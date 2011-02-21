@@ -122,7 +122,9 @@
 			<groupId>org.richfaces.core</groupId> 
 			<artifactId>richfaces-core-impl</artifactId>
 			<version>4.0.0.20110209-M6</version> 
-		</dependency> -->
+		</dependency> 
+		-->
+		
 		<dependency>
 			<groupId>de.mpg.escidoc.services</groupId>
 			<artifactId>framework_access</artifactId>
@@ -145,8 +147,7 @@
 			<version>5.1.0.GA</version>
 			<scope>provided</scope>
 		</dependency> 
-		<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-6.0</artifactId> 
-			<version>1.0.0.Final</version> <type>pom</type> <scope>provided</scope> </dependency> -->
+	
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
