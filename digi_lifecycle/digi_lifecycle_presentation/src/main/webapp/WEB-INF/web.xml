@@ -1,0 +1,111 @@
+
+<!-- CDDL HEADER START The contents of this file are subject to the terms 
+	of the Common Development and Distribution License, Version 1.0 only (the 
+	"License"). You may not use this file except in compliance with the License. 
+	You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+	See the License for the specific language governing permissions and limitations 
+	under the License. When distributing Covered Code, include this CDDL HEADER 
+	in each file and include the License file at license/ESCIDOC.LICENSE. If 
+	applicable, add the following below this CDDL HEADER, with the fields enclosed 
+	by brackets "[]" replaced with your own identifying information: Portions 
+	Copyright [yyyy] [name of copyright owner] CDDL HEADER END Copyright 2006-2007 
+	Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische 
+	Information mbH and Max-Planck- Gesellschaft zur Förderung der Wissenschaft 
+	e.V. All rights reserved. Use is subject to license terms. -->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+
+	<!-- JSF 2: this tells JBoss 5 to use the jsf jars included in the app -->
+	<!-- 
+	<context-param>
+	   <param-name>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL</param-name>
+	   <param-value>true</param-value>
+	</context-param>
+	-->
+	<!-- JSF 2: this needs to be included to avoid an error message -->
+	<!-- 
+	<context-param>
+	   <param-name>com.sun.faces.injectionProvider</param-name>
+	   <param-value>org.jboss.web.jsf.integration.injection.JBossInjectionProvider</param-value>
+	</context-param>
+
+-->
+
+    <context-param>
+        <param-name>javax.faces.DISABLE_FACELET_JSF_VIEWHANDLER</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+     <!-- Use Documents Saved as *.xhtml -->	
+
+  <context-param>
+    <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+    <param-value>.xhtml</param-value>
+  </context-param>
+
+  <!-- Special Debug Output for Development -->
+  <context-param>
+    <param-name>facelets.DEVELOPMENT</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  
+  <!-- Use documents saved as *.xhtml for Facelets -->
+  <context-param>
+    <param-name>facelets.VIEW_MAPPINGS</param-name>
+    <param-value>*.xhtml</param-value>
+  </context-param> 
+    
+
+
+	<context-param>
+	   <param-name>org.richfaces.SKIN</param-name>
+	   <param-value>blueSky</param-value>
+	</context-param>
+	
+	
+	<context-param>
+	      <param-name>org.richfaces.CONTROL_SKINNING</param-name>
+	      <param-value>enable</param-value>
+	</context-param>
+	
+ 
+	<filter> 
+	   <display-name>RichFaces Filter</display-name> 
+	   <filter-name>richfaces</filter-name> 
+	   <filter-class>org.ajax4jsf.Filter</filter-class> 
+	</filter> 
+	
+	<filter-mapping> 
+	   <filter-name>richfaces</filter-name> 
+	   <servlet-name>Faces Servlet</servlet-name>
+	   <dispatcher>REQUEST</dispatcher>
+	   <dispatcher>FORWARD</dispatcher>
+	   <dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+
+
+	
+	<!-- Faces Servlet -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+
+	<session-config>
+		<session-timeout>180</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>home.jsf</welcome-file>
+	</welcome-file-list>
+
+
+</web-app>
+
