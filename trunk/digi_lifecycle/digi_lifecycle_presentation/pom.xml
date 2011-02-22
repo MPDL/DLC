@@ -132,9 +132,15 @@
 			<groupId>de.mpg.escidoc.services</groupId>
 			<artifactId>framework_access</artifactId>
 			<version>1.0.58</version>
-			<scope>provided</scope>
+		    <exclusions>
+		        <exclusion>
+		          <groupId>javaee</groupId>
+		          <artifactId>javaee</artifactId>
+		        </exclusion>
+      		</exclusions> 
 		</dependency>
 		-->
+		
 		<dependency>
     		<groupId>commons-fileupload</groupId>
     		<artifactId>commons-fileupload</artifactId>
