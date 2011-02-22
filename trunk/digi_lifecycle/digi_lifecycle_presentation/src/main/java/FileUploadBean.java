@@ -1,10 +1,15 @@
 
+import java.awt.image.BufferedImage;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
+import javax.imageio.ImageIO;
 
 
 import org.richfaces.event.UploadEvent;
@@ -17,10 +22,10 @@ import org.richfaces.model.UploadItem;
  *
  */
 @ManagedBean
-@RequestScoped  
+@SessionScoped 
 public class FileUploadBean{
 	    
-	    private ArrayList<File> files = new ArrayList<File>();
+	    private ArrayList<java.io.File> files = new ArrayList<java.io.File>();
 	    private int uploadsAvailable = 5;
 	    private boolean autoUpload = false;
 	    private boolean useFlash = false;
@@ -37,15 +42,13 @@ public class FileUploadBean{
 	    }
 
 	    public void paint(OutputStream stream, Object object) throws IOException {
-	        stream.write(getFiles().get((Integer)object).getData());
+	        BufferedImage img = ImageIO.read(getFiles().get((Integer)object));
+	    	ImageIO.write(img, "jpeg", stream);
 	    }
 	    public void listener(UploadEvent event) throws Exception{
 	        UploadItem item = event.getUploadItem();
-	        File file = new File();
-	        file.setLength(item.getData().length);
-	        file.setName(item.getFileName());
-	        file.setData(item.getData());
-	        files.add(file);
+	       
+	        files.add(item.getFile());
 	        uploadsAvailable--;
 	    }  
 	      
@@ -59,11 +62,11 @@ public class FileUploadBean{
 	        return System.currentTimeMillis();
 	    }
 	    
-	    public ArrayList<File> getFiles() {
+	    public ArrayList<java.io.File> getFiles() {
 	        return files;
 	    }
 
-	    public void setFiles(ArrayList<File> files) { 
+	    public void setFiles(ArrayList<java.io.File> files) { 
 	        this.files = files;
 	    }
 
