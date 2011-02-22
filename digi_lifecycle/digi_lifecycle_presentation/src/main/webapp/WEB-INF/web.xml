@@ -32,31 +32,49 @@
 
 -->
 
-    <context-param>
-        <param-name>javax.faces.DISABLE_FACELET_JSF_VIEWHANDLER</param-name>
-        <param-value>true</param-value>
-    </context-param>
+   
+    
+   
+    
 
      <!-- Use Documents Saved as *.xhtml -->	
+
 
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
     <param-value>.xhtml</param-value>
   </context-param>
 
+
   <!-- Special Debug Output for Development -->
+
   <context-param>
     <param-name>facelets.DEVELOPMENT</param-name>
     <param-value>true</param-value>
   </context-param>
-  
+
   <!-- Use documents saved as *.xhtml for Facelets -->
   <context-param>
     <param-name>facelets.VIEW_MAPPINGS</param-name>
     <param-value>*.xhtml</param-value>
   </context-param> 
-    
+  
+  <!-- USe this, otherwise richfaces reRender functionality does not work anymore -->
+     <context-param>
+        <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
+        <param-value>false</param-value>
+    </context-param>
 
+  
+	 <context-param>
+			<param-name>org.ajax4jsf.VIEW_HANDLERS</param-name>
+			<param-value>com.sun.facelets.FaceletViewHandler</param-value>
+	</context-param>
+ 	
+ 	<context-param>
+        <param-name>javax.faces.DISABLE_FACELET_JSF_VIEWHANDLER</param-name>
+        <param-value>true</param-value>
+    </context-param>
 
 	<context-param>
 	   <param-name>org.richfaces.SKIN</param-name>
@@ -95,7 +113,7 @@
 
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.jsf</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 
 	<session-config>
@@ -103,7 +121,7 @@
 	</session-config>
 
 	<welcome-file-list>
-		<welcome-file>home.jsf</welcome-file>
+		<welcome-file>home.xhtml</welcome-file>
 	</welcome-file-list>
 
 

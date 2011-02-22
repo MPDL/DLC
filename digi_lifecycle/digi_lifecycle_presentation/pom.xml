@@ -92,7 +92,6 @@
 			<version>3.3.3.Final</version>
 		</dependency>
 
-
 		<dependency>
       		<groupId>com.sun.facelets</groupId>
       		<artifactId>jsf-facelets</artifactId>
