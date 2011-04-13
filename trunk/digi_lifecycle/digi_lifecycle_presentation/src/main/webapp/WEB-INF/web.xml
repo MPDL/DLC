@@ -54,12 +54,15 @@
   </context-param>
 
   <!-- Use documents saved as *.xhtml for Facelets -->
+ <!-- 
   <context-param>
     <param-name>facelets.VIEW_MAPPINGS</param-name>
     <param-value>*.xhtml</param-value>
   </context-param> 
-  
+  -->
   <!-- USe this, otherwise richfaces reRender functionality does not work anymore -->
+     
+     <!-- 
      <context-param>
         <param-name>facelets.RECREATE_VALUE_EXPRESSION_ON_BUILD_BEFORE_RESTORE</param-name>
         <param-value>false</param-value>
@@ -102,8 +105,21 @@
 	   <dispatcher>INCLUDE</dispatcher>
 	</filter-mapping>
 
-
+-->
 	
+	<!-- PrimeFaces Uplaod Filter -->
+
+<!-- 
+	<filter>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+
+   </filter>
+   <filter-mapping>
+      <filter-name>PrimeFaces FileUpload Filter</filter-name>
+      <servlet-name>Faces Servlet</servlet-name>
+   </filter-mapping>
+-->
 	<!-- Faces Servlet -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>

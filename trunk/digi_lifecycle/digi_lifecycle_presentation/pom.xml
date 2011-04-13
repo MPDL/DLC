@@ -53,33 +53,33 @@
 	<!-- <dependencyManagement> <dependencies> <dependency> <groupId>org.richfaces</groupId> 
 		<artifactId>richfaces-bom</artifactId> <version>4.0.0.20110209-M6</version> 
 		<scope>import</scope> <type>pom</type> </dependency> </dependencies> </dependencyManagement> -->
-	<!-- 
+	
 	<dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>org.richfaces</groupId>
                 <artifactId>richfaces-bom</artifactId>
-                <version>4.0.0.20110209-M6</version>
+                <version>4.0.0.Final</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
-	-->
 	
 	<dependencies>
 
-  <!-- 
+  
 	 	<dependency>
 	        <groupId>org.richfaces.ui</groupId>
 	        <artifactId>richfaces-components-ui</artifactId>
-	    </dependency>
+	 	</dependency>
 	    <dependency>
 	        <groupId>org.richfaces.core</groupId>
-	        <artifactId>richfaces-core-impl</artifactId>
+	        <artifactId>richfaces-core-impl</artifactId> 
 	    </dependency>
-    -->
+    
 	 
+	 <!-- 
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
 			<artifactId>richfaces-impl-jsf2</artifactId>
@@ -97,20 +97,19 @@
       		<artifactId>jsf-facelets</artifactId>
       		<version>1.1.15</version>
     	</dependency>	
-
+-->
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-impl</artifactId>
 			<version>2.0.3-b05</version>
 			<scope>provided</scope>
-			
 		</dependency>
+	
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
 			<version>2.0.3-b05</version>
 			<scope>provided</scope>
-			
 		</dependency>
 
 		<!-- 
@@ -143,7 +142,13 @@
 		<dependency>
     		<groupId>commons-fileupload</groupId>
     		<artifactId>commons-fileupload</artifactId>
-    		<version>1.2.2</version>
+    		<version>1.2.1</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>commons-io</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>1.4</version>
 		</dependency>
 		
 		<!-- 
@@ -161,6 +166,13 @@
 			<version>4.1</version>
 			<scope>test</scope>
 		</dependency>
+
+	     <dependency>  
+	        <groupId>org.primefaces</groupId>  
+	      	<artifactId>primefaces</artifactId>  
+	      	
+	        <version>3.0-prime-1</version>
+	    </dependency>  
 
 	</dependencies>
 
