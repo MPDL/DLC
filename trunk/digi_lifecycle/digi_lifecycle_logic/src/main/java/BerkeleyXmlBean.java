@@ -25,7 +25,6 @@ public class BerkeleyXmlBean implements BerkeleyXmlService {
 		XmlManager xmlManager = new XmlManager();
 		XmlContainer testContainer = xmlManager.openContainer("test.dbxml");
 		testContainer.putDocument("testDocument", "<test>Hallo</test>");
-		testContainer.g
 	}
 
 }
