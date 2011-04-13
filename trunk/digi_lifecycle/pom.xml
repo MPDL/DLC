@@ -202,6 +202,12 @@
 	            <updatePolicy>never</updatePolicy>
 	          </snapshots>
         </repository>
+        <repository>  
+	        <id>prime-repo</id>  
+	        <name>Prime Technology Maven Repository</name>  
+	        <url>http://repository.prime.com.tr</url>  
+	        <layout>default</layout>  
+	    </repository>  
 	</repositories>
 
 	<pluginRepositories>
@@ -273,6 +279,22 @@
 					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
 				</configuration>
 			</plugin>
+
+		      <plugin>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <configuration>
+		          <source>1.6</source>
+		          <target>1.6</target>
+		        </configuration>
+		      </plugin>
+		      <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-ejb-plugin</artifactId>
+	            <configuration>
+	                <ejbVersion>3.0</ejbVersion>
+	            </configuration>
+        	  </plugin>
+
 		</plugins>
 	</build>
 
@@ -352,7 +374,7 @@
            </build> 
 			<properties>
 				<!-- the jdk version to use -->
-				<jdk.version>1.5</jdk.version>
+				<jdk.version>1.6</jdk.version>
 
 				<!-- used by the cargo plugin to run a jboss server for integration-testing /goal: cargo:start-->
 				<cargo.port>8080</cargo.port>
