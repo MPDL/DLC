@@ -28,8 +28,7 @@
             All rights reserved. Use is subject to license terms.
              */
 -->
-<f:view encoding="UTF-8"
-	locale="en"
+<f:view encoding="UTF-8" locale="en"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -42,50 +41,49 @@
 	<f:loadBundle var="tlt" basename="Tooltips" />
 
 	<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<h:head>
 
-<title><h:outputText
-		value="#{browserTitle} | #{applicationBean.pureAppTitle}" />
-</title>
+	<title><h:outputText
+			value="#{browserTitle} | #{applicationBean.pureAppTitle}" /></title>
 
-<link
-	href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/main.css"
-	type="text/css" rel="stylesheet" />
-<link
-	href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_highContrast/styles/theme.css"
-	id="highContrastTheme" title="high contrast" type="text/css"
-	rel="alternate stylesheet" />
-<link
-	href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_classic/styles/theme.css"
-	id="classicTheme" title="classic" type="text/css"
-	rel="alternate stylesheet" />
-<link
-	href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_VIRR/styles/theme.css"
-	id="PubManTheme" title="Virr" type="text/css" rel="stylesheet" />
+	<link
+		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/main.css"
+		type="text/css" rel="stylesheet" />
+	<link
+		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_highContrast/styles/theme.css"
+		id="highContrastTheme" title="high contrast" type="text/css"
+		rel="alternate stylesheet" />
+	<link
+		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_classic/styles/theme.css"
+		id="classicTheme" title="classic" type="text/css"
+		rel="alternate stylesheet" />
+	<link
+		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_VIRR/styles/theme.css"
+		id="PubManTheme" title="Virr" type="text/css" rel="stylesheet" />
 
-<link
-	href="#{applicationBean.contextPath}/images/Virr_Medium_Volume_31_Static.gif"
-	type="image/x-icon" rel="shortcut icon" />
+	<link
+		href="#{applicationBean.contextPath}/images/Virr_Medium_Volume_31_Static.gif"
+		type="image/x-icon" rel="shortcut icon" />
 
-<meta http-equiv="pragma" content="no-cache" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="expires" content="0" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
 
-<script type="text/javascript" language="JavaScript">
+	<script type="text/javascript" language="JavaScript">
 				var cookieVersion = "1.0";
 				var jsURL = "#{applicationBean.contextPath}/resources/eSciDoc_JavaScript/";
 				<ui:insert name="scriptVars"></ui:insert>
 			</script>
 
-<script
-	src="#{applicationBean.contextPath}/resources/eSciDoc_JavaScript/eSciDoc_javascript.js"
-	language="JavaScript" type="text/javascript">;</script>
+	<script
+		src="#{applicationBean.contextPath}/resources/eSciDoc_JavaScript/eSciDoc_javascript.js"
+		language="JavaScript" type="text/javascript">;</script>
 
 
-<script src="#{applicationBean.contextPath}/resources/scripts.js"
-	language="JavaScript" type="text/javascript">;</script>
+	<script src="#{applicationBean.contextPath}/resources/scripts.js"
+		language="JavaScript" type="text/javascript">;</script>
 
-</head>
+</h:head>
 
 <body lang="#{internationalizationHelper.userLocaleString}">
 	<h:form id="form1">
