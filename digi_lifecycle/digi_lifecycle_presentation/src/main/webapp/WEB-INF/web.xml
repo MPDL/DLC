@@ -56,7 +56,7 @@
   <!-- RichFaces File Upload -->
    <context-param>
     <param-name>org.richfaces.fileUpload.createTempFiles</param-name>
-    <param-value>true</param-value>
+    <param-value>false</param-value>
   </context-param>
   <context-param>
     <param-name>org.richfaces.fileUpload.maxRequestSizes</param-name>
