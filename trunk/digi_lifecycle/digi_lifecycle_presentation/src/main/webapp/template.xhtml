@@ -33,7 +33,7 @@
 		<f:loadBundle var="msg" basename="Messages"/>
 		<f:loadBundle var="tlt" basename="Tooltips"/>
 		<html xmlns="http://www.w3.org/1999/xhtml">
-			<head>
+			<h:head>
 
 				<title><h:outputText value="#{browserTitle} | #{AppBean.pureAppTitle}"/></title>
 				
@@ -59,7 +59,7 @@
 
 				<script src="#{AppBean.contextPath}/resources/scripts.js" language="JavaScript" type="text/javascript">;</script>
 
-			</head>
+			</h:head>
 			
 			<body lang="#{InternationalizationHelper.userLocaleString}">
 			<h:panelGroup rendered="#{EditMetadata.loginState}"/>
