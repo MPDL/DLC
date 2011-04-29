@@ -52,6 +52,16 @@
     <param-name>facelets.DEVELOPMENT</param-name>
     <param-value>true</param-value>
   </context-param>
+  
+  <!-- RichFaces File Upload -->
+   <context-param>
+    <param-name>org.richfaces.fileUpload.createTempFiles</param-name>
+    <param-value>true</param-value>
+  </context-param>
+  <context-param>
+    <param-name>org.richfaces.fileUpload.maxRequestSizes</param-name>
+    <param-value>1000000</param-value>
+  </context-param>
 
   <!-- Use documents saved as *.xhtml for Facelets -->
  <!-- 
