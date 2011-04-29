@@ -8,8 +8,19 @@
 		<pattern>
 			/
 		</pattern>
-		<view-id>/faces/HomePage.xhtml</view-id>
+		<view-id>/Welcome.xhtml</view-id>
 	</url-mapping>
+	
+	<url-mapping id="upload">
+		<pattern>
+			/upload
+		</pattern>
+		<view-id>/Upload.xhtml</view-id>
+	</url-mapping>
+	
+	
+	
+	
 	
 	<url-mapping id="browseListPagination">
 		<pattern>

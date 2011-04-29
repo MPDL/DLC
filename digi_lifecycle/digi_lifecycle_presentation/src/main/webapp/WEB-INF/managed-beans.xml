@@ -29,53 +29,9 @@
 -->
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd"
-	version="1.2"> 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0"> 
 	
-	<managed-bean>
-		<managed-bean-name>AppBean</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.base.ApplicationBean</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>BookPaginatorListSessionBean</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.viewer.BookPaginatorListSessionBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>ViewPages</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.viewer.ViewPages</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>EditTree</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.edit.EditTree</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>EditMetadata</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.edit.EditMetadata</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>InternationalizationHelper</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.util.InternationalizationHelper</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>TocEditingSessionBean</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.editToc.TocEditingSessionBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>VirrRequestBean</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.base.VirrRequestBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>MessagesBean</managed-bean-name>
-		<managed-bean-class>de.mpg.escidoc.virr.base.MessagesBean</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
+
 		
 </faces-config>
