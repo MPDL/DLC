@@ -45,7 +45,7 @@
 	<!-- Help --> 
 	<h:outputLink id="lnkHelp"
 		styleClass="small_area0_p8 endline" title="#{tlt.Help}"
-		value="#{applicationBean.contextPath}/#{InternationalizationHelper.selectedHelpPage}#{applicationBean.helpAnchor}"
+		value="#{applicationBean.contextPath}/#{internationalizationHelper.selectedHelpPage}#{applicationBean.helpAnchor}"
 		target="_blank">
 		<h:outputText value="#{lbl.header_lnk_help}" />
 	</h:outputLink> 
