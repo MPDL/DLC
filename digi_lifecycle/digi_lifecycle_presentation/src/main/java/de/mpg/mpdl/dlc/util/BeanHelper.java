@@ -1,15 +1,22 @@
 package de.mpg.mpdl.dlc.util;
 
+import java.util.ResourceBundle;
+
+
+import javax.faces.application.Application;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-
 import org.apache.log4j.Logger;
+
 
 public class BeanHelper 
 {
 	private static Logger logger = Logger.getLogger(BeanHelper.class);
+    protected Application application = FacesContext.getCurrentInstance().getApplication();
+    protected InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), InternationalizationHelper.BEAN_NAME);
+	
 	
 	public static synchronized Object getRequestBean(final Class<?> cls)
 	{
@@ -261,6 +268,11 @@ public class BeanHelper
         {
             FacesContext.getCurrentInstance().addMessage(component.getId(), fm);
         }
+    }
+    
+    public String getMessage(String placeholder)
+    {
+    	return ResourceBundle.getBundle(i18nHelper.getSelectedMessagesBundle()).getString(placeholder);
     }
     
 }
