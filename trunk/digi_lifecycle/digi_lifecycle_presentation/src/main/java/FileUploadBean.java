@@ -25,7 +25,7 @@ public class FileUploadBean implements Serializable {
         stream.close();
     }
  
-    public void listener(FileUploadEvent event) throws Exception {
+    public void listener(FileUploadEvent event) throws Exception { 
         UploadedFile item = event.getUploadedFile();
         File file = new File();
         file.setLength(item.getData().length);
@@ -52,7 +52,7 @@ public class FileUploadBean implements Serializable {
     }
  
     public ArrayList<File> getFiles() {
-        return files;
+        return files; 
     }
  
     public void setFiles(ArrayList<File> files) {

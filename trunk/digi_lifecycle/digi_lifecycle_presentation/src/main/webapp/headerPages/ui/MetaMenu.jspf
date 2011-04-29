@@ -35,9 +35,9 @@
 
 	<!-- meta Menu starts here --> 
 	<!-- Language --> 
-	<h:selectOneMenu id="selSelectLocale" value="#{InternationalizationHelper.userLocaleString}"
+	<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}"
 		styleClass="medium_select" immediate="true" onchange="submit();"
-		valueChangeListener="#{InternationalizationHelper.changeLanguage}">
+		valueChangeListener="#{internationalizationHelper.changeLanguage}">
 		<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
 		<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
 	</h:selectOneMenu> 
