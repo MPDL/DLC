@@ -7,32 +7,17 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:p="http://primefaces.prime.com.tr/ui">
-<h:head>
-	<title>Test Digi Lifecycle</title>
-	<!-- required for dragndrop, don't know why -->
-	<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
-</h:head>
-
-<h:body>
 
 
-<h:form>
-
-
-
-	<h:form id="form">
-
-		
-
-			
-			
-			
-			
+<ui:composition template="templates/template.xhtml">
+	
+	<ui:define name="mainContent">
 			<h:panelGrid columns="2" columnClasses="top,top">
             <rich:fileUpload fileUploadListener="#{fileUploadBean.listener}"
                 id="upload" acceptedTypes="jpg, gif, png, bmp">
                 <a4j:ajax event="uploadcomplete" execute="@none" render="info" />
             </rich:fileUpload>
+           
             <h:panelGroup id="info" layout="block">
                 <rich:panel bodyClass="info">
                     <f:facet name="header">
@@ -40,6 +25,8 @@
                     </f:facet>
                     <h:outputText value="No files currently uploaded"
                         rendered="#{fileUploadBean.size==0}" />
+                    
+                    
                     <rich:dataGrid columns="1" value="#{fileUploadBean.files}"
                         var="file" rowKeyVar="row">
                         <rich:panel bodyClass="rich-laguna-panel-no-header">
@@ -64,35 +51,13 @@
                     render="info, upload" value="Clear Uploaded Data"
                     rendered="#{fileUploadBean.size>0}" />
             </h:panelGroup>
+            
+            
         </h:panelGrid>
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			<h:panelGroup id="uploadedFiles">
-			
 
-		     
-			
-			
-		
+	</ui:define>
 
-			</h:panelGroup>
-			
-	</h:form>
+</ui:composition>
 
-
-
-</h:form>
-</h:body>
 </html>
