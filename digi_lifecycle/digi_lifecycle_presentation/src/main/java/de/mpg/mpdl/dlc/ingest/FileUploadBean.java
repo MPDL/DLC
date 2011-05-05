@@ -1,3 +1,5 @@
+package de.mpg.mpdl.dlc.ingest;
+
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,6 +8,11 @@ import java.util.ArrayList;
  
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ActionListener;
+import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.AjaxBehaviorListener;
  
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
@@ -58,5 +65,8 @@ public class FileUploadBean implements Serializable {
     public void setFiles(ArrayList<File> files) {
         this.files = files;
     }
- 
+
+	
+
+
 }
