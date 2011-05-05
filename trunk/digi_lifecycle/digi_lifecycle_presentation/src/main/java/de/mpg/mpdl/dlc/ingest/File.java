@@ -1,3 +1,4 @@
+package de.mpg.mpdl.dlc.ingest;
 public class File {
 
     private String Name;

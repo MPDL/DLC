@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite">
+
+<!-- INTERFACE -->
+<cc:interface componentType="de.mpg.mpdl.components.FileUploadComponent">
+	<cc:attribute name="actionListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)"/>
+	<cc:attribute name="rerender" type="java.lang.String"/>
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	
+<!-- 
+	<h:form id="form" prependId="false">
+		<h3>Choose file(s)</h3>
+		<p><input id="files-upload" type="file"/></p>
+		<p id="drop-area"><span class="drop-instructions">or drag
+		and drop files here</span> <span class="drop-over">Drop files here!</span></p>
+
+		<ul id="file-list">
+			<li class="no-items">(no files uploaded yet)</li>
+		</ul>
+
+	</h:form>
+-->
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+	google.load("jquery", "1.5");
+	</script>
+	<h:outputScript library="components/fileUpload/plupload" name="gears_init.js"/>
+	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+	<!-- Load source versions of the plupload script files -->
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.gears.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.silverlight.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.flash.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="jquery.plupload.queue.js"/>
+
+
+
+		<div id="submit-form">
+		
+			<div id="filelist">No runtime found.</div>
+			<br />
+			<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
+			<a id="pickfiles" href="#">[Select files]</a> 
+			<a id="uploadfiles" href="#">
+				<h:outputText value="[Upload files]"/>
+				
+			</a>
+			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
+				<f:ajax event="click" render="#{cc.attrs.rerender}"/>
+			</h:commandButton>
+		</div>
+		
+		<h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
+	    <cc:insertChildren/>
+	
+	
+	
+	
+
+
+
+</cc:implementation>
+</html>
