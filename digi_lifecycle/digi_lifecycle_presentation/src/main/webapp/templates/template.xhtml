@@ -47,22 +47,22 @@
 			value="#{browserTitle} | #{applicationBean.pureAppTitle}" /></title>
 
 	<link
-		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/main.css"
+		href="#{applicationBean.domain}common/resources/cssFramework/main.css"
 		type="text/css" rel="stylesheet" />
 	<link
-		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_highContrast/styles/theme.css"
+		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_highContrast/styles/theme.css"
 		id="highContrastTheme" title="high contrast" type="text/css"
 		rel="alternate stylesheet" />
 	<link
-		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_classic/styles/theme.css"
+		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_classic/styles/theme.css"
 		id="classicTheme" title="classic" type="text/css"
 		rel="alternate stylesheet" />
 	<link
-		href="#{applicationBean.contextPath}/resources/eSciDoc_CSS_v2/themes/skin_VIRR/styles/theme.css"
+		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_VIRR/styles/theme.css"
 		id="PubManTheme" title="Virr" type="text/css" rel="stylesheet" />
 
 	<link
-		href="#{applicationBean.contextPath}/images/Virr_Medium_Volume_31_Static.gif"
+		href="#{applicationBean.domain}/images/Virr_Medium_Volume_31_Static.gif"
 		type="image/x-icon" rel="shortcut icon" />
 
 	<meta http-equiv="pragma" content="no-cache" />
@@ -86,7 +86,7 @@
 </h:head>
 
 <body lang="#{internationalizationHelper.userLocaleString}">
-	<h:form id="form1">
+	<h:form id="form1" enctype="multipart/form-data">
 		<div class="full wrapper">
 			<h:inputHidden id="offset"></h:inputHidden>
 
