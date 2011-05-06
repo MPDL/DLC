@@ -1,17 +1,59 @@
 
+
+
+
+
 // Custom example logic
 $(function() {
+	
+	
+	var styledUploader = $("#pluploader").pluploadQueue({
+		// General settings
+		runtimes : 'gears,html5,flash,silverlight,browserplus,html4',
+		url : document.URL,
+		max_file_size : '10mb',
+		chunk_size : '1mb',
+		multipart : true,
+		unique_names : true,
+		resize : {width : 320, height : 240, quality : 90},
+		filters : [
+			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Zip files", extensions : "zip"}
+		],
+		multipart_params : {
+			'javax.faces.ViewState' : getViewState()
+		}
+		
+	});
+	
+	styledUploader.bind('UploadComplete', function(up, file) {
+		$('#submit-form').find('.hiddenUploadCompleteButton').click();
+	});
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	var uploader = new plupload.Uploader({
 		runtimes : 'gears,html5,flash,silverlight,browserplus,html4',
 		browse_button : 'pickfiles',
 		drop_element : 'dropArea',
 		url : document.URL,
-		multipart : true,
-		max_file_size : '10mb',
+		
+		max_file_size : '50mb',
 		resize : {width : 320, height : 240, quality : 90},
 		flash_swf_url : '../js/plupload.flash.swf',
 		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Image files", extensions : "jpg,gif,png,tif"},
 			{title : "Zip files", extensions : "zip"}
 		],
 		multipart_params : {
