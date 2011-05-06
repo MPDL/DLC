@@ -13,13 +13,55 @@
 
 			
 			
-			<ui:remove>
 			
-			<fu:fileUpload actionListener="#{fileUploadBeanNew.processAction}" rerender=":form1:info">
+			
+			<fu:fileUpload actionListener="#{fileUploadBeanNew.processAction}" rerender=":form1:tablePart">
 			</fu:fileUpload>
 			
 			
+			
+			<style>
+				.accept {
+					background-color:green;
+				}
+				.reject {
+					background-color:red;
+				}
+				.default {
 
+				}
+			</style>
+			
+			
+			<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
+       			 Drag the item to proper area..
+  		  </rich:dragIndicator>
+			
+			
+			<a4j:outputPanel id="tablePart" layout="block" style="height:400px;width:500px;">
+			 	<a4j:outputPanel id="dropPanelFirst" layout="block" style="height:10px; background-color:grey" styleClass="dropPanel">
+					<rich:dropTarget acceptedTypes="file" dropValue="pos0"
+                    		dropListener="#{fileUploadBeanNew.processDrop}"
+                    		render="tablePart" />
+                    </a4j:outputPanel>
+	            <a4j:repeat value="#{fileUploadBeanNew.files}" var="file" id="table"
+	                style="height:300px; width:500px;" rowKeyVar="row">
+	                <a4j:outputPanel layout="block" style="background-color:lightgrey">
+	                    	<rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
+                    		 <a4j:mediaOutput element="img" cacheable="false" id="img" createContent="#{fileUploadBeanNew.paint}" value="#{row}" mimeType="image/jpeg" alt="img" style="height:50px;"/>
+                    		<h:outputText value="#{file.name}" />
+	                 </a4j:outputPanel>
+	                 <a4j:outputPanel id="dropPanel" layout="block" style="height:10px; background-color:grey" styleClass="dropPanel">
+	                 <rich:dropTarget acceptedTypes="file" dropValue="#{file}"
+                    		dropListener="#{fileUploadBeanNew.processDrop}"
+                    		render="tablePart" />
+                    </a4j:outputPanel>
+	
+	            </a4j:repeat>
+    		</a4j:outputPanel>
+			
+
+<ui:remove>
 			<h:panelGroup id="info" layout="block">
                 <rich:panel bodyClass="info">
                     <f:facet name="header">
@@ -50,7 +92,7 @@
                     render="info, upload" value="Clear Uploaded Data"
                     rendered="#{fileUploadBean.size>0}" />
             </h:panelGroup>
-          </ui:remove>
+            </ui:remove>
 	</ui:define>
 
 </ui:composition>
