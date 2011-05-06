@@ -12,12 +12,9 @@ $(function() {
 		runtimes : 'gears,html5,flash,silverlight,browserplus,html4',
 		url : document.URL,
 		max_file_size : '10mb',
-		chunk_size : '1mb',
-		multipart : true,
 		unique_names : true,
-		resize : {width : 320, height : 240, quality : 90},
 		filters : [
-			{title : "Image files", extensions : "jpg,gif,png"},
+			{title : "Image files", extensions : "jpg,gif,png,tif"},
 			{title : "Zip files", extensions : "zip"}
 		],
 		multipart_params : {
@@ -26,19 +23,7 @@ $(function() {
 		
 	});
 	
-	styledUploader.bind('UploadComplete', function(up, file) {
-		$('#submit-form').find('.hiddenUploadCompleteButton').click();
-	});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
