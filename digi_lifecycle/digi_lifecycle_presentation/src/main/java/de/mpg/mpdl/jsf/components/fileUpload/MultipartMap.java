@@ -62,6 +62,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  */
 public class MultipartMap extends HashMap<String, Object> {
 
+	
     // Constants ----------------------------------------------------------------------------------
 
     private static final String ATTRIBUTE_NAME = "parts";
@@ -129,9 +130,10 @@ public class MultipartMap extends HashMap<String, Object> {
         /** NEW */
         try {
 			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-			diskFileItemFactory.setRepository(new File("C://Users//haarlae1//test"));
-			diskFileItemFactory.setSizeThreshold(500);
+			diskFileItemFactory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+			diskFileItemFactory.setSizeThreshold(5000);
 			
+			System.out.println("Detected Multipart Request. Saving temp files to " +System.getProperty("java.io.tmpdir"));
 			
 			ServletFileUpload servletFileUpload = new ServletFileUpload(diskFileItemFactory);
 			
@@ -154,8 +156,9 @@ public class MultipartMap extends HashMap<String, Object> {
 			            put(item.getFieldName(), newValues);
 			        }
 				}
-				else
+				else {
 					put(item.getFieldName(), item);
+				}
 			}
 		} catch (FileUploadException e) {
 			throw new ServletException(e);

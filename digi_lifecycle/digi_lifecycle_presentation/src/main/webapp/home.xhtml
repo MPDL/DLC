@@ -13,7 +13,7 @@
 
 			
 			
-			
+			<ui:remove>
 			
 			<fu:fileUpload actionListener="#{fileUploadBeanNew.processAction}" rerender=":form1:info">
 			</fu:fileUpload>
@@ -50,7 +50,7 @@
                     render="info, upload" value="Clear Uploaded Data"
                     rendered="#{fileUploadBean.size>0}" />
             </h:panelGroup>
-          
+          </ui:remove>
 	</ui:define>
 
 </ui:composition>

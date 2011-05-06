@@ -99,13 +99,14 @@
 	        <groupId>org.richfaces.core</groupId>
 	        <artifactId>richfaces-core-impl</artifactId> 
 	    </dependency>
-    
+    <!-- 
 	    <dependency>
 			<groupId>de.mpg.escidoc.services</groupId>
 			<artifactId>framework_access</artifactId>
 			<version>1.0.60-SNAPSHOT</version>
 			<scope>provided</scope>
-		</dependency>	 
+		</dependency>
+		-->	 
 	 <!-- 
 		<dependency>
 			<groupId>org.richfaces.framework</groupId>
@@ -166,28 +167,28 @@
       		</exclusions> 
 		</dependency>
 		-->
-		<!-- 
+		
 		<dependency>
     		<groupId>commons-fileupload</groupId>
     		<artifactId>commons-fileupload</artifactId>
     		<version>1.2.1</version>
 		</dependency>
-		-->
+		
 		<dependency>
     		<groupId>commons-io</groupId>
     		<artifactId>commons-io</artifactId>
     		<version>1.4</version>
 		</dependency>
 		
-		<!-- 
+	
 		<dependency> 
 			<groupId>org.jboss.jbossas</groupId>
 			<artifactId>jboss-as-client</artifactId> 
 			<type>pom</type>
-			<version>5.1.0.GA</version>
+			<version>6.0.0.Final</version>
 			<scope>provided</scope>
 		</dependency> 
-	-->
+	
 	
 		<dependency>
 			<groupId>com.sleepycat</groupId>
