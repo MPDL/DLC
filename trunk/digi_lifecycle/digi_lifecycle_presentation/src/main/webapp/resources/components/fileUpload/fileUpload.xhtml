@@ -5,7 +5,9 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:cc="http://java.sun.com/jsf/composite"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
 
 <!-- INTERFACE -->
 <cc:interface componentType="de.mpg.mpdl.components.FileUploadComponent">
@@ -43,16 +45,18 @@
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="jquery.plupload.queue.js"/>
-	<h:outputStylesheet library="components/fileUpload/plupload" name="plupload.queue.css"/>
+	<h:outputStylesheet library="components/fileUpload/plupload/styles" name="plupload.queue.css"/>
 
 
    
 
 
 		<div id="submit-form">
-		 <ui:remove>
+		
 		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
-				</ui:remove>
+			
+			<!-- 
+			<ui:remove>
 				<div id="filelist">No runtime found.</div>
 				<br />
 				<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
@@ -61,9 +65,10 @@
 					<h:outputText value="[Upload files]"/>
 					
 				</a>
-		
+		 	</ui:remove>
+		 	-->
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
-				<f:ajax event="click" render="#{cc.attrs.rerender}"/>
+				<a4j:ajax event="click" render="#{cc.attrs.rerender}" execute="@all"/>
 			</h:commandButton>
 		</div>
 		

@@ -314,6 +314,11 @@
 						$('span.plupload_total_status,span.plupload_total_file_size', target).hide();
 					}
 				});
+				
+				uploader.bind('UploadComplete', function(up, file) {
+					$('#submit-form').find('.hiddenUploadCompleteButton').click();
+				});
+				
 
 				// Call setup function
 				if (settings.setup) {
