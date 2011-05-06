@@ -124,6 +124,11 @@ public class ApplicationBean
     {
         this.appContext = appContext;
     }
+    
+    public String getDomain()
+    {
+    	return "http://localhost:8080/";
+    }
 
     /**
      * creates list of VirrBooks used for the tree model.
@@ -145,6 +150,8 @@ public class ApplicationBean
         param.append("</param>");
         return param.toString();
     }
+    
+
 
 
 
