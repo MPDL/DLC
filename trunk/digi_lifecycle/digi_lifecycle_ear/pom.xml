@@ -33,6 +33,11 @@
 							<artifactId>digi_lifecycle_presentation</artifactId>
 							<contextRoot>/digi_lifecycle</contextRoot>
 						</webModule>
+						<webModule>
+							<groupId>de.mpg.escidoc.services</groupId>
+							<artifactId>common_presentation</artifactId>
+							<contextRoot>/common</contextRoot>
+						</webModule>
 						
 						
 						
@@ -172,6 +177,13 @@
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>de.mpg.escidoc.services</groupId>
+			<artifactId>common_presentation</artifactId>
+			<version>1.0.45-SNAPSHOT</version>
+			<type>war</type>
+			<scope>compile</scope>
 		</dependency>
 		
 
