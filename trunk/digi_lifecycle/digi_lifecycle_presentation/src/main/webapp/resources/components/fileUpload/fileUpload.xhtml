@@ -32,9 +32,7 @@
 	</h:form>
 -->
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-	google.load("jquery", "1.5");
-	</script>
+	<script type="text/javascript">google.load("jquery", "1.5");</script>
 	<h:outputScript library="components/fileUpload/plupload" name="gears_init.js"/>
 	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
 	<!-- Load source versions of the plupload script files -->
@@ -45,13 +43,12 @@
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="jquery.plupload.queue.js"/>
-	<h:outputStylesheet library="components/fileUpload/plupload/styles" name="plupload.queue.css"/>
 
 
    
 
 
-		<div id="submit-form">
+
 		
 		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
 			
@@ -70,7 +67,7 @@
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
 				<a4j:ajax event="click" render="#{cc.attrs.rerender}" execute="@all"/>
 			</h:commandButton>
-		</div>
+
 		
 		<h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
 	    <cc:insertChildren/>
