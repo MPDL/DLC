@@ -135,59 +135,20 @@
 		<url>https://zim02.gwdg.de/repos/virr/</url>
 	</scm>
 
-	<distributionManagement>
-		<repository>
-			<id>deployment.webdav</id>
-			<name>Archiva deployment</name>
-			<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/internal</url>
-		</repository>
-		<snapshotRepository>
-			<id>snapshots.webdav</id>
-			<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/snapshots</url>
-		</snapshotRepository>
-		<site>
-			<id>website</id>
-			<url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/virr</url>
-		</site>
-	</distributionManagement>
+
 
 	<repositories>
 		<repository>
-			<id>deployment.webdav</id>
-			<name>Archiva Managed Internal Repository</name>
-			<url>http://archiva.mpdl.mpg.de/archiva/repository/internal</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>snapshots.webdav</id>
-			<name>Archiva Managed Snapshot Repository</name>
-			<url>http://archiva.mpdl.mpg.de/archiva/repository/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-	          <id>jboss-public-repository-group</id>
-	          <name>JBoss Public Maven Repository Group</name>
-	          <url>https://repository.jboss.org/nexus/content/groups/public-jboss/</url>
-	          <layout>default</layout>
-	          <releases>
-	            <enabled>true</enabled>
-	            <updatePolicy>never</updatePolicy>
-	          </releases>
-	          <snapshots>
-	            <enabled>true</enabled>
-	            <updatePolicy>never</updatePolicy>
-	          </snapshots>
+            <id>central</id>
+            <url>http://central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
+	
         <repository>
 	          <id>codehouse-repository</id>
 	          <name>Codehouse Repository</name>
@@ -210,28 +171,32 @@
 	    </repository>  
 	</repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Archiva plugin snapshots</id>
-			<url>http://archiva.mpdl.mpg.de/archiva/repository/snapshots</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-                <pluginRepository>
-			<id>Archiva plugin internal</id>
-			<url>http://archiva.mpdl.mpg.de/archiva/repository/snapshots</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+   <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>http://central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Nexus Managed Releases</name>
+            <url>http://rd.mpdl.mpg.de/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Managed Snapshots</name>
+            <url>http://rd.mpdl.mpg.de/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 	<build>
 		<resources>
 			<resource>
@@ -369,6 +334,14 @@
                                </goals>
                            </execution>
                        </executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-utils</artifactId>
+								<version>1.4.1</version>
+								<scope>runtime</scope>
+							</dependency>
+						</dependencies>		                       
                    </plugin>
                </plugins>
            </build> 
@@ -417,20 +390,13 @@
 			</properties>
 
 			<distributionManagement>
-				<repository>
-					<id>deployment.webdav</id>
-					<name>Archiva deployment</name>
-					<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/internal/</url>
-				</repository>
-				<snapshotRepository>
-					<id>snapshots.webdav</id>
-					<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/snapshots/</url>
-				</snapshotRepository>
 				<site>
 					<id>website</id>
-					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/00_default/projects/digi_lifecycle</url>
+					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/digi_lifecycle</url>
 				</site>
-			</distributionManagement>
+			</distributionManagement>			
+
+
 		</profile>
 		<profile>
 			<id>env-testing-continuum</id>
@@ -484,20 +450,13 @@
 			</properties>
 
 			<distributionManagement>
-				<repository>
-					<id>deployment.webdav</id>
-					<name>Archiva deployment</name>
-					<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/internal/</url>
-				</repository>
-				<snapshotRepository>
-					<id>snapshots.webdav</id>
-					<url>dav:http://archiva.mpdl.mpg.de/archiva/repository/snapshots/</url>
-				</snapshotRepository>
 				<site>
 					<id>website</id>
-					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/00_default/projects/snapshots/virr</url>
+					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/digi_lifecycle</url>
+					<!--url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/virr</url-->
 				</site>
-			</distributionManagement>
+			</distributionManagement>		
+
 		</profile>
 		<profile>
 			<id>env-production-escidoc2</id>
