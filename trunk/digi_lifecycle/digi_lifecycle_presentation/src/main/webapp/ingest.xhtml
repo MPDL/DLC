@@ -13,14 +13,14 @@
 	<ui:define name="mainContent">
 			
 			
-			<mpdl:paginator paginatorBean="#{testPaginatorBean}" var="test">
-				<h:outputText value="#{row}"/>
+			<mpdl:paginator paginatorBean="#{testPaginatorBean}">
+				<h:outputText value="#{var}"/>
 			</mpdl:paginator>
 			
 			
 			
 			
-			<fu:fileUpload actionListener="#{fileUploadBeanNew.processAction}" rerender=":form1:dragDropTable">
+			<fu:fileUpload rerender=":form1:dragDropTable" fileUploadListener="#{fileUploadBeanNew.fileUploaded}">
 			</fu:fileUpload>
 			
 			

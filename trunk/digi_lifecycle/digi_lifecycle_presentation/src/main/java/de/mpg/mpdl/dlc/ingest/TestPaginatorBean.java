@@ -27,13 +27,12 @@ public class TestPaginatorBean extends BasePaginatorBean<String> {
 	
 	@Override
 	public List<String> retrieveList(int offset, int limit) throws Exception {
-		return list.subList(offset, offset+limit);
+		return list.subList(offset, offset+limit); 
 		
 	}
 
 	@Override
 	public int getTotalNumberOfRecords() {
-		// TODO Auto-generated method stub
 		return 100;
 	}
 
