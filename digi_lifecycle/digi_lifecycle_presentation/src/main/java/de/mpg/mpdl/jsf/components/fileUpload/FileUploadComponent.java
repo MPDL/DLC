@@ -34,7 +34,6 @@ public class FileUploadComponent extends UINamingContainer implements ActionSour
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         
         super.processEvent(event);
-        
         Object request = getFacesContext().getExternalContext().getRequest();
 		if(request instanceof MultipartRequest)
 		{
