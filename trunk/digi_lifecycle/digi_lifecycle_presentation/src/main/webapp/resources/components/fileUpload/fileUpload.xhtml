@@ -49,7 +49,7 @@
 
 
 
-		
+		<div id="submit-form">
 		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
 			
 			<!-- 
@@ -65,12 +65,12 @@
 		 	</ui:remove>
 		 	-->
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
-				<a4j:ajax event="click" render="#{cc.attrs.rerender}" execute="@all"/>
+				<f:ajax event="click" render="#{cc.attrs.rerender}" execute="@all"/>
 			</h:commandButton>
 
 		
 		<h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
-	    <cc:insertChildren/>
+	    </div>
 	
 	
 	
