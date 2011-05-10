@@ -11,9 +11,7 @@
 
 <!-- INTERFACE -->
 <cc:interface>
-	<cc:attribute name="paginatorBean"/>
-	<cc:attribute name="var" type="java.lang.String"/>
-	<cc:attribute name="rerender" type="java.lang.String"/>
+	<cc:attribute name="paginatorBean" required="true"/>
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
@@ -76,9 +74,14 @@
 		 </h:panelGroup>
 		 
 		 
-		<a4j:repeat var="row" value="#{cc.attrs.paginatorBean.currentPartList}">
+		<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
 		 	<cc:insertChildren/>
 		</a4j:repeat>
+		
+		
+		
+		
+		
 		
 	</h:panelGroup>
 </cc:implementation>

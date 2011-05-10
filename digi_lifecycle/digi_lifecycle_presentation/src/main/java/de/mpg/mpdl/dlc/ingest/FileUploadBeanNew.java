@@ -30,7 +30,7 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  */
 @ManagedBean
 @SessionScoped
-public class FileUploadBeanNew implements Serializable, ActionListener, DropListener {
+public class FileUploadBeanNew implements Serializable, DropListener {
  
     private ArrayList<FileItem> files = new ArrayList<FileItem>();
 	private Collection<Object> selection;
@@ -67,13 +67,7 @@ public class FileUploadBeanNew implements Serializable, ActionListener, DropList
         this.files = files;
     }
 
-	public void processAction(ActionEvent evt) throws AbortProcessingException {
-		FileUploadEvent fue = (FileUploadEvent) evt;
-		if(fue.getFileItem()!=null)
-		{
-			files.add(fue.getFileItem());
-		}
-	}
+	
 	
 	public Collection<Object> getSelection() {
         return selection;
@@ -130,6 +124,16 @@ public class FileUploadBeanNew implements Serializable, ActionListener, DropList
 			
 		
 		
+	}
+	
+	public void fileUploaded(FileUploadEvent evt)
+	{
+		System.out.println("FILE UPLOADED!!!" + evt.getFileItem().getName());
+		FileUploadEvent fue = (FileUploadEvent) evt;
+		if(fue.getFileItem()!=null)
+		{
+			files.add(fue.getFileItem());
+		}
 	}
 
 	

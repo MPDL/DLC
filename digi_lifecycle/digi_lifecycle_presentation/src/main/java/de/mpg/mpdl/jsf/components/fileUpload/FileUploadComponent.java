@@ -25,7 +25,10 @@ import com.sun.faces.application.MethodExpressionMethodBindingAdapter;
 
 @FacesComponent("de.mpg.mpdl.components.FileUploadComponent")
 @ListenerFor(systemEventClass=PostValidateEvent.class)
-public class FileUploadComponent extends UINamingContainer implements ActionSource2{
+public class FileUploadComponent extends UINamingContainer {
+
+	private MethodBinding fileUploadListener;
+	
 
 	private MethodExpression exp;
 	List<ActionListener> listeners=new LinkedList<ActionListener>();
@@ -42,83 +45,16 @@ public class FileUploadComponent extends UINamingContainer implements ActionSour
             queueEvent(evt);
         }
     }
-
 	
-
-
-    public MethodExpression getActionExpression() {
-        return exp;
-    }
-
-   
-    public void setActionExpression(MethodExpression action) {
-        exp=action; 
-    }
-
-    
-    public MethodBinding getAction() {
-        return exp != null ? new MethodBindingMethodExpressionAdapter(exp): null;
-    }
-
-    
-    public void setAction(MethodBinding action) {
-        setActionExpression(new MethodExpressionMethodBindingAdapter(action));
-    }
-
-    private MethodBinding actionListener;
-
-    
-    public MethodBinding getActionListener() {
-        return actionListener;
-    }
-
-    
-    public void setActionListener(MethodBinding actionListener) {
-        this.actionListener=actionListener;
-    }
-
-    private boolean i;
-
-   
-    public boolean isImmediate() {
-        return i;
-    }
-
-    
-    public void setImmediate(boolean immediate) {
-        this.i=immediate;
-    }
-
-
-    public void addActionListener(ActionListener listener) {
-        listeners.add(listener);
-    }
-
-   
-    public ActionListener[] getActionListeners() {
-        return listeners.toArray(new ActionListener[0]);
-    }
-
-    
-    public void removeActionListener(ActionListener listener) {
-        listeners.remove(listener);
-    }
-
    
 
      public void broadcast(FacesEvent event) throws AbortProcessingException {
-        super.broadcast(event);
-		if(event instanceof FileUploadEvent) 
-		{
-            FacesContext context = getFacesContext(); 
-            
-            for(ActionListener al : getActionListeners())
-            {
-            	al.processAction((FileUploadEvent)event);
-            }
-            
-        
-		}
+        super.broadcast(event); 
+        if(getAttributes().get("fileUploadListener")!=null)
+        {
+        	MethodExpression fileUploadExp = (MethodExpression)getAttributes().get("fileUploadListener");
+        	fileUploadExp.invoke(this.getFacesContext().getELContext(), new Object[]{((FileUploadEvent)event)});
+        }
      }
      
 
