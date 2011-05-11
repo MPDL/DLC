@@ -26,12 +26,6 @@ import com.sun.faces.application.MethodExpressionMethodBindingAdapter;
 @FacesComponent("de.mpg.mpdl.components.FileUploadComponent")
 @ListenerFor(systemEventClass=PostValidateEvent.class)
 public class FileUploadComponent extends UINamingContainer {
-
-	private MethodBinding fileUploadListener;
-	
-
-	private MethodExpression exp;
-	List<ActionListener> listeners=new LinkedList<ActionListener>();
 	
 	@Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {

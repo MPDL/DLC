@@ -18,7 +18,7 @@ public class TestPaginatorBean extends BasePaginatorBean<String> {
 	{
 		super();
 		
-		for (int i=0; i<100; i++)
+		for (int i=0; i<2000; i++)
 		{
 			list.add("test " + i);
 		}
@@ -33,7 +33,7 @@ public class TestPaginatorBean extends BasePaginatorBean<String> {
 
 	@Override
 	public int getTotalNumberOfRecords() {
-		return 100;
+		return list.size();
 	}
 
 	@Override
