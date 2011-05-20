@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc;
+package de.mpg.mpdl.dlc.wf.testing;
 
 import java.io.*;
 import javax.xml.validation.*;

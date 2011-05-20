@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc;
+package de.mpg.mpdl.dlc.wf.testing;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,6 +47,7 @@ public class DBXMLDAO {
 		XmlManagerConfig managerConfig = new XmlManagerConfig();
 		managerConfig.setAdoptEnvironment(true);
 		managerConfig.setAllowAutoOpen(true);
+		managerConfig.setAllowExternalAccess(true);
 		xmlManager = new XmlManager(environment, managerConfig);
 		return xmlManager;
 	}
