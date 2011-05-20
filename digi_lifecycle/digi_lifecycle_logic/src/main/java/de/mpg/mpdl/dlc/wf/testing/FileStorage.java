@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc;
+package de.mpg.mpdl.dlc.wf.testing;
 
 import java.io.File;
 import java.net.URL;
@@ -20,11 +20,16 @@ public class FileStorage extends Thread {
 	private XmlContainer container = null;
 	private File file = null;
 	private URL url = null;
+	private String name = null;
 
-	FileStorage(XmlManager xmgr, XmlContainer xcon, File f) {
+	FileStorage(XmlManager xmgr, XmlContainer xcon, File f, String name) {
 		this.manager = xmgr;
 		this.container = xcon;
 		this.file = f;
+		if (name != null)
+		{
+			this.name = name;
+		}
 	}
 
 	FileStorage(XmlManager xmgr, XmlContainer xcon, URL u) {
@@ -46,8 +51,16 @@ public class FileStorage extends Thread {
 				transaction = manager.createTransaction(null, tc);
 				XmlInputStream stream = manager.createLocalFileInputStream(file
 						.getAbsolutePath());
-				container.putDocument(transaction, file.getName(), stream,
+				if (name == null)
+				{
+					container.putDocument(transaction, file.getName(), stream,
 						context);
+				}
+				else
+				{
+					container.putDocument(transaction, name, stream, context);
+					System.out.println(name + " was successfully stored in container " + container.getName());
+				}
 				transaction.commit();
 				transaction = null;
 				retry = false;
