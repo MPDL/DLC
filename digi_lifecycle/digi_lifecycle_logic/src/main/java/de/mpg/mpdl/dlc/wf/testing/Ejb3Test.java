@@ -12,6 +12,8 @@ import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlManager;
 
 import de.mpg.mpdl.dlc.dbxml.DBXML;
+import de.mpg.mpdl.dlc.dbxml.DBXMLBean;
+import de.mpg.mpdl.dlc.dbxml.DBXMLLocal;
 
 
 public class Ejb3Test {
@@ -44,8 +46,8 @@ public class Ejb3Test {
 		props.setProperty("java.naming.factory.initial","org.jnp.interfaces.NamingContextFactory");
 		props.setProperty("java.naming.factory.url.pkgs", "org.jboss.naming:org.jnp.interfaces");
 		props.setProperty("java.naming.provider.url", "localhost:1099");  
-		InitialContext ctx = new InitialContext(props);
-		bean = (DBXML)ctx.lookup("digi_lifecycle_logic_ear-1.0-SNAPSHOT/DBXMLBean/remote");
+		InitialContext ctx = new InitialContext();
+		bean = (DBXML)ctx.lookup("digi_lifecycle_logic_ear-1.0-SNAPSHOT/DBXMLBean/local");
 
 		String containerName = "DLC_METS";
 		env = bean.getEnvironment("/home/frank/data/dlc/dbxml");

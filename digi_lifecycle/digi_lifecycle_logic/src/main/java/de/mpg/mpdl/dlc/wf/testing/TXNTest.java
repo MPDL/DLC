@@ -4,28 +4,18 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import javax.faces.el.ValueBinding;
 
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
 import com.sleepycat.db.EnvironmentConfig;
 import com.sleepycat.dbxml.XmlContainer;
-import com.sleepycat.dbxml.XmlContainerConfig;
 import com.sleepycat.dbxml.XmlDocument;
 import com.sleepycat.dbxml.XmlDocumentConfig;
-import com.sleepycat.dbxml.XmlEventReader;
 import com.sleepycat.dbxml.XmlException;
 import com.sleepycat.dbxml.XmlIndexDeclaration;
 import com.sleepycat.dbxml.XmlIndexSpecification;
@@ -55,7 +45,7 @@ public class TXNTest {
 		// prepare();
 		// load();
 		query();
-		//info();
+		//indexes();
 		// addMD();
 		// System.setProperty("sun.arch.data.model", "32");
 		// System.out.println(System.getProperty("sun.arch.data.model"));
@@ -108,7 +98,7 @@ public class TXNTest {
 		try {
 			environment = DBXMLDAO.getEnvironment(envPath);
 			manager = DBXMLDAO.getManager(environment);
-			container = DBXMLDAO.getContainer(manager, "DLC_TEI");
+			container = DBXMLDAO.getContainer(manager, "DLC_METS");
 			txn = manager.createTransaction();
 
 			System.out.println(container.getName() + " contains "
@@ -139,7 +129,7 @@ public class TXNTest {
 			// String query = "for $num in (100001 to 100561) return\n";
 			//String query = "for $title in (collection('DLC_METS') | collection('DLC_All'))//mets:dmdSec[@ID='dmd0']//mods:title[dbxml:contains(dbxml:metadata('dbxml:name'), $metsValue)] | collection('DLC_TEI')//title[dbxml:contains(dbxml:metadata('dbxml:name'), $teiValue)]\n";
 			String query = "for $title in (collection('DLC_METS') | collection('DLC_All'))//mets:dmdSec[@ID='dmd0']//mods:title[dbxml:contains(dbxml:metadata('dbxml:name'), $metsValue)]\n";
-			query += "for $teiTitle in collection('DLC_TEI')//title[dbxml:contains(dbxml:metadata('dbxml:name'), $teiValue)]\n";
+			//query += "for $teiTitle in collection('DLC_TEI')//title[dbxml:contains(dbxml:metadata('dbxml:name'), $teiValue)]\n";
 
 			//query += "let $title := $doc//title\n";
 			// query += "where contains($href, \"escidoc:110765\")\n";
@@ -147,7 +137,8 @@ public class TXNTest {
 			// query += "return distinct-values($id)";
 			//query += "return ($teiTitle, $title)";
 			query += "return $title, $teiTitle";
-			String tei_query = "for $title in collection('DLC_TEI')//title | collection('DLC_METS')//mets:dmdSec[@ID='dmd0']//mods:title\n";
+			String tei_query = "for $title at $pos in collection('DLC_TEI')//p\n"; // | collection('DLC_METS')//mets:dmdSec[@ID='dmd0']//mods:title\n";
+			tei_query += "where contains($title, 'Eintracht') and contains($title, 'geſtö') and $pos < 100\n";
 			tei_query += "return $title";
 			String q = getQueryFromFile(new File(
 					"src/main/resources/queries/defaultURLsFromMETS.qry"));
@@ -160,7 +151,7 @@ public class TXNTest {
 			// "for $div in doc('http://r-coreservice.mpdl.mpg.de/ir/item/escidoc:332635/components/component/escidoc:332634/content')/toc:toc/toc:div/toc:div/toc:div[@ORDERLABEL='Einband']\n";
 			// file += "return distinct-values($div/@ID)";
 			String file = "for $pb in doc('file:///home/frank/data/digitization_lifecycle/tei_samples/Benedetti_1585.xml')//echo:pb[@file='0007'] return $pb";
-			XmlQueryExpression expr = manager.prepare(query, qctx);
+			XmlQueryExpression expr = manager.prepare(tei_query, qctx);
 			// System.out.println(expr.getQueryPlan());
 
 			XmlResults results = expr.execute(txn, qctx);
@@ -170,10 +161,11 @@ public class TXNTest {
 				XmlValue value = results.next();
 				// System.out.println(value.asDocument().getName() + "   "
 				// + value.getNodeValue());
-				System.out.println(value.asDocument().getName());
+				//System.out.println(value.asDocument().getName());
 				// System.out.println(value.asDocument().getName() + "   " +
 				// value.getNodeValue());
 				System.out.println(value.asString());
+				//System.out.println(value.getParentNode().asString());
 				/*
 				 * if (value.isType(XmlValue.TEXT_NODE)) {
 				 * System.out.println("it's a TEXT_NODE"); } else {
