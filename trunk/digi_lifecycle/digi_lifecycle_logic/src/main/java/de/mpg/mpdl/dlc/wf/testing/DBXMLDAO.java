@@ -22,7 +22,7 @@ public class DBXMLDAO {
 		envConfig.setInitializeCache(true);
 		envConfig.setInitializeLocking(true);
 		envConfig.setInitializeLogging(true);
-		envConfig.setRunRecovery(true);
+		//envConfig.setRunRecovery(true);
 		envConfig.setTransactional(true);
 		envConfig.setTxnMaxActive(1000);
 		envConfig.setMaxLocks(10000);
