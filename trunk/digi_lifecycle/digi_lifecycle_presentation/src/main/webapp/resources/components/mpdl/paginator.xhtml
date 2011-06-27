@@ -46,10 +46,10 @@
 		 		<h:panelGroup styleClass="seperator" />
 		 		<a4j:repeat id="paginator" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
 		 	
-		 			<h:commandButton id="btPageNumber1" styleClass="xSmall_txtBtn" value="#{paginatorPage.number}"  action="#{paginatorPage.goToPage}" rendered="#{!(cc.attrs.paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber)}">
+		 			<h:commandButton id="btPageNumber1" styleClass="xSmall_txtBtn" value="#{paginatorPage.number}"  action="#{paginatorPage.goToPage}" rendered="#{!(paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber)}">
 		 				<f:ajax render=":#{cc.clientId}:paginatorList"/>
 		 			</h:commandButton>
-		 			<h:commandButton id="btPageNumber2" styleClass="xSmall_txtBtn actual" value="#{paginatorPage.number}"  disabled="true" rendered="#{cc.attrs.paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
+		 			<h:commandButton id="btPageNumber2" styleClass="xSmall_txtBtn actual" value="#{paginatorPage.number}"  disabled="true" rendered="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
 		 			</h:commandButton>
 		 			<h:panelGroup styleClass="seperator" />
 		 		

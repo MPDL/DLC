@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
  
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AbortProcessingException;
@@ -16,6 +17,8 @@ import javax.faces.event.AjaxBehaviorListener;
  
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
+
+import de.mpg.mpdl.dlc.beans.IngestService;
  
 /**
  * @author Ilya Shaikovsky
@@ -25,6 +28,9 @@ import org.richfaces.model.UploadedFile;
 @SessionScoped
 public class FileUploadBean implements Serializable {
  
+	
+	@EJB
+	private IngestService ingestService;
     private ArrayList<File> files = new ArrayList<File>();
  
     public void paint(OutputStream stream, Object object) throws IOException {

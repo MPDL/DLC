@@ -21,6 +21,7 @@ import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
 import org.richfaces.event.DropListener;
 
+import de.escidoc.core.client.Authentication;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
  
@@ -35,10 +36,11 @@ public class FileUploadBeanNew implements Serializable, DropListener {
     private ArrayList<FileItem> files = new ArrayList<FileItem>();
 	private Collection<Object> selection;
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
+	private int moveTo;
  
 
-    public void paint(OutputStream stream, Object object) throws IOException {
-        stream.write(getFiles().get((Integer) object).get());
+    public void paint(OutputStream stream, Object object) throws Exception {
+    	stream.write(getFiles().get((Integer) object).get());
         stream.close();
     }
     
@@ -90,6 +92,31 @@ public class FileUploadBeanNew implements Serializable, DropListener {
         dataTable.setRowKey(originalKey);
     }
 
+    private void move(FileItem from, FileItem to)
+    {
+    	int indexOfTo = 0;
+    	if(to!=null)
+    	{
+    		indexOfTo = getFiles().indexOf(to);
+    	}
+    	
+    	int indexOfFrom = getFiles().indexOf(from);
+    	
+    	
+		if(indexOfTo > indexOfFrom)
+		{
+			getFiles().add(indexOfTo, from);
+			getFiles().remove(indexOfFrom);
+		}
+		else
+		{
+			getFiles().add(indexOfTo, from);
+			getFiles().remove(indexOfFrom+1);
+		}
+		
+
+    }
+    
 	public void processDrop(DropEvent evt) {
 		System.out.println("DROPPED!!!");
 		
@@ -119,22 +146,45 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 			getFiles().remove(indexOfDragged+1);
 		}
 			
-			
-			
-			
 		
+	}
+	
+	public void changeOrder(FileItem f)
+	{
 		
+		try {
+			move(f, getFiles().get(getMoveTo()-1));
+		} catch (Exception e) {
+			System.out.println("Error" + e);
+		}
+		setMoveTo(0);
+		System.out.println("ORDER changed!!" + getMoveTo());
 	}
 	
 	public void fileUploaded(FileUploadEvent evt)
 	{
-		System.out.println("FILE UPLOADED!!!" + evt.getFileItem().getName());
+		System.out.println("FILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
 		{
 			files.add(fue.getFileItem());
 		}
 	}
+	
+	public String indexOfFile(FileItem f)
+	{
+		return String.valueOf(getFiles().indexOf(f));
+	}
+
+	public void setMoveTo(int moveTo) {
+		this.moveTo = moveTo;
+	}
+
+	public int getMoveTo() {
+		return moveTo;
+	}
+	
+	
 
 	
 

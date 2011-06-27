@@ -32,6 +32,32 @@
 							<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
 							<artifactId>digi_lifecycle_logic</artifactId>
 						</ejbModule>
+						<jarModule>
+							<groupId>com.sleepycat</groupId>
+							<artifactId>server_db</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						<jarModule>
+							<groupId>com.sleepycat</groupId>
+							<artifactId>server_dbxml</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						<jarModule>
+							<groupId>xmlbeans</groupId>
+							<artifactId>mets_1.7</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						<jarModule>
+							<groupId>xmlbeans</groupId>
+							<artifactId>mods_3.3</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						<jarModule>
+							<groupId>org.apache.xmlbeans</groupId>
+							<artifactId>xmlbeans</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						
 						
 						
 						
@@ -171,6 +197,48 @@
 			<version>1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>com.sleepycat</groupId>
+			<artifactId>server_db</artifactId>
+			<version>4.8.26</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sleepycat</groupId>
+			<artifactId>server_dbxml</artifactId>
+			<version>2.5.16</version>
+		</dependency>
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>mods_3.3</artifactId>
+			<version>3.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>mets_1.7</artifactId>
+			<version>1.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>xbean</artifactId>
+			<version>2.4.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>xbean_xpath</artifactId>
+			<version>2.4.0</version>
+			<scope>compile</scope>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+   		 	<artifactId>xmlbeans</artifactId>
+   			 <version>2.4.0</version>
+   			 <classifier>java6</classifier>
 		</dependency>
 		
 

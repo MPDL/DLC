@@ -15,8 +15,15 @@
 		    <groupId>org.escidoc.core</groupId>
 		    <artifactId>escidoc-ijc</artifactId>
 		    <version>1.3</version>
+		    <exclusions>
+		    	<exclusion>
+			    	<groupId>xml-apis</groupId>
+	  				<artifactId>xml-apis</artifactId>
+		    	</exclusion>
+		    </exclusions>
 		</dependency>
   	
+  		<!-- 
 	  	<dependency>
 	  		<groupId>org.jboss.jbossas</groupId>
 	  		<artifactId>jboss-as-server</artifactId>
@@ -24,6 +31,14 @@
 	  		<scope>provided</scope>
 	  		<type>pom</type>
 	  	</dependency>
+	  	-->
+	  	
+	  	<dependency>
+			<groupId>org.jboss.spec</groupId>
+			<artifactId>jboss-javaee-6.0</artifactId>
+			<version>1.0.0.Final</version>
+			<type>pom</type>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -35,6 +50,7 @@
 			<artifactId>commons-logging</artifactId>
 			<version>1.1</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>xmlbeans</groupId>
 			<artifactId>xbean</artifactId>
@@ -47,6 +63,14 @@
 			<version>2.4.0</version>
 			<scope>compile</scope>
 		</dependency>
+		-->
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+   		 	<artifactId>xmlbeans</artifactId>
+   			 <version>2.4.0</version>
+   			 <classifier>java6</classifier>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
@@ -110,6 +134,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>javaee</groupId>
 			<artifactId>javaee</artifactId>
@@ -117,6 +142,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>axis</groupId>
 			<artifactId>axis</artifactId>
