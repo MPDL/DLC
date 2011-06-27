@@ -18,12 +18,18 @@ public class BerkeleyXmlBean implements BerkeleyXmlService {
 		return a+b;
 	}
 	
+	public void createVolume(String userHandle)
+	{
+		
+	}
+	
 	public static void main(String[] args) throws Exception
 	{
 
 		
 		XmlManager xmlManager = new XmlManager();
-		XmlContainer testContainer = xmlManager.openContainer("test.dbxml");
+		XmlContainer testContainer = xmlManager.createContainer("test.db.xml");
+		//xmlManager.openContainer("test.dbxml");
 		testContainer.putDocument("testDocument", "<test>Hallo</test>");
 	}
 

@@ -1,3 +1,4 @@
+/*
 package de.mpg.mpdl.dlc.escidoc;
 
 import java.net.MalformedURLException;
@@ -19,7 +20,6 @@ public class Ingest {
 	
 	public static void main(String... strings)
 	{
-		//System.out.println(itemXML());
 		createItem();
 	}
 	
@@ -47,18 +47,15 @@ public class Ingest {
 			RestItemHandlerClient handler = new RestItemHandlerClient(new URL("http://latest-coreservice.mpdl.mpg.de:8080"));
 			System.out.println(handler.retrieve("escidoc:1004"));
 		} catch (InternalClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (EscidocException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransportException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 }
+*/

@@ -148,7 +148,17 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
-	
+        <!-- 
+         <repository>
+	        <id>escidoc.org</id>
+	        <name>escidoc.org-releases</name>
+	        <url>https://www.escidoc.org/artifactory/libs-releases-local</url>
+	        <releases>
+	            <enabled>true</enabled>
+	            <updatePolicy>never</updatePolicy>
+	        </releases>
+	    </repository>
+	-->
         <repository>
 	          <id>codehouse-repository</id>
 	          <name>Codehouse Repository</name>
@@ -195,7 +205,9 @@
             <name>Nexus Managed Snapshots</name>
             <url>http://rd.mpdl.mpg.de/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
+	   
     </distributionManagement>
+   
 
 	<build>
 		<resources>
@@ -447,6 +459,8 @@
 				<!-- Virr URLs -->
 				<escidoc.virr.instance.url>http://dev-virr.mpdl.mpg.de:8080</escidoc.virr.instance.url>
 				<escidoc.virr.instance.context.path>/virr</escidoc.virr.instance.context.path>
+				
+				<image-upload.password>test</image-upload.password>
 			</properties>
 
 			<distributionManagement>

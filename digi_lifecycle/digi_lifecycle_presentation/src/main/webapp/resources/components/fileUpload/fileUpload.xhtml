@@ -50,10 +50,12 @@
 
 
 		<div id="submit-form">
-		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
-			
-			<!-- 
+		 	<!-- 
 			<ui:remove>
+		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
+				</ui:remove>
+		 	-->
+			
 				<div id="filelist">No runtime found.</div>
 				<br />
 				<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
@@ -62,8 +64,7 @@
 					<h:outputText value="[Upload files]"/>
 					
 				</a>
-		 	</ui:remove>
-		 	-->
+		 
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
 				<f:ajax event="click" render="#{cc.attrs.rerender}"/>
 			</h:commandButton>

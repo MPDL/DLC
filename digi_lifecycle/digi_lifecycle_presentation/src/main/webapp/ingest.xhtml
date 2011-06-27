@@ -52,6 +52,11 @@
 	                <a4j:outputPanel layout="block" style="background-color:lightgrey">
 	                    	<rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
                     		 <a4j:mediaOutput element="img" cacheable="false" id="img" createContent="#{fileUploadBeanNew.paint}" value="#{row}" mimeType="image/jpeg" alt="img" style="height:50px;"/>
+                    		 <h:outputText value="#{row + 1}"/>
+                    		 <h:inputText value="#{fileUploadBeanNew.moveTo}">
+                    		 	<f:ajax event="keyup" listener="#{fileUploadBeanNew.changeOrder(file)}" render=":form1:dragDropTable"/>
+                    		 </h:inputText>
+                    		 
                     		<h:outputText value="#{file.name}" />
 	                 </a4j:outputPanel>
 	                 <a4j:outputPanel id="dropPanel" layout="block" style="height:10px; background-color:grey" styleClass="dropPanel">
@@ -62,12 +67,10 @@
 	
 	            </a4j:repeat>
     		</a4j:outputPanel>
-			
-			
-			
+
 			
 
-<ui:remove>
+		<ui:remove>
 			<h:panelGroup id="info" layout="block">
                 <rich:panel bodyClass="info">
                     <f:facet name="header">
