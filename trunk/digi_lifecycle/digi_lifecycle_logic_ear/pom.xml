@@ -57,6 +57,17 @@
 							<artifactId>xmlbeans</artifactId>
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
+						<jarModule>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						
+						<jarModule>
+							<groupId>org.escidoc.core</groupId>
+						    <artifactId>escidoc-ijc</artifactId>
+						    <includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
 						
 						
 						
@@ -148,6 +159,14 @@
                     </items>
                 </configuration>
             </plugin>
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-ejb-plugin</artifactId>
+	        <version>2.3</version>
+	        <configuration>
+	          <ejbVersion>3.0</ejbVersion>
+	        </configuration>
+	      </plugin>
 		</plugins>
 	</build>
 
@@ -241,6 +260,25 @@
    			 <classifier>java6</classifier>
 		</dependency>
 		
+		<!-- Use this here to avoid conflicts between different commons.logging versions -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.escidoc.core</groupId>
+		    <artifactId>escidoc-ijc</artifactId>
+		    <version>1.3</version>
+		    <exclusions>
+		    	<exclusion>
+			    	<groupId>xml-apis</groupId>
+	  				<artifactId>xml-apis</artifactId>
+		    	</exclusion>
+		    </exclusions>
+		</dependency>
+		
 
 		
 		
@@ -281,7 +319,7 @@
 										<copy overwrite="true" file="${project.build.directory}/classes/jboss-service.xml" todir="${project.build.directory}/jboss/server/conf">
 										</copy>
 										<!-- copy over the configuration file -->
-										<copy overwrite="true" file="${project.build.directory}/classes/virr.properties" todir="${project.build.directory}/jboss/server/conf">
+										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${project.build.directory}/jboss/server/conf">
 										</copy>
 									</tasks>
 								</configuration>
@@ -295,7 +333,7 @@
 								<configuration>
 									<tasks>
 										<!-- copy over the configuration file -->
-										<copy overwrite="true" file="${project.build.directory}/classes/virr.properties" todir="${jboss.install.dir}/server/default/conf">
+										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${jboss.install.dir}/server/default/conf">
 										</copy>
 									</tasks>
 								</configuration>
