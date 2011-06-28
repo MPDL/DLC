@@ -264,9 +264,9 @@
 										<copy overwrite="true" file="${project.build.directory}/classes/jboss-service.xml" todir="${project.build.directory}/jboss/server/conf">
 										</copy>
 										<!-- copy over the configuration file -->
-										<!--
-										<copy overwrite="true" file="${project.build.directory}/classes/virr.properties" todir="${project.build.directory}/jboss/server/conf">
-										</copy>-->										
+										
+										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${project.build.directory}/jboss/server/conf">
+										</copy>									
 									</tasks>
 								</configuration>
 							</execution>
@@ -279,10 +279,10 @@
 								<configuration>
 									<tasks>
 										<!-- copy over the configuration file -->
-										<!--
-										<copy overwrite="true" file="${project.build.directory}/classes/virr.properties" todir="${jboss.install.dir}/server/default/conf">
+										
+										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${jboss.install.dir}/server/default/conf">
 										</copy>
-										-->
+										
 									</tasks>
 								</configuration>
 							</execution>
