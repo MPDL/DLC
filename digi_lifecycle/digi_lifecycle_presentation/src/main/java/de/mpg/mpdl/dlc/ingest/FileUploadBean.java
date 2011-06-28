@@ -18,7 +18,7 @@ import javax.faces.event.AjaxBehaviorListener;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
 
-import de.mpg.mpdl.dlc.beans.IngestService;
+import de.mpg.mpdl.dlc.beans.IngestServiceBean;
  
 /**
  * @author Ilya Shaikovsky
@@ -29,8 +29,7 @@ import de.mpg.mpdl.dlc.beans.IngestService;
 public class FileUploadBean implements Serializable {
  
 	
-	@EJB
-	private IngestService ingestService;
+	
     private ArrayList<File> files = new ArrayList<File>();
  
     public void paint(OutputStream stream, Object object) throws IOException {

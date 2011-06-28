@@ -1,6 +1,8 @@
 package de.mpg.mpdl.dlc.ingest;
 
 
+import gov.loc.mods.v3.ModsDocument;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
  
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AbortProcessingException;
@@ -22,6 +25,7 @@ import org.richfaces.event.DropEvent;
 import org.richfaces.event.DropListener;
 
 import de.escidoc.core.client.Authentication;
+import de.mpg.mpdl.dlc.beans.IngestServiceBean;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
  
@@ -38,8 +42,12 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
 	private int moveTo;
  
+	@EJB
+	private IngestServiceBean ingestService;
 
     public void paint(OutputStream stream, Object object) throws Exception {
+    	
+    	
     	stream.write(getFiles().get((Integer) object).get());
         stream.close();
     }
@@ -163,12 +171,23 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	
 	public void fileUploaded(FileUploadEvent evt)
 	{
-		System.out.println("FILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
+		System.out.println("XXFILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
 		{
 			files.add(fue.getFileItem());
 		}
+		
+		
+		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
+    		//modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
+    	
+    		try {
+				ingestService.createNewVolume("bla", "blub", modsdoc, new String[]{fue.getFileItem().getString()});
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	public String indexOfFile(FileItem f)

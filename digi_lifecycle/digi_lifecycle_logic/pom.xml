@@ -9,6 +9,24 @@
   <artifactId>digi_lifecycle_logic</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>ejb</packaging>
+  
+  
+  <!-- Creates a client.jar file, maybe activate this later -->
+  <!-- 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ejb-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <ejbVersion>3.0</ejbVersion>
+          <generateClient>true</generateClient>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  -->
   <dependencies>
   
 		  <dependency>
@@ -20,6 +38,11 @@
 			    	<groupId>xml-apis</groupId>
 	  				<artifactId>xml-apis</artifactId>
 		    	</exclusion>
+		    	<exclusion>
+			    	<groupId>commons-logging</groupId>
+	  				<artifactId>commons-logging</artifactId>
+		    	</exclusion>
+		    	
 		    </exclusions>
 		</dependency>
   	
@@ -45,11 +68,8 @@
 			<version>4.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1</version>
-		</dependency>
+
+
 		<!-- 
 		<dependency>
 			<groupId>xmlbeans</groupId>
@@ -81,23 +101,7 @@
 			<artifactId>postgresql</artifactId>
 			<version>8.1-407.jdbc3</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>xmlbeans</groupId>
-			<artifactId>foxml1.1</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>fedora-commons</groupId>
-			<artifactId>fedora-client</artifactId>
-			<version>3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>xmlbeans</groupId>
-			<artifactId>escidoc-core</artifactId>
-			<version>1.2rc1</version>
-		</dependency>
-		 -->
+		
 		<dependency>
 			<groupId>net.sf.saxon</groupId>
 			<artifactId>saxon</artifactId>
@@ -130,40 +134,19 @@
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
-			<version>3.0.1</version>
+			<version>3.1</version>
+			<!-- 
+			<exclusions>
+			<exclusion>
+			    	<groupId>commons-logging</groupId>
+	  				<artifactId>commons-logging</artifactId>
+		    	</exclusion>
+		    	</exclusions>
+		    	-->
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>javaee</groupId>
-			<artifactId>javaee</artifactId>
-			<version>1.5</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>axis</groupId>
-			<artifactId>axis</artifactId>
-			<version>1.4</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>de.mpg.escidoc.services</groupId>
-			<artifactId>framework_access</artifactId>
-			<version>1.0.59-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>jena</artifactId>
-			<version>2.6.2</version>
-		</dependency>
-		 -->
+		
 		<dependency>
 			<groupId>com.sleepycat</groupId>
 			<artifactId>server_db</artifactId>

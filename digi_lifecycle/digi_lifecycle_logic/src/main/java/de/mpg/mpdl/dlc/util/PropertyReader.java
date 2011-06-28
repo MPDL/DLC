@@ -63,11 +63,9 @@ public class PropertyReader
 {
     private static Properties properties;
 
-    private static final String DEFAULT_PROPERTY_FILE = "pubman.properties";
-
-    private static final String PROPERTY_FILE_KEY = "pubman.properties.file";
+    private static final String DEFAULT_PROPERTY_FILE = "dlc.properties";
     
-    private static URL solution;
+    //private static URL solution;
     
     private static String fileLocation = null;
 
@@ -123,7 +121,10 @@ public class PropertyReader
     public static void loadProperties() throws IOException, URISyntaxException
     {
         String propertiesFile = null;
+       
+        
         Properties solProperties = new Properties();
+        /*
         try
         {
             solution = PropertyReader.class.getClassLoader().getResource("solution.properties");
@@ -143,10 +144,11 @@ public class PropertyReader
         }
         else
         {
+        */
          // Use Default location of properties file
             propertiesFile = DEFAULT_PROPERTY_FILE;
             Logger.getLogger(PropertyReader.class).debug("solution.properties file not found. Trying default.");
-        }
+       // }
 
         InputStream instream = getInputStream(propertiesFile);
         properties = new Properties();

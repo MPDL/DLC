@@ -55,7 +55,7 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @Stateless
-public class IngestService {
+public class IngestServiceBean {
 
 	public void createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, String[] imageUrls) throws Exception
 	{
@@ -134,7 +134,8 @@ public class IngestService {
 	{
 		String url = "http://latest-coreservice.mpdl.mpg.de";
 		Authentication auth = new Authentication(new URL(url), "sysadmin", "sysadmin");
-		
+		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
+		modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
 		/*
 		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
 		cmh.setHandle(auth.getHandle());
@@ -220,10 +221,9 @@ public class IngestService {
 		System.out.println("Context: " + result.toString());^
 		
 		
-		*/
+		
 		UserAccountHandlerClient uac = new UserAccountHandlerClient(new URL(url));
-		/*
-		UserAccount ua = new UserAccount();
+			UserAccount ua = new UserAccount();
 
 		
         UserAccountProperties properties = new UserAccountProperties();
@@ -237,7 +237,7 @@ public class IngestService {
         taskParam.setComment("Activate User");
 	    taskParam.setLastModificationDate(ua.getLastModificationDate());
         uac.activate(ua.getObjid(), taskParam);
-        */
+      
         
 		UserAccount ua = uac.retrieve("dlc_user");
 		
@@ -269,7 +269,7 @@ public class IngestService {
         uac.createGrant(ua.getObjid(), grant);
         System.out.println("Granted Moderator");
         
-        
+        */
         
         
 		
