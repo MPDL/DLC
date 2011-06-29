@@ -134,7 +134,12 @@ public class ImageServlet extends HttpServlet {
 						if(item.getFieldName().equals("directory"))
 						{
 							destDir = item.getString();
+							
 							log("Directory retrieved: " + destDir);
+							if(destDir.contains("../"))
+							{
+								throw new Exception("Filepath not allowed");
+							}
 						}
 						
 					} 
