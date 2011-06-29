@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.imageupload;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,27 +31,17 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 
+import de.mpg.mpdl.dlc.imageupload.ImageHelper.Type;
+
 
 public class ImageServlet extends HttpServlet {
 	
-	public static Properties props;
 	
-	public ImageServlet() throws Exception
-	{
-		if(props==null)
-		{
-			props=new Properties();
-			URL propUrl = ImageServlet.class.getClassLoader().getResource("image-upload.properties");
-			InputStream is = propUrl.openStream();
-			props.load(is);
-			
-		}
-	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		String destDir =(String)props.get("image-upload.destDir");
+		String destDir =(String)PropertyReader.getProperty("image-upload.destDir");
 		
 		File f = new File(destDir + req.getPathInfo());
 		
@@ -92,7 +84,7 @@ public class ImageServlet extends HttpServlet {
 			String username = decodedValue.split(":")[0];
 			String password = decodedValue.split(":")[1];
 			
-			if(!(username.equals(props.get("image-upload.username"))) || !(password.equals(props.get("image-upload.password"))))
+			if(!(username.equals(PropertyReader.getProperty("image-upload.username"))) || !(password.equals(PropertyReader.getProperty("image-upload.password"))))
 			{
 				resp.sendError(HttpStatus.SC_FORBIDDEN);
 				return;
@@ -112,13 +104,13 @@ public class ImageServlet extends HttpServlet {
 
 			// Set factory constraints
 			factory.setSizeThreshold(100);
-			factory.setRepository(new File((String)props.get("image-upload.tmpDir")));
+			factory.setRepository(new File((String)PropertyReader.getProperty("image-upload.tmpDir")));
 
 			// Create a new file upload handler
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
 			// Set overall request size constraint
-			long sizeMax = Long.parseLong((String)props.get("image-upload.sizeMax"));
+			long sizeMax = Long.parseLong((String)PropertyReader.getProperty("image-upload.sizeMax"));
 			upload.setSizeMax(sizeMax);
 		    PrintWriter out = resp.getWriter();
 			resp.setContentType("text/plain");
@@ -130,7 +122,7 @@ public class ImageServlet extends HttpServlet {
 				 */
 				List<FileItem> items = upload.parseRequest(req);
 				Iterator<FileItem> itr = items.iterator();
-				String destDir =(String)props.get("image-upload.destDir");
+				String destDir = "";
 				
 				while(itr.hasNext()) {
 					FileItem item = (FileItem) itr.next();
@@ -141,7 +133,7 @@ public class ImageServlet extends HttpServlet {
 						
 						if(item.getFieldName().equals("directory"))
 						{
-							destDir += "/" + item.getString();
+							destDir = item.getString();
 							log("Directory retrieved: " + destDir);
 						}
 						
@@ -153,29 +145,8 @@ public class ImageServlet extends HttpServlet {
 							", Content type = "+item.getContentType()+
 							", File Size = "+item.getSize());
 
-						
-						
-						File destDirFile = new File(destDir);
-						if(!destDirFile.exists())
-						{
-							destDirFile.mkdirs();
-						}
-						
-						
-						File file = new File(destDirFile,item.getName());
-						if(file.exists())
-						{
-							
-							resp.sendError(HttpStatus.SC_CONFLICT, "File already exists");
-							return;
-						}
-						else
-						{
-							item.write(file);
-							out.println(file.getPath());
-							
-						}
-
+						String filename = storeImages(destDir, item, "jpg");
+						out.write(destDir + "/" + filename);
 					}
 					
 				}
@@ -192,5 +163,25 @@ public class ImageServlet extends HttpServlet {
 		}
 		
 	}
+	
+	 public String storeImages(String destDir, FileItem input, String imgType) throws Exception{
+			BufferedImage bufferedImage = ImageIO.read(input.getInputStream());
+			String dir = PropertyReader.getProperty("image-upload.destDir") + "/original/" + destDir;
+			String filename = input.getName();
+			if(!filename.endsWith(".jpg") && ! filename.endsWith(".JPG"))
+			{
+				filename=filename + ".jpg";
+			}
+			
+			File orig = ImageHelper.scaleAndStoreImage(dir, 0, bufferedImage, filename, imgType, Type.ORIGINAL);
+			
+			dir = PropertyReader.getProperty("image-upload.destDir") + "/web/" + destDir;
+			ImageHelper.scaleAndStoreImage(dir, Integer.parseInt(PropertyReader.getProperty("image-upload.resolution.web")), bufferedImage, filename, imgType, Type.WEB);
+			
+			dir = PropertyReader.getProperty("image-upload.destDir") + "/thumbnails/" + destDir;
+			ImageHelper.scaleAndStoreImage(dir, Integer.parseInt(PropertyReader.getProperty("image-upload.resolution.thumbnail")), bufferedImage, filename, imgType, Type.THUMBNAIL);
+	 		
+			return orig.getName();
+		 }
 
 }

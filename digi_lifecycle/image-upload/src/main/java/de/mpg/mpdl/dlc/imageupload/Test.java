@@ -41,8 +41,8 @@ public class Test {
     	PostMethod method = new PostMethod(weblintURL);
     	Part[] parts = new Part[2];
     	parts[0] = new StringPart("directory", "test");
-    	File file = new File( "C:\\Users\\haarlae1\\Pictures\\TestBilder\\2.jpg");
-    	parts[1] = new FilePart( "1.jpg", file );
+    	File file = new File( "C:\\Users\\haarlae1\\Pictures\\TestBilder\\1.jpg");
+    	parts[1] = new FilePart( "test.tif", file );
     	HttpMethodParams params = new HttpMethodParams();
     	method.setRequestEntity(new MultipartRequestEntity(parts, params));
     	String handle = "Basic " + new String(Base64.encodeBase64("image-uploader:dlc-uploader".getBytes()));
