@@ -1,6 +1,5 @@
 package de.mpg.mpdl.dlc.beans;
 
-import java.io.IOException;
 import java.net.URL;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -8,11 +7,9 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
-import com.ocpsoft.pretty.PrettyContext;
 import de.escidoc.core.client.UserAccountHandlerClient;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-
 
 @ManagedBean
 @SessionScoped
@@ -40,7 +37,7 @@ public class LoginBean
             {
                 logger.error("Error decoding userHandle", e);
             }
-            if (newUserHandle != null && !newUserHandle.equals(userHandle))
+            if (newUserHandle != null && !"".equals(newUserHandle) && !newUserHandle.equals(userHandle))
             {
                 try
                 {  
