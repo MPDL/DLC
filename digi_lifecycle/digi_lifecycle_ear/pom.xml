@@ -41,18 +41,21 @@
 						
 						
 						
-						
+						<!-- 
 						
 						<jarModule>
 							<groupId>org.apache.xmlbeans</groupId>
    		 					<artifactId>xmlbeans</artifactId>
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
+						
+				
 						<jarModule>
 						 	<groupId>org.escidoc.core</groupId>
 		    				<artifactId>escidoc-ijc</artifactId>
 		   					 <includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
+						-->
 						<!-- 
 						<jarModule>
 							<groupId>commons-logging</groupId>
@@ -196,12 +199,14 @@
 			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
    		 	<artifactId>xmlbeans</artifactId>
    			 <version>2.4.0</version>
    			 <classifier>java6</classifier>
 		</dependency>
+		-->
 		<!-- 
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -209,6 +214,7 @@
    			 <version>1.1.1</version>
 		</dependency>
 		-->
+		<!-- 
 		<dependency>
 		    <groupId>org.escidoc.core</groupId>
 		    <artifactId>escidoc-ijc</artifactId>
@@ -224,6 +230,7 @@
 		    	</exclusion>
 		    </exclusions>
 		</dependency>
+		-->
 
 		
 		

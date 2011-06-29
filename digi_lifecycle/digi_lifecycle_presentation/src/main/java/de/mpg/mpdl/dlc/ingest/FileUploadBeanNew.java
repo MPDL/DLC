@@ -20,6 +20,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.log4j.Logger;
 import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
 import org.richfaces.event.DropListener;
@@ -37,6 +38,7 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 @SessionScoped
 public class FileUploadBeanNew implements Serializable, DropListener {
  
+	private static Logger logger = Logger.getLogger(FileUploadBeanNew.class);
     private ArrayList<FileItem> files = new ArrayList<FileItem>();
 	private Collection<Object> selection;
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
@@ -171,7 +173,7 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	
 	public void fileUploaded(FileUploadEvent evt)
 	{
-		System.out.println("XXFILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
+		logger.info("XXFILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
 		{
@@ -180,10 +182,10 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 		
 		
 		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
-    		//modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
+    	modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
     	
     		try {
-				ingestService.createNewVolume("bla", "blub", modsdoc, new String[]{fue.getFileItem().getString()});
+				ingestService.createNewVolume("bla", "blub", modsdoc, new String[]{fue.getFileItem().getName()});
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

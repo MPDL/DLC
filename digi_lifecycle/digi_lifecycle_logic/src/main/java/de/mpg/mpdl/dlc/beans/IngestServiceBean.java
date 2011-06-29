@@ -15,57 +15,41 @@ import gov.loc.mets.MetsType.FileSec.FileGrp;
 import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlCursor;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.escidoc.core.client.Authentication;
-import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
-import de.escidoc.core.client.OrganizationalUnitHandlerClient;
-import de.escidoc.core.client.UserAccountHandlerClient;
-import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.escidoc.core.resources.aa.useraccount.GrantProperties;
-import de.escidoc.core.resources.aa.useraccount.UserAccount;
-import de.escidoc.core.resources.aa.useraccount.UserAccountProperties;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
-import de.escidoc.core.resources.common.Result;
-import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
-import de.escidoc.core.resources.common.reference.OrganizationalUnitRef;
-import de.escidoc.core.resources.common.reference.RoleRef;
-import de.escidoc.core.resources.om.context.Context;
-import de.escidoc.core.resources.om.context.ContextProperties;
-import de.escidoc.core.resources.om.context.OrganizationalUnitRefs;
 import de.escidoc.core.resources.om.item.Item;
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @Stateless
 public class IngestServiceBean {
+	
+	private static Logger logger = Logger.getLogger(IngestServiceBean.class); 
 
 	public void createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, String[] imageUrls) throws Exception
 	{
+		logger.info("CREATE NEW VOLUME");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
 		Item item = new Item();
 		item.getProperties().setContext(new ContextRef(contextId));
 		item.getProperties().setContentModel(new ContentModelRef(PropertyReader.getProperty("dlc.content-model.id")));
-		item = client.create(item);
+		//item = client.create(item);
 		
 		MetadataRecords mdRecs = new MetadataRecords();
 		MetadataRecord mdRec = new MetadataRecord("escidoc");
