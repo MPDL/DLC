@@ -72,18 +72,19 @@
 	<!-- LogIn, LogOut -->
 	<h:commandLink id="lnkLogin" styleClass="small_area0_p8 endline"
 		title="#{tlt.Login}" value="#{lbl.header_lnk_login}"
-		action="#{loginBean.login}"
+		action="#{loginBean.login}" rendered="#{!loginBean.login}"
 		immediate="true">
 	</h:commandLink>
 	
-	<!-- 
-	<h:commandLink id="lnkLogout"
-		styleClass="small_area0_p8 endline" title="#{tlt.Logout}"
-		value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}"
+	
+	<h:commandLink id="lnkLogout" styleClass="small_area0_p8 endline" 
+		title="#{tlt.Logout}" value="#{lbl.header_lnk_logout}" 
+		action="#{loginBean.logout}" rendered="#{loginBean.login}"
 		immediate="true">
 	</h:commandLink> 
 	<h:panelGroup styleClass="seperator"></h:panelGroup> 
-	 -->
+	 
+	<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.userAccount.properties.loginName}" rendered="#{loginBean.login}"></h:outputLabel>
 	 
 
 	
