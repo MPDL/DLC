@@ -57,11 +57,6 @@
 							<artifactId>xmlbeans</artifactId>
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
-						<jarModule>
-							<groupId>commons-logging</groupId>
-							<artifactId>commons-logging</artifactId>
-							<includeInApplicationXml>true</includeInApplicationXml>
-						</jarModule>
 						
 						<jarModule>
 							<groupId>org.escidoc.core</groupId>
@@ -260,12 +255,7 @@
    			 <classifier>java6</classifier>
 		</dependency>
 		
-		<!-- Use this here to avoid conflicts between different commons.logging versions -->
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.0.4</version>
-		</dependency>
+		
 		
 		<dependency>
 		    <groupId>org.escidoc.core</groupId>
