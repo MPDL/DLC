@@ -21,12 +21,9 @@ public class LoginBean
     public static final String LOGOUT_URL = "/aa/logout?target=$1";
     private String userHandle;
     private UserAccount userAccount;
-    private int i = 1;
     
     public final boolean getLoginState()
     {
-		System.err.println("i = " + i);
-		i++;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
         if (request.getParameter("eSciDocUserHandle") != null)
