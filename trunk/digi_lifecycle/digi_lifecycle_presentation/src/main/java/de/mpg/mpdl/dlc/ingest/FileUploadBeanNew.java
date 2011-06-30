@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.ingest;
 
 import gov.loc.mods.v3.ModsDocument;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.List;
  
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ActionEvent;
@@ -19,7 +21,16 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
@@ -27,6 +38,8 @@ import org.richfaces.event.DropListener;
 
 import de.escidoc.core.client.Authentication;
 import de.mpg.mpdl.dlc.beans.IngestServiceBean;
+import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
  
@@ -42,6 +55,9 @@ public class FileUploadBeanNew implements Serializable, DropListener {
     private ArrayList<FileItem> files = new ArrayList<FileItem>();
 	private Collection<Object> selection;
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
+	
 	private int moveTo;
  
 	@EJB
@@ -173,23 +189,17 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	
 	public void fileUploaded(FileUploadEvent evt)
 	{
-		logger.info("XXFILE UPLOADED!!!" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
+		
+		logger.info("File uploaded" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
 		{
 			files.add(fue.getFileItem());
+			
 		}
 		
 		
-		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
-    	modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
-    	
-    		try {
-				ingestService.createNewVolume("bla", "blub", modsdoc, new String[]{fue.getFileItem().getName()});
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	
 	}
 	
 	public String indexOfFile(FileItem f)
@@ -204,6 +214,28 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	public int getMoveTo() {
 		return moveTo;
 	}
+	
+	
+	
+	public void save() throws Exception
+	{
+		
+		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
+    	modsdoc.addNewMods().addNewTitleInfo().addNewTitle().setStringValue("Test Title");
+    	
+    	ingestService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsdoc, files);
+    	
+	
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+	
 	
 	
 

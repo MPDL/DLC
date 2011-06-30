@@ -12,19 +12,18 @@
 	
 	<ui:define name="mainContent">
 			
-			
+			<!-- 
 			<mpdl:paginator paginatorBean="#{testPaginatorBean}">
 				<h:outputText value="#{var}"/>
 			</mpdl:paginator>
-			
+			-->
 			
 			
 			
 			<fu:fileUpload rerender=":form1:dragDropTable" fileUploadListener="#{fileUploadBeanNew.fileUploaded}">
 			</fu:fileUpload>
 			
-			
-			
+
 			
 			<!-- Drag&Drop Panel -->
 			<style>
@@ -68,6 +67,8 @@
 	            </a4j:repeat>
     		</a4j:outputPanel>
 
+			
+				<h:commandButton action="#{fileUploadBeanNew.save}" value="Save" />
 			
 
 		<ui:remove>
