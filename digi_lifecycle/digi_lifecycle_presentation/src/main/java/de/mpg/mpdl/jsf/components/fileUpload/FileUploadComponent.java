@@ -34,9 +34,13 @@ public class FileUploadComponent extends UINamingContainer {
         Object request = getFacesContext().getExternalContext().getRequest();
 		if(request instanceof MultipartRequest)
 		{
-            FileUploadEvent evt = new FileUploadEvent(this); 
-            evt.setFileItem(((MultipartRequest)request).getFile("file"));
-            queueEvent(evt);
+			if(((MultipartRequest)request).getFile("file")!=null)
+			{
+				FileUploadEvent evt = new FileUploadEvent(this); 
+	            evt.setFileItem(((MultipartRequest)request).getFile("file"));
+	            queueEvent(evt);
+			}
+            
         }
     }
 	

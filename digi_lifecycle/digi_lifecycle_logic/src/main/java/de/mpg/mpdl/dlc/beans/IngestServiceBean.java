@@ -22,12 +22,24 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
+import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
+import org.apache.commons.httpclient.methods.multipart.Part;
+import org.apache.commons.httpclient.methods.multipart.StringPart;
+import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlCursor;
 import org.w3c.dom.Element;
 
 import de.escidoc.core.client.Authentication;
+import de.escidoc.core.client.ContentModelHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
+import de.escidoc.core.resources.cmm.ContentModel;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
@@ -40,7 +52,7 @@ public class IngestServiceBean {
 	
 	private static Logger logger = Logger.getLogger(IngestServiceBean.class); 
 
-	public void createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, String[] imageUrls) throws Exception
+	public void createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, List<FileItem> images) throws Exception
 	{
 		logger.info("CREATE NEW VOLUME");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -49,17 +61,41 @@ public class IngestServiceBean {
 		Item item = new Item();
 		item.getProperties().setContext(new ContextRef(contextId));
 		item.getProperties().setContentModel(new ContentModelRef(PropertyReader.getProperty("dlc.content-model.id")));
-		//item = client.create(item);
+		
 		
 		MetadataRecords mdRecs = new MetadataRecords();
 		MetadataRecord mdRec = new MetadataRecord("escidoc");
 		mdRecs.add(mdRec);
 		item.setMetadataRecords(mdRecs);
 		
-		
 		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
 		Mets mets = metsDoc.addNewMets();
-		FileSec fileSec = metsDoc.addNewMets().addNewFileSec();
+		
+		MdSecType dmdSec = mets.addNewDmdSec();
+		dmdSec.setID("dmd_0");
+		MdWrap mdWrap = dmdSec.addNewMdWrap();
+		mdWrap.setMIMETYPE("text/xml");
+		mdWrap.setMDTYPE(MDTYPE.MODS);
+		XmlData xmlData = mdWrap.addNewXmlData();
+		
+		XmlCursor dataCursor = xmlData.newCursor();
+		dataCursor.toNextToken();
+		XmlCursor modsCursor = modsDoc.getMods().newCursor();
+		modsCursor.copyXml(dataCursor);
+		modsCursor.dispose();
+		dataCursor.dispose();
+		
+		
+		//Add METS xml to mdRecord of Item
+		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
+		
+		
+		
+		item = client.create(item);
+		logger.info("Item created: " + item.getObjid());
+		
+		
+		FileSec fileSec = mets.addNewFileSec();
 		FileGrp imageFileGrp = fileSec.addNewFileGrp();
 		imageFileGrp.setUSE("scans");
 		
@@ -72,10 +108,13 @@ public class IngestServiceBean {
 		physicalMainDiv.setDMDID(dmdIds);
 		
 		
+		int i = 0;
 		
-		
-		for(int i=0; i<imageUrls.length; i++)
+		for(FileItem fileItem : images)
 		{
+			
+			String dir = uploadFileToImageServer(fileItem, item.getObjid());
+			logger.info("File uploaded to " + dir);
 			FileType f = imageFileGrp.addNewFile();
 			f.setMIMETYPE("image/jpg");
 			String fileId = "img_" + i;
@@ -83,7 +122,7 @@ public class IngestServiceBean {
 			
 			FLocat loc = f.addNewFLocat();
 			loc.setLOCTYPE(FLocat.LOCTYPE.OTHER);
-			loc.setHref(imageUrls[i]);
+			loc.setHref(dir);
 			
 			DivType pageDiv = physicalMainDiv.addNewDiv();
 			pageDiv.setTYPE("page");
@@ -91,9 +130,79 @@ public class IngestServiceBean {
 			pageDiv.setID("page_"+ i);
 			Fptr fileptr = pageDiv.addNewFptr();
 			fileptr.setFILEID(fileId);
+			i++;
 		}
 		
 		
+		
+		
+		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
+		item.getMetadataRecords().clear();
+		item.getMetadataRecords().add(mdRec);
+		item = client.update(item);
+		logger.info("Item updated: " + item.getObjid());
+		
+	}
+	
+	
+	private String uploadFileToImageServer(FileItem item, String directory) throws Exception
+	{
+		/*
+		File tmpFile = File.createTempFile(item.getName(), "tmp");
+		item.write(tmpFile);
+		*/
+		HttpClient client = new HttpClient( );
+
+		String weblintURL = PropertyReader.getProperty("image-upload.url");
+    	PostMethod method = new PostMethod(weblintURL);
+    	Part[] parts = new Part[2];
+    	parts[0] = new StringPart("directory", directory);
+    	parts[1] = new FilePart(item.getName(), new ByteArrayPartSource(item.getName(), item.get()));
+    	
+    	//parts[1] = new FilePart( item.getName(), tmpFile );
+    	HttpMethodParams params = new HttpMethodParams();
+    	method.setRequestEntity(new MultipartRequestEntity(parts, params));
+    	String username = PropertyReader.getProperty("image-upload.username");
+    	String password = PropertyReader.getProperty("image-upload.password");
+    	String handle = "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes()));
+    	method.addRequestHeader("authorization", handle);
+    	// Execute and print response
+    	client.executeMethod( method );
+    	String response = method.getResponseBodyAsString( );
+    	method.releaseConnection( );
+    	if(!(method.getStatusCode()==201 || method.getStatusCode()==200))
+    	{
+    		throw new RuntimeException("File Upload Servlet responded with: " + method.getStatusCode() + "\n" + method.getResponseBodyAsString());
+    	}
+
+    	return response;
+	}
+	
+	public static void main(String[] args) throws Exception
+	{
+		String url = "http://latest-coreservice.mpdl.mpg.de";
+		Authentication auth = new Authentication(new URL(url), "dlc_user", "dlc");
+		ModsDocument modsDoc = ModsDocument.Factory.newInstance();
+		modsDoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
+		
+		
+		
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL(url));
+		client.setHandle(auth.getHandle());
+		
+		Item item = new Item();
+		item.getProperties().setContext(new ContextRef("escidoc:5002"));
+		item.getProperties().setContentModel(new ContentModelRef("escidoc:4001"));
+		
+		
+		MetadataRecords mdRecs = new MetadataRecords();
+		MetadataRecord mdRec = new MetadataRecord("escidoc");
+		mdRecs.add(mdRec);
+		item.setMetadataRecords(mdRecs);
+		
+		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
+		Mets mets = metsDoc.addNewMets();
 		
 		MdSecType dmdSec = mets.addNewDmdSec();
 		dmdSec.setID("dmd_0");
@@ -112,14 +221,16 @@ public class IngestServiceBean {
 		//Add METS xml to mdRecord of Item
 		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
 		
-	}
-	
-	public static void main(String[] args) throws Exception
-	{
-		String url = "http://latest-coreservice.mpdl.mpg.de";
-		Authentication auth = new Authentication(new URL(url), "sysadmin", "sysadmin");
-		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
-		modsdoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
+		
+		
+		item = client.create(item);
+		
+		System.out.println(item.getObjid());
+		
+		
+		
+		
+		
 		/*
 		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
 		cmh.setHandle(auth.getHandle());
@@ -130,7 +241,8 @@ public class IngestServiceBean {
 		
 		cm = cmh.create(cm);
 		System.out.println(cm.getObjid());
-		*/
+		 */
+		
 		
 		/*
 		OrganizationalUnitHandlerClient ouc = new OrganizationalUnitHandlerClient(new URL(url));
