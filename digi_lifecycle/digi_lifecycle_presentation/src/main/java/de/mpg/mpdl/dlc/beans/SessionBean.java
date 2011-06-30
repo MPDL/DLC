@@ -1,20 +1,19 @@
 package de.mpg.mpdl.dlc.beans;
 
 import java.io.Serializable;
-import java.net.URI;
-import java.security.Security;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
+
+import de.escidoc.core.resources.aa.useraccount.UserAccount;
 
 @ManagedBean
 @SessionScoped
@@ -26,6 +25,8 @@ public class SessionBean implements Serializable
     public static final String MESSAGES_BUNDLE = "messages";
     public static final String METADATA_BUNDLE = "metadata";
     private Locale locale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
+    @ManagedProperty(value = "#{loginBean.userAccount}")
+    private UserAccount userAccount;
     
 	public SessionBean()
     {

@@ -15,15 +15,18 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 @SessionScoped
 public class LoginBean 
 {
-    private boolean login = false;
+    private boolean login;
     private static Logger logger = Logger.getLogger(LoginBean.class);
     private static final String LOGIN_URL = "/aa/login?target=$1";
     public static final String LOGOUT_URL = "/aa/logout?target=$1";
-    private String userHandle = null;
-    private UserAccount userAccount = null;
-
-	public boolean isLogin() 
-	{
+    private String userHandle;
+    private UserAccount userAccount;
+    private int i = 1;
+    
+    public final boolean getLoginState()
+    {
+		System.err.println("i = " + i);
+		i++;
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
         if (request.getParameter("eSciDocUserHandle") != null)
@@ -42,7 +45,7 @@ public class LoginBean
                 try
                 {  
                 	this.userHandle = newUserHandle;
-                    login = true;
+                    this.login = true;
                     UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
                     client.setHandle(userHandle);
                     this.userAccount = client.retrieveCurrentUser();
@@ -55,13 +58,16 @@ public class LoginBean
                     logger.error("Error authenticating user", e);
                 }
             }
-
-                return login;
-        }
+        }  
+        return false;
+    }
+    
+    
+	public boolean isLogin() 
+	{
 		return login;
-
 	}
-
+	
 	public void setLogin(boolean login) 
 	{
 		this.login = login;
@@ -129,6 +135,7 @@ public class LoginBean
     {
     	return PropertyReader.getProperty("escidoc.common.framework.url")+LOGIN_URL;
     }
+    
     public static String getLogoutUrl() throws Exception
     {
     	return PropertyReader.getProperty("escidoc.common.framework.url")+LOGOUT_URL;

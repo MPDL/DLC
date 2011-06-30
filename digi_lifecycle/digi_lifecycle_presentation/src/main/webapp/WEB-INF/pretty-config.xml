@@ -5,17 +5,13 @@
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
 	
 	<url-mapping id="home">
-		<pattern>
-			/
-		</pattern>
+		<pattern>/</pattern>
 		<view-id>/Welcome.xhtml</view-id>
 	</url-mapping>
 	
 	<url-mapping id="upload">
-		<pattern>
-			/upload
-		</pattern>
-		<view-id>/Upload.xhtml</view-id>
+		<pattern>/upload</pattern>
+		<view-id>/ingest.xhtml</view-id>
 	</url-mapping>
 	
 	
@@ -23,24 +19,18 @@
 	
 	
 	<url-mapping id="browseListPagination">
-		<pattern>
-			/browse/#{BookPaginatorListSessionBean.elementsPerPage}/#{BookPaginatorListSessionBean.currentPageNumber}
-		</pattern>
+		<pattern>/browse/#{BookPaginatorListSessionBean.elementsPerPage}/#{BookPaginatorListSessionBean.currentPageNumber}</pattern>
 		<view-id>/faces/MultiVolList.xhtml</view-id>
 	</url-mapping>
 	
 	<url-mapping id="browseList">
-		<pattern>
-			/browse
-		</pattern>
+		<pattern>/browse</pattern>
 		<view-id>/faces/MultiVolList.xhtml</view-id>
 		<action>#{BookPaginatorListSessionBean.reset}</action>
 	</url-mapping>
 	
 	<url-mapping id="descriptionISBD">
-		<pattern>
-			/view/#{ViewPages.selectedBookId}/description/ISBD
-		</pattern>
+		<pattern>/view/#{ViewPages.selectedBookId}/description/ISBD</pattern>
 		<view-id>/faces/ViewMDISBD.xhtml</view-id>
 		<action>#{ViewPages.initNewBook}</action>
 	</url-mapping>

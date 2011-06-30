@@ -44,7 +44,7 @@
 <h:head>
 
 	<title><h:outputText
-			value="#{browserTitle} | #{applicationBean.pureAppTitle}" /></title>
+			value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
 
 	<link
 		href="#{applicationBean.domain}common/resources/cssFramework/main.css"
@@ -87,7 +87,8 @@
 
 </h:head>
 
-<h:body lang="#{internationalizationHelper.userLocaleString}">
+<h:body lang="#{applicationBean.userLocaleString}">
+	<h:panelGroup rendered="#{loginBean.loginState}"/>
 	<h:form id="form1" enctype="multipart/form-data">
 		<div class="full wrapper">
 			<h:inputHidden id="offset"></h:inputHidden>
