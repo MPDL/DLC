@@ -41,6 +41,8 @@
        			 Drag the item to proper area..
   		  </rich:dragIndicator>
 			<a4j:outputPanel id="dragDropTable" layout="block" style="height:400px;width:500px;">
+			 	
+			 	<ui:remove>
 			 	<a4j:outputPanel id="dropPanelFirst" layout="block" style="height:10px; background-color:grey" styleClass="dropPanel">
 					<rich:dropTarget acceptedTypes="file" dropValue="pos0"
                     		dropListener="#{fileUploadBeanNew.processDrop}"
@@ -65,6 +67,8 @@
                     </a4j:outputPanel>
 	
 	            </a4j:repeat>
+	            
+	            </ui:remove>
     		</a4j:outputPanel>
 
 			

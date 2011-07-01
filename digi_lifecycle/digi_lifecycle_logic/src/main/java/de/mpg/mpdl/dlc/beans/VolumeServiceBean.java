@@ -15,12 +15,16 @@ import gov.loc.mets.MetsType.FileSec.FileGrp;
 import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
+import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
@@ -34,7 +38,10 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlCursor;
+import org.apache.xmlbeans.XmlOptions;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
@@ -42,25 +49,109 @@ import de.escidoc.core.client.ItemHandlerClient;
 import de.escidoc.core.resources.cmm.ContentModel;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
+import de.escidoc.core.resources.common.Result;
+import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.Volume;
 
 @Stateless
-public class IngestServiceBean {
+public class VolumeServiceBean {
 	
-	private static Logger logger = Logger.getLogger(IngestServiceBean.class); 
+	private static Logger logger = Logger.getLogger(VolumeServiceBean.class); 
 
-	public void createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, List<FileItem> images) throws Exception
+	
+	public Volume retrieveVolume(String id, String userHandle) throws Exception
 	{
-		logger.info("CREATE NEW VOLUME");
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		if(userHandle!=null)
+		{
+			client.setHandle(userHandle);
+		}
+		
+		Item item = client.retrieve(id);
+		return new Volume(item);
+		
+	}
+	
+	public Volume createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, List<FileItem> images) throws Exception
+	{
+		logger.info("Trying to create a new volume");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
+		//Create a dummy Item with dummy md record to get id of item
 		Item item = new Item();
 		item.getProperties().setContext(new ContextRef(contextId));
 		item.getProperties().setContentModel(new ContentModelRef(PropertyReader.getProperty("dlc.content-model.id")));
+		MetadataRecords mdRecs = new MetadataRecords();
+		MetadataRecord mdRec = new MetadataRecord("escidoc");
+		mdRecs.add(mdRec);
+		item.setMetadataRecords(mdRecs);
+		
+		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
+		Mets mets = metsDoc.addNewMets();
+		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
+		item = client.create(item);
+		logger.info("Empty item created: " + item.getObjid());
+		
+		
+		//Create a volume
+		Volume vol = new Volume();
+		vol.setProperties(item.getProperties());
+		vol.setModsMetadata(modsDoc.getMods());
+		vol.setItem(item);
+		
+		for(FileItem fileItem : images)
+		{
+			
+			String dir = uploadFileToImageServer(fileItem, item.getObjid());
+			logger.info("File uploaded to " + dir);
+			vol.getPages().add(new Page("", dir));
+		}
+		
+		vol = updateVolume(vol, userHandle);
+		vol = releaseVolume(vol, userHandle);
+		return vol;
+	}
+	
+	
+	public Volume releaseVolume(Volume vol, String userHandle) throws Exception
+	{
+		String id = vol.getItem().getObjid();
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		
+		logger.info("Releasing Volume " + id);
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Submit Volume");
+		taskParam.setLastModificationDate(vol.getItem().getLastModificationDate());
+		
+		Result res = client.submit(id, taskParam);
+		
+		taskParam=new TaskParam(); 
+	    taskParam.setComment("Release Volume");
+		taskParam.setLastModificationDate(res.getLastModificationDate());
+		res = client.release(id, taskParam);
+		
+		return retrieveVolume(id, userHandle);
+	
+	}
+	
+	
+	
+	public Volume updateVolume(Volume vol, String userHandle) throws Exception
+	{
+		
+		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		
+		Item item = vol.getItem();
 		
 		
 		MetadataRecords mdRecs = new MetadataRecords();
@@ -80,21 +171,14 @@ public class IngestServiceBean {
 		
 		XmlCursor dataCursor = xmlData.newCursor();
 		dataCursor.toNextToken();
-		XmlCursor modsCursor = modsDoc.getMods().newCursor();
+		XmlCursor modsCursor = vol.getModsMetadata().newCursor();
 		modsCursor.copyXml(dataCursor);
 		modsCursor.dispose();
 		dataCursor.dispose();
 		
 		
 		//Add METS xml to mdRecord of Item
-		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
-		
-		
-		
-		item = client.create(item);
-		logger.info("Item created: " + item.getObjid());
-		
-		
+
 		FileSec fileSec = mets.addNewFileSec();
 		FileGrp imageFileGrp = fileSec.addNewFileGrp();
 		imageFileGrp.setUSE("scans");
@@ -110,11 +194,10 @@ public class IngestServiceBean {
 		
 		int i = 0;
 		
-		for(FileItem fileItem : images)
+		for(Page page : vol.getPages())
 		{
 			
-			String dir = uploadFileToImageServer(fileItem, item.getObjid());
-			logger.info("File uploaded to " + dir);
+			
 			FileType f = imageFileGrp.addNewFile();
 			f.setMIMETYPE("image/jpg");
 			String fileId = "img_" + i;
@@ -122,28 +205,41 @@ public class IngestServiceBean {
 			
 			FLocat loc = f.addNewFLocat();
 			loc.setLOCTYPE(FLocat.LOCTYPE.OTHER);
-			loc.setHref(dir);
+			loc.setHref(page.getPath());
 			
 			DivType pageDiv = physicalMainDiv.addNewDiv();
 			pageDiv.setTYPE("page");
 			pageDiv.setORDER(BigInteger.valueOf(i));
 			pageDiv.setID("page_"+ i);
+			if(page.getPagination()!=null)
+			{
+				pageDiv.setORDERLABEL(page.getPagination());
+			}
 			Fptr fileptr = pageDiv.addNewFptr();
 			fileptr.setFILEID(fileId);
 			i++;
 		}
+
 		
+		//Workaround for eSciDoc: Change prefix "xlin" to "xlink", otherwise bug with eSciDoc
+		HashMap suggestedPrefixes = new HashMap();
+		suggestedPrefixes.put("http://www.w3.org/1999/xlink", "xlink");
+		XmlOptions opts = new XmlOptions();
+		opts.setSaveSuggestedPrefixes(suggestedPrefixes);
+		opts.setSavePrettyPrint();
+		String xml = metsDoc.xmlText(opts);
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document d = builder.parse( new InputSource(new StringReader(xml)) );
+		//---
 		
-		
-		
-		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
-		item.getMetadataRecords().clear();
-		item.getMetadataRecords().add(mdRec);
+		mdRec.setContent(d.getDocumentElement());
+
 		item = client.update(item);
 		logger.info("Item updated: " + item.getObjid());
+		return new Volume(item);
 		
 	}
-	
 	
 	private String uploadFileToImageServer(FileItem item, String directory) throws Exception
 	{
@@ -180,17 +276,31 @@ public class IngestServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
+		
 		String url = "http://latest-coreservice.mpdl.mpg.de";
 		Authentication auth = new Authentication(new URL(url), "dlc_user", "dlc");
+		
+		
+		
 		ModsDocument modsDoc = ModsDocument.Factory.newInstance();
 		modsDoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
 		
-		
+		HashMap suggestedPrefixes = new HashMap();
+		suggestedPrefixes.put("http://www.w3.org/1999/xlink", "xlink");
+		XmlOptions opts = new XmlOptions();
+		opts.setSaveSuggestedPrefixes(suggestedPrefixes);
+		opts.setSavePrettyPrint();
+		MetsDocument doc = MetsDocument.Factory.newInstance(opts);
+	
 		
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(url));
 		client.setHandle(auth.getHandle());
+		client.delete("escidoc:5030");
 		
+		
+		/*
+		 * 
 		Item item = new Item();
 		item.getProperties().setContext(new ContextRef("escidoc:5002"));
 		item.getProperties().setContentModel(new ContentModelRef("escidoc:4001"));
@@ -228,7 +338,7 @@ public class IngestServiceBean {
 		System.out.println(item.getObjid());
 		
 		
-		
+		*/
 		
 		
 		/*

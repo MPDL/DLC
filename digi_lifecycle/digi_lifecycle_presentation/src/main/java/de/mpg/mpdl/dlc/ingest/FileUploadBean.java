@@ -18,7 +18,7 @@ import javax.faces.event.AjaxBehaviorListener;
 import org.richfaces.event.FileUploadEvent;
 import org.richfaces.model.UploadedFile;
 
-import de.mpg.mpdl.dlc.beans.IngestServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
  
 /**
  * @author Ilya Shaikovsky
