@@ -28,7 +28,7 @@
             All rights reserved. Use is subject to license terms.
              */
 -->
-<f:view encoding="UTF-8" locale="en"
+<f:view encoding="UTF-8" locale="#{applicationBean.userLocaleString}"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -89,6 +89,7 @@
 
 <h:body lang="#{applicationBean.userLocaleString}">
 	<h:panelGroup rendered="#{loginBean.loginState}"/>
+	
 	<h:form id="form1" enctype="multipart/form-data">
 		<div class="full wrapper">
 			<h:inputHidden id="offset"></h:inputHidden>
