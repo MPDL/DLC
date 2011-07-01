@@ -26,6 +26,10 @@
 
 
 
+	<context-param>
+	   <param-name>com.ocpsoft.pretty.BASE_PACKAGES</param-name>
+	   <param-value>de.mpg.mpdl.dlc</param-value>
+	</context-param>
 
 
 

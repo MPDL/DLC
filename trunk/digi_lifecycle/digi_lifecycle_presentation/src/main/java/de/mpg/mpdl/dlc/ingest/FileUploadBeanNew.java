@@ -37,7 +37,7 @@ import org.richfaces.event.DropEvent;
 import org.richfaces.event.DropListener;
 
 import de.escidoc.core.client.Authentication;
-import de.mpg.mpdl.dlc.beans.IngestServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
@@ -61,7 +61,7 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	private int moveTo;
  
 	@EJB
-	private IngestServiceBean ingestService;
+	private VolumeServiceBean volumeService;
 
     public void paint(OutputStream stream, Object object) throws Exception {
     	
@@ -223,7 +223,7 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
     	modsdoc.addNewMods().addNewTitleInfo().addNewTitle().setStringValue("Test Title");
     	
-    	ingestService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsdoc, files);
+    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsdoc, files);
     	
 	
 	}
