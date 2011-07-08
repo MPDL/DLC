@@ -12,7 +12,28 @@
 	
 	<ui:define name="mainContent">
 			
-		<h:graphicImage value="#{viewPages.getDigilibUrlForPage(viewPages.selectedPage)}"/>
+		<h:outputText value="Pagination: #{viewPages.selectedPage.pagination}" />
+		
+		<br/>
+		
+		<h:outputLink value="#{viewPages.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
+			Digilib
+		</h:outputLink>
+		<br/>
+		<h:graphicImage id="img" value="#{viewPages.getDigilibScalerUrlForPage(viewPages.selectedPage)}"/>
+		
+		<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}">
+			
+		</h:commandButton>	
+		<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}">
+
+		</h:commandButton>		
+		<h:commandButton value=">" action="#{viewPages.goToNextPage}">
+
+		</h:commandButton>	
+		<h:commandButton value=">>" action="#{viewPages.goToLastPage}">
+		</h:commandButton>	
+		
 	</ui:define>
 
 </ui:composition>

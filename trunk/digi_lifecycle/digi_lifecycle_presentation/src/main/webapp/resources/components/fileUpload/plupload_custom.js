@@ -34,8 +34,8 @@ $(function() {
 		drop_element : 'dropArea',
 		url : document.URL,
 		
-		max_file_size : '50mb',
-		resize : {width : 320, height : 240, quality : 90},
+		max_file_size : '5mb',
+		//resize : {width : 320, height : 240, quality : 90},
 		flash_swf_url : '../js/plupload.flash.swf',
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png,tif"},
