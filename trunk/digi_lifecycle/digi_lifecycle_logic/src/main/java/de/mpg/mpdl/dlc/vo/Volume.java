@@ -54,13 +54,11 @@ public class Volume {
 		
 		for(FileGrp fileGroup : metsDoc.getMets().getFileSec().getFileGrpArray())
 		{
-			System.out.println(fileGroup.getFileArray(0).getFLocatArray().length);
 			if(fileGroup.getUSE().equals("scans"))
 			{
 				for(FileType fileType : fileGroup.getFileArray())
 				{
 					fileMap.put(fileType.getID(), fileType);
-					System.out.println(fileType.getFLocatArray().length);
 				}
 				
 			}
