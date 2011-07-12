@@ -28,23 +28,15 @@
  */
 package de.mpg.mpdl.dlc.beans;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Calendar;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
-
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
-
 import org.apache.log4j.Logger;
-
 import de.mpg.mpdl.dlc.util.PropertyReader;
-
-
 
 @ManagedBean
 @ApplicationScoped
@@ -83,7 +75,7 @@ public class ApplicationBean
     	Iterator<Locale> supportedLocales = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
     	boolean found = false;
         while (supportedLocales.hasNext())
-        {
+        { 
             Locale supportedLocale = supportedLocales.next();
             if (supportedLocale.getLanguage().equals(userLocale.getLanguage()))
             {
@@ -108,13 +100,11 @@ public class ApplicationBean
     	
     	try {
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
+	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
 		} catch (Exception e) {
 			logger.error("");
 		}      
-		
-        FacesContext fc = FacesContext.getCurrentInstance();
-        this.contextPath = fc.getExternalContext().getRequestContextPath();
     }
     
     
