@@ -5,26 +5,27 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
-	<ui:composition template="templates/template.xhtml">
-		<ui:param name="browserTitle" value="#{lbl.HomePage}"/>
-		<ui:param name="headline" value="#{lbl.HomePage}" />
+	xmlns:rich="http://richfaces.org/rich">
 	
-		<ui:define name="mainContent">
-			<div class="full_area0 infoPage">
-				<h:panelGroup styleClass="half_area0_p8 mainSection">
+<ui:composition template="templates/template.xhtml">
+	<ui:param name="browserTitle" value="#{lbl.HomePage}" />
+	<ui:param name="headline" value="#{lbl.HomePage}" />
+
+	<ui:define name="mainContent">
+		<div class="full_area0 infoPage">
+			<h:panelGroup styleClass="half_area0_p8 mainSection">
+
+			</h:panelGroup>
+
+			<!-- Side Panels -->
+			<h:panelGroup styleClass="sideSectionArea">
+				<h:panelGroup styleClass="free_area0_p8 sideSection">
 
 				</h:panelGroup>
-		
-				<!-- Side Panels -->
-				<h:panelGroup styleClass="sideSectionArea">
-					<h:panelGroup styleClass="free_area0_p8 sideSection">
-	
-					</h:panelGroup>
-				</h:panelGroup>
-			</div>
-		</ui:define>
-	
-	</ui:composition>
+			</h:panelGroup>
+		</div>
+	</ui:define>
+
+</ui:composition>
+
 </html>
