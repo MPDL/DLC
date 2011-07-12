@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
+
+
+<ui:composition template="templates/template.xhtml">
+	<ui:param name="browserTitle" value="#{lbl.view_tree_browser_title}" />
+	<ui:param name="headline" value="#{lbl.view_tree_headline}" />
+	
+	<ui:define name="actionsMenu">
+		<h:panelGroup styleClass="free_area0 sub action" rendered="#{loginBean.login}">
+			<h:outputLabel value="#{lbl.edit_filter_state}:" />
+			<h:selectOneMenu styleClass="free_txtInput lineInput" value="#{collectionsBean.selectedState}" onchange="submit();">
+				<f:selectItem itemValue="all" itemLabel="#{lbl.ENUM_ALL}" />
+				<f:selectItem itemValue="released" itemLabel="#{lbl.ENUM_STATE_RELEASED}" />
+				<f:selectItem itemValue="pending" itemLabel="#{lbl.ENUM_STATE_PENDING}" />
+			</h:selectOneMenu>
+		</h:panelGroup>
+	</ui:define>
+    
+	<ui:define name="mainContent">
+		<mpdl:paginator paginatorBean="#{collectionsBean}">
+			<h:panelGroup>
+				<li class="full_area0 listItem">
+
+					<h:panelGroup layout="block" styleClass="full_area0 shortView">
+						<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" >
+							
+							<span class="huge_area0_p8 endline labelLine">
+								<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
+							</span>
+							<span class="xHuge_area0 endline">
+								<h:outputText value="#{var.title}"/>
+							</span>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" >
+							<span class="huge_area0_p8 endline labelLine">
+								<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
+							</span>
+							<span class="xHuge_area0 endline">
+								<h:outputText value="#{var.author}"/>
+							</span>
+						</h:panelGroup>
+					</h:panelGroup>
+
+				</li>
+			</h:panelGroup>
+		</mpdl:paginator>
+				
+	</ui:define>
+
+</ui:composition>
+
+</html>
