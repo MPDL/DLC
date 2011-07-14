@@ -1,0 +1,16 @@
+### XMLBEANS (2.4) SCHEMA COMPILER
+### scomp [opts] [dirs]* [schema.xsd]* [service.wsdl]* [config.xsdconfig]*
+### compile all REST schemas in the escidoc13_REST directory
+### using version independent package names as declared in escidoc-rest-13.xsdconfig
+
+
+scomp
+ -out escidoc_13_REST_final.jar
+ -dl
+ -noupa
+ -nopvr
+ -allowmdef "http://www.escidoc.de/schemas/commontypes/0.4 http://escidoc.de/core/01/structural-relations/"
+ escidoc13_REST
+ escidoc-rest-13.xsdconfig 
+
+
