@@ -53,7 +53,7 @@
 		
 		<!-- upload -->
 		<h:outputLink id="lnkUpload" title="#{tlt.Collection}"
-			styleClass="free_area0" value="#{applicationBean.contextPath}/ingest.xhtml"
+			styleClass="free_area0" value="/ingest.xhtml"
 			rendered="true">
 			<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 		</h:outputLink>
