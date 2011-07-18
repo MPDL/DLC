@@ -5,16 +5,18 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
-	
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel">
+
 <ui:composition template="templates/template.xhtml">
+
 	<ui:param name="browserTitle" value="#{lbl.HomePage}" />
 	<ui:param name="headline" value="#{lbl.HomePage}" />
 
 	<ui:define name="mainContent">
 		<div class="full_area0 infoPage">
 			<h:panelGroup styleClass="half_area0_p8 mainSection">
-
+				<ca:carousel value1="#{testCarouselBean}" displayTime="600"/>
 			</h:panelGroup>
 
 			<!-- Side Panels -->
