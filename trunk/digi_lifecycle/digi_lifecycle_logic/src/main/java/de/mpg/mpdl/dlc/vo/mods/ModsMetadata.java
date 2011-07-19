@@ -55,16 +55,12 @@ public class ModsMetadata {
 	private String subseries_361;
 	
 
-	@XmlPath("originInfo/edition/text()")
-	private String editionStatement_403;
+	
 	
 	
 	@XmlElement(name = "originInfo")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
-	
-	
-	@XmlPath("originInfo/dateIssued[@encoding='w3cdtf']/text()")
-	private Date dateIssued_425;
+
 	
 	
 	@XmlPath("physicalDescription/extent/text()")
@@ -135,18 +131,6 @@ public class ModsMetadata {
 		this.names = names;
 	}
 
-
-	public void setDateIssued_425(Date dateIssued_425) {
-		this.dateIssued_425 = dateIssued_425;
-	}
-
-
-
-	public Date getDateIssued_425() {
-		return dateIssued_425;
-	}
-
-	
 
 
 	public void setIdentifiers(List<ModsIdentifier> identifiers) {
@@ -233,15 +217,7 @@ public class ModsMetadata {
 
 
 
-	public String getEditionStatement_403() {
-		return editionStatement_403;
-	}
 
-
-
-	public void setEditionStatement_403(String editionStatement_403) {
-		this.editionStatement_403 = editionStatement_403;
-	}
 
 
 
