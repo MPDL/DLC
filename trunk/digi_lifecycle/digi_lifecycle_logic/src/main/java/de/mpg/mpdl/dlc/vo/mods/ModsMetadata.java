@@ -97,18 +97,9 @@ public class ModsMetadata {
 	}
 
 
-/*
-	public String getZdbId_025z() {
-		return zdbId_025z;
-	}
 
+	
 
-
-	public void setZdbId_025z(String zdbId_025z) {
-		this.zdbId_025z = zdbId_025z;
-	}
-*/
-/*
 
 	public String getParentId_010() {
 		return parentId_010;
@@ -118,42 +109,6 @@ public class ModsMetadata {
 
 	public void setParentId_010(String parentId_010) {
 		this.parentId_010 = parentId_010;
-	}
-
-
-
-	public String getUniformTitle_304() {
-		return uniformTitle_304;
-	}
-
-
-
-	public void setUniformTitle_304(String uniformTitle_304) {
-		this.uniformTitle_304 = uniformTitle_304;
-	}
-
-
-
-	public String getAlternativeTitle_310() {
-		return alternativeTitle_310;
-	}
-
-
-
-	public void setAlternativeTitle_310(String titleProper_310) {
-		this.alternativeTitle_310 = titleProper_310;
-	}
-
-
-
-	public String getTitleProper_331() {
-		return titleProper_331;
-	}
-
-
-
-	public void setTitleProper_331(String titleProper_331) {
-		this.titleProper_331 = titleProper_331;
 	}
 
 
@@ -204,7 +159,7 @@ public class ModsMetadata {
 		return identifiers;
 	}
 
-*/
+
 
 	public void setLanguage_037(ModsLanguage language_037) {
 		this.language_037 = language_037;
@@ -214,6 +169,138 @@ public class ModsMetadata {
 
 	public ModsLanguage getLanguage_037() {
 		return language_037;
+	}
+
+
+
+	public List<ModsTitle> getTitles() {
+		return titles;
+	}
+
+
+
+	public void setTitles(List<ModsTitle> titles) {
+		this.titles = titles;
+	}
+
+
+
+	public String getMaterialDesignation_334() {
+		return materialDesignation_334;
+	}
+
+
+
+	public void setMaterialDesignation_334(String materialDesignation_334) {
+		this.materialDesignation_334 = materialDesignation_334;
+	}
+
+
+
+	public String getRemainderTitle_334() {
+		return remainderTitle_334;
+	}
+
+
+
+	public void setRemainderTitle_334(String remainderTitle_334) {
+		this.remainderTitle_334 = remainderTitle_334;
+	}
+
+
+
+	public List<ModsNote> getNotes() {
+		return notes;
+	}
+
+
+
+	public void setNotes(List<ModsNote> notes) {
+		this.notes = notes;
+	}
+
+
+
+	public String getSubseries_361() {
+		return subseries_361;
+	}
+
+
+
+	public void setSubseries_361(String subseries_361) {
+		this.subseries_361 = subseries_361;
+	}
+
+
+
+	public String getEditionStatement_403() {
+		return editionStatement_403;
+	}
+
+
+
+	public void setEditionStatement_403(String editionStatement_403) {
+		this.editionStatement_403 = editionStatement_403;
+	}
+
+
+
+	public List<ModsPublisher> getPublishers() {
+		return publishers;
+	}
+
+
+
+	public void setPublishers(List<ModsPublisher> publishers) {
+		this.publishers = publishers;
+	}
+
+
+
+	public String getExtent_432() {
+		return extent_432;
+	}
+
+
+
+	public void setExtent_432(String extent_432) {
+		this.extent_432 = extent_432;
+	}
+
+
+
+	public String getFormat_435() {
+		return format_435;
+	}
+
+
+
+	public void setFormat_435(String format_435) {
+		this.format_435 = format_435;
+	}
+
+
+
+	public String getSeriesTitle_451() {
+		return seriesTitle_451;
+	}
+
+
+
+	public void setSeriesTitle_451(String seriesTitle_451) {
+		this.seriesTitle_451 = seriesTitle_451;
+	}
+
+
+
+	public String getSignature_544() {
+		return signature_544;
+	}
+
+
+
+	public void setSignature_544(String signature_544) {
+		this.signature_544 = signature_544;
 	}
 
 
