@@ -94,9 +94,40 @@
 				<xsl:for-each select="key('fields', '432')">
 					<xsl:call-template name="mab432ToNote"/>
 				</xsl:for-each>
+				<xsl:for-each select="key('fields', '433')">
+					<xsl:call-template name="mab433ToPhysicalDescription"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '435')">
+					<xsl:call-template name="mab433ToPhysicalDescription"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '451')">
+					<xsl:call-template name="mab451ToRelatedItem"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '453')">
+					<xsl:call-template name="mab010ToRelatedItem"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '501')">
+					<xsl:call-template name="mab501ToNote"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '519')">
+					<xsl:call-template name="mab519ToNote"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '540')">
+					<xsl:call-template name="mab540ToIdentifier"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '542')">
+					<xsl:call-template name="mab542ToIdentifier"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '544')">
+					<xsl:call-template name="mab544ToLocation"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '552')">
+					<xsl:call-template name="mab552ToIdentifier"/>
+				</xsl:for-each>
 				<xsl:for-each select="key('fields', '580')">
 					<xsl:call-template name="mab580ToIdentifier"/>
 				</xsl:for-each>
+				
 
 		</xsl:element>
 	</xsl:template>
@@ -124,7 +155,7 @@
 	<xsl:template name="mab025ToIdentifier">
 		<xsl:if test="@ind='z'">
 			<xsl:element name="identifier">
-				<xsl:attribute name="displaylabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="type"><xsl:value-of select="'zdb-id'"/></xsl:attribute>
 				<xsl:value-of select="."/>
 			</xsl:element>
@@ -133,7 +164,7 @@
 	
 	<xsl:template name="mab037ToLanguage">
 		<xsl:element name="language">
-			<xsl:attribute name="displaylabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:element name="languageTerm">
 				<xsl:attribute name="type"><xsl:value-of select="'code'"/></xsl:attribute>
 				<xsl:attribute name="authority"><xsl:value-of select="'rfc4646'"/></xsl:attribute>
@@ -395,15 +426,94 @@
 		</xsl:element>
 	</xsl:template>	
 	
+	<xsl:template name="mab433ToPhysicalDescription">
+		<xsl:element name="physicalDescription">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:element name="extent">
+				<xsl:value-of select="."/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab451ToRelatedItem">
+		<xsl:element name="relatedItem">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'series'"/></xsl:attribute>
+			<xsl:element name="titleInfo">
+				<xsl:element name="title">
+					<xsl:value-of select="."/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab501ToNote">
+		<xsl:element name="note">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template name="mab519ToNote">
+		<xsl:element name="note">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'thesis'"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template name="mab540ToIdentifier">
+			<xsl:element name="identifier">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:attribute name="type"><xsl:value-of select="'isbn'"/></xsl:attribute>
+				<xsl:if test="@ind='b'">
+					<xsl:attribute name="invalid"><xsl:value-of select="'yes'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="."/>
+			</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template name="mab542ToIdentifier">
+			<xsl:element name="identifier">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:attribute name="type"><xsl:value-of select="'issn'"/></xsl:attribute>
+				<xsl:if test="@ind='b'">
+					<xsl:attribute name="invalid"><xsl:value-of select="'yes'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="."/>
+			</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template name="mab544ToLocation">
+		<xsl:element name="location">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:element name="holdingSimple">
+				<xsl:element name="copyInformation">
+					<xsl:element name="shelfLocator">
+						<xsl:value-of select="."/>
+					</xsl:element>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab552ToIdentifier">
+			<xsl:element name="identifier">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:if test="@ind='a'">
+				<xsl:attribute name="type"><xsl:value-of select="'doi'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@ind='b'">
+				<xsl:attribute name="type"><xsl:value-of select="'urn'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="."/>
+			</xsl:element>
+	</xsl:template>	
+	
 	<xsl:template name="mab580ToIdentifier">
 		<xsl:element name="identifier">
-			<xsl:attribute name="displaylabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:if test="contains(lower-case(.), 'kirchner')">
-			<xsl:attribute name="type"><xsl:value-of select="'kirchner'"/></xsl:attribute>
-			</xsl:if>
-			<xsl:if test="contains(lower-case(.), 'ezdb')">
-			<xsl:attribute name="type"><xsl:value-of select="'ezdb-id'"/></xsl:attribute>
-			</xsl:if>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'local'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>
