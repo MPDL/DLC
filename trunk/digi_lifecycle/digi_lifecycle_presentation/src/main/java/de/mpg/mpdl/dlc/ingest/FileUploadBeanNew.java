@@ -40,6 +40,8 @@ import de.escidoc.core.client.Authentication;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
  
@@ -220,10 +222,12 @@ public class FileUploadBeanNew implements Serializable, DropListener {
 	public void save() throws Exception
 	{
 		
-		ModsDocument modsdoc = ModsDocument.Factory.newInstance();
-    	modsdoc.addNewMods().addNewTitleInfo().addNewTitle().setStringValue("Test Title");
+		ModsMetadata md = new ModsMetadata();
+		ModsTitle title = new ModsTitle();
+		title.setTitle("Test title");
+		md.getTitles().add(title);
     	
-    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsdoc, files);
+    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), md, files);
     	
 	
 	}

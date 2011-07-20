@@ -80,7 +80,7 @@ public class ViewPages {
 	{
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getPath(), "UTF-8") + "&dh=1000&dw=500";
+			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=1000&dw=500";
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for image", e);
@@ -92,7 +92,7 @@ public class ViewPages {
 	{
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.jquery.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getPath(), "UTF-8");
+			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8");
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for image", e);
