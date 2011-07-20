@@ -23,9 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.axis.transport.http.AdminServlet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.httpclient.HttpClient;
@@ -46,6 +50,7 @@ import org.xml.sax.InputSource;
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
+import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.resources.cmm.ContentModel;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
@@ -54,15 +59,41 @@ import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
+import de.escidoc.core.resources.sb.search.SearchResultRecord;
+import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.MetsFile;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 @Stateless
 public class VolumeServiceBean {
 	
 	private static Logger logger = Logger.getLogger(VolumeServiceBean.class); 
 
+	
+	
+	
+	public List<Volume> retrieveVolumes(int limit, int offset) throws Exception
+	{
+		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		
+		
+		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
+		SearchRetrieveResponse resp = shc.search("escidoc.content-model.objid=\"" + contentModelId + "\"", offset, limit, null, "escidoc_all");
+		
+		List<Volume> volumeList = new ArrayList<Volume>();
+		for(SearchResultRecord rec : resp.getRecords())
+		{
+			Item item = (Item)rec.getRecordData().getContent();
+			volumeList.add(createVolumeFromItem(item));
+		}
+		
+		return volumeList;
+		
+	}
+	
 	
 	public Volume retrieveVolume(String id, String userHandle) throws Exception
 	{
@@ -74,11 +105,13 @@ public class VolumeServiceBean {
 		}
 		
 		Item item = client.retrieve(id);
-		return new Volume(item);
+		return createVolumeFromItem(item);
 		
 	}
 	
-	public Volume createNewVolume(String contextId, String userHandle, ModsDocument modsDoc, List<FileItem> images) throws Exception
+	
+	
+	public Volume createNewVolume(String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images) throws Exception
 	{
 		logger.info("Trying to create a new volume");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -93,25 +126,47 @@ public class VolumeServiceBean {
 		mdRecs.add(mdRec);
 		item.setMetadataRecords(mdRecs);
 		
-		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
-		Mets mets = metsDoc.addNewMets();
-		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
+		
+		Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+		Volume dummyVol = new Volume();
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Marshaller marshaller = ctx.createMarshaller();
+		marshaller.marshal(dummyVol, d);
+		mdRec.setContent(d.getDocumentElement());
 		item = client.create(item);
 		logger.info("Empty item created: " + item.getObjid());
+		
 		
 		
 		//Create a volume
 		Volume vol = new Volume();
 		vol.setProperties(item.getProperties());
-		vol.setModsMetadata(modsDoc.getMods());
+		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
 		
+
+		int i = 0;
 		for(FileItem fileItem : images)
 		{
 			
 			String dir = uploadFileToImageServer(fileItem, item.getObjid());
 			logger.info("File uploaded to " + dir);
-			vol.getPages().add(new Page("", dir));
+			
+			MetsFile f = new MetsFile();
+			f.setID("img_" + i);
+			f.setMimeType(fileItem.getContentType());
+			f.setLocatorType("OTHER");
+			f.setHref(dir);
+			vol.getFiles().add(f);
+			
+			Page p = new Page();
+			p.setID("page_" + i);
+			p.setOrder(i);
+			p.setOrderLabel("");
+			p.setType("page");
+			p.setFile(f);
+			vol.getPages().add(p);
+			i++;
 		}
 		
 		vol = updateVolume(vol, userHandle);
@@ -159,6 +214,7 @@ public class VolumeServiceBean {
 		mdRecs.add(mdRec);
 		item.setMetadataRecords(mdRecs);
 		
+		/*
 		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
 		Mets mets = metsDoc.addNewMets();
 		
@@ -168,13 +224,8 @@ public class VolumeServiceBean {
 		mdWrap.setMIMETYPE("text/xml");
 		mdWrap.setMDTYPE(MDTYPE.MODS);
 		XmlData xmlData = mdWrap.addNewXmlData();
+		xmlData.set(vol.getModsMetadata());
 		
-		XmlCursor dataCursor = xmlData.newCursor();
-		dataCursor.toNextToken();
-		XmlCursor modsCursor = vol.getModsMetadata().newCursor();
-		modsCursor.copyXml(dataCursor);
-		modsCursor.dispose();
-		dataCursor.dispose();
 		
 		
 		//Add METS xml to mdRecord of Item
@@ -219,9 +270,10 @@ public class VolumeServiceBean {
 			fileptr.setFILEID(fileId);
 			i++;
 		}
-
+*/
 		
 		//Workaround for eSciDoc: Change prefix "xlin" to "xlink", otherwise bug with eSciDoc
+		/*
 		HashMap suggestedPrefixes = new HashMap();
 		suggestedPrefixes.put("http://www.w3.org/1999/xlink", "xlink");
 		XmlOptions opts = new XmlOptions();
@@ -231,13 +283,24 @@ public class VolumeServiceBean {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
 		Document d = builder.parse( new InputSource(new StringReader(xml)) );
+		*/
 		//---
 		
-		mdRec.setContent(d.getDocumentElement());
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document metsDoc = builder.newDocument();
+        
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Marshaller m = ctx.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(vol, metsDoc);
+		
+		
+		
+		mdRec.setContent(metsDoc.getDocumentElement());
 
 		item = client.update(item);
 		logger.info("Item updated: " + item.getObjid());
-		return new Volume(item);
+		return createVolumeFromItem(item);
 		
 	}
 	
@@ -478,6 +541,19 @@ public class VolumeServiceBean {
         */
         
         
+		
+	}
+	
+	public static Volume createVolumeFromItem(Item item) throws Exception
+	{
+		MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		Volume vol = (Volume)unmarshaller.unmarshal(mdRec.getContent());
+		vol.setItem(item);
+		vol.setProperties(item.getProperties());
+		return vol;
+		
 		
 	}
 }

@@ -1,9 +1,12 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ModsName {
 	
 	@XmlAttribute(name = "ID")
