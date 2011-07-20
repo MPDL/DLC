@@ -1,8 +1,10 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
+import gov.loc.mets.MetsDocument;
 import gov.loc.mods.v3.ModsDocument;
 
 import java.io.File;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +17,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.apache.commons.fileupload.FileItem;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import de.mpg.mpdl.dlc.vo.MetsFile;
+import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.Volume;
 
 
 @XmlRootElement(name="mods", namespace="http://www.loc.gov/mods/v3")
@@ -284,21 +291,29 @@ public class ModsMetadata {
 	public static void main(String[] args) throws Exception
 	{
 		
-		ModsDocument modsDoc = ModsDocument.Factory.newInstance();
+		//ModsDocument modsDoc = ModsDocument.Factory.newInstance();
 		//RecordIdentifier ric = modsDoc.addNewMods().addNewLocation().addNewShelfLocator()
 		//ric.setSource("test");
 		
-		modsDoc.save(System.out);
+		//modsDoc.save(System.out);
 		
-		/*
+		
 		ModsMetadata md = new ModsMetadata();
-		md.setUniformTitle_304("Unifotm Title");
-		md.setAlternativeTitle_310("Proper 310");
-		md.setTitleProper_331("Proper 331");
-		md.setLanguage_037("en");
 		
+		ModsTitle t = new ModsTitle();
+		t.setTitle("Unifotm Title");
+		t.setType("uniform");
+		md.getTitles().add(t);
 		
+		ModsTitle t2 = new ModsTitle();
+		t2.setTitle("Alternative Title");
+		t2.setType("alternative");
+		md.getTitles().add(t2);
 		
+		ModsTitle t3 = new ModsTitle();
+		t3.setTitle("Title");
+		md.getTitles().add(t3);
+
 		ModsName name1 = new ModsName();
 		name1.setName("Test Author 1");
 		name1.setRole("aut");
@@ -309,30 +324,56 @@ public class ModsMetadata {
 		md.getNames().add(name1);
 		md.getNames().add(name2);
 		
-		md.setDateIssued_425(new Date());
-		
 
-		
 		ModsIdentifier id1 = new ModsIdentifier();
 		id1.setInvalid("yes");
 		id1.setValue("invalidisbn");
 		id1.setType("ISBN");
 		md.getIdentifiers().add(id1);
 		
-		*/
+		
 
+		Volume v = new Volume();
+		v.setModsMetadata(md);
 		
 		
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
-		//Marshaller m = ctx.createMarshaller();
-		//m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		//m.marshal(md, System.out);
+		
+		for(int i=0; i<10; i++)
+		{
+			
+			MetsFile f = new MetsFile();
+			f.setID("img_" + i);
+			f.setMimeType("image/jpg");
+			f.setLocatorType("OTHER");
+			f.setHref("dir/number" + i);
+			v.getFiles().add(f);
+			
+			Page p = new Page();
+			p.setID("page_" + i);
+			p.setOrder(i);
+			p.setOrderLabel("");
+			p.setType("page");
+			p.setFile(f);
+			v.getPages().add(p);
+		}
+		
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Marshaller m = ctx.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		
+		StringWriter sw = new StringWriter();
+		m.marshal(v, sw);
+		System.out.println(sw.toString());
+		MetsDocument.Factory.parse(sw.toString());
 		
 		
+		
+		/*
 		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mods_example.xml");
 		Unmarshaller um = ctx.createUnmarshaller();
 		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
 		System.out.println(unmarshalledMods.getCatalogueId_001());
+		*/
 		 
 	}
 
