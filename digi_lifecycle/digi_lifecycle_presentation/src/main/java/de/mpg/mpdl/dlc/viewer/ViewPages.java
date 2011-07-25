@@ -45,8 +45,6 @@ public class ViewPages {
 	public void loadVolume()
 	{
 		try { 
-			//ModsMetadata md = new ModsMetadata();
-			//md.printExample();
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{
 				logger.info("Load new book" + volume);
