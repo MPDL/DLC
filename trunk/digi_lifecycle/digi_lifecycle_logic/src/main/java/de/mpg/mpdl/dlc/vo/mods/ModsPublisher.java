@@ -15,22 +15,22 @@ public class ModsPublisher {
 	@XmlAttribute(name="displayLabel")
 	private String mabId;
 
-	@XmlPath("place/placeTerm[@type='text']/text()")
+	@XmlPath("mods:place/mods:placeTerm[@type='text']/text()")
 	private String place;
 	
-	@XmlPath("publisher/text()")
+	@XmlPath("mods:publisher/text()")
 	private String publisher;
 	
-	@XmlElement(name = "edition")
+	@XmlElement(name = "edition", namespace="http://www.loc.gov/mods/v3")
 	private String editionStatement;
 	
-	@XmlElement(name = "dateIssued")
+	@XmlElement(name = "dateIssued", namespace="http://www.loc.gov/mods/v3")
 	private Date dateIssued_425;
 	
-	@XmlPath("dateIssued/@encoding")
+	@XmlPath("mods:dateIssued/@encoding")
 	private String dateEncoding = "w3cdtf";
 	
-	@XmlPath("dateIssued/@keyDate")
+	@XmlPath("mods:dateIssued/@keyDate")
 	private String dateKeyDate = "yes";
 	
 	

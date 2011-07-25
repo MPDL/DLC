@@ -14,10 +14,10 @@ public class MetsFile {
 	@XmlAttribute(name = "MIMETYPE")
 	private String mimeType;
 	
-	@XmlPath("FLocat/@LOCTYPE")
+	@XmlPath("mets:FLocat/@LOCTYPE")
 	private String locatorType;
 	
-	@XmlPath("FLocat/@xlink:href")
+	@XmlPath("mets:FLocat/@xlink:href")
 	private String href;
 
 	public String getID() {
