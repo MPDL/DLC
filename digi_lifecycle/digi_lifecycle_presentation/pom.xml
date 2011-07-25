@@ -130,18 +130,14 @@
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-impl</artifactId>
-			<version>2.0.4-b09</version>
-			<scope>provided</scope>
-		</dependency>
-<!-- 
+			<version>2.1.1-b04</version>
+		</dependency> 
 
 		<dependency>
 			<groupId>com.sun.faces</groupId>
 			<artifactId>jsf-api</artifactId>
-			<version>2.0.3-b05</version>
-			<scope>provided</scope>
+			<version>2.1.1-b04</version>
 		</dependency>
-			-->	
 	
 
 		<!-- 
@@ -192,6 +188,7 @@
 			<scope>provided</scope>
 		</dependency> 
 	-->
+	<!-- 
 	<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>
@@ -199,6 +196,7 @@
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
+		-->
 	
 	<!-- 
 		<dependency>
@@ -235,13 +233,6 @@
 		</dependency>	
 		 -->     
 
-	    <dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-			<scope>compile</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>com.ocpsoft</groupId>
 			<artifactId>prettyfaces-jsf2</artifactId>
@@ -253,15 +244,6 @@
 			<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
 			<artifactId>digi_lifecycle_logic</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		</dependency>
-		
-		
-		
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-			<scope>provided</scope>
 		</dependency>
 		
 		

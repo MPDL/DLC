@@ -233,6 +233,30 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+			      <groupId>org.eclipse.m2e</groupId>
+			      <artifactId>lifecycle-mapping</artifactId>
+			      <version>1.0.0</version>
+			      <configuration>
+			        <lifecycleMappingMetadata>
+			          <pluginExecutions>
+			            <pluginExecution>
+			              <pluginExecutionFilter>
+			                <groupId>*</groupId>
+			                <artifactId>*</artifactId>
+			                <versionRange>[1.0.0,)</versionRange>
+			                <goals>
+			                  <goal>some-goal</goal>
+			                </goals>
+			              </pluginExecutionFilter>
+			              <action>
+			                <ignore />
+			              </action>
+			            </pluginExecution>
+			          </pluginExecutions>
+			        </lifecycleMappingMetadata>
+			      </configuration>
+			    </plugin>
+				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
 						 <!--  if there are no tests, don't bail out -->
@@ -241,6 +265,7 @@
 						<argLine>-Xmx1000M</argLine>
 					</configuration>
 				</plugin>
+				
 			</plugins>
 		</pluginManagement>
 		<plugins>

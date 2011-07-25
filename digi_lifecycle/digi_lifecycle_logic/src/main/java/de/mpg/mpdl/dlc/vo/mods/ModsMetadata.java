@@ -1,12 +1,10 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
 import gov.loc.mets.MetsDocument;
-import gov.loc.mods.v3.ModsDocument;
 
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -17,7 +15,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.commons.fileupload.FileItem;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import de.mpg.mpdl.dlc.vo.MetsFile;
@@ -290,7 +287,7 @@ public class ModsMetadata {
 
 	public static void main(String[] args) throws Exception
 	{
-		
+		new ModsMetadata().printExample();
 		//ModsDocument modsDoc = ModsDocument.Factory.newInstance();
 		//RecordIdentifier ric = modsDoc.addNewMods().addNewLocation().addNewShelfLocator()
 		//ric.setSource("test");
@@ -298,6 +295,21 @@ public class ModsMetadata {
 		//modsDoc.save(System.out);
 		
 		
+		
+		
+		
+		
+		/*
+		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mods_example.xml");
+		Unmarshaller um = ctx.createUnmarshaller();
+		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
+		System.out.println(unmarshalledMods.getCatalogueId_001());
+		*/
+		 
+	}
+
+	public void printExample() throws Exception
+	{
 		ModsMetadata md = new ModsMetadata();
 		
 		ModsTitle t = new ModsTitle();
@@ -356,6 +368,7 @@ public class ModsMetadata {
 			p.setFile(f);
 			v.getPages().add(p);
 		}
+	
 		
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 		Marshaller m = ctx.createMarshaller();
@@ -368,15 +381,13 @@ public class ModsMetadata {
 		
 		
 		
-		/*
 		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mods_example.xml");
 		Unmarshaller um = ctx.createUnmarshaller();
 		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
 		System.out.println(unmarshalledMods.getCatalogueId_001());
-		*/
-		 
+		
+		
 	}
-
 
 
 	
