@@ -67,7 +67,7 @@ public class PropertyReader
     
     //private static URL solution;
     
-    private static String fileLocation = null;
+    //private static String fileLocation = null;
 
     /**
      * Gets the value of a property for the given key from the system properties or the escidoc property file.
@@ -155,7 +155,7 @@ public class PropertyReader
         properties.load(instream);
         properties.putAll(solProperties);
             
-        Logger.getLogger(PropertyReader.class).info("Properties loaded from " + fileLocation);
+        Logger.getLogger(PropertyReader.class).info("Properties loaded from ");
         //Logger.getLogger(PropertyReader.class).info(properties.toString());
     }
 
@@ -173,8 +173,9 @@ public class PropertyReader
         // First try to search in file system
         try
         {
-            instream = new FileInputStream(filepath);
-            fileLocation = (new File(filepath)).getAbsolutePath();
+        	instream=PropertyReader.class.getClassLoader().getResourceAsStream(filepath);
+            //instream = new FileInputStream(filepath);
+           // fileLocation = (new File(filepath)).getAbsolutePath();
         }
         catch (Exception e)
         {
@@ -183,7 +184,7 @@ public class PropertyReader
             if (url != null)
             {
                 instream = url.openStream();
-                fileLocation = url.getFile();
+                //fileLocation = url.getFile();
             }
         }
         if (instream == null)

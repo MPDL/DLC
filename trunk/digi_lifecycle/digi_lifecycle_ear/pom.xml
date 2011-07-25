@@ -39,16 +39,20 @@
 							<contextRoot>/common</contextRoot>
 						</webModule>
 						
-						
-						
-						<!-- 
-						
 						<jarModule>
-							<groupId>org.apache.xmlbeans</groupId>
-   		 					<artifactId>xmlbeans</artifactId>
+							<groupId>org.eclipse.persistence</groupId>
+							<artifactId>eclipselink</artifactId>
 							<includeInApplicationXml>true</includeInApplicationXml>
 						</jarModule>
+						<!-- 
+						<jarModule>
+							<groupId>stax</groupId>
+							<artifactId>stax-api</artifactId>
+							<includeInApplicationXml>true</includeInApplicationXml>
+						</jarModule>
+						-->
 						
+						<!-- 
 				
 						<jarModule>
 						 	<groupId>org.escidoc.core</groupId>
@@ -87,6 +91,16 @@
 				        </jarModule>
 				        -->
 					</modules>
+					<archive>
+						<manifestEntries>
+							<Dependencies>
+								org.apache.log4j
+							</Dependencies>
+							<Dependencies>
+								org.apache.commons.logging
+							</Dependencies>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -199,6 +213,18 @@
 			<type>war</type>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.eclipse.persistence</groupId>
+			<artifactId>eclipselink</artifactId>
+			<version>2.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>stax</groupId>
+	  		<artifactId>stax-api</artifactId>
+	  		<version>1.0.1</version>
+	  		<scope>provided</scope>
+		</dependency>
+		
 		<!-- 
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
@@ -242,15 +268,18 @@
 			<id>jboss42</id>
 			<build>
 				<plugins>
+					<!-- 
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>jboss-maven-plugin</artifactId>
 						<configuration>
 							<jbossHome>${jboss.install.dir}</jbossHome>
+							<deployDir>${jboss.install.dir}/standalone/deployments</deployDir>
 							<hostName>${jboss.deploy.host}</hostName>
 							<port>${jboss.deploy.port}</port>
 						</configuration>
 					</plugin>
+					-->
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
 						<version>1.1</version>
@@ -263,17 +292,24 @@
 								</goals>
 								<configuration>
 									<tasks>
+										
 										<!-- copy a default jboss server configuration -->
+										<!-- 
 										<copy todir="${project.build.directory}">
 											<fileset dir="src/jboss/configuration42x" />
 										</copy>
+										-->
 										<!-- copy over the jboss service descriptor -->
+										<!-- 
 										<copy overwrite="true" file="${project.build.directory}/classes/jboss-service.xml" todir="${project.build.directory}/jboss/server/conf">
 										</copy>
+										-->
 										<!-- copy over the configuration file -->
-										
+										<!-- 
 										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${project.build.directory}/jboss/server/conf">
-										</copy>									
+										
+										</copy>	
+										-->								
 									</tasks>
 								</configuration>
 							</execution>
@@ -286,8 +322,28 @@
 								<configuration>
 									<tasks>
 										<!-- copy over the configuration file -->
-										
+										<!-- 
 										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${jboss.install.dir}/server/default/conf">
+										</copy>
+										-->
+									
+									</tasks>
+								</configuration>
+							</execution>
+							<execution>
+								<id>copy-to-jboss</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+								<configuration>
+									<tasks>
+										<!-- copy over the configuration file -->
+										<!-- 
+										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${jboss.install.dir}/server/default/conf">
+										</copy>
+										-->
+										<copy overwrite="true" file="${project.build.directory}/${project.build.finalName}.${project.packaging}" todir="${jboss.install.dir}/standalone/deployments">
 										</copy>
 										
 									</tasks>

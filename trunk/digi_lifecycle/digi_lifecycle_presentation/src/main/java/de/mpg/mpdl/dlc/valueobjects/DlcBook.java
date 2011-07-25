@@ -48,7 +48,6 @@ public class DlcBook implements Comparable<DlcBook>
 		}
 	}
 
-	@Override
 	public int compareTo(DlcBook dlc) {
 		return 0;
 	}

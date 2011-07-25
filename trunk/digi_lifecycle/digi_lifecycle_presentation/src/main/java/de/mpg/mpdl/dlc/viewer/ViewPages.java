@@ -22,6 +22,7 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 @ManagedBean
 @SessionScoped
@@ -44,6 +45,8 @@ public class ViewPages {
 	public void loadVolume()
 	{
 		try { 
+			ModsMetadata md = new ModsMetadata();
+			md.printExample();
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{
 				logger.info("Load new book" + volume);
@@ -54,7 +57,7 @@ public class ViewPages {
 			
 			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-1));
 		} catch (Exception e) {
-			logger.info("Problem while loading Volume");
+			logger.error("Problem while loading Volume", e);
 			MessageHelper.errorMessage("Problem while loading volume");
 		}
 		
