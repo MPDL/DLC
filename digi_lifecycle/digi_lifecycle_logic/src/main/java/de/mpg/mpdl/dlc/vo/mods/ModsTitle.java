@@ -15,7 +15,7 @@ public class ModsTitle {
 	@XmlAttribute(name = "type")
 	private String type;
 	
-	@XmlPath("title/text()")
+	@XmlPath("mods:title/text()")
 	private String title;
 
 	public String getType() {

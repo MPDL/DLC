@@ -21,7 +21,7 @@ public class Page {
 	@XmlAttribute(name = "ORDERLABEL")
 	private String orderLabel;
 	
-	@XmlPath("fptr/@FILEID")
+	@XmlPath("mets:fptr/@FILEID")
 	@XmlIDREF
 	private MetsFile file;
 

@@ -26,62 +26,57 @@ import de.mpg.mpdl.dlc.vo.Volume;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
-	@XmlPath("recordInfo/recordIdentifier[@source='mab001']/text()")
+	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='mab001']/text()")
 	private String catalogueId_001;
 	
-	@XmlPath("relatedItem[@type='host']/identifier[@type='local']/text()")
+	@XmlPath("mods:relatedItem[@type='host']/mods:identifier[@type='local']/text()")
 	private String parentId_010;
 
-	@XmlElement(name = "language")
+	@XmlElement(name = "language", namespace="http://www.loc.gov/mods/v3")
 	private ModsLanguage language_037;
 	
-	@XmlPath("part[@type='host']/detail/number/text()")
+	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
 	private String volumeDescriptive_089;
 	
-	@XmlElement(name="name")
+	@XmlElement(name="name", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsName> names = new ArrayList<ModsName>();
 	
-	@XmlElement(name="titleInfo")
+	@XmlElement(name="titleInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsTitle> titles = new ArrayList<ModsTitle>();
 	
 
-	@XmlPath("physicalDescription/form[@type=material]/text()")
+	@XmlPath("mods:physicalDescription/mods:form[@type=material]/text()")
 	private String materialDesignation_334;
 	
-	@XmlPath("titleInfo/subTitle/text()")
+	@XmlPath("mods:titleInfo/mods:subTitle/text()")
 	private String remainderTitle_334;
 	
-	@XmlElement(name = "note")
+	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
 	
 	
-	@XmlPath("part[@type='constituent']/detail/title/text()")
+	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
 	private String subseries_361;
-	
 
-	
-	
-	
-	@XmlElement(name = "originInfo")
+	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
 
 	
-	
-	@XmlPath("physicalDescription/extent/text()")
+	@XmlPath("mods:physicalDescription/mods:extent/text()")
 	private String extent_432;
 	
-	@XmlPath("physicalDescription/extent/text()")
+	@XmlPath("mods:physicalDescription/mods:extent/text()")
 	private String format_435;
 	
-	@XmlPath("relatedItem[@type='series']/titleInfo/title/text()")
+	@XmlPath("mods:relatedItem[@type='series']/mods:titleInfo/mods:title/text()")
 	private String seriesTitle_451;
 	
 	
-	@XmlElement(name = "identifier")
+	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
 	
 	
-	@XmlPath("location/shelfLocator/text()")
+	@XmlPath("mods:location/mods:shelfLocator/text()")
 	private String signature_544;
 	
 
@@ -312,6 +307,8 @@ public class ModsMetadata {
 	{
 		ModsMetadata md = new ModsMetadata();
 		
+		md.setCatalogueId_001("testCatId");
+		/*
 		ModsTitle t = new ModsTitle();
 		t.setTitle("Unifotm Title");
 		t.setType("uniform");
@@ -321,11 +318,13 @@ public class ModsMetadata {
 		t2.setTitle("Alternative Title");
 		t2.setType("alternative");
 		md.getTitles().add(t2);
-		
+		*/
+		/*
 		ModsTitle t3 = new ModsTitle();
 		t3.setTitle("Title");
 		md.getTitles().add(t3);
-
+*/
+		/*
 		ModsName name1 = new ModsName();
 		name1.setName("Test Author 1");
 		name1.setRole("aut");
@@ -342,9 +341,17 @@ public class ModsMetadata {
 		id1.setValue("invalidisbn");
 		id1.setType("ISBN");
 		md.getIdentifiers().add(id1);
-		
+		*/
 		
 
+		
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
+		Marshaller m = ctx.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		StringWriter sw = new StringWriter();
+		m.marshal(md, sw);
+		System.out.println(sw.toString());
+		
 		Volume v = new Volume();
 		v.setModsMetadata(md);
 		
@@ -370,21 +377,22 @@ public class ModsMetadata {
 		}
 	
 		
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-		Marshaller m = ctx.createMarshaller();
+		ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		
-		StringWriter sw = new StringWriter();
-		m.marshal(v, sw);
-		System.out.println(sw.toString());
-		MetsDocument.Factory.parse(sw.toString());
+		StringWriter sw2 = new StringWriter();
+		m.marshal(v, sw2);
+		System.out.println(sw2.toString());
+		MetsDocument.Factory.parse(sw2.toString());
 		
 		
 		
-		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mods_example.xml");
+		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mets_example.xml");
 		Unmarshaller um = ctx.createUnmarshaller();
-		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
-		System.out.println(unmarshalledMods.getCatalogueId_001());
+		Volume unmarshalledMets = (Volume)um.unmarshal(example);
+		System.out.println(unmarshalledMets.getPages().size());
+		System.out.println(unmarshalledMets.getModsMetadata().getTitles().size());
 		
 		
 	}

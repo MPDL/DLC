@@ -37,13 +37,13 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Volume {
 
-	@XmlPath("dmdSec[@ID='dmd_0']/mdWrap[@MDTYPE='MODS']/xmlData/mods:mods")
+	@XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
 	private ModsMetadata modsMetadata;
 	
-	@XmlPath("structMap[@TYPE='physical']/div[@DMDID='dmd_0']/div")
+	@XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div")
 	private List<Page> pages = new ArrayList<Page>();
 	
-	@XmlPath("fileSec/fileGrp[@USE='scans']/file")
+	@XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file")
 	private List<MetsFile> files = new ArrayList<MetsFile>();
 	
 	
