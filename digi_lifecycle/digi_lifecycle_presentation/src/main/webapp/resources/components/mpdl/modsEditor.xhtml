@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="modsMetadata" required="true"/>
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	
+				<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}"/>
+				
+				<h:outputText value="#{lbl.mods_parentId_010}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.parentId_010}"/>
+				
+				<h:outputText value="#{lbl.mods_language_037}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}"/>
+				
+				
+				<h:outputText value="#{lbl.mods_titles}"/>
+				<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
+					<h:outputText value="#{lbl.mods_mabId}"/>
+					<h:inputText value="#{title.mabId}"/>
+					
+					<h:outputText value="#{lbl.mods_titleType}"/>
+					<h:inputText value="#{title.type}"/>
+					
+					<h:outputText value="#{lbl.mods_title}"/>
+					<h:inputText value="#{title.title}"/>
+				</a4j:repeat>
+				
+				<h:outputText value="#{lbl.mods_names}"/>
+				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
+					<h:outputText value="#{lbl.mods_mabId}"/>
+					<h:inputText value="#{name.mabId}"/>
+					
+					<h:outputText value="#{lbl.mods_nameType}"/>
+					<h:inputText value="#{name.type}"/>
+					
+					<h:outputText value="#{lbl.mods_nameRole}"/>
+					<h:inputText value="#{name.role}"/>
+					
+					<h:outputText value="#{lbl.mods_name}"/>
+					<h:inputText value="#{name.name}"/>
+				</a4j:repeat>
+				
+				
+				<h:outputText value="#{lbl.mods_identifiers}"/>
+				<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
+					<h:outputText value="#{lbl.mods_mabId}"/>
+					<h:inputText value="#{identifier.mabId}"/>
+					
+					<h:outputText value="#{lbl.mods_identifierType}"/>
+					<h:inputText value="#{identifier.type}"/>
+					
+					<h:outputText value="#{lbl.mods_identifier}"/>
+					<h:inputText value="#{identifier.value}"/>
+				</a4j:repeat>
+				
+				
+				<h:outputText value="#{lbl.mods_publisherInfo}"/>
+				<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}">
+					<h:outputText value="#{lbl.mods_mabId}"/>
+					<h:inputText value="#{pb.mabId}"/>
+					
+					<h:outputText value="#{lbl.mods_publisherType}"/>
+					<h:inputText value="#{pb.type}"/>
+					
+					<h:outputText value="#{lbl.mods_publisher}"/>
+					<h:inputText value="#{pb.publisher}"/>
+					
+					<h:outputText value="#{lbl.mods_publisherPlace}"/>
+					<h:inputText value="#{pb.place}"/>
+					
+					<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+					<h:inputText value="#{pb.editionStatement}"/>
+					
+					<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+					<h:inputText value="#{pb.dateIssued_425}"/>
+				</a4j:repeat>
+				
+				
+				
+				<h:outputText value="#{lbl.mods_notes}"/>
+				<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
+					<h:outputText value="#{lbl.mods_mabId}"/>
+					<h:inputText value="#{note.mabId}"/>
+					
+					<h:outputText value="#{lbl.mods_noteType}"/>
+					<h:inputText value="#{note.type}"/>
+					
+					<h:outputText value="#{lbl.mods_note}"/>
+					<h:inputText value="#{note.note}"/>
+				</a4j:repeat>
+				
+				<h:outputText value="#{lbl.mods_volumeDescriptive_089}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.volumeDescriptive_089}"/>
+				
+				<h:outputText value="#{lbl.mods_materialDesignation_334}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.materialDesignation_334}"/>
+				
+				<h:outputText value="#{lbl.mods_remainderTitle_334}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.remainderTitle_334}"/>
+				
+				<h:outputText value="#{lbl.mods_subseries_361}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.subseries_361}"/>
+				
+				<h:outputText value="#{lbl.mods_extent_432}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.extent_432}"/>
+				
+				<h:outputText value="#{lbl.mods_format_435}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.format_435}"/>
+				
+				<h:outputText value="#{lbl.mods_seriesTitle_451}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.seriesTitle_451}"/>
+				
+				<h:outputText value="#{lbl.mods_siganture_544}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.signature_544}"/>
+		
+</cc:implementation>
+</html>
