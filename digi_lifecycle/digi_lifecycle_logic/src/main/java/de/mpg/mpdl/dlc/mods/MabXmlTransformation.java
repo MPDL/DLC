@@ -26,6 +26,7 @@ import de.ddb.conversion.ConverterException;
 import de.ddb.professionell.mabxml.mabxml1.DateiDocument;
 import de.ddb.professionell.mabxml.mabxml1.DatensatzType;
 import de.ddb.professionell.mabxml.mabxml1.FeldType;
+import de.mpg.mpdl.dlc.wf.testing.EscidocTests;
 
 public class MabXmlTransformation {
 	
@@ -37,28 +38,38 @@ public class MabXmlTransformation {
     Source XSL = null;
     Source XML = null;
     
-    public ModsDocument getMods(DatensatzType mabRecord, InputStream xslt)
+    public File mabToMods(String mabId, File mabFile)
+    {
+    	File utf8 = mabFileToUtf8(mabFile);
+    	File xml = mabUtf8ToXml(utf8);
+    	DatensatzType mabRecord = getMabRecord(mabId, xml);
+    	File mods = getMods(mabRecord);
+    	return mods;
+    }
+    
+    public File getMods(DatensatzType mabRecord)
     {
     	System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    	ModsDocument modsDocument = null;
-    	XSL = new SAXSource(reader, new InputSource(xslt));
+    	File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
+    	// ModsDocument modsDocument = null;
+    	// XSL = new SAXSource(reader, new InputSource(xslt));
+		XSL = new StreamSource(xslt);
     	XML = new StreamSource(mabRecord.newInputStream());
     	try {
     		File transformed = File.createTempFile("transformed", "xml");
 			Result result = new StreamResult(transformed);
 		    TransformerFactory transfFactory = TransformerFactory.newInstance();
-	        transformer = transfFactory.newTransformer(XSL);
+		    transformer = transfFactory.newTransformer(XSL);
 	        transformer.transform(XML, result);
-	        modsDocument = ModsDocument.Factory.parse(transformed);
-	        return modsDocument;
+	        //modsDocument = ModsDocument.Factory.parse(transformed);
+	        //return modsDocument;
+	        return transformed;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
 		} catch (TransformerException e) {
-			e.printStackTrace();
-		} catch (XmlException e) {
 			e.printStackTrace();
 		}
 		return null;
