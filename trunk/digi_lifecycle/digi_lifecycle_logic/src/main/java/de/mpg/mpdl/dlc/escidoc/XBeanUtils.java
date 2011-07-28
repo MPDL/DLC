@@ -57,9 +57,11 @@ public class XBeanUtils
         namespaces.put("http://escidoc.de/core/01/structural-relations/", "srel");
         namespaces.put("http://www.escidoc.de/schemas/metadatarecords/0.5", "md-records");
         namespaces.put("http://purl.org/dc/elements/1.1/", "dc");
+        namespaces.put("http://purl.org/dc/terms/", "dcterms");
         namespaces.put("http://www.w3.org/1999/xlink", "xlink");
         namespaces.put("http://www.escidoc.de/schemas/components/0.9", "components");
         namespaces.put("http://purl.org/escidoc/metadata/profiles/0.1/file", "file");
+        namespaces.put("http://purl.org/escidoc/metadata/terms/0.1/", "eterms");
         namespaces.put("http://www.loc.gov/mods/v3", "mods");
         itemOpts.setSavePrettyPrint();
         itemOpts.setSavePrettyPrintIndent(4);
@@ -168,8 +170,10 @@ public class XBeanUtils
         fileOpts = new XmlOptions();
         Map<String, String> namespaces = new HashMap<String, String>();
         namespaces.put("http://purl.org/dc/elements/1.1/", "dc");
+        namespaces.put("http://purl.org/dc/terms/", "dcterms");
         namespaces.put("http://www.w3.org/1999/xlink", "xlink");
         namespaces.put("http://purl.org/escidoc/metadata/profiles/0.1/file", "file");
+        namespaces.put("http://purl.org/escidoc/metadata/terms/0.1/", "eterms");
         fileOpts.setSavePrettyPrint();
         fileOpts.setSavePrettyPrintIndent(4);
         fileOpts.setSaveAggressiveNamespaces();
@@ -208,10 +212,13 @@ public class XBeanUtils
         else
         {
             Logger.getLogger(XBeanUtils.class).error("Validation failed! "+o.getClass().getName());
+            System.out.println("Validation failed! "+o.getClass().getName());
+
             Iterator iter = valErrors.iterator();
             while (iter.hasNext())
             {
                 Logger.getLogger(XBeanUtils.class).error(">> " + iter.next() + "\n");
+                System.out.println(">> " + iter.next() + "\n");
             }
             valid = false;
         }

@@ -8,6 +8,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.sleepycat.db.DatabaseException;
@@ -16,6 +17,7 @@ import com.sleepycat.db.EnvironmentConfig;
 import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlDocument;
 import com.sleepycat.dbxml.XmlDocumentConfig;
+import com.sleepycat.dbxml.XmlEventReader;
 import com.sleepycat.dbxml.XmlException;
 import com.sleepycat.dbxml.XmlIndexDeclaration;
 import com.sleepycat.dbxml.XmlIndexSpecification;
@@ -44,9 +46,10 @@ public class TXNTest {
 
 		// prepare();
 		// load();
-		query();
+		// query();
 		//indexes();
 		// addMD();
+		searchURL();
 		// System.setProperty("sun.arch.data.model", "32");
 		// System.out.println(System.getProperty("sun.arch.data.model"));
 	}
@@ -364,5 +367,110 @@ public class TXNTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void searchURL()
+	{
+		long time = System.currentTimeMillis();
+		XmlTransaction txn = null;
+
+		try {
+			environment = DBXMLDAO.getEnvironment(envPath);
+			manager = DBXMLDAO.getManager(environment);
+			XmlQueryContext ctx = manager.createQueryContext();
+			txn = manager.createTransaction();
+			ctx.setNamespace("", "http://www.tei-c.org/ns/1.0");
+			String query = "for $pb in doc('http://latest-coreservice.mpdl.mpg.de:8080/ir/item/escidoc:1004/components/component/escidoc:3002/content')//pb[@n = '44']\n";
+			query += "return $pb";
+			XmlQueryExpression expr = manager.prepare(query, ctx);
+			XmlResults results = expr.execute(txn, ctx);
+			long resultTime = System.currentTimeMillis() -time;
+			System.out.println("got " + results.size() + " results in " + resultTime + " ms");
+			LinkedList<String> lili = new LinkedList<String>();
+			while (results.hasNext()) {
+				StringBuffer sb = new StringBuffer();
+				XmlValue value = results.next();
+				XmlEventReader reader = value.getParentNode().asEventReader();
+				while (reader.hasNext())
+				{
+					int e = reader.next();
+					if (e == reader.StartElement)
+					{
+						if (reader.isEmptyElement())
+						{
+							sb.append("<" + reader.getLocalName() + "/>");
+						}
+						else
+						{
+							lili.add(reader.getLocalName());
+							sb.append("<" + reader.getLocalName());
+							if (reader.getAttributeCount() > 0)
+							{
+								for (int a = 0; a < reader.getAttributeCount(); a++)
+								{
+									//System.out.println(buildXPath(lili, "/@" + reader.getAttributeLocalName(a) + "\"" + reader.getAttributeValue(a) + "\""));
+									sb.append(" " + reader.getAttributeLocalName(a) + "=\"" + reader.getAttributeValue(a) + "\">");
+								}
+							}
+							else
+							{
+								sb.append(">");
+							}
+						}
+						
+					}
+					if (e == reader.Characters && !(e == reader.Whitespace))
+					{
+						String txt = reader.getValue();
+						if (txt.trim().length() > 0)
+						{
+							//System.out.println(buildXPath(lili, "\"" + txt + "\""));
+							sb.append(txt);
+						}
+					}
+					if (e == reader.EndElement)
+					{
+						lili.removeLast();
+						sb.append("</" + reader.getLocalName() + ">");
+					}
+				}
+				reader.close();
+				System.out.println(sb.toString());
+				System.out.println(value.getParentNode().getLocalName() + "  " + value.getParentNode().getTypeName());
+				System.out.println(value.getParentNode().getNextSibling().getTypeName());
+				System.out.println(value.getParentNode().getNextSibling().getNextSibling().getLocalName() + "  " + value.getParentNode().getNextSibling().getNextSibling().getTypeName());
+				System.out.println(value.getParentNode().getNextSibling().getNextSibling().getNextSibling().getLocalName() + "  " + value.getParentNode().getNextSibling().getNextSibling().getNextSibling().getTypeName());
+			}
+
+		} catch (XmlException xe) {
+			xe.printStackTrace();
+		} catch (DatabaseException de) {
+			de.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (txn != null) {
+				try {
+					txn.abort();
+				} catch (Exception e) {
+					System.err.println("Error aborting txn: " + e.toString());
+					e.printStackTrace();
+				}
+			}
+
+			DBXMLDAO.close(container, manager);
+			time = System.currentTimeMillis() -time;
+			System.out.println("total time to query AND process results: " + time + " ms");
+		}
+		
+	}
+	
+	public static String buildXPath(LinkedList<String> tags, String values) {
+		StringBuffer sb = new StringBuffer();
+		for (String tag : tags) {
+			sb.append("/").append(tag);
+		}
+		sb.append(values);
+		return sb.toString();
 	}
 }

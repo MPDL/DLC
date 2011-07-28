@@ -146,17 +146,40 @@
 		</dependency>
 		 -->
 		<dependency>
-			<groupId>xmlbeans</groupId>
-			<artifactId>mods_3.3</artifactId>
-			<version>3.3</version>
-			<scope>compile</scope>
-		</dependency>
+  <groupId>xmlbeans</groupId>
+  <artifactId>mods_3.4</artifactId>
+  <version>3.4</version>
+  <classifier>mods_34</classifier>
+</dependency>
 		<dependency>
 			<groupId>xmlbeans</groupId>
 			<artifactId>mets_1.7</artifactId>
 			<version>1.7</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+      		<groupId>xmlbeans</groupId>
+      		<artifactId>mabxml</artifactId>
+      		<version>1.0.0</version>
+      		<scope>compile</scope>
+    	</dependency>
+		<dependency>
+			<groupId>xmlbeans</groupId>
+			<artifactId>escidoc_profiles</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+  			<groupId>xmlbeans</groupId>
+  			<artifactId>escidoc-core</artifactId>
+  			<version>1.3</version>
+  			<classifier>escidoc_13_REST_final</classifier>
+		</dependency>
+		<dependency>
+  <groupId>de.ddb.application</groupId>
+  <artifactId>dnbConversionTools</artifactId>
+  <version>1.9.0</version>
+  <classifier>dnbConversionTools</classifier>
+</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
