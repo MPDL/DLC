@@ -29,41 +29,40 @@ import de.ddb.professionell.mabxml.mabxml1.FeldType;
 import de.mpg.mpdl.dlc.wf.testing.EscidocTests;
 
 public class MabXmlTransformation {
-	
+
 	DateiDocument mabxml = null;
 	DatensatzType mabRecord = null;
-	
+
 	XMLReader reader = null;
-    Transformer transformer = null;
-    Source XSL = null;
-    Source XML = null;
-    
-    public File mabToMods(String mabId, File mabFile)
-    {
-    	File utf8 = mabFileToUtf8(mabFile);
-    	File xml = mabUtf8ToXml(utf8);
-    	DatensatzType mabRecord = getMabRecord(mabId, xml);
-    	File mods = getMods(mabRecord);
-    	return mods;
-    }
-    
-    public File getMods(DatensatzType mabRecord)
-    {
-    	System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    	File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
-    	// ModsDocument modsDocument = null;
-    	// XSL = new SAXSource(reader, new InputSource(xslt));
+	Transformer transformer = null;
+	Source XSL = null;
+	Source XML = null;
+
+	public File mabToMods(String mabId, File mabFile) {
+		File utf8 = mabFileToUtf8(mabFile);
+		File xml = mabUtf8ToXml(utf8);
+		DatensatzType mabRecord = getMabRecord(mabId, xml);
+		File mods = getMods(mabRecord);
+		return mods;
+	}
+
+	public File getMods(DatensatzType mabRecord) {
+		System.setProperty("javax.xml.transform.TransformerFactory",
+				"net.sf.saxon.TransformerFactoryImpl");
+		File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
+		// ModsDocument modsDocument = null;
+		// XSL = new SAXSource(reader, new InputSource(xslt));
 		XSL = new StreamSource(xslt);
-    	XML = new StreamSource(mabRecord.newInputStream());
-    	try {
-    		File transformed = File.createTempFile("transformed", "xml");
+		XML = new StreamSource(mabRecord.newInputStream());
+		try {
+			File transformed = File.createTempFile("transformed", "xml");
 			Result result = new StreamResult(transformed);
-		    TransformerFactory transfFactory = TransformerFactory.newInstance();
-		    transformer = transfFactory.newTransformer(XSL);
-	        transformer.transform(XML, result);
-	        //modsDocument = ModsDocument.Factory.parse(transformed);
-	        //return modsDocument;
-	        return transformed;
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			transformer = transfFactory.newTransformer(XSL);
+			transformer.transform(XML, result);
+			// modsDocument = ModsDocument.Factory.parse(transformed);
+			// return modsDocument;
+			return transformed;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,21 +72,21 @@ public class MabXmlTransformation {
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public File getModsAsXhtml(ModsDocument mods, InputStream xslt)
-    {
-    	System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    	File resultingXhtml = null;
-    	XSL = new SAXSource(reader, new InputSource(xslt));
-    	XML = new StreamSource(mods.newInputStream());
-    	try {
-    		resultingXhtml = File.createTempFile("transformed", "xhtml");
+	}
+
+	public File getModsAsXhtml(ModsDocument mods, InputStream xslt) {
+		System.setProperty("javax.xml.transform.TransformerFactory",
+				"net.sf.saxon.TransformerFactoryImpl");
+		File resultingXhtml = null;
+		XSL = new SAXSource(reader, new InputSource(xslt));
+		XML = new StreamSource(mods.newInputStream());
+		try {
+			resultingXhtml = File.createTempFile("transformed", "xhtml");
 			Result result = new StreamResult(resultingXhtml);
-		    TransformerFactory transfFactory = TransformerFactory.newInstance();
-	        transformer = transfFactory.newTransformer(XSL);
-	        transformer.transform(XML, result);
-	        return resultingXhtml;
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			transformer = transfFactory.newTransformer(XSL);
+			transformer.transform(XML, result);
+			return resultingXhtml;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -97,21 +96,21 @@ public class MabXmlTransformation {
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public File getModsAsRdf(ModsDocument mods, InputStream xslt)
-    {
-    	System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-    	File resultingXhtml = null;
-    	XSL = new SAXSource(reader, new InputSource(xslt));
-    	XML = new StreamSource(mods.newInputStream());
-    	try {
-    		resultingXhtml = File.createTempFile("transformed", "xhtml");
+	}
+
+	public File getModsAsRdf(ModsDocument mods, InputStream xslt) {
+		System.setProperty("javax.xml.transform.TransformerFactory",
+				"net.sf.saxon.TransformerFactoryImpl");
+		File resultingXhtml = null;
+		XSL = new SAXSource(reader, new InputSource(xslt));
+		XML = new StreamSource(mods.newInputStream());
+		try {
+			resultingXhtml = File.createTempFile("transformed", "xhtml");
 			Result result = new StreamResult(System.out);
-		    TransformerFactory transfFactory = TransformerFactory.newInstance();
-	        transformer = transfFactory.newTransformer(XSL);
-	        transformer.transform(XML, result);
-	        return resultingXhtml;
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			transformer = transfFactory.newTransformer(XSL);
+			transformer.transform(XML, result);
+			return resultingXhtml;
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -121,36 +120,40 @@ public class MabXmlTransformation {
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public DatensatzType getMabRecord(String mab001Id, File mabXmlFile)
-    {
-    	try {
+	}
+
+	public DatensatzType getMabRecord(String mab001Id, File mabXmlFile) {
+		try {
 			mabxml = DateiDocument.Factory.parse(mabXmlFile);
-			DatensatzType[] mabRecords = mabxml.getDatei().getDatensatzArray();
-	    	for (DatensatzType dst : mabRecords)
-	    	{
-	    		FeldType mab001Field = dst.getFeldArray(0);
-				if (mab001Field.xmlText().contains(mab001Id))
-				{
-					mabRecord = dst;
+			if (mabxml.getDatei().sizeOfDatensatzArray() > 1) {
+				DatensatzType[] mabRecords = mabxml.getDatei()
+						.getDatensatzArray();
+				for (DatensatzType dst : mabRecords) {
+					FeldType mab001Field = dst.getFeldArray(0);
+					if (mab001Field.xmlText().contains(mab001Id)) {
+						mabRecord = dst;
+					}
 				}
-	    	}
-	    	return mabRecord;
+			}
+			else
+			{
+				mabRecord = mabxml.getDatei().getDatensatzArray(0);
+			}
+			return mabRecord;
 		} catch (XmlException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public File mabFileToUtf8(File mabFile)
-    {
+	}
+
+	public File mabFileToUtf8(File mabFile) {
 		File mabUtf8;
 		try {
 			mabUtf8 = File.createTempFile(mabFile.getName(), "utf8");
-			String[] args_utf8 = {"-i", mabFile.getAbsolutePath(), "-o", mabUtf8.getAbsolutePath()};
+			String[] args_utf8 = { "-i", mabFile.getAbsolutePath(), "-o",
+					mabUtf8.getAbsolutePath() };
 			XMabToUtf8.main(args_utf8);
 			return mabUtf8;
 		} catch (IOException e) {
@@ -159,14 +162,14 @@ public class MabXmlTransformation {
 			e.printStackTrace();
 		}
 		return null;
-    }
-    
-    public File mabUtf8ToXml(File mabUtf8)
-    {
-    	File mabXml;
-    	try {
+	}
+
+	public File mabUtf8ToXml(File mabUtf8) {
+		File mabXml;
+		try {
 			mabXml = File.createTempFile(mabUtf8.getName(), "xml");
-			String[] args_xml = {"-i", mabUtf8.getAbsolutePath(), "-o", mabXml.getAbsolutePath()};
+			String[] args_xml = { "-i", mabUtf8.getAbsolutePath(), "-o",
+					mabXml.getAbsolutePath() };
 			MabToMabxml.main(args_xml);
 			return mabXml;
 		} catch (IOException e) {
@@ -175,5 +178,5 @@ public class MabXmlTransformation {
 			e.printStackTrace();
 		}
 		return null;
-    }
+	}
 }
