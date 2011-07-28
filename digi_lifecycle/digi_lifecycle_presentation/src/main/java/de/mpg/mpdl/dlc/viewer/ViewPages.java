@@ -1,16 +1,10 @@
 package de.mpg.mpdl.dlc.viewer;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +16,6 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
-import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 @ManagedBean
 @SessionScoped
@@ -47,7 +40,7 @@ public class ViewPages {
 		try { 
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{
-				logger.info("Load new book" + volume);
+				logger.info("Load new book" + volumeId);
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
 				
 				

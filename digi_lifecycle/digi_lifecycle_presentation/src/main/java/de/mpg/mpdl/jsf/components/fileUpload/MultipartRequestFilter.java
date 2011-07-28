@@ -29,6 +29,7 @@ import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -40,8 +41,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @link http://balusc.blogspot.com/2009/12/uploading-files-in-servlet-30.html
  */
 
-@WebFilter(urlPatterns = { "/*" }, initParams = {
-    @WebInitParam(name = "location", value = "/upload") })
+@WebFilter(displayName = "FileUploadFilter", urlPatterns = { "/*" })
 public class MultipartRequestFilter implements Filter {
 
     // Constants ----------------------------------------------------------------------------------
@@ -64,11 +64,18 @@ public class MultipartRequestFilter implements Filter {
    
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
-        HttpServletRequest httpRequest = (HttpServletRequest) request; 
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
         if (ServletFileUpload.isMultipartContent(httpRequest)) {
-            request = new MultipartRequest(httpRequest, location); 
+            request = new MultipartRequest(httpRequest, location);
+            //System.out.println(request);
+            //System.out.println(httpRequest.getHeader("Cookie"));
         }
-        chain.doFilter(request, response); 
+       
+       
+        //System.out.println(request.getParameter("form1"));
+        chain.doFilter(request, response);
+        
+
     }
 
     public void destroy() {

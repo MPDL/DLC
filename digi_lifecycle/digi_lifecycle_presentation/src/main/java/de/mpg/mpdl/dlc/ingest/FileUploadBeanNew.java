@@ -1,45 +1,25 @@
 package de.mpg.mpdl.dlc.ingest;
 
 
-import gov.loc.mods.v3.ModsDocument;
-
-import java.io.File;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
- 
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.AjaxBehaviorListener;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
-import org.richfaces.event.DropListener;
 
-import de.escidoc.core.client.Authentication;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
-import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
@@ -51,7 +31,7 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  */
 @ManagedBean
 @SessionScoped
-public class FileUploadBeanNew implements Serializable, DropListener {
+public class FileUploadBeanNew implements Serializable {
  
 	private static Logger logger = Logger.getLogger(FileUploadBeanNew.class);
     private ArrayList<FileItem> files = new ArrayList<FileItem>();
