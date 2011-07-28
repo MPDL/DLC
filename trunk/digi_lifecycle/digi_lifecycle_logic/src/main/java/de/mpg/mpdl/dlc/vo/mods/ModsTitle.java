@@ -33,6 +33,14 @@ public class ModsTitle {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
+	public String getMabId() {
+		return mabId;
+	}
+
+	public void setMabId(String mabId) {
+		this.mabId = mabId;
+	}
 	
 	
 

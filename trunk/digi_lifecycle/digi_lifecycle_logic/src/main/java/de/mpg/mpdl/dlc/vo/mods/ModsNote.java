@@ -14,4 +14,30 @@ public class ModsNote {
 	@XmlValue
 	private String note;
 
+	public String getMabId() {
+		return mabId;
+	}
+
+	public void setMabId(String mabId) {
+		this.mabId = mabId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	
+
 }

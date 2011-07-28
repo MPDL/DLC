@@ -10,7 +10,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 public class ModsName {
 	
 	@XmlAttribute(name = "ID")
-	private String mabID;
+	private String mabId;
 	
 	@XmlAttribute(name = "type")
 	private String type = "personal";
@@ -77,14 +77,16 @@ public class ModsName {
 	}
 
 
-	public void setMabID(String mabID) {
-		this.mabID = mabID;
+	public String getMabId() {
+		return mabId;
 	}
 
 
-	public String getMabID() {
-		return mabID;
+	public void setMabId(String mabId) {
+		this.mabId = mabId;
 	}
+
+
 
 
 	
