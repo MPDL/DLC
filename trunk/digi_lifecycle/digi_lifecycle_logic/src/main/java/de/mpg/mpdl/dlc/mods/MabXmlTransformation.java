@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.mods;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import gov.loc.mods.v3.ModsDocument;
 
@@ -49,12 +50,15 @@ public class MabXmlTransformation {
 	public File getMods(DatensatzType mabRecord) {
 		System.setProperty("javax.xml.transform.TransformerFactory",
 				"net.sf.saxon.TransformerFactoryImpl");
-		File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
+		
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/mabToMods/mab2mods.xsl");
+		//File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
 		// ModsDocument modsDocument = null;
 		// XSL = new SAXSource(reader, new InputSource(xslt));
-		XSL = new StreamSource(xslt);
-		XML = new StreamSource(mabRecord.newInputStream());
 		try {
+		XSL = new StreamSource(url.openStream());
+		XML = new StreamSource(mabRecord.newInputStream());
+		
 			File transformed = File.createTempFile("transformed", "xml");
 			Result result = new StreamResult(transformed);
 			TransformerFactory transfFactory = TransformerFactory.newInstance();

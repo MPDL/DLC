@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.vo.mods;
 import gov.loc.mets.MetsDocument;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -388,15 +389,16 @@ public class ModsMetadata {
 		
 		
 		
-		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/mets_example.xml");
+		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/trans_mods_example.xml");
 		Unmarshaller um = ctx.createUnmarshaller();
-		Volume unmarshalledMets = (Volume)um.unmarshal(example);
-		System.out.println(unmarshalledMets.getPages().size());
-		System.out.println(unmarshalledMets.getModsMetadata().getTitles().size());
+		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
+		System.out.println(unmarshalledMods.getCatalogueId_001());
+		//System.out.println(unmarshalledMets.getModsMetadata().getTitles().size());
 		
 		
 	}
-
+	
+	
 
 	
 

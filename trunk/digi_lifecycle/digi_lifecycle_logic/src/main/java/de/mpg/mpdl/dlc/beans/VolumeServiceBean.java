@@ -15,6 +15,7 @@ import gov.loc.mets.MetsType.FileSec.FileGrp;
 import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
+import java.io.InputStream;
 import java.io.StringReader;
 import java.math.BigInteger;
 import java.net.URL;
@@ -46,6 +47,8 @@ import org.apache.xmlbeans.XmlOptions;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+
+import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
@@ -553,6 +556,18 @@ public class VolumeServiceBean {
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
 		return vol;
+		
+		
+	}
+	
+	public static ModsMetadata createModsMetadataFromXml(InputStream xml) throws Exception
+	{
+		
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(xml);
+
+		return md;
 		
 		
 	}
