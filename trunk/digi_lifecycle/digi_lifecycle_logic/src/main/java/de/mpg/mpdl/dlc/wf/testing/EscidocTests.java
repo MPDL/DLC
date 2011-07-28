@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlObject;
 import org.apache.xmlbeans.XmlString;
 
@@ -39,12 +40,37 @@ public class EscidocTests {
 	public static void main(String[] args) {
 
 		File mab = new File("/home/frank/data/digitization_lifecycle/dlib-journals/sample_mab");
+		String mabId = "74525";
+
 		// getFileMd();
 		// itemxml("dlc:1234", "dlc:2222");
 		//File mabxml = mab2xml(mab);
-		//mab2mods(mabxml);
 		//getthetei();
-		createCModel();
+		//createCModel();
+		testMab3Mods(mabId, mab);
+	}
+	
+	public static void testMab3Mods(String id, File f)
+	{
+		InputStream xslt = EscidocTests.class.getClassLoader().getResourceAsStream("xslt/mabToMods/mab2mods.xsl");
+
+		MabXmlTransformation mxt = new MabXmlTransformation();
+		File modsFile = mxt.mabToMods(id, f);
+		ModsDocument mods;
+		try {
+			mods = ModsDocument.Factory.parse(modsFile);
+			if (XBeanUtils.validation(mods))
+			{
+				System.out.println(mods.xmlText(XBeanUtils.getModsOpts()));
+			}
+		} catch (XmlException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	public static void getFileMd()
@@ -93,14 +119,8 @@ public class EscidocTests {
 		
 		MabXmlTransformation mxt = new MabXmlTransformation();
 		DatensatzType dst = mxt.getMabRecord(mabId, mabxml);
-		ModsDocument mods = mxt.getMods(dst, xslt);
-		if (XBeanUtils.validation(mods))
-		{
-			System.out.println(mods.xmlText(XBeanUtils.getModsOpts()));
-			File xhtml = mxt.getModsAsXhtml(mods, xslt2xhtml);
-			System.out.println(xhtml.getAbsolutePath());
-			mxt.getModsAsRdf(mods, xslt2rdf);
-		}
+		File modsFile = mxt.getMods(dst);
+		
 	}
 	
 	public static void mabToMabXml(File mabfile)
