@@ -38,6 +38,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 /**
  * The MultipartMap. It simulates the <code>HttpServletRequest#getParameterXXX()</code> methods to
@@ -62,6 +63,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  */
 public class MultipartMap extends HashMap<String, Object> {
 
+	private static Logger logger = Logger.getLogger(MultipartMap.class);
 	
     // Constants ----------------------------------------------------------------------------------
 
@@ -158,6 +160,7 @@ public class MultipartMap extends HashMap<String, Object> {
 				}
 				else {
 					put(item.getFieldName(), item);
+					logger.info("File found: " + item.getName());
 				}
 			}
 		} catch (FileUploadException e) {

@@ -15,8 +15,6 @@ import javax.faces.event.ActionListener;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.AjaxBehaviorListener;
  
-import org.richfaces.event.FileUploadEvent;
-import org.richfaces.model.UploadedFile;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
  
@@ -37,6 +35,7 @@ public class FileUploadBean implements Serializable {
         stream.close();
     }
  
+    /*
     public void listener(FileUploadEvent event) throws Exception { 
         UploadedFile item = event.getUploadedFile();
         File file = new File();
@@ -45,7 +44,7 @@ public class FileUploadBean implements Serializable {
         file.setData(item.getData());
         files.add(file);
     }
- 
+ */
     public String clearUploadData() {
         files.clear();
         return null;

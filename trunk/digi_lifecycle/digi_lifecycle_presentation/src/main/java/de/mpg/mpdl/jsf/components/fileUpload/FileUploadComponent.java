@@ -1,58 +1,77 @@
 package de.mpg.mpdl.jsf.components.fileUpload;
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.el.MethodExpression;
-import javax.faces.component.ActionSource2;
 import javax.faces.component.FacesComponent;
-import javax.faces.component.UICommand;
-import javax.faces.component.UIInput;
 import javax.faces.component.UINamingContainer;
 import javax.faces.context.FacesContext;
-import javax.faces.el.MethodBinding;
 import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ActionListener;
 import javax.faces.event.ComponentSystemEvent;
 import javax.faces.event.FacesEvent;
 import javax.faces.event.ListenerFor;
 import javax.faces.event.PostValidateEvent;
 
-import org.apache.commons.fileupload.FileItem;
-
-import com.sun.faces.application.MethodBindingMethodExpressionAdapter;
-import com.sun.faces.application.MethodExpressionMethodBindingAdapter;
-
-@FacesComponent("de.mpg.mpdl.components.FileUploadComponent")
+@FacesComponent("de.mpg.mpdl.jsf.components.FileUploadComponent")
 @ListenerFor(systemEventClass=PostValidateEvent.class)
 public class FileUploadComponent extends UINamingContainer {
+	
+	
+	@Override
+	 public void decode(FacesContext context)
+	{
+		super.decode(context);
+		System.out.println("DECODE");
+		//HTML 5 uploads
+		if(context.getPartialViewContext().isAjaxRequest())
+		{
+			checkFileUpload();
+		}
+		
+		
+	}
+	
 	
 	@Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
         
+		
         super.processEvent(event);
-        Object request = getFacesContext().getExternalContext().getRequest();
-		if(request instanceof MultipartRequest)
+        
+        if(!FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest())
 		{
-			if(((MultipartRequest)request).getFile("file")!=null)
-			{
-				FileUploadEvent evt = new FileUploadEvent(this); 
-	            evt.setFileItem(((MultipartRequest)request).getFile("file"));
-	            queueEvent(evt);
-			}
-            
-        }
+			checkFileUpload();
+		}
+        System.out.println("PROCESS EVENT");
+        
+       
     }
+    
 	
    
 
      public void broadcast(FacesEvent event) throws AbortProcessingException {
-        super.broadcast(event); 
+        super.broadcast(event);
+        //System.out.println("BROADCAST");
         if(getAttributes().get("fileUploadListener")!=null)
         {
         	MethodExpression fileUploadExp = (MethodExpression)getAttributes().get("fileUploadListener");
         	fileUploadExp.invoke(this.getFacesContext().getELContext(), new Object[]{((FileUploadEvent)event)});
         }
+     }
+     
+     private void checkFileUpload()
+     {
+    	 
+ 		//System.out.println("DECODE");
+ 		 Object request = getFacesContext().getExternalContext().getRequest();
+ 			if(request instanceof MultipartRequest)
+ 			{
+ 				if(((MultipartRequest)request).getFile(getClientId())!=null)
+ 				{
+ 					FileUploadEvent evt = new FileUploadEvent(this); 
+ 					evt.setFileItem(((MultipartRequest)request).getFile(getClientId()));
+ 		            queueEvent(evt);
+ 				}
+ 	            
+ 	        }
      }
      
 

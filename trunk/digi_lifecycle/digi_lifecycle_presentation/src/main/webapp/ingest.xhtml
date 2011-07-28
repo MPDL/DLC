@@ -18,12 +18,23 @@
 			</mpdl:paginator>
 			-->
 			
+			<h:outputText value="#{session.id}"/>
+			<h:outputText value="#{facesContext.viewRoot.viewId}"/>
 			
-			
-			<fu:fileUpload rerender=":form1:dragDropTable" fileUploadListener="#{fileUploadBeanNew.fileUploaded}">
+			<fu:fileUpload rerender="form1:info" fileUploadListener="#{fileUploadBeanNew.fileUploaded}">
 			</fu:fileUpload>
 			
+			
+			
+			
+			
+			
+			
+			
+			<h:panelGroup id="test"></h:panelGroup>
+			
 
+			
 			
 			<!-- Drag&Drop Panel -->
 			<style>
@@ -40,9 +51,13 @@
 			<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
        			 Drag the item to proper area..
   		  </rich:dragIndicator>
+			
+			<h:panelGroup id="info">
+			
+			
 			<a4j:outputPanel id="dragDropTable" layout="block" style="height:400px;width:500px;">
 			 	
-			 	<ui:remove>
+			 	
 			 	<a4j:outputPanel id="dropPanelFirst" layout="block" style="height:10px; background-color:grey" styleClass="dropPanel">
 					<rich:dropTarget acceptedTypes="file" dropValue="pos0"
                     		dropListener="#{fileUploadBeanNew.processDrop}"
@@ -68,14 +83,14 @@
 	
 	            </a4j:repeat>
 	            
-	            </ui:remove>
     		</a4j:outputPanel>
+    		</h:panelGroup>
 
 			
 				<h:commandButton action="#{fileUploadBeanNew.save}" value="Save" />
 			
 
-		<ui:remove>
+	<ui:remove>
 			<h:panelGroup id="info" layout="block">
                 <rich:panel bodyClass="info">
                     <f:facet name="header">

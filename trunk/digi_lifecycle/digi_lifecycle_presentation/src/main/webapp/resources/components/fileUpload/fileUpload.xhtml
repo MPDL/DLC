@@ -10,7 +10,7 @@
 	xmlns:rich="http://richfaces.org/rich">
 
 <!-- INTERFACE -->
-<cc:interface componentType="de.mpg.mpdl.components.FileUploadComponent">
+<cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
 	<cc:attribute name="fileUploadListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)" required="true"/>
 	<cc:attribute name="rerender" type="java.lang.String"/>
 </cc:interface>
@@ -31,8 +31,12 @@
 
 	</h:form>
 -->
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">google.load("jquery", "1.5");</script>
+
+	<!-- 
+	<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
+	-->
+	<h:outputStylesheet library="components/fileUpload/plupload/img" />
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
 	<h:outputScript library="components/fileUpload/plupload" name="gears_init.js"/>
 	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
 	<!-- Load source versions of the plupload script files -->
@@ -42,20 +46,33 @@
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.flash.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
+	<h:outputScript library="components/fileUpload/plupload" name="plupload.html4.js"/>
 	<h:outputScript library="components/fileUpload/plupload" name="jquery.plupload.queue.js"/>
-
-
-   
-
-
-
-		<div id="submit-form">
-		 	<!-- 
-			<ui:remove>
-		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
-				</ui:remove>
-		 	-->
+    <h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
+    
+    <script type="text/javascript">
+			$(function(){
+				initUploader('#{cc.clientId}', '#{cc.attrs.rerender}', getViewState(), '#{session.id}', '#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}', '#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf')
+			})
 			
+			function getViewState()
+			{
+				var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+				var regExp = new RegExp('\\+','g');
+				var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+				return encodedViewState;
+			}
+    </script>
+
+
+
+		<div id="#{cc.clientId}">
+
+		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't have a HTML 4 browser.</div>
+			
+		 	
+			<!-- 
+			<ui:remove>
 				<div id="filelist">No runtime found.</div>
 				<br />
 				<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
@@ -64,14 +81,17 @@
 					<h:outputText value="[Upload files]"/>
 					
 				</a>
-		 
-			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="display:none;">
+	</ui:remove>		 
+-->
+<!-- 
+			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" value="hidden">
 				<f:ajax event="click" render="#{cc.attrs.rerender}"/>
 			</h:commandButton>
-
+-->
 		
-		<h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
+		
 	    </div>
+	    
 	
 	
 	

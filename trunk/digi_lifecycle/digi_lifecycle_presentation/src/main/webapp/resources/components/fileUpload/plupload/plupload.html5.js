@@ -558,10 +558,11 @@
 
 							// Append multipart parameters
 							plupload.each(plupload.extend(args, up.settings.multipart_params), function(value, name) {
-								multipartBlob += dashdash + boundary + crlf +
+									multipartBlob += dashdash + boundary + crlf +
 									'Content-Disposition: form-data; name="' + name + '"' + crlf + crlf;
 
 								multipartBlob += unescape(encodeURIComponent(value)) + crlf;
+								
 							});
 
 							mimeType = plupload.mimeTypes[file.name.replace(/^.+\.([^.]+)/, '$1')] || 'application/octet-stream';
@@ -581,6 +582,7 @@
 						}
 
 						if (xhr.sendAsBinary) {
+							
 							xhr.sendAsBinary(chunkBlob); // Gecko
 						} else {
 							xhr.send(chunkBlob); // WebKit
