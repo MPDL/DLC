@@ -39,7 +39,7 @@ public class EscidocTests {
 	 */
 	public static void main(String[] args) {
 
-		File mab = new File("/home/frank/data/digitization_lifecycle/dlib-journals/sample_mab");
+		File mab = new File("/home/frank/data/digitization_lifecycle/dlib-journals/single_mab");
 		String mabId = "74525";
 
 		// getFileMd();
