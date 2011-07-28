@@ -57,14 +57,24 @@
 			
 			function getViewState()
 			{
-				var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
-				var regExp = new RegExp('\\+','g');
-				var encodedViewState = viewStateValue.replace(regExp, '\%2B');
-				return encodedViewState;
+				
+				if(document.getElementsByName('javax.faces.ViewState')[0])
+				{
+					
+					var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+					var regExp = new RegExp('\\+','g');
+					var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+					return encodedViewState;
+				}
+				else
+				{
+					return '';
+				}
+				
 			}
     </script>
 
-
+<h:form>
 
 		<div id="#{cc.clientId}">
 
@@ -91,7 +101,7 @@
 		
 		
 	    </div>
-	    
+	    </h:form>
 	
 	
 	

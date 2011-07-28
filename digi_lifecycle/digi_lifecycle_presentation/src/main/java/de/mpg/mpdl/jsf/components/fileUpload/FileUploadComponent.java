@@ -19,7 +19,7 @@ public class FileUploadComponent extends UINamingContainer {
 	{
 		super.decode(context);
 		System.out.println("DECODE");
-		//HTML 5 uploads
+		//HTML 5 uploads & Flash
 		if(context.getPartialViewContext().isAjaxRequest())
 		{
 			checkFileUpload();
@@ -34,7 +34,7 @@ public class FileUploadComponent extends UINamingContainer {
         
 		
         super.processEvent(event);
-        
+        //HTML 4 uploads
         if(!FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest())
 		{
 			checkFileUpload();

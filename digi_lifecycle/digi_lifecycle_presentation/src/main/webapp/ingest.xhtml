@@ -67,7 +67,9 @@
 	                style="height:300px; width:500px;" rowKeyVar="row">
 	                <a4j:outputPanel layout="block" style="background-color:lightgrey">
 	                    	<rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
-                    		 <a4j:mediaOutput element="img" cacheable="false" id="img" createContent="#{fileUploadBeanNew.paint}" value="#{row}" mimeType="image/jpeg" alt="img" style="height:50px;"/>
+                    		<ui:remove>
+                    		<!-- <a4j:mediaOutput element="img" cacheable="false" id="img" createContent="#{fileUploadBeanNew.paint}" value="#{row}" mimeType="image/jpeg" alt="img" style="height:50px;"/>-->
+                    		</ui:remove>
                     		 <h:outputText value="#{row + 1}"/>
                     		 <h:inputText value="#{fileUploadBeanNew.moveTo}">
                     		 	<f:ajax event="keyup" listener="#{fileUploadBeanNew.changeOrder(file)}" render=":form1:dragDropTable"/>
