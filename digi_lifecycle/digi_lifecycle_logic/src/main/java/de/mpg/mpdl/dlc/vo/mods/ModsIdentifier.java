@@ -44,4 +44,12 @@ public class ModsIdentifier {
 		this.value = value;
 	}
 
+	public String getMabId() {
+		return mabId;
+	}
+
+	public void setMabId(String mabId) {
+		this.mabId = mabId;
+	}
+
 }
