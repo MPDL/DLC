@@ -21,6 +21,7 @@ import org.richfaces.event.DropEvent;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
@@ -31,11 +32,16 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  */
 @ManagedBean
 @SessionScoped
-public class FileUploadBeanNew implements Serializable {
+public class IngestBean implements Serializable {
  
-	private static Logger logger = Logger.getLogger(FileUploadBeanNew.class);
-    private ArrayList<FileItem> files = new ArrayList<FileItem>();
-	private Collection<Object> selection;
+	private static Logger logger = Logger.getLogger(IngestBean.class);
+   
+	private ArrayList<FileItem> imageFiles = new ArrayList<FileItem>();
+	private FileItem mabFile;
+	private ModsMetadata modsMetadata = new ModsMetadata();
+	private FileItem teiFile;
+	
+    private Collection<Object> selection;
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
@@ -44,22 +50,29 @@ public class FileUploadBeanNew implements Serializable {
  
 	@EJB
 	private VolumeServiceBean volumeService;
+	
+	public IngestBean()
+	{
+		this.modsMetadata.getTitles().add(new ModsTitle());
+		this.modsMetadata.getNames().add(new ModsName());
+		
+	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
     	
     	
-    	stream.write(getFiles().get((Integer) object).get());
+    	stream.write(getImageFiles().get((Integer) object).get());
         stream.close();
     }
     
     public String clearUploadData() {
-        files.clear();
+        imageFiles.clear();
         return null;
     }
  
     public int getSize() {
-        if (getFiles().size() > 0) {
-            return getFiles().size();
+        if (getImageFiles().size() > 0) {
+            return getImageFiles().size();
         } else {
             return 0;
         }
@@ -69,15 +82,15 @@ public class FileUploadBeanNew implements Serializable {
         return System.currentTimeMillis();
     }
  
-    public ArrayList<FileItem> getFiles() {
-        return files; 
+    public ArrayList<FileItem> getImageFiles() {
+        return imageFiles; 
     }
  
-    public void setFiles(ArrayList<FileItem> files) {
-        this.files = files;
+    public void setImageFiles(ArrayList<FileItem> files) {
+        this.imageFiles = files;
     }
 
-	
+	/*
 	
 	public Collection<Object> getSelection() {
         return selection;
@@ -169,6 +182,7 @@ public class FileUploadBeanNew implements Serializable {
 		System.out.println("ORDER changed!!" + getMoveTo());
 	}
 	
+	*/
 	public void fileUploaded(FileUploadEvent evt)
 	{
 		
@@ -176,7 +190,19 @@ public class FileUploadBeanNew implements Serializable {
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
 		{
-			files.add(fue.getFileItem());
+			if (fue.getFileItem().getName().endsWith(".mab"))
+			{
+				this.setMabFile(fue.getFileItem());
+			}
+			else if(fue.getFileItem().getName().endsWith(".xml"))
+			{
+				this.setTeiFile(fue.getFileItem());
+			}
+			else
+			{
+				imageFiles.add(fue.getFileItem());
+			}
+			
 			
 		}
 		
@@ -184,9 +210,11 @@ public class FileUploadBeanNew implements Serializable {
 	
 	}
 	
+	
+    
 	public String indexOfFile(FileItem f)
 	{
-		return String.valueOf(getFiles().indexOf(f));
+		return String.valueOf(getImageFiles().indexOf(f));
 	}
 
 	public void setMoveTo(int moveTo) {
@@ -202,12 +230,12 @@ public class FileUploadBeanNew implements Serializable {
 	public void save() throws Exception
 	{
 		
-		ModsMetadata md = new ModsMetadata();
-		ModsTitle title = new ModsTitle();
-		title.setTitle("Test title");
-		md.getTitles().add(title);
+		//ModsMetadata md = new ModsMetadata();
+		//ModsTitle title = new ModsTitle();
+		//title.setTitle("Test title");
+		//md.getTitles().add(title);
     	
-    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), md, files);
+    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles);
     	
 	
 	}
@@ -218,6 +246,30 @@ public class FileUploadBeanNew implements Serializable {
 
 	public LoginBean getLoginBean() {
 		return loginBean;
+	}
+
+	public FileItem getMabFile() {
+		return mabFile;
+	}
+
+	public void setMabFile(FileItem mabFile) {
+		this.mabFile = mabFile;
+	}
+
+	public FileItem getTeiFile() {
+		return teiFile;
+	}
+
+	public void setTeiFile(FileItem teiFile) {
+		this.teiFile = teiFile;
+	}
+
+	public ModsMetadata getModsMetadata() {
+		return modsMetadata;
+	}
+
+	public void setModsMetadata(ModsMetadata modsMetadata) {
+		this.modsMetadata = modsMetadata;
 	}
 	
 	

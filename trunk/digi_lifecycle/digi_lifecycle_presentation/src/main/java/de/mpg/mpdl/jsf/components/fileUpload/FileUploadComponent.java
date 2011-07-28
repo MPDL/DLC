@@ -18,7 +18,7 @@ public class FileUploadComponent extends UINamingContainer {
 	 public void decode(FacesContext context)
 	{
 		super.decode(context);
-		System.out.println("DECODE");
+		//System.out.println("DECODE");
 		//HTML 5 uploads & Flash
 		if(context.getPartialViewContext().isAjaxRequest())
 		{
@@ -31,17 +31,12 @@ public class FileUploadComponent extends UINamingContainer {
 	
 	@Override
     public void processEvent(ComponentSystemEvent event) throws AbortProcessingException {
-        
-		
         super.processEvent(event);
         //HTML 4 uploads
         if(!FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest())
 		{
 			checkFileUpload();
 		}
-        System.out.println("PROCESS EVENT");
-        
-       
     }
     
 	

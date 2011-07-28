@@ -4,22 +4,23 @@
 
 
 // Custom example logic
-function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl) {
+function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, maxFileSize) {
 	
 	//alert('Start');
 	var styledUploader = $("#pluploader").pluploadQueue({
 		// General settings
 		preinit: attachCallbacks,
-		runtimes : 'html5, flash, gears, browserplus, html4',
+		runtimes : 'html5, flash',
 		url : url + ';jsessionid=' + sessionId,
 		max_file_size : '10mb',
 		flash_swf_url : flashUrl,
 		multi_selection : true,
 		multipart : true,
-		
+		multiple_queues : true,
 		filters : [
 			{title : "Image files", extensions : "jpg,gif,png,tif"},
-			{title : "Zip files", extensions : "zip"}
+			{title : "Xml Files", extensions : "xml"},
+			{title : "Mab Files", extensions : "mab"}
 		],
 		file_data_name : clientId,
 		multipart_params : {
