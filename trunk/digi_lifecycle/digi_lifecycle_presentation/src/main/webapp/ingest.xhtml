@@ -19,7 +19,6 @@
 			-->
 			
 			
-			
 			<rich:panel header="Upload your files...">
 			
 				<fu:fileUpload rerender="form1:imageInfo form1:modsInfo form1:teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
@@ -27,7 +26,7 @@
 			
 			</rich:panel>
 			
-			
+
 			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}"/>
 				

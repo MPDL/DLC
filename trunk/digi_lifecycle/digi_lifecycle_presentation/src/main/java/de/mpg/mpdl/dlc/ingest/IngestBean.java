@@ -1,6 +1,9 @@
 package de.mpg.mpdl.dlc.ingest;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,15 +14,19 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
@@ -193,6 +200,9 @@ public class IngestBean implements Serializable {
 			if (fue.getFileItem().getName().endsWith(".mab"))
 			{
 				this.setMabFile(fue.getFileItem());
+				processMabFile(fue.getFileItem());
+				
+				
 			}
 			else if(fue.getFileItem().getName().endsWith(".xml"))
 			{
@@ -212,6 +222,25 @@ public class IngestBean implements Serializable {
 	
 	
     
+	private void processMabFile(FileItem fileItem) {
+		
+		try {
+			if(fileItem instanceof DiskFileItem)
+			{
+				DiskFileItem item = (DiskFileItem) fileItem;
+				MabXmlTransformation transform = new MabXmlTransformation();
+				File modsFile = transform.mabToMods(null, item.getStoreLocation());
+				this.modsMetadata = VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
+				System.out.println("");
+			}
+		} catch (Exception e) {
+			logger.error("Error while transforming MAB", e);
+		}
+		
+		
+		
+	}
+
 	public String indexOfFile(FileItem f)
 	{
 		return String.valueOf(getImageFiles().indexOf(f));
