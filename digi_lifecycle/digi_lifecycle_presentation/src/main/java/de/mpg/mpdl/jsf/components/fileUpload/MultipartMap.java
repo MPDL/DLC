@@ -133,7 +133,7 @@ public class MultipartMap extends HashMap<String, Object> {
         try {
 			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 			diskFileItemFactory.setRepository(new File(System.getProperty("java.io.tmpdir")));
-			diskFileItemFactory.setSizeThreshold(5000);
+			diskFileItemFactory.setSizeThreshold(0);
 			
 			//System.out.println("Detected Multipart Request. Saving temp files to " +System.getProperty("java.io.tmpdir"));
 			
