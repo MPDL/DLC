@@ -24,7 +24,7 @@
 				<h:inputText value="#{cc.attrs.modsMetadata.parentId_010}"/>
 				
 				<h:outputText value="#{lbl.mods_language_037}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{not empty cc.attrs.modsMetadata.language_037}"/>
 				
 				
 				<h:outputText value="#{lbl.mods_titles}"/>
@@ -82,8 +82,10 @@
 					<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
 					<h:inputText value="#{pb.editionStatement}"/>
 					
+					<!-- 
 					<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
 					<h:inputText value="#{pb.dateIssued_425}"/>
+					-->
 				</a4j:repeat>
 				
 				

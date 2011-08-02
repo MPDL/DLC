@@ -19,6 +19,10 @@
 			-->
 			
 			
+			<rich:panel>
+				<h:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}"/>
+			</rich:panel>
+			
 			<rich:panel header="Upload your files...">
 			
 				<fu:fileUpload rerender="form1:imageInfo form1:modsInfo form1:teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
@@ -44,9 +48,9 @@
 			
 			
 			
-			<rich:panel id="imageInfo" header="Uploaded Images">
+			<rich:panel id="imageInfo">
 	                    <f:facet name="header">
-	                        <h:outputText value="Uploaded Files Info" />
+	                        <h:outputText value="Uploaded Images" />
 	                    </f:facet>
 	                    <h:outputText value="No files currently uploaded"
 	                        rendered="#{ingestBean.size==0}" />

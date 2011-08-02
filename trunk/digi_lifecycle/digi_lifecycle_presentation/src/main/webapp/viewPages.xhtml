@@ -16,11 +16,11 @@
 		
 		<br/>
 		
-		<h:outputLink value="#{viewPages.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
+		<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
 			Digilib
 		</h:outputLink>
 		<br/>
-		<h:graphicImage id="img" value="#{viewPages.getDigilibScalerUrlForPage(viewPages.selectedPage)}"/>
+		<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}"/>
 		
 		<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}">
 			

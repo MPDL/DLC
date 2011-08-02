@@ -70,29 +70,7 @@ public class ViewPages {
 		return selectedPage;
 	}
 	
-	public String getDigilibScalerUrlForPage(Page p)
-	{
-		try {
-			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=1000&dw=500";
-			return url;
-		} catch (Exception e) {
-			logger.error("Error getting URL for image", e);
-			return null;
-		}
-	}
 	
-	public String getDigilibJQueryUrlForPage(Page p)
-	{
-		try {
-			String digilibUrl = PropertyReader.getProperty("digilib.jquery.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8");
-			return url;
-		} catch (Exception e) {
-			logger.error("Error getting URL for image", e);
-			return null;
-		}
-	}
 
 	public void setVolumeId(String volumeId) {
 		this.volumeId = volumeId;
