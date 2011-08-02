@@ -7,10 +7,8 @@
 		   }
 )
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlJavaTypeAdapter(value=StringAdapter.class, type=String.class)
 package de.mpg.mpdl.dlc.vo;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlNsForm;
-import javax.xml.bind.annotation.XmlSchema;
-import javax.xml.bind.annotation.XmlNs;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.*;

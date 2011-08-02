@@ -15,8 +15,10 @@ import gov.loc.mets.MetsType.FileSec.FileGrp;
 import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateless;
+import javax.faces.view.facelets.ComponentConfig;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -54,6 +57,8 @@ import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
+import de.escidoc.core.client.StagingHandlerClient;
+import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
 import de.escidoc.core.resources.cmm.ContentModel;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
@@ -62,6 +67,10 @@ import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
+import de.escidoc.core.resources.om.item.StorageType;
+import de.escidoc.core.resources.om.item.component.Component;
+import de.escidoc.core.resources.om.item.component.ComponentContent;
+import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -90,7 +99,7 @@ public class VolumeServiceBean {
 		for(SearchResultRecord rec : resp.getRecords())
 		{
 			Item item = (Item)rec.getRecordData().getContent();
-			volumeList.add(createVolumeFromItem(item));
+			volumeList.add(createVolumeFromItem(item, null));
 		}
 		
 		return volumeList;
@@ -108,7 +117,7 @@ public class VolumeServiceBean {
 		}
 		
 		Item item = client.retrieve(id);
-		return createVolumeFromItem(item);
+		return createVolumeFromItem(item, userHandle);
 		
 	}
 	
@@ -131,10 +140,9 @@ public class VolumeServiceBean {
 		
 		
 		Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		Volume dummyVol = new Volume();
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 		Marshaller marshaller = ctx.createMarshaller();
-		marshaller.marshal(dummyVol, d);
+		marshaller.marshal(modsMetadata, d);
 		mdRec.setContent(d.getDocumentElement());
 		item = client.create(item);
 		logger.info("Empty item created: " + item.getObjid());
@@ -172,7 +180,7 @@ public class VolumeServiceBean {
 			i++;
 		}
 		
-		vol = updateVolume(vol, userHandle);
+		vol = updateVolume(vol, userHandle, true);
 		vol = releaseVolume(vol, userHandle);
 		return vol;
 	}
@@ -202,7 +210,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public Volume updateVolume(Volume vol, String userHandle) throws Exception
+	public Volume updateVolume(Volume vol, String userHandle, boolean initial) throws Exception
 	{
 		
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
@@ -290,20 +298,59 @@ public class VolumeServiceBean {
 		//---
 		
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document metsDoc = builder.newDocument();
+        Document modsDoc = builder.newDocument();
         
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		m.marshal(vol, metsDoc);
+		m.marshal(vol.getModsMetadata(), modsDoc);
+		mdRec.setContent(modsDoc.getDocumentElement());
+		
+		
+		StringWriter sw = new StringWriter();
+		m.marshal(vol, sw);
+		sw.flush();
+		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		sthc.setHandle(userHandle);
+		URL uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+		
+		//Check if component already exists
+		if (initial)
+		{
+			Component metsComponent = new Component();
+			ComponentProperties props = new ComponentProperties();
+			metsComponent.setProperties(props);
+			
+			metsComponent.getProperties().setMimeType("text/xml");
+			metsComponent.getProperties().setContentCategory("mets");
+			metsComponent.getProperties().setVisibility("public");
+			ComponentContent content = new ComponentContent();
+			metsComponent.setContent(content);
+			metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+			metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
+			item.getComponents().add(metsComponent);
+			
+		}
+		else
+		{
+			for(Component comp : item.getComponents())
+			{
+				if(comp.getProperties().getContentCategory().equals("mets"))
+				{
+					comp.getContent().setXLinkHref(uploadedMets.toExternalForm());
+					
+				}
+			}
+		}
 		
 		
 		
-		mdRec.setContent(metsDoc.getDocumentElement());
+		
+		
 
 		item = client.update(item);
 		logger.info("Item updated: " + item.getObjid());
-		return createVolumeFromItem(item);
+		return createVolumeFromItem(item, userHandle);
 		
 	}
 	
@@ -343,9 +390,10 @@ public class VolumeServiceBean {
 	public static void main(String[] args) throws Exception
 	{
 		
-		String url = "http://latest-coreservice.mpdl.mpg.de";
-		Authentication auth = new Authentication(new URL(url), "dlc_user", "dlc");
 		
+		String url = "http://latest-coreservice.mpdl.mpg.de";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "sysadmin");
+		/*
 		
 		
 		ModsDocument modsDoc = ModsDocument.Factory.newInstance();
@@ -363,7 +411,7 @@ public class VolumeServiceBean {
 		ItemHandlerClient client = new ItemHandlerClient(new URL(url));
 		client.setHandle(auth.getHandle());
 		client.delete("escidoc:5030");
-		
+		*/
 		
 		/*
 		 * 
@@ -407,17 +455,17 @@ public class VolumeServiceBean {
 		*/
 		
 		
-		/*
+		
 		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
 		cmh.setHandle(auth.getHandle());
 		
 		ContentModel cm = new ContentModel();
-		cm.getProperties().setName("Content_Model_DLC_ITEMs");
+		cm.getProperties().setName("Content_Model_DLC_ITEM_NEW");
 		cm.getProperties().setDescription("Content Model for Digitization Lifecycle Items");
 		
 		cm = cmh.create(cm);
 		System.out.println(cm.getObjid());
-		 */
+		 
 		
 		
 		/*
@@ -547,15 +595,30 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public static Volume createVolumeFromItem(Item item) throws Exception
+	public static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
 	{
-		MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-		Unmarshaller unmarshaller = ctx.createUnmarshaller();
-		Volume vol = (Volume)unmarshaller.unmarshal(mdRec.getContent());
-		vol.setItem(item);
-		vol.setProperties(item.getProperties());
-		return vol;
+		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		
+		for(Component c : item.getComponents())
+		{
+			if (c.getProperties().getContentCategory().equals("mets"))
+			{
+				
+				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				Volume vol = (Volume)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
+				vol.setItem(item);
+				vol.setProperties(item.getProperties());
+				return vol;
+			}
+		}
+		
+		return null;
+		
+		
+		
 		
 		
 	}
