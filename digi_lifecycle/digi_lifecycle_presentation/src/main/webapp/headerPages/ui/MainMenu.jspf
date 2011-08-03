@@ -37,8 +37,7 @@
 	<div id="mainMenuSkipLinkAnchor" class="full_area0 mainMenu">
 		<!-- main Menu starts here -->
 		<!-- start -->
-		<h:outputLink id="lnkHome" title="#{tlt.Home}" styleClass="free_area0"
-			value="#{applicationBean.contextPath}/" rendered="true">
+		<h:outputLink id="lnkHome" title="#{tlt.Home}" styleClass="free_area0" value="/#{applicationBean.contextPath}/" rendered="true">
 			<h:outputText value="#{lbl.navigation_lnk_start}" />
 		</h:outputLink>
 		<h:outputText id="txtHomeInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_start}" rendered="false" />
