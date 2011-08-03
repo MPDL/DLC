@@ -12,6 +12,42 @@
 	
 	<ui:define name="mainContent">
 			
+		<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
+			
+		<h:outputScript library="components/digilib_jquery" name="jquery.js"/>
+		<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js"/>
+		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js"/>
+		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js"/>
+		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js"/>
+		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js"/>
+		
+        
+        
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var opts = {
+                	interactionMode : 'embedded',
+                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+                    showRegionNumbers : true,
+                    buttonSettings : {
+                        embedded : {
+                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+                            'buttonSetWidth' : 18,
+                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","help","reset","bird","toggleoptions"],
+                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+                            'arrowSet' : ["up", "down", "left", "right"],
+                            'buttonSets' : ['standardSet', 'specialSet']
+                            },
+                    },
+                    
+                    };
+                var $div = $('div.digilib');
+                $div.digilib(opts);
+            });
+
+        </script>
+			
+			
 		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
 		
 		<br/>
@@ -20,7 +56,9 @@
 			Digilib
 		</h:outputLink>
 		<br/>
-		<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}"/>
+		<div id="digilib" class="digilib">
+			<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}"/>
+		</div>
 		
 		<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}">
 			
