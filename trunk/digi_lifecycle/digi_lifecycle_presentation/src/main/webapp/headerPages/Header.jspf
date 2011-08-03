@@ -57,7 +57,7 @@
 	
 			<span id="metaMenuSkipLinkAnchor" class="full_area0 metaMenu"> <!-- logo alternate starts here -->
 				<h:panelGroup layout="block" styleClass="free_area0 small_marginLExcl logoAlternate" rendered="#{headline != lbl.HomePage}">
-					<h:outputLink id="lnkStartPageAlternate" title="#{tlt.Home}" value="#{applicationBean.contextPath}/">
+					<h:outputLink id="lnkStartPageAlternate" title="#{tlt.Home}" value="/#{applicationBean.contextPath}/">
 						<span>Max Planck Institut f&#252;r europ&#228;ische Rechtsgeschichte</span>
 					</h:outputLink>
 				</h:panelGroup> 
@@ -67,8 +67,7 @@
 			</span>
 			
 			<h:panelGroup layout="block" styleClass="full_area0 LogoNSearch" rendered="#{headline == lbl.HomePage}">
-				<h:outputLink id="lnkStartPage" title="#{tlt.Home}"
-					value="#{applicationBean.contextPath}/">
+				<h:outputLink id="lnkStartPage" title="#{tlt.Home}" value="/#{applicationBean.contextPath}/">
 					<h:panelGroup styleClass="xTiny_marginLExcl half_area0 headerLogo">
 						<h:panelGroup styleClass="half_area0 themePark"></h:panelGroup>
 					</h:panelGroup>
