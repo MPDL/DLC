@@ -11,120 +11,135 @@
 
 <!-- INTERFACE -->
 <cc:interface>
-	<cc:attribute name="modsMetadata" required="true"/>
+	<cc:attribute name="modsMetadata" required="true" />
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
-	
-				<h:outputText value="#{lbl.mods_catalogueId_001}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}"/>
-				
-				<h:outputText value="#{lbl.mods_parentId_010}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.parentId_010}"/>
-				
-				<h:outputText value="#{lbl.mods_language_037}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{not empty cc.attrs.modsMetadata.language_037}"/>
-				
-				
-				<h:outputText value="#{lbl.mods_titles}"/>
-				<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
-					<h:outputText value="#{lbl.mods_mabId}"/>
-					<h:inputText value="#{title.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_titleType}"/>
-					<h:inputText value="#{title.type}"/>
-					
-					<h:outputText value="#{lbl.mods_title}"/>
-					<h:inputText value="#{title.title}"/>
-				</a4j:repeat>
-				
-				<h:outputText value="#{lbl.mods_names}"/>
-				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
-					<h:outputText value="#{lbl.mods_mabId}"/>
-					<h:inputText value="#{name.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_nameType}"/>
-					<h:inputText value="#{name.type}"/>
-					
-					<h:outputText value="#{lbl.mods_nameRole}"/>
-					<h:inputText value="#{name.role}"/>
-					
-					<h:outputText value="#{lbl.mods_name}"/>
-					<h:inputText value="#{name.name}"/>
-				</a4j:repeat>
-				
-				
-				<h:outputText value="#{lbl.mods_identifiers}"/>
-				<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
-					<h:outputText value="#{lbl.mods_mabId}"/>
-					<h:inputText value="#{identifier.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_identifierType}"/>
-					<h:inputText value="#{identifier.type}"/>
-					
-					<h:outputText value="#{lbl.mods_identifier}"/>
-					<h:inputText value="#{identifier.value}"/>
-				</a4j:repeat>
-				
-				
-				<h:outputText value="#{lbl.mods_publisherInfo}"/>
-				<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}">
-					<h:outputText value="#{lbl.mods_mabId}"/>
-					<h:inputText value="#{pb.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_publisher}"/>
-					<h:inputText value="#{pb.publisher}"/>
-					
-					<h:outputText value="#{lbl.mods_publisherPlace}"/>
-					<h:inputText value="#{pb.place}"/>
-					
-					<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
-					<h:inputText value="#{pb.editionStatement}"/>
-					
-					<!-- 
-					<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
-					<h:inputText value="#{pb.dateIssued_425}"/>
-					-->
-				</a4j:repeat>
-				
-				
-				
-				<h:outputText value="#{lbl.mods_notes}"/>
-				<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
-					<h:outputText value="#{lbl.mods_mabId}"/>
-					<h:inputText value="#{note.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_noteType}"/>
-					<h:inputText value="#{note.type}"/>
-					
-					<h:outputText value="#{lbl.mods_note}"/>
-					<h:inputText value="#{note.note}"/>
-				</a4j:repeat>
-				
-				<h:outputText value="#{lbl.mods_volumeDescriptive_089}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.volumeDescriptive_089}"/>
-				
-				<h:outputText value="#{lbl.mods_materialDesignation_334}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.materialDesignation_334}"/>
-				
-				<h:outputText value="#{lbl.mods_remainderTitle_334}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.remainderTitle_334}"/>
-				
-				<h:outputText value="#{lbl.mods_subseries_361}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.subseries_361}"/>
-				
-				<h:outputText value="#{lbl.mods_extent_432}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.extent_432}"/>
-				
-				<h:outputText value="#{lbl.mods_format_435}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.format_435}"/>
-				
-				<h:outputText value="#{lbl.mods_seriesTitle_451}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.seriesTitle_451}"/>
-				
-				<h:outputText value="#{lbl.mods_siganture_544}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.signature_544}"/>
+	<h:panelGrid columns="2">
+		<h:outputText value="#{lbl.mods_catalogueId_001}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" />
+
+		<h:outputText value="#{lbl.mods_parentId_010}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.parentId_010}" />
+
+		<h:outputText value="#{lbl.mods_language_037}"
+			rendered="#{not empty cc.attrs.modsMetadata.language_037}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}"
+			rendered="#{not empty cc.attrs.modsMetadata.language_037}" />
+
+
+
+		<h:outputText value="#{lbl.mods_titles}" />
+		<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
+			<h:panelGrid columns="2">
+				<h:outputText value="#{lbl.mods_mabId}" />
+				<h:inputText value="#{title.mabId}" />
+			
+				<h:outputText value="#{lbl.mods_titleType}" />
+				<h:inputText value="#{title.type}" />
 		
+				<h:outputText value="#{lbl.mods_title}" />
+				<h:inputText value="#{title.title}" />
+			</h:panelGrid>
+		</a4j:repeat>
+
+
+		<h:outputText value="#{lbl.mods_names}" />
+		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
+			<h:panelGrid columns="2">
+				<h:outputText value="#{lbl.mods_mabId}" />
+				<h:inputText value="#{name.mabId}" />
+	
+				<h:outputText value="#{lbl.mods_nameType}" />
+				<h:inputText value="#{name.type}" />
+	
+				<h:outputText value="#{lbl.mods_nameRole}" />
+				<h:inputText value="#{name.role}" />
+	
+				<h:outputText value="#{lbl.mods_name}" />
+				<h:inputText value="#{name.name}" />
+			</h:panelGrid>
+		</a4j:repeat>
+	
+
+		<h:outputText value="#{lbl.mods_identifiers}" />
+		<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
+			<h:panelGrid columns="2">
+				<h:outputText value="#{lbl.mods_mabId}" />
+				<h:inputText value="#{identifier.mabId}" />
+	
+				<h:outputText value="#{lbl.mods_identifierType}" />
+				<h:inputText value="#{identifier.type}" />
+	
+				<h:outputText value="#{lbl.mods_identifier}" />
+				<h:inputText value="#{identifier.value}" />
+			</h:panelGrid>
+		</a4j:repeat>
+		
+
+
+		<h:outputText value="#{lbl.mods_publisherInfo}" />
+		<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}">
+			<h:panelGrid columns="2">
+				<h:outputText value="#{lbl.mods_mabId}" />
+				<h:inputText value="#{pb.mabId}" />
+	
+				<h:outputText value="#{lbl.mods_publisher}" />
+				<h:inputText value="#{pb.publisher}" />
+	
+				<h:outputText value="#{lbl.mods_publisherPlace}" />
+				<h:inputText value="#{pb.place}" />
+	
+				<h:outputText value="#{lbl.mods_publisherEditionStatement}" />
+				<h:inputText value="#{pb.editionStatement}" />
+	
+				<!-- 
+						<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+						<h:inputText value="#{pb.dateIssued_425}"/>
+						-->
+			</h:panelGrid>
+		</a4j:repeat>
+		
+
+		<h:outputText value="#{lbl.mods_notes}" />
+		<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
+			<h:panelGrid columns="2">
+				<h:outputText value="#{lbl.mods_mabId}" />
+				<h:inputText value="#{note.mabId}" />
+	
+				<h:outputText value="#{lbl.mods_noteType}" />
+				<h:inputText value="#{note.type}" />
+	
+				<h:outputText value="#{lbl.mods_note}" />
+				<h:inputText value="#{note.note}" />
+			</h:panelGrid>
+		</a4j:repeat>
+	
+
+		<h:outputText value="#{lbl.mods_volumeDescriptive_089}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.volumeDescriptive_089}" />
+
+		<h:outputText value="#{lbl.mods_materialDesignation_334}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.materialDesignation_334}" />
+
+		<h:outputText value="#{lbl.mods_remainderTitle_334}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.remainderTitle_334}" />
+
+		<h:outputText value="#{lbl.mods_subseries_361}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.subseries_361}" />
+
+		<h:outputText value="#{lbl.mods_extent_432}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.extent_432}" />
+
+		<h:outputText value="#{lbl.mods_format_435}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.format_435}" />
+
+		<h:outputText value="#{lbl.mods_seriesTitle_451}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.seriesTitle_451}" />
+
+		<h:outputText value="#{lbl.mods_siganture_544}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
+	</h:panelGrid>
 </cc:implementation>
 </html>
