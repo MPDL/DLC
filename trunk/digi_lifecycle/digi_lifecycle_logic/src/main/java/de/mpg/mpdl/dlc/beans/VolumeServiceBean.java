@@ -16,10 +16,13 @@ import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -157,35 +160,62 @@ public class VolumeServiceBean {
 		
 
 		int i = 0;
-		for(FileItem fileItem : images)
-		{
+		try {
 			
-			String dir = uploadFileToImageServer(fileItem, item.getObjid());
-			logger.info("File uploaded to " + dir);
+			for(FileItem fileItem : images)
+			{
+				
+				String dir = uploadFileToImageServer(fileItem, item.getObjid());
+				logger.info("File uploaded to " + dir);
+				
+				MetsFile f = new MetsFile();
+				f.setID("img_" + i);
+				f.setMimeType(fileItem.getContentType());
+				f.setLocatorType("OTHER");
+				f.setHref(dir);
+				vol.getFiles().add(f);
+				
+				Page p = new Page();
+				p.setID("page_" + i);
+				p.setOrder(i);
+				p.setOrderLabel("");
+				p.setType("page");
+				p.setFile(f);
+				vol.getPages().add(p);
+				i++;
+			}
 			
-			MetsFile f = new MetsFile();
-			f.setID("img_" + i);
-			f.setMimeType(fileItem.getContentType());
-			f.setLocatorType("OTHER");
-			f.setHref(dir);
-			vol.getFiles().add(f);
+			vol = updateVolume(vol, userHandle, true);
+			vol = releaseVolume(vol, userHandle);
 			
-			Page p = new Page();
-			p.setID("page_" + i);
-			p.setOrder(i);
-			p.setOrderLabel("");
-			p.setType("page");
-			p.setFile(f);
-			vol.getPages().add(p);
-			i++;
+		} catch (Exception e) {
+			logger.error("Error while creating Volume. Trying to rollback", e);
+			rollbackCreation(vol, userHandle);
+			throw new Exception(e);
 		}
-		
-		vol = updateVolume(vol, userHandle, true);
-		vol = releaseVolume(vol, userHandle);
 		return vol;
 	}
 	
 	
+	private void rollbackCreation(Volume vol, String userHandle) {
+		logger.info("Trying to delete item" + vol.getItem().getObjid());
+		try 
+		{
+			
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			client.delete(vol.getItem().getObjid());
+			logger.info("Item successfully deleted");
+		} 
+		catch (Exception e) 
+		{
+			logger.error("Could not delete item" + vol.getItem().getObjid(), e);
+			
+		}
+		
+	}
+
+
 	public Volume releaseVolume(Volume vol, String userHandle) throws Exception
 	{
 		String id = vol.getItem().getObjid();
@@ -378,8 +408,9 @@ public class VolumeServiceBean {
     	// Execute and print response
     	client.executeMethod( method );
     	String response = method.getResponseBodyAsString( );
+    	logger.info("Image Upload servlet responded with: " + method.getStatusCode() + "\n" + response);
     	method.releaseConnection( );
-    	if(!(method.getStatusCode()==201 || method.getStatusCode()==200))
+    	if(response == null || !(method.getStatusCode()==201 || method.getStatusCode()==200))
     	{
     		throw new RuntimeException("File Upload Servlet responded with: " + method.getStatusCode() + "\n" + method.getResponseBodyAsString());
     	}
