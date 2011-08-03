@@ -27,6 +27,7 @@ import org.richfaces.event.DropEvent;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
@@ -256,7 +257,7 @@ public class IngestBean implements Serializable {
 	
 	
 	
-	public void save() throws Exception
+	public void save()
 	{
 		
 		//ModsMetadata md = new ModsMetadata();
@@ -264,7 +265,11 @@ public class IngestBean implements Serializable {
 		//title.setTitle("Test title");
 		//md.getTitles().add(title);
     	
-    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles);
+    	try {
+			volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles);
+		} catch (Exception e) {
+			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
+		}
     	
 	
 	}
