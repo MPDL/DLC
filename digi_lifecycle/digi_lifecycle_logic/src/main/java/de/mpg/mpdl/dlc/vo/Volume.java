@@ -32,6 +32,7 @@ import de.escidoc.core.resources.common.Properties;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @XmlRootElement(name="mets", namespace="http://www.loc.gov/METS/")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -52,6 +53,9 @@ public class Volume {
 	
 	@XmlTransient
 	private Item item;
+	
+	@XmlTransient
+	private TeiSd teiSd;
 	
 
 	public Volume ()
@@ -153,6 +157,14 @@ public class Volume {
 
 	public List<MetsFile> getFiles() {
 		return files;
+	}
+
+	public TeiSd getTeiSd() {
+		return teiSd;
+	}
+
+	public void setTeiSd(TeiSd teiSd) {
+		this.teiSd = teiSd;
 	}
 
 	

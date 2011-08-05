@@ -16,6 +16,7 @@ import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -35,10 +36,42 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import javax.xml.xquery.XQConnection;
+import javax.xml.xquery.XQConstants;
+import javax.xml.xquery.XQDataSource;
+import javax.xml.xquery.XQExpression;
+import javax.xml.xquery.XQResultSequence;
+
+
+import net.sf.saxon.om.NamespaceConstant;
+import net.sf.saxon.om.NodeInfo;
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.XPathCompiler;
+import net.sf.saxon.s9api.XPathExecutable;
+import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
+import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XdmValue;
+import net.sf.saxon.xpath.XPathEvaluator;
+import net.sf.saxon.xqj.SaxonXQDataSource;
+
 
 import org.apache.axis.transport.http.AdminServlet;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
@@ -56,6 +89,7 @@ import org.xml.sax.InputSource;
 
 import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input;
 
+import de.ddb.application.StandaloneConverter;
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
@@ -76,11 +110,13 @@ import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
+import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsFile;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @Stateless
 public class VolumeServiceBean {
@@ -126,7 +162,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public Volume createNewVolume(String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images) throws Exception
+	public Volume createNewVolume(String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
 	{
 		logger.info("Trying to create a new volume");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -185,7 +221,7 @@ public class VolumeServiceBean {
 				i++;
 			}
 			
-			vol = updateVolume(vol, userHandle, true);
+			vol = updateVolume(vol, teiFile, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
 			
 		} catch (Exception e) {
@@ -240,7 +276,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public Volume updateVolume(Volume vol, String userHandle, boolean initial) throws Exception
+	public Volume updateVolume(Volume vol, FileItem teiFile, String userHandle, boolean initial) throws Exception
 	{
 		
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
@@ -342,8 +378,9 @@ public class VolumeServiceBean {
 		sw.flush();
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		sthc.setHandle(userHandle);
-		URL uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
 		
+		URL uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+
 		//Check if component already exists
 		if (initial)
 		{
@@ -359,6 +396,51 @@ public class VolumeServiceBean {
 			metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 			metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
 			item.getComponents().add(metsComponent);
+			
+			
+			if(teiFile!=null)
+			{
+
+				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
+				
+				//Transform TEI to Tei-SD and add to component
+				String teiSd = transformTeiToTeiSd(teiFile.getInputStream());
+				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(teiSd.getBytes("UTF-8")));
+				Component teiSdComponent = new Component();
+				ComponentProperties teiSdCompProps = new ComponentProperties();
+				teiSdComponent.setProperties(teiSdCompProps);
+				
+				teiSdComponent.getProperties().setMimeType("text/xml");
+				teiSdComponent.getProperties().setContentCategory("tei-sd");
+				teiSdComponent.getProperties().setVisibility("public");
+				ComponentContent teiSdContent = new ComponentContent();
+				teiSdComponent.setContent(teiSdContent);
+				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
+				item.getComponents().add(teiSdComponent);
+				
+				
+				//Add original TEI as component
+				URL uploadedTei = sthc.upload(diskTeiFile.getInputStream());
+				Component teiComponent = new Component();
+				ComponentProperties teiCompProps = new ComponentProperties();
+				teiComponent.setProperties(teiCompProps);
+				
+				teiComponent.getProperties().setMimeType("text/xml");
+				teiComponent.getProperties().setContentCategory("tei");
+				teiComponent.getProperties().setVisibility("public");
+				ComponentContent teiContent = new ComponentContent();
+				teiComponent.setContent(teiContent);
+				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
+				item.getComponents().add(teiComponent);
+				
+				
+				
+			}
+			
+			
+			
 			
 		}
 		else
@@ -626,12 +708,14 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
+	private static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
+		TeiSd teiSd = null;
+		Volume vol = null;
 		for(Component c : item.getComponents())
 		{
 			if (c.getProperties().getContentCategory().equals("mets"))
@@ -639,20 +723,28 @@ public class VolumeServiceBean {
 				
 				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
-				Volume vol = (Volume)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
-				vol.setItem(item);
-				vol.setProperties(item.getProperties());
-				return vol;
+				vol = (Volume)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
+				
+
+			}
+			
+			else if (c.getProperties().getContentCategory().equals("tei-sd"))
+			{
+				
+				JAXBContext ctx = JAXBContext.newInstance(new Class[] { TeiSd.class });
+				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				teiSd = (TeiSd)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
 			}
 		}
 		
+		vol.setItem(item);
+		vol.setProperties(item.getProperties());
+		vol.setTeiSd(teiSd);
+		
+		
 		return null;
-		
-		
-		
-		
-		
 	}
+	
 	
 	public static ModsMetadata createModsMetadataFromXml(InputStream xml) throws Exception
 	{
@@ -663,6 +755,111 @@ public class VolumeServiceBean {
 
 		return md;
 		
+		
+	}
+	
+	
+	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
+	{
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
+			System.setProperty("javax.xml.transform.TransformerFactory",
+					"net.sf.saxon.TransformerFactoryImpl");
+			File resultingXhtml = null;
+			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			Source teiXmlSource = new StreamSource(teiXml);
+			
+		
+			resultingXhtml = File.createTempFile("transformed", "xhtml");
+			StringWriter wr = new StringWriter();
+			javax.xml.transform.Result result = new StreamResult(wr);
+			
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			Transformer transformer = transfFactory.newTransformer(xsltSource);
+			transformer.transform(teiXmlSource, result);
+			
+			return wr.toString();
+		
+	}
+	
+	public static int validateTei(InputStream teiXml) throws Exception
+	{
+		
+		 XQDataSource ds = new SaxonXQDataSource();
+         XQConnection conn = ds.getConnection();
+         XQExpression exp = conn.createExpression();
+         exp.bindDocument(XQConstants.CONTEXT_ITEM, teiXml, null, null);
+         XQResultSequence res = exp.executeQuery("declare namespace tei='http://www.tei-c.org/ns/1.0'; count(//tei:pb)");
+         res.next();
+         int pbNumber = Integer.parseInt(res.getItemAsString(null));
+         System.out.println("Found " + pbNumber + " <pb> elements");
+         return pbNumber;
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
+		
+		
+		InputSource is = new InputSource(teiXml);
+		SAXSource ss = new SAXSource(is);
+		Processor proc = new Processor(false);
+		XdmNode node = proc.newDocumentBuilder().build(ss);
+		XPathCompiler comp = proc.newXPathCompiler();
+		comp.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+		XPathExecutable xpe = comp.compile("//tei:pb");
+		XPathSelector sel = xpe.load();
+		sel.setContextItem(node);
+		
+		XdmValue val = sel.evaluate();
+		
+		for(XdmItem item : val)
+		{
+			System.out.println(item.toString());
+		}
+		*/
+		
+		
+		//Following is specific to Saxon: should be in a properties file
+        
+		/*
+		System.setProperty("javax.xml.xpath.XPathFactory:"+NamespaceConstant.OBJECT_MODEL_SAXON,"net.sf.saxon.xpath.XPathFactoryImpl");
+
+        XPathFactory xpf = XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON);
+        XPath xpe = xpf.newXPath();
+        System.err.println("Loaded XPath Provider " + xpe.getClass().getName());
+     */
+
+        // Build the source document. This is outside the scope of the XPath API, and
+        // is therefore Saxon-specific.
+       
+        
+        //NodeInfo doc = ((XPathEvaluator)xpe).setSource(ss);
+
+        // Declare a variable resolver to return the value of variables used in XPath expressions
+        //xpe.setXPathVariableResolver(this);
+
+        // Compile the XPath expressions used by the application
+
+        //xpe.setNamespaceContext(this);
+
+/*
+        
+        String xpath =  "declare namespace tei='http://www.tei-c.org/ns/1.0'\n" +
+        		"//tei:pb";
+        
+        XPathExpression findPb = xpe.compile(xpath);
+        
+        
+        List res = (List)findPb.evaluate(is, XPathConstants.NODESET);
+        
+        System.out.println(res);
+        */
+
 		
 	}
 }
