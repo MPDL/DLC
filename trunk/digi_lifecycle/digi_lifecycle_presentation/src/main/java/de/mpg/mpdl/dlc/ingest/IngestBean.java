@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.ingest;
 
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class IngestBean implements Serializable {
 	private FileItem mabFile;
 	private ModsMetadata modsMetadata = new ModsMetadata();
 	private FileItem teiFile;
+	private int numberOfTeiPbs;
 	
     private Collection<Object> selection;
 	private List<FileItem> selectionItems = new ArrayList<FileItem>();
@@ -208,6 +210,16 @@ public class IngestBean implements Serializable {
 			else if(fue.getFileItem().getName().endsWith(".xml"))
 			{
 				this.setTeiFile(fue.getFileItem());
+				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
+				try {
+					numberOfTeiPbs = volumeService.validateTei(diskTeiFile.getInputStream());
+				
+				} catch (Exception e) {
+					logger.error("error while validating TEI", e);
+					MessageHelper.errorMessage("Error while validating TEI"); 
+				}
+				
+				
 			}
 			else
 			{
@@ -266,7 +278,21 @@ public class IngestBean implements Serializable {
 		//md.getTitles().add(title);
     	
     	try {
-			volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles);
+    		
+    		
+			
+    		if(getImageFiles().size()==0)
+    		{
+    			MessageHelper.errorMessage("You have to upload at least Image");
+    			return;
+    		}
+    		if (getNumberOfTeiPbs()!=getImageFiles().size())
+    		{
+    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+    			return;
+    		}
+    		
+    		volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
 		} catch (Exception e) {
 			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
 		}
@@ -304,6 +330,14 @@ public class IngestBean implements Serializable {
 
 	public void setModsMetadata(ModsMetadata modsMetadata) {
 		this.modsMetadata = modsMetadata;
+	}
+
+	public int getNumberOfTeiPbs() {
+		return numberOfTeiPbs;
+	}
+
+	public void setNumberOfTeiPbs(int numberOfTeiPbs) {
+		this.numberOfTeiPbs = numberOfTeiPbs;
 	}
 	
 	
