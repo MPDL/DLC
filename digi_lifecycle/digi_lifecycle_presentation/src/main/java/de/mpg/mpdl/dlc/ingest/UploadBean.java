@@ -49,7 +49,7 @@ public class UploadBean
 //		this.url = ((HttpServletRequest)request).getRequestURL().toString();
 	}
 	
-	@URLAction(onPostback=false)
+	//@URLAction(onPostback=false)
 	public void status()
 	{
 		if(UrlHelper.getParameterBoolean("start"))
@@ -102,7 +102,7 @@ public class UploadBean
 		ModsTitle title = new ModsTitle();
 		title.setTitle("Test title");
 		md.getTitles().add(title);
-    	volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), md, files);
+    	//volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), md, files);
     	uFiles.addAll(files);
     	files.clear();
 	} 

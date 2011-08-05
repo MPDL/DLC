@@ -45,8 +45,9 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 		
 	});
 	
-	//alert('Stop');
 	
+	
+	//After file upload is complete, send an JSF ajax request in order to rerender fiven elements
 	function attachCallbacks(uploader) {
 	
 		uploader.bind('FileUploaded', function(up, file, response) {
