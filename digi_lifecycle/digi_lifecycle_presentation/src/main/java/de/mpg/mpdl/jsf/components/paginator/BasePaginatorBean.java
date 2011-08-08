@@ -133,14 +133,14 @@ public abstract class BasePaginatorBean<ListElementType>
      * reads out basic parameters and calls readOutParamters on implementing subclasses. It uses the
      * BaseListRetrieverRequestBean in order to retrieve the new list and finally calls listUpdated on implementing
      * subclasses.
-     */
+     */ 
     public void update()
     {
-        try
-        {
+        try 
+        {  
             if (elementsPerPage == 0)
             {
-                setElementsPerPage(25);
+                setElementsPerPage(24);
             }
             if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("page"))
             {
@@ -149,7 +149,7 @@ public abstract class BasePaginatorBean<ListElementType>
             if (currentPageNumber == 0)
             {
                 setCurrentPageNumber(1);
-            }
+            }   
             // logger.info("No List update: "+noListUpdate);
             previousPartList = new ArrayList<ListElementType>();
             previousPartList.addAll(currentPartList);

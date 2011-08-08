@@ -28,25 +28,25 @@ public class ViewPages {
 	
 	private String volumeId;
 	
-	private Volume volume;
+	private static Volume volume;
 	
 	private int selectedPageNumber;
 	
 	private Page selectedPage;
+	private int i = 0;
+
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
 		try { 
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
-			{
-				logger.info("Load new book" + volumeId);
+			{    
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
+				logger.info("Load new book" + volumeId);
 				
-				
-			}
-			
-			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-1));
+			}  
+			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()));
 		} catch (Exception e) {
 			logger.error("Problem while loading Volume", e);
 			MessageHelper.errorMessage("Problem while loading volume");
@@ -90,7 +90,7 @@ public class ViewPages {
 	
 	public String goToNextPage()
 	{
-		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
+//		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
         if (volume.getPages().size()>= selectedPageNumber + 1)
         {
            selectedPageNumber ++;
@@ -101,30 +101,32 @@ public class ViewPages {
 	
 	public String goToPreviousPage()
 	{
-		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        if (selectedPageNumber -1 > 0)
+//		selectedPageNumber = volume.getPages().indexOf(selectedPage) - 1;
+        if (selectedPageNumber -1 >= 0)
         {
            selectedPageNumber --;
            loadVolume();
         }
         return null;
-	}
+	} 
 	
 	public String goToLastPage()
 	{
-		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        selectedPageNumber = volume.getPages().size();
+//		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
+        selectedPageNumber = volume.getPages().size()-1;
         loadVolume();
         return null;
 	}
 	
 	public String goToFirstPage()
 	{
-		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        selectedPageNumber = 1; 
+//		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
+        selectedPageNumber = 0; 
         loadVolume();
         return null;
 	}
+	
+
 	
 	
 	
