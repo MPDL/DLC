@@ -10,18 +10,26 @@
 
 
 <ui:composition template="templates/template.xhtml">
+
 	<ui:define name="mainContent">
+
+		<mpdl:paginator paginatorBean="#{volumePagesBean}">
+		</mpdl:paginator>
+		
+		<mpdl:thumbList paginatorBean="#{volumePagesBean}">
+			<pretty:link mappingId="viewPages">
+				<f:param value="#{viewVolume.volumeId}" />
+				<f:param value="#{item.order}" />
+
+
+						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(item,50,100)}" />
+
+				
+			</pretty:link>
+		</mpdl:thumbList>
+
 			
-			<mpdl:paginator paginatorBean="#{allVolumesBean}">
-				<pretty:link mappingId="viewVolume">
-					<f:param value="#{var.item.objid}" />
-					
-					<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
-					<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>
-				</pretty:link>
-				<br/>
-			</mpdl:paginator>
-			
+		
 	</ui:define>
 
 </ui:composition>
