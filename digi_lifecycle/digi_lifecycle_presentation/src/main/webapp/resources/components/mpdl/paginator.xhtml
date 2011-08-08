@@ -18,18 +18,18 @@
 <cc:implementation>
 	
 
-	<h:panelGroup id="paginatorList">
+	<h:panelGroup layout="block" id="paginatorList">
 	<h:panelGroup layout="block" id="paginatorTop" styleClass="full_area0 paginator">
 		
 			<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
 			
 		 	<div class="large_area0 small_marginLIncl rangeSelector">
 		 		<h:selectOneMenu id="extSelectTop" styleClass="free_select" value="#{cc.attrs.paginatorBean.elementsPerPageTop}">
-		 			<f:selectItem itemValue="10" itemLabel="10"></f:selectItem>
-		 			<f:selectItem itemValue="25" itemLabel="25"></f:selectItem>
-		 			<f:selectItem itemValue="50" itemLabel="50"></f:selectItem>
-		 			<f:selectItem itemValue="100" itemLabel="100"></f:selectItem>
-		 			<f:selectItem itemValue="250" itemLabel="250"></f:selectItem>
+		 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+		 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+		 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+		 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+		 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
 		 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render="paginatorList"/>
 		 		</h:selectOneMenu>
 		 		<h:outputLabel id="lblItemList_ObjectsPerPage" for="extSelectTop" styleClass="free_label hitsLabel" value=" #{lbl.paginator_objectsPerPage}" />
