@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="paginatorBean" required="true"/>
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
+			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
+				<a4j:repeat id="pictureList" var="item" value="#{cc.attrs.paginatorBean.currentPartList}" rows="0" rowKeyVar="index">
+					<li class="large_area0 itemTile">
+						<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1 matrixItem">
+							<cc:insertChildren />
+						</h:panelGroup>
+					</li>
+				</a4j:repeat>
+			</ul>
+		</h:panelGroup>
+</cc:implementation>
+</html>
