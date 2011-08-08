@@ -2,12 +2,15 @@ package de.mpg.mpdl.dlc.util;
 
 import java.net.URLEncoder;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 
@@ -16,12 +19,15 @@ import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 public class VolumeUtilBean {
 
 	private static Logger logger = Logger.getLogger(VolumeUtilBean.class);
+
 	
 	public static String getDigilibScalerUrlForPage(Page p, int width, int height)
 	{
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=" + height + "&dw=" + width;
+			String url = null;
+			if(p.getFile().getHref()!=null)
+				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=" + height + "&dw=" + width;
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for image", e);
@@ -54,5 +60,6 @@ public class VolumeUtilBean {
 		}
 		return new ModsTitle();
 	}
+
 		
 }
