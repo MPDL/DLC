@@ -126,7 +126,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public List<Volume> retrieveVolumes(int limit, int offset) throws Exception
+	public List<Volume> retrieveVolumes(int limit, int offset, String userHandle) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		
@@ -138,7 +138,7 @@ public class VolumeServiceBean {
 		for(SearchResultRecord rec : resp.getRecords())
 		{
 			Item item = (Item)rec.getRecordData().getContent();
-			volumeList.add(createVolumeFromItem(item, null));
+			volumeList.add(createVolumeFromItem(item, userHandle));
 		}
 		
 		return volumeList;
@@ -709,7 +709,7 @@ public class VolumeServiceBean {
 	}
 	
 	private static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
-	{
+	{ 
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -740,9 +740,10 @@ public class VolumeServiceBean {
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
 		vol.setTeiSd(teiSd);
+
 		
-		
-		return null;
+	
+		return vol;
 	}
 	
 	
