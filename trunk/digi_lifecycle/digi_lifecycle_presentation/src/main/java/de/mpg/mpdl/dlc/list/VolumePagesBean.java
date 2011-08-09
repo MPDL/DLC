@@ -49,8 +49,8 @@ public class VolumePagesBean extends BasePaginatorBean<Page>{
 	public List<Page> retrieveList(int offset, int limit) throws Exception 
 	{
 		pageList = volServiceBean.retrieveVolume(viewVolume.getVolumeId(), loginBean.getUserHandle()).getPages();
-		List<Page> subList = pageList.subList(offset, offset+limit);
 		totalNumberOfRecords = pageList.size();
+		List<Page> subList = pageList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
 		return subList;
 	}
 
