@@ -13,6 +13,7 @@ import com.sun.tools.javac.comp.Todo;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.valueobjects.DlcBook;
+import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
@@ -26,13 +27,9 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
-	public LoginBean getLoginBean() {
-		return loginBean;
-	}
+	private int totalNumberOfRecords;
+	private List<Volume> volList= new ArrayList<Volume>();
 
-	public void setLoginBean(LoginBean loginBean) {
-		this.loginBean = loginBean;
-	}
 
 	public AllVolumesBean()
 	{
@@ -44,18 +41,27 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception {
 		
-		List<Volume> volList = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
-		return volList;
+		volList = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
+		totalNumberOfRecords = volList.size();
+		List<Volume> subList = volList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
+		return subList;
 	}
 
 	@Override
 	public int getTotalNumberOfRecords() {
-		return 100;
+		return totalNumberOfRecords;
 	}
 
 	@Override
 	public String getNavigationString() {
-		return "pretty:";
+		return "pretty:viewPage";
+	}
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
 	}
 	
 }
