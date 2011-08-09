@@ -36,6 +36,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -205,14 +206,14 @@ public class VolumeServiceBean {
 				logger.info("File uploaded to " + dir);
 				
 				MetsFile f = new MetsFile();
-				f.setID("img_" + i);
+				f.setId("img_" + i);
 				f.setMimeType(fileItem.getContentType());
 				f.setLocatorType("OTHER");
 				f.setHref(dir);
 				vol.getFiles().add(f);
 				
 				Page p = new Page();
-				p.setID("page_" + i);
+				p.setId("page_" + i);
 				p.setOrder(i);
 				p.setOrderLabel("");
 				p.setType("page");
@@ -709,7 +710,7 @@ public class VolumeServiceBean {
 	}
 	
 	private static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
-	{ 
+	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -740,9 +741,8 @@ public class VolumeServiceBean {
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
 		vol.setTeiSd(teiSd);
-
 		
-	
+		
 		return vol;
 	}
 	
@@ -760,23 +760,42 @@ public class VolumeServiceBean {
 	}
 	
 	
+	public String transformTeiToMets(InputStream teiXml)throws Exception
+	{
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_ad_ids");
+			System.setProperty("javax.xml.transform.TransformerFactory",
+					"net.sf.saxon.TransformerFactoryImpl");
+			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			Source teiXmlSource = new StreamSource(teiXml);
+
+			StringWriter wr = new StringWriter();
+			javax.xml.transform.Result result = new StreamResult(wr);
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			
+			Transformer transformer = transfFactory.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(teiXmlSource, result);
+			
+			return wr.toString();
+		
+	}
+	
+	
 	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
 			System.setProperty("javax.xml.transform.TransformerFactory",
 					"net.sf.saxon.TransformerFactoryImpl");
-			File resultingXhtml = null;
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
 			Source teiXmlSource = new StreamSource(teiXml);
-			
-		
-			resultingXhtml = File.createTempFile("transformed", "xhtml");
+
 			StringWriter wr = new StringWriter();
 			javax.xml.transform.Result result = new StreamResult(wr);
-			
 			TransformerFactory transfFactory = TransformerFactory.newInstance();
 			Transformer transformer = transfFactory.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(teiXmlSource, result);
 			
 			return wr.toString();
