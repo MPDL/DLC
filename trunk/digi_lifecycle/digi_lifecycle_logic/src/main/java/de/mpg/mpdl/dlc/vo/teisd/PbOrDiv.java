@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.vo.teisd;
 
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlTransient;
 
 public class PbOrDiv {
 	
@@ -11,6 +12,9 @@ public class PbOrDiv {
 	
 	@XmlAttribute(name = "n")
 	private String numeration;
+	
+	@XmlTransient
+	protected String type;
 	
 	public String getId() {
 		return id;
@@ -26,6 +30,14 @@ public class PbOrDiv {
 
 	public void setNumeration(String numeration) {
 		this.numeration = numeration;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

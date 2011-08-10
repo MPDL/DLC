@@ -13,6 +13,8 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 @XmlRootElement(name = "div", namespace = "http://www.tei-c.org/ns/1.0")
 public class Div extends PbOrDiv {
 	
+	protected String type = "div";
+	
 	@XmlPath("/tei:head/text()")
 	private String head;
 	
