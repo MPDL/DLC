@@ -42,4 +42,10 @@ public class TestPaginatorBean extends BasePaginatorBean<String> {
 		return null;
 	}
 
+	@Override
+	public int getCurrentPageNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

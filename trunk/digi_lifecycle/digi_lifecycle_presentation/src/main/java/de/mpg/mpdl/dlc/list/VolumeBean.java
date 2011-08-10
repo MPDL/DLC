@@ -1,13 +1,14 @@
 package de.mpg.mpdl.dlc.list;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.AbortProcessingException;
+import javax.faces.event.ActionEvent;
 
 import org.apache.log4j.Logger;
 
@@ -20,9 +21,9 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
-public class VolumePagesBean extends BasePaginatorBean<Page>{
+public class VolumeBean extends BasePaginatorBean<Page>{
 	
-	private static Logger logger = Logger.getLogger(VolumePagesBean.class); 
+	private static Logger logger = Logger.getLogger(VolumeBean.class); 
 
 
 	@EJB 
@@ -36,14 +37,12 @@ public class VolumePagesBean extends BasePaginatorBean<Page>{
 	
 
 	private int totalNumberOfRecords;
+
 	private List<Page> pageList = new ArrayList<Page>();
     
-	public VolumePagesBean()
+	public VolumeBean()
 	{
 		super();
-
-		
-
 	}
 	
 	public List<Page> retrieveList(int offset, int limit) throws Exception 
@@ -52,6 +51,12 @@ public class VolumePagesBean extends BasePaginatorBean<Page>{
 		totalNumberOfRecords = pageList.size();
 		List<Page> subList = pageList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
 		return subList;
+	}
+	
+	
+	public int getCurrentPageNumber() {
+		setCurrentPageNumber(viewVolume.getCurrentPageNumber());
+		return viewVolume.getCurrentPageNumber();
 	}
 
 	public int getTotalNumberOfRecords() {
@@ -77,5 +82,8 @@ public class VolumePagesBean extends BasePaginatorBean<Page>{
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
 	}
+	
+
+
 
 }
