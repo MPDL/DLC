@@ -58,7 +58,7 @@
 			<span id="metaMenuSkipLinkAnchor" class="full_area0 metaMenu"> <!-- logo alternate starts here -->
 				<h:panelGroup layout="block" styleClass="free_area0 small_marginLExcl logoAlternate" rendered="#{headline != lbl.HomePage}">
 					<h:outputLink id="lnkStartPageAlternate" title="#{tlt.Home}" value="/#{applicationBean.contextPath}/">
-						<span>Max Planck Institut f&#252;r europ&#228;ische Rechtsgeschichte</span>
+						<span>Digitization Lifecycle Project</span>
 					</h:outputLink>
 				</h:panelGroup> 
 				<!-- logo alternate ends here --> 
