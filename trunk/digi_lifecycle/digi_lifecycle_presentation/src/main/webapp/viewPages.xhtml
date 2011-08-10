@@ -49,6 +49,20 @@
         </script>
 			
 			
+					
+		
+		
+		<rich:tree toggleType="ajax" var="divItem">
+            <rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
+                <rich:treeNode expanded="false" rendered ="#{divItem.type!='page'}">
+                    <h:commandLink action="#{viewPages.goTo(divItem)}">
+                    	<h:outputText value="#{divItem.type}: #{divItem.label}" />
+                    </h:commandLink>
+                </rich:treeNode>
+            </rich:treeModelRecursiveAdaptor>
+        </rich:tree>
+			
+			
 		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
 		
 		<br/>
@@ -72,6 +86,10 @@
 		</h:commandButton>	
 		<h:commandButton value=">>" action="#{viewPages.goToLastPage}">
 		</h:commandButton>	
+		
+
+		
+		
 		
 	</ui:define>
 
