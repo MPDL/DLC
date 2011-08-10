@@ -12,6 +12,11 @@
         <xsl:copy-of select="/tei:TEI"/>
     </xsl:param>
 
+     <xsl:variable name="logicalStructMapVar">
+	 <xsl:call-template name="structMapLogical">
+		<xsl:with-param name="createHelper" select="'true'"/>
+	 </xsl:call-template>
+      </xsl:variable>
 
     <xsl:template match="tei:TEI">
         <mets:mets
@@ -24,8 +29,10 @@
             <xsl:call-template name="dmdSec"/>
             -->
             <xsl:call-template name="fileSec"/>
-            <xsl:call-template name="structMap-physical"/>
-            <xsl:call-template name="structMap-logical"/>
+            <xsl:call-template name="structMapPhysical"/>
+             <xsl:call-template name="structMapLogical">
+           	 	<xsl:with-param name="createHelper" select="'false'"/>
+            </xsl:call-template>
             <xsl:call-template name="structLink"/>
         </mets:mets>
     </xsl:template>
@@ -81,7 +88,7 @@
     </xsl:template>
 
 
-    <xsl:template name="structMap-physical">
+    <xsl:template name="structMapPhysical">
         <mets:structMap TYPE="physical">
             <mets:div DMDID="dmd_0">
                 <!--
@@ -90,7 +97,7 @@
                 </xsl:attribute>
                 -->
                 <xsl:for-each select="//tei:pb">
-                    <xsl:apply-templates select="." mode="structMap-physical">
+                    <xsl:apply-templates select="." mode="structMapPhysical">
                         <xsl:with-param name="n">
                             <xsl:value-of select="@n"/>
                         </xsl:with-param>
@@ -103,7 +110,7 @@
         </mets:structMap>
     </xsl:template>
 
-    <xsl:template match="tei:pb" mode="structMap-physical">
+    <xsl:template match="tei:pb" mode="structMapPhysical">
         <xsl:param name="n"/>
         <xsl:param name="id"/>
         <mets:div TYPE="page">
@@ -128,21 +135,20 @@
 
   
     
-    <xsl:template name="structMap-logical">
-        <mets:structMap TYPE="logical">
-            <mets:div type="book">
-                <!--
-            <xsl:attribute name="LABEL">
-                    <xsl:call-template name="labelCitation"/>
-                </xsl:attribute>
-                -->
-                <xsl:apply-templates select="/tei:TEI/tei:text"/>
+    <xsl:template name="structMapLogical">
+       <xsl:param name="createHelper"/>
+    	<mets:structMap TYPE="logical">
+            <mets:div TYPE="book">
+                <xsl:apply-templates select="/tei:TEI/tei:text">
+                	<xsl:with-param name="createHelper" select="$createHelper"/>
+                </xsl:apply-templates>
             </mets:div>
         </mets:structMap>
     </xsl:template>
     
     <xsl:template match="tei:front|tei:div|tei:titlePage|tei:front/tei:epigraph|tei:back|tei:body">
-        <mets:div>
+        <xsl:param name="createHelper"/>
+    	<mets:div>
             <xsl:attribute name="ID">
                 <xsl:value-of select="@xml:id"/>
             </xsl:attribute>
@@ -199,27 +205,39 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:attribute>
-            <xsl:apply-templates />
-            <!--
-            <xsl:choose>
-                <xsl:when test=".//tei:pb">
-                    <xsl:apply-templates/>
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:apply-templates select="preceding::tei:pb[position()=1]"/>
-                </xsl:otherwise>
-            </xsl:choose>
-            -->
+            
+           
+                <xsl:if test="not(.//tei:pb)">
+                 <xsl:apply-templates select="preceding::tei:pb[position()=1]">
+                   	<xsl:with-param name="createHelper" select="$createHelper"/>
+                    </xsl:apply-templates>
+                </xsl:if>
+               <xsl:apply-templates>
+                    	<xsl:with-param name="createHelper" select="$createHelper"/>
+                </xsl:apply-templates>
+           
+           
             
         </mets:div>
     </xsl:template>
     
-    <!--
+ 
     <xsl:template match="tei:pb">
         <xsl:param name="n"><xsl:value-of select="@n"/></xsl:param>
         <xsl:param name="id"><xsl:value-of select="@xml:id"/></xsl:param>
-        <xsl:param name="chunkId"/>
+        <xsl:param name="createHelper"/>
+         <xsl:param name="chunkId"/>
         <mets:div TYPE="page">
+            <xsl:attribute name="ID">
+                <xsl:value-of select="generate-id()"/>
+            </xsl:attribute>
+            <!--Temporary variable to create structLink section-->
+            <xsl:if test="$createHelper='true'">
+		    <xsl:attribute name="pageId">
+			<xsl:value-of select="@xml:id"/>
+		    </xsl:attribute>
+	    </xsl:if>
+            
             <xsl:attribute name="ORDER">
                 <xsl:value-of select="count(preceding::pb[ancestor::*[@xml:id = $chunkId]]) + 1"/>
             </xsl:attribute>
@@ -230,15 +248,27 @@
             </xsl:if>
         </mets:div>
     </xsl:template>
-    -->
+  
+
+    
     
     
     <xsl:template name="structLink">
-    	<mets:structLink>
-    		<xsl:apply-templates mode="structLink" />
+        <mets:structLink>
+    		<xsl:for-each select="$logicalStructMapVar//mets:div[@TYPE='page' and @pageId]">
+    			<mets:smLink>
+    				<xsl:attribute name="xlink:from">
+    					<xsl:value-of select="@ID"/>
+    				</xsl:attribute>
+           
+    				<xsl:attribute name="xlink:to">
+    					<xsl:value-of select="@pageId"/>
+    				</xsl:attribute>
+    			</mets:smLink>
+    		</xsl:for-each>
     	</mets:structLink>	
     </xsl:template>
-
+<!--
  <xsl:template match="tei:front|tei:div|tei:titlePage|tei:front/tei:epigraph|tei:back|tei:body" mode="structLink">
             <xsl:choose>
                 <xsl:when test=".//tei:pb">
@@ -267,7 +297,7 @@
            
         </mets:smLink>
     </xsl:template>
-
+-->
     <xsl:template match="text()"/>
     <xsl:template match="text()" mode="structLink"/>
     

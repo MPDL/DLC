@@ -9,7 +9,7 @@ public class MetsFile {
 	
 	@XmlAttribute(name = "ID")
 	@XmlID
-	private String ID;
+	private String id;
 	
 	@XmlAttribute(name = "MIMETYPE")
 	private String mimeType;
@@ -20,13 +20,7 @@ public class MetsFile {
 	@XmlPath("mets:FLocat/@xlink:href")
 	private String href;
 
-	public String getID() {
-		return ID;
-	}
 
-	public void setID(String iD) {
-		ID = iD;
-	}
 
 	public String getMimeType() {
 		return mimeType;
@@ -50,5 +44,13 @@ public class MetsFile {
 
 	public void setHref(String href) {
 		this.href = href;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

@@ -3,14 +3,14 @@
 		xmlns:tei="http://www.tei-c.org/ns/1.0">
 		
 		
-		<xsl:template match="/tei:TEI|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb">
+		<xsl:template match="/tei:TEI|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:docTitle">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates />
 			</xsl:copy>
 		</xsl:template>
 		
-		<xsl:template match="tei:head">
+		<xsl:template match="tei:head|tei:titlePart">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:value-of select="."/>

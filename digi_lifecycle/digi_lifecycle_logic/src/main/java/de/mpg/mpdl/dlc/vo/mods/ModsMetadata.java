@@ -346,7 +346,8 @@ public class ModsMetadata {
 		
 
 		
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		/*
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		StringWriter sw = new StringWriter();
@@ -362,14 +363,14 @@ public class ModsMetadata {
 		{
 			
 			MetsFile f = new MetsFile();
-			f.setID("img_" + i);
+			f.setId("img_" + i);
 			f.setMimeType("image/jpg");
 			f.setLocatorType("OTHER");
 			f.setHref("dir/number" + i);
 			v.getFiles().add(f);
 			
 			Page p = new Page();
-			p.setID("page_" + i);
+			p.setId("page_" + i);
 			p.setOrder(i);
 			p.setOrderLabel("");
 			p.setType("page");
@@ -387,12 +388,12 @@ public class ModsMetadata {
 		System.out.println(sw2.toString());
 		MetsDocument.Factory.parse(sw2.toString());
 		
+		*/
 		
-		
-		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/trans_mods_example.xml");
+		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/trans_mets_example.xml");
 		Unmarshaller um = ctx.createUnmarshaller();
-		ModsMetadata unmarshalledMods = (ModsMetadata)um.unmarshal(example);
-		System.out.println(unmarshalledMods.getCatalogueId_001());
+		Volume unmarshalledVol = (Volume)um.unmarshal(example);
+		System.out.println(unmarshalledVol.getFiles());
 		//System.out.println(unmarshalledMets.getModsMetadata().getTitles().size());
 		
 		

@@ -1,19 +1,24 @@
 package de.mpg.mpdl.dlc.vo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-public class Page {
+public class MetsDiv {
 	
-	@XmlAttribute(name = "ID")
+
 	@XmlID
+	@XmlAttribute(name = "ID")
 	private String id;
 	
 	@XmlAttribute(name = "TYPE")
-	private String type = "page";
+	private String type;
 	
 	@XmlAttribute(name = "ORDER")
 	private int order;
@@ -21,11 +26,19 @@ public class Page {
 	@XmlAttribute(name = "ORDERLABEL")
 	private String orderLabel;
 	
-	@XmlPath("mets:fptr/@FILEID")
-	@XmlIDREF
-	private MetsFile file;
-
+	@XmlAttribute(name = "LABEL")
+	private String label;
 	
+	@XmlElement(name="div", namespace="http://www.loc.gov/METS/")
+	private List<MetsDiv> divs = new ArrayList<MetsDiv>();
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getType() {
 		return type;
@@ -51,25 +64,24 @@ public class Page {
 		this.orderLabel = orderLabel;
 	}
 
-	public MetsFile getFile() {
-		return file;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setFile(MetsFile file) {
-		this.file = file;
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
-	public String getId() {
-		return id;
+	public List<MetsDiv> getDivs() {
+		return divs;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setDivs(List<MetsDiv> divs) {
+		this.divs = divs;
 	}
 	
 	
+	//private List<MetsSmLink> smLinks = new ArrayList<MetsSmLink>();
 	
-	
-
 
 }

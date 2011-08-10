@@ -17,6 +17,7 @@ import gov.loc.mods.v3.ModsDocument;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
@@ -188,42 +189,67 @@ public class VolumeServiceBean {
 		logger.info("Empty item created: " + item.getObjid());
 		
 		
-		
-		//Create a volume
 		Volume vol = new Volume();
-		vol.setProperties(item.getProperties());
-		vol.setModsMetadata(modsMetadata);
-		vol.setItem(item);
+		File teiFileWithIds = null;
 		
-
-		int i = 0;
 		try {
-			
-			for(FileItem fileItem : images)
+			if(teiFile==null)
 			{
+
+				int i = 0;
 				
-				String dir = uploadFileToImageServer(fileItem, item.getObjid());
-				logger.info("File uploaded to " + dir);
-				
-				MetsFile f = new MetsFile();
-				f.setId("img_" + i);
-				f.setMimeType(fileItem.getContentType());
-				f.setLocatorType("OTHER");
-				f.setHref(dir);
-				vol.getFiles().add(f);
-				
-				Page p = new Page();
-				p.setId("page_" + i);
-				p.setOrder(i);
-				p.setOrderLabel("");
-				p.setType("page");
-				p.setFile(f);
-				vol.getPages().add(p);
-				i++;
+					
+					for(FileItem fileItem : images)
+					{
+						
+						String dir = uploadFileToImageServer(fileItem, item.getObjid());
+						logger.info("File uploaded to " + dir);
+						
+						MetsFile f = new MetsFile();
+						f.setId("img_" + i);
+						f.setMimeType(fileItem.getContentType());
+						f.setLocatorType("OTHER");
+						f.setHref(dir);
+						vol.getFiles().add(f);
+						
+						Page p = new Page();
+						p.setId("page_" + i);
+						p.setOrder(i);
+						p.setOrderLabel("");
+						p.setType("page");
+						p.setFile(f);
+						vol.getPages().add(p);
+						i++;
+					}
 			}
 			
-			vol = updateVolume(vol, teiFile, userHandle, true);
+			else
+			{
+				logger.info("TEI file found");
+				teiFileWithIds = addIdsToTei(teiFile.getInputStream());
+				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
+				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
+				
+				int i = 0;
+				for(FileItem fileItem : images)
+				{
+					
+					String dir = uploadFileToImageServer(fileItem, item.getObjid());
+					logger.info("File uploaded to " + dir);
+					vol.getFiles().get(i).setHref(dir);
+					i++;
+				}
+				
+			}
+		
+		
+			vol.setProperties(item.getProperties());
+			vol.setModsMetadata(modsMetadata);
+			vol.setItem(item);
+			vol = updateVolume(vol, teiFileWithIds, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
+		
 			
 		} catch (Exception e) {
 			logger.error("Error while creating Volume. Trying to rollback", e);
@@ -277,7 +303,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public Volume updateVolume(Volume vol, FileItem teiFile, String userHandle, boolean initial) throws Exception
+	public Volume updateVolume(Volume vol, File teiFile, String userHandle, boolean initial) throws Exception
 	{
 		
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
@@ -402,9 +428,10 @@ public class VolumeServiceBean {
 			if(teiFile!=null)
 			{
 
-				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
+
 				
 				//Transform TEI to Tei-SD and add to component
+				/*
 				String teiSd = transformTeiToTeiSd(teiFile.getInputStream());
 				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(teiSd.getBytes("UTF-8")));
 				Component teiSdComponent = new Component();
@@ -419,10 +446,10 @@ public class VolumeServiceBean {
 				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
 				item.getComponents().add(teiSdComponent);
-				
+				*/
 				
 				//Add original TEI as component
-				URL uploadedTei = sthc.upload(diskTeiFile.getInputStream());
+				URL uploadedTei = sthc.upload(new FileInputStream(teiFile));
 				Component teiComponent = new Component();
 				ComponentProperties teiCompProps = new ComponentProperties();
 				teiComponent.setProperties(teiCompProps);
@@ -715,7 +742,7 @@ public class VolumeServiceBean {
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
-		TeiSd teiSd = null;
+		//TeiSd teiSd = null;
 		Volume vol = null;
 		for(Component c : item.getComponents())
 		{
@@ -729,6 +756,7 @@ public class VolumeServiceBean {
 
 			}
 			
+			/*
 			else if (c.getProperties().getContentCategory().equals("tei-sd"))
 			{
 				
@@ -736,11 +764,12 @@ public class VolumeServiceBean {
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				teiSd = (TeiSd)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
 			}
+			*/
 		}
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
-		vol.setTeiSd(teiSd);
+		//vol.setTeiSd(teiSd);
 		
 		
 		return vol;
@@ -760,13 +789,39 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public String transformTeiToMets(InputStream teiXml)throws Exception
+	public File addIdsToTei(InputStream teiXml)throws Exception
 	{
 		
-			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_ad_ids");
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_add_ids.xslt");
 			System.setProperty("javax.xml.transform.TransformerFactory",
 					"net.sf.saxon.TransformerFactoryImpl");
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			
+			
+			Source teiXmlSource = new StreamSource(teiXml);
+
+			StringWriter wr = new StringWriter();
+			File temp = File.createTempFile("tei_with_ids", "xml");
+			javax.xml.transform.Result result = new StreamResult(temp);
+			TransformerFactory transfFactory = TransformerFactory.newInstance();
+			
+			Transformer transformer = transfFactory.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(teiXmlSource, result);
+			
+			return temp;
+		
+	}
+	
+	public String transformTeiToMets(InputStream teiXml)throws Exception
+	{
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_to_mets.xslt");
+			System.setProperty("javax.xml.transform.TransformerFactory",
+					"net.sf.saxon.TransformerFactoryImpl");
+			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			
+			
 			Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
@@ -780,6 +835,8 @@ public class VolumeServiceBean {
 			return wr.toString();
 		
 	}
+	
+	
 	
 	
 	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
