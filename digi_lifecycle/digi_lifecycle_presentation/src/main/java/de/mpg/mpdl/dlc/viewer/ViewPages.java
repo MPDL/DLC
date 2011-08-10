@@ -28,7 +28,7 @@ public class ViewPages {
 	
 	private String volumeId;
 	
-	private static Volume volume;
+	private Volume volume;
 	
 	private int selectedPageNumber;
 	
@@ -44,7 +44,6 @@ public class ViewPages {
 			{    
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
 				logger.info("Load new book" + volumeId);
-				
 			}  
 			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()));
 		} catch (Exception e) {

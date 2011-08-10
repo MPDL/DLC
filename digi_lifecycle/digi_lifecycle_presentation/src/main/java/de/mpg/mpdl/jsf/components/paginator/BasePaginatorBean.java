@@ -30,12 +30,15 @@ package de.mpg.mpdl.jsf.components.paginator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.StringTokenizer;
 
+import javax.faces.application.ViewHandler;
+import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
@@ -87,6 +90,11 @@ public abstract class BasePaginatorBean<ListElementType>
      * The current paginator page number
      */
     private int currentPageNumber;
+    
+    /**
+     * The page number from URL
+     */
+    private int pageNumber;
     /**
      * The current value of the 'go to' input fields
      */
@@ -127,6 +135,17 @@ public abstract class BasePaginatorBean<ListElementType>
         update(); 
         return "";
     }
+    
+    public String gerReload()
+    {
+    	FacesContext context = FacesContext.getCurrentInstance();
+    	String viewId = context.getViewRoot().getViewId();
+    	ViewHandler handler = context.getApplication().getViewHandler();
+    	UIViewRoot root = handler.createView(context, viewId);
+    	root.setViewId(viewId);
+    	context.setViewRoot(root);
+    	return "";
+    }
 
     /**
      * This method is called by the corresponding BaseListRetrieverRequestBean whenever the list has to be updated. It
@@ -135,9 +154,10 @@ public abstract class BasePaginatorBean<ListElementType>
      * subclasses.
      */ 
     public void update()
-    {
+    {  
         try 
         {  
+        	getCurrentPageNumber();
             if (elementsPerPage == 0)
             {
                 setElementsPerPage(24);
@@ -320,6 +340,9 @@ public abstract class BasePaginatorBean<ListElementType>
      */
     public String changeElementsPerPageTop(AjaxBehaviorEvent evt) throws Exception
     {
+    	System.err.println("changeElementsPerPageTop");
+    	System.err.println("change = "+elementsPerPage);
+    	System.out.println("change get = " + getElementsPerPage());
         setElementsPerPage(getElementsPerPageTop());
         // set new PageNumber to a number where the first element of the current Page is still displayed
         setCurrentPageNumber(((currentPageNumber - 1 * elementsPerPage + 1) / (elementsPerPage)) + 1);
@@ -401,10 +424,8 @@ public abstract class BasePaginatorBean<ListElementType>
      * 
      * @return
      */
-    public int getCurrentPageNumber()
-    {
-        return currentPageNumber;
-    }
+    public abstract int getCurrentPageNumber();
+    
 
     /**
      * Returns a list with the paginator pages. Used from jsf to iterate over the numbers
@@ -511,11 +532,24 @@ public abstract class BasePaginatorBean<ListElementType>
          * Returns the link that is used as output link of the paginator page button
          * 
          * @return
+         * @throws Exception 
          */
-        public String goToPage()
+        public String goToPage() throws Exception
         {
-            setCurrentPageNumber(getNumber());
-            return getNavigationString();
+//            setCurrentPageNumber(getNumber());
+//			  return getNavigationString();	
+
+        	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        	String url = request.getHeader("Referer");
+        	String newURL="";
+        	StringTokenizer st = new StringTokenizer(url, "/", true);
+        	int l = st.countTokens();
+        	for(int i = 1; i<l-1; i++)
+        		newURL += st.nextToken();
+        	newURL+= "/" + getNumber();
+        	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
+        	response.sendRedirect(newURL);
+        	return "";
         }
     }
 

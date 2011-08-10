@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.sun.tools.javac.comp.Todo;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
@@ -19,6 +20,7 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
+
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	
 	@EJB
@@ -62,6 +64,11 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
+	}
+
+	@Override
+	public int getCurrentPageNumber() {
+		return 1;
 	}
 	
 }
