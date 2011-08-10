@@ -13,20 +13,18 @@
 
 	<ui:define name="mainContent">
 
-		<mpdl:paginator paginatorBean="#{volumePagesBean}">
+		<mpdl:paginator paginatorBean="#{volumeBean}">
 		</mpdl:paginator>
 		
-		<mpdl:thumbList paginatorBean="#{volumePagesBean}">
-			<pretty:link mappingId="viewPages">
-				<f:param value="#{viewVolume.volumeId}" />
-				<f:param value="#{item.order}" />
 
+			<mpdl:list paginatorBean="#{volumeBean}">
+				<pretty:link mappingId="viewPages">
+					<f:param value="#{viewVolume.volumeId}" />
+					<f:param value="#{var.order}" />
+					<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+				</pretty:link>
+			</mpdl:list>
 
-						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(item,50,100)}" />
-
-				
-			</pretty:link>
-		</mpdl:thumbList>
 
 			
 		

@@ -12,15 +12,26 @@
 <ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
 			
-			<mpdl:paginator paginatorBean="#{allVolumesBean}">
-				<pretty:link mappingId="viewVolume">
-					<f:param value="#{var.item.objid}" />
-					
-					<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
-					<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>
-				</pretty:link>
-				<br/>
-			</mpdl:paginator>
+		<mpdl:paginator paginatorBean="#{allVolumesBean}">
+		</mpdl:paginator>
+			
+			
+		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
+			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
+				<a4j:repeat id="pictureList" var="var" value="#{allVolumesBean.currentPartList}" rows="0" rowKeyVar="index">
+					<li >
+						<h:panelGroup layout="block" id="imgFrame">
+							<pretty:link mappingId="viewVolume">
+								<f:param value="#{var.item.objid}" />
+								<f:param value="1" />
+								<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
+								<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>
+							</pretty:link>
+						</h:panelGroup>
+					</li>
+				</a4j:repeat>
+			</ul>
+		</h:panelGroup>
 			
 	</ui:define>
 
