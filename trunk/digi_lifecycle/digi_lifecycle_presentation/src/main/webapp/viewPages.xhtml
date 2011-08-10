@@ -54,8 +54,8 @@
 		
 		<rich:tree toggleType="ajax" var="divItem">
             <rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
-                <rich:treeNode expanded="false" rendered ="#{divItem.type!='page'}">
-                    <h:commandLink action="#{viewPages.goTo(divItem)}">
+                <rich:treeNode expanded="#{true}" rendered ="#{divItem.type!='page'}">
+                    <h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
                     	<h:outputText value="#{divItem.type}: #{divItem.label}" />
                     </h:commandLink>
                 </rich:treeNode>

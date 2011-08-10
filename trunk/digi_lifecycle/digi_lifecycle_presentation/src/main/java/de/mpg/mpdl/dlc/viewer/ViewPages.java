@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -34,6 +35,10 @@ public class ViewPages {
 	private int selectedPageNumber;
 	
 	private Page selectedPage;
+	
+	private MetsDiv selectedDiv;
+	
+	
 	private int i = 0;
 
 	
@@ -47,6 +52,14 @@ public class ViewPages {
 				logger.info("Load new book" + volumeId);
 			}  
 			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()));
+			List<MetsDiv> divForPage = volume.getDivMap().get(selectedPage);
+			if(divForPage!=null && divForPage.size()>0)
+			{	
+				this.selectedDiv = divForPage.get(0).getParentDiv();
+			}
+			
+			//this.selectedDiv
+			
 		} catch (Exception e) {
 			logger.error("Problem while loading Volume", e);
 			MessageHelper.errorMessage("Problem while loading volume");
@@ -141,12 +154,13 @@ public class ViewPages {
 	
 	public MetsDiv getNextPage(MetsDiv div)
 	{
-		if(div.getType().equals("page"))
+		if(div.getType()!=null && div.getType().equals("page"))
 		{
 			return div;
 		}
 		else
 		{	
+			
 			for(MetsDiv subDiv : div.getDivs())
 			{
 				return getNextPage(subDiv);
@@ -156,6 +170,15 @@ public class ViewPages {
 		return null;
 			
 	}
+
+	public MetsDiv getSelectedDiv() {
+		return selectedDiv;
+	}
+
+	public void setSelectedDiv(MetsDiv selectedDiv) {
+		this.selectedDiv = selectedDiv;
+	}
+	
 	
 
 	
