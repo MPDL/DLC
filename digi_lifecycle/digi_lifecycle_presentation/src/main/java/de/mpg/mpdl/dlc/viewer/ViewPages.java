@@ -14,6 +14,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.MetsDiv;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 
@@ -123,6 +124,37 @@ public class ViewPages {
         selectedPageNumber = 0; 
         loadVolume();
         return null;
+	}
+	
+	public void goTo(MetsDiv div)
+	{
+		MetsDiv nextPage = getNextPage(div);
+		Page p = volume.getPageMap().get(nextPage).get(0);
+		selectedPageNumber = volume.getPages().indexOf(p);
+		loadVolume();
+		
+		
+		
+		
+		
+	}
+	
+	public MetsDiv getNextPage(MetsDiv div)
+	{
+		if(div.getType().equals("page"))
+		{
+			return div;
+		}
+		else
+		{	
+			for(MetsDiv subDiv : div.getDivs())
+			{
+				return getNextPage(subDiv);
+			}
+			
+		}
+		return null;
+			
 	}
 	
 
