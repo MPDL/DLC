@@ -9,16 +9,19 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 
+
 <!-- INTERFACE -->
 <cc:interface>
 	<cc:attribute name="paginatorBean" required="true"/>
+	<cc:attribute name="varProLine" type="java.lang.Integer" />
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
-		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
+
+		<h:panelGroup id="varList" layout="block" styleClass="full_area0 noTopBorder">
 			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
-				<a4j:repeat id="pictureList" var="item" value="#{cc.attrs.paginatorBean.currentPartList}" rows="0" rowKeyVar="index">
+				<a4j:repeat id="pictureList" var="var" value="#{cc.attrs.paginatorBean.currentPartList}" rows="0" rowKeyVar="index">
 					<li class="large_area0 itemTile">
 						<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1 matrixItem">
 							<cc:insertChildren />
