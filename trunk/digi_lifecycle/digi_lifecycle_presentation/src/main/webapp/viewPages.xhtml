@@ -75,6 +75,9 @@
 			<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}"/>
 		</div>
 		
+		<div id="fulltext" style="width:400; height:1000; background-color:white;">
+			<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" />
+		</div>
 		<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}">
 			
 		</h:commandButton>	
