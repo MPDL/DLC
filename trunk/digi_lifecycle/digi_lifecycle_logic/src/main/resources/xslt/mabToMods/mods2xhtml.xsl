@@ -30,9 +30,16 @@
 					<xsl:for-each select="key('elements', name())">
 					<tr>
 					<td>
+					<!-- 
 					<xsl:for-each select="ancestor-or-self::*">
 						<xsl:value-of select="name()"/>
 						<xsl:if test="position() != last()"> / </xsl:if>
+					</xsl:for-each>
+					 -->
+					<xsl:for-each select="ancestor-or-self::*">
+						<xsl:if test="position() = last()">
+							<xsl:value-of select="name()"/>
+						</xsl:if>
 					</xsl:for-each>
 					</td>
 					<!-- 

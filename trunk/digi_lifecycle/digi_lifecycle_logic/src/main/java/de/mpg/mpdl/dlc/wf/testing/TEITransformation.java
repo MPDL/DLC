@@ -44,11 +44,11 @@ public class TEITransformation {
         	File xslFile;
 			try {
 				//xslFile = new File("src/main/resources/xsl/xhtml2/tei.xsl");
-				xslFile = new File("/home/frank/data/digitization_lifecycle/tei_samples/paged_tei.xsl");
+				xslFile = new File("/home/frank/data/digitization_lifecycle/tei_samples/single_tei2xhtml.xsl");
 				
 	        	XSL = new SAXSource(reader, new InputSource(xslFile.getAbsolutePath()));
 			    TransformerFactory transfFactory = TransformerFactory.newInstance();
-		        XML = new StreamSource(xmlFile);
+		        XML = new StreamSource(file);
 		        Result result = new StreamResult(new File("/home/frank/data/digitization_lifecycle/tei_samples/test.html"));
 		        transformer = transfFactory.newTransformer(XSL);
 		        transformer.transform(XML, result);

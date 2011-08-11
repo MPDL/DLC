@@ -29,15 +29,20 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import de.mpg.mpdl.dlc.tei.TEITransformer;
+
 public class XMLParser {
 
 	public static void main(String[] args) {
-		
+
 		long time = System.currentTimeMillis();
 		XMLParser parser = new XMLParser();
-		String uri = "http://latest-coreservice.mpdl.mpg.de:8080/ir/item/escidoc:1004/components/component/escidoc:3002/content";
-		File marx_struct = new File("/home/frank/data/digitization_lifecycle/tei_samples/ernst_struct.xml");
-		parser.extractStructure(uri, marx_struct);
+		// String uri =
+		// "http://latest-coreservice.mpdl.mpg.de:8080/ir/item/escidoc:1004/components/component/escidoc:3002/content";
+		// File tei_sd = new
+		// File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/struct.xml");
+		// parser.extractStructure(uri, tei_sd);
+		parser.transform();
 		time = System.currentTimeMillis() - time;
 		System.out.println("time to extract structure: " + time);
 	}
@@ -112,14 +117,16 @@ public class XMLParser {
 	public LinkedList<String>[] getTagLists(String uri, int start, int end)
 			throws Exception {
 		URL url = null;
+		if (uri.startsWith("http"))
+		{
 		try {
 			url = new URL(uri);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		// InputStream in = new
-		// FileInputStream("/home/frank/data/DARIAH/candidates/actions/actions/Texts/stalky.xml");
-		InputStream in = url.openStream();
+		// InputStream in = url.openStream();
+		}
+		InputStream in = new FileInputStream(uri);
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader parser = factory.createXMLEventReader(in);
 
@@ -163,14 +170,15 @@ public class XMLParser {
 	public LinkedHashMap<String, Integer> getPageBreakPositions(String uri)
 			throws Exception {
 		URL url = null;
-		try {
-			url = new URL(uri);
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
+		if (uri.startsWith("http")) {
+			try {
+				url = new URL(uri);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			// InputStream in = url.openStream();
 		}
-		// InputStream in = new
-		// FileInputStream("/home/frank/data/DARIAH/candidates/actions/actions/Texts/stalky.xml");
-		InputStream in = url.openStream();
+		InputStream in = new FileInputStream(uri);
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLEventReader parser = factory.createXMLEventReader(in);
 
@@ -210,11 +218,14 @@ public class XMLParser {
 			LinkedList<String> missingStartTags,
 			LinkedList<String> missingEndTags, File out)
 			throws XMLStreamException, IOException {
-		URL url = new URL(uri);
-		InputStream stream = url.openStream();
+		// URL url = new URL(uri);
+		// InputStream stream = url.openStream();
+		InputStream stream = new FileInputStream(uri);
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 
-		XMLEventReader reader = factory.createXMLEventReader(uri, stream);
+		// XMLEventReader reader = factory.createXMLEventReader(uri, stream);
+		XMLEventReader reader = factory.createXMLEventReader(stream);
+
 		XMLOutputFactory of = XMLOutputFactory.newInstance();
 		XMLEventWriter writer = of.createXMLEventWriter(new FileOutputStream(
 				out));
@@ -287,72 +298,75 @@ public class XMLParser {
 
 	public String getText(File in, File out) throws XMLStreamException,
 			IOException {
-		
+
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 
-		XMLStreamReader reader = factory.createXMLStreamReader(new FileInputStream(in));
+		XMLStreamReader reader = factory
+				.createXMLStreamReader(new FileInputStream(in));
 		XMLOutputFactory of = XMLOutputFactory.newInstance();
 		StringBuffer buffer = new StringBuffer();
 
 		while (reader.hasNext()) {
 			int event = reader.next();
 
-				switch (event) {
-				case XMLStreamConstants.END_DOCUMENT:
-					reader.close();
-					break;
-				case XMLStreamConstants.START_ELEMENT:
-					if (reader.getName().getLocalPart().equalsIgnoreCase("lb"))
-					{
-						buffer.append("\n");
-					}
-					System.out.println("processing: " + reader.getName());
-					if (reader.hasText())
-					{
-						System.out.println("element text of " + reader.getName() + ": " + reader.getElementText());
-					}
-					break;
-				case XMLStreamConstants.CHARACTERS:
-					if (!reader.isWhiteSpace()) {
-						String data = reader.getText().replace("           ", "").replace("\n", "");
-						buffer.append(data);
-					}
-					break;
-				default:
-					break;
+			switch (event) {
+			case XMLStreamConstants.END_DOCUMENT:
+				reader.close();
+				break;
+			case XMLStreamConstants.START_ELEMENT:
+				if (reader.getName().getLocalPart().equalsIgnoreCase("lb")) {
+					buffer.append("\n");
 				}
+				System.out.println("processing: " + reader.getName());
+				if (reader.hasText()) {
+					System.out.println("element text of " + reader.getName()
+							+ ": " + reader.getElementText());
+				}
+				break;
+			case XMLStreamConstants.CHARACTERS:
+				if (!reader.isWhiteSpace()) {
+					String data = reader.getText().replace("           ", "")
+							.replace("\n", "");
+					buffer.append(data);
+				}
+				break;
+			default:
+				break;
 			}
+		}
 		reader.close();
 		return buffer.toString();
 	}
 
-	public void extractStructure(String uri, File out)
-	{
+	public void extractStructure(String uri, File out) {
 		URL url;
-		String[] teiTags = new String[]{"text", "front", "body", "back", "titlePage", "pb", "div", "head", "figure"};
+		String[] teiTags = new String[] { "text", "front", "body", "back",
+				"titlePage", "pb", "div", "head", "figure" };
 		try {
 			url = new URL(uri);
 			InputStream stream = url.openStream();
 			XMLInputFactory factory = XMLInputFactory.newInstance();
 
-			//XMLEventReader reader = factory.createXMLEventReader(uri, stream);
-			XMLEventReader reader = factory.createXMLEventReader(new FileReader("/home/frank/data/digitization_lifecycle/tei_samples/ernstcurtius_v02.xmlx "));
+			// XMLEventReader reader = factory.createXMLEventReader(uri,
+			// stream);
+			XMLEventReader reader = factory
+					.createXMLEventReader(new FileReader(
+							"/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-990.tei"));
 			XMLOutputFactory of = XMLOutputFactory.newInstance();
-			XMLEventWriter writer = of.createXMLEventWriter(new FileOutputStream(
-					out));
+			XMLEventWriter writer = of
+					.createXMLEventWriter(new FileOutputStream(out));
 			XMLEventFactory ef = XMLEventFactory.newInstance();
 			StartDocument sd_tei = ef.createStartDocument("UTF-8", "1.0");
 			StartElement se_tei = ef.createStartElement("",
 					"http://www.tei-c.org/ns/1.0", "TEI");
 			Namespace ns = ef.createNamespace("http://www.tei-c.org/ns/1.0");
 			EndElement ee_tei = ef.createEndElement("", "", "TEI");
-			
+
 			writer.add(sd_tei);
 			writer.add(se_tei);
 			writer.add(ns);
-			
-			while (reader.hasNext())
-			{
+
+			while (reader.hasNext()) {
 				XMLEvent event = reader.nextEvent();
 				switch (event.getEventType()) {
 				case XMLStreamConstants.END_DOCUMENT:
@@ -360,22 +374,18 @@ public class XMLParser {
 					break;
 				case XMLStreamConstants.START_ELEMENT:
 					StartElement startTag = event.asStartElement();
-					for (String tag : teiTags)
-					{
-						if (startTag.getName().getLocalPart().equalsIgnoreCase(tag))
-						{
-							if (startTag.getName().getLocalPart().equalsIgnoreCase("head"))
-							{
+					for (String tag : teiTags) {
+						if (startTag.getName().getLocalPart()
+								.equalsIgnoreCase(tag)) {
+							if (startTag.getName().getLocalPart()
+									.equalsIgnoreCase("head")) {
 								XMLEvent next = reader.peek();
-								if (next.isCharacters())
-								{
+								if (next.isCharacters()) {
 									Characters chars = next.asCharacters();
 									writer.add(startTag);
 									writer.add(chars);
 								}
-							}
-							else
-							{
+							} else {
 								writer.add(startTag);
 							}
 						}
@@ -383,10 +393,9 @@ public class XMLParser {
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 					EndElement endTag = event.asEndElement();
-					for (String tag : teiTags)
-					{
-						if (endTag.getName().getLocalPart().equalsIgnoreCase(tag))
-						{
+					for (String tag : teiTags) {
+						if (endTag.getName().getLocalPart()
+								.equalsIgnoreCase(tag)) {
 							writer.add(endTag);
 						}
 					}
@@ -407,17 +416,21 @@ public class XMLParser {
 			e.printStackTrace();
 		}
 	}
-	
-	public void transform()
-	{
+
+	public void transform() {
 		long time = System.currentTimeMillis();
 		XMLParser parser = new XMLParser();
-		String uri = "http://latest-coreservice.mpdl.mpg.de:8080/ir/item/escidoc:1004/components/component/escidoc:3002/content";
+		//String uri =
+		//"http://latest-coreservice.mpdl.mpg.de:8080/ir/item/escidoc:1004/components/component/escidoc:3002/content";
+		//String uri = "/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-990.tei";
+		String uri = "/home/frank/data/digitization_lifecycle/tei_samples/marx.xml";
+
 		File pagedTEI = new File(
-				"/home/frank/data/digitization_lifecycle/tei_samples/page.xml");
+				"/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/page.xml");
 		File pagedTXT = new File(
-		"/home/frank/data/digitization_lifecycle/tei_samples/page.txt");
-		File marx_struct = new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_struct.xml");
+				"/home/frank/data/digitization_lifecycle/tei_samples/page.txt");
+		File marx_struct = new File(
+				"/home/frank/data/digitization_lifecycle/tei_samples/marx_struct.xml");
 		int start = 0;
 		int end = 0;
 		try {
@@ -425,20 +438,21 @@ public class XMLParser {
 					.getPageBreakPositions(uri);
 			Integer[] offsets = new Integer[pbs.values().size()];
 			offsets = pbs.values().toArray(offsets);
-			start = offsets[offsets.length - 5];
-			end = offsets[offsets.length - 4];
+			start = offsets[offsets.length - 7];
+			end = offsets[offsets.length - 6];
 			LinkedList[] taglists = parser.getTagLists(uri, start, end);
 			File teiPage = parser.createPage(uri, start, end, taglists[1],
 					taglists[0], pagedTEI);
-			//String txt = parser.getText(teiPage, pagedTXT);
-			//System.out.println(txt);
+			// String txt = parser.getText(teiPage, pagedTXT);
+			// System.out.println(txt);
 			// TEIValidator.check(teiPage);
-			TEITransformation tt = new TEITransformation();
-			tt.html(teiPage);
+			InputStream xslt = XMLParser.class.getClassLoader().getResourceAsStream("xslt/teiToXhtml/tei_page2xhtml.xsl");
+			String result = TEITransformer.teiFileToXhtml(teiPage, xslt);
 			time = System.currentTimeMillis() - time;
 			System.out
-					.println("total time to build and transform XML for page: "
+					.println("total time to build and transform TEI page: "
 							+ time + " ms");
+			System.out.println(result);
 
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
@@ -451,8 +465,7 @@ public class XMLParser {
 		}
 
 	}
-	
-	
+
 	/*
 	 * for (LinkedList list : taglists) { Iterator<String> li =
 	 * list.descendingIterator(); while (li.hasNext()) {
