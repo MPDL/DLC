@@ -15,13 +15,17 @@ import gov.loc.mets.MetsType.FileSec.FileGrp;
 import gov.loc.mets.StructMapType;
 import gov.loc.mods.v3.ModsDocument;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -112,13 +116,16 @@ import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
+import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.tei.TEITransformer;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsFile;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
+import de.mpg.mpdl.dlc.wf.testing.TEITransformation;
 
 @Stateless
 public class VolumeServiceBean {
@@ -202,7 +209,7 @@ public class VolumeServiceBean {
 					for(FileItem fileItem : images)
 					{
 						
-						String dir = uploadFileToImageServer(fileItem, item.getObjid());
+						String dir = ImageController.uploadFileToImageServer(fileItem, item.getObjid());
 						logger.info("File uploaded to " + dir);
 						
 						MetsFile f = new MetsFile();
@@ -235,7 +242,7 @@ public class VolumeServiceBean {
 				for(FileItem fileItem : images)
 				{
 					
-					String dir = uploadFileToImageServer(fileItem, item.getObjid());
+					String dir = ImageController.uploadFileToImageServer(fileItem, item.getObjid());
 					logger.info("File uploaded to " + dir);
 					vol.getFiles().get(i).setHref(dir);
 					i++;
@@ -494,39 +501,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	private String uploadFileToImageServer(FileItem item, String directory) throws Exception
-	{
-		/*
-		File tmpFile = File.createTempFile(item.getName(), "tmp");
-		item.write(tmpFile);
-		*/
-		HttpClient client = new HttpClient( );
-
-		String weblintURL = PropertyReader.getProperty("image-upload.url");
-    	PostMethod method = new PostMethod(weblintURL);
-    	Part[] parts = new Part[2];
-    	parts[0] = new StringPart("directory", directory);
-    	parts[1] = new FilePart(item.getName(), new ByteArrayPartSource(item.getName(), item.get()));
-    	
-    	//parts[1] = new FilePart( item.getName(), tmpFile );
-    	HttpMethodParams params = new HttpMethodParams();
-    	method.setRequestEntity(new MultipartRequestEntity(parts, params));
-    	String username = PropertyReader.getProperty("image-upload.username");
-    	String password = PropertyReader.getProperty("image-upload.password");
-    	String handle = "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes()));
-    	method.addRequestHeader("authorization", handle);
-    	// Execute and print response
-    	client.executeMethod( method );
-    	String response = method.getResponseBodyAsString( );
-    	logger.info("Image Upload servlet responded with: " + method.getStatusCode() + "\n" + response);
-    	method.releaseConnection( );
-    	if(response == null || !(method.getStatusCode()==201 || method.getStatusCode()==200))
-    	{
-    		throw new RuntimeException("File Upload Servlet responded with: " + method.getStatusCode() + "\n" + method.getResponseBodyAsString());
-    	}
-
-    	return response;
-	}
+	
 	
 	public static void main(String[] args) throws Exception
 	{
@@ -744,6 +719,7 @@ public class VolumeServiceBean {
 		
 		//TeiSd teiSd = null;
 		Volume vol = null;
+		String tei = null;
 		for(Component c : item.getComponents())
 		{
 			if (c.getProperties().getContentCategory().equals("mets"))
@@ -756,25 +732,51 @@ public class VolumeServiceBean {
 
 			}
 			
-			/*
-			else if (c.getProperties().getContentCategory().equals("tei-sd"))
+			else if (c.getProperties().getContentCategory().equals("tei"))
 			{
 				
-				JAXBContext ctx = JAXBContext.newInstance(new Class[] { TeiSd.class });
-				Unmarshaller unmarshaller = ctx.createUnmarshaller();
-				teiSd = (TeiSd)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
+				tei = convertStreamToString(client.retrieveContent(item.getObjid(), c.getObjid()));
 			}
-			*/
+			
 		}
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
+		vol.setTei(tei);
 		//vol.setTeiSd(teiSd);
 		
 		
 		return vol;
 	}
 	
+	
+	public static String convertStreamToString(InputStream is)
+            throws IOException {
+        /*
+         * To convert the InputStream to String we use the
+         * Reader.read(char[] buffer) method. We iterate until the
+         * Reader return -1 which means there's no more data to
+         * read. We use the StringWriter class to produce the string.
+         */
+        if (is != null) {
+            Writer writer = new StringWriter();
+
+            char[] buffer = new char[1024];
+            try {
+                Reader reader = new BufferedReader(
+                        new InputStreamReader(is, "UTF-8"));
+                int n;
+                while ((n = reader.read(buffer)) != -1) {
+                    writer.write(buffer, 0, n);
+                }
+            } finally {
+                is.close();
+            }
+            return writer.toString();
+        } else {        
+            return "";
+        }
+    }
 	
 	public static ModsMetadata createModsMetadataFromXml(InputStream xml) throws Exception
 	{
@@ -788,6 +790,12 @@ public class VolumeServiceBean {
 		
 	}
 	
+	public String getXhtmlForPage(Page p, String tei) throws Exception
+	{
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei_pageByPbId2xhtml.xsl");
+		ByteArrayInputStream bis = new ByteArrayInputStream(tei.getBytes("UTF-8"));
+		return TEITransformer.teiStreamToXhtmlByPagebreakId(bis, url.openStream(), p.getId());
+	}
 	
 	public File addIdsToTei(InputStream teiXml)throws Exception
 	{

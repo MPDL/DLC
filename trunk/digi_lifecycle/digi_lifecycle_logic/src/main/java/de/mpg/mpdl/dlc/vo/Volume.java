@@ -9,6 +9,7 @@ import gov.loc.mods.v3.ModsDocument;
 import gov.loc.mods.v3.ModsType;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.w3c.dom.Node;
 
 
+import de.escidoc.core.resources.HttpInputStream;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.Properties;
 import de.escidoc.core.resources.om.item.Item;
@@ -68,6 +70,9 @@ public class Volume {
 	
 	@XmlTransient
 	private Item item;
+	
+	@XmlTransient
+	private String tei;
 	
 	//@XmlTransient
 	//private TeiSd teiSd;
@@ -191,18 +196,21 @@ public class Volume {
 		{
 
 			divMap = new HashMap<Page, List<MetsDiv>>();
-			
-			for(MetsSmLink smLink : metsStructLink.getSmLinks())
+			if(metsStructLink!=null)
 			{
-				if(divMap.get(smLink.getTo()) == null)
+			
+				for(MetsSmLink smLink : metsStructLink.getSmLinks())
 				{
-					divMap.put(smLink.getTo(), new ArrayList<MetsDiv>());
+					if(divMap.get(smLink.getTo()) == null)
+					{
+						divMap.put(smLink.getTo(), new ArrayList<MetsDiv>());
+					}
+					
+					List<MetsDiv> divListForPage = divMap.get(smLink.getTo());
+					
+					divListForPage.add(smLink.getFrom());
+					
 				}
-				
-				List<MetsDiv> divListForPage = divMap.get(smLink.getTo());
-				
-				divListForPage.add(smLink.getFrom());
-				
 			}
 		}
 		return divMap;
@@ -218,20 +226,24 @@ public class Volume {
 
 			pageMap = new HashMap<MetsDiv, List<Page>>();
 			
-			for(MetsSmLink smLink : metsStructLink.getSmLinks())
+			if(metsStructLink!=null)
 			{
-
-				if(pageMap.get(smLink.getFrom()) == null)
+				for(MetsSmLink smLink : metsStructLink.getSmLinks())
 				{
-					pageMap.put(smLink.getFrom(), new ArrayList<Page>());
+
+					if(pageMap.get(smLink.getFrom()) == null)
+					{
+						pageMap.put(smLink.getFrom(), new ArrayList<Page>());
+					}
+					
+					List<Page> pageListForDiv = pageMap.get(smLink.getFrom());
+					
+					
+					pageListForDiv.add(smLink.getTo());
+					
 				}
-				
-				List<Page> pageListForDiv = pageMap.get(smLink.getFrom());
-				
-				
-				pageListForDiv.add(smLink.getTo());
-				
 			}
+			
 		}
 		
 		return pageMap;
@@ -247,6 +259,16 @@ public class Volume {
 
 	public void setLogicalStructure(List<MetsDiv> logicalStructure) {
 		this.logicalStructure = logicalStructure;
+	}
+	
+	
+	public String getTei() {
+		return this.tei;
+	}
+
+	public void setTei(String tei) {
+		this.tei = tei;
+		
 	}
 	
 	
