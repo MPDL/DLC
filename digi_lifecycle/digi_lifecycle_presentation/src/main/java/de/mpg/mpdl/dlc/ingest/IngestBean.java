@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
@@ -25,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
 
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
@@ -57,6 +59,10 @@ public class IngestBean implements Serializable {
 	private LoginBean loginBean;
 	
 	private int moveTo;
+	
+	private String selectedContextId;
+	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
+	
  
 	@EJB
 	private VolumeServiceBean volumeService;
@@ -99,6 +105,8 @@ public class IngestBean implements Serializable {
     public void setImageFiles(ArrayList<FileItem> files) {
         this.imageFiles = files;
     }
+    
+  
 
 	/*
 	
@@ -292,7 +300,7 @@ public class IngestBean implements Serializable {
     			return;
     		}
     		
-    		volumeService.createNewVolume("escidoc:5002", getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
+    		volumeService.createNewVolume(getSelectedContextId(), getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
 		} catch (Exception e) {
 			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
 		}
@@ -338,6 +346,28 @@ public class IngestBean implements Serializable {
 
 	public void setNumberOfTeiPbs(int numberOfTeiPbs) {
 		this.numberOfTeiPbs = numberOfTeiPbs;
+	}
+
+	public String getSelectedContextId() {
+		return selectedContextId;
+	}
+
+	public void setSelectedContextId(String selectedContextId) {
+		this.selectedContextId = selectedContextId;
+	}
+
+	public List<SelectItem> getContextSelectItems() {
+		contextSelectItems.clear();
+		for(Context c : loginBean.getDepositorContexts())
+		{
+			contextSelectItems.add(new SelectItem(c.getObjid(), c.getProperties().getName()));
+		}
+		
+		return contextSelectItems;
+	}
+
+	public void setContextSelectItems(List<SelectItem> contextSelectItems) {
+		this.contextSelectItems = contextSelectItems;
 	}
 	
 	

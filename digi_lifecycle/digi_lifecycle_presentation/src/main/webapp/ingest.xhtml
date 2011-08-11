@@ -20,7 +20,14 @@
 			
 			
 			<rich:panel>
+				<h:selectOneMenu value="#{ingestBean.selectedContextId}">
+						<f:selectItems value="#{ingestBean.contextSelectItems}"/>
+				</h:selectOneMenu>
+			
 				<h:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}"/>
+				
+				
+				
 			</rich:panel>
 			
 			<rich:panel header="Upload your files...">

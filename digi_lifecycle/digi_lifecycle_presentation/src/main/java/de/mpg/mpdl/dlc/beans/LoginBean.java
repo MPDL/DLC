@@ -1,14 +1,22 @@
 package de.mpg.mpdl.dlc.beans;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
+
+import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.UserAccountHandlerClient;
+import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @ManagedBean
@@ -21,6 +29,10 @@ public class LoginBean
     public static final String LOGOUT_URL = "/aa/logout?target=$1";
     private String userHandle;
     private UserAccount userAccount;
+    private Grants grants;
+    private List<Context> depositorContexts = new ArrayList<Context>();
+    
+    
     
     public final boolean getLoginState()
     {
@@ -46,6 +58,20 @@ public class LoginBean
                     UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
                     client.setHandle(userHandle);
                     this.userAccount = client.retrieveCurrentUser();
+                    this.setGrants(client.retrieveCurrentGrants(userAccount));
+                    
+                    ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+                    depositorContexts.clear();
+                    for(Grant grant : grants)
+                    {
+                    	if(grant.getProperties().getRole().getObjid().equals("escidoc:role-depositor"))
+                    	{
+                    		Context c = contextClient.retrieve(grant.getProperties().getAssignedOn().getObjid());
+                    		depositorContexts.add(c);
+                    	}
+                    	
+                    }
+                    
                 }
                 catch (Exception e)
                 {
@@ -137,6 +163,26 @@ public class LoginBean
     {
     	return PropertyReader.getProperty("escidoc.common.framework.url")+LOGOUT_URL;
     }
+
+
+	public Grants getGrants() {
+		return grants;
+	}
+
+
+	public void setGrants(Grants grants) {
+		this.grants = grants;
+	}
+
+
+	public List<Context> getDepositorContexts() {
+		return depositorContexts;
+	}
+
+
+	public void setDepositorContexts(List<Context> depositorContexts) {
+		this.depositorContexts = depositorContexts;
+	}
     
 
 }

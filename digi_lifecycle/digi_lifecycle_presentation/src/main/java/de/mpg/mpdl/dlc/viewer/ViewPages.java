@@ -13,6 +13,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.tei.TEITransformer;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsDiv;
@@ -37,10 +38,6 @@ public class ViewPages {
 	private Page selectedPage;
 	
 	private MetsDiv selectedDiv;
-	
-	
-	private int i = 0;
-
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
@@ -179,6 +176,13 @@ public class ViewPages {
 		this.selectedDiv = selectedDiv;
 	}
 	
+	
+	public String getXhtmlForPage() throws Exception
+	{
+		String tei = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getTei());
+		logger.info(tei);
+		return tei;
+	}
 	
 
 	
