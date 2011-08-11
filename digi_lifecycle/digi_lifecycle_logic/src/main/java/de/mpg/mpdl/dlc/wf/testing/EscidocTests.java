@@ -39,15 +39,16 @@ public class EscidocTests {
 	 */
 	public static void main(String[] args) {
 
-		File mab = new File("/home/frank/data/digitization_lifecycle/dlib-journals/single_mab");
+		File mab = new File("/home/frank/data/digitization_lifecycle/dlib-journals/single.mab");
 		String mabId = "74525";
 
 		// getFileMd();
 		// itemxml("dlc:1234", "dlc:2222");
-		//File mabxml = mab2xml(mab);
+		File mabxml = mab2xml(mab);
 		//getthetei();
 		//createCModel();
-		testMab3Mods(mabId, mab);
+		//testMab3Mods(null, mab);
+		mab2mods(mabxml);
 	}
 	
 	public static void testMab3Mods(String id, File f)
@@ -114,12 +115,22 @@ public class EscidocTests {
 
 
 		String mabId = "74525";
-		ModsDocument md = MabToMods.fromMabXml(mabxml, mabId);
-		// System.out.println(md.xmlText(XBeanUtils.getModsOpts()));
 		
 		MabXmlTransformation mxt = new MabXmlTransformation();
 		DatensatzType dst = mxt.getMabRecord(mabId, mabxml);
 		File modsFile = mxt.getMods(dst);
+		try {
+			ModsDocument doc = ModsDocument.Factory.parse(modsFile);
+			System.out.println(doc.xmlText(XBeanUtils.getModsOpts()));
+			File xhtml = mxt.getModsAsXhtml(doc, xslt2xhtml);
+			System.out.println(xhtml.getAbsolutePath());
+		} catch (XmlException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
