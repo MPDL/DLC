@@ -6,8 +6,15 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="2.0">
 
-    <xsl:output indent="yes"/>
+    
 
+    
+   <xsl:template match="@*|*|processing-instruction()|comment()|text()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()"/>
+    </xsl:copy>
+  </xsl:template>
+    
    <xsl:template match="tei:pb|tei:div|tei:back|tei:front|tei:body|tei:titlePage">
     <xsl:copy>
       <xsl:if test="not(@xml:id)">
@@ -15,13 +22,9 @@
           <xsl:value-of select="generate-id()"/>
         </xsl:attribute>
       </xsl:if>
-      <xsl:apply-templates select="@*|node()"/>
+      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()"/>
     </xsl:copy>
   </xsl:template>
 
-  <xsl:template match="@*|node()">
-    <xsl:copy>
-      <xsl:apply-templates select="@*|node()"/>
-    </xsl:copy>
-  </xsl:template>
+
 </xsl:stylesheet>
