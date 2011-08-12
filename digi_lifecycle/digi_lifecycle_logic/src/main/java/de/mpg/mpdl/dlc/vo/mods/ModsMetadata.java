@@ -2,7 +2,9 @@ package de.mpg.mpdl.dlc.vo.mods;
 
 import gov.loc.mets.MetsDocument;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -15,9 +17,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.Result;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.MetsFile;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -390,10 +394,19 @@ public class ModsMetadata {
 		
 		*/
 		
-		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/trans_mets_example.xml");
-		Unmarshaller um = ctx.createUnmarshaller();
-		Volume unmarshalledVol = (Volume)um.unmarshal(example);
-		System.out.println(unmarshalledVol.getFiles());
+		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/ernstcurtius_v03_ids.xml");
+		File teiFileWithIds = VolumeServiceBean.addIdsToTei(new FileInputStream(example));
+		String mets = VolumeServiceBean.transformTeiToMets(new FileInputStream(teiFileWithIds));
+		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		Volume vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
+		
+		System.out.println(mets);
+		
+		System.out.println("------------------------------------------------");
+		StringWriter sw = new StringWriter();
+		Marshaller m = ctx.createMarshaller();
+		m.marshal(vol, sw);
+		System.out.println(sw.toString());
 		//System.out.println(unmarshalledMets.getModsMetadata().getTitles().size());
 		
 		
