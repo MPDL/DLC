@@ -21,7 +21,7 @@
 				<a4j:repeat id="pictureList" var="var" value="#{allVolumesBean.currentPartList}" rows="0" rowKeyVar="index">
 					<li >
 						<h:panelGroup layout="block" id="imgFrame">
-							<pretty:link mappingId="viewVolume">
+							<pretty:link mappingId="viewPages">
 								<f:param value="#{var.item.objid}" />
 								<f:param value="1" />
 								<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
