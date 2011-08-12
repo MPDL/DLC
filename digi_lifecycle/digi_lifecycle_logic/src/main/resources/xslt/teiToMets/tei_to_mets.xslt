@@ -207,7 +207,7 @@
             </xsl:attribute>
             
            
-                <xsl:if test="not(.//tei:pb)">
+                <xsl:if test="preceding::tei:pb[position()=1]">
                  <xsl:apply-templates select="preceding::tei:pb[position()=1]">
                    	<xsl:with-param name="createHelper" select="$createHelper"/>
                     </xsl:apply-templates>
@@ -229,7 +229,7 @@
          <xsl:param name="chunkId"/>
         <mets:div TYPE="page">
             <xsl:attribute name="ID">
-                <xsl:value-of select="generate-id()"/>
+                <xsl:value-of select="generate-id(.)"/>
             </xsl:attribute>
             <!--Temporary variable to create structLink section-->
             <xsl:if test="$createHelper='true'">

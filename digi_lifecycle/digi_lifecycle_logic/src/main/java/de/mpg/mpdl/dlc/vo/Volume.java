@@ -86,6 +86,9 @@ public class Volume {
 	@XmlTransient
 	private Map<MetsDiv, List<Page>> pageMap;
 
+	@XmlTransient
+	private String pagedTei;
+
 	
 
 	public Volume ()
@@ -270,6 +273,16 @@ public class Volume {
 		this.tei = tei;
 		
 	}
+
+	public void setPagedTei(String pagedTei) {
+		this.pagedTei = pagedTei;
+		
+	}
+	
+	public String getPagedTei() {
+		return pagedTei;
+	}
+
 	
 	
 	
