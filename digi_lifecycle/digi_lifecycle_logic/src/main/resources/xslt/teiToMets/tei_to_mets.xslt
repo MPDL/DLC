@@ -229,7 +229,7 @@
          <xsl:param name="chunkId"/>
         <mets:div TYPE="page">
             <xsl:attribute name="ID">
-                <xsl:value-of select="generate-id(.)"/>
+                <xsl:value-of select="concat(generate-id(),'_logic')"/>
             </xsl:attribute>
             <!--Temporary variable to create structLink section-->
             <xsl:if test="$createHelper='true'">
