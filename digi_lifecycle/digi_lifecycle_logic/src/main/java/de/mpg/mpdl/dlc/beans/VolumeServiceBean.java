@@ -438,22 +438,22 @@ public class VolumeServiceBean {
 
 				
 				//Transform TEI to Tei-SD and add to component
-				/*
-				String teiSd = transformTeiToTeiSd(teiFile.getInputStream());
+				
+				String teiSd = transformTeiToPagedTei(new FileInputStream(teiFile));
 				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(teiSd.getBytes("UTF-8")));
 				Component teiSdComponent = new Component();
 				ComponentProperties teiSdCompProps = new ComponentProperties();
 				teiSdComponent.setProperties(teiSdCompProps);
 				
 				teiSdComponent.getProperties().setMimeType("text/xml");
-				teiSdComponent.getProperties().setContentCategory("tei-sd");
+				teiSdComponent.getProperties().setContentCategory("tei-paged");
 				teiSdComponent.getProperties().setVisibility("public");
 				ComponentContent teiSdContent = new ComponentContent();
 				teiSdComponent.setContent(teiSdContent);
 				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
 				item.getComponents().add(teiSdComponent);
-				*/
+				
 				
 				//Add original TEI as component
 				URL uploadedTei = sthc.upload(new FileInputStream(teiFile));
@@ -720,6 +720,7 @@ public class VolumeServiceBean {
 		//TeiSd teiSd = null;
 		Volume vol = null;
 		String tei = null;
+		String pagedTei = null;
 		for(Component c : item.getComponents())
 		{
 			if (c.getProperties().getContentCategory().equals("mets"))
@@ -738,19 +739,25 @@ public class VolumeServiceBean {
 				tei = convertStreamToString(client.retrieveContent(item.getObjid(), c.getObjid()));
 			}
 			
+			else if (c.getProperties().getContentCategory().equals("tei-paged"))
+			{
+				
+				pagedTei = convertStreamToString(client.retrieveContent(item.getObjid(), c.getObjid()));
+			}
+			
 		}
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
 		vol.setTei(tei);
-		//vol.setTeiSd(teiSd);
+		vol.setPagedTei(pagedTei);
 		
 		
 		return vol;
 	}
 	
 	
-	public static String convertStreamToString(InputStream is)
+	private static String convertStreamToString(InputStream is)
             throws IOException {
         /*
          * To convert the InputStream to String we use the
@@ -797,7 +804,7 @@ public class VolumeServiceBean {
 		return TEITransformer.teiStreamToXhtmlByPagebreakId(bis, url.openStream(), p.getId());
 	}
 	
-	public File addIdsToTei(InputStream teiXml)throws Exception
+	public static File addIdsToTei(InputStream teiXml)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_add_ids.xslt");
@@ -821,7 +828,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public String transformTeiToMets(InputStream teiXml)throws Exception
+	public static String transformTeiToMets(InputStream teiXml)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_to_mets.xslt");
@@ -847,10 +854,10 @@ public class VolumeServiceBean {
 	
 	
 	
-	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
+	public String transformTeiToPagedTei(InputStream teiXml)throws Exception
 	{
 		
-			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToPagedTei/teiToPagedTei.xsl");
 			System.setProperty("javax.xml.transform.TransformerFactory",
 					"net.sf.saxon.TransformerFactoryImpl");
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
