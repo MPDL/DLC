@@ -8,7 +8,9 @@
 		<TEI>
 			<teiHeader/>
 			<text>
+			<body>
 				<xsl:apply-templates select="."/>
+				</body>
 			</text>
 		</TEI>
 	</xsl:template>

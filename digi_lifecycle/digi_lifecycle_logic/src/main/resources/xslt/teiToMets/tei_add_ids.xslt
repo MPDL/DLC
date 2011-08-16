@@ -7,7 +7,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink" version="2.0">
 
     
-
+    <xsl:output indent="yes"/>
     
    <xsl:template match="@*|*|processing-instruction()|comment()|text()">
     <xsl:copy>
