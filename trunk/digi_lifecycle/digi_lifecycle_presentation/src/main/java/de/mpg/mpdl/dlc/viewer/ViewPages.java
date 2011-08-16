@@ -1,10 +1,12 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.apache.log4j.Logger;
@@ -12,6 +14,7 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.tei.TEITransformer;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -29,6 +32,9 @@ public class ViewPages {
 	@EJB
 	private VolumeServiceBean volServiceBean;
 	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
+	
 	private String volumeId;
 	
 	private Volume volume;
@@ -38,6 +44,8 @@ public class ViewPages {
 	private Page selectedPage;
 	
 	private MetsDiv selectedDiv;
+	
+	private List<Page> pageList = new ArrayList<Page>();
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
@@ -62,6 +70,24 @@ public class ViewPages {
 			MessageHelper.errorMessage("Problem while loading volume");
 		}
 		
+	}
+	
+	public List<Page> getPageList() throws Exception
+	{
+		pageList = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle()).getPages();
+		return pageList;
+	}
+	public void setPageList(List<Page> pageList)
+	{
+		this.pageList = pageList;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
 	}
 
 	public void setVolume(Volume volume) {
