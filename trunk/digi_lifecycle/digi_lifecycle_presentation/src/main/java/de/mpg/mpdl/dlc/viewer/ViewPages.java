@@ -139,7 +139,8 @@ public class ViewPages {
 	public void goTo(MetsDiv div)
 	{
 		MetsDiv nextPage = getNextPage(div);
-		Page p = volume.getPageMap().get(nextPage).get(0);
+		List<Page> pages = volume.getPageMap().get(nextPage);
+		Page p = pages.get(0);
 		selectedPageNumber = volume.getPages().indexOf(p);
 		loadVolume();
 		
@@ -179,8 +180,8 @@ public class ViewPages {
 	
 	public String getXhtmlForPage() throws Exception
 	{
-		String tei = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getTei());
-		logger.info(tei);
+		String tei = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getPagedTei());
+		//logger.info(tei);
 		return tei;
 	}
 	
