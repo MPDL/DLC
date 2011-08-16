@@ -814,7 +814,7 @@ public class VolumeServiceBean {
 	
 	public String getTeiForPage(Page p, String pagedTei) throws Exception
 	{
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToPagedTei/tei_xml_page.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToPagedTei/pagedTeiToSinglePage.xsl");
 		
 		SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
 		
