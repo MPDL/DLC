@@ -46,34 +46,6 @@
 				</rich:tab>
 			</rich:tabPanel>
 		</h:panelGroup>
-        
-			
-			
-		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
-		
-		<br/>
-		
-		<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
-			Digilib
-		</h:outputLink>
-		<br/>
-		<div id="digilib" class="digilib">
-			<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}"/>
-		</div>
-		
-		<div id="fulltext" style="width:400; height:1000; background-color:white;">
-			<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
-		</div>
-		
-		<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}">
-			
-		</h:commandButton>	
-		<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}">
-		</h:commandButton>
-
-
-
-
 
 		<h:panelGroup>
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
@@ -113,7 +85,6 @@
 
 
 			<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
-
 			<br />
 
 			<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
@@ -125,16 +96,14 @@
 			</div>
 
 			<div id="fulltext" style="width: 400; height: 1000; background-color: white;">
-				<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" />
+				<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
 			</div>
-			<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"></h:commandButton>
+			
+			<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"/>
+			<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"/>
+			<h:commandButton value=">" action="#{viewPages.goToNextPage}"/>
+			<h:commandButton value=">>" action="#{viewPages.goToLastPage}"/>
 
-			<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"></h:commandButton>
-			<h:commandButton value=">" action="#{viewPages.goToNextPage}">
-
-			</h:commandButton>
-			<h:commandButton value=">>" action="#{viewPages.goToLastPage}">
-			</h:commandButton>
 		</h:panelGroup>
 
 
