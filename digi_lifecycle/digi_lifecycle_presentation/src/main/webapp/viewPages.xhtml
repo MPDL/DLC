@@ -5,62 +5,48 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
-	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
-
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
 
 <ui:composition template="templates/template.xhtml">
-	
-	<ui:define name="mainContent">
-			
-		<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
-			
-		<h:outputScript library="components/digilib_jquery" name="jquery.js"/>
-		<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js"/>
-		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js"/>
-		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js"/>
-		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js"/>
-		<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js"/>
-		
-        
-        
-        <script type="text/javascript">
-            $(document).ready(function(){
-                var opts = {
-                	interactionMode : 'embedded',
-                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
-                    showRegionNumbers : true,
-                    logoUrl: '',
-                    buttonSettings : {
-                        embedded : {
-                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
-                            'buttonSetWidth' : 18,
-                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-                            'arrowSet' : ["up", "down", "left", "right"],
-                            'buttonSets' : ['standardSet', 'specialSet']
-                            },
-                    },
-                    
-                    };
-                var $div = $('div.digilib');
-                $div.digilib(opts);
-            });
 
-        </script>
-			
-			
-					
-		
-		
-		<rich:tree toggleType="ajax" var="divItem">
-            <rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
-                <rich:treeNode expanded="#{true}" rendered ="#{divItem.type!='page'}">
-                    <h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-                    	<h:outputText value="#{divItem.type}: #{divItem.label}" />
-                    </h:commandLink>
-                </rich:treeNode>
-            </rich:treeModelRecursiveAdaptor>
-        </rich:tree>
+	<ui:define name="mainContent">
+	
+		<h:outputScript library="components/digilib_jquery" name="jquery.js" />
+
+		<h:panelGroup layout="block">
+			<rich:tabPanel switchType="ajax" selectedTab="Thumbs">
+				<rich:tab header="Thumbs">
+					<ui:remove>
+						<mpdl:paginator paginatorBean="#{volumeBean}" />
+						<mpdl:list paginatorBean="#{volumeBean}">
+							<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
+								<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+							</a>
+						</mpdl:list>
+					</ui:remove>
+
+					<load:lazyLoad pageList="#{viewPages}">
+						<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
+							<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+						</a>
+					</load:lazyLoad>
+				</rich:tab>
+
+     			<rich:tab header="Toc">
+					<rich:tree toggleType="ajax" var="divItem">
+						<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
+							<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
+								<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+									<h:outputText value="#{divItem.type}: #{divItem.label}" />
+								</h:commandLink>
+							</rich:treeNode>
+						</rich:treeModelRecursiveAdaptor>
+					</rich:tree>
+				</rich:tab>
+			</rich:tabPanel>
+		</h:panelGroup>
+        
 			
 			
 		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
@@ -84,17 +70,73 @@
 		</h:commandButton>	
 		<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}">
 
-		</h:commandButton>		
-		<h:commandButton value=">" action="#{viewPages.goToNextPage}">
 
-		</h:commandButton>	
-		<h:commandButton value=">>" action="#{viewPages.goToLastPage}">
-		</h:commandButton>	
-		
 
-		
-		
-		
+
+
+		<h:panelGroup>
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
+
+			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" />
+
+
+
+			<script type="text/javascript">
+	            $(document).ready(function(){
+	                var opts = {
+	                	interactionMode : 'embedded',
+	                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+	                    showRegionNumbers : true,
+	                    logoUrl: '',
+	                    buttonSettings : {
+	                        embedded : {
+	                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+	                            'buttonSetWidth' : 18,
+	                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+	                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+	                            'arrowSet' : ["up", "down", "left", "right"],
+	                            'buttonSets' : ['standardSet', 'specialSet']
+	                            },
+	                    },
+	                    
+	                    };
+	                var $div = $('div.digilib');
+	                $div.digilib(opts);
+	            });
+	
+	        </script>
+
+
+			<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
+
+			<br />
+
+			<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
+				Digilib
+			</h:outputLink>
+			<br />
+			<div id="digilib" class="digilib">
+				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}" />
+			</div>
+
+			<div id="fulltext" style="width: 400; height: 1000; background-color: white;">
+				<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" />
+			</div>
+			<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"></h:commandButton>
+
+			<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"></h:commandButton>
+			<h:commandButton value=">" action="#{viewPages.goToNextPage}">
+
+			</h:commandButton>
+			<h:commandButton value=">>" action="#{viewPages.goToLastPage}">
+			</h:commandButton>
+		</h:panelGroup>
+
+
 	</ui:define>
 
 </ui:composition>
