@@ -160,7 +160,7 @@ public abstract class BasePaginatorBean<ListElementType>
         {  
             if (elementsPerPage == 0)
             {
-                setElementsPerPage(12);
+                setElementsPerPage(24);
             }
         	getCurrentPageNumber();
 //        	System.out.println("page= "+currentPageNumber);
@@ -172,7 +172,6 @@ public abstract class BasePaginatorBean<ListElementType>
             {
                 setCurrentPageNumber(1);
             }   
-            System.out.println(currentPageNumber);
             // logger.info("No List update: "+noListUpdate);
             previousPartList = new ArrayList<ListElementType>();
             previousPartList.addAll(currentPartList);
