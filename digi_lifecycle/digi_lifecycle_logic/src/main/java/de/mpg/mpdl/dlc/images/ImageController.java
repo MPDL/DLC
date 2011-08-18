@@ -2,6 +2,8 @@ package de.mpg.mpdl.dlc.images;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
@@ -58,6 +60,38 @@ public class ImageController {
     	}
 
     	return response;
+	}
+	
+	public static List<String> uploadFilesToImageServer(List<FileItem> items, String directory) throws Exception
+	{
+		String[] dirs = new String[items.size()];
+		List<FileItem> retry = new ArrayList<FileItem>();
+		
+		for(FileItem item : items)
+		{
+			if(item != null)
+			{
+				try 
+				{
+					String dir = uploadFileToImageServer(item, directory);
+					dirs[items.indexOf(item)] =  dir;
+				} catch (Exception e) {
+					logger.warn("Failed upload for file " + item.getName() + "\nWill retry later...", e);
+					retry.add(item);
+				}
+			}
+		}
+		
+		for(FileItem item : retry)
+		{
+			if(item != null)
+			{
+					String dir = uploadFileToImageServer(item, directory);
+					dirs[items.indexOf(item)] =  dir;
+			}
+		}
+		
+		return Arrays.asList(dirs);
 	}
 	
 	

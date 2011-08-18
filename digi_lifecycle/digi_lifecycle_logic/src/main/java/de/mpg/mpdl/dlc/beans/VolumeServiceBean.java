@@ -211,35 +211,30 @@ public class VolumeServiceBean {
 		
 		Volume vol = new Volume();
 		File teiFileWithIds = null;
-		
 		try {
+			
+			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
+
 			if(teiFile==null)
 			{
 
-				int i = 0;
-				
-					
-					for(FileItem fileItem : images)
+				for(FileItem fileItem : images)
 					{
-						
-						String dir = ImageController.uploadFileToImageServer(fileItem, item.getObjid());
-						logger.info("File uploaded to " + dir);
-						
+						int pos = images.indexOf(fileItem);
 						MetsFile f = new MetsFile();
-						f.setId("img_" + i);
+						f.setId("img_" + pos);
 						f.setMimeType(fileItem.getContentType());
 						f.setLocatorType("OTHER");
-						f.setHref(dir);
+						f.setHref(dirs.get(pos));
 						vol.getFiles().add(f);
 						
 						Page p = new Page();
-						p.setId("page_" + i);
-						p.setOrder(i);
+						p.setId("page_" + pos);
+						p.setOrder(pos);
 						p.setOrderLabel("");
 						p.setType("page");
 						p.setFile(f);
 						vol.getPages().add(p);
-						i++;
 					}
 			}
 			
@@ -251,14 +246,11 @@ public class VolumeServiceBean {
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
 				
-				int i = 0;
 				for(FileItem fileItem : images)
 				{
-					
-					String dir = ImageController.uploadFileToImageServer(fileItem, item.getObjid());
-					logger.info("File uploaded to " + dir);
-					vol.getFiles().get(i).setHref(dir);
-					i++;
+
+					int pos = images.indexOf(fileItem);
+					vol.getFiles().get(pos).setHref(dirs.get(pos));
 				}
 				
 			}
@@ -847,6 +839,10 @@ public class VolumeServiceBean {
 		StringWriter wr = new StringWriter();
 		StreamResult res = new StreamResult(wr);
 		Transformer transformer = transfFact.newTransformer(xsltSource);
+		transformer.setParameter("autoToc", "false");
+		transformer.setParameter("topNavigationPanel", "false");
+		transformer.setParameter("showFigures", "false");
+		transformer.setParameter("linkPanel", "false");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setParameter("pbid", p.getId());
 		transformer.transform(teiXmlSource, res);
