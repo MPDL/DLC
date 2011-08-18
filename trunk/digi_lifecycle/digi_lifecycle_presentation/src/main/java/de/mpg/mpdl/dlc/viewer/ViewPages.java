@@ -170,11 +170,6 @@ public class ViewPages {
 		Page p = pages.get(0);
 		selectedPageNumber = volume.getPages().indexOf(p);
 		loadVolume();
-		
-		
-		
-		
-		
 	}
 	
 	public MetsDiv getNextPage(MetsDiv div)

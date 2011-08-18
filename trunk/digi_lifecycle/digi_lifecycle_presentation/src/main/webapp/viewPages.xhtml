@@ -8,31 +8,13 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
 
-<ui:composition template="templates/template.xhtml">
+	<ui:composition template="templates/template_dlc.xhtml">
 
-	<ui:define name="mainContent">
-	
-		<h:outputScript library="components/digilib_jquery" name="jquery.js" />
-
-		<h:panelGroup layout="block" style="float:left;">
-			<rich:tabPanel switchType="ajax" selectedTab="Thumbs">
-				<rich:tab header="Thumbs">
-					<ui:remove>
-						<mpdl:paginator paginatorBean="#{volumeBean}" />
-						<mpdl:list paginatorBean="#{volumeBean}">
-							<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-								<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
-							</a>
-						</mpdl:list>
-					</ui:remove>
-
-					<load:lazyLoad pageList="#{viewPages}">
-						<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-							<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="height:100px; width:60px"/>
-						</a>
-					</load:lazyLoad>
-				</rich:tab>
-
+		
+		<ui:define name ="tabPanel">
+			<h:outputScript library="components/digilib_jquery" name="jquery.js" />
+			<h:outputScript library="js" name="col.js" />
+			<rich:tabPanel switchType="ajax" selectedTab="Toc">
      			<rich:tab header="Toc">
 					<rich:tree toggleType="ajax" var="divItem">
 						<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
@@ -44,10 +26,22 @@
 						</rich:treeModelRecursiveAdaptor>
 					</rich:tree>
 				</rich:tab>
+				<rich:tab header="tab2">
+				</rich:tab>
 			</rich:tabPanel>
-		</h:panelGroup>
+	    </ui:define>
+			
+		<ui:define name ="thumbPanel">
+				<load:lazyLoad pageList="#{viewPages}">
+					<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
+						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+					</a>
+				</load:lazyLoad>
+	    </ui:define>
 
-		<h:panelGroup>
+
+		
+		<ui:define name="img">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
 			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
@@ -55,9 +49,6 @@
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" />
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" />
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" />
-
-
-
 			<script type="text/javascript">
 	            $(document).ready(function(){
 	                var opts = {
@@ -82,33 +73,23 @@
 	            });
 	
 	        </script>
-
-
 			<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
 			<br />
 
 			<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
 				Digilib
 			</h:outputLink>
+
 			<br />
 			<div id="digilib" class="digilib" style="float:left">
-				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}" />
-			</div>
-
-			<div id="fulltext" style="width: 400; height: 1000; background-color: white;">
-				<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
+				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,460,761)}" />
 			</div>
 			
 			<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"/>
 			<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"/>
 			<h:commandButton value=">" action="#{viewPages.goToNextPage}"/>
 			<h:commandButton value=">>" action="#{viewPages.goToLastPage}"/>
-
-		</h:panelGroup>
-
-
-	</ui:define>
-
-</ui:composition>
+		</ui:define>
+	</ui:composition>
 
 </html>
