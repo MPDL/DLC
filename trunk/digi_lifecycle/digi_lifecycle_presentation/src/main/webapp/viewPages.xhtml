@@ -8,12 +8,33 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
 
-	<ui:composition template="templates/template_dlc.xhtml">
+	<ui:composition template="templates/template.xhtml">
 
 		
-		<ui:define name ="tabPanel">
+		<ui:define name ="mainContent">
 			<h:outputScript library="components/digilib_jquery" name="jquery.js" />
-			<h:outputScript library="js" name="col.js" />
+
+
+		<h:panelGroup layout="block" style="width:98em; float:clear;">
+		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
+				<br />
+	
+				<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
+					Digilib
+				</h:outputLink>
+				
+					<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"/>
+					<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"/>
+					<h:commandButton value=">" action="#{viewPages.goToNextPage}">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+					<h:commandButton value=">>" action="#{viewPages.goToLastPage}"/>
+
+
+				<br />
+				</h:panelGroup>
+
+			<h:panelGroup layout="block" style="float:left; width:20em;">
 			<rich:tabPanel switchType="ajax" selectedTab="Toc">
      			<rich:tab header="Toc">
 					<rich:tree toggleType="ajax" var="divItem">
@@ -29,19 +50,21 @@
 				<rich:tab header="tab2">
 				</rich:tab>
 			</rich:tabPanel>
-	    </ui:define>
+			</h:panelGroup>
+	   
 			
-		<ui:define name ="thumbPanel">
+		<h:panelGroup layout="block" style="float:left; width:7em;">
 				<load:lazyLoad pageList="#{viewPages}">
 					<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
 					</a>
 				</load:lazyLoad>
-	    </ui:define>
+		</h:panelGroup>
+	  
 
 
 		
-		<ui:define name="img">
+		
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
 			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
@@ -73,26 +96,26 @@
 	            });
 	
 	        </script>
-			<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
-			<br />
-
-			<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
-				Digilib
-			</h:outputLink>
-
-			<br />
-			<div id="digilib" class="digilib" style="float:left">
-				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,460,761)}" />
-			</div>
 			
-			<div id="fulltext" style="width: 400; height: 1000; background-color: white;">
-				<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
-			</div>
 			
-			<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"/>
-			<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"/>
-			<h:commandButton value=">" action="#{viewPages.goToNextPage}"/>
-			<h:commandButton value=">>" action="#{viewPages.goToLastPage}"/>
+			<h:panelGroup layout="block" style="overflow:auto; float:left; width:70em; height:1000px">
+				
+			
+				<div id="digilib" class="digilib" style="float:left; width:360px;">
+					<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,761)}" />
+				</div>
+				<!-- 
+				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,761)}" />
+				-->
+				
+				<div id="fulltext" style="width: 360; height: 1000; background-color: white;">
+					<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
+				</div>
+				
+			
+			</h:panelGroup>
+			
+			
 		</ui:define>
 	</ui:composition>
 
