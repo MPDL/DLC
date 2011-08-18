@@ -19,7 +19,7 @@ public class ModsName {
 	private String authority = "pnd";
 	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/@authority")
-	private String roleTermAuthority = "marcrelator";
+	private String roleTermAuthority;
 	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/text()")
 	private String role;

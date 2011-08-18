@@ -54,7 +54,7 @@ public class ModsMetadata {
 	private String materialDesignation_334;
 	
 	@XmlPath("mods:titleInfo/mods:subTitle/text()")
-	private String remainderTitle_334;
+	private String remainderTitle_335;
 	
 	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
@@ -68,7 +68,7 @@ public class ModsMetadata {
 
 	
 	@XmlPath("mods:physicalDescription/mods:extent/text()")
-	private String extent_432;
+	private String extent_433;
 	
 	@XmlPath("mods:physicalDescription/mods:extent/text()")
 	private String format_435;
@@ -85,6 +85,11 @@ public class ModsMetadata {
 	private String signature_544;
 	
 
+	public ModsMetadata()
+	{
+		
+	}
+	
 	
 	public String getCatalogueId_001() {
 		return catalogueId_001;
@@ -185,14 +190,14 @@ public class ModsMetadata {
 
 
 
-	public String getRemainderTitle_334() {
-		return remainderTitle_334;
+	public String getRemainderTitle_335() {
+		return remainderTitle_335;
 	}
 
 
 
-	public void setRemainderTitle_334(String remainderTitle_334) {
-		this.remainderTitle_334 = remainderTitle_334;
+	public void setRemainderTitle_335(String remainderTitle_335) {
+		this.remainderTitle_335 = remainderTitle_335;
 	}
 
 
@@ -237,14 +242,14 @@ public class ModsMetadata {
 
 
 
-	public String getExtent_432() {
-		return extent_432;
+	public String getExtent_433() {
+		return extent_433;
 	}
 
 
 
-	public void setExtent_432(String extent_432) {
-		this.extent_432 = extent_432;
+	public void setExtent_433(String extent_433) {
+		this.extent_433 = extent_433;
 	}
 
 

@@ -12,14 +12,54 @@
         <xsl:copy-of select="/tei:TEI"/>
     </xsl:param>
 
-     <xsl:variable name="logicalStructMapVar">
+    <!-- Create logical structMAp as variable with helper attribute pageId -->
+     <xsl:param name="logicalStructMap">
 	 <xsl:call-template name="structMapLogical">
 		<xsl:with-param name="createHelper" select="'true'"/>
 	 </xsl:call-template>
-      </xsl:variable>
-
+      </xsl:param>
+      
+      <!-- Create ids for new div[@type='page'] in logical section -->
+      <xsl:param name="logicalStructMapVarWithIdsAndHelper">
+	 <xsl:apply-templates select="$logicalStructMap" mode="generateIds"/>
+      </xsl:param>
+      <xsl:template match="@*|*|processing-instruction()|comment()|text()" mode="generateIds">
+	    <xsl:copy>
+	      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" mode="generateIds"/>
+	    </xsl:copy>
+      </xsl:template>
+	    
+       <xsl:template match="mets:div" mode="generateIds">
+	    <xsl:copy>
+	      <xsl:if test="not(@ID) or @ID=''">
+		<xsl:attribute name="ID">
+		  <xsl:value-of select="generate-id()"/>
+		</xsl:attribute>
+	      </xsl:if>
+	      <xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()"  mode="generateIds"/>
+	    </xsl:copy>
+	   </xsl:template>
+	   
+	
+	   <!-- Create logical section without helper variable pageId -->
+      <xsl:param name="logicalStructMapVarWithIds">
+	 <xsl:apply-templates select="$logicalStructMapVarWithIdsAndHelper" mode="removePageIds"/>
+      </xsl:param>
+      
+      <xsl:template match="@*|*|processing-instruction()|comment()|text()" mode="removePageIds">
+	    	<xsl:copy>
+	    		<xsl:apply-templates select="@*|*|processing-instruction()|comment()|text()" mode="removePageIds"/>
+	    	</xsl:copy>
+      </xsl:template>
+      
+       <xsl:template match="@pageId" mode="removePageIds">
+      </xsl:template>
+	    
+     
+      
+      
     <xsl:template match="tei:TEI">
-        <mets:mets
+    <mets:mets
             xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd">
             <xsl:attribute name="ID">
                 <xsl:value-of select="@xml:id"/>
@@ -30,10 +70,18 @@
             -->
             <xsl:call-template name="fileSec"/>
             <xsl:call-template name="structMapPhysical"/>
-             <xsl:call-template name="structMapLogical">
+            
+            <!--
+            <xsl:call-template name="structMapLogical">
            	 	<xsl:with-param name="createHelper" select="'false'"/>
             </xsl:call-template>
-            <xsl:call-template name="structLink"/>
+            
+            -->
+            <xsl:copy-of select="$logicalStructMapVarWithIds"/>
+            
+            <xsl:call-template name="structLink">
+            	<xsl:with-param name="logicalStructMapVarWithIdsAndHelper" select="$logicalStructMapVarWithIdsAndHelper"/>
+            </xsl:call-template>
         </mets:mets>
     </xsl:template>
 <!--
@@ -185,7 +233,7 @@
                     <!-- don't want body to repeat head from text -->
                     <xsl:when test="name(.) = 'body'"/>
                     <xsl:when test="name(.) = 'titlePage'">
-                        <xsl:value-of select="'Title Page'"/>
+                        <xsl:value-of select="normalize-space(descendant::tei:titlePart[1])"/>
                     </xsl:when>
                     <xsl:when test="name(.) = 'epigraph'">
                         <xsl:value-of select="'Epigraph'"/>
@@ -228,19 +276,22 @@
         <xsl:param name="createHelper"/>
          <xsl:param name="chunkId"/>
         <mets:div TYPE="page">
-            <xsl:attribute name="ID">
+            <!--
+        <xsl:attribute name="ID">
                 <xsl:value-of select="concat(generate-id(),'_logic')"/>
             </xsl:attribute>
+            -->
             <!--Temporary variable to create structLink section-->
             <xsl:if test="$createHelper='true'">
 		    <xsl:attribute name="pageId">
 			<xsl:value-of select="@xml:id"/>
 		    </xsl:attribute>
 	    </xsl:if>
-            
+            <!--
             <xsl:attribute name="ORDER">
                 <xsl:value-of select="count(preceding::pb[ancestor::*[@xml:id = $chunkId]]) + 1"/>
             </xsl:attribute>
+            -->
             <xsl:if test="$n != ''">
                 <xsl:attribute name="ORDERLABEL">
                     <xsl:value-of select="$n"/>
@@ -254,8 +305,9 @@
     
     
     <xsl:template name="structLink">
-        <mets:structLink>
-    		<xsl:for-each select="$logicalStructMapVar//mets:div[@TYPE='page' and @pageId]">
+       <xsl:param name="logicalStructMapVarWithIdsAndHelper"/>
+    <mets:structLink>
+    		<xsl:for-each select="$logicalStructMapVarWithIdsAndHelper//mets:div[@TYPE='page' and @pageId]">
     			<mets:smLink>
     				<xsl:attribute name="xlink:from">
     					<xsl:value-of select="@ID"/>

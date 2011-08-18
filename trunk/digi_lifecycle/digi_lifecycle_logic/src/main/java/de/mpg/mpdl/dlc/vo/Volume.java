@@ -1,42 +1,20 @@
 package de.mpg.mpdl.dlc.vo;
 
-import gov.loc.mets.DivType;
-import gov.loc.mets.FileType;
-import gov.loc.mets.MetsDocument;
-import gov.loc.mets.MetsType.FileSec.FileGrp;
-import gov.loc.mets.StructMapType;
-import gov.loc.mods.v3.ModsDocument;
-import gov.loc.mods.v3.ModsType;
-
-import java.io.File;
-import java.io.InputStream;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.xmlbeans.XmlCursor;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
-import org.w3c.dom.Node;
 
-
-import de.escidoc.core.resources.HttpInputStream;
-import de.escidoc.core.resources.common.MetadataRecord;
-import de.escidoc.core.resources.common.Properties;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
-import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @XmlRootElement(name="mets", namespace="http://www.loc.gov/METS/")
 @XmlAccessorType(XmlAccessType.FIELD)
