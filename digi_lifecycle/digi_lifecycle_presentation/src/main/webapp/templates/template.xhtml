@@ -48,19 +48,19 @@
 
 
 	<link
-		href="#{applicationBean.domain}common/resources/cssFramework/main.css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/main.css"
 		type="text/css" rel="stylesheet" />
 	<link
-		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_highContrast/styles/theme.css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_highContrast/styles/theme.css"
 		id="highContrastTheme" title="high contrast" type="text/css"
 		rel="alternate stylesheet" />
 	<link
-		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_classic/styles/theme.css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_classic/styles/theme.css"
 		id="classicTheme" title="classic" type="text/css"
 		rel="alternate stylesheet" />
 		
 	<link
-		href="#{applicationBean.domain}common/resources/cssFramework/themes/skin_blue/styles/theme.css"
+		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/styles/theme.css"
 		id="PubManTheme" title="Virr" type="text/css" rel="stylesheet" />
 
 
@@ -68,6 +68,9 @@
 		href="#{applicationBean.domain}/images/Virr_Medium_Volume_31_Static.gif"
 		type="image/x-icon" rel="shortcut icon" />
 		
+	<style type="text/css">
+	.headerLogo {background-image: url("<h:outputText value='#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo.png'/>") !important; background-repeat: norepeat; background-position: top left; }
+	</style>
 		
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<meta http-equiv="pragma" content="no-cache" />
