@@ -24,7 +24,7 @@
 						<f:selectItems value="#{ingestBean.contextSelectItems}"/>
 				</h:selectOneMenu>
 			 
-				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages" execute="@all" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages modsInfo" execute="@all" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 				</a4j:commandButton>
 				

@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.util;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -11,7 +12,11 @@ import org.apache.log4j.Logger;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.mods.ModsName;
+import de.mpg.mpdl.dlc.vo.mods.ModsNote;
+import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 
 @ManagedBean
@@ -60,6 +65,87 @@ public class VolumeUtilBean {
 		}
 		return new ModsTitle();
 	}
+	
+	
+	public void removeListMember (Object pos, List list)
+	{
+		list.remove(pos);
+	}
+	
+	public void addNewModsTitle (ModsTitle pos, List<ModsTitle> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(list.indexOf(pos)+1, new ModsTitle());
+		}
+		else
+		{
+			list.add(new ModsTitle());
+		}
+		
+		
+	}
+
+	public void addNewModsName (ModsName pos, List<ModsName> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(list.indexOf(pos)+1, new ModsName());
+		}
+		else
+		{
+			list.add(new ModsName());
+		}
+	}
+	
+	public void addNewModsNote (ModsNote pos, List<ModsNote> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(list.indexOf(pos)+1, new ModsNote());
+		}
+		else
+		{
+			list.add(new ModsNote());
+		}
+		
+		
+	}
+	
+	public void addNewModsPublisher (ModsPublisher pos, List<ModsPublisher> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(list.indexOf(pos)+1, new ModsPublisher());
+		}
+		else
+		{
+			list.add(new ModsPublisher());
+		}
+		
+		
+	}
+	
+	public void addNewModsIdentifier (ModsIdentifier pos, List<ModsIdentifier> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(list.indexOf(pos)+1, new ModsIdentifier());
+		}
+		else
+		{
+			list.add(new ModsIdentifier());
+		}
+		
+		
+	}
+	
+	
 
 		
 }
