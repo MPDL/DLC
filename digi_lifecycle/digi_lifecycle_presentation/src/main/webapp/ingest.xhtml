@@ -23,9 +23,22 @@
 				<h:selectOneMenu value="#{ingestBean.selectedContextId}">
 						<f:selectItems value="#{ingestBean.contextSelectItems}"/>
 				</h:selectOneMenu>
-			
-				<h:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}"/>
+			 
+				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages" execute="@all" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+				</a4j:commandButton>
 				
+				
+
+			    <rich:popupPanel id="popup" modal="true" resizeable="false">
+			        <f:facet name="header">
+			            <h:outputText value="Upload in progress" />
+			        </f:facet>
+			        <f:facet name="controls">
+			        </f:facet>
+			        <p>Images are uploaded and processed</p>
+			        <p>Please be patient, this process may take several minutes</p>
+			    </rich:popupPanel>
 				
 				
 			</rich:panel>

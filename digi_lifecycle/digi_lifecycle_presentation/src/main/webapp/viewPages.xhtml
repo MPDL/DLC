@@ -14,7 +14,7 @@
 	
 		<h:outputScript library="components/digilib_jquery" name="jquery.js" />
 
-		<h:panelGroup layout="block">
+		<h:panelGroup layout="block" style="float:left;">
 			<rich:tabPanel switchType="ajax" selectedTab="Thumbs">
 				<rich:tab header="Thumbs">
 					<ui:remove>
@@ -28,7 +28,7 @@
 
 					<load:lazyLoad pageList="#{viewPages}">
 						<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-							<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" />
+							<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="height:100px; width:60px"/>
 						</a>
 					</load:lazyLoad>
 				</rich:tab>
@@ -91,7 +91,7 @@
 				Digilib
 			</h:outputLink>
 			<br />
-			<div id="digilib" class="digilib">
+			<div id="digilib" class="digilib" style="float:left">
 				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,500,1000)}" />
 			</div>
 

@@ -31,8 +31,11 @@ import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
+import de.mpg.mpdl.dlc.vo.mods.ModsNote;
+import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
@@ -71,6 +74,11 @@ public class IngestBean implements Serializable {
 	{
 		this.modsMetadata.getTitles().add(new ModsTitle());
 		this.modsMetadata.getNames().add(new ModsName());
+		this.modsMetadata.getNotes().add(new ModsNote());
+		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
+		this.modsMetadata.getPublishers().add(new ModsPublisher());
+		//this.modsMetadata.getTitles().add(new ModsTitle());
+
 		
 	}
 
@@ -277,8 +285,9 @@ public class IngestBean implements Serializable {
 	
 	
 	
-	public void save()
+	public String save()
 	{
+		logger.info("SAVE!!");
 		
 		//ModsMetadata md = new ModsMetadata();
 		//ModsTitle title = new ModsTitle();
@@ -292,18 +301,20 @@ public class IngestBean implements Serializable {
     		if(getImageFiles().size()==0)
     		{
     			MessageHelper.errorMessage("You have to upload at least Image");
-    			return;
+    			return "";
     		}
-    		if (getNumberOfTeiPbs()!=getImageFiles().size())
+    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
     		{
     			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
-    			return;
+    			return "";
     		}
     		
     		volumeService.createNewVolume(getSelectedContextId(), getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
 		} catch (Exception e) {
 			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
+			
 		}
+    	return "";
     	
 	
 	}
