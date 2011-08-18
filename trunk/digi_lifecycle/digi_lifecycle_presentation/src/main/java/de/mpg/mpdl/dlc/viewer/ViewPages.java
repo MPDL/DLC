@@ -60,7 +60,7 @@ public class ViewPages {
 			List<MetsDiv> divForPage = volume.getDivMap().get(selectedPage);
 			if(divForPage!=null && divForPage.size()>0)
 			{	
-				this.selectedDiv = divForPage.get(0).getParentDiv();
+				this.selectedDiv = divForPage.get(divForPage.size()-1).getParentDiv();
 			}
 			
 			//this.selectedDiv
@@ -164,6 +164,7 @@ public class ViewPages {
 	
 	public void goTo(MetsDiv div)
 	{
+		logger.info("Go to div " + div.getId());
 		MetsDiv nextPage = getNextPage(div);
 		List<Page> pages = volume.getPageMap().get(nextPage);
 		Page p = pages.get(0);

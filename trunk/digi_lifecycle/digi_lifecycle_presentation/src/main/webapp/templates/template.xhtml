@@ -94,46 +94,46 @@
 	<h:panelGroup rendered="#{loginBean.loginState}"/>
 	
 	<h:form id="form1" enctype="multipart/form-data">
-		<div class="full wrapper">
+		<h:panelGroup layout="block" class="full wrapper" id="fullWrapper">
 			<h:inputHidden id="offset"></h:inputHidden>
 
 			<!-- import header -->
 			<ui:include src="../headerPages/Header.jspf" />
 
-			<div id="content" class="full_area0 clear">
+			<h:panelGroup layout="block" id="content" class="full_area0 clear">
 				<!-- begin: content section (including elements that visualy belong to the header (breadcrumb, headline, subheader and content menu)) -->
-				<div class="clear">
-					<div class="headerSection">
+				<h:panelGroup layout="block" class="clear">
+					<h:panelGroup layout="block" class="headerSection">
 						<ui:include src="../headerPages/Breadcrumb.jspf" />
 
-						<div id="contentSkipLinkAnchor" class="clear headLine">
+						<h:panelGroup layout="block" id="contentSkipLinkAnchor" class="clear headLine">
 							<!-- Headline starts here, taken from facelets parameter -->
 							<h1>
 								<h:outputText value="#{headline}" />
 							</h1>
 							<!-- Headline ends here -->
-						</div>
-					</div>
-					<div class="small_marginLIncl subHeaderSection">
-						<div class="contentMenu">
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" class="small_marginLIncl subHeaderSection">
+						<h:panelGroup layout="block" class="contentMenu">
 							<!-- content menu starts here -->
-							<div class="free_area0 sub">
+							<h:panelGroup layout="block" class="free_area0 sub">
 								<!-- content menu upper line starts here -->
 								<ui:insert name="contentMenu">&#160;</ui:insert>
 								<!-- content menu upper line ends here -->
-							</div>
+							</h:panelGroup>
 
 							<ui:insert name="actionsMenu">
-								<div class="free_area0 sub action">
+								<h:panelGroup layout="block" class="free_area0 sub action">
 									<!-- content menu lower line starts here -->
 									&#160;
 									<!-- content menu lower line ends here -->
-								</div>
+								</h:panelGroup>
 							</ui:insert>
 							<!-- content menu ends here -->
-						</div>
+						</h:panelGroup>
 
-						<div class="subHeader">
+						<h:panelGroup layout="block" styleClass="subHeader" id="messages">
 							<!-- Subheadline starts here -->
 							<h:messages styleClass="singleMessage" errorClass="messageError"
 								warnClass="messageWarn" fatalClass="messageFatal"
@@ -168,11 +168,11 @@
 							<h:outputText value="&#160;"
 								rendered="#{!messagesBean.hasErrorMessages}" />
 							<!-- Subheadline ends here -->
-						</div>
-					</div>
-				</div>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
 
-				<div class="full_area0">
+				<h:panelGroup layout="block" class="full_area0">
 					<!-- Main Content -->
 					<ui:insert name="mainContent">
 						&#160;
@@ -180,11 +180,11 @@
 					<ui:insert name="formButtons">
 						&#160;
 					</ui:insert>
-				</div>
-			</div>
+				</h:panelGroup>
+			</h:panelGroup>
 
 			<!-- end: content section -->
-		</div>
+		</h:panelGroup>
 		<ui:include src="../footerPages/Footer.jspf" />
 	</h:form>
 

@@ -34,10 +34,16 @@
 		<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
 			<h:panelGrid columns="2">
 				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:inputText value="#{title.mabId}" />
+				<h:outputText value="#{title.mabId}" />
 			
 				<h:outputText value="#{lbl.mods_titleType}" />
-				<h:inputText value="#{title.type}" />
+				<h:selectOneMenu value="#{title.type}">
+						<f:selectItem itemLabel="none" itemValue=""/>
+						<f:selectItem itemLabel="abbreviated" itemValue="abbreviated"/>
+						<f:selectItem itemLabel="translated" itemValue="translated"/>
+						<f:selectItem itemLabel="alternative" itemValue="alternative"/>
+						<f:selectItem itemLabel="uniform" itemValue="uniform"/>	
+				</h:selectOneMenu>
 		
 				<h:outputText value="#{lbl.mods_title}" />
 				<h:inputText value="#{title.title}" />
@@ -49,11 +55,27 @@
 		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
 			<h:panelGrid columns="2">
 				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:inputText value="#{name.mabId}" />
+				<h:outputText value="#{name.mabId}" />
 	
 				<h:outputText value="#{lbl.mods_nameType}" />
-				<h:inputText value="#{name.type}" />
+				<h:selectOneMenu value="#{name.type}">
+						<f:selectItem itemLabel="none" itemValue=""/>
+						<f:selectItem itemLabel="personal" itemValue="personal"/>
+						<f:selectItem itemLabel="corporate" itemValue="corporate"/>
+						<f:selectItem itemLabel="conference" itemValue="conference"/>
+						<f:selectItem itemLabel="family" itemValue="family"/>	
+				</h:selectOneMenu>
 	
+	
+				<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" />
+				<h:selectOneMenu value="#{name.roleTermAuthority}">
+						<f:selectItem itemLabel="none" itemValue=""/>
+						<f:selectItem itemLabel="pnd" itemValue="pnd"/>
+						<f:selectItem itemLabel="marcrelator" itemValue="marcrelator"/>
+						<f:selectItem itemLabel="gkd" itemValue="gkd"/>
+				</h:selectOneMenu>
+				
+				
 				<h:outputText value="#{lbl.mods_nameRole}" />
 				<h:inputText value="#{name.role}" />
 	
@@ -67,10 +89,32 @@
 		<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
 			<h:panelGrid columns="2">
 				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:inputText value="#{identifier.mabId}" />
+				<h:outputText value="#{identifier.mabId}" />
 	
-				<h:outputText value="#{lbl.mods_identifierType}" />
-				<h:inputText value="#{identifier.type}" />
+	<h:outputText value="#{lbl.mods_identifierType}" />
+	
+
+				<h:selectOneMenu value="#{identifier.type}">
+						<f:selectItem itemLabel="none" itemValue=""/>
+						<f:selectItem itemLabel="hdl" itemValue="hdl"/>
+						<f:selectItem itemLabel="doi" itemValue="doi"/>
+						<f:selectItem itemLabel="isrc" itemValue="isrc"/>
+						<f:selectItem itemLabel="ismn" itemValue="ismn"/>
+						<f:selectItem itemLabel="issn" itemValue="issn"/>
+						<f:selectItem itemLabel="issue number" itemValue="issue number"/>
+						<f:selectItem itemLabel="lccn" itemValue="lccn"/>
+						<f:selectItem itemLabel="local" itemValue="local"/>
+						<f:selectItem itemLabel="matrix number" itemValue="matrix number"/>
+						<f:selectItem itemLabel="music publisher" itemValue="music publisher"/>
+						<f:selectItem itemLabel="music plate" itemValue="music plate"/>
+						<f:selectItem itemLabel="sici" itemValue="sici"/>
+						<f:selectItem itemLabel="uri" itemValue="uri"/>
+						<f:selectItem itemLabel="upc" itemValue="upc"/>
+						<f:selectItem itemLabel="videorecording identifier" itemValue="videorecording identifier"/>
+						<f:selectItem itemLabel="stock number" itemValue="stock number"/>
+				</h:selectOneMenu>
+				
+				
 	
 				<h:outputText value="#{lbl.mods_identifier}" />
 				<h:inputText value="#{identifier.value}" />
@@ -83,7 +127,7 @@
 		<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}">
 			<h:panelGrid columns="2">
 				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:inputText value="#{pb.mabId}" />
+				<h:outputText value="#{pb.mabId}" />
 	
 				<h:outputText value="#{lbl.mods_publisher}" />
 				<h:inputText value="#{pb.publisher}" />
@@ -106,10 +150,62 @@
 		<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
 			<h:panelGrid columns="2">
 				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:inputText value="#{note.mabId}" />
-	
+				<h:outputText value="#{note.mabId}" />
+
 				<h:outputText value="#{lbl.mods_noteType}" />
-				<h:inputText value="#{note.type}" />
+				<h:inputText value="#{note.type}"/>
+				<ui:remove>
+				<!-- 
+				<h:selectOneMenu value="#{note.type}">
+						<f:selectItem itemLabel="none" itemValue=""/>
+						<f:selectItem itemLabel="accrual method" itemValue="accrual method"/>
+						<f:selectItem itemLabel="accrual policy" itemValue="accrual policy"/>
+						<f:selectItem itemLabel="acquisition" itemValue="acquisition"/>
+						<f:selectItem itemLabel="action" itemValue="action"/>
+						<f:selectItem itemLabel="additional physical form" itemValue="additional physical form"/>
+						<f:selectItem itemLabel="admin" itemValue="admin"/>
+						<f:selectItem itemLabel="bibliographic history" itemValue="bibliographic history"/>
+						<f:selectItem itemLabel="bibliography" itemValue="bibliography"/>
+						<f:selectItem itemLabel="biographical/historical" itemValue="biographical/historical"/>
+						<f:selectItem itemLabel="citation/reference" itemValue="citation/reference"/>
+						<f:selectItem itemLabel="conservation history" itemValue="conservation history"/>
+						<f:selectItem itemLabel="content" itemValue="content"/>
+						<f:selectItem itemLabel="creation/production credits" itemValue="creation/production credits"/>
+						<f:selectItem itemLabel="date" itemValue="date"/>
+						<f:selectItem itemLabel="exhibitions" itemValue="exhibitions"/>
+						<f:selectItem itemLabel="funding" itemValue="funding"/>
+						<f:selectItem itemLabel="handwritten" itemValue="handwritten"/>
+						<f:selectItem itemLabel="language" itemValue="language"/>
+						<f:selectItem itemLabel="numbering" itemValue="numbering"/>
+						<f:selectItem itemLabel="date/sequential designation" itemValue="date/sequential designation"/>
+						<f:selectItem itemLabel="original location" itemValue="original location"/>
+						<f:selectItem itemLabel="original version" itemValue="original version"/>
+						<f:selectItem itemLabel="ownership" itemValue="ownership"/>
+						<f:selectItem itemLabel="performers" itemValue="performers"/>
+						<f:selectItem itemLabel="preferred citation" itemValue="preferred citation"/>
+						<f:selectItem itemLabel="publications" itemValue="publications"/>
+						<f:selectItem itemLabel="reproduction" itemValue="reproduction"/>
+						<f:selectItem itemLabel="restriction" itemValue="restriction"/>
+						<f:selectItem itemLabel="source characteristics" itemValue="source characteristics"/>
+						<f:selectItem itemLabel="source dimensions" itemValue="source dimensions"/>
+						<f:selectItem itemLabel="source identifier" itemValue="source identifier"/>
+						<f:selectItem itemLabel="source note" itemValue="source note"/>
+						<f:selectItem itemLabel="source type" itemValue="source type"/>
+						<f:selectItem itemLabel="statement of responsibility" itemValue="statement of responsibility"/>
+						<f:selectItem itemLabel="subject completeness" itemValue="subject completeness"/>
+						<f:selectItem itemLabel="system details" itemValue="system details"/>
+						<f:selectItem itemLabel="thesis" itemValue="thesis"/>
+						<f:selectItem itemLabel="venue" itemValue="venue"/>
+						<f:selectItem itemLabel="version identification" itemValue="version identification"/>
+						
+						<f:selectItem itemLabel="subseries" itemValue="subseries"/>
+						<f:selectItem itemLabel="attached" itemValue="attached"/>
+						<f:selectItem itemLabel="indexes" itemValue="indexes"/>
+						<f:selectItem itemLabel="summaryofvolumes" itemValue="summaryofvolumes"/>
+						
+				</h:selectOneMenu>
+				-->
+				</ui:remove>
 	
 				<h:outputText value="#{lbl.mods_note}" />
 				<h:inputText value="#{note.note}" />
@@ -123,14 +219,14 @@
 		<h:outputText value="#{lbl.mods_materialDesignation_334}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.materialDesignation_334}" />
 
-		<h:outputText value="#{lbl.mods_remainderTitle_334}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.remainderTitle_334}" />
+		<h:outputText value="#{lbl.mods_remainderTitle_335}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.remainderTitle_335}" />
 
 		<h:outputText value="#{lbl.mods_subseries_361}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.subseries_361}" />
 
-		<h:outputText value="#{lbl.mods_extent_432}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.extent_432}" />
+		<h:outputText value="#{lbl.mods_extent_433}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.extent_433}" />
 
 		<h:outputText value="#{lbl.mods_format_435}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.format_435}" />
@@ -138,7 +234,7 @@
 		<h:outputText value="#{lbl.mods_seriesTitle_451}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.seriesTitle_451}" />
 
-		<h:outputText value="#{lbl.mods_siganture_544}" />
+		<h:outputText value="#{lbl.mods_signature_544}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
 	</h:panelGrid>
 </cc:implementation>
