@@ -16,6 +16,8 @@
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
+	<div id="#{cc.clientId}">
+	
 	<h:panelGrid columns="2">
 		<h:outputText value="#{lbl.mods_catalogueId_001}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" />
@@ -29,7 +31,7 @@
 			rendered="#{not empty cc.attrs.modsMetadata.language_037}" />
 
 
-
+		
 		<h:outputText value="#{lbl.mods_titles}" />
 		<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
 			<h:panelGrid columns="2">
@@ -46,8 +48,16 @@
 				</h:selectOneMenu>
 		
 				<h:outputText value="#{lbl.mods_title}" />
-				<h:inputText value="#{title.title}" />
+				<h:message for="title" styleClass="messageError"/>
+				<h:inputText id="title" value="#{title.title}" required="true" requiredMessage="Title is required!" />
+				
 			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsTitle(title, cc.attrs.modsMetadata.titles)}" value="+" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(title, cc.attrs.modsMetadata.titles)}" value="-" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
 		</a4j:repeat>
 
 
@@ -82,6 +92,12 @@
 				<h:outputText value="#{lbl.mods_name}" />
 				<h:inputText value="#{name.name}" />
 			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsName(name, cc.attrs.modsMetadata.names)}" value="+" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(name, cc.attrs.modsMetadata.names)}" value="-" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
 		</a4j:repeat>
 	
 
@@ -119,6 +135,12 @@
 				<h:outputText value="#{lbl.mods_identifier}" />
 				<h:inputText value="#{identifier.value}" />
 			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsIdentifier(identifier, cc.attrs.modsMetadata.identifiers)}" value="+" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(identifier, cc.attrs.modsMetadata.identifiers)}" value="-" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
 		</a4j:repeat>
 		
 
@@ -143,6 +165,12 @@
 						<h:inputText value="#{pb.dateIssued_425}"/>
 						-->
 			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsPublisher(pb, cc.attrs.modsMetadata.publishers)}" value="+" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(pb, cc.attrs.modsMetadata.publishers)}" value="-" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
 		</a4j:repeat>
 		
 
@@ -210,6 +238,13 @@
 				<h:outputText value="#{lbl.mods_note}" />
 				<h:inputText value="#{note.note}" />
 			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsNote(note, cc.attrs.modsMetadata.notes)}" value="+" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(note, cc.attrs.modsMetadata.notes)}" value="-" >
+				 <f:ajax render=":#{cc.clientId}"/>
+			</h:commandButton>
+			
 		</a4j:repeat>
 	
 
@@ -237,5 +272,6 @@
 		<h:outputText value="#{lbl.mods_signature_544}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
 	</h:panelGrid>
+	</div>
 </cc:implementation>
 </html>
