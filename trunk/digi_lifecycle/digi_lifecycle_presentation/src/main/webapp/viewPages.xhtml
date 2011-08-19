@@ -9,113 +9,266 @@
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
 
 	<ui:composition template="templates/template.xhtml">
+	<ui:define name="mainContent">
 
-		
-		<ui:define name ="mainContent">
-			<h:outputScript library="components/digilib_jquery" name="jquery.js" />
-
-
-		<h:panelGroup layout="block" style="width:98em; float:clear;">
-		<h:outputText value="Pagination: #{viewPages.selectedPage.orderLabel}" />
+	<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+			
+			<div class="full_area0 itemHeader">
+			<h:panelGroup styleClass="xLarge_area0 endline blockHeader" >
+				&#160;	
+			</h:panelGroup>
+			<h:panelGroup styleClass="seperator" />
+			<h:panelGroup styleClass="free_area0_p8 endline itemHeadline">
+				<h:outputText value="Author"/>
 				<br />
-	
-				<h:outputLink value="#{volumeUtilBean.getDigilibJQueryUrlForPage(viewPages.selectedPage)}" target="_blank">
-					Digilib
-				</h:outputLink>
-				
-					<h:commandButton value="&lt;&lt;" action="#{viewPages.goToFirstPage}"/>
-					<h:commandButton value="&lt;" action="#{viewPages.goToPreviousPage}"/>
-					<h:commandButton value=">" action="#{viewPages.goToNextPage}">
+				<b>
+						<h:outputText value="#{volumeUtilBean.getMainTitle(viewPages.volume.modsMetadata).title}"/>
+				</b>
+			</h:panelGroup>
+			</div>
+			
+			<div class="full_area0 itemHeader">
+				<h:panelGroup layout="block" styleClass="medium_area0 xHuge_marginLIncl pageBrowser">
+					<h:commandButton value=" " action="#{viewPages.goToFirstPage}" styleClass="min_imgBtn groupBtn skipToFirst">
 						<f:ajax render="@all"/>
 					</h:commandButton>
-					<h:commandButton value=">>" action="#{viewPages.goToLastPage}"/>
+					<h:commandButton value=" " action="#{viewPages.goToPreviousPage}" styleClass="min_imgBtn groupBtn backward">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+					<h:commandButton value=" " action="#{viewPages.goToNextPage}" styleClass="min_imgBtn groupBtn forward">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+					<h:commandButton value=" " action="#{viewPages.goToLastPage}" styleClass="min_imgBtn groupBtn skipToLast">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+					
+					<h:commandButton value="Zoom " action="#{viewPages.setViewType('SINGLE')}" styleClass="large_imgBtn groupBtn" />
+					<h:commandButton value="Recto/Verso " action="#{viewPages.setViewType('RECTO_VERSO')}" styleClass="large_imgBtn groupBtn"/>
+					<h:commandButton value="Fulltext " action="#{viewPages.setViewType('FULLTEXT')}" styleClass="large_imgBtn groupBtn"/>
 
-
-				<br />
+					
 				</h:panelGroup>
-
-			<h:panelGroup layout="block" style="float:left; width:20em;">
-			<rich:tabPanel switchType="ajax" selectedTab="Toc">
-     			<rich:tab header="Toc">
-					<rich:tree toggleType="ajax" var="divItem">
-						<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
-							<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
-								<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-									<h:outputText value="#{divItem.type}: #{divItem.label}" />
-								</h:commandLink>
-							</rich:treeNode>
-						</rich:treeModelRecursiveAdaptor>
-					</rich:tree>
-				</rich:tab>
-				<rich:tab header="tab2">
-				</rich:tab>
-			</rich:tabPanel>
+			<!-- 
+			<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea">
+				<h:outputLink title="firstpic" value="">
+					
+				</h:outputLink>
 			</h:panelGroup>
-	   
+			-->
+			<!-- 
+			<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea" rendered="#{(ViewPages.selectedBook.type == 'M')}">
+				<h:panelGroup styleClass="big_imgArea statusIcon virrMediaType#{ViewPages.selectedBook.type}"/>
+				<span class="noDisplay">(</span>
+					<h:outputLabel id="lblItemPublicState" styleClass="medium_label endline">
+						<h:outputText value="#{lbl.view_dtls_genre_volume_txt}" rendered="#{(ViewPages.selectedBook.type == 'V')}" />
+						<h:outputText value="#{lbl.view_dtls_genre_mono_txt}" rendered="#{(ViewPages.selectedBook.type == 'MG')}" />
+						<h:outputText value="#{lbl.view_dtls_genre_multi_txt}" rendered="#{(ViewPages.selectedBook.type == 'M')}" />
+					</h:outputLabel>
+					<span class="noDisplay">)</span>
+			</h:panelGroup>	
+			-->
+			</div>
+
+<!-- 
+			<div class="full_area0 itemBlock">
+				<h:panelGroup styleClass="xTiny_area0 endline" >
+					&#160;
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				<h:panelGroup styleClass="quad_area0 endline">
+					&#160; <h:outputText value="#{lbl.view_faximile}" />
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				<h:panelGroup styleClass="quad_area0 endline">
+					&#160; <h:outputText value="#{lbl.view_outline}" />
+				</h:panelGroup>
+			</div>
+			-->
 			
-		<h:panelGroup layout="block" style="float:left; width:7em;">
-				<load:lazyLoad pageList="#{viewPages}">
-					<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
-					</a>
-				</load:lazyLoad>
-		</h:panelGroup>
-	  
+			
+			
+			<div class="full_area0 itemBlock noTopBorder">
+				<span class="full_area0 xTiny_marginLExcl">
+				
+				
+				
+				<span class="double_area0">
+						<!-- 
+						<span class="double_area1 splitBlockHeader">
+							<span class="double_area0_p4 endline itemHeadline">
+								<b>
+									Volume
+								</b>
+							</span>  
+							<span class="double_area0_p4 lineToolSection">
+								LineToolSection
+							</span>
+							
+						</span>
+						-->
+						
+						<div id="tocTree" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
+							<rich:tabPanel switchType="ajax" selectedTab="Toc" >
+				     			<rich:tab header="Toc" style="overflow:auto">
+									<div style="overflow:auto; height:1000px;">
+									<rich:tree toggleType="ajax" var="divItem">
+										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
+											<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
+												<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+													<h:outputText value="#{divItem.type}: #{divItem.label}" />
+												</h:commandLink>
+											</rich:treeNode>
+										</rich:treeModelRecursiveAdaptor>
+									</rich:tree>
+									</div>
+								</rich:tab>
+								<rich:tab header="Thumbs">
+									<load:lazyLoad pageList="#{viewPages}">
+										<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
+										<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
+										</a>
+									</load:lazyLoad>
+								
+								</rich:tab>
+							</rich:tabPanel>
+						</div>
+					</span>
+				
+				
+				
+					<h:panelGroup styleClass="xHuge_area0" rendered="#{viewPages.viewType == 'SINGLE'}" style="width:70em;" >
 
+						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
+						<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" />
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" />
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" />
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" />
+						<script type="text/javascript">
+				            $(document).ready(function(){
+				                var opts = {
+				                	interactionMode : 'embedded',
+				                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+				                    showRegionNumbers : true,
+				                    logoUrl: '',
+				                    buttonSettings : {
+				                        embedded : {
+				                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+				                            'buttonSetWidth' : 18,
+				                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+				                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+				                            'arrowSet' : ["up", "down", "left", "right"],
+				                            'buttonSets' : ['standardSet', 'specialSet']
+				                            },
+				                    },
+				                    //scalerInset : -10
+				                    
+				                    };
+				                var $div = $('div.digilib');
+				                $div.digilib(opts);
+				            });
+				
+				        </script>
+						
+
+						
+						<span class="xHuge_area1 splitBlockHeader" style="width:70em;">
+							<span class="xHuge_area0_p4 endline itemHeadline" >
+								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
+								&#160;	
+							</span>
+							
+							<span class="xHuge_area0_p4 lineToolSection">
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+							</span>
+							
+						</span>
+						
+						<div class="digilib xHuge_area1 splitBlockBody noTopBorder sameHeightMaster" style="width:70em;">
+							<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}" style="cursor:pointer"/>
+						</div>
+						
+					</h:panelGroup>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<h:panelGroup styleClass="quad_area0" rendered="#{(viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT') and viewPages.selectedPage!=null}">
+						<span class="quad_area1 splitBlockHeader">
+							<span class="quad_area0_p4 endline itemHeadline">
+								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
+								&#160;	
+							</span>
+							
+							<span class="quad_area0_p4 lineToolSection">
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+							</span>
+							
+						</span>
+						
+						<div class="quad_area1 splitBlockBody noTopBorder sameHeightMaster digilib">
+							<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,1000)}" style="cursor:pointer"/>
+						</div>
+					</h:panelGroup>
+					
+					
+					
+					<h:panelGroup styleClass="quad_area0" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+						<span class="quad_area1 splitBlockHeader">
+							<span class="quad_area0_p4 endline itemHeadline">
+								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedRightPage.orderLabel}" />
+								&#160;	
+							</span>
+							
+							<span class="quad_area0_p4 lineToolSection">
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedRightPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+							</span>
+							
+						</span>
+						
+						<span class="quad_area1 splitBlockBody noTopBorder sameHeightMaster">
+							<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedRightPage,360,1000)}" style="cursor:pointer"/>
+						</span>
+						
+					</h:panelGroup>
+				
+					
+					<h:panelGroup class="quad_area0" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+						
+						<span class="quad_area1 splitBlockHeader">
+						<ui:remove>
+							<span class="quad_area0_p4 endline itemHeadline">
+								<b>
+									Volume
+								</b>
+							</span>  
+							<span class="quad_area0_p4 lineToolSection">
+								LineToolSection
+							</span>
+							</ui:remove>
+						</span>
+						
+						
+						
+						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
+							<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
+						</div>
+		
+					</h:panelGroup>
+					
+					
+			</span>
+			
+		</div>
+	</h:panelGroup>
 		
 		
-			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
-
-			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" />
-			<script type="text/javascript">
-	            $(document).ready(function(){
-	                var opts = {
-	                	interactionMode : 'embedded',
-	                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
-	                    showRegionNumbers : true,
-	                    logoUrl: '',
-	                    buttonSettings : {
-	                        embedded : {
-	                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
-	                            'buttonSetWidth' : 18,
-	                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-	                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-	                            'arrowSet' : ["up", "down", "left", "right"],
-	                            'buttonSets' : ['standardSet', 'specialSet']
-	                            },
-	                    },
-	                    
-	                    };
-	                var $div = $('div.digilib');
-	                $div.digilib(opts);
-	            });
-	
-	        </script>
-			
-			
-			<h:panelGroup layout="block" style="overflow:auto; float:left; width:70em; height:1000px">
-				
-			
-				<div id="digilib" class="digilib" style="float:left; width:360px;">
-					<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,761)}" />
-				</div>
-				<!-- 
-				<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,761)}" />
-				-->
-				
-				<div id="fulltext" style="width: 360; height: 1000; background-color: white;">
-					<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
-				</div>
-				
-			
-			</h:panelGroup>
-			
-			
 		</ui:define>
 	</ui:composition>
 

@@ -28,6 +28,10 @@ import de.mpg.mpdl.dlc.vo.Volume;
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml")
 public class ViewPages {
 	
+	enum ViewType{
+		SINGLE, RECTO_VERSO, FULLTEXT
+	}
+	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 	@EJB
 	private VolumeServiceBean volServiceBean;
@@ -42,10 +46,13 @@ public class ViewPages {
 	private int selectedPageNumber;
 	
 	private Page selectedPage;
+	private Page selectedRightPage;
 	
 	private MetsDiv selectedDiv;
 	
 	private List<Page> pageList = new ArrayList<Page>();
+	
+	private ViewType viewType = ViewType.RECTO_VERSO;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
@@ -55,9 +62,47 @@ public class ViewPages {
 			{    
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
 				logger.info("Load new book" + volumeId);
-			}  
-			this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()));
-			List<MetsDiv> divForPage = volume.getDivMap().get(selectedPage);
+			}
+			Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
+			
+			if(ViewType.RECTO_VERSO.equals(viewType))
+			{
+				if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
+				{
+					if(getSelectedPageNumber() % 2 == 0)
+					{
+						this.setSelectedPage(pageforNumber);
+						
+						try {
+							this.setSelectedRightPage(volume.getPages().get(getSelectedPageNumber()));
+						} catch (IndexOutOfBoundsException e) {
+							this.setSelectedRightPage(null);
+						}
+					}
+					else
+					{
+						this.setSelectedRightPage(pageforNumber);
+						
+						try {
+							this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-2));
+						} catch (IndexOutOfBoundsException e) {
+							this.setSelectedPage(null);
+						}
+					}
+				}
+			
+				
+			}
+			else
+			{
+				this.setSelectedPage(pageforNumber);
+			}
+			
+			
+			List<MetsDiv> divForPage = volume.getDivMap().get(pageforNumber);
+
+			
+			
 			if(divForPage!=null && divForPage.size()>0)
 			{	
 				this.selectedDiv = divForPage.get(divForPage.size()-1).getParentDiv();
@@ -127,7 +172,14 @@ public class ViewPages {
 	public String goToNextPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        if (volume.getPages().size()>= selectedPageNumber + 1)
+        if(ViewType.RECTO_VERSO.equals(viewType) && volume.getPages().size()>= selectedPageNumber + 2)
+        {
+        	
+        		selectedPageNumber += 2;
+        		loadVolume();
+        }
+        
+        else if (volume.getPages().size()>= selectedPageNumber + 1)
         {
            selectedPageNumber ++;
            loadVolume();
@@ -138,7 +190,14 @@ public class ViewPages {
 	public String goToPreviousPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) - 1;
-        if (selectedPageNumber -1 >= 0)
+		
+		if(ViewType.RECTO_VERSO.equals(viewType) && selectedPageNumber - 2 >= 0)
+        {
+			selectedPageNumber -= 2;
+			loadVolume();
+        }
+		
+		else if (selectedPageNumber -1 >= 0)
         {
            selectedPageNumber --;
            loadVolume();
@@ -149,7 +208,7 @@ public class ViewPages {
 	public String goToLastPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        selectedPageNumber = volume.getPages().size()-1;
+        selectedPageNumber = volume.getPages().size();
         loadVolume();
         return null;
 	}
@@ -157,7 +216,7 @@ public class ViewPages {
 	public String goToFirstPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        selectedPageNumber = 0; 
+        selectedPageNumber = 1; 
         loadVolume();
         return null;
 	}
@@ -168,7 +227,7 @@ public class ViewPages {
 		MetsDiv nextPage = getNextPage(div);
 		List<Page> pages = volume.getPageMap().get(nextPage);
 		Page p = pages.get(0);
-		selectedPageNumber = volume.getPages().indexOf(p);
+		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
 		loadVolume();
 	}
 	
@@ -206,6 +265,25 @@ public class ViewPages {
 		//logger.info(tei);
 		return tei;
 	}
+
+	public Page getSelectedRightPage() {
+		return selectedRightPage;
+	}
+
+	public void setSelectedRightPage(Page selectedRightPage) {
+		this.selectedRightPage = selectedRightPage;
+	}
+
+	public ViewType getViewType() {
+		return viewType;
+	}
+
+	public void setViewType(ViewType viewType) {
+		this.viewType = viewType;
+		loadVolume();
+	}
+
+	
 	
 
 	
