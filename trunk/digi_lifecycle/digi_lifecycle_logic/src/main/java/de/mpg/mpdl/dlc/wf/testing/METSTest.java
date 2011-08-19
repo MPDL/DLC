@@ -24,7 +24,11 @@ public class METSTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//TEIParser.transform(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"));
+		TEIParser.transformByPosition(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"), 8);
+		TEIParser.transform(null, new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_with_ids.xml"), "d1e125");
+		TEIParser.transform(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"), "d1e315");
+		TEIParser.transformByPosition(null, new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_with_ids.xml"), 6);
+
 		//listpbpositions();
 		pagebyid();
 		//applyids();
@@ -52,6 +56,8 @@ public class METSTest {
 	
 	public static void pagebyid()
 	{
+		long time = System.currentTimeMillis();
+
 		//File xml = new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei");
 		File xml = new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_with_ids.xml");
 		String xslt = "/home/frank/data/digitization_lifecycle/tei_samples/tei_pageByPbId2xhtml.xsl";
@@ -61,6 +67,10 @@ public class METSTest {
 		//in = new FileInputStream(xslt);
 		in = METSTest.class.getClassLoader().getResourceAsStream("xslt/teiToXhtml/tei_pageByPbId2xhtml.xsl");
 		System.out.println(TEITransformer.teiFileToXhtmlByPagebreakId(xml, in, "d1e789", out));
+		time = System.currentTimeMillis() - time;
+		System.out
+				.println("total time to transform TEI: "
+						+ time + " ms");
 		
 	}
 	

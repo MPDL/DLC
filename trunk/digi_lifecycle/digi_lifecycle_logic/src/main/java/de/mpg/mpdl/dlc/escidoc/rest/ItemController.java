@@ -49,6 +49,7 @@ public class ItemController {
 	ih.setHandle(auth.getHandle());
 	HttpInputStream hin = ih.retrieveContent("escidoc:1004", "escidoc:3002");
 	MetadataRecord md = ih.retrieveMdRecord("escidoc:1004", "escidoc");
+	Item item = ih.retrieve("");
 	Element e = md.getContent();
 	XmlObject content = XmlObject.Factory.parse(e);
 	return content.xmlText();
