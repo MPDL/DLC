@@ -14,23 +14,67 @@
 			
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
 		</mpdl:paginator>
-			
-			
-		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
-			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
+		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
+			<div class="full_area0 listHeader">&#160;</div>
+			<ol>
 				<a4j:repeat id="pictureList" var="var" value="#{allVolumesBean.currentPartList}" rows="0" rowKeyVar="index">
-					<li >
-						<h:panelGroup layout="block" id="imgFrame">
-							<pretty:link mappingId="viewPages">
-								<f:param value="#{var.item.objid}" />
-								<f:param value="1" />
-								<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
-								<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>
-							</pretty:link>
-						</h:panelGroup>
-					</li>
+					<h:panelGroup>
+						<li class="full_area0 listItem">
+	 						<h:panelGroup layout="block" styleClass="free_area0 itemHeader">
+								<span class="free_area0_p8 endline itemSelectArea">
+									&#160;
+				 				</span>
+				 				<span class="seperator"></span>
+				 				<span class="free_area0_p8 status statusArea">
+									<span class="noDisplay">(</span>
+			 						<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}"/>
+				 					<span class="noDisplay">)</span>
+				 				</span>
+								<span class="seperator status"></span>
+				 				<span class="free_area0_p6 endline itemHeadline">
+									<b>
+										<pretty:link mappingId="viewPages">
+											<f:param value="#{var.item.objid}" />
+											<f:param value="1" />
+											<h:outputText value="#{volumeUtilBean.getNames(var.modsMetadata)}"/>
+											<br/>
+											<!-- title - pulisher.place : publisher.publisher , dateStart - dateEnd -->
+											<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}, "/>
+										</pretty:link>
+									</b>
+				 				</span>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="full_area0 shortView">
+								<div class="free_area0_p0  small_marginLIncl endline listItemLine">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.view_dtls_title_txt}"/><span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+										<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>&#160;
+									</span>
+								</div>
+	
+								<h:panelGroup layout="block" styleClass="free_area0_p0 small_marginLIncl endline listItemLine">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.view_dtls_author_txt}"/>
+										<span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+										<h:outputText value="#{volumeUtilBean.getNames(var.modsMetadata)}"/>&#160;
+									</span>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+									</span>
+								</h:panelGroup>
+							</h:panelGroup>
+						</li>
+					</h:panelGroup>
 				</a4j:repeat>
-			</ul>
+			</ol>
 		</h:panelGroup>
 			
 	</ui:define>
