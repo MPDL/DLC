@@ -47,10 +47,16 @@ public class TEITransformer {
 	static StreamResult result = null;
 
 	static File transformToFile(File file2transform,
-			InputStream stream2transform, InputStream xslt, String pbId,
+			InputStream stream2transform, InputStream xslt, String systemId, String pbId,
 			File output) {
 		System.setProperty(TRANSFORMERFACTORY_KEY, TRANSFORMERFACTORY_VALUE);
-		XSL = new SAXSource(reader, new InputSource(xslt));
+		if (xslt != null) {
+			XSL = new SAXSource(reader, new InputSource(xslt));
+		} else {
+			if (systemId != null) {
+				XSL = new StreamSource(systemId);
+			}
+		}
 		TransformerFactory transfFactory = TransformerFactory.newInstance();
 		if (file2transform != null) {
 			XML = new StreamSource(file2transform);
@@ -80,10 +86,16 @@ public class TEITransformer {
 	}
 	
 	static String transformToString(File file2transform,
-			InputStream stream2transform, InputStream xslt, String pbId,
+			InputStream stream2transform, InputStream xslt, String systemId, String pbId,
 			File output) {
 		System.setProperty(TRANSFORMERFACTORY_KEY, TRANSFORMERFACTORY_VALUE);
-		XSL = new SAXSource(reader, new InputSource(xslt));
+		if (xslt != null) {
+			XSL = new SAXSource(reader, new InputSource(xslt));
+		} else {
+			if (systemId != null) {
+				XSL = new StreamSource(systemId);
+			}
+		}
 		TransformerFactory transfFactory = TransformerFactory.newInstance();
 		if (file2transform != null) {
 			XML = new StreamSource(file2transform);
@@ -109,7 +121,16 @@ public class TEITransformer {
 	}
 
 	public static String teiFileToXhtml(File file2transform, InputStream xslt) {
-		String transformed = transformToString(file2transform, null, xslt, null, null);
+		String transformed = transformToString(file2transform, null, xslt, null, null, null);
+		if (transformed != null) {
+			return transformed;
+		} else {
+			return null;
+		}
+	}
+	
+	public static String teiFileToXhtmlUsingSystemId(File file2transform, String systemId) {
+		String transformed = transformToString(file2transform, null, null, systemId, null, null);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -118,7 +139,7 @@ public class TEITransformer {
 	}
 	
 	public static String teiFileToXhtmlByPagebreakId(File file2transform, InputStream xslt, String pbId) {
-		String transformed = transformToString(file2transform, null, xslt, pbId, null);
+		String transformed = transformToString(file2transform, null, xslt, null, pbId, null);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -128,7 +149,7 @@ public class TEITransformer {
 	
 	public static File teiFileToXhtml(File file2transform,
 			InputStream xslt, File output) {
-		File transformed = transformToFile(file2transform, null, xslt, null, output);
+		File transformed = transformToFile(file2transform, null, xslt, null, null, output);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -138,7 +159,7 @@ public class TEITransformer {
 
 	public static File teiFileToXhtmlByPagebreakId(File file2transform,
 			InputStream xslt, String pbId, File output) {
-		File transformed = transformToFile(file2transform, null, xslt, pbId, output);
+		File transformed = transformToFile(file2transform, null, xslt, null, pbId, output);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -148,7 +169,7 @@ public class TEITransformer {
 
 	public static String teiStreamToXhtml(InputStream tei2transform,
 			InputStream xslt) {
-		String transformed = transformToString(null, tei2transform, xslt, null, null);
+		String transformed = transformToString(null, tei2transform, xslt, null, null, null);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -158,7 +179,7 @@ public class TEITransformer {
 	
 	public static String teiStreamToXhtmlByPagebreakId(InputStream tei2transform,
 			InputStream xslt, String pbId) {
-		String transformed = transformToString(null, tei2transform, xslt, pbId, null);
+		String transformed = transformToString(null, tei2transform, xslt, null, pbId, null);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -168,7 +189,7 @@ public class TEITransformer {
 	
 	public static File teiStreamToXhtml(InputStream tei2transform,
 			InputStream xslt, File output) {
-		File transformed = transformToFile(null, tei2transform, xslt, null, output);
+		File transformed = transformToFile(null, tei2transform, xslt, null, null, output);
 		if (transformed != null) {
 			return transformed;
 		} else {
@@ -178,7 +199,7 @@ public class TEITransformer {
 
 	public static File teiStreamToXhtmlByPagebreakId(InputStream tei2transform,
 			InputStream xslt, String pbId, File output) {
-		File transformed = transformToFile(null, tei2transform, xslt, pbId, output);
+		File transformed = transformToFile(null, tei2transform, xslt, null, pbId, output);
 		if (transformed != null) {
 			return transformed;
 		} else {

@@ -82,7 +82,7 @@
 			</body>
 		</html>
 	</xsl:template>
-	
+	<!--
 	<xsl:template match="/">
 		<xsl:for-each select="//tei:pb">
 			<xsl:if test="@xml:id=$pbid">
@@ -90,7 +90,12 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-	
+	-->
+	<xsl:template match="/">
+		<xsl:for-each select="//tei:pb[@xml:id=$pbid]">
+				<xsl:call-template name="structure"></xsl:call-template>
+		</xsl:for-each>
+	</xsl:template>
 	<xsl:template match="text()">
 		<xsl:param name="start"/>
 		<xsl:param name="end"/>

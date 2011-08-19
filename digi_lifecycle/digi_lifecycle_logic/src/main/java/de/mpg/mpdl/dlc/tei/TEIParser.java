@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventFactory;
@@ -34,6 +35,12 @@ import javax.xml.stream.events.XMLEvent;
 import de.mpg.mpdl.dlc.wf.testing.XMLParser;
 
 public class TEIParser {
+
+	static XMLInputFactory inputFactory = null;
+	static XMLOutputFactory outputFactory = null;
+	static XMLEventReader parser = null;
+	static XMLEventWriter writer = null;
+	static XMLEventFactory eventFactory = null;
 
 	public static LinkedList<LinkedList<String>> getTagLists(String uri,
 			File file, int start, int end) {
@@ -57,10 +64,10 @@ public class TEIParser {
 				}
 			}
 		}
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		XMLEventReader parser = null;
+		inputFactory = XMLInputFactory.newInstance();
+
 		try {
-			parser = factory.createXMLEventReader(in);
+			parser = inputFactory.createXMLEventReader(in);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
@@ -129,10 +136,9 @@ public class TEIParser {
 				e.printStackTrace();
 			}
 		}
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		XMLEventReader parser = null;
+		inputFactory = XMLInputFactory.newInstance();
 		try {
-			parser = factory.createXMLEventReader(in);
+			parser = inputFactory.createXMLEventReader(in);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
@@ -155,12 +161,13 @@ public class TEIParser {
 						// key.append("<" + startTag.getName().getLocalPart());
 						// Iterator<Attribute> atts = startTag..getAttributes();
 						// while (atts.hasNext()) {
-						//	Attribute att = atts.next();
-						//	key.append(" " + att.getName().getLocalPart()
-						//			+ "=\"" + att.getValue() + "\"");
+						// Attribute att = atts.next();
+						// key.append(" " + att.getName().getLocalPart()
+						// + "=\"" + att.getValue() + "\"");
 						// }
 						// key.append(">");
-						Attribute pbId = startTag.getAttributeByName(new QName("http://www.w3.org/XML/1998/namespace", "id"));
+						Attribute pbId = startTag.getAttributeByName(new QName(
+								"http://www.w3.org/XML/1998/namespace", "id"));
 						key.append(pbId.getValue());
 						pbPositions.put(key.toString(), Integer
 								.valueOf(startTag.getLocation()
@@ -204,19 +211,20 @@ public class TEIParser {
 			}
 		}
 
-		XMLInputFactory factory = XMLInputFactory.newInstance();
-		XMLEventReader reader;
+		inputFactory = XMLInputFactory.newInstance();
 		try {
-			reader = factory.createXMLEventReader(in);
-			XMLOutputFactory of = XMLOutputFactory.newInstance();
-			XMLEventWriter writer = of
-					.createXMLEventWriter(new FileOutputStream(out));
-			XMLEventFactory ef = XMLEventFactory.newInstance();
-			StartDocument sd_tei = ef.createStartDocument("UTF-8", "1.0");
-			StartElement se_tei = ef.createStartElement("",
+			parser = inputFactory.createXMLEventReader(in);
+			outputFactory = XMLOutputFactory.newInstance();
+			writer = outputFactory.createXMLEventWriter(new FileOutputStream(
+					out));
+			eventFactory = XMLEventFactory.newInstance();
+			StartDocument sd_tei = eventFactory.createStartDocument("UTF-8",
+					"1.0");
+			StartElement se_tei = eventFactory.createStartElement("",
 					"http://www.tei-c.org/ns/1.0", "TEI");
-			Namespace ns = ef.createNamespace("http://www.tei-c.org/ns/1.0");
-			EndElement ee_tei = ef.createEndElement("", "", "TEI");
+			Namespace ns = eventFactory
+					.createNamespace("http://www.tei-c.org/ns/1.0");
+			EndElement ee_tei = eventFactory.createEndElement("", "", "TEI");
 			writer.add(sd_tei);
 			writer.add(se_tei);
 			writer.add(ns);
@@ -227,19 +235,19 @@ public class TEIParser {
 			 */
 			Iterator<String> startTags = missingStartTags.descendingIterator();
 			while (startTags.hasNext()) {
-				StartElement startElemet = ef.createStartElement("", "",
-						startTags.next());
+				StartElement startElemet = eventFactory.createStartElement("",
+						"", startTags.next());
 				writer.add(startElemet);
 			}
 
-			while (reader.hasNext()) {
-				XMLEvent event = reader.nextEvent();
+			while (parser.hasNext()) {
+				XMLEvent event = parser.nextEvent();
 
 				if (event.getLocation().getCharacterOffset() >= start
 						&& event.getLocation().getCharacterOffset() < end) {
 					switch (event.getEventType()) {
 					case XMLStreamConstants.END_DOCUMENT:
-						reader.close();
+						parser.close();
 						break;
 					case XMLStreamConstants.START_ELEMENT:
 						StartElement startTag = event.asStartElement();
@@ -263,14 +271,14 @@ public class TEIParser {
 
 			Iterator<String> endTags = missingEndTags.descendingIterator();
 			while (endTags.hasNext()) {
-				EndElement endElement = ef.createEndElement("", "",
+				EndElement endElement = eventFactory.createEndElement("", "",
 						endTags.next());
 				writer.add(endElement);
 			}
 			writer.add(ee_tei);
 			writer.flush();
 			writer.close();
-			reader.close();
+			parser.close();
 			return out;
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
@@ -295,8 +303,8 @@ public class TEIParser {
 				}
 			}
 
-			XMLInputFactory factory = XMLInputFactory.newInstance();
-			XMLEventReader reader = factory.createXMLEventReader(in);
+			inputFactory = XMLInputFactory.newInstance();
+			parser = inputFactory.createXMLEventReader(in);
 			XMLOutputFactory of = XMLOutputFactory.newInstance();
 			XMLEventWriter writer = of
 					.createXMLEventWriter(new FileOutputStream(out));
@@ -311,11 +319,11 @@ public class TEIParser {
 			writer.add(se_tei);
 			writer.add(ns);
 
-			while (reader.hasNext()) {
-				XMLEvent event = reader.nextEvent();
+			while (parser.hasNext()) {
+				XMLEvent event = parser.nextEvent();
 				switch (event.getEventType()) {
 				case XMLStreamConstants.END_DOCUMENT:
-					reader.close();
+					parser.close();
 					break;
 				case XMLStreamConstants.START_ELEMENT:
 					StartElement startTag = event.asStartElement();
@@ -324,7 +332,7 @@ public class TEIParser {
 								.equalsIgnoreCase(tag)) {
 							if (startTag.getName().getLocalPart()
 									.equalsIgnoreCase("head")) {
-								XMLEvent next = reader.peek();
+								XMLEvent next = parser.peek();
 								if (next.isCharacters()) {
 									Characters chars = next.asCharacters();
 									writer.add(startTag);
@@ -362,7 +370,7 @@ public class TEIParser {
 		}
 	}
 
-	public static void transform(String uri, File file) {
+	public static void transform(String uri, File file, String pbId) {
 		int start = 0;
 		int end = 0;
 		LinkedHashMap<String, Integer> pbs = null;
@@ -374,34 +382,31 @@ public class TEIParser {
 		try {
 			if (uri != null) {
 				pbs = getPageBreakPositions(uri, null);
-				Integer[] offsets = new Integer[pbs.values().size()];
-				offsets = pbs.values().toArray(offsets);
-				start = offsets[8];
-				end = offsets[9];
+				start = pbs.get(pbId);
+				end = pbs.get(nextPagebreakPosition(pbs, pbId));
 				taglists = getTagLists(uri, null, start, end);
-				teiPage = createPage(uri, null, start, end,
-						taglists.get(0), taglists.get(1),
+				teiPage = createPage(uri, null, start, end, taglists.getLast(),
+						taglists.getFirst(),
 						File.createTempFile("paged", "tei"));
 			} else {
 				if (file != null) {
 					pbs = getPageBreakPositions(null, file);
-					Integer[] offsets = new Integer[pbs.values().size()];
-					offsets = pbs.values().toArray(offsets);
-					//start = offsets[8];
-					start = pbs.get("d1e256");
-					//end = offsets[9];
-					end = pbs.get("d1e263");
+					start = pbs.get(pbId);
+					end = pbs.get(nextPagebreakPosition(pbs, pbId));
 					taglists = getTagLists(null, file, start, end);
-					System.out.println(taglists.get(1));
-					System.out.println(taglists.get(0));
 					teiPage = createPage(null, file, start, end,
 							taglists.getLast(), taglists.getFirst(),
 							File.createTempFile("paged", "tei"));
 				}
 			}
 
-			InputStream xslt = XMLParser.class.getClassLoader()
+			InputStream xslt = TEIParser.class.getClassLoader()
 					.getResourceAsStream("xslt/teiToXhtml/tei_page2xhtml.xsl");
+
+			URL xsltUrl = TEIParser.class.getClassLoader().getResource(
+					"xslt/tei/xhtml2/tei.xsl");
+
+			String systemId = xsltUrl.toExternalForm();
 
 			String result = TEITransformer.teiFileToXhtml(teiPage, xslt);
 
@@ -418,5 +423,79 @@ public class TEIParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void transformByPosition(String uri, File file,
+			int startPosition) {
+		int start = 0;
+		int end = 0;
+		LinkedHashMap<String, Integer> pbs = null;
+		LinkedList<LinkedList<String>> taglists = null;
+		File teiPage = null;
+
+		long time = System.currentTimeMillis();
+
+		try {
+			if (uri != null) {
+				pbs = getPageBreakPositions(uri, null);
+				Integer[] offsets = new Integer[pbs.values().size()];
+				offsets = pbs.values().toArray(offsets);
+				start = offsets[startPosition];
+				end = offsets[startPosition + 1];
+				taglists = getTagLists(uri, null, start, end);
+				teiPage = createPage(uri, null, start, end, taglists.getLast(),
+						taglists.getFirst(),
+						File.createTempFile("paged", "tei"));
+			} else {
+				if (file != null) {
+					pbs = getPageBreakPositions(null, file);
+					Integer[] offsets = new Integer[pbs.values().size()];
+					offsets = pbs.values().toArray(offsets);
+					start = offsets[startPosition];
+					end = offsets[startPosition + 1];
+					taglists = getTagLists(null, file, start, end);
+					teiPage = createPage(null, file, start, end,
+							taglists.getLast(), taglists.getFirst(),
+							File.createTempFile("paged", "tei"));
+				}
+			}
+
+			InputStream xslt = XMLParser.class.getClassLoader()
+					.getResourceAsStream("xslt/teiToXhtml/tei_page2xhtml.xsl");
+
+			URL xsltUrl = TEIParser.class.getClassLoader().getResource(
+					"xslt/tei/xhtml2/tei.xsl");
+
+			String systemId = xsltUrl.toExternalForm();
+
+			String result = TEITransformer.teiFileToXhtml(teiPage, xslt);
+
+			time = System.currentTimeMillis() - time;
+			System.out
+					.println("total time to build and transform XML for page: "
+							+ time + " ms");
+			System.out.println(result);
+
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	static String nextPagebreakPosition(
+			LinkedHashMap<String, Integer> positions, String startId) {
+		Iterator<Entry<String, Integer>> iter = positions.entrySet().iterator();
+		while (iter.hasNext()) {
+			Entry<String, Integer> e = (Entry<String, Integer>) iter.next();
+			if (e.getKey().equalsIgnoreCase(startId)) {
+				Entry<String, Integer> next = (Entry<String, Integer>) iter
+						.next();
+				return next.getKey();
+			}
+		}
+		return null;
 	}
 }
