@@ -35,7 +35,7 @@ public class VolumeUtilBean {
 				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=" + height + "&dw=" + width;
 			return url;
 		} catch (Exception e) {
-			logger.error("Error getting URL for image", e);
+			logger.error("Error getting URL for page " + p + "(" + width + "," + height + ")", e);
 			return null;
 		}
 	}
