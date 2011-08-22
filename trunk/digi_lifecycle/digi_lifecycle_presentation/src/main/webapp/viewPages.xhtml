@@ -116,6 +116,7 @@
 											<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
 												<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 													<h:outputText value="#{divItem.type}: #{divItem.label}" />
+													<f:ajax render="@all"/>
 												</h:commandLink>
 											</rich:treeNode>
 										</rich:treeModelRecursiveAdaptor>
@@ -180,7 +181,7 @@
 							</span>
 							
 							<span class="xHuge_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
@@ -207,7 +208,7 @@
 							</span>
 							
 							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
@@ -227,7 +228,7 @@
 							</span>
 							
 							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedRightPage.order} #{lbl.toc_edit_of} #{genericJsfUtils.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedRightPage.order}  #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
