@@ -79,10 +79,11 @@ public class VolumeUtilBean {
 	
 	public static ModsPublisher getMainPublisher(ModsMetadata md)
 	{
+		
 		for(ModsPublisher mp : md.getPublishers() )
 		{
-			if(mp.getPublisher() == null || mp.getPublisher().isEmpty())
-				return mp;
+			
+
 		}
 		return new ModsPublisher();
 	}
