@@ -119,7 +119,7 @@ public class ViewPages {
 	
 	public List<Page> getPageList() throws Exception
 	{
-		pageList = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle()).getPages();
+		pageList = volume.getPages();
 		return pageList;
 	}
 	public void setPageList(List<Page> pageList)
