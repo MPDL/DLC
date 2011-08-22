@@ -36,11 +36,13 @@
 										<pretty:link mappingId="viewPages">
 											<f:param value="#{var.item.objid}" />
 											<f:param value="1" />
-											<h:outputText value="#{volumeUtilBean.getNames(var.modsMetadata)}"/>
+											<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata)} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
+											<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 											<br/>
 											<!-- title - pulisher.place : publisher.publisher , dateStart - dateEnd -->
-											<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}, "/>
+											<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}, #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
 										</pretty:link>
+
 									</b>
 				 				</span>
 							</h:panelGroup>
@@ -59,17 +61,48 @@
 										<h:outputText value="#{lbl.view_dtls_author_txt}"/>
 										<span class="noDisplay">: </span>
 									</span>
+									
 									<span class="xHuge_area0 endline">
-										<h:outputText value="#{volumeUtilBean.getNames(var.modsMetadata)}"/>&#160;
+										<h:outputText value=""/>&#160;
 									</span>
+									
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine">
 									<span class="huge_area0_p8 endline labelLine">
 										<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
 									</span>
 									<span class="xHuge_area0 endline">
+										<!-- TODO
+										<h:outputText value="#{book.metadata.mvDateIssued}"/>&#160;
+										 -->
 									</span>
 								</h:panelGroup>
+								<!-- 
+								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.edit_tree_toc_lastmodificationdate}"/><span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+										<h:outputText value="#{book.toc.lmd2display}"/>&#160;
+									</span>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.edit_tree_toc_releasedate}"/><span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+										<h:outputText value="#{book.toc.releaseDate}"/>&#160;
+									</span>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
+									<span class="huge_area0_p8 endline labelLine">
+										<h:outputText value="#{lbl.edit_tree_toc_versionstate}"/><span class="noDisplay">: </span>
+									</span>
+									<span class="xHuge_area0 endline">
+										<h:outputText value="#{book.toc.versionStatusLabel}"/>&#160;
+									</span>
+								</h:panelGroup>
+								 -->
 							</h:panelGroup>
 						</li>
 					</h:panelGroup>
