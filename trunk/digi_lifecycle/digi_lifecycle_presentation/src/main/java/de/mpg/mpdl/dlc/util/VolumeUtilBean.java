@@ -66,25 +66,22 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
-	public static String getNames(ModsMetadata md)
+	public static ModsName getFirstNamePart(ModsMetadata md)
 	{
-		String names = "";
 		for(ModsName mn : md.getNames())
-		{
 			if(mn.getName() != null)
-				names += mn.getName();
-		}
-		return names;
+				return mn;
+		
+		return new ModsName();
 	}
+	
+
 	
 	public static ModsPublisher getMainPublisher(ModsMetadata md)
 	{
-		
-		for(ModsPublisher mp : md.getPublishers() )
-		{
-			
-
-		}
+		for(ModsPublisher mp : md.getPublishers())
+			if(mp != null)
+				return mp;
 		return new ModsPublisher();
 	}
 	
