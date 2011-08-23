@@ -91,11 +91,6 @@ public abstract class BasePaginatorBean<ListElementType>
      * The current paginator page number
      */
     private int currentPageNumber;
-    
-    /**
-     * The page number from URL
-     */
-    private int pageNumber;
     /**
      * The current value of the 'go to' input fields
      */
@@ -136,17 +131,6 @@ public abstract class BasePaginatorBean<ListElementType>
         update(); 
         return "";
     }
-    
-    public String gerReload()
-    {
-    	FacesContext context = FacesContext.getCurrentInstance();
-    	String viewId = context.getViewRoot().getViewId();
-    	ViewHandler handler = context.getApplication().getViewHandler();
-    	UIViewRoot root = handler.createView(context, viewId);
-    	root.setViewId(viewId);
-    	context.setViewRoot(root);
-    	return "";
-    }
 
     /**
      * This method is called by the corresponding BaseListRetrieverRequestBean whenever the list has to be updated. It
@@ -160,10 +144,8 @@ public abstract class BasePaginatorBean<ListElementType>
         {  
             if (elementsPerPage == 0)
             {
-                setElementsPerPage(24);
+                setElementsPerPage(12);
             }
-        	getCurrentPageNumber();
-//        	System.out.println("page= "+currentPageNumber);
 //            if (FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().containsKey("page"))
 //            {
 //            	currentPageNumber = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("page"));
@@ -181,7 +163,7 @@ public abstract class BasePaginatorBean<ListElementType>
             if (getTotalNumberOfElements() <= getOffset())
             {
                 setCurrentPageNumber(((getTotalNumberOfElements() - 1) / getElementsPerPage()) + 1);
-                System.out.println("offset= "+getOffset());
+
                 currentPartList = retrieveList(getOffset(), elementsPerPage);
                 totalNumberOfElements = getTotalNumberOfRecords();
             }
@@ -424,7 +406,10 @@ public abstract class BasePaginatorBean<ListElementType>
      * 
      * @return
      */
-    public abstract int getCurrentPageNumber();
+    public int getCurrentPageNumber()
+    {
+    	return currentPageNumber;
+    }
     
 
     /**
@@ -536,21 +521,21 @@ public abstract class BasePaginatorBean<ListElementType>
          */
         public String goToPage() throws Exception
         {
-//            setCurrentPageNumber(getNumber());
-//			  return getNavigationString();	
+            setCurrentPageNumber(getNumber());
+			return getNavigationString();	
 
-        	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        	String url = request.getHeader("Referer");
-        	String newURL="";
-        	StringTokenizer st = new StringTokenizer(url, "/", true);
-        	int l = st.countTokens();
-        	for(int i = 1; i<l-1; i++)
-        		newURL += st.nextToken();
-        	int j = (getNumber()-1)*getElementsPerPage()+1;
-        	newURL+= "/" + j;
-        	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
-        	response.sendRedirect(newURL);
-        	return "";
+//        	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        	String url = request.getHeader("Referer");
+//        	String newURL="";
+//        	StringTokenizer st = new StringTokenizer(url, "/", true);
+//        	int l = st.countTokens();
+//        	for(int i = 1; i<l-1; i++)
+//        		newURL += st.nextToken();
+//        	int j = (getNumber()-1)*getElementsPerPage()+1;
+//        	newURL+= "/" + j;
+//        	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
+//        	response.sendRedirect(newURL);
+//        	return "";
         }
     }
 
@@ -563,19 +548,7 @@ public abstract class BasePaginatorBean<ListElementType>
     public String goToNextPage() throws IOException
     {
         currentPageNumber += 1; 
-//        return getNavigationString();
-    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String url = request.getHeader("Referer");
-    	String newURL="";
-    	StringTokenizer st = new StringTokenizer(url, "/", true);
-    	int l = st.countTokens();
-    	for(int i = 1; i<l-1; i++)
-    		newURL += st.nextToken();
-    	int j = (currentPageNumber-1)*getElementsPerPage()+1;
-    	newURL+= "/" + j;
-    	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
-    	response.sendRedirect(newURL);
-    	return "";
+        return getNavigationString();
     }
 
     /**
@@ -587,19 +560,7 @@ public abstract class BasePaginatorBean<ListElementType>
     public String goToPreviousPage() throws IOException
     { 
         currentPageNumber -= 1;
-//        return getNavigationString();
-    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String url = request.getHeader("Referer");
-    	String newURL="";
-    	StringTokenizer st = new StringTokenizer(url, "/", true);
-    	int l = st.countTokens();
-    	for(int i = 1; i<l-1; i++)
-    		newURL += st.nextToken();
-    	int j = (currentPageNumber-1)*getElementsPerPage()+1;
-    	newURL+= "/" + j;
-    	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
-    	response.sendRedirect(newURL);
-    	return "";
+        return getNavigationString();
     }
 
     /**
@@ -611,19 +572,7 @@ public abstract class BasePaginatorBean<ListElementType>
     public String goToFirstPage() throws IOException
     {
         currentPageNumber = 1;
-//        return getNavigationString();
-    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String url = request.getHeader("Referer");
-    	String newURL="";
-    	StringTokenizer st = new StringTokenizer(url, "/", true);
-    	int l = st.countTokens();
-    	for(int i = 1; i<l-1; i++)
-    		newURL += st.nextToken();
-    	int j = (currentPageNumber-1)*getElementsPerPage()+1;
-    	newURL+= "/" + j;
-    	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
-    	response.sendRedirect(newURL);
-    	return "";
+        return getNavigationString();
     }
 
     /**
@@ -635,19 +584,7 @@ public abstract class BasePaginatorBean<ListElementType>
     public String goToLastPage() throws IOException
     {
         currentPageNumber = getPaginatorPageSize();
-//        return getNavigationString();
-    	HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    	String url = request.getHeader("Referer");
-    	String newURL="";
-    	StringTokenizer st = new StringTokenizer(url, "/", true);
-    	int l = st.countTokens();
-    	for(int i = 1; i<l-1; i++)
-    		newURL += st.nextToken();
-    	int j = (currentPageNumber-1)*getElementsPerPage()+1;
-    	newURL+= "/" + j;
-    	HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse(); 
-    	response.sendRedirect(newURL);
-    	return "";
+        return getNavigationString();
     }
 
     /**
