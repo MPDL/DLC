@@ -958,8 +958,9 @@ public class VolumeServiceBean {
 	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.id") + "escidoc.metadata=\"" + query + "\"";
-		SearchRetrieveResponse resp = shc.search(query, offset, limit, null, "escidoc_all");
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.id") + "\" and escidoc.metadata=\"" + query + "\"";
+		logger.info(cqlQuery);
+		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
 		
 		List<Volume> volumeResult = new ArrayList<Volume>();
 		
