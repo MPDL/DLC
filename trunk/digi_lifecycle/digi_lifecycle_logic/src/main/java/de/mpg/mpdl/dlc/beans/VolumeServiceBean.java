@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.faces.view.facelets.ComponentConfig;
 import javax.xml.bind.JAXBContext;
@@ -127,11 +128,14 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 import de.mpg.mpdl.dlc.wf.testing.TEITransformation;
 
-@Stateless
+@Stateful
 public class VolumeServiceBean {
 	
 	private static Logger logger = Logger.getLogger(VolumeServiceBean.class); 
+	private static int numberOfVolumes;
 	
+
+
 	static{
 		
 	}
@@ -142,30 +146,40 @@ public class VolumeServiceBean {
 	{
 		if(transfFact==null)
 		{
-			System.setProperty("javax.xml.transform.TransformerFactory",
-					"net.sf.saxon.TransformerFactoryImpl");
+			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
 			transfFact = TransformerFactory.newInstance();
 		}
 	}
 	
+
+	
 	public List<Volume> retrieveVolumes(int limit, int offset, String userHandle) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		
-		
 		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
 		SearchRetrieveResponse resp = shc.search("escidoc.content-model.objid=\"" + contentModelId + "\"", offset, limit, null, "escidoc_all");
-		
+		setNumberOfVolumes(resp.getNumberOfRecords());
 		List<Volume> volumeList = new ArrayList<Volume>();
+
 		for(SearchResultRecord rec : resp.getRecords())
 		{
 			Item item = (Item)rec.getRecordData().getContent();
 			volumeList.add(createVolumeFromItem(item, userHandle));
 		}
-		
 		return volumeList;
 		
 	}
+	
+	public static int getNumberOfVolumes() {
+		return numberOfVolumes;
+	}
+
+	@SuppressWarnings("static-access")
+	public void setNumberOfVolumes(int numberOfVolumes) {
+		this.numberOfVolumes = numberOfVolumes;
+	}
+
+
 	
 	
 	public Volume retrieveVolume(String id, String userHandle) throws Exception
