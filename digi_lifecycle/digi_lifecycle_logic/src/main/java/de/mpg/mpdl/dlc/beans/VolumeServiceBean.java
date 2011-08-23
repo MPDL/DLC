@@ -1,20 +1,5 @@
 package de.mpg.mpdl.dlc.beans;
 
-import gov.loc.mets.DivType;
-import gov.loc.mets.DivType.Fptr;
-import gov.loc.mets.FileType;
-import gov.loc.mets.FileType.FLocat;
-import gov.loc.mets.MdSecType;
-import gov.loc.mets.MdSecType.MdWrap;
-import gov.loc.mets.MdSecType.MdWrap.MDTYPE;
-import gov.loc.mets.MdSecType.MdWrap.XmlData;
-import gov.loc.mets.MetsDocument;
-import gov.loc.mets.MetsDocument.Mets;
-import gov.loc.mets.MetsType.FileSec;
-import gov.loc.mets.MetsType.FileSec.FileGrp;
-import gov.loc.mets.StructMapType;
-import gov.loc.mods.v3.ModsDocument;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,20 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.ejb.Stateful;
-import javax.ejb.Stateless;
-import javax.faces.view.facelets.ComponentConfig;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -45,58 +23,23 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQConstants;
 import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
-
-import net.sf.saxon.om.NamespaceConstant;
-import net.sf.saxon.om.NodeInfo;
-import net.sf.saxon.s9api.Processor;
-import net.sf.saxon.s9api.XPathCompiler;
-import net.sf.saxon.s9api.XPathExecutable;
-import net.sf.saxon.s9api.XPathSelector;
-import net.sf.saxon.s9api.XdmItem;
-import net.sf.saxon.s9api.XdmNode;
-import net.sf.saxon.s9api.XdmValue;
-import net.sf.saxon.xpath.XPathEvaluator;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
-
-import org.apache.axis.transport.http.AdminServlet;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-import org.apache.commons.httpclient.methods.multipart.StringPart;
-import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
-import org.apache.xmlbeans.XmlCursor;
-import org.apache.xmlbeans.XmlOptions;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-import com.sun.tools.doclets.internal.toolkit.util.DocFinder.Input;
-
-import de.ddb.application.StandaloneConverter;
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
@@ -119,14 +62,12 @@ import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
-import de.mpg.mpdl.dlc.tei.TEITransformer;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsFile;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
-import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
-import de.mpg.mpdl.dlc.wf.testing.TEITransformation;
 
 @Stateful
 public class VolumeServiceBean {
@@ -153,7 +94,7 @@ public class VolumeServiceBean {
 	
 
 	
-	public List<Volume> retrieveVolumes(int limit, int offset, String userHandle) throws Exception
+	public VolumeSearchResult retrieveVolumes(int limit, int offset, String userHandle) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
@@ -166,14 +107,11 @@ public class VolumeServiceBean {
 			Item item = (Item)rec.getRecordData().getContent();
 			volumeList.add(createVolumeFromItem(item, userHandle));
 		}
-		return volumeList;
+		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
 		
 	}
 	
-	public static int getNumberOfVolumes() {
-		return numberOfVolumes;
-	}
-
+	
 	@SuppressWarnings("static-access")
 	public void setNumberOfVolumes(int numberOfVolumes) {
 		this.numberOfVolumes = numberOfVolumes;
@@ -1022,6 +960,26 @@ public class VolumeServiceBean {
         System.out.println(res);
         */
 
+		
+	}
+	
+	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
+	{
+		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.id") + "escidoc.metadata=\"" + query + "\"";
+		SearchRetrieveResponse resp = shc.search(query, offset, limit, null, "escidoc_all");
+		
+		List<Volume> volumeResult = new ArrayList<Volume>();
+		
+		for(SearchResultRecord rec : resp.getRecords())
+		{
+			Item item = (Item)rec.getRecordData().getContent();
+			volumeResult.add(createVolumeFromItem(item, null));
+			
+		}
+		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
+		
+		
 		
 	}
 }
