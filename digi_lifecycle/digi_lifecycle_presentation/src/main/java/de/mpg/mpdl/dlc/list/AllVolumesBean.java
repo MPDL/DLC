@@ -9,17 +9,15 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
-import com.sun.tools.javac.comp.Todo;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.valueobjects.DlcBook;
-import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
+@URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes")
 
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	
@@ -29,34 +27,29 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
-	private int totalNumberOfRecords;
-	private List<Volume> volList= new ArrayList<Volume>();
-
-
 	public AllVolumesBean()
 	{
 		super();
 		//TODO
-
+ 
 	}
   
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception {
+		List<Volume> volList = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
+		return volList;
+ 
 		
-		volList = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
-		totalNumberOfRecords = volList.size();
-		List<Volume> subList = volList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
-		return subList;
 	}
 
-	@Override
-	public int getTotalNumberOfRecords() {
-		return totalNumberOfRecords;
+	public int getTotalNumberOfRecords() 
+	{
+		return volServiceBean.getNumberOfVolumes();
 	}
 
 	@Override
 	public String getNavigationString() {
-		return "pretty:viewPage";
+		return "pretty:volumes";
 	}
 	public LoginBean getLoginBean() {
 		return loginBean;
@@ -66,9 +59,5 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 		this.loginBean = loginBean;
 	}
 
-	@Override
-	public int getCurrentPageNumber() {
-		return 1;
-	}
 	
 }
