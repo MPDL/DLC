@@ -32,6 +32,22 @@
              */
 -->
 </ui:remove>
+
+
 <div id="searchMenuSkipLinkAnchor" class="free_area0 searchMenu">
-<!-- search Menu starts here --> &#160; <!-- search Menu ends here --></div>
+	<!-- search Menu starts here -->
+	<span class="std_imgArea quickSearchIcon">&#160;</span>
+	<span class="large_area0 quickSearchMenu">
+		<h:inputText id="quickSearchString" styleClass="large_txtInput quickSearchTextInput" value="#{quickSearchBean.searchString}"/>
+		<!--<h:panelGroup styleClass="large_checkbox quickSearchCheckBoxMenu">
+			 <h:selectBooleanCheckbox id="quickSearchCheckBox" value="#{Search.includeFiles}" />
+			<h:outputLabel for="quickSearchCheckBox" value="#{lbl.search_lblIncludeFiles}"/>
+		</h:panelGroup>
+		-->
+	</span>
+	<h:commandButton id="btnQuickSearchStart" styleClass="small_txtBtn activeButton quickSearchBtn" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.quick_search_btnStart}"/>
+	
+
+	<!-- search Menu ends here -->
+</div>
 </div>
