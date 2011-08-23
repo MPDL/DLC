@@ -74,9 +74,10 @@
 				</h:outputLink>
 		
 				<!-- import search here-->
-				<ui:include src="ui/SearchMenu.jspf" />
+				
 		
 			</h:panelGroup> 
+			<ui:include src="ui/SearchMenu.jspf" />
 			<!-- import main menu here --> 
 			<ui:include src="ui/MainMenu.jspf" /> 
 			<!-- end: header section -->

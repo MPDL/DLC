@@ -13,12 +13,12 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes")
-
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	
 	@EJB
@@ -26,6 +26,8 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
+	
+	private int totalNumberOfRecords;
 	
 	public AllVolumesBean()
 	{
@@ -36,15 +38,17 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
   
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception {
-		List<Volume> volList = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
-		return volList;
+		
+		VolumeSearchResult res = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
+		this.totalNumberOfRecords = res.getNumberOfRecords();
+		return res.getVolumes();
  
 		
 	}
 
 	public int getTotalNumberOfRecords() 
 	{
-		return volServiceBean.getNumberOfVolumes();
+		return totalNumberOfRecords;
 	}
 
 	@Override
