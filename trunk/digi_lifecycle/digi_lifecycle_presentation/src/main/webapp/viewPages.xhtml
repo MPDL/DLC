@@ -125,9 +125,11 @@
 								</rich:tab>
 								<rich:tab header="Thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
-										<a href="http://localhost:8080/digi_lifecycle/view/#{viewPages.volumeId}/#{var.order}">
-										<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
-										</a>
+										<h:commandLink action="#{viewPages.goTo(var)}">
+										
+											<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
+											<f:ajax render="@all"/>
+										</h:commandLink>
 									</load:lazyLoad>
 								
 								</rich:tab>

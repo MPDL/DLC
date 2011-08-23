@@ -231,6 +231,13 @@ public class ViewPages {
 		loadVolume();
 	}
 	
+	public void goTo(Page p)
+	{
+		logger.info("Go to page " + p.getId());
+		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
+		loadVolume();
+	}
+	
 	public MetsDiv getNextPage(MetsDiv div)
 	{
 		if(div.getType()!=null && div.getType().equals("page"))
