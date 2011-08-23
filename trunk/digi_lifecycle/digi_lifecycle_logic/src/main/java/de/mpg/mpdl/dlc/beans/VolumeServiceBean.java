@@ -69,11 +69,10 @@ import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
-@Stateful
+
 public class VolumeServiceBean {
 	
 	private static Logger logger = Logger.getLogger(VolumeServiceBean.class); 
-	private static int numberOfVolumes;
 	
 
 
@@ -99,7 +98,6 @@ public class VolumeServiceBean {
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
 		SearchRetrieveResponse resp = shc.search("escidoc.content-model.objid=\"" + contentModelId + "\"", offset, limit, null, "escidoc_all");
-		setNumberOfVolumes(resp.getNumberOfRecords());
 		List<Volume> volumeList = new ArrayList<Volume>();
 
 		for(SearchResultRecord rec : resp.getRecords())
@@ -110,13 +108,6 @@ public class VolumeServiceBean {
 		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
 		
 	}
-	
-	
-	@SuppressWarnings("static-access")
-	public void setNumberOfVolumes(int numberOfVolumes) {
-		this.numberOfVolumes = numberOfVolumes;
-	}
-
 
 	
 	
