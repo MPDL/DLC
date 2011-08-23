@@ -728,27 +728,38 @@ public class VolumeServiceBean {
 		String pagedTei = null;
 		for(Component c : item.getComponents())
 		{
+			
 			if (c.getProperties().getContentCategory().equals("mets"))
 			{
 				
+				long start = System.currentTimeMillis();
 				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				vol = (Volume)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
+				long time = System.currentTimeMillis()-start;
+				System.out.println("Time METS: " + time);
 				
 
 			}
 			
+			
 			else if (c.getProperties().getContentCategory().equals("tei"))
 			{
-				
+				long start = System.currentTimeMillis();
 				tei = convertStreamToString(client.retrieveContent(item.getObjid(), c.getObjid()));
+				long time = System.currentTimeMillis()-start;
+				System.out.println("Time TEI: " + time);
 			}
 			
 			else if (c.getProperties().getContentCategory().equals("tei-paged"))
 			{
-				
+				long start = System.currentTimeMillis();
 				pagedTei = convertStreamToString(client.retrieveContent(item.getObjid(), c.getObjid()));
+				long time = System.currentTimeMillis()-start;
+				System.out.println("Time Paged: " + time);
 			}
+			
+			
 			
 		}
 		
