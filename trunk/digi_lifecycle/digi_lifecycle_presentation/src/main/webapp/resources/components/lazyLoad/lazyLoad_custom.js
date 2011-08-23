@@ -5,5 +5,13 @@
 					//event: "click",
 					effect: "fadeIn"
 					});
-
+			var obj = document.getElementById("container");
+			var imgCount = obj.getElementsByTagName("a").length;
+			var url = window.location.pathname;
+			var reg=/escidoc:.+\/([^&#]*)/;
+			var e = reg.exec(url);
+			obj.scrollTop=obj.scrollHeight*((e[1]-1)/imgCount);
 			});
+
+		
+
