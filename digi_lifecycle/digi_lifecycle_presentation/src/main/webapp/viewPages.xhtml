@@ -11,7 +11,7 @@
 	<ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
 
-	<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
 			
 			<div class="full_area0 itemHeader">
 			<h:panelGroup styleClass="xLarge_area0 endline blockHeader" >
@@ -92,7 +92,7 @@
 				
 				
 				
-				<span class="double_area0">
+				<span class="double_area0" style="height:700px">
 						<!-- 
 						<span class="double_area1 splitBlockHeader">
 							<span class="double_area0_p4 endline itemHeadline">
@@ -107,23 +107,22 @@
 						</span>
 						-->
 						
-						<div id="tocTree" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
-							<rich:tabPanel switchType="ajax" selectedTab="Toc" >
-				     			<rich:tab header="Toc" style="overflow:auto">
-									<div style="overflow:auto; height:1000px;">
-									<rich:tree toggleType="ajax" var="divItem">
-										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}">
-											<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
-												<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-													<h:outputText value="#{divItem.type}: #{divItem.label}" />
-													<f:ajax render="@all"/>
-												</h:commandLink>
-											</rich:treeNode>
-										</rich:treeModelRecursiveAdaptor>
-									</rich:tree>
+							<rich:tabPanel switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
+				     			<rich:tab header="Toc" id="toc" style="height:700px; overflow:auto">
+				     				<div style="overflow-x:auto">
+										<rich:tree toggleType="ajax" var="divItem" >
+											<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}" >
+												<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
+													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+														<h:outputText value="#{divItem.type}: #{divItem.label}" />
+														<f:ajax render="@all"/>
+													</h:commandLink>
+												</rich:treeNode>
+											</rich:treeModelRecursiveAdaptor>
+										</rich:tree>
 									</div>
 								</rich:tab>
-								<rich:tab header="Thumbs">
+								<rich:tab header="Thumbs" id="thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
 										<h:commandLink action="#{viewPages.goToPage(var)}">
 										
@@ -131,13 +130,12 @@
 											<f:ajax render="@all"/>
 										</h:commandLink>
 									</load:lazyLoad>
-								
 								</rich:tab>
-								<rich:tab header="Bibl. Metadata">
+								<rich:tab header="Bibl. Metadata" id="bibmd">
 									<mpdl:modsViewer modsMetadata="#{viewPages.volume.modsMetadata}"/>
 								</rich:tab>
 							</rich:tabPanel>
-						</div>
+						
 					</span>
 				
 				
