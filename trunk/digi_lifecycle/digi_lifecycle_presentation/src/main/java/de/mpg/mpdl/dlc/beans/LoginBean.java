@@ -7,9 +7,12 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
+import org.richfaces.event.ItemChangeEvent;
 
 import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.UserAccountHandlerClient;
@@ -18,6 +21,8 @@ import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+
+
 
 @ManagedBean
 @SessionScoped
@@ -31,10 +36,26 @@ public class LoginBean
     private UserAccount userAccount;
     private Grants grants;
     private List<Context> depositorContexts = new ArrayList<Context>();
+
+    private String tab = "toc";
     
     
-    
-    public final boolean getLoginState()
+    public String getTab() {
+		return tab;
+	}
+
+
+	public void setTab(String tab) {
+		this.tab = tab;
+	}
+	
+	public void changeTab(ItemChangeEvent event)
+	{  
+		setTab(event.getNewItemName());
+	}
+
+
+	public final boolean getLoginState()
     {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
