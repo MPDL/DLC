@@ -90,7 +90,12 @@
 
 	<script src="#{applicationBean.contextPath}/resources/scripts.js"
 		language="JavaScript" type="text/javascript">;</script>
-
+		
+		
+	<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+		
+	<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
+	
 </h:head>
 
 <h:body lang="#{applicationBean.userLocaleString}">

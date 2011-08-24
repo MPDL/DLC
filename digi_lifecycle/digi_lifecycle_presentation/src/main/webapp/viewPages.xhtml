@@ -125,7 +125,7 @@
 								</rich:tab>
 								<rich:tab header="Thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
-										<h:commandLink action="#{viewPages.goTo(var)}">
+										<h:commandLink action="#{viewPages.goToPage(var)}">
 										
 											<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
 											<f:ajax render="@all"/>
