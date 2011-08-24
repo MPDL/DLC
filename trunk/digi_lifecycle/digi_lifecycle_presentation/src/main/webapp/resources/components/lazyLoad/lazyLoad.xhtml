@@ -18,6 +18,11 @@
 
   		<h:outputScript library="components/lazyLoad" name="jquery.lazyload.js"/>
   		<h:outputScript library="components/lazyLoad" name="lazyLoad_custom.js"/>
+  		<script type="text/javascript">
+			$(function(){
+				load('#{viewPages.selectedPage.order}')
+			})
+		</script>
  
 		
 		  <style type="text/css">
