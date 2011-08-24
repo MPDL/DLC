@@ -11,6 +11,7 @@ import javax.faces.bean.SessionScoped;
 
 import org.apache.log4j.Logger;
 
+import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
@@ -52,7 +53,7 @@ public class ViewPages {
 	
 	private List<Page> pageList = new ArrayList<Page>();
 	
-	private ViewType viewType = ViewType.RECTO_VERSO;
+	private ViewType viewType = ViewType.SINGLE;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
@@ -197,7 +198,7 @@ public class ViewPages {
 			loadVolume();
         }
 		
-		else if (selectedPageNumber -1 >= 0)
+		else if (selectedPageNumber -1 > 0)
         {
            selectedPageNumber --;
            loadVolume();
@@ -288,6 +289,7 @@ public class ViewPages {
 	public void setViewType(ViewType viewType) {
 		this.viewType = viewType;
 		loadVolume();
+		//PrettyContext.getCurrentInstance().g
 	}
 
 	
