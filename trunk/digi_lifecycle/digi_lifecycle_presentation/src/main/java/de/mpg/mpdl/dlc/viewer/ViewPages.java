@@ -231,7 +231,7 @@ public class ViewPages {
 		loadVolume();
 	}
 	
-	public void goTo(Page p)
+	public void goToPage(Page p)
 	{
 		logger.info("Go to page " + p.getId());
 		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
