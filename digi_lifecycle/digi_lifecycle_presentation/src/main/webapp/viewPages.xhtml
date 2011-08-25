@@ -6,7 +6,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
-	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
@@ -41,12 +42,25 @@
 					<h:commandButton value=" " action="#{viewPages.goToLastPage}" styleClass="min_imgBtn groupBtn skipToLast">
 						<f:ajax render="@all"/>
 					</h:commandButton>
-					
-					<h:commandButton value="Zoom " action="#{viewPages.setViewType('SINGLE')}" styleClass="large_imgBtn groupBtn" />
+					<h:commandButton value="Rerender" styleClass="min_imgBtn groupBtn">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
+					<h:commandButton value="Zoom " action="#{viewPages.setViewType('SINGLE')}" styleClass="large_imgBtn groupBtn"/>
 					<h:commandButton value="Recto/Verso " action="#{viewPages.setViewType('RECTO_VERSO')}" styleClass="large_imgBtn groupBtn"/>
 					<h:commandButton value="Fulltext " action="#{viewPages.setViewType('FULLTEXT')}" styleClass="large_imgBtn groupBtn"/>
-
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
+					<pretty:urlbuffer var="pageUrl" mappingId="viewPages">
+						<f:param value="#{viewPages.volumeId}"/>
+						<f:param value="#{viewPages.selectedPageNumber}"/>
+					</pretty:urlbuffer>
 					
+					
+					<h:outputText value="URL:" />
+					<h:inputText styleClass="xHuge_txtInput" readonly="true" value="#{applicationBean.domain}#{requestScope.pageUrl}"/>
+
 				</h:panelGroup>
 			<!-- 
 			<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea">
@@ -184,7 +198,7 @@
 							</span>
 							
 							<span class="xHuge_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
@@ -211,7 +225,7 @@
 							</span>
 							
 							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedPage.order} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
@@ -231,7 +245,7 @@
 							</span>
 							
 							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.selectedRightPage.order}  #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
 							
 						</span>
