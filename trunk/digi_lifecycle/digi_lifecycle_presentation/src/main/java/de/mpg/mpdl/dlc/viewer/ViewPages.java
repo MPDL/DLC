@@ -192,7 +192,7 @@ public class ViewPages {
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) - 1;
 		
-		if(ViewType.RECTO_VERSO.equals(viewType) && selectedPageNumber - 2 >= 0)
+		if(ViewType.RECTO_VERSO.equals(viewType) && selectedPageNumber - 2 > 0)
         {
 			selectedPageNumber -= 2;
 			loadVolume();
