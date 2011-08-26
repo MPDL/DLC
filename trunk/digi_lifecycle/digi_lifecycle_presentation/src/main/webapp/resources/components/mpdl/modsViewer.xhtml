@@ -18,164 +18,142 @@
 <cc:implementation>
 	<div id="#{cc.clientId}">
 	
-	<h:panelGrid columns="2">
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.catalogueId_001}">
-			<h:outputText value="#{lbl.mods_catalogueId_001}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" /></b>
-		</h:panelGroup>
+		<h:panelGrid columns="2">
 
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.parentId_010}">
-			<h:outputText value="#{lbl.mods_parentId_010}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.parentId_010}" /></b>
-		</h:panelGroup>
+			<h:outputText value="#{lbl.mods_catalogueId_001}" rendered = "#{not empty cc.attrs.modsMetadata.catalogueId_001}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" rendered = "#{not empty cc.attrs.modsMetadata.catalogueId_001}"/>
 
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.language_037}">
-			<h:outputText value="#{lbl.mods_language_037}"/>
-			<b><h:outputText value="#{cc.attrs.modsMetadata.language_037.language}"/></b>
-		</h:panelGroup>
-
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.titles}">
-		<h:outputText value="#{lbl.mods_titles}" />
-		<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
-			<h:panelGrid columns="2">
-				<!-- 
-				<h:outputText value="#{lbl.mods_mabId}" />
-				<b><h:outputText value="#{title.mabId}" /></b>
-				-->
-				
-				<h:outputText value="#{lbl.mods_titleType}" />
-				<b><h:outputText value="#{title.type}" /></b>
-					
-				<h:outputText value="#{lbl.mods_title}" />
-				<h:message for="title" styleClass="messageError"/>
-				<b><h:outputText id="title" value="#{title.title}" required="true" requiredMessage="Title is required!" /></b>
-				
-			</h:panelGrid>
-			
-		</a4j:repeat>
-		</h:panelGroup>
-
-
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.names}">
-		<h:outputText value="#{lbl.mods_names}" />
-		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
-			<h:panelGrid columns="2">
-			<!-- 
-				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:outputText value="#{name.mabId}" />
-			-->
-				<h:outputText value="#{lbl.mods_nameType}" />
-				<b><h:outputText value="#{name.type}"/></b>
+			<h:outputText value="#{lbl.mods_parentId_010}" rendered = "#{not empty cc.attrs.modsMetadata.parentId_010}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.parentId_010}" rendered = "#{not empty cc.attrs.modsMetadata.parentId_010}"/>
 	
-	
-				<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" />
-				<b><h:outputText value="#{name.roleTermAuthority}"/></b>
-						
-				<h:outputText value="#{lbl.mods_nameRole}" />
-				<b><h:outputText value="#{name.role}" /></b>
-	
-				<h:outputText value="#{lbl.mods_name}" />
-				<b><h:outputText value="#{name.name}" /></b>
-			</h:panelGrid>
-		</a4j:repeat>
-		</h:panelGroup>
-	
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.identifiers}">
-			<h:outputText value="#{lbl.mods_identifiers}" />
-			<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
+			<h:outputText value="#{lbl.mods_language_037}" rendered = "#{not empty cc.attrs.modsMetadata.language_037}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered = "#{not empty cc.attrs.modsMetadata.language_037}"/>
+
+			<h:outputText value="#{lbl.mods_titles}" rendered = "#{not empty cc.attrs.modsMetadata.titles}"/>
+			<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}" rendered = "#{not empty cc.attrs.modsMetadata.titles}">
 				<h:panelGrid columns="2">
+					<ui:remove>
+						<!-- 
+						<h:outputText value="#{lbl.mods_mabId}" />
+						<b><h:outputText value="#{title.mabId}" /></b>
+						 -->
+					</ui:remove>
+					<h:outputText value="#{lbl.mods_titleType}" rendered = "#{not empty title.type}"/>
+					<h:outputText value="#{title.type}" rendered = "#{not empty title.type}"/>
+						
+					<h:outputText value="#{lbl.mods_title}" />
+					<h:outputText id="title" value="#{title.title}"/>
+				</h:panelGrid>
+			</a4j:repeat>
+
+			<h:outputText value="#{lbl.mods_names}" rendered = "#{not empty cc.attrs.modsMetadata.names}"/>
+			<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rendered = "#{not empty cc.attrs.modsMetadata.names}">
+				<h:panelGrid columns="2">
+				<ui:remove>
+				<!-- 
+					<h:outputText value="#{lbl.mods_mabId}" />
+					<h:outputText value="#{name.mabId}" />
+				-->
+				</ui:remove>
+					<h:outputText value="#{lbl.mods_nameType}" rendered="#{not empty name.type}"/>
+					<h:outputText value="#{name.type}" rendered="#{not empty name.type}"/>
+		
+		
+					<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" rendered="#{not empty name.roleTermAuthority}"/>
+					<h:outputText value="#{name.roleTermAuthority}" rendered="#{not empty name.roleTermAuthority}"/>
+							
+					<h:outputText value="#{lbl.mods_nameRole}" rendered="#{not empty name.role}"/>
+					<h:outputText value="#{name.role}" rendered="#{not empty name.role}"/>
+		
+					<h:outputText value="#{lbl.mods_name}" rendered="#{not empty name.name}"/>
+					<h:outputText value="#{name.name}" rendered="#{not empty name.name}"/>
+				</h:panelGrid>
+			</a4j:repeat>
+	
+			<h:outputText value="#{lbl.mods_identifiers}" rendered = "#{not empty cc.attrs.modsMetadata.identifiers}"/>
+			<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}" rendered = "#{not empty cc.attrs.modsMetadata.identifiers}">
+				<h:panelGrid columns="2">
+					<ui:remove>
 					<!-- 
 					<h:outputText value="#{lbl.mods_mabId}" />
 					<b><h:outputText value="#{identifier.mabId}" /></b>
 					-->
-					<h:outputText value="#{lbl.mods_identifierType}" />
-					<b><h:outputText value="#{identifier.type}" /></b>
-	
-					<h:outputText value="#{lbl.mods_identifier}" />
-					<b><h:outputText value="#{identifier.value}" /></b>
+					</ui:remove>
+					<h:outputText value="#{lbl.mods_identifierType}" rendered="#{not empty identifier.type}"/>
+					<h:outputText value="#{identifier.type}" rendered="#{not empty identifier.type}"/>
+
+					<h:outputText value="#{lbl.mods_identifier}" rendered="#{not empty identifier.value}"/>
+					<h:outputText value="#{identifier.value}" rendered="#{not empty identifier.value}"/>
 				</h:panelGrid>
 			</a4j:repeat>
-		</h:panelGroup>
 
-
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.publishers}">
-		<h:outputText value="#{lbl.mods_publisherInfo}" />
-		<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}">
-			<h:panelGrid columns="2">
-				<!-- 
-				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:outputText value="#{pb.mabId}" />
-				-->
-				<h:outputText value="#{lbl.mods_publisher}" />
-				<b><h:outputText value="#{pb.publisher}" /></b>
-	
-				<h:outputText value="#{lbl.mods_publisherPlace}" />
-				<b><h:outputText value="#{pb.place}" /></b>
-	
-				<h:outputText value="#{lbl.mods_publisherEditionStatement}" />
-				<b><h:outputText value="#{pb.editionStatement}" /></b>
-	
-				<!-- 
-						<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
-						<h:outputText value="#{pb.dateIssued_425}"/>
-						-->
-			</h:panelGrid>
-			
-		</a4j:repeat>
-		</h:panelGroup>
+			<h:outputText value="#{lbl.mods_publisherInfo}" rendered = "#{not empty cc.attrs.modsMetadata.publishers}"/>
+			<a4j:repeat var="pb" value="#{cc.attrs.modsMetadata.publishers}" rendered = "#{not empty cc.attrs.modsMetadata.publishers}">
+				<h:panelGrid columns="2">
+					<ui:remove>
+					<!-- 
+					<h:outputText value="#{lbl.mods_mabId}" />
+					<h:outputText value="#{pb.mabId}" />
+					-->
+					</ui:remove>
+					<h:outputText value="#{lbl.mods_publisher}" rendered="#{not empty pb.publisher}"/>
+					<h:outputText value="#{pb.publisher}" rendered="#{not empty pb.publisher}"/>
 		
+					<h:outputText value="#{lbl.mods_publisherPlace}" rendered="#{not empty pb.place}"/>
+					<h:outputText value="#{pb.place}" rendered="#{not empty pb.place}"/>
 		
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.notes}">
-		<h:outputText value="#{lbl.mods_notes}" />
-		<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
-			<h:panelGrid columns="2">
-				<!-- 
-				<h:outputText value="#{lbl.mods_mabId}" />
-				<h:outputText value="#{note.mabId}" />
-				-->
-				<h:outputText value="#{lbl.mods_noteType}" />
-				<b><h:outputText value="#{note.type}"/></b>
-
-				<h:outputText value="#{lbl.mods_note}" />
-				<b><h:outputText value="#{note.note}" /></b>
-			</h:panelGrid>
-			
-		</a4j:repeat>
-		</h:panelGroup>
+					<h:outputText value="#{lbl.mods_publisherEditionStatement}" rendered="#{not empty pb.editionStatement}"/>
+					<h:outputText value="#{pb.editionStatement}" rendered="#{not empty pb.editionStatement}"/>
+					<ui:remove>
+					<!-- 
+							<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+							<h:outputText value="#{pb.dateIssued_425}"/>
+							-->
+					</ui:remove>
+				</h:panelGrid>
+			</a4j:repeat>
+		
+			<h:outputText value="#{lbl.mods_notes}" rendered = "#{not empty cc.attrs.modsMetadata.notes}"/>
+			<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}" rendered = "#{not empty cc.attrs.modsMetadata.notes}">
+				<h:panelGrid columns="2">
+					<ui:remove>
+					<!-- 
+					<h:outputText value="#{lbl.mods_mabId}" />
+					<h:outputText value="#{note.mabId}" />
+					-->
+					</ui:remove>
+					<h:outputText value="#{lbl.mods_noteType}" rendered="#{not empty note.type}"/>
+					<h:outputText value="#{note.type}" rendered="#{not empty note.type}"/>
 	
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.volumeDescriptive_089}">
-			<h:outputText value="#{lbl.mods_volumeDescriptive_089}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.volumeDescriptive_089}" /></b>
-		</h:panelGroup>
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.materialDesignation_334}">
-			<h:outputText value="#{lbl.mods_materialDesignation_334}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.materialDesignation_334}" /></b>
-		</h:panelGroup>
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.remainderTitle_335}">
-			<h:outputText value="#{lbl.mods_remainderTitle_335}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.remainderTitle_335}" /></b>
-		</h:panelGroup>
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.subseries_361}">
-			<h:outputText value="#{lbl.mods_subseries_361}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.subseries_361}" /></b>
-		</h:panelGroup>
-			<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.extent_433}">
-			<h:outputText value="#{lbl.mods_extent_433}" />
-		<b><h:outputText value="#{cc.attrs.modsMetadata.extent_433}" /></b>
-		</h:panelGroup>
-			<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.format_435}">
-			<h:outputText value="#{lbl.mods_format_435}" />
-		<b><h:outputText value="#{cc.attrs.modsMetadata.format_435}" /></b>
-		</h:panelGroup>
-			<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.seriesTitle_451}">
-			<h:outputText value="#{lbl.mods_seriesTitle_451}" />
-		<b><h:outputText value="#{cc.attrs.modsMetadata.seriesTitle_451}" /></b>
-		</h:panelGroup>
-		<h:panelGroup rendered = "#{not empty cc.attrs.modsMetadata.signature_544}">
-			<h:outputText value="#{lbl.mods_signature_544}" />
-			<b><h:outputText value="#{cc.attrs.modsMetadata.signature_544}" /></b>
-		</h:panelGroup>
-	</h:panelGrid>
+					<h:outputText value="#{lbl.mods_note}" rendered="#{not empty note.note}"/>
+					<h:outputText value="#{note.note}" rendered="#{not empty note.note}"/>
+				</h:panelGrid>
+			</a4j:repeat>
+
+			<h:outputText value="#{lbl.mods_volumeDescriptive_089}" rendered = "#{not empty cc.attrs.modsMetadata.volumeDescriptive_089}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.volumeDescriptive_089}" rendered = "#{not empty cc.attrs.modsMetadata.volumeDescriptive_089}"/>
+
+			<h:outputText value="#{lbl.mods_materialDesignation_334}" rendered = "#{not empty cc.attrs.modsMetadata.materialDesignation_334}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.materialDesignation_334}" rendered = "#{not empty cc.attrs.modsMetadata.materialDesignation_334}"/>
+			
+			<h:outputText value="#{lbl.mods_remainderTitle_335}" rendered = "#{not empty cc.attrs.modsMetadata.remainderTitle_335}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.remainderTitle_335}" rendered = "#{not empty cc.attrs.modsMetadata.remainderTitle_335}"/>
+
+			<h:outputText value="#{lbl.mods_subseries_361}" rendered = "#{not empty cc.attrs.modsMetadata.subseries_361}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.subseries_361}" rendered = "#{not empty cc.attrs.modsMetadata.subseries_361}"/>
+
+			<h:outputText value="#{lbl.mods_extent_433}" rendered = "#{not empty cc.attrs.modsMetadata.extent_433}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.extent_433}" rendered = "#{not empty cc.attrs.modsMetadata.extent_433}"/>
+
+			<h:outputText value="#{lbl.mods_format_435}" rendered = "#{not empty cc.attrs.modsMetadata.format_435}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.format_435}" rendered = "#{not empty cc.attrs.modsMetadata.format_435}"/>
+
+			<h:outputText value="#{lbl.mods_seriesTitle_451}" rendered = "#{not empty cc.attrs.modsMetadata.seriesTitle_451}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.seriesTitle_451}" rendered = "#{not empty cc.attrs.modsMetadata.seriesTitle_451}"/>
+
+			<h:outputText value="#{lbl.mods_signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
+			<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
+		</h:panelGrid>
 	</div>
 </cc:implementation>
 </html>
