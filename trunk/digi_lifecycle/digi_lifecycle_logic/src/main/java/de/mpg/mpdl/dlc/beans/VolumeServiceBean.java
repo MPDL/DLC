@@ -670,6 +670,15 @@ public class VolumeServiceBean {
 		Volume vol = null;
 		String tei = null;
 		String pagedTei = null;
+		
+		/*
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(item.getMetadataRecords().get(0).getContent());
+		vol = new Volume();
+		vol.setModsMetadata(md);
+		*/
+		
 		for(Component c : item.getComponents())
 		{
 			
@@ -686,7 +695,7 @@ public class VolumeServiceBean {
 
 			}
 			
-			
+			/*
 			else if (c.getProperties().getContentCategory().equals("tei"))
 			{
 				long start = System.currentTimeMillis();
@@ -702,10 +711,13 @@ public class VolumeServiceBean {
 				long time = System.currentTimeMillis()-start;
 				System.out.println("Time Paged: " + time);
 			}
+			*/
+			
 			
 			
 			
 		}
+		
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
@@ -714,6 +726,44 @@ public class VolumeServiceBean {
 		
 		
 		return vol;
+	}
+	
+	
+	public String loadTei(Volume vol, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+
+		String tei = null;
+		for(Component c : vol.getItem().getComponents())
+		{
+			
+			
+			if (c.getProperties().getContentCategory().equals("tei"))
+			{
+
+				tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+			}
+		}
+		vol.setTei(tei);
+		return tei;
+	}
+	
+	public String loadPagedTei(Volume vol, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+
+		String tei = null;
+		for(Component c : vol.getItem().getComponents())
+		{
+			if (c.getProperties().getContentCategory().equals("tei-paged"))
+			{
+				tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+			}
+		}
+		vol.setPagedTei(tei);
+		return tei;
 	}
 	
 	

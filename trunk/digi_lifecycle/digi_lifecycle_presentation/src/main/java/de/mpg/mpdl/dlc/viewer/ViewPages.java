@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
@@ -25,7 +26,7 @@ import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml")
 public class ViewPages {
 	
@@ -62,6 +63,9 @@ public class ViewPages {
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{    
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
+				volServiceBean.loadTei(volume, null);
+				volServiceBean.loadPagedTei(volume, null);
+				
 				logger.info("Load new book" + volumeId);
 			}
 			Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
