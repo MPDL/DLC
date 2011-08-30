@@ -121,16 +121,20 @@
 						</span>
 						-->
 						
+						
+						
 							<rich:tabPanel switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 				     			<rich:tab header="Toc" id="toc" style="height:700px; overflow:auto">
 				     				<div style="overflow-x:auto">
-										<rich:tree toggleType="ajax" var="divItem" >
+										<rich:tree toggleType="ajax" var="divItem">
 											<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}" >
-												<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}">
+												<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}" handleClass="test" >
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														<h:outputText value="#{divItem.type}: #{divItem.label}" />
+														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
+														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
 														<f:ajax render="@all"/>
 													</h:commandLink>
+													<h:outputText value="#{divItem.label}" />
 												</rich:treeNode>
 											</rich:treeModelRecursiveAdaptor>
 										</rich:tree>
@@ -154,7 +158,7 @@
 				
 				
 				
-					<h:panelGroup styleClass="xHuge_area0" rendered="#{viewPages.viewType == 'SINGLE'}" style="width:70em;" >
+					<h:panelGroup styleClass="xHuge_area0"  rendered="#{viewPages.viewType == 'SINGLE'}" style="width:70em; height:1600px" >
 
 						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
@@ -217,7 +221,7 @@
 					
 					
 					
-					<h:panelGroup styleClass="quad_area0" rendered="#{(viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT') and viewPages.selectedPage!=null}">
+					<h:panelGroup styleClass="quad_area0" style="height:1000px" rendered="#{(viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT') and viewPages.selectedPage!=null}">
 						<span class="quad_area1 splitBlockHeader">
 							<span class="quad_area0_p4 endline itemHeadline">
 								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
@@ -237,7 +241,7 @@
 					
 					
 					
-					<h:panelGroup styleClass="quad_area0" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+					<h:panelGroup styleClass="quad_area0"  style="height:1000px" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
 						<span class="quad_area1 splitBlockHeader">
 							<span class="quad_area0_p4 endline itemHeadline">
 								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedRightPage.orderLabel}" />
@@ -257,7 +261,7 @@
 					</h:panelGroup>
 				
 					
-					<h:panelGroup class="quad_area0" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+					<h:panelGroup class="quad_area0"  style="height:1000px" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 						
 						<span class="quad_area1 splitBlockHeader">
 						<ui:remove>
