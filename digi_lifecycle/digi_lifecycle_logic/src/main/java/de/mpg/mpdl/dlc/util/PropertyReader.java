@@ -175,10 +175,9 @@ public class PropertyReader
         {
         	String jbossHome = System.getProperty("jboss.home.dir");
         	String path = jbossHome + "/standalone/configuration/"  + filepath;
-        	System.out.println("Searching props in " + path);
         	instream = new FileInputStream(path);
             
-        	Logger.getLogger(PropertyReader.class).info("Properties loaded from " + path);
+        	Logger.getLogger(PropertyReader.class).info("Properties loaded from File" + path);
         }
         catch (Exception e)
         {
