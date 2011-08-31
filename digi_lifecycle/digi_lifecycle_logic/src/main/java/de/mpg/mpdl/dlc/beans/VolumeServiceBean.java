@@ -845,6 +845,9 @@ public class VolumeServiceBean {
 		StreamResult res = new StreamResult(wr);
 		Transformer transformer = transfFact.newTransformer(xsltSource);
 		transformer.setParameter("autoToc", "false");
+		transformer.setParameter("autoHead", "false");
+		transformer.setParameter("institution", "");
+		transformer.setParameter("copyrightStatement", "");
 		transformer.setParameter("topNavigationPanel", "false");
 		transformer.setParameter("showFigures", "false");
 		transformer.setParameter("linkPanel", "false");
