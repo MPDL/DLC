@@ -155,7 +155,7 @@ public class PropertyReader
         properties.load(instream);
         properties.putAll(solProperties);
             
-        Logger.getLogger(PropertyReader.class).info("Properties loaded from ");
+        
         //Logger.getLogger(PropertyReader.class).info(properties.toString());
     }
 
@@ -173,9 +173,12 @@ public class PropertyReader
         // First try to search in file system
         try
         {
-        	instream=PropertyReader.class.getClassLoader().getResourceAsStream(filepath);
-            //instream = new FileInputStream(filepath);
-           // fileLocation = (new File(filepath)).getAbsolutePath();
+        	String jbossHome = System.getProperty("jboss.home.dir");
+        	String path = jbossHome + "/standalone/configuration/"  + filepath;
+        	System.out.println("Searching props in " + path);
+        	instream = new FileInputStream(path);
+            
+        	Logger.getLogger(PropertyReader.class).info("Properties loaded from " + path);
         }
         catch (Exception e)
         {
