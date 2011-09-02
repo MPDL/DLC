@@ -132,12 +132,6 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public Context retrieveContext(String contextId, String userHandle) throws Exception
-	{
-		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		contextClient.setHandle(userHandle);
-		return contextClient.retrieve(contextId);
-	}
 
 	
 	
@@ -1055,33 +1049,7 @@ public class VolumeServiceBean {
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
 	
-	public List<OrganizationalUnit> retrieveOus() throws Exception
-	{
-		List<OrganizationalUnit> ous;
-		OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		ouClient.setHandle(null);
-		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
-		ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
-		return ous;
-	}
-	
-	
-	public List<Context> retrieveOUContexts(OrganizationalUnit ou) throws Exception
-	{
-        List<Context> contextList = new ArrayList<Context>();
-        SearchRetrieveResponse response = null;
-		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery("\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
-		response = contextClient.retrieveContexts(req);
-		for(SearchResultRecord rec : response.getRecords())
-		{
-			Context context = (Context)rec.getRecordData().getContent();
-			contextList.add(context);
-		}
-        return contextList;		
-	}
+
 	
 
 }
