@@ -28,14 +28,25 @@
  */
 package de.mpg.mpdl.dlc.beans;
 
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
+
+import javax.ejb.EJB;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
 import org.apache.log4j.Logger;
+
+import de.escidoc.core.client.OrganizationalUnitHandlerClient;
+import de.escidoc.core.resources.om.context.Context;
+import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @ManagedBean
@@ -54,6 +65,12 @@ public class ApplicationBean
     //TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
+    
+    @EJB
+    private VolumeServiceBean volumeService;
+    
+    private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
+
     
     /**
      * Public constructor.
@@ -102,10 +119,36 @@ public class ApplicationBean
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
+//	    	this.ous = volumeService.retrieveOus();
+			OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			ouClient.setHandle(null);
+			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
+			this.ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
+
+
 		} catch (Exception e) {
 			logger.error("");
 		}      
     }
+        
+	public List<OrganizationalUnit> getOus() {
+		return ous;
+	}
+
+	public void setOus(List<OrganizationalUnit> ous) {
+
+		this.ous = ous;
+	}
+	
+	public List<Context> getContext(OrganizationalUnit ou)
+	{
+		try {
+			return volumeService.retrieveOUContexts(ou);
+		} catch (Exception e) {
+			return null;
+		}
+	}
     
     
     public String getDomain()

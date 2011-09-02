@@ -1,5 +1,10 @@
 package de.mpg.mpdl.dlc.beans;
 
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +12,6 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.axis.encoding.Base64;
@@ -15,11 +19,16 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.ItemChangeEvent;
 
 import de.escidoc.core.client.ContextHandlerClient;
+import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.UserAccountHandlerClient;
+import de.escidoc.core.resources.ResourceType;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
+import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.escidoc.core.resources.sb.search.SearchResultRecord;
+import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 
@@ -36,29 +45,42 @@ public class LoginBean
     private UserAccount userAccount;
     private Grants grants;
     private List<Context> depositorContexts = new ArrayList<Context>();
-
     private String tab = "toc";
     
-    
-    public String getTab() {
+    public String getTab() 
+    {
 		return tab;
 	}
 
-
-	public void setTab(String tab) {
+	public void setTab(String tab) 
+	{
 		this.tab = tab;
 	}
 	
+	
+	
+
+
 	public void changeTab(ItemChangeEvent event)
 	{  
 		setTab(event.getNewItemName());
 	}
+	
+
+
+	public LoginBean()
+	{
+
+
+	}
+	
 
 
 	public final boolean getLoginState()
     {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) fc.getExternalContext().getRequest();
+
         if (request.getParameter("eSciDocUserHandle") != null)
         {
         	String newUserHandle = null;
