@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.beans;
 
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -42,7 +44,9 @@ import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContentModelHandlerClient;
+import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.ItemHandlerClient;
+import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
@@ -53,11 +57,13 @@ import de.escidoc.core.resources.common.Result;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
+import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
+import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
@@ -108,6 +114,28 @@ public class VolumeServiceBean {
 		}
 		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
 		
+	}
+	
+	public VolumeSearchResult retrieveContextVolumes(String contextId, int limit, int offset, String userHandle) throws Exception
+	{
+		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		SearchRetrieveResponse resp = shc.search("escidoc.context.objid=\"" + contextId + "\"", offset, limit, null, "escidoc_all");
+		List<Volume> volumeList = new ArrayList<Volume>();
+
+		for(SearchResultRecord rec : resp.getRecords())
+		{
+			Item item = (Item)rec.getRecordData().getContent();
+			volumeList.add(createVolumeFromItem(item, userHandle));
+		}
+		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
+		
+	}
+	
+	public Context retrieveContext(String contextId, String userHandle) throws Exception
+	{
+		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		contextClient.setHandle(userHandle);
+		return contextClient.retrieve(contextId);
 	}
 
 	
@@ -1024,8 +1052,36 @@ public class VolumeServiceBean {
 			
 		}
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
-		
-		
-		
 	}
+	
+	public List<OrganizationalUnit> retrieveOus() throws Exception
+	{
+		List<OrganizationalUnit> ous;
+		OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		ouClient.setHandle(null);
+		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+		req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
+		ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
+		System.out.println("ous size= " + ous.size());
+		return ous;
+	}
+	
+	
+	public List<Context> retrieveOUContexts(OrganizationalUnit ou) throws Exception
+	{
+        List<Context> contextList = new ArrayList<Context>();
+        SearchRetrieveResponse response = null;
+		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+		req.setQuery("\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+		response = contextClient.retrieveContexts(req);
+		for(SearchResultRecord rec : response.getRecords())
+		{
+			Context context = (Context)rec.getRecordData().getContent();
+			contextList.add(context);
+		}
+        return contextList;		
+	}
+	
+
 }
