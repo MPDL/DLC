@@ -44,7 +44,7 @@
 		
 		<!-- browse collection -->
 		<h:outputLink id="lnkBrowse" title="#{tlt.Collection}"
-			styleClass="free_area0" value="/#{applicationBean.contextPath}/volumes.xhtml"
+			styleClass="free_area0" value="/#{applicationBean.contextPath}/volumes/all"
 			rendered="true">
 			<h:outputText value="#{lbl.navigation_lnk_viewtree}" />
 		</h:outputLink>
