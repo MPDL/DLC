@@ -16,6 +16,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
@@ -1062,7 +1063,6 @@ public class VolumeServiceBean {
 		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 		req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
 		ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
-		System.out.println("ous size= " + ous.size());
 		return ous;
 	}
 	
