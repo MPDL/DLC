@@ -70,7 +70,7 @@ public class ApplicationBean
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
     @EJB
-    private VolumeServiceBean volumeServiceBean;
+    private ApplicationServiceBean appServiceBean;
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
@@ -92,7 +92,7 @@ public class ApplicationBean
     {
     	try {
 			InitialContext context = new InitialContext();
-			this.volumeServiceBean = (VolumeServiceBean) context.lookup("java:module/VolumeServiceBean");
+			this.appServiceBean = (ApplicationServiceBean) context.lookup("java:module/ApplicationServiceBean");
 		} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
 		}
@@ -128,7 +128,7 @@ public class ApplicationBean
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
-	    	this.ous = volumeServiceBean.retrieveOus();
+	    	this.ous = appServiceBean.retrieveOus();
 		} catch (Exception e) {
 			logger.error("Cannot get OUs: " + e.getMessage());
 		}      
@@ -146,7 +146,7 @@ public class ApplicationBean
 	public List<Context> getContext(OrganizationalUnit ou)
 	{
 		try {
-			return volumeServiceBean.retrieveOUContexts(ou);
+			return appServiceBean.retrieveOUContexts(ou);
 		} catch (Exception e) {
 			return null;
 		}
