@@ -42,6 +42,9 @@ import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ValueChangeEvent;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
@@ -67,7 +70,7 @@ public class ApplicationBean
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
     @EJB
-    private VolumeServiceBean volumeService;
+    private VolumeServiceBean volumeServiceBean;
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
@@ -87,6 +90,12 @@ public class ApplicationBean
      */
     public void init()
     {
+    	try {
+			InitialContext context = new InitialContext();
+			this.volumeServiceBean = (VolumeServiceBean) context.lookup("java:module/VolumeServiceBean");
+		} catch (NamingException ex) {
+			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
+		}
     	
     	this.userLocale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     	Iterator<Locale> supportedLocales = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
@@ -119,16 +128,9 @@ public class ApplicationBean
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
-//	    	this.ous = volumeService.retrieveOus();
-			OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-			ouClient.setHandle(null);
-			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-			req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
-			this.ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
-
-
+	    	this.ous = volumeServiceBean.retrieveOus();
 		} catch (Exception e) {
-			logger.error("");
+			logger.error("Cannot get OUs: " + e.getMessage());
 		}      
     }
         
@@ -144,7 +146,7 @@ public class ApplicationBean
 	public List<Context> getContext(OrganizationalUnit ou)
 	{
 		try {
-			return volumeService.retrieveOUContexts(ou);
+			return volumeServiceBean.retrieveOUContexts(ou);
 		} catch (Exception e) {
 			return null;
 		}
