@@ -79,8 +79,22 @@
 											<h:outputText value="#{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>&#160;
 										</span>
 									</h:panelGroup>
-
+									
 								</h:panelGroup>
+								
+								<h:panelGroup layout="block" >
+
+					 				<span class="free_area0_p6 endline itemHeadline">
+										<b>
+											<pretty:link mappingId="thumbnails">
+												<f:param value="#{var.item.objid}" />
+												<h:outputText style="padding-left:200px" value="Thumbnails"/>
+											</pretty:link>
+	
+										</b>
+					 				</span>
+								</h:panelGroup>
+
 							</li>
 						</h:panelGroup>
 				</ol>

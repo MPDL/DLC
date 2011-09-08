@@ -1,0 +1,57 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<ui:composition template="templates/template.xhtml">
+
+	<ui:define name="mainContent">
+		<mpdl:paginator paginatorBean="#{thumbnailsBean}" />	
+		
+		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
+			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
+				<a4j:repeat id="pictureList" var="var" value="#{thumbnailsBean.currentPartList}" rows="0" rowKeyVar="index">
+					<li class="large_area0 itemTile">
+						<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1 matrixItem">
+							<pretty:link mappingId="viewPages">
+								<f:param value="#{thumbnailsBean.volumeId}" />
+								<f:param value="#{var.order}" />
+								<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
+							</pretty:link>
+						</h:panelGroup>
+					</li>
+				</a4j:repeat>
+			</ul>
+		</h:panelGroup>
+
+
+<ui:remove>	
+		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
+				<div class="small_area0">&#160;</div>
+				<div class="clear"></div>
+				<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
+					<mpdl:paginator paginatorBean="#{thumbnailsBean}">
+						<li class="large_area0 itemTile">
+							<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1">
+								<pretty:link mappingId="viewPages">
+									<f:param value="#{thumbnailsBean.volumeId}" />
+									<f:param value="#{var.order}" />
+									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
+								</pretty:link>
+							</h:panelGroup>
+						</li>
+					</mpdl:paginator>
+				</ul>
+		</h:panelGroup>
+</ui:remove>
+	</ui:define>
+
+</ui:composition>
+
+</html>
