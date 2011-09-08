@@ -32,8 +32,6 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
-
-
 	private int totalNumberOfRecords;
 	private Context context;
 	private String contextId;
