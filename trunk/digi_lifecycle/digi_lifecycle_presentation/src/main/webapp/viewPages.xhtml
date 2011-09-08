@@ -127,15 +127,27 @@
 				     			<rich:tab header="Toc" id="toc" style="height:700px; overflow:auto">
 				     				<div style="overflow-x:auto">
 										<rich:tree toggleType="ajax" var="divItem">
-											<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.logicalStructure}" nodes="#{divItem.divs}" >
-												<rich:treeNode expanded="#{true}" rendered="#{divItem.type!='page'}" handleClass="test" >
+											<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
+												
+												<rich:treeNode expanded="#{true}" rendered="#{utilBean.getUnqualifiedClassName(divItem) != 'Pagebreak'}">
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
 														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
 														<f:ajax render="@all"/>
 													</h:commandLink>
-													<h:outputText value="#{divItem.label}" />
+													<h:outputText value="#{divItem.head}" />
 												</rich:treeNode>
+										
+												<ui:remove>
+												<rich:treeNode expanded="#{true}" rendered="#{divItem.class.name!='Pagebreak'}" handleClass="test" >
+													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
+														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
+														<f:ajax render="@all"/>
+													</h:commandLink>
+													<h:outputText value="#{divItem.head}" />
+												</rich:treeNode>
+												</ui:remove>
 											</rich:treeModelRecursiveAdaptor>
 										</rich:tree>
 									</div>

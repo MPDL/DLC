@@ -24,6 +24,8 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsDiv;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
 @ViewScoped
@@ -50,7 +52,7 @@ public class ViewPages {
 	private Page selectedPage;
 	private Page selectedRightPage;
 	
-	private MetsDiv selectedDiv;
+	private PbOrDiv selectedDiv;
 	
 	private List<Page> pageList = new ArrayList<Page>();
 	
@@ -104,16 +106,13 @@ public class ViewPages {
 			}
 			
 			
-			List<MetsDiv> divForPage = volume.getDivMap().get(pageforNumber);
-
 			
 			
-			if(divForPage!=null && divForPage.size()>0)
-			{	
-				this.selectedDiv = divForPage.get(divForPage.size()-1).getParentDiv();
-			}
+			this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
 			
-			//this.selectedDiv
+			
+	
+			
 			
 		} catch (Exception e) {
 			logger.error("Problem while loading Volume", e);
@@ -189,6 +188,9 @@ public class ViewPages {
            selectedPageNumber ++;
            loadVolume();
         }
+        
+        
+        
         return "";
 	}
 	
@@ -226,14 +228,14 @@ public class ViewPages {
         return null;
 	}
 	
-	public void goTo(MetsDiv div)
+	public void goTo(PbOrDiv div) throws Exception
 	{
+		
 		logger.info("Go to div " + div.getId());
-		MetsDiv nextPage = getNextPage(div);
-		List<Page> pages = volume.getPageMap().get(nextPage);
-		Page p = pages.get(0);
+		Page p = volServiceBean.getPageForDiv(volume, div);
 		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
 		loadVolume();
+		
 	}
 	
 	public void goToPage(Page p)
@@ -262,11 +264,11 @@ public class ViewPages {
 			
 	}
 
-	public MetsDiv getSelectedDiv() {
+	public PbOrDiv getSelectedDiv() {
 		return selectedDiv;
 	}
 
-	public void setSelectedDiv(MetsDiv selectedDiv) {
+	public void setSelectedDiv(PbOrDiv selectedDiv) {
 		this.selectedDiv = selectedDiv;
 	}
 	

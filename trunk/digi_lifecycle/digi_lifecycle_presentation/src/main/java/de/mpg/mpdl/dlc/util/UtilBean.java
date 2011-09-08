@@ -52,4 +52,15 @@ public class UtilBean {
 	{
 	}
 	
+	public static String getUnqualifiedClassName(Object obj)
+	{
+		Class cls = obj.getClass();
+	    String name = cls.getName();
+	    if (name.lastIndexOf('.') > 0)
+	    {
+	      name = name.substring(name.lastIndexOf('.') + 1); // Map$Entry
+	      name = name.replace('$', '.');      // Map.Entry
+	    }
+	    return name;
+	}
 }
