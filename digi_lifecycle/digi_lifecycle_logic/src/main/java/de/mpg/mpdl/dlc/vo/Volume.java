@@ -11,10 +11,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+import org.w3c.dom.Document;
 
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @XmlRootElement(name="mets", namespace="http://www.loc.gov/METS/")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -29,19 +34,21 @@ public class Volume {
 	@XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file")
 	private List<MetsFile> files = new ArrayList<MetsFile>();
 	
+	/*
+	
 	@XmlPath("mets:structMap[@TYPE='logical']/mets:div")
 	private List<MetsDiv> logicalStructure;
-	
+	*/
 	
 	//Doesn't currently work, see http://stackoverflow.com/questions/6882337/xmladapter-and-xmlidref-in-moxy-jaxb
 	//@XmlJavaTypeAdapter(SmLinkAdapter.class)
 	//@XmlElement(name="structLink", namespace="http://www.loc.gov/METS/")
 	//private StructuralLinks structuralLinks;
 	
-
+	/*
 	@XmlPath("mets:structLink")
 	private MetsStructLink metsStructLink;
-	
+	*/
 	
 	@XmlTransient
 	private ItemProperties properties;
@@ -52,17 +59,15 @@ public class Volume {
 	@XmlTransient
 	private String tei;
 	
-	//@XmlTransient
-	//private TeiSd teiSd;
-	
-	/**
-	 * Helper Maps for working with structural Links
-	 */
 	@XmlTransient
-	private Map<Page, List<MetsDiv>> divMap;
+	private TeiSd teiSd;
 	
+
 	@XmlTransient
-	private Map<MetsDiv, List<Page>> pageMap;
+	private Document teiSdXml;
+	
+	
+	
 
 	@XmlTransient
 	private String pagedTei;
@@ -171,36 +176,10 @@ public class Volume {
 	}
 
 
-	public Map<Page, List<MetsDiv>> getDivMap() {
-		
-		if(divMap==null)
-		{
+	
 
-			divMap = new HashMap<Page, List<MetsDiv>>();
-			if(metsStructLink!=null)
-			{
-			
-				for(MetsSmLink smLink : metsStructLink.getSmLinks())
-				{
-					if(divMap.get(smLink.getTo()) == null)
-					{
-						divMap.put(smLink.getTo(), new ArrayList<MetsDiv>());
-					}
-					
-					List<MetsDiv> divListForPage = divMap.get(smLink.getTo());
-					
-					divListForPage.add(smLink.getFrom());
-					
-				}
-			}
-		}
-		return divMap;
-	}
-
-	public void setDivMap(Map<Page, List<MetsDiv>> divMap) {
-		this.divMap = divMap;
-	}
-
+	
+/*
 	public Map<MetsDiv, List<Page>> getPageMap() {
 		if(pageMap==null)
 		{
@@ -242,7 +221,7 @@ public class Volume {
 		this.logicalStructure = logicalStructure;
 	}
 	
-	
+*/	
 	public String getTei() {
 		return this.tei;
 	}
@@ -259,6 +238,22 @@ public class Volume {
 	
 	public String getPagedTei() {
 		return pagedTei;
+	}
+
+	public TeiSd getTeiSd() {
+		return teiSd;
+	}
+
+	public void setTeiSd(TeiSd teiSd) {
+		this.teiSd = teiSd;
+	}
+
+	public Document getTeiSdXml() {
+		return teiSdXml;
+	}
+
+	public void setTeiSdXml(Document teiSdXml) {
+		this.teiSdXml = teiSdXml;
 	}
 
 	

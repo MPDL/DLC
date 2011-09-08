@@ -147,7 +147,7 @@ public class PropertyReader
         */
          // Use Default location of properties file
             propertiesFile = DEFAULT_PROPERTY_FILE;
-            Logger.getLogger(PropertyReader.class).debug("solution.properties file not found. Trying default.");
+            //Logger.getLogger(PropertyReader.class).debug("solution.properties file not found. Trying default.");
        // }
 
         InputStream instream = getInputStream(propertiesFile);

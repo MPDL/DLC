@@ -36,6 +36,7 @@ import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.Properties;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 @XmlRootElement(name="TEI", namespace="http://www.tei-c.org/ns/1.0")
@@ -44,92 +45,58 @@ public class TeiSd {
 
 	@XmlElements
 	(value = {
+			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Front.class),
+			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Body.class),
+			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Back.class),
 			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Div.class),
 			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Pagebreak.class)
 	})
 	@XmlPaths
 	(value = {
+			@XmlPath("tei:text/tei:front"),
+			@XmlPath("tei:text/tei:body"),
+			@XmlPath("tei:text/tei:back"),
 			@XmlPath("tei:text/tei:front/tei:div"),
 			@XmlPath("tei:text/tei:front/tei:pb")
 	})
-	private List<PbOrDiv> frontPageOrDiv = new ArrayList<PbOrDiv>();
-	
-	
-	@XmlElements
-	(value = {
-			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Div.class),
-			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Pagebreak.class)
-	})
-	@XmlPaths
-	(value = {
-			@XmlPath("tei:text/tei:body/tei:div"),
-			@XmlPath("tei:text/tei:body/tei:pb")
-	})
-	private List<PbOrDiv> bodyPageOrDiv = new ArrayList<PbOrDiv>();
-	
+	private List<PbOrDiv> pbOrDiv = new ArrayList<PbOrDiv>();
 	
 
-	@XmlElements
-	(value = {
-			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Div.class),
-			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Pagebreak.class)
-	})
-	@XmlPaths
-	(value = {
-			@XmlPath("tei:text/tei:back/tei:div"),
-			@XmlPath("tei:text/tei:back/tei:pb")
-	})
-	private List<PbOrDiv> backPageOrDiv = new ArrayList<PbOrDiv>();
-	
-
-	
+	/**
+	 * Helper Maps for working with structural Links
+	 */
+	@XmlTransient
+	private Map<String, PbOrDiv> divMap;
 
 	public TeiSd ()
 	{
 	}
 	
 	
+	public Map<String, PbOrDiv> getDivMap() {
+		
+		if(divMap==null)
+		{
+			divMap = new HashMap<String, PbOrDiv>();
+			createDivMap(getPbOrDiv());
+		}
+		return divMap;
+	}
 	
-
-	public List<PbOrDiv> getFrontPageOrDiv() {
-		return frontPageOrDiv;
+	
+	private void createDivMap(List<PbOrDiv> currentList)
+	{
+		for(PbOrDiv current : currentList)
+		{
+			divMap.put(current.getId(), current);
+			if(current.getPbOrDiv()!=null)
+			{	
+				createDivMap(current.getPbOrDiv());
+			}
+		}
 	}
 
-
-
-
-	public void setFrontPageOrDiv(List<PbOrDiv> frontPageOrDiv) {
-		this.frontPageOrDiv = frontPageOrDiv;
-	}
-
-
-
-
-	public List<PbOrDiv> getBodyPageOrDiv() {
-		return bodyPageOrDiv;
-	}
-
-
-
-
-	public void setBodyPageOrDiv(List<PbOrDiv> bodyPageOrDiv) {
-		this.bodyPageOrDiv = bodyPageOrDiv;
-	}
-
-
-
-
-	public List<PbOrDiv> getBackPageOrDiv() {
-		return backPageOrDiv;
-	}
-
-
-
-
-	public void setBackPageOrDiv(List<PbOrDiv> backPageOrDiv) {
-		this.backPageOrDiv = backPageOrDiv;
-	}
-
+	
 
 
 
@@ -142,10 +109,15 @@ public class TeiSd {
 		
 		Unmarshaller um = ctx.createUnmarshaller();
 		TeiSd tei = (TeiSd)um.unmarshal(example);
-		System.out.println(tei.getBodyPageOrDiv().size());
+		System.out.println(tei.getPbOrDiv().size());
 		
 		
 		TeiSd teiSd = new TeiSd();
+		
+		Front front = new Front();
+		Body body = new Body();
+		
+		
 		Div div = new Div();
 		div.setHead("test");
 		div.setId("id");
@@ -162,8 +134,12 @@ public class TeiSd {
 		pb.setId("pbid");
 		pb.setFacs("facsnumber");
 		
-		teiSd.getBodyPageOrDiv().add(pb);
-		teiSd.getBodyPageOrDiv().add(div);
+		body.getPbOrDiv().add(pb);
+		body.getPbOrDiv().add(div);
+		front.getPbOrDiv().add(div);
+		
+		teiSd.getPbOrDiv().add(front);
+		teiSd.getPbOrDiv().add(body);
 		
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -171,24 +147,25 @@ public class TeiSd {
 		m.marshal(teiSd, sw);
 		
 		System.out.println(sw.toString());
+
 		
-		
-		
-		
-		
-		
-		
-		
-		
+	}
+
+
+
+
+	public List<PbOrDiv> getPbOrDiv() {
+		return pbOrDiv;
+	}
+
+
+
+
+	public void setPageOrDiv(List<PbOrDiv> pageOrDiv) {
+		this.pbOrDiv = pageOrDiv;
 	}
 	
 
-	
-
-	
-	
-	
-	
 	
 	
 }
