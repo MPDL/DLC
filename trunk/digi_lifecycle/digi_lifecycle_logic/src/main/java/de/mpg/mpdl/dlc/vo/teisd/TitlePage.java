@@ -12,10 +12,10 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.eclipse.persistence.oxm.annotations.XmlPaths;
 
 @XmlRootElement(name = "div", namespace = "http://www.tei-c.org/ns/1.0")
-public class Div extends PbOrDiv {
+public class TitlePage extends Div {
 	
 	
-	@XmlPath("/tei:head/text()")
+	@XmlPath("/tei:titlePart/text()")
 	private String head;
 	
 	

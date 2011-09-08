@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-public class Page {
+public class Page{
 	
 	@XmlAttribute(name = "ID")
 	@XmlID
@@ -65,6 +65,20 @@ public class Page {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		
+		if(o instanceof Page)
+		{
+			return this.getId().equals(((Page)o).getId());
+		}
+		else
+		{
+			return this.equals(o);
+		}
+			
 	}
 	
 	

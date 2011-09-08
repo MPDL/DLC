@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
@@ -27,20 +28,31 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQConstants;
 import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
+import net.sf.saxon.om.NamespaceConstant;
+import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.XPathCompiler;
+import net.sf.saxon.s9api.XPathExecutable;
+import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
+import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.Authentication;
@@ -75,6 +87,9 @@ import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 
 @Stateless
@@ -411,20 +426,37 @@ public class VolumeServiceBean {
 				
 				//Transform TEI to Tei-SD and add to component
 				
-				String teiSd = transformTeiToPagedTei(new FileInputStream(teiFile));
+				String teiSd = transformTeiToTeiSd(new FileInputStream(teiFile));
 				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(teiSd.getBytes("UTF-8")));
 				Component teiSdComponent = new Component();
 				ComponentProperties teiSdCompProps = new ComponentProperties();
 				teiSdComponent.setProperties(teiSdCompProps);
 				
 				teiSdComponent.getProperties().setMimeType("text/xml");
-				teiSdComponent.getProperties().setContentCategory("tei-paged");
+				teiSdComponent.getProperties().setContentCategory("tei-sd");
 				teiSdComponent.getProperties().setVisibility("public");
 				ComponentContent teiSdContent = new ComponentContent();
 				teiSdComponent.setContent(teiSdContent);
 				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
 				item.getComponents().add(teiSdComponent);
+				
+				
+				//Add paged TEI as component
+				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFile));
+				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
+				Component pagedTeiComponent = new Component();
+				ComponentProperties pagedTeiCompProps = new ComponentProperties();
+				pagedTeiComponent.setProperties(pagedTeiCompProps);
+				
+				pagedTeiComponent.getProperties().setMimeType("text/xml");
+				pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+				pagedTeiComponent.getProperties().setVisibility("public");
+				ComponentContent pagedTeiContent = new ComponentContent();
+				pagedTeiComponent.setContent(pagedTeiContent);
+				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+				item.getComponents().add(pagedTeiComponent);
 				
 				
 				//Add original TEI as component
@@ -687,9 +719,10 @@ public class VolumeServiceBean {
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
+		client.setHandle(userHandle); 
 		
-		//TeiSd teiSd = null;
+		TeiSd teiSd = null;
+		Document teiSdXml = null;
 		Volume vol = null;
 		String tei = null;
 		String pagedTei = null;
@@ -718,6 +751,20 @@ public class VolumeServiceBean {
 
 			}
 			
+			else if (c.getProperties().getContentCategory().equals("tei-sd"))
+			{
+				long start = System.currentTimeMillis();
+				JAXBContext ctx = JAXBContext.newInstance(new Class[] { TeiSd.class });
+				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+				fac.setNamespaceAware(true);
+				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(item.getObjid(), c.getObjid()));
+				teiSd = (TeiSd)unmarshaller.unmarshal(teiSdXml);
+				long time = System.currentTimeMillis()-start;
+				System.out.println("Time TEI-SD: " + time);
+			}
+			
+			
 			/*
 			else if (c.getProperties().getContentCategory().equals("tei"))
 			{
@@ -744,6 +791,8 @@ public class VolumeServiceBean {
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
+		vol.setTeiSd(teiSd);
+		vol.setTeiSdXml(teiSdXml);
 		vol.setTei(tei);
 		vol.setPagedTei(pagedTei);
 		
@@ -950,6 +999,26 @@ public class VolumeServiceBean {
 		
 	}
 	
+	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
+	{
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
+			System.setProperty("javax.xml.transform.TransformerFactory",
+					"net.sf.saxon.TransformerFactoryImpl");
+			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			Source teiXmlSource = new StreamSource(teiXml);
+
+			StringWriter wr = new StringWriter();
+			javax.xml.transform.Result result = new StreamResult(wr);
+			
+			Transformer transformer = transfFact.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(teiXmlSource, result);
+			
+			return wr.toString();
+		
+	}
+	
 	public static int validateTei(InputStream teiXml) throws Exception
 	{
 		
@@ -1048,6 +1117,79 @@ public class VolumeServiceBean {
 		}
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
+	
+	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
+	{
+
+		String pageId = "";
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:*[@xml:id='"+ div.getId()+ "']/preceding::tei:pb[1]/@xml:id");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.wrap(v.getTeiSdXml());
+        selector.setContextItem(xdmDoc);
+        
+        for(XdmItem item : selector) {
+            XdmNode node = (XdmNode)item;
+            Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+            pageId = attribute.getTextContent();
+        }
+		Page page = new Page();
+		page.setId(pageId);
+        int pageIndex = v.getPages().indexOf(page);
+        return v.getPages().get(pageIndex);
+		
+	
+	}
+	
+	
+	public Div getDivForPage(Volume v, Page p) throws Exception
+	{
+
+		String divId = "";
+		Processor proc = new Processor(false);
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        
+        //Check if pagebreak is directly followed by an structural element like div, front, body...
+        XPathExecutable xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(following::*|following::text()[normalize-space(.)!=''])[1]/(self::tei:front|self::tei:body|self::tei:back|self::tei:titlePage|self::tei:div)/@xml:id");
+        XPathSelector selector = xx.load();
+        XdmNode xdmDoc = db.wrap(v.getTeiSdXml());
+        selector.setContextItem(xdmDoc);
+        if(selector.iterator().hasNext())
+        {
+        	for(XdmItem item : selector) {
+                XdmNode node = (XdmNode)item;
+                Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+                divId = attribute.getTextContent();
+            }
+        }
+        else
+        {
+        	//if not, take the first parent structural element of the pagebreak
+        	xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(ancestor::tei:front|ancestor::tei:body|ancestor::tei:back|ancestor::tei:titlePage|ancestor::tei:div)[last()]/@xml:id");
+        	selector = xx.load();
+            selector.setContextItem(xdmDoc);
+            for(XdmItem item : selector) {
+                XdmNode node = (XdmNode)item;
+                Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+                divId = attribute.getTextContent();
+            }
+        }
+        
+        Div div = (Div)v.getTeiSd().getDivMap().get(divId);
+        
+		System.out.println("Found div: " + divId);
+        return div;
+		
+	
+	}
+	
 	
 
 	
