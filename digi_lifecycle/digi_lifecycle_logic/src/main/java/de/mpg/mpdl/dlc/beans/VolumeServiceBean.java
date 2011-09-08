@@ -1183,8 +1183,6 @@ public class VolumeServiceBean {
         }
         
         Div div = (Div)v.getTeiSd().getDivMap().get(divId);
-        
-		System.out.println("Found div: " + divId);
         return div;
 		
 	
