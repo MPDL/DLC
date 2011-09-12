@@ -18,6 +18,13 @@ import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
+import de.mpg.mpdl.dlc.vo.teisd.Back;
+import de.mpg.mpdl.dlc.vo.teisd.Body;
+import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.Front;
+import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @ManagedBean
 @RequestScoped
@@ -86,7 +93,33 @@ public class VolumeUtilBean {
 	}
 	
 
+	public Pagebreak getPagebreakForPage (TeiSd tei, Page p)
+	{
+
+		if(tei!=null)
+		{
+			return (Pagebreak)tei.getDivMap().get(p.getId());
+		}
+		
+		return null;
+		
+	}
 	
+	public Div getPartForPagebreak (Pagebreak p)
+	{
+
+		PbOrDiv parent = p.getParent();
+		while(parent!=null)
+		{
+			if(parent instanceof Front || parent instanceof Body || parent instanceof Back)
+			{
+				return (Div)parent;
+			}
+			parent=parent.getParent();
+		}
+		return null;
+		
+	}
 	
 	
 	
