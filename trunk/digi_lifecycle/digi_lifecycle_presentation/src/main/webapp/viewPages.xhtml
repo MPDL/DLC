@@ -11,6 +11,17 @@
 
 	<ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
+	<style>
+
+	/* span.double_area0:hover
+	{
+	width: 40em; 
+	 opacity:0.9;
+	}*/
+
+	</style>
+
+
 
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
 			
@@ -102,11 +113,8 @@
 			
 			
 			<div class="full_area0 itemBlock noTopBorder">
-				<span class="full_area0 xTiny_marginLExcl">
-				
-				
-				
-				<span class="double_area0" style="height:700px">
+				<span class="full_area0">
+
 						<!-- 
 						<span class="double_area1 splitBlockHeader">
 							<span class="double_area0_p4 endline itemHeadline">
@@ -121,14 +129,11 @@
 						</span>
 						-->
 						
-						
-						
-							<rich:tabPanel switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
-				     			<rich:tab header="Toc" id="toc" style="height:700px; overflow:auto">
-				     				<div style="overflow-x:auto">
+						<span class="double_area0" style="position:absolute; z-index: 2; heigth:90em">		
+							<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}" style="overflow-x:hidden; overflow-y:auto;" >
+				     			<rich:tab header="Toc" id="toc" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 										<rich:tree toggleType="ajax" var="divItem">
 											<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
-												
 												<rich:treeNode expanded="#{true}" rendered="#{utilBean.getUnqualifiedClassName(divItem) != 'Pagebreak'}">
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
@@ -150,27 +155,26 @@
 												</ui:remove>
 											</rich:treeModelRecursiveAdaptor>
 										</rich:tree>
-									</div>
 								</rich:tab>
 								<rich:tab header="Thumbs" id="thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
 										<h:commandLink action="#{viewPages.goToPage(var)}">
-										
-											<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}" style="width:50px; height:100px;" />
+											<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,120,200)}" style="width:120px;" />
 											<f:ajax render="@all"/>
 										</h:commandLink>
 									</load:lazyLoad>
 								</rich:tab>
-								<rich:tab header="Bibl. Metadata" id="bibmd">
+								<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 									<mpdl:modsViewer modsMetadata="#{viewPages.volume.modsMetadata}"/>
 								</rich:tab>
 							</rich:tabPanel>
-						
-					</span>
+					
+						</span>
+		
 				
 				
 				
-					<h:panelGroup styleClass="xHuge_area0"  rendered="#{viewPages.viewType == 'SINGLE'}" style="width:70em; height:1600px" >
+					<h:panelGroup rendered="#{viewPages.viewType == 'SINGLE'}" style="margin-left:18.83em; width:75em; height:90em; position:absolute; z-index:1;">
 
 						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
