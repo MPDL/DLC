@@ -30,26 +30,18 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 @ManagedBean
 @ViewScoped
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml")
-public class ViewPages {
+public class ViewPages extends VolumeLoaderBean{
 	
 	enum ViewType{
 		SINGLE, RECTO_VERSO, FULLTEXT
 	}
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
-	@EJB
-	private VolumeServiceBean volServiceBean;
-	
-	@ManagedProperty("#{loginBean}")
-	private LoginBean loginBean;
-	
-	private String volumeId;
-	
-	private Volume volume;
-	
+
 	private int selectedPageNumber;
 	
 	private Page selectedPage;
+	
 	private Page selectedRightPage;
 	
 	private PbOrDiv selectedDiv;
@@ -58,68 +50,64 @@ public class ViewPages {
 	
 	private ViewType viewType = ViewType.SINGLE;
 	
+	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		try { 
-			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
-			{    
-				this.volume = volServiceBean.retrieveVolume(volumeId, null);
-				volServiceBean.loadTei(volume, null);
-				volServiceBean.loadPagedTei(volume, null);
-				
-				logger.info("Load new book" + volumeId);
-			}
-			Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
-			
-			if(ViewType.RECTO_VERSO.equals(viewType))
+		super.loadVolume();
+	}
+	
+	@Override
+	protected void volumeLoaded() {
+		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
+		
+		if(ViewType.RECTO_VERSO.equals(viewType))
+		{
+			if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
 			{
-				if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
+				if(getSelectedPageNumber() % 2 == 0)
 				{
-					if(getSelectedPageNumber() % 2 == 0)
-					{
-						this.setSelectedPage(pageforNumber);
-						
-						try {
-							this.setSelectedRightPage(volume.getPages().get(getSelectedPageNumber()));
-						} catch (IndexOutOfBoundsException e) {
-							this.setSelectedRightPage(null);
-						}
-					}
-					else
-					{
-						this.setSelectedRightPage(pageforNumber);
-						
-						try {
-							this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-2));
-						} catch (IndexOutOfBoundsException e) {
-							this.setSelectedPage(null);
-						}
+					this.setSelectedPage(pageforNumber);
+					
+					try {
+						this.setSelectedRightPage(volume.getPages().get(getSelectedPageNumber()));
+					} catch (IndexOutOfBoundsException e) {
+						this.setSelectedRightPage(null);
 					}
 				}
-			
-				
+				else
+				{
+					this.setSelectedRightPage(pageforNumber);
+					
+					try {
+						this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-2));
+					} catch (IndexOutOfBoundsException e) {
+						this.setSelectedPage(null);
+					}
+				}
 			}
-			else
-			{
-				this.setSelectedPage(pageforNumber);
-			}
+		
 			
-			
-			
-			
+		}
+		else
+		{
+			this.setSelectedPage(pageforNumber);
+		}
+		
+		
+		
+		try
+		{
 			this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
-			
-			
-	
-			
-			
-		} catch (Exception e) {
-			logger.error("Problem while loading Volume", e);
-			MessageHelper.errorMessage("Problem while loading volume");
+		} 
+		catch (Exception e) 
+		{
+			logger.error("Structural element cannot be selected for this page.", e);
+			MessageHelper.errorMessage("Structural element cannot be selected for this page.");
 		}
 		
 	}
+	
 	
 	public List<Page> getPageList() throws Exception
 	{
@@ -131,21 +119,6 @@ public class ViewPages {
 		this.pageList = pageList;
 	}
 
-	public LoginBean getLoginBean() {
-		return loginBean;
-	}
-
-	public void setLoginBean(LoginBean loginBean) {
-		this.loginBean = loginBean;
-	}
-
-	public void setVolume(Volume volume) {
-		this.volume = volume;
-	}
-
-	public Volume getVolume() {
-		return volume;
-	}
 
 	public void setSelectedPage(Page selectedPage) {
 		this.selectedPage = selectedPage;
@@ -157,13 +130,6 @@ public class ViewPages {
 	
 	
 
-	public void setVolumeId(String volumeId) {
-		this.volumeId = volumeId;
-	}
-
-	public String getVolumeId() {
-		return volumeId;
-	}
 
 	public void setSelectedPageNumber(int selectedPageNumber) {
 		this.selectedPageNumber = selectedPageNumber;
@@ -297,6 +263,8 @@ public class ViewPages {
 		loadVolume();
 		//PrettyContext.getCurrentInstance().g
 	}
+
+	
 
 	
 	
