@@ -18,6 +18,8 @@ import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
 import org.richfaces.event.ItemChangeEvent;
 
+import com.ocpsoft.pretty.PrettyContext;
+
 import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.UserAccountHandlerClient;
@@ -159,12 +161,14 @@ public class LoginBean
 	}
     
 	public final String login()
-	{ 
+	{   
 		FacesContext fc = FacesContext.getCurrentInstance();
-		HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
-		String requestURL = request.getRequestURL().toString();
+		PrettyContext pc = PrettyContext.getCurrentInstance();
+//		HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
+//		String requestURL = request.getRequestURL().toString();
         try 
         {
+    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
 			fc.getExternalContext().redirect(getLoginUrl().replace("$1", requestURL));
 		} 
         catch (Exception e) 
@@ -184,9 +188,11 @@ public class LoginBean
 				this.login = false;
 				this.userAccount = null;
 				FacesContext fc = FacesContext.getCurrentInstance();
-				HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
-				String requestURL = request.getRequestURL().toString();
-                FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
+				PrettyContext pc = PrettyContext.getCurrentInstance();
+//				HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
+//				String requestURL = request.getRequestURL().toString();
+	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
+	    		FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
 			}
 			catch(Exception e)
 			{
