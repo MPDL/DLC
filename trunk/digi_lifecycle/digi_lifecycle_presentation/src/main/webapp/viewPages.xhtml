@@ -126,7 +126,7 @@
 			
 			
 			<div class="full_area0 itemBlock noTopBorder">
-				<span class="full_area0">
+				<span class="full_area0" style="position:relative; height:100em;">
 
 						<!-- 
 						<span class="double_area1 splitBlockHeader">
@@ -142,7 +142,7 @@
 						</span>
 						-->
 						
-						<span class="double_area0" style="position:absolute; z-index: 2; heigth:90em">		
+						<span class="double_area0" style="position:absolute; z-index: 2;">		
 							<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}" style="overflow-x:hidden; overflow-y:auto;" >
 				     			<rich:tab header="Toc" id="toc" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 										<rich:tree toggleType="ajax" var="divItem">
@@ -187,7 +187,7 @@
 				
 				
 				
-					<h:panelGroup rendered="#{viewPages.viewType == 'SINGLE'}" style="margin-left:18.83em; width:75em; height:90em; position:absolute; z-index:1;">
+					<h:panelGroup rendered="#{viewPages.viewType == 'SINGLE'}" style="margin-left:18.83em;width:75em; position:absolute; z-index:1; float:right;">
 
 						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
