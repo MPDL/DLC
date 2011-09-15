@@ -249,68 +249,70 @@
 					
 					
 					
+					<h:panelGroup rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}" style="margin-left:18.83em; position:absolute; z-index:1; float:right;">
 					
-					<h:panelGroup styleClass="quad_area0" style="height:1000px" rendered="#{(viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT') and viewPages.selectedPage!=null}">
-						<span class="quad_area1 splitBlockHeader">
-							<span class="quad_area0_p4 endline itemHeadline">
-								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
-								&#160;	
+						<h:panelGroup styleClass="quad_area0" rendered="#{viewPages.selectedPage!=null}">
+							<span class="quad_area1 splitBlockHeader">
+								<span class="quad_area0_p4 endline itemHeadline">
+									<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
+									&#160;	
+								</span>
+								
+								<span class="quad_area0_p4 lineToolSection">
+									<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+								</span>
+								
 							</span>
 							
-							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+							<div class="quad_area1 splitBlockBody noTopBorder sameHeightMaster digilib">
+								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,1000)}" style="cursor:pointer"/>
+							</div>
+						</h:panelGroup>
+						
+						
+						
+						<h:panelGroup styleClass="quad_area0"  rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+							<span class="quad_area1 splitBlockHeader">
+								<span class="quad_area0_p4 endline itemHeadline">
+									<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedRightPage.orderLabel}" />
+									&#160;	
+								</span>
+								
+								<span class="quad_area0_p4 lineToolSection">
+									<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+								</span>
+								
 							</span>
 							
-						</span>
-						
-						<div class="quad_area1 splitBlockBody noTopBorder sameHeightMaster digilib">
-							<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,1000)}" style="cursor:pointer"/>
-						</div>
-					</h:panelGroup>
-					
-					
-					
-					<h:panelGroup styleClass="quad_area0"  style="height:1000px" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
-						<span class="quad_area1 splitBlockHeader">
-							<span class="quad_area0_p4 endline itemHeadline">
-								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedRightPage.orderLabel}" />
-								&#160;	
+							<span class="quad_area1 splitBlockBody noTopBorder sameHeightMaster">
+								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedRightPage,360,1000)}" style="cursor:pointer"/>
 							</span>
 							
-							<span class="quad_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+						</h:panelGroup>
+					
+						
+						<h:panelGroup class="quad_area0"  rendered="#{viewPages.viewType == 'FULLTEXT'}">
+							
+							<span class="quad_area1 splitBlockHeader">
+							<ui:remove>
+								<span class="quad_area0_p4 endline itemHeadline">
+									<b>
+										Volume
+									</b>
+								</span>  
+								<span class="quad_area0_p4 lineToolSection">
+									LineToolSection
+								</span>
+								</ui:remove>
 							</span>
 							
-						</span>
-						
-						<span class="quad_area1 splitBlockBody noTopBorder sameHeightMaster">
-							<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedRightPage,360,1000)}" style="cursor:pointer"/>
-						</span>
-						
-					</h:panelGroup>
-				
-					
-					<h:panelGroup class="quad_area0"  style="height:1000px" rendered="#{viewPages.viewType == 'FULLTEXT'}">
-						
-						<span class="quad_area1 splitBlockHeader">
-						<ui:remove>
-							<span class="quad_area0_p4 endline itemHeadline">
-								<b>
-									Volume
-								</b>
-							</span>  
-							<span class="quad_area0_p4 lineToolSection">
-								LineToolSection
-							</span>
-							</ui:remove>
-						</span>
-						
-						
-						
-						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
-							<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
-						</div>
-		
+							
+							
+							<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
+								<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
+							</div>
+			
+						</h:panelGroup>
 					</h:panelGroup>
 					
 					
