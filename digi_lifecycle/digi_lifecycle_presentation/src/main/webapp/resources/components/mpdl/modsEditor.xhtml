@@ -160,10 +160,10 @@
 				<h:outputText value="#{lbl.mods_publisherEditionStatement}" />
 				<h:inputText value="#{pb.editionStatement}" />
 	
-				<!-- 
-						<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
-						<h:inputText value="#{pb.dateIssued_425}"/>
-						-->
+				
+				<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+				<h:inputText value="#{pb.dateIssued_425.date}"/>
+						
 			</h:panelGrid>
 			<h:commandButton action="#{volumeUtilBean.addNewModsPublisher(pb, cc.attrs.modsMetadata.publishers)}" value="+" >
 				 <f:ajax render=":#{cc.clientId}"/>
