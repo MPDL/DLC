@@ -49,6 +49,7 @@ public class ViewPages extends VolumeLoaderBean{
 	private List<Page> pageList = new ArrayList<Page>();
 	
 	private ViewType viewType = ViewType.SINGLE;
+	private boolean hasSelected = false;
 	
 	
 	@URLAction(onPostback=false)
@@ -98,8 +99,16 @@ public class ViewPages extends VolumeLoaderBean{
 		
 		try
 		{
-			this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
+			if(hasSelected == false)
+			{
+				this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
+			}
+			else
+			{
+				hasSelected = false;
+			}
 		} 
+		
 		catch (Exception e) 
 		{
 			logger.error("Structural element cannot be selected for this page.", e);
@@ -194,16 +203,30 @@ public class ViewPages extends VolumeLoaderBean{
         return null;
 	}
 	
-	public void goTo(PbOrDiv div) throws Exception
+	public void goTo(PbOrDiv div)
 	{
-		
 		logger.info("Go to div " + div.getId());
-		Page p = volServiceBean.getPageForDiv(volume, div);
+		Page p;
+		try {
+			p = volServiceBean.getPageForDiv(volume, div);
+		} catch (Exception e) {
+			p = volume.getPages().get(0);
+		}
 		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
+		setSelectedDiv(div);
+		setHasSelected(true);
 		loadVolume();
 		
 	}
 	
+	public boolean isHasSelected() {
+		return hasSelected;
+	}
+
+	public void setHasSelected(boolean hasSelected) {
+		this.hasSelected = hasSelected;
+	}
+
 	public void goToPage(Page p)
 	{
 		logger.info("Go to page " + p.getId());
