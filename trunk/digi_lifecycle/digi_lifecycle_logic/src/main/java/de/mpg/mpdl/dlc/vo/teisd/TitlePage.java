@@ -15,7 +15,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 public class TitlePage extends Div {
 	
 	
-	@XmlPath("/tei:titlePart/text()")
+	@XmlPath("/tei:docTitle/tei:titlePart/text()")
 	private String head;
 	
 	

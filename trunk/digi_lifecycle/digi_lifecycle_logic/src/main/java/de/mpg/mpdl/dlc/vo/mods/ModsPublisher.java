@@ -1,13 +1,12 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
-import java.util.Date;
+
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
+
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
