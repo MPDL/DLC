@@ -1,11 +1,8 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
-import gov.loc.mets.MetsDocument;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +14,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.transform.Result;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.vo.MetsFile;
-import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 

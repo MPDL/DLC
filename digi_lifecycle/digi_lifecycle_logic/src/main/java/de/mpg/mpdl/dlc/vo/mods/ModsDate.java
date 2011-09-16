@@ -11,8 +11,8 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 public class ModsDate {
 	
 	@XmlValue
-	@XmlSchemaType(name = "dateTime")
-	private Date date;
+	//@XmlSchemaType(name = "dateTime")
+	private String date;
 	
 	@XmlAttribute(name = "encoding")
 	private String dateEncoding = "w3cdtf";
@@ -20,11 +20,11 @@ public class ModsDate {
 	@XmlAttribute(name = "keyDate")
 	private String dateKeyDate = "yes";
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 

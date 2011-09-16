@@ -17,6 +17,9 @@ public class Pagebreak extends PbOrDiv{
 	
 	@XmlAttribute(name="prev")
 	private String prev;
+	
+	@XmlAttribute(name="subtype")
+	private String subtype;
 
 	public String getFacs() {
 		return facs;
@@ -24,6 +27,14 @@ public class Pagebreak extends PbOrDiv{
 
 	public void setFacs(String facs) {
 		this.facs = facs;
+	}
+
+	public String getSubtype() {
+		return subtype;
+	}
+
+	public void setSubtype(String subtype) {
+		this.subtype = subtype;
 	}
 	
 	
