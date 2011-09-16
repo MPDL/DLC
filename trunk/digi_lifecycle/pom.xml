@@ -125,7 +125,6 @@
 	<modules>
 		<module>digi_lifecycle_ear</module>
 		<module>digi_lifecycle_logic</module>
-		<module>digi_lifecycle_logic_ear</module>
 		<module>digi_lifecycle_presentation</module>
 	</modules>
 
