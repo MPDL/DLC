@@ -48,9 +48,9 @@
 				</h:selectOneMenu>
 		
 				<h:outputText value="#{lbl.mods_title}" />
-				<h:message for="title" styleClass="messageError"/>
 				<h:inputText id="title" value="#{title.title}" required="true" requiredMessage="Title is required!" />
-				
+				<h:message for="title" styleClass="messageError"/>
+								
 			</h:panelGrid>
 			<h:commandButton action="#{volumeUtilBean.addNewModsTitle(title, cc.attrs.modsMetadata.titles)}" value="+" >
 				 <f:ajax render=":#{cc.clientId}"/>
@@ -162,7 +162,7 @@
 	
 				
 				<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
-				<h:inputText value="#{pb.dateIssued_425.date}"/>
+				<!-- <h:inputText value="#{pb.dateIssued_425.date}"/> -->
 						
 			</h:panelGrid>
 			<h:commandButton action="#{volumeUtilBean.addNewModsPublisher(pb, cc.attrs.modsMetadata.publishers)}" value="+" >
