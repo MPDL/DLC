@@ -13,6 +13,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
@@ -31,6 +32,7 @@ import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 
@@ -116,7 +118,7 @@ public class LoginBean
                     	}
                     	
                     }
-                    
+                    MessageHelper.infoMessage("You have logged in successfully!");
                 }
                 catch (Exception e)
                 {
@@ -127,6 +129,7 @@ public class LoginBean
                 }
             }
         }  
+
         return false;
     }
     
@@ -188,11 +191,16 @@ public class LoginBean
 				this.login = false;
 				this.userAccount = null;
 				FacesContext fc = FacesContext.getCurrentInstance();
+		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
+		        session.invalidate();
 				PrettyContext pc = PrettyContext.getCurrentInstance();
 //				HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
 //				String requestURL = request.getRequestURL().toString();
 	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
+	    		if(requestURL.equals("http://localhost:8080/digi_lifecycle/upload"))
+	    			requestURL = "http://localhost:8080/digi_lifecycle/";
 	    		FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
+
 			}
 			catch(Exception e)
 			{
