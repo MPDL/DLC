@@ -109,6 +109,7 @@
 			<ui:include src="../headerPages/Header.jspf" />
 
 			<div id="content" class="full_area0 clear">
+
 				<!-- begin: content section (including elements that visualy belong to the header (breadcrumb, headline, subheader and content menu)) -->
 				<div class="clear">
 					<div class="headerSection">
@@ -141,9 +142,9 @@
 							<!-- content menu ends here -->
 						</div>
 
-						<div class="subHeader">
+						<h:panelGroup layout="block" id="messages" class="subHeader">
 							<!-- Subheadline starts here -->
-							<h:messages styleClass="singleMessage" errorClass="messageError"
+							<h:messages styleClass="singleMessage" errorClass="messageError" 
 								warnClass="messageWarn" fatalClass="messageFatal"
 								infoClass="messageStatus" layout="list" globalOnly="true"
 								showDetail="false" showSummary="true"
@@ -176,19 +177,21 @@
 							<h:outputText value="&#160;"
 								rendered="#{!messagesBean.hasErrorMessages}" />
 							<!-- Subheadline ends here -->
-						</div>
+						</h:panelGroup>
 					</div>
 				</div>
 
 				<div class="full_area0">
+					<ui:insert name="formButtons">
+						&#160;
+					</ui:insert>
 					<!-- Main Content -->
 					<ui:insert name="mainContent">
 						&#160;
 					</ui:insert>
-					<ui:insert name="formButtons">
-						&#160;
-					</ui:insert>
+
 				</div>
+
 			</div>
 
 			<!-- end: content section -->
