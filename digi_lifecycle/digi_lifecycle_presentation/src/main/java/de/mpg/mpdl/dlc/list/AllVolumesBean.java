@@ -7,13 +7,17 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
+import org.apache.log4j.Logger;
+
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
@@ -22,6 +26,7 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 @SessionScoped
 @URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes/#{allVolumesBean.contextId}")
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
+	private static Logger logger = Logger.getLogger(AllVolumesBean.class);
 	
 	@EJB
 	private VolumeServiceBean volServiceBean;
@@ -81,9 +86,9 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 		else
 			res = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
 		this.totalNumberOfRecords = res.getNumberOfRecords();
+
+
 		return res.getVolumes();
- 
-		
 	}
 
 	public Context getContext() {
@@ -110,6 +115,6 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
 	}
-
+	
 	
 }
