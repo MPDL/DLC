@@ -13,6 +13,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,13 +65,18 @@ import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
+import de.escidoc.core.resources.HttpInputStream;
 import de.escidoc.core.resources.cmm.ContentModel;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
+import de.escidoc.core.resources.common.Relation;
+import de.escidoc.core.resources.common.Relations;
 import de.escidoc.core.resources.common.Result;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
+import de.escidoc.core.resources.common.reference.ItemRef;
+import de.escidoc.core.resources.common.reference.Reference;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.StorageType;
@@ -114,7 +121,25 @@ public class VolumeServiceBean {
 		}
 	}
 	
+	public VolumeSearchResult retrieveContextMultiVolumes(String contextId, String userHandle) throws Exception
+	{
+		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 
+		String contentModelId = PropertyReader.getProperty("dlc.content-model.multivolume.id");
+		String cqlQuery ="escidoc.content-model.objid=\"" + contentModelId + "\" and escidoc.context.objid=\"" + contextId + "\"";
+ 
+		SearchRetrieveResponse resp = shc.search(cqlQuery, "escidoc_all");
+
+		List<Volume> volumeList = new ArrayList<Volume>();
+
+		for(SearchResultRecord rec : resp.getRecords())
+		{ 
+			Item item = (Item)rec.getRecordData().getContent();
+			volumeList.add(createVolumeFromItem(item, userHandle));
+		}
+		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
+	}
+	
 	
 	public VolumeSearchResult retrieveVolumes(int limit, int offset, String userHandle) throws Exception
 	{
@@ -124,7 +149,7 @@ public class VolumeServiceBean {
 		List<Volume> volumeList = new ArrayList<Volume>();
 
 		for(SearchResultRecord rec : resp.getRecords())
-		{
+		{ 
 			Item item = (Item)rec.getRecordData().getContent();
 			volumeList.add(createVolumeFromItem(item, userHandle));
 		}
@@ -147,9 +172,6 @@ public class VolumeServiceBean {
 		
 	}
 	
-
-	
-	
 	public Volume retrieveVolume(String id, String userHandle) throws Exception
 	{
 		
@@ -164,62 +186,95 @@ public class VolumeServiceBean {
 		
 	}
 	
+
 	
-	
-	public Volume createNewVolume(String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
+	public Item createNewEmptyItem(String contentModel, String contextId,String userHandle, ModsMetadata modsMetadata) 
 	{
 		logger.info("Trying to create a new volume");
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
-		
-		//Create a dummy Item with dummy md record to get id of item
 		Item item = new Item();
-		item.getProperties().setContext(new ContextRef(contextId));
-		item.getProperties().setContentModel(new ContentModelRef(PropertyReader.getProperty("dlc.content-model.id")));
-		MetadataRecords mdRecs = new MetadataRecords();
-		MetadataRecord mdRec = new MetadataRecord("escidoc");
-		mdRecs.add(mdRec);
-		item.setMetadataRecords(mdRecs);
-		
-		
-		Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-		Marshaller marshaller = ctx.createMarshaller();
-		marshaller.marshal(modsMetadata, d);
-		mdRec.setContent(d.getDocumentElement());
-		item = client.create(item);
-		logger.info("Empty item created: " + item.getObjid());
-		
-		
-		Volume vol = new Volume();
-		File teiFileWithIds = null;
+		ItemHandlerClient client;
 		try {
-			
-			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
+			client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			//Create a dummy Item with dummy md record to get id of item
+			item.getProperties().setContext(new ContextRef(contextId));
+			item.getProperties().setContentModel(new ContentModelRef(contentModel));
+		//	item.getProperties().setContentModel(new ContentModelRef(PropertyReader.getProperty("dlc.content-model.id")));
+			MetadataRecords mdRecs = new MetadataRecords();
+			MetadataRecord mdRec = new MetadataRecord("escidoc");
+			mdRecs.add(mdRec);
+			item.setMetadataRecords(mdRecs);
+				
+			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });		
+			Marshaller marshaller = ctx.createMarshaller();
+			marshaller.marshal(modsMetadata, d);
+			mdRec.setContent(d.getDocumentElement());
+			item = client.create(item);
+			logger.info("Empty item created: " + item.getObjid());
 
+		} catch (Exception e) {
+			logger.error("Error while creating Item", e);
+
+		} 
+
+		return item;
+	}
+	
+	public Volume createNewMultiVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
+	{
+		Item item = createNewEmptyItem(contentModel, contextId, userHandle, modsMetadata);
+		Volume vol= new Volume();
+		try
+		{
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		vol.setProperties(item.getProperties());
+		vol.setModsMetadata(modsMetadata);
+		vol.setItem(item);
+		vol = updateVolume(vol, null,null,userHandle, true);
+		vol = releaseVolume(vol, userHandle);
+		}
+		catch(Exception e)
+		{
+			logger.error("Error while creating Volume. Trying to rollback", e);
+			rollbackCreation(vol, userHandle);
+			throw new Exception(e);
+		}
+		return vol;
+	}
+	
+	
+	public Volume createNewMonoVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
+	{
+		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+ 
+		Volume vol = new Volume();
+		try 
+		{
+			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });			
+			File teiFileWithIds = null;
+			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
 			if(teiFile==null)
 			{
-
 				for(FileItem fileItem : images)
-					{
-						int pos = images.indexOf(fileItem);
-						MetsFile f = new MetsFile();
-						f.setId("img_" + pos);
-						f.setMimeType(fileItem.getContentType());
-						f.setLocatorType("OTHER");
-						f.setHref(dirs.get(pos));
-						vol.getFiles().add(f);
-						
-						Page p = new Page();
-						p.setId("page_" + pos);
-						p.setOrder(pos);
-						p.setOrderLabel("");
-						p.setType("page");
-						p.setFile(f);
-						vol.getPages().add(p);
+				{
+					int pos = images.indexOf(fileItem);
+					MetsFile f = new MetsFile();
+					f.setId("img_" + pos);
+					f.setMimeType(fileItem.getContentType());
+					f.setLocatorType("OTHER");
+					f.setHref(dirs.get(pos));
+					vol.getFiles().add(f);
+
+					Page p = new Page();
+					p.setId("page_" + pos);
+					p.setOrder(pos);
+					p.setOrderLabel("");
+					p.setType("page");
+					p.setFile(f);
+					vol.getPages().add(p);
 					}
 			}
-			
 			else
 			{
 				logger.info("TEI file found");
@@ -227,30 +282,94 @@ public class VolumeServiceBean {
 				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
-				
 				for(FileItem fileItem : images)
 				{
-
+	
 					int pos = images.indexOf(fileItem);
 					vol.getFiles().get(pos).setHref(dirs.get(pos));
-				}
-				
+					}
 			}
-		
-		
 			vol.setProperties(item.getProperties());
 			vol.setModsMetadata(modsMetadata);
 			vol.setItem(item);
-			vol = updateVolume(vol, teiFileWithIds, userHandle, true);
+
+			vol = updateVolume(vol, null,teiFileWithIds, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
-		
-			
-		} catch (Exception e) {
+		} 
+		catch (Exception e) 
+		{
 			logger.error("Error while creating Volume. Trying to rollback", e);
 			rollbackCreation(vol, userHandle);
 			throw new Exception(e);
-		}
+			}
 		return vol;
+	}
+
+
+	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
+	{ 
+
+		Volume vol = new Volume();
+		Volume parent = retrieveVolume(multiVolumeId, userHandle);
+		
+		Item item = createNewEmptyItem("escidoc:5001",contextId, userHandle, modsMetadata); 
+		
+		parent = updateMultiVolume(parent, item.getObjid(), userHandle);
+		parent = releaseVolume(parent, userHandle);
+
+
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });			
+		File teiFileWithIds = null;
+
+		List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
+	
+		if(teiFile==null)
+		{
+			for(FileItem fileItem : images)
+			{
+				int pos = images.indexOf(fileItem);
+				MetsFile f = new MetsFile();
+				f.setId("img_" + pos);
+				f.setMimeType(fileItem.getContentType());
+				f.setLocatorType("OTHER");
+				f.setHref(dirs.get(pos));
+				vol.getFiles().add(f);
+						
+				Page p = new Page();
+				p.setId("page_" + pos);
+				p.setOrder(pos);
+				p.setOrderLabel("");
+				p.setType("page");
+				p.setFile(f);
+				vol.getPages().add(p);
+			}
+		}
+				
+		else
+		{
+			logger.info("TEI file found");
+			teiFileWithIds = addIdsToTei(teiFile.getInputStream());
+			String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
+			Unmarshaller unmarshaller = ctx.createUnmarshaller();
+			vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
+			
+			for(FileItem fileItem : images)
+			{
+				int pos = images.indexOf(fileItem);
+				vol.getFiles().get(pos).setHref(dirs.get(pos));
+			}
+					
+		}
+		vol.setProperties(item.getProperties());
+		vol.setModsMetadata(modsMetadata);
+		vol.setItem(item);
+
+		vol = updateVolume(vol, multiVolumeId, teiFileWithIds, userHandle, true);
+		vol = releaseVolume(vol, userHandle);
+
+
+
+	return vol;
 	}
 	
 	
@@ -291,13 +410,34 @@ public class VolumeServiceBean {
 		taskParam.setLastModificationDate(res.getLastModificationDate());
 		res = client.release(id, taskParam);
 		
+		
 		return retrieveVolume(id, userHandle);
+	}
 	
+	public Volume updateMultiVolume(Volume vol, String relationId, String userHandle) throws Exception
+	{
+		logger.info("Trying to update Multivolume item" + vol.getProperties().getVersion().getObjid());
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		Item item = vol.getItem();
+		Relations relations = new Relations();
+		Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
+		
+		Relation relation = new Relation(ref);
+		relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasDerivation");
+		relations.add(relation);
+		item.setRelations(relations);
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Update Volume");
+		client.update(item);
+
+		logger.info("Item updated: " + item.getObjid());
+		
+		return retrieveVolume(item.getObjid(), userHandle);
 	}
 	
 	
-	
-	public Volume updateVolume(Volume vol, File teiFile, String userHandle, boolean initial) throws Exception
+	public Volume updateVolume(Volume vol, String relationId, File teiFile, String userHandle, boolean initial) throws Exception
 	{
 		
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
@@ -312,6 +452,16 @@ public class VolumeServiceBean {
 		mdRecs.add(mdRec);
 		item.setMetadataRecords(mdRecs);
 		
+		if(relationId != null)
+		{
+			Relations relations = new Relations();
+			Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
+			
+			Relation relation = new Relation(ref);
+			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasDerivation");
+			relations.add(relation);
+			item.setRelations(relations);
+		}
 		/*
 		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
 		Mets mets = metsDoc.addNewMets();
@@ -1103,7 +1253,8 @@ public class VolumeServiceBean {
 	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.id") + "\" and escidoc.metadata=\"" + query + "\"";
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" and escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" and escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.volume.id")+"\" and escidoc.metadata=\"" + query + "\"";
+
 		logger.info(cqlQuery);
 		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
 		

@@ -34,7 +34,7 @@ public class ApplicationServiceBean {
 		OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		ouClient.setHandle(null);
 		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=dlc");
+		req.setQuery("\"/md-records/md-record/organizational-unit/organization-type\"=DLC");
 		ous =  ouClient.retrieveOrganizationalUnitsAsList(req);
 		return ous;
 	}
