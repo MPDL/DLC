@@ -2,22 +2,30 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
+import javax.inject.Inject;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
@@ -27,10 +35,14 @@ import org.richfaces.component.UIExtendedDataTable;
 import org.richfaces.event.DropEvent;
 
 import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.util.VolumeUtilBean;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
@@ -52,12 +64,10 @@ public class IngestBean implements Serializable {
    
 	private ArrayList<FileItem> imageFiles = new ArrayList<FileItem>();
 	private FileItem mabFile;
-	private ModsMetadata modsMetadata = new ModsMetadata();
+	private ModsMetadata modsMetadata  = new ModsMetadata();
 	private FileItem teiFile;
 	private int numberOfTeiPbs;
-	
-    private Collection<Object> selection;
-	private List<FileItem> selectionItems = new ArrayList<FileItem>();
+
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
@@ -65,33 +75,81 @@ public class IngestBean implements Serializable {
 	
 	private String selectedContextId;
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
+
+	private String selectedContentModel;
+	private List<SelectItem> contentModelItems = new ArrayList<SelectItem>();
 	
- 
+	private String selectedMultiVolumeId;
+	private List<SelectItem> multiVolItems = new ArrayList<SelectItem>();
+	
+	private boolean hasMab = true;
+	private boolean useMultiVolMab;
+	public boolean isUseMultiVolMab() {
+		return useMultiVolMab;
+	}
+
+	public void setUseMultiVolMab(boolean useMultiVolMab) {
+		this.useMultiVolMab = useMultiVolMab;
+	}
+
 	@EJB
 	private VolumeServiceBean volumeService;
+
+	public IngestBean() throws Exception
+	{
+		addModsMetadata();
+		//init contentModel
+		this.contentModelItems.add(new SelectItem("Monograph", "Monograph"));
+		this.contentModelItems.add(new SelectItem("Multivolume", "Multivolume"));
+		this.contentModelItems.add(new SelectItem("Volume", "Volume"));
+		this.selectedContentModel = (String) contentModelItems.get(0).getValue();
+	}
+	  
+	@PostConstruct
+	public void init()
+	{
+		//init contexts
+		for(Context c : loginBean.getDepositorContexts())
+		{
+			this.contextSelectItems.add(new SelectItem(c.getObjid(), c.getProperties().getName()));
+		}
+		this.selectedContextId = (String)contextSelectItems.get(0).getValue();	
+	}
+
+
 	
-	public IngestBean()
+	public void addModsMetadata()
 	{
 		this.modsMetadata.getTitles().add(new ModsTitle());
 		this.modsMetadata.getNames().add(new ModsName());
 		this.modsMetadata.getNotes().add(new ModsNote());
 		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
 		this.modsMetadata.getPublishers().add(new ModsPublisher());
-		//this.modsMetadata.getTitles().add(new ModsTitle());
-
-		
 	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
-    	
-    	
     	stream.write(getImageFiles().get((Integer) object).get());
         stream.close();
     }
     
-    public String clearUploadData() {
+    public String clearUploadedImages() 
+    {    
         imageFiles.clear();
-        return null;
+        return "";
+    }
+    
+    public String clearAllData()
+    {  
+    	if(imageFiles.size()>0)
+    		imageFiles.clear();
+    	if(mabFile != null)
+    		this.mabFile = null;
+    	modsMetadata = new ModsMetadata();
+    	addModsMetadata();
+    	if(teiFile != null)
+    		this.teiFile = null;
+    	numberOfTeiPbs = 0;
+    	return "";
     }
  
     public int getSize() {
@@ -101,7 +159,7 @@ public class IngestBean implements Serializable {
             return 0;
         }
     }
- 
+  
     public long getTimeStamp() {
         return System.currentTimeMillis();
     }
@@ -114,8 +172,14 @@ public class IngestBean implements Serializable {
         this.imageFiles = files;
     }
     
-  
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
 
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+    
 	/*
 	
 	public Collection<Object> getSelection() {
@@ -211,7 +275,6 @@ public class IngestBean implements Serializable {
 	*/
 	public void fileUploaded(FileUploadEvent evt)
 	{
-		
 		logger.info("File uploaded" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		if(fue.getFileItem()!=null)
@@ -220,8 +283,6 @@ public class IngestBean implements Serializable {
 			{
 				this.setMabFile(fue.getFileItem());
 				processMabFile(fue.getFileItem());
-				
-				
 			}
 			else if(fue.getFileItem().getName().endsWith(".xml"))
 			{
@@ -229,24 +290,16 @@ public class IngestBean implements Serializable {
 				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
 				try {
 					numberOfTeiPbs = volumeService.validateTei(diskTeiFile.getInputStream());
-				
 				} catch (Exception e) {
 					logger.error("error while validating TEI", e);
 					MessageHelper.errorMessage("Error while validating TEI"); 
 				}
-				
-				
 			}
 			else
 			{
 				imageFiles.add(fue.getFileItem());
 			}
-			
-			
 		}
-		
-		
-	
 	}
 	
 	
@@ -285,47 +338,79 @@ public class IngestBean implements Serializable {
 	
 	
 	
-	public String save()
-	{
+	public String save() 
+	{ 
 		logger.info("SAVE!!");
-		
+		try {
+			if(getSelectedContentModel().equals("Monograph"))
+			{
+	     		if(getImageFiles().size()==0)
+	    		{
+	    			MessageHelper.errorMessage("You have to upload at least Image");
+	    			return "";
+	    		}
+	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+	    		{
+	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+	    			return "";
+	    		}
+	    		Volume volume = volumeService.createNewMonoVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		clearAllData();
+	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+			}
+			else if(getSelectedContentModel().equals("Multivolume"))
+			{
+	    		Volume volume = volumeService.createNewMultiVolume(PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
+	    		clearAllData();
+	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+	    		MessageHelper.infoMessage("Neues MultiVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+			}
+			else
+			{
+	     		if(getImageFiles().size()==0)
+	    		{
+	    			MessageHelper.errorMessage("You have to upload at least Image");
+	    			return "";
+	    		}
+	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+	    		{
+	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+	    			return "";
+	    		}
+	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		clearAllData();
+	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+	    		MessageHelper.infoMessage("Neues Volume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+			}
+		} catch (Exception e) {
+			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
+		}
 		//ModsMetadata md = new ModsMetadata();
 		//ModsTitle title = new ModsTitle();
 		//title.setTitle("Test title");
 		//md.getTitles().add(title);
-    	
-    	try {
-    		
-    		
-			
-    		if(getImageFiles().size()==0)
-    		{
-    			MessageHelper.errorMessage("You have to upload at least Image");
-    			return "";
-    		}
-    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-    		{
-    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
-    			return "";
-    		}
-    		
-    		volumeService.createNewVolume(getSelectedContextId(), getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
-		} catch (Exception e) {
-			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
-			
-		}
+//    	try {
+//     		if(getImageFiles().size()==0)
+//    		{
+//    			MessageHelper.errorMessage("You have to upload at least Image");
+//    			return "";
+//    		}
+//    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+//    		{
+//    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+//    			return "";
+//    		}
+//    		volumeService.createNewVolume(getSelectedContentModel(),getSelectedContextId(), getLoginBean().getUserHandle(), modsMetadata, imageFiles, teiFile);
+//    	} catch (Exception e) {
+//			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
+//		}
     	return "";
     	
 	
 	}
 
-	public void setLoginBean(LoginBean loginBean) {
-		this.loginBean = loginBean;
-	}
 
-	public LoginBean getLoginBean() {
-		return loginBean;
-	}
 
 	public FileItem getMabFile() {
 		return mabFile;
@@ -368,23 +453,64 @@ public class IngestBean implements Serializable {
 	}
 
 	public List<SelectItem> getContextSelectItems() {
-		contextSelectItems.clear();
-		for(Context c : loginBean.getDepositorContexts())
-		{
-			contextSelectItems.add(new SelectItem(c.getObjid(), c.getProperties().getName()));
-		}
-		
+
+
 		return contextSelectItems;
 	}
-
+	
 	public void setContextSelectItems(List<SelectItem> contextSelectItems) {
 		this.contextSelectItems = contextSelectItems;
 	}
 	
-	
-	
+	public List<SelectItem> getContentModelItems() throws Exception {
 
+
+		return contentModelItems;
+	}
+
+	public void setContentModelItems(List<SelectItem> contentModelItems) {
+		this.contentModelItems = contentModelItems;
+	}
+
+	public String getSelectedContentModel() {
+		return selectedContentModel;
+	}
+
+	public void setSelectedContentModel(String selectedContentModel) {
+		this.selectedContentModel = selectedContentModel;
+	}
+
+	public String getSelectedMultiVolumeId() {
+		return selectedMultiVolumeId;
+	}
+
+	public void setSelectedMultiVolumeId(String selectedMultiVolId) {
+		this.selectedMultiVolumeId = selectedMultiVolId;
+	}
+
+	public List<SelectItem> getMultiVolItems() throws Exception{
+		for(Volume vol : volumeService.retrieveContextMultiVolumes(getSelectedContextId(),loginBean.getUserHandle()).getVolumes())
+		{
+			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
+		}
+		return multiVolItems;
+	}
+
+	public void setMultiVolItems(List<SelectItem> multiVolItems) {
+		this.multiVolItems = multiVolItems;
+	}
 	
+	public boolean isHasMab() {
+		return hasMab;
+	}
+
+	public void setHasMab(boolean hasMab) {
+		this.hasMab = hasMab;
+	}
+
+
+
+
 
 
 }
