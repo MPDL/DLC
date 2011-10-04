@@ -10,7 +10,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 	var styledUploader = $("#pluploader").pluploadQueue({
 		// General settings
 		preinit: attachCallbacks,
-		runtimes : 'html5, flash',
+		runtimes : 'html5',
 		url : url + ';jsessionid=' + sessionId,
 		max_file_size : '10mb',
 		flash_swf_url : flashUrl,
@@ -44,8 +44,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 	
 		
 	});
-	
-	
+
 	
 	//After file upload is complete, send an JSF ajax request in order to rerender fiven elements
 	function attachCallbacks(uploader) {
