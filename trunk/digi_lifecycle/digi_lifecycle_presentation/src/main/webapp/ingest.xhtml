@@ -41,7 +41,7 @@
 
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
 			<rich:panel id="submit">
-				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages form1:modsInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 				</a4j:commandButton>
 				
