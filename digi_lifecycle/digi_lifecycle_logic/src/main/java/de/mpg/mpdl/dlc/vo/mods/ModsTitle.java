@@ -17,6 +17,9 @@ public class ModsTitle {
 	
 	@XmlPath("mods:title/text()")
 	private String title;
+	
+	@XmlPath("mods:subTitle/text()")
+	private String subTitle;
 
 	public String getType() {
 		return type;
@@ -36,6 +39,14 @@ public class ModsTitle {
 
 	public String getMabId() {
 		return mabId;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
 	}
 
 	public void setMabId(String mabId) {
