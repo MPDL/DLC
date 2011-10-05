@@ -44,11 +44,11 @@ public class EscidocTests {
 
 		// getFileMd();
 		// itemxml("dlc:1234", "dlc:2222");
-		File mabxml = mab2xml(mab);
-		//getthetei();
+		//File mabxml = mab2xml(mab);
 		//createCModel();
 		//testMab3Mods(null, mab);
-		mab2mods(mabxml);
+		//mab2mods(mabxml);
+		ItemController.create();
 	}
 	
 	public static void testMab3Mods(String id, File f)
@@ -170,13 +170,6 @@ public class EscidocTests {
 			e.printStackTrace();
 		}
 		return null;
-	}
-	
-	public static void getthetei()
-	{
-		String tei = ItemController.create();
-		System.out.println(tei);
-		
 	}
 	
 	public static void createCModel()

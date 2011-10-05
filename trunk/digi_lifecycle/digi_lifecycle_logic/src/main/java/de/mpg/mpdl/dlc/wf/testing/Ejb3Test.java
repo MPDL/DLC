@@ -2,7 +2,6 @@ package de.mpg.mpdl.dlc.wf.testing;
 
 import java.util.Properties;
 
-import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -12,8 +11,6 @@ import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlManager;
 
 import de.mpg.mpdl.dlc.dbxml.DBXML;
-import de.mpg.mpdl.dlc.dbxml.DBXMLBean;
-import de.mpg.mpdl.dlc.dbxml.DBXMLLocal;
 
 
 public class Ejb3Test {

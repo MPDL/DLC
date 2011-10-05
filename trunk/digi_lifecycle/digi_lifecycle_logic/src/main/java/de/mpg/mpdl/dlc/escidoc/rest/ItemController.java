@@ -8,10 +8,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.xmlbeans.XmlObject;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.escidoc.core.client.Authentication;
@@ -35,7 +40,12 @@ import de.escidoc.core.resources.cmm.Xslt;
 import de.escidoc.core.resources.common.ContentStream;
 import de.escidoc.core.resources.common.ContentStreams;
 import de.escidoc.core.resources.common.MetadataRecord;
+import de.escidoc.core.resources.common.MetadataRecords;
+import de.escidoc.core.resources.common.reference.ContentModelRef;
+import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.om.item.Item;
+import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.Volume;
 
 public class ItemController {
 	
@@ -44,15 +54,25 @@ public class ItemController {
 	public static String create() {
 	try
 	{
-		auth = new Authentication(new URL("http://latest-coreservice.mpdl.mpg.de:8080"), "dlc_user", "dlc");
+		auth = new Authentication(new URL("http://latest-coreservice.mpdl.mpg.de:8080"), "dlc_user", "dlc_user");
 	ItemHandlerClient ih = new ItemHandlerClient(auth.getServiceAddress());
 	ih.setHandle(auth.getHandle());
-	HttpInputStream hin = ih.retrieveContent("escidoc:1004", "escidoc:3002");
-	MetadataRecord md = ih.retrieveMdRecord("escidoc:1004", "escidoc");
-	Item item = ih.retrieve("");
-	Element e = md.getContent();
-	XmlObject content = XmlObject.Factory.parse(e);
-	return content.xmlText();
+	//Create a dummy Item with dummy md record to get id of item
+	Item item = new Item();
+	item.getProperties().setContext(new ContextRef("escidoc:1001"));
+	item.getProperties().setContentModel(new ContentModelRef("escidoc:2001"));
+	MetadataRecords mdRecs = new MetadataRecords();
+	MetadataRecord mdRec = new MetadataRecord("escidoc");
+	mdRecs.add(mdRec);
+	item.setMetadataRecords(mdRecs);
+	
+	
+	Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+	Element e = d.createElement("empty");
+	d.appendChild(e);
+	mdRec.setContent(d.getDocumentElement());
+	item = ih.create(item);
+	System.out.println(("Empty item created: " + item.getObjid()));
 	
 	} catch (Exception e) {
 		e.printStackTrace();

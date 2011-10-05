@@ -3,14 +3,27 @@ package de.mpg.mpdl.dlc.wf.testing;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import org.apache.xmlbeans.XmlException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
+import org.apache.xmlbeans.XmlException;
+import org.xml.sax.InputSource;
+
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.tei.TEIParser;
 import de.mpg.mpdl.dlc.tei.TEITransformer;
 
@@ -24,16 +37,41 @@ public class METSTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		TEIParser.transformByPosition(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"), 8);
-		TEIParser.transform(null, new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_with_ids.xml"), "d1e125");
-		TEIParser.transform(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"), "d1e315");
-		TEIParser.transformByPosition(null, new File("/home/frank/data/digitization_lifecycle/tei_samples/marx_with_ids.xml"), 6);
 
+		try {
+			FileInputStream fin = new FileInputStream(new File("/home/frank/data/digitization_lifecycle/test/berlin.tei"));
+			System.out.println(tei2mets(fin));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		//listpbpositions();
-		pagebyid();
+		//pagebyid();
 		//applyids();
+ catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
+	public static String tei2mets(InputStream in) throws Exception {
+		URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_to_mets.xslt");
+		System.setProperty("javax.xml.transform.TransformerFactory",
+				"net.sf.saxon.TransformerFactoryImpl");
+		SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+		
+		
+		Source teiXmlSource = new StreamSource(in);
+
+		FileWriter wr = new FileWriter(new File("/home/frank/data/digitization_lifecycle/test/berlin.mets"));
+		javax.xml.transform.Result result = new StreamResult(wr);
+		
+		TransformerFactory transfFact = TransformerFactory.newInstance();
+		Transformer transformer = transfFact.newTransformer(xsltSource);
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.transform(teiXmlSource, result);
+		
+		return wr.toString();
+	}
 	public static void listpbpositions()
 	{
 		LinkedHashMap<String, Integer> map = TEIParser.getPageBreakPositions(null, new File("/home/frank/data/digitization_lifecycle/tei_bhr_khi/tei/BHR_Dg450-2971_withIds.tei"));

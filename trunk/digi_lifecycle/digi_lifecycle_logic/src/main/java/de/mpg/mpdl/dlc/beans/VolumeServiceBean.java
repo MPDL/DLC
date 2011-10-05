@@ -249,6 +249,7 @@ public class VolumeServiceBean {
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
  
 		Volume vol = new Volume();
+		File teiFileWithPbConvention = null;
 		try 
 		{
 			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });			
@@ -278,7 +279,8 @@ public class VolumeServiceBean {
 			else
 			{
 				logger.info("TEI file found");
-				teiFileWithIds = addIdsToTei(teiFile.getInputStream());
+				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
+				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
@@ -1092,6 +1094,29 @@ public class VolumeServiceBean {
 
 			StringWriter wr = new StringWriter();
 			File temp = File.createTempFile("tei_with_ids", "xml");
+			javax.xml.transform.Result result = new StreamResult(temp);
+			
+
+			Transformer transformer = transfFact.newTransformer(xsltSource);
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.transform(teiXmlSource, result);
+			
+			return temp;
+		
+	}
+	
+	public static File applyPbConventionToTei(InputStream teiXml)throws Exception
+	{
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_apply_pb_convention.xslt");
+			
+			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
+			
+			
+			Source teiXmlSource = new StreamSource(teiXml);
+
+			StringWriter wr = new StringWriter();
+			File temp = File.createTempFile("tei_with_pb_convention", "xml");
 			javax.xml.transform.Result result = new StreamResult(temp);
 			
 
