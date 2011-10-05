@@ -354,7 +354,7 @@ public class IngestBean implements Serializable {
 	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
 	    			return "";
 	    		}
-	    		Volume volume = volumeService.createNewMonoVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
@@ -489,6 +489,7 @@ public class IngestBean implements Serializable {
 	}
 
 	public List<SelectItem> getMultiVolItems() throws Exception{
+		multiVolItems.clear();
 		for(Volume vol : volumeService.retrieveContextMultiVolumes(getSelectedContextId(),loginBean.getUserHandle()).getVolumes())
 		{
 			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
