@@ -145,7 +145,9 @@ public class VolumeServiceBean {
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
-		SearchRetrieveResponse resp = shc.search("escidoc.content-model.objid=\"" + contentModelId + "\"", offset, limit, null, "escidoc_all");
+		
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.volume.id")+"\"";
+		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
 		List<Volume> volumeList = new ArrayList<Volume>();
 
 		for(SearchResultRecord rec : resp.getRecords())
