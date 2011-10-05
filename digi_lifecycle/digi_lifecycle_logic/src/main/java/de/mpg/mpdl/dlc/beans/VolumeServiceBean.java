@@ -244,10 +244,17 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public Volume createNewMonoVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
 	{
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
- 
+		
+		if(multiVolumeId != null)
+		{
+			Volume parent = retrieveVolume(multiVolumeId, userHandle);
+			parent = updateMultiVolume(parent, item.getObjid(), userHandle);
+			parent = releaseVolume(parent, userHandle);
+		}
+		
 		Volume vol = new Volume();
 		File teiFileWithPbConvention = null;
 		try 
@@ -295,7 +302,7 @@ public class VolumeServiceBean {
 			vol.setModsMetadata(modsMetadata);
 			vol.setItem(item);
 
-			vol = updateVolume(vol, null,teiFileWithIds, userHandle, true);
+			vol = updateVolume(vol, multiVolumeId,teiFileWithIds, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
 		} 
 		catch (Exception e) 
@@ -308,73 +315,6 @@ public class VolumeServiceBean {
 	}
 
 
-	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
-	{ 
-
-		Volume vol = new Volume();
-		Volume parent = retrieveVolume(multiVolumeId, userHandle);
-		
-		Item item = createNewEmptyItem("escidoc:5001",contextId, userHandle, modsMetadata); 
-		
-		parent = updateMultiVolume(parent, item.getObjid(), userHandle);
-		parent = releaseVolume(parent, userHandle);
-
-
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });			
-		File teiFileWithIds = null;
-
-		List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
-	
-		if(teiFile==null)
-		{
-			for(FileItem fileItem : images)
-			{
-				int pos = images.indexOf(fileItem);
-				MetsFile f = new MetsFile();
-				f.setId("img_" + pos);
-				f.setMimeType(fileItem.getContentType());
-				f.setLocatorType("OTHER");
-				f.setHref(dirs.get(pos));
-				vol.getFiles().add(f);
-						
-				Page p = new Page();
-				p.setId("page_" + pos);
-				p.setOrder(pos);
-				p.setOrderLabel("");
-				p.setType("page");
-				p.setFile(f);
-				vol.getPages().add(p);
-			}
-		}
-				
-		else
-		{
-			logger.info("TEI file found");
-			teiFileWithIds = addIdsToTei(teiFile.getInputStream());
-			String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
-			Unmarshaller unmarshaller = ctx.createUnmarshaller();
-			vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
-			
-			for(FileItem fileItem : images)
-			{
-				int pos = images.indexOf(fileItem);
-				vol.getFiles().get(pos).setHref(dirs.get(pos));
-			}
-					
-		}
-		vol.setProperties(item.getProperties());
-		vol.setModsMetadata(modsMetadata);
-		vol.setItem(item);
-
-		vol = updateVolume(vol, multiVolumeId, teiFileWithIds, userHandle, true);
-		vol = releaseVolume(vol, userHandle);
-
-
-
-	return vol;
-	}
-	
-	
 	private void rollbackCreation(Volume vol, String userHandle) {
 		logger.info("Trying to delete item" + vol.getItem().getObjid());
 		try 
@@ -426,7 +366,7 @@ public class VolumeServiceBean {
 		Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
 		
 		Relation relation = new Relation(ref);
-		relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasDerivation");
+		relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart");
 		relations.add(relation);
 		item.setRelations(relations);
 		TaskParam taskParam=new TaskParam(); 
@@ -460,7 +400,7 @@ public class VolumeServiceBean {
 			Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
 			
 			Relation relation = new Relation(ref);
-			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasDerivation");
+			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
 			relations.add(relation);
 			item.setRelations(relations);
 		}
