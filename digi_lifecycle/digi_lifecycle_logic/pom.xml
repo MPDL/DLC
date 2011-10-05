@@ -64,6 +64,11 @@
 			<scope>provided</scope>
 		</dependency>
   	
+  	<dependency>
+	    <groupId>jboss</groupId>
+	    <artifactId>jboss-common</artifactId>
+	    <version>4.2.3.GA</version>
+	</dependency>
   		<!-- 
 	  	<dependency>
 	  		<groupId>org.jboss.jbossas</groupId>
@@ -73,14 +78,12 @@
 	  		<type>pom</type>
 	  	</dependency>
 	  	-->
-	   
 	  	<dependency>
 			<groupId>org.jboss.spec</groupId>
 			<artifactId>jboss-javaee-6.0</artifactId>
 			<version>1.0.0.Final</version>
 			<type>pom</type>
 		</dependency>
-		
 		<!-- 
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>

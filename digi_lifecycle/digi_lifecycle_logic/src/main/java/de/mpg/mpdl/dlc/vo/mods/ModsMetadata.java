@@ -393,9 +393,9 @@ public class ModsMetadata {
 		
 		*/
 		
-		File example = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/ernstcurtius_v03_ids.xml");
-		File teiFileWithIds = VolumeServiceBean.addIdsToTei(new FileInputStream(example));
-		String mets = VolumeServiceBean.transformTeiToMets(new FileInputStream(teiFileWithIds));
+		File example = new File("/home/frank/data/digitization_lifecycle/tei_samples/ernstcurtius_v02.xml");
+		//File teiFileWithIds = VolumeServiceBean.addIdsToTei(new FileInputStream(example));
+		String mets = VolumeServiceBean.transformTeiToMets(new FileInputStream(example));
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		Volume vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
 		
