@@ -48,7 +48,8 @@
 				</h:selectOneMenu>
 		
 				<h:outputText value="#{lbl.mods_title}" />
-				<h:inputText id="title" value="#{title.title}" required="true" requiredMessage="Title is required!" />
+				<h:inputText id="title" value="#{title.title}" required="true" requiredMessage="Title is required!" rendered="#{title.subTitle == null}"/>
+				<h:inputText id="subTitle" value="#{title.subTitle}" rendered="#{title.subTitle != null}"/>
 				<h:message for="title" styleClass="messageError"/>
 								
 			</h:panelGrid>
