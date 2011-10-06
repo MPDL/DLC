@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.list;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -12,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
@@ -40,13 +42,30 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	private int totalNumberOfRecords;
 	private Context context;
 	private String contextId;
+	private List<Volume> relatedVolumes;
 	
 	public AllVolumesBean()
 	{
 		super();
 		//TODO
 	}
-	
+	public List<Volume> getRelatedVolumes(Volume vol)
+	{
+		List<Volume> vols = new ArrayList<Volume>();
+		for(Relation rel : vol.getItem().getRelations())
+		{
+			System.err.println(rel.getObjid());
+			Volume relatedVolume = null;
+			try {
+				relatedVolume= volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
+			} catch (Exception e) {
+			}
+			if(relatedVolume != null)
+				vols.add(relatedVolume);
+		}
+			return vols;
+	}
+
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
