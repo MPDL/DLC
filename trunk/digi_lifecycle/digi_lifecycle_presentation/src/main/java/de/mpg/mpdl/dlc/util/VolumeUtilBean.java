@@ -92,6 +92,23 @@ public class VolumeUtilBean {
 		return new ModsPublisher();
 	}
 	
+	public static String[] getPublicationDates(List<Volume> vols) throws Exception
+	{
+        int length = vols.size();
+        String start ="";
+        String end ="";
+        if(length >0)
+        {
+	        start = getMainPublisher(vols.get(0).getModsMetadata()).getDateIssued_425().getDate();
+	        end = getMainPublisher(vols.get(length-1).getModsMetadata()).getDateIssued_425().getDate();
+        }
+
+        		
+//        volume.getItem().getRelations().get(0).getObjid();
+//        String end = this.getVolumes().get(vols - 1).getMetadata().getVolDateIssued();
+        return new String[] { start, end };
+	}
+			
 
 	public Pagebreak getPagebreakForPage (TeiSd tei, Page p)
 	{
