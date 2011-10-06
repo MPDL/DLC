@@ -144,9 +144,8 @@ public class VolumeServiceBean {
 	public VolumeSearchResult retrieveVolumes(int limit, int offset, String userHandle) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String contentModelId = PropertyReader.getProperty("dlc.content-model.id");
 		
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.volume.id")+"\"";
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\"";
 		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
 		List<Volume> volumeList = new ArrayList<Volume>();
 
@@ -1220,7 +1219,7 @@ public class VolumeServiceBean {
 	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.volume.id")+"\" and escidoc.metadata=\"" + query + "\"";
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\"";
 
 		logger.info(cqlQuery);
 		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
