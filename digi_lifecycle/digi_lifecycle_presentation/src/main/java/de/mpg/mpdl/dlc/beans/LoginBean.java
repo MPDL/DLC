@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +44,8 @@ public class LoginBean
 {
     private boolean login;
     private static Logger logger = Logger.getLogger(LoginBean.class);
-    private static final String LOGIN_URL = "/aa/login?target=$1";
-    public static final String LOGOUT_URL = "/aa/logout?target=$1";
+    private static final String LOGIN_URL = "aa/login?target=$1";
+    public static final String LOGOUT_URL = "aa/logout?target=$1";
     private String userHandle;
     private UserAccount userAccount;
     private Grants grants;
@@ -164,7 +165,7 @@ public class LoginBean
 	}
     
 	public final String login()
-	{   
+	{    
 		FacesContext fc = FacesContext.getCurrentInstance();
 		PrettyContext pc = PrettyContext.getCurrentInstance();
 //		HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
@@ -172,7 +173,7 @@ public class LoginBean
         try 
         {
     		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
-			fc.getExternalContext().redirect(getLoginUrl().replace("$1", requestURL));
+			fc.getExternalContext().redirect(getLoginUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
 		} 
         catch (Exception e) 
         {
