@@ -1,16 +1,11 @@
 package de.mpg.mpdl.dlc.ingest;
 
 
-import java.io.ByteArrayInputStream;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -18,24 +13,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
-import javax.faces.event.ValueChangeEvent;
-import javax.faces.event.ValueChangeListener;
 import javax.faces.model.SelectItem;
-import javax.inject.Inject;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
-import org.richfaces.component.UIExtendedDataTable;
-import org.richfaces.event.DropEvent;
 
 import de.escidoc.core.resources.om.context.Context;
-import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
@@ -386,10 +370,10 @@ public class IngestBean implements Serializable {
 		} catch (Exception e) {
 			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
 		}
-		//ModsMetadata md = new ModsMetadata();
-		//ModsTitle title = new ModsTitle();
-		//title.setTitle("Test title");
-		//md.getTitles().add(title);
+//		ModsMetadata md = new ModsMetadata();
+//		ModsTitle title = new ModsTitle();
+//		title.setTitle("Test title");
+//		md.getTitles().add(title);
 //    	try {
 //     		if(getImageFiles().size()==0)
 //    		{
