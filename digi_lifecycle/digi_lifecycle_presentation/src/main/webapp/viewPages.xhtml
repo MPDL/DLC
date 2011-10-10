@@ -44,7 +44,8 @@
 				</h:panelGroup>
 				<h:panelGroup styleClass="seperator" />
 				<h:panelGroup styleClass="free_area0_p8 endline itemHeadline">
-					<h:outputText value="Author"/>
+					<h:outputText value="[#{volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name}"/>
+							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name}"/>
 					<br />
 					<b>
 							<h:outputText value="#{volumeUtilBean.getMainTitle(viewPages.volume.modsMetadata).title}"/>
