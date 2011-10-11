@@ -151,12 +151,49 @@ public class VolumeServiceBean {
 
 		for(SearchResultRecord rec : resp.getRecords())
 		{ 
-			Item item = (Item)rec.getRecordData().getContent();
-			volumeList.add(createVolumeFromItem(item, userHandle));
+			Item item = (Item)rec.getRecordData().getContent(); 
+			if(!item.getObjid().equals("escidoc:1007"))
+				//updateMultiVolume(item, userHandle);
+				volumeList.add(createVolumeFromItem(item, userHandle));
 		}
+		
 		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
 		
 	}
+	
+//	//delete relations of MultiVolume
+//	public Volume updateMultiVolume(Item item, String userHandle) throws Exception
+//	{  
+//		logger.info("Trying to update Multivolume item" + item.getObjid());
+//		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+//		client.setHandle(userHandle);
+//		
+//
+//		TaskParam taskParam=new TaskParam(); 
+//	    taskParam.setComment("Update Volume");
+//		taskParam.setLastModificationDate(item.getLastModificationDate());
+//	    
+//		Result updateResult = client.removeContentRelations(item.getObjid(), "Update Volume");
+//	
+//		Relations relations = new Relations();
+//		Reference ref = new ItemRef("/ir/item/"+"escidoc:4037","Item "+"escidoc:4037");
+//		
+//		Relation relation = new Relation(ref);
+//		relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart");
+//		relations.add(relation);
+//		item.setRelations(relations);
+//		taskParam=new TaskParam(); 
+//	    taskParam.setComment("Update Volume");
+//		client.update(item);
+//
+//		logger.info("Item updated: " + item.getObjid());
+//		
+//		Volume vol = retrieveVolume("escidoc:1007", userHandle);
+//		vol = releaseVolume(vol, userHandle);
+//		return vol;
+//	}
+	
+	
 	
 	public VolumeSearchResult retrieveContextVolumes(String contextId, int limit, int offset, String userHandle) throws Exception
 	{
@@ -889,7 +926,15 @@ public class VolumeServiceBean {
 		vol.setTei(tei);
 		vol.setPagedTei(pagedTei);
 		
-		
+		if(item.getRelations().size() > 0)
+		{
+			List<String> relatedVols = new ArrayList<String>();
+			for(Relation r : item.getRelations())
+			{
+				relatedVols.add(r.getObjid());
+			}
+			vol.setRelatedVolumes(relatedVols);
+		}
 		return vol;
 	}
 	
