@@ -42,29 +42,14 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	private int totalNumberOfRecords;
 	private Context context;
 	private String contextId;
-	private List<Volume> relatedVolumes;
 	
+
 	public AllVolumesBean()
 	{
 		super();
 		//TODO
 	}
-	public List<Volume> getRelatedVolumes(Volume vol)
-	{
-		List<Volume> vols = new ArrayList<Volume>();
-		for(Relation rel : vol.getItem().getRelations())
-		{
-			System.err.println(rel.getObjid());
-			Volume relatedVolume = null;
-			try {
-				relatedVolume= volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
-			} catch (Exception e) {
-			}
-			if(relatedVolume != null)
-				vols.add(relatedVolume);
-		}
-			return vols;
-	}
+
 
 	@URLAction(onPostback=false)
 	public void loadContext()
@@ -133,6 +118,22 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
+	}
+	
+	public List<Volume> getRelatedVolumes(Volume vol)
+	{
+		List<Volume> vols = new ArrayList<Volume>();
+		for(Relation rel : vol.getItem().getRelations())
+		{
+			Volume relatedVolume = null;
+			try {
+				relatedVolume= volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
+			} catch (Exception e) {
+			}
+			if(relatedVolume != null)
+				vols.add(relatedVolume);
+		}
+			return vols;
 	}
 	
 	
