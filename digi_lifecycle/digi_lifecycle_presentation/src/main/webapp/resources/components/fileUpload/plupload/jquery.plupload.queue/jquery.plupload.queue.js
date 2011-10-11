@@ -90,6 +90,7 @@
 											function(p, o) {
 												l = "";
 												if (o.status == plupload.DONE) {
+												
 													if (o.target_name) {
 														l += '<input type="hidden" name="'
 																+ k
@@ -252,16 +253,15 @@
 													"title",
 													"Using runtime: "
 															+ m.runtime);
-											c("a.plupload_start", i)
-													.click(
+											c("a.plupload_start", i).click(
+	
 															function(n) {
 																if (!c(this)
 																		.hasClass(
 																				"plupload_disabled")) {
 																	j.start()
 																}
-																n
-																		.preventDefault()
+																n.preventDefault()
 															});
 											c("a.plupload_stop", i).click(
 													function(n) {

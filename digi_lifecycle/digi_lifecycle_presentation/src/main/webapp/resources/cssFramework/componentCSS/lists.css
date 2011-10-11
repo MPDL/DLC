@@ -55,6 +55,10 @@
 	border-style: solid;
 }
 
+.collapse, .expand {
+	display: none;
+}
+
 .itemList .collapseTriangle, .itemList .expandTriangle {
 	display: block;
 }
@@ -120,9 +124,16 @@ div.listHeader span.itemSelectArea {
 
 .listHeader .collapseTriangle, .listHeader .collapseTriangle:hover, .listHeader .collapseTriangle:focus, .listHeader .expandTriangle, .listHeader .expandTriangle:hover, .listHeader .expandTriangle:focus {
 	line-height: normal;
-/*	margin-left: 0.1818em; */
+/*	margin-left: 0.1818em;  */
 	background-position: left;
 }
+
+.listHeader .collapse, .listHeader .collapse:hover, .listHeader .collapse:focus, .listHeader .expand, .listHeader .expand:hover, .listHeader .expand:focus {
+	line-height: normal;
+	margin-left: 0.19em;
+	background-position: left;
+}
+
 
 .listHeader .headerSwitchView {
 	margin-top:0;
@@ -385,6 +396,13 @@ th .selectMenu {
 	margin-left: -0.65em;
 }
 
+.listItem .collapse, .listItem .expand {
+	float: left;
+	line-height: normal;
+	padding-left: 1.36em;
+	margin-left: -0.65em;
+}
+
 .listItem .itemCheckBox {
 	float: right;
 }
@@ -490,7 +508,7 @@ th .selectMenu {
 /*PRINT RELATED DEFINITIONS*/
 
 @media print {
-	.itemList input, .itemList select, .itemList .seperator, .listItem .collapseTriangle, .listItem .expandTriangle {
+	.itemList input, .itemList select, .itemList .seperator, .itemList .collapse,  .itemList .expand,.listItem .collapseTriangle, .listItem .expandTriangle {
 		display: none !important;
 	}
 	

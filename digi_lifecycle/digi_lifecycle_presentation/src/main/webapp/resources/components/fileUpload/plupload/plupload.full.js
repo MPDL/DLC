@@ -504,7 +504,9 @@
 						if (F) {
 							E = F[1]
 						}
-						D.target_name = D.id + "." + E
+						D.target_name = D.name;
+						//alert("target_name = " + D.target_name);
+						//D.target_name = D.id + "." + E
 					})
 				}
 				A.bind("UploadProgress", function(C, D) {
@@ -2196,10 +2198,8 @@
 																	});
 													k = n = null
 												});
-								g
-										.bind(
-												"UploadFile",
-												function(n, k) {
+								g.bind("UploadFile",function(n, k) {
+		
 													var m = h[k.id], s = {}, l = n.settings.chunk_size, o, p = [];
 													function r(t, v) {
 														var u;
@@ -3905,6 +3905,7 @@
 																							"UploadProgress",
 																							k);
 																			p
+																			
 																					.trigger(
 																							"FileUploaded",
 																							k,

@@ -77,15 +77,14 @@
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta http-equiv="expires" content="-1" />
 
+
 	<script type="text/javascript" language="JavaScript">
 				var cookieVersion = "1.0";
-				var jsURL = "#{applicationBean.contextPath}/resources/eSciDoc_JavaScript/";
+				var jsURL = "#{facesContext.externalContext.requestContextPath}/resources/commonJavaScript/";
 				<ui:insert name="scriptVars"></ui:insert>
-			</script>
+	</script>
 
-	<script
-		src="#{applicationBean.contextPath}/resources/eSciDoc_JavaScript/eSciDoc_javascript.js"
-		language="JavaScript" type="text/javascript">;</script>
+	<script src="#{facesContext.externalContext.requestContextPath}/resources/commonJavaScript/eSciDoc_javascript.js" language="JavaScript" type="text/javascript">;</script>
 
 
 	<script src="#{applicationBean.contextPath}/resources/scripts.js"
