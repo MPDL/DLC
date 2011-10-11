@@ -584,6 +584,7 @@
 																				"post",
 																				D,
 																				true);
+													
 																j
 																		.each(
 																				r.settings.headers,
@@ -691,13 +692,14 @@
 																	return
 																}
 															}
-															D = j
-																	.buildUrl(
-																			r.settings.url,
-																			j
-																					.extend(
-																							K,
-																							r.settings.multipart_params));
+//															D = j
+//																	.buildUrl(
+//																			r.settings.url,
+//																			j
+//																					.extend(
+//																							K,
+//																							r.settings.multipart_params));
+															D=j.buildUrl(r.settings.url,{name:t.target_name||t.name});
 															T.open("post", D,
 																	true);
 															T

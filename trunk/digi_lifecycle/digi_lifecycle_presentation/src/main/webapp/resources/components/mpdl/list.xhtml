@@ -19,6 +19,8 @@
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
+
+
 <div class="full_area0 listHeader">&#160;</div>
 <ol>
 	
@@ -45,16 +47,49 @@
 					<span class="noDisplay">)</span>
 				</span>
 				<span class="seperator status"></span>
+				
  				<span class="free_area0_p6 endline itemHeadline">
 					<b>
+					
+						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
+							<f:param value="#{var.item.objid}" />
+							<f:param value="1" />
+							<h:outputText value="#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name}" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role != 'asn') and (not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
+							<h:outputText value="#{lbl.view_dtls_no_author}" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role != 'asn') and (empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
+							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role == 'asn') and (not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
+							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role == 'asn') and (empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
+
+							<br/>
+							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}" />
+							<h:outputText value=" - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).publisher || not empty volumeUtilBean.getMainPublisher(var.modsMetadata).place}"/>
+ 							<h:outputText value=" , #{volumeUtilBean.getPublicationDates(var)[0]}" rendered="#{volumeUtilBean.getSize(var.relatedVolumes) > 0}"/>
+							<h:outputText value="-#{volumeUtilBean.getPublicationDates(var)[1]}" rendered="#{volumeUtilBean.getSize(var.relatedVolumes) > 1}" />
+						</pretty:link>
+						
 						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}" >
 							<f:param value="#{var.item.objid}" />
 							<f:param value="1" />
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<br/>
-						<!-- title - pulisher.place : publisher.publisher , dateStart - dateEnd -->
-							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}, #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
+							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} "/>
+							<h:outputText value=" - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).place}"/>
+							<h:outputText value=" , #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
+						</pretty:link>
+
+				
+
+<ui:remove>				
+						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}" >
+							<f:param value="#{var.item.objid}" />
+							<f:param value="1" />
+							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
+							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
+							<br/>
+							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} "/>
+							<h:outputText value="- #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} " rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).place}"/>
+							<h:outputText value=": #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}"/>
+							<h:outputText value=", #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
 						</pretty:link>
 						
 						<pretty:link mappingId="viewPages" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
@@ -63,9 +98,13 @@
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<br/>
-						<!-- title - pulisher.place : publisher.publisher , dateStart - dateEnd -->
-							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title} - #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}, #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
+							<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>
+							<h:outputText value="- #{volumeUtilBean.getMainPublisher(var.modsMetadata).place} " rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).place}"/>
+							<h:outputText value=": #{volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).publisher}"/>
+							<h:outputText value=", #{volumeUtilBean.getPublicationDates(allVolumesBean.getRelatedVolumes(var))[0]}" rendered="#{not empty volumeUtilBean.getPublicationDates(allVolumesBean.getRelatedVolumes(var))[0]}"/>
+							<h:outputText value="-#{volumeUtilBean.getPublicationDates(allVolumesBean.getRelatedVolumes(var))[1]}" rendered="#{not empty volumeUtilBean.getPublicationDates(allVolumesBean.getRelatedVolumes(var))[1]}" />
 						</pretty:link>
+</ui:remove>
 					</b>
 				</span>
 			</h:panelGroup>
@@ -73,7 +112,7 @@
 			<h:panelGroup layout="block" styleClass="full_area0 shortView">
 				<div class="free_area0_p0  small_marginLIncl endline listItemLine">
 					<span class="huge_area0_p8 endline labelLine">
-						<!-- 
+
 						<h:panelGroup layout="block" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
 							<a class="collapse">
 								<span class="noDisplay">
@@ -81,16 +120,25 @@
 								</span>
 								<h:outputText value="#{lbl.ViewItemShort_lblLess}"/>
 							</a>
-							<a class="expand"><span class="noDisplay"><h:outputText value="#{lbl.ViewItemShort_lblShow}"/> </span><h:outputText value="#{lbl.ViewItemShort_lblMore}"/></a>
+							<a class="expand">
+								<span class="noDisplay">
+									<h:outputText value="#{lbl.ViewItemShort_lblShow}"/> 
+								</span>
+								<h:outputText value="#{lbl.ViewItemShort_lblMore}"/>
+							</a>
 						</h:panelGroup>
-						 -->
+<ui:remove>			
 						<h:outputText value="#{lbl.view_dtls_title_txt}"/><span class="noDisplay">: </span>
+</ui:remove>	
 					</span>
+<ui:remove>	
 					<span class="xHuge_area0 endline">
 						<h:outputText value="#{volumeUtilBean.getMainTitle(var.modsMetadata).title}"/>&#160;
 					</span>
+</ui:remove>	
 				</div>
 		
+<ui:remove>
 				<h:panelGroup layout="block" styleClass="free_area0_p0 small_marginLIncl endline listItemLine" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.view_dtls_author_txt}" rendered="#{volumeUtilBean.getFirstNamePart(var.modsMetadata).role != 'asn'}" />
@@ -120,44 +168,44 @@
 						<h:outputText value="#{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>&#160;
 					</span>
 				</h:panelGroup>
-				<!-- 
-							<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'M'}">
-								<span class="huge_area0_p8 endline labelLine">
-									<h:outputText value="Number of Volumes"/><span class="noDisplay">: </span>
-								</span>
-								<span class="xHuge_area0 endline">
-									<h:outputText value="#{book.numberOfVolumes}"/>&#160;
-								</span>
-							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
-								<span class="huge_area0_p8 endline labelLine">
-									<h:outputText value="#{lbl.edit_tree_toc_lastmodificationdate}"/><span class="noDisplay">: </span>
-								</span>
-								<span class="xHuge_area0 endline">
-									<h:outputText value="#{book.toc.lmd2display}"/>&#160;
-								</span>
-							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
-								<span class="huge_area0_p8 endline labelLine">
-									<h:outputText value="#{lbl.edit_tree_toc_releasedate}"/><span class="noDisplay">: </span>
-								</span>
-								<span class="xHuge_area0 endline">
-									<h:outputText value="#{book.toc.releaseDate}"/>&#160;
-								</span>
-							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{book.type == 'MG' and EditMetadata.allowed}">
-								<span class="huge_area0_p8 endline labelLine">
-									<h:outputText value="#{lbl.edit_tree_toc_versionstate}"/><span class="noDisplay">: </span>
-								</span>
-								<span class="xHuge_area0 endline">
-									<h:outputText value="#{book.toc.versionStatusLabel}"/>&#160;
-								</span>
-							</h:panelGroup>
+</ui:remove>
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
+					<span class="huge_area0_p8 endline labelLine">
+						<h:outputText value="Number of Volumes"/><span class="noDisplay">: </span>
+					</span>
+					<span class="xHuge_area0 endline">
+						<h:outputText value="#{volumeUtilBean.getSize(var.relatedVolumes)}"/>&#160;
+					</span>
+				</h:panelGroup>
 				
 				
+				<!-- TODO		
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}">
+					<span class="huge_area0_p8 endline labelLine">
+						<h:outputText value="#{lbl.edit_tree_toc_lastmodificationdate}"/><span class="noDisplay">: </span>
+					</span>
+					<span class="xHuge_area0 endline">
+						<h:outputText value="#{book.toc.lmd2display}"/>&#160;
+					</span>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}">
+					<span class="huge_area0_p8 endline labelLine">
+						<h:outputText value="#{lbl.edit_tree_toc_releasedate}"/><span class="noDisplay">: </span>
+					</span>
+					<span class="xHuge_area0 endline">
+						<h:outputText value="#{book.toc.releaseDate}"/>&#160;
+					</span>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
+					<span class="huge_area0_p8 endline labelLine">
+						<h:outputText value="#{lbl.edit_tree_toc_versionstate}"/><span class="noDisplay">: </span>
+					</span>
+					<span class="xHuge_area0 endline">
+						<h:outputText value="#{book.toc.versionStatusLabel}"/>&#160;
+					</span>
+				</h:panelGroup>
 				 -->
-				
-				
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="full_area0 shortView" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'  and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) != null}">
 				<div class="free_area0_p0  small_marginLIncl endline listItemLine">											
@@ -169,55 +217,22 @@
 			</h:panelGroup>
 		
 			<h:panelGroup layout="block" styleClass="full_area0 mediumView" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
-			<!-- 
-							<tr:iterator value="#{book.volumes}" var="volume" rows="0">
-								<h:panelGroup rendered="#{volume.type == 'V' and (!EditMetadata.allowed or BookPaginatorListSessionBean.selectedState=='all' or volume.toc.versionStatus==BookPaginatorListSessionBean.selectedState)}">
-									<h:panelGroup layout="block" styleClass="listItem free_area0_p0 xLarge_marginLIncl endline listItemLine noTopBorder" style="border-top-width: 0px !important;" >
-										<span class="xHuge_area0 endline itemHeadline noPaddingTopBottom">
-											<b>
-	
-											 <tr:goLink text="#{volume.metadata.volTitle}" destination="/view/#{volume.objid}/image-outline" rendered="#{not empty volume.metadata.volTitle}"/>
-											</b>
-										</span>
-									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{EditMetadata.allowed}">
-									<span class="huge_area0_p8 endline labelLine">
-										<h:outputText value="#{lbl.edit_tree_toc_lastmodificationdate}"/><span class="noDisplay">: </span>
-									</span>
-									<span class="xHuge_area0 endline">
-										<h:outputText value="#{volume.toc.lmd2display}"/>&#160;
-									</span>
-								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{EditMetadata.allowed}">
-									<span class="huge_area0_p8 endline labelLine">
-										<h:outputText value="#{lbl.edit_tree_toc_releasedate}"/><span class="noDisplay">: </span>
-									</span>
-									<span class="xHuge_area0 endline">
-										<h:outputText value="#{volume.toc.releaseDate}"/>&#160;
-									</span>
-								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{EditMetadata.allowed}">
-									<span class="huge_area0_p8 endline labelLine">
-										<h:outputText value="#{lbl.edit_tree_toc_versionstate}"/><span class="noDisplay">: </span>
-									</span>
-									<span class="xHuge_area0 endline">
-										<h:outputText value="#{volume.toc.versionStatusLabel}"/>&#160;
-									</span>
-								</h:panelGroup>
-							</h:panelGroup>
-								
-
-							</tr:iterator>
-			
-			 -->
-			
-			
-			
-			
-			
-			
-			
-			
+				<a4j:repeat id="vol" value="#{allVolumesBean.getRelatedVolumes(var)}" var="volume" rows="0" rowKeyVar="index">
+					<h:panelGroup layout="block" styleClass="listItem free_area0_p0 xLarge_marginLIncl endline listItemLine noTopBorder" style="border-top-width: 0px !important;" >
+						<span class="xHuge_area0 endline itemHeadline noPaddingTopBottom">
+							<b>
+								<pretty:link mappingId="viewPages" >
+									<f:param value="#{volume.item.objid}" />
+									<f:param value="1" />
+									<br/>
+									<h:outputText value="#{lbl.view_dtls_volume_txt}"/>
+								</pretty:link>
+								<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
+								<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}"/>
+							</b>
+						</span>
+					</h:panelGroup>
+				</a4j:repeat>								
 			</h:panelGroup>
 
 		
