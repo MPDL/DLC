@@ -65,14 +65,12 @@ public class Volume {
 
 	@XmlTransient
 	private Document teiSdXml;
-	
-	
-	
 
 	@XmlTransient
 	private String pagedTei;
-
 	
+	@XmlTransient
+	private List<String> relatedVolumes;
 
 	public Volume ()
 	{
@@ -255,6 +253,15 @@ public class Volume {
 	public void setTeiSdXml(Document teiSdXml) {
 		this.teiSdXml = teiSdXml;
 	}
+
+	public List<String> getRelatedVolumes() {
+		return relatedVolumes;
+	}
+
+	public void setRelatedVolumes(List<String> relatedVolumes) {
+		this.relatedVolumes = relatedVolumes;
+	}
+	
 
 	
 	
