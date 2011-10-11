@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.util;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -9,6 +10,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -59,6 +61,14 @@ public class VolumeUtilBean {
 		}
 	}
 	
+	public static int getSize(List<Object> objs)
+	{
+		if(objs != null)
+			return objs.size();
+		else
+			return 0;
+	}
+	
 	public static ModsTitle getMainTitle(ModsMetadata md)
 	{
 		
@@ -92,23 +102,30 @@ public class VolumeUtilBean {
 		return new ModsPublisher();
 	}
 	
-	public static String[] getPublicationDates(List<Volume> vols) throws Exception
+	
+	public static String[] getPublicationDates(Volume vol) throws Exception
 	{
-        int length = vols.size();
+        int length = vol.getRelatedVolumes().size();
         String start ="";
         String end ="";
-        if(length >0)
-        {
-	        start = getMainPublisher(vols.get(0).getModsMetadata()).getDateIssued_425().getDate();
-	        end = getMainPublisher(vols.get(length-1).getModsMetadata()).getDateIssued_425().getDate();
-        }
+        if(length > 0 )
+            start = getMainPublisher(getVolume(vol.getRelatedVolumes().get(0)).getModsMetadata()).getDateIssued_425().getDate();
 
-        		
-//        volume.getItem().getRelations().get(0).getObjid();
-//        String end = this.getVolumes().get(vols - 1).getMetadata().getVolDateIssued();
+	    if(length > 1)  
+	        end = getMainPublisher(getVolume(vol.getRelatedVolumes().get(length-1)).getModsMetadata()).getDateIssued_425().getDate();
+
         return new String[] { start, end };
 	}
-			
+	
+	
+	public static Volume getVolume(String id) throws Exception
+	{
+		VolumeServiceBean volServiceBean = new VolumeServiceBean();
+		LoginBean loginBean = new LoginBean();
+		return volServiceBean.retrieveVolume(id, loginBean.getUserHandle());
+	}
+
+	
 
 	public Pagebreak getPagebreakForPage (TeiSd tei, Page p)
 	{
