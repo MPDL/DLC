@@ -64,6 +64,9 @@ public class ApplicationBean
     private String userLocaleString;
     private Locale userLocale;
     private String selectedHelpPage;
+    private String cmMultiVol;
+    private String cmVolume;
+    private String cmMono;
     
     //TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
@@ -129,6 +132,9 @@ public class ApplicationBean
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
 	    	this.ous = appServiceBean.retrieveOus();
+	    	this.cmMono = PropertyReader.getProperty("dlc.content-model.monograph.id");
+	    	this.cmMultiVol = PropertyReader.getProperty("dlc.content-model.multivolume.id");
+	    	this.cmVolume = PropertyReader.getProperty("dlc.content-model.volume.id");
 		} catch (Exception e) {
 			logger.error("Cannot get OUs: " + e.getMessage());
 		}      
@@ -219,9 +225,34 @@ public class ApplicationBean
 	{
 		this.selectedHelpPage = selectedHelpPage;
 	}  
+	
     
     
-    /**
+    public String getCmMultiVol() {
+		return cmMultiVol;
+	}
+
+	public void setCmMultiVol(String cmMultiVol) {
+		this.cmMultiVol = cmMultiVol;
+	}
+
+	public String getCmVolume() {
+		return cmVolume;
+	}
+
+	public void setCmVolume(String cmVolume) {
+		this.cmVolume = cmVolume;
+	}
+
+	public String getCmMono() {
+		return cmMono;
+	}
+
+	public void setCmMono(String cmMono) {
+		this.cmMono = cmMono;
+	}
+
+	/**
      * toggle the locale.
      * @param event
      */
