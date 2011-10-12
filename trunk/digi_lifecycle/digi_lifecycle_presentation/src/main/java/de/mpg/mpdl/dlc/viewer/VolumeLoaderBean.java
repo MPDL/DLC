@@ -1,13 +1,15 @@
 package de.mpg.mpdl.dlc.viewer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedProperty;
 
 import org.apache.log4j.Logger;
 
-import com.ocpsoft.pretty.faces.annotation.URLAction;
-import com.ocpsoft.pretty.faces.annotation.URLMapping;
-
+import de.escidoc.core.resources.common.Relation;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -21,12 +23,17 @@ public abstract class VolumeLoaderBean {
 	@ManagedProperty("#{loginBean}")
 	protected LoginBean loginBean;
 	
+	@ManagedProperty("#{applicationBean}")
+	protected ApplicationBean appBean;
+	
 	@EJB
 	protected VolumeServiceBean volServiceBean;
 	
 	protected String volumeId;
 	
 	protected Volume volume;
+	
+	protected List<Volume> relatedVolumes = new ArrayList<Volume>();
 
 	protected abstract void volumeLoaded();
 
@@ -41,8 +48,37 @@ public abstract class VolumeLoaderBean {
 			{   
 				logger.info("Load new book " + volumeId);
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
-				volServiceBean.loadTei(volume, null);
-				volServiceBean.loadPagedTei(volume, null);
+				if(volume.getItem().getProperties().getContentModel().getObjid().equals(appBean.getCmMono()))
+				{
+					volServiceBean.loadTei(volume, null);
+					volServiceBean.loadPagedTei(volume, null);					
+				}
+				else if(volume.getItem().getProperties().getContentModel().getObjid().equals(appBean.getCmMultiVol()))
+				{
+					for(Relation rel : volume.getItem().getRelations())
+					{
+						Volume child = null;
+						try {
+							child= volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
+						} catch (Exception e) {
+							logger.error("cannot retrieve child Volume" + e.getMessage());
+						}
+						relatedVolumes.add(child);
+					}
+				}
+				else
+				{
+					try {
+						Volume parent = null;
+						Relation rel = volume.getItem().getRelations().get(0);
+						parent = volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
+						relatedVolumes.add(parent);
+					} catch (Exception e) {
+						logger.error("cannot retrieve parent Volume" + e.getMessage());
+					}
+					volServiceBean.loadTei(volume, null);
+					volServiceBean.loadPagedTei(volume, null);
+				}
 			}
 			volumeLoaded();
 		} catch (Exception e) {
@@ -69,7 +105,6 @@ public abstract class VolumeLoaderBean {
 		return volume;
 	}
 	
-
 	public void setVolumeId(String volumeId) {
 		this.volumeId = volumeId;
 	}
@@ -77,5 +112,34 @@ public abstract class VolumeLoaderBean {
 	public String getVolumeId() {
 		return volumeId;
 	}
+
+
+
+	public ApplicationBean getAppBean() {
+		return appBean;
+	}
+
+
+
+	public void setAppBean(ApplicationBean appBean) {
+		this.appBean = appBean;
+	}
+
+
+
+	public List<Volume> getRelatedVolumes() {
+		return relatedVolumes;
+	}
+
+
+
+	public void setRelatedVolumes(List<Volume> relatedVolumes) {
+		this.relatedVolumes = relatedVolumes;
+	}
+
+
+
+	
+	
 
 }

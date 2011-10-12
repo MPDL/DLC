@@ -99,7 +99,7 @@ public class ViewPages extends VolumeLoaderBean{
 		
 		try
 		{
-			if(hasSelected == false)
+			if(getVolume().getPagedTei() != null && hasSelected == false)
 			{
 				this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
 			}
