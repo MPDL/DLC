@@ -37,21 +37,9 @@
 
 
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
-			
-			<div class="full_area0 itemHeader">
-				<h:panelGroup styleClass="xLarge_area0 endline blockHeader" >
-					&#160;	
-				</h:panelGroup>
-				<h:panelGroup styleClass="seperator" />
-				<h:panelGroup styleClass="free_area0_p8 endline itemHeadline">
-					<h:outputText value="[#{volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name}"/>
-							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(viewPages.volume.modsMetadata).name}"/>
-					<br />
-					<b>
-							<h:outputText value="#{volumeUtilBean.getMainTitle(viewPages.volume.modsMetadata).title}"/>
-					</b>
-				</h:panelGroup>
-			</div>
+
+			<mpdl:header volume="#{viewPages.volume}" relatedVolumes="#{viewPages.relatedVolumes}"/>
+
 			
 			<div class="full_area0 itemHeader">
 				<h:panelGroup layout="block" styleClass="xHuge_marginLIncl pageBrowser">

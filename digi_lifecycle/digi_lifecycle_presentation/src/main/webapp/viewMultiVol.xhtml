@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<ui:composition template="templates/template.xhtml">
+
+	<ui:param name="browserTitle" value="#{volumeUtilBean.getFirstNamePart(viewMultiVol.volume.modsMetadata).name}"/>
+	
+	<ui:param name="descriptionSelected" value="#{viewMultiVol.viewType == 'LIST' or viewMultiVol.viewType == 'ISBD'}"/>
+	
+	<ui:define name="contentMenu">			
+		<h:outputText id="lblDescription" styleClass="free_area0" value="#{lbl.menu_description}" rendered="#{descriptionSelected}" />
+	</ui:define>
+	
+	
+	<ui:define name="actionsMenu">
+		<div class="free_area0 sub action">
+			<h:panelGroup rendered="#{descriptionSelected}">
+				<h:commandButton value="#{lbl.menu_list}" action="#{viewMultiVol.setViewType('LIST')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
+				<h:outputText id="lblList" value="#{lbl.menu_list}" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
+				<h:panelGroup styleClass="seperator" rendered="true" />
+				<h:commandButton value="#{lbl.menu_ISBD}" action="#{viewMultiVol.setViewType('ISBD')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
+				<h:outputText id="lblISBD" value="#{lbl.menu_ISBD}" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
+				<h:panelGroup styleClass="seperator" rendered="true" />
+			</h:panelGroup>
+		</div>
+	</ui:define>
+	
+	<ui:define name="mainContent">
+		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		
+			<mpdl:header volume="#{viewMultiVol.volume}" />
+			
+			<div id="viewBiblMD" class="full_area0 itemBlock">
+				<h:panelGroup styleClass="xLarge_area0 blockHeader endline" >
+					<h:outputText value="#{lbl.view_dtls_biblMD}" />&#160;
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
+					<mpdl:modsViewer modsMetadata="#{viewMultiVol.volume.modsMetadata}"/>
+				</h:panelGroup>
+			</div>
+
+
+			<div class="full_area0 itemBlock" id="viewVolumes" rendered="#{not empty cc.attrs.volumes}">
+				<h:panelGroup styleClass="xLarge_area0 blockHeader endline">
+					<h:outputText value="#{lbl.view_dtls_volumes_txt}" />&#160;
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				<h:panelGroup styleClass="free_area0 itemBlockContent endline" >			
+					<mpdl:volumes volumes="#{viewMultiVol.relatedVolumes}" />
+				</h:panelGroup>
+			</div>
+
+			
+		</h:panelGroup>
+	</ui:define>
+
+</ui:composition>
+
+
+</html>
