@@ -198,7 +198,10 @@ public class VolumeServiceBean {
 	public VolumeSearchResult retrieveContextVolumes(String contextId, int limit, int offset, String userHandle) throws Exception
 	{
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		SearchRetrieveResponse resp = shc.search("escidoc.context.objid=\"" + contextId + "\"", offset, limit, null, "escidoc_all");
+		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" and escidoc.context.objid=\"" + contextId + "\"";
+		
+		
+		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
 		List<Volume> volumeList = new ArrayList<Volume>();
 
 		for(SearchResultRecord rec : resp.getRecords())
@@ -851,7 +854,7 @@ public class VolumeServiceBean {
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle); 
-		
+		System.err.println("item id = " + item.getObjid());
 		TeiSd teiSd = null;
 		Document teiSdXml = null;
 		Volume vol = null;
