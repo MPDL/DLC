@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces" >
+	
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="volumes" required="true" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
+		<h:panelGroup layout="block" styleClass="listItem free_area0_p0 xLarge_marginLIncl endline listItemLine noTopBorder" style="border-top-width: 0px !important;">
+			<span class="xHuge_area0 endline itemHeadline noPaddingTopBottom">
+				<b> <pretty:link mappingId="viewPages">
+						<f:param value="#{volume.item.objid}" />
+						<f:param value="1" />
+						<br />
+						<h:outputText value="#{lbl.view_dtls_volume_txt}" />
+					</pretty:link> 
+					<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" />
+					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}" />
+			</b> </span>
+		</h:panelGroup>
+	</a4j:repeat>
+</cc:implementation>
+</html>

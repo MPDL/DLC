@@ -33,15 +33,15 @@
 				<span class="seperator"></span>
 				<span class="free_area0_p8 status statusArea">
 					<span class="noDisplay">(</span>
-				 	<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001' and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) != null}"/>
+				 	<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100)}" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) != null}"/>
 			 		
-			 		<h:panelGroup styleClass="big_imgArea statusIcon virrMediaTypeMG" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001' and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) == null}"/>
-			 		<h:panelGroup styleClass="big_imgArea statusIcon virrMediaTypeM" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" />
+			 		<h:panelGroup styleClass="big_imgArea statusIcon virrMediaTypeMG" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) == null}"/>
+			 		<h:panelGroup styleClass="big_imgArea statusIcon virrMediaTypeM" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}" />
 			 		
-			 		<h:outputLabel id="lblMonoItemPublicState" styleClass="medium_label endline" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001' and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) == null}">
+			 		<h:outputLabel id="lblMonoItemPublicState" styleClass="medium_label endline" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) == null}">
 						<h:outputText value="#{lbl.view_dtls_genre_mono_txt}"/>
 					</h:outputLabel>
-			 		<h:outputLabel id="lblMultiItemPublicState" styleClass="medium_label endline" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
+			 		<h:outputLabel id="lblMultiItemPublicState" styleClass="medium_label endline" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}" >
 						<h:outputText value="#{lbl.view_dtls_genre_multi_txt}" />
 					</h:outputLabel>
 					<span class="noDisplay">)</span>
@@ -51,9 +51,8 @@
  				<span class="free_area0_p6 endline itemHeadline">
 					<b>
 					
-						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
+						<pretty:link mappingId="viewMultiVol"  rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}" >
 							<f:param value="#{var.item.objid}" />
-							<f:param value="1" />
 							<h:outputText value="#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name}" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role != 'asn') and (not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
 							<h:outputText value="#{lbl.view_dtls_no_author}" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role != 'asn') and (empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{(volumeUtilBean.getFirstNamePart(var.modsMetadata).role == 'asn') and (not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name)}"/>
@@ -66,7 +65,7 @@
 							<h:outputText value="-#{volumeUtilBean.getPublicationDates(var)[1]}" rendered="#{volumeUtilBean.getSize(var.relatedVolumes) > 1}" />
 						</pretty:link>
 						
-						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}" >
+						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono}" >
 							<f:param value="#{var.item.objid}" />
 							<f:param value="1" />
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
@@ -80,7 +79,7 @@
 				
 
 <ui:remove>				
-						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}" >
+						<pretty:link mappingId="viewPages"  rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono}" >
 							<f:param value="#{var.item.objid}" />
 							<f:param value="1" />
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
@@ -92,9 +91,8 @@
 							<h:outputText value=", #{volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(var.modsMetadata).dateIssued_425.date}"/>
 						</pretty:link>
 						
-						<pretty:link mappingId="viewPages" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
+						<pretty:link mappingId="viewMultiVol" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}" >
 							<f:param value="#{var.item.objid}" />
-							<f:param value="1" />
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(var.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(var.modsMetadata).name}"/>
 							<br/>
@@ -113,18 +111,18 @@
 				<div class="free_area0_p0  small_marginLIncl endline listItemLine">
 					<span class="huge_area0_p8 endline labelLine">
 
-						<h:panelGroup layout="block" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
-							<a class="collapse">
+						<h:panelGroup layout="block" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+							<a class="collapse" >
 								<span class="noDisplay">
 									<h:outputText value="#{lbl.ViewItemShort_lblShow}"/> 
 								</span>
-								<h:outputText value="#{lbl.ViewItemShort_lblLess}"/>
+								<h:outputText value="#{lbl.ViewItemShort_lblLess}" />
 							</a>
 							<a class="expand">
 								<span class="noDisplay">
-									<h:outputText value="#{lbl.ViewItemShort_lblShow}"/> 
-								</span>
-								<h:outputText value="#{lbl.ViewItemShort_lblMore}"/>
+									<h:outputText value="#{lbl.ViewItemShort_lblShow}" rendered="#{volumeUtilBean.getSize(var.relatedVolumes) > 0}"/> 
+								</span> 
+								<h:outputText value="#{lbl.ViewItemShort_lblMore}" rendered="#{volumeUtilBean.getSize(var.relatedVolumes) > 0}"/>
 							</a>
 						</h:panelGroup>
 <ui:remove>			
@@ -151,7 +149,7 @@
 					</span>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}" >
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}" >
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
 					</span>
@@ -160,7 +158,7 @@
 					</span>				
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}">
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.view_dtls_date_issued_txt}"/><span class="noDisplay">: </span>
 					</span>
@@ -169,7 +167,7 @@
 					</span>
 				</h:panelGroup>
 </ui:remove>
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="Number of Volumes"/><span class="noDisplay">: </span>
 					</span>
@@ -180,7 +178,7 @@
 				
 				
 				<!-- TODO		
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}">
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.edit_tree_toc_lastmodificationdate}"/><span class="noDisplay">: </span>
 					</span>
@@ -188,7 +186,7 @@
 						<h:outputText value="#{book.toc.lmd2display}"/>&#160;
 					</span>
 				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'}">
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.edit_tree_toc_releasedate}"/><span class="noDisplay">: </span>
 					</span>
@@ -197,7 +195,7 @@
 					</span>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
+				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="#{lbl.edit_tree_toc_versionstate}"/><span class="noDisplay">: </span>
 					</span>
@@ -207,7 +205,7 @@
 				</h:panelGroup>
 				 -->
 			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="full_area0 shortView" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2001'  and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) != null}">
+			<h:panelGroup layout="block" styleClass="full_area0 shortView" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMono  and volumeUtilBean.getDigilibScalerUrlForPage(var.pages[0],50,100) != null}">
 				<div class="free_area0_p0  small_marginLIncl endline listItemLine">											
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{var.item.objid}" />
@@ -216,23 +214,8 @@
 				</div>
 			</h:panelGroup>
 		
-			<h:panelGroup layout="block" styleClass="full_area0 mediumView" rendered="#{var.item.properties.contentModel.objid == 'escidoc:2002'}">
-				<a4j:repeat id="vol" value="#{allVolumesBean.getRelatedVolumes(var)}" var="volume" rows="0" rowKeyVar="index">
-					<h:panelGroup layout="block" styleClass="listItem free_area0_p0 xLarge_marginLIncl endline listItemLine noTopBorder" style="border-top-width: 0px !important;" >
-						<span class="xHuge_area0 endline itemHeadline noPaddingTopBottom">
-							<b>
-								<pretty:link mappingId="viewPages" >
-									<f:param value="#{volume.item.objid}" />
-									<f:param value="1" />
-									<br/>
-									<h:outputText value="#{lbl.view_dtls_volume_txt}"/>
-								</pretty:link>
-								<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
-								<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}"/>
-							</b>
-						</span>
-					</h:panelGroup>
-				</a4j:repeat>								
+			<h:panelGroup layout="block" styleClass="full_area0 mediumView" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+				<mpdl:volumes volumes="#{allVolumesBean.getRelatedVolumes(var)}" />
 			</h:panelGroup>
 
 		
