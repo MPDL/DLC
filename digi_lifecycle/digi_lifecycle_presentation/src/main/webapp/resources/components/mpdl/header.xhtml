@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="volume" required="true" />
+	<cc:attribute name="relatedVolumes" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+
+	<div class="full_area0 itemHeader">
+		<h:panelGroup styleClass="xLarge_area0 endline blockHeader">
+			&#160;	
+		</h:panelGroup>
+		<h:panelGroup styleClass="seperator" />
+		<h:panelGroup styleClass="free_area0_p8 endline itemHeadline">
+			<h:outputText value="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}:" rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn' and not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText value="[#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]:"
+				rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role == 'asn' and not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText value="#{lbl.view_dtls_no_author}:"
+				rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn' and empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText
+				value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]:"
+				rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role == 'asn' and empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
+			<br />
+			<b> 
+				<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMono}">
+					<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}" />
+					<h:outputText value=", #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" 
+						rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}" />
+				</h:panelGroup>
+				
+				<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+					<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}." />
+					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}" />
+ 					<h:outputText value=" #{volumeUtilBean.getPublicationDates(cc.attrs.volume)[0]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 0}"/>
+					<h:outputText value=" - #{volumeUtilBean.getPublicationDates(cc.attrs.volume)[1]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 1}" />
+				</h:panelGroup> 
+
+				
+				<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+					<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.relatedVolumes.get(0).modsMetadata).title}, #{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}."/>
+					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>	
+				</h:panelGroup>			
+			</b>
+		</h:panelGroup>
+		
+		<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+			<h:panelGroup styleClass="big_imgArea statusIcon virrMediaTypeM" />
+			<span class="noDisplay">(</span>
+			<h:outputLabel id="lblItemPublicState" styleClass="medium_label endline">
+				<h:outputText value="#{lbl.view_dtls_genre_multi_txt}"/>
+			</h:outputLabel>
+			<span class="noDisplay">)</span>
+		</h:panelGroup>
+	</div>
+
+</cc:implementation>
+</html>
