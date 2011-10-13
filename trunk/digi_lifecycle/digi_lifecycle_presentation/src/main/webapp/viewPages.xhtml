@@ -39,8 +39,6 @@
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
 
 			<mpdl:header volume="#{viewPages.volume}" relatedVolumes="#{viewPages.relatedVolumes}"/>
-
-			
 			<div class="full_area0 itemHeader">
 				<h:panelGroup layout="block" styleClass="xHuge_marginLIncl pageBrowser">
 					<h:commandButton value=" " action="#{viewPages.goToFirstPage}" styleClass="min_imgBtn groupBtn skipToFirst">
@@ -55,9 +53,12 @@
 					<h:commandButton value=" " action="#{viewPages.goToLastPage}" styleClass="min_imgBtn groupBtn skipToLast">
 						<f:ajax render="@all"/>
 					</h:commandButton>
+<ui:remove>
 					<h:commandButton value="Rerender" styleClass="min_imgBtn groupBtn">
 						<f:ajax render="@all"/>
 					</h:commandButton>
+</ui:remove>
+
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
 					<h:commandButton value="Zoom " action="#{viewPages.setViewType('SINGLE')}" styleClass="large_imgBtn groupBtn"/>
