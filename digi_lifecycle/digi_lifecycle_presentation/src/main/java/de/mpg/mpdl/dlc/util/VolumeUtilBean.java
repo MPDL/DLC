@@ -83,6 +83,24 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
+	public static ModsTitle getUniformTitle(ModsMetadata md)
+	{
+		for(ModsTitle mt : md.getTitles())
+			if(mt.getType() == "uniform")
+				return mt;
+		return new ModsTitle();
+	}
+	
+	public static ModsTitle getSubTitle(ModsMetadata md)
+	{
+		for(ModsTitle mt : md.getTitles())
+		{
+			if(mt.getSubTitle() != "" )
+				return mt;
+		}
+		return new ModsTitle();
+	}
+	
 	public static ModsName getFirstNamePart(ModsMetadata md)
 	{
 		for(ModsName mn : md.getNames())
@@ -92,7 +110,18 @@ public class VolumeUtilBean {
 		return new ModsName();
 	}
 	
-
+	public static ModsName getSecondNamePart(ModsMetadata md)
+	{
+		int i = 1;
+		for(ModsName mn : md.getNames())
+			if(mn.getName() != null)
+			{
+				i++;
+				if(i>2)
+					return mn;
+			}
+		return new ModsName();
+	}
 	
 	public static ModsPublisher getMainPublisher(ModsMetadata md)
 	{
@@ -101,7 +130,6 @@ public class VolumeUtilBean {
 				return mp;
 		return new ModsPublisher();
 	}
-	
 	
 	public static String[] getPublicationDates(Volume vol) throws Exception
 	{
@@ -115,6 +143,22 @@ public class VolumeUtilBean {
 	        end = getMainPublisher(getVolume(vol.getRelatedVolumes().get(length-1)).getModsMetadata()).getDateIssued_425().getDate();
 
         return new String[] { start, end };
+	}
+	
+	public static ModsNote getNoteSOR(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if(mn.getType() == "statementOfResponsibility")
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsNote getMainNote(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if(mn.getType() == null || mn.getType().isEmpty())
+				return mn;
+		return new ModsNote();
 	}
 	
 	
