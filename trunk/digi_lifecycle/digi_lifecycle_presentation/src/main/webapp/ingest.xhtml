@@ -22,19 +22,23 @@
 	{
         
         if (data.status == 'complete') {
- //          toggleDisplay(document.getElementById('form1:modsInfo'));
- //          toggleDisplay(document.getElementById('form1:modsInfo2'));
+           toggleDisplay(document.getElementById('form1:teiInfo'));
+           toggleDisplay(document.getElementById('form1:imageInfo'));
 
 
-        	var  object= document.getElementById('form1:teiInfo');
-           	if(document.getElementById('form1:contentModel').value == 'Multivolume')
-            	object.style.display = "none";
-           	else
-            	object.style.display = "";
-        }
+   
+
+
       }
+
      function toggleDisplay(element) {
-         element.style.display = element.style.display == "none" ? "" : "none"; 
+ //        element.style.display = element.style.display == "none" ? "" : "none"; 
+     	if(document.getElementById('form1:contentModel').value == 'Multivolume')
+        	element.style.display = "none";
+       	else
+        	element.style.display = "";
+    }
+
       }
 
 	</script>
@@ -118,7 +122,7 @@
 					value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
 			</rich:panel>
 
-			<rich:panel id="imageInfo" rendered="#{ingestBean.selectedContentModel != 'escidoc:19002'}">
+			<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<f:facet name="header">
 					<h:outputText value="Uploaded Images" />
 				</f:facet>
