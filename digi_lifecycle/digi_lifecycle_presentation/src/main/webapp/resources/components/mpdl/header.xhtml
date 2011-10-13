@@ -50,7 +50,7 @@
 				
 				<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
 					<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.relatedVolumes.get(0).modsMetadata).title}, #{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}."/>
-					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>	
+					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>	
 				</h:panelGroup>			
 			</b>
 		</h:panelGroup>

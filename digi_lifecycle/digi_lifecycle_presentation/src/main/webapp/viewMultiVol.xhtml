@@ -20,7 +20,7 @@
 		<h:outputText id="lblDescription" styleClass="free_area0" value="#{lbl.menu_description}" rendered="#{descriptionSelected}" />
 	</ui:define>
 	
-	
+<ui:remove>	
 	<ui:define name="actionsMenu">
 		<div class="free_area0 sub action">
 			<h:panelGroup rendered="#{descriptionSelected}">
@@ -33,7 +33,7 @@
 			</h:panelGroup>
 		</div>
 	</ui:define>
-	
+</ui:remove>	
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
 		
