@@ -1278,7 +1278,8 @@ public class VolumeServiceBean {
 		for(SearchResultRecord rec : resp.getRecords())
 		{
 			Item item = (Item)rec.getRecordData().getContent();
-			volumeResult.add(createVolumeFromItem(item, null));
+			if(!item.getObjid().equals("escidoc:1007"))
+				volumeResult.add(createVolumeFromItem(item, null));
 			
 		}
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
