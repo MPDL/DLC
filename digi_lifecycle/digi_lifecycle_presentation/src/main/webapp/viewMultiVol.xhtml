@@ -45,12 +45,12 @@
 				</h:panelGroup>
 				<h:panelGroup styleClass="seperator" />
 				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
-					<mpdl:modsViewer modsMetadata="#{viewMultiVol.volume.modsMetadata}"/>
+					<mpdl:biblMD volume="#{viewMultiVol.volume}"/>
 				</h:panelGroup>
 			</div>
 
 
-			<div class="full_area0 itemBlock" id="viewVolumes" rendered="#{not empty cc.attrs.volumes}">
+			<div class="full_area0 itemBlock" id="viewVolumes" rendered="#{not empty viewMultiVol.relatedVolumes}">
 				<h:panelGroup styleClass="xLarge_area0 blockHeader endline">
 					<h:outputText value="#{lbl.view_dtls_volumes_txt}" />&#160;
 				</h:panelGroup>
