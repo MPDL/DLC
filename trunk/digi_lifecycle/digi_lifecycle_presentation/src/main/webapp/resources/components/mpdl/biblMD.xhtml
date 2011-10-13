@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="volume" required="true" />
+	<cc:attribute name="relatedVolumes" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+		<!-- SIGNATURE -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol) and (not empty cc.attrs.volume.modsMetadata.signature_544)}">
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_signature_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{cc.attrs.volume.modsMetadata.signature_544}"/>
+		</h:panelGroup>
+		<!-- Author / Editor -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}">
+			<!-- All -->
+			<b class="xLarge_label labelLine clear">
+				<h:outputText value="#{lbl.view_dtls_author_txt}" rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn'}"/>
+				<h:outputText value="#{lbl.view_dtls_editor_txt}" rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role == 'asn'}"/>
+			</b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}"/>
+		</h:panelGroup>
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty volumeUtilBean.getSecondNamePart(cc.attrs.volume.modsMetadata).name)}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear">
+				<h:outputText value="#{lbl.view_dtls_author_txt}" rendered="#{volumeUtilBean.getSecondNamePart(cc.attrs.volume.modsMetadata).role != 'asn'}"/>
+				<h:outputText value="#{lbl.view_dtls_editor_txt}" rendered="#{volumeUtilBean.getSecondNamePart(cc.attrs.volume.modsMetadata).role == 'asn'}"/>
+			</b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getSecondNamePart(cc.attrs.volume.modsMetadata).name}"/>
+		</h:panelGroup>
+		
+		<!-- Uniform Title -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{not empty volumeUtilBean.getUniformTitle(cc.attrs.volume.modsMetadata).title}">
+			<!-- All -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_uniformtitle_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getUniformTitle(cc.attrs.volume.modsMetadata).title}" />
+		</h:panelGroup>
+		<!-- Title -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}">
+			<!-- All -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_title_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}" />
+		</h:panelGroup>
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}" >
+			<!-- All -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_title_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainTitle(cc.attrs.relatedVolumes.get(0).volume.modsMetadata).title}" />
+		</h:panelGroup>
+		<!-- Volume -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume) and (not empty cc.attrs.modsMetada.volumeDescriptive_089)}">
+			<!-- Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_volume_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{cc.attrs.modsMetada.volumeDescriptive_089}" />
+		</h:panelGroup>
+		<!-- Volume-Title -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+			<!-- Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_volumetitle_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}" />
+		</h:panelGroup>
+		<!-- Subtitle -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume) and (not empty volumeUtilBean.getSubTitle(cc.attrs.volume.modsMetadata).subTitle)}">
+			<!-- Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_volumesubtitle_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getSubTitle(cc.attrs.volume.modsMetadata).subTitle}"/>
+		</h:panelGroup>
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty volumeUtilBean.getSubTitle(cc.attrs.volume.modsMetadata).subTitle)}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_subtitle_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getSubTitle(cc.attrs.volume.modsMetadata).subTitle}"/>
+		</h:panelGroup>
+
+		<!-- NoteSOR -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty volumeUtilBean.getNoteSOR(cc.attrs.volume.modsMetadata).note)}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_notesor_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getNoteSOR(cc.attrs.volume.modsMetadata).note}"/>
+		</h:panelGroup>
+	
+		<!-- Publishing Place -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place)}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_place4publisher_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>					
+		</h:panelGroup>
+
+		<!-- Publisher -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher)}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_publisher_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher}"/>					
+		</h:panelGroup>
+
+<ui:remove> 
+				<!-- Printing Place -->
+				<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty ViewPages.selectedBook.metadata.mvPlaceTerm4Printer)}">
+					<!-- Multivolume, Monograph -->
+					<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_place4printer_txt}"/></b>
+					<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{ViewPages.selectedBook.metadata.mvPlaceTerm4Printer}"/>					
+				</h:panelGroup>
+
+				<!-- Printer -->
+				<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume) and (not empty ViewPages.selectedBook.metadata.mvPrinter)}">
+					<!-- Multivolume, Monograph -->
+					<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_printer_txt}"/></b>
+					<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{ViewPages.selectedBook.metadata.mvPrinter}"/>					
+				</h:panelGroup>
+</ui:remove>
+
+		<!-- Date(s) -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol) and (not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date)}">
+			<!-- Monograph, Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_date_issued_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}"/>					
+		</h:panelGroup>
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{(cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol) and (volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 0)}">
+			<!-- Multivolume -->
+		<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_date_issued_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getPublicationDates(cc.attrs.volume)[0]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) == 1}"/>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getPublicationDates(cc.attrs.volume)[0]} - #{volumeUtilBean.getPublicationDates(cc.attrs.volume)[1]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 1}"/>
+		</h:panelGroup>
+
+		<!-- Note(s) -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{not empty volumeUtilBean.getMainNote(cc.attrs.volume.modsMetadata).note}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_note_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getMainNote(cc.attrs.volume.modsMetadata).note}"/>
+		</h:panelGroup>
+
+		<!-- Language -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{not empty cc.attrs.volume.modsMetadata.language_037.language}">
+			<!-- Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_language_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{cc.attrs.volume.modsMetadata.language_037.language}"/>					
+		</h:panelGroup>
+
+<ui:remove>
+				<!-- Genre -->
+				<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+					<!-- Volume -->
+					<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_genre_txt}"/></b>
+					<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{lbl.view_dtls_genre_volume_txt}"/>					
+				</h:panelGroup>
+				<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMono}">
+					<!-- Monograph -->
+					<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_genre_txt}"/></b>
+					<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{lbl.view_dtls_genre_mono_txt}"/>					
+				</h:panelGroup>
+				<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+					<!-- Multivolume -->
+					<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_genre_txt}"/></b>
+					<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{lbl.view_dtls_genre_multi_txt}"/>					
+				</h:panelGroup>
+</ui:remove>
+		<!-- CatalogID -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{not empty cc.attrs.volume.modsMetadata.catalogueId_001}">
+			<!-- Volume -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_identifier_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{cc.attrs.volume.modsMetadata.catalogueId_001}"/>					
+		</h:panelGroup>
+
+
+			
+		<!-- Number of Scans -->
+		<h:panelGroup styleClass="free_area0 endline itemLine noTopBorder" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol and volumeUtilBean.getSize(cc.attrs.volume.pages)>0}">
+			<!-- Multivolume, Monograph -->
+			<b class="xLarge_label labelLine clear"><h:outputText value="#{lbl.view_dtls_num_of_scans_txt}"/></b>
+			<h:outputText styleClass="xHuge_area0_p1 xTiny_marginLExcl endline" value="#{volumeUtilBean.getSize(cc.attrs.volume.pages)}"/>					
+		</h:panelGroup>
+
+</cc:implementation>
+</html>
