@@ -51,12 +51,21 @@
 		<h:outputText id="txtBrowseInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_viewtree}" rendered="false" />
 		
 		<!-- upload -->
-		<h:outputLink id="lnkUpload" title="#{tlt.Collection}"
+		<h:outputLink id="lnkUpload" title="#{tlt.Upload}"
 			styleClass="free_area0" value="/#{applicationBean.contextPath}/ingest.xhtml"
 			rendered="#{loginBean.login}">
 			<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 		</h:outputLink>
 		<h:outputText id="txtUploadInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_Upload}" rendered="false" />
+		
+		<!-- Admin -->
+		<h:outputLink id="lnkUser" title="#{tlt.Admin}"
+			styleClass="free_area0" value="/#{applicationBean.contextPath}/admin.xhtml"
+			rendered="#{loginBean.login}">
+			<h:outputText value="#{lbl.navigation_lnk_Admin}" />
+		</h:outputLink>
+		<h:outputText id="txtUserInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_Admin}" rendered="false" />		
+		
 		
 				
 		<!-- 
