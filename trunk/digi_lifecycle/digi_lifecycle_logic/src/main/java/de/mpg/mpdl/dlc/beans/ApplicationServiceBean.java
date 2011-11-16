@@ -46,7 +46,7 @@ public class ApplicationServiceBean {
         SearchRetrieveResponse response = null;
 		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery("\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+		req.setQuery(" \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
 		response = contextClient.retrieveContexts(req);
 		for(SearchResultRecord rec : response.getRecords())
 		{
