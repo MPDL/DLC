@@ -104,10 +104,40 @@ public class VolumeServiceBean {
 	
 	private static Logger logger = Logger.getLogger(VolumeServiceBean.class); 
 	
+	public static String monographContentModelId;
+	public static String multivolumeContentModelId;
+	public static String volumeContentModelId;
 
 
-	static{
+	static
+	{
+		try 
+		{
+			monographContentModelId = PropertyReader.getProperty("dlc.content-model.monograph.id");
+			multivolumeContentModelId = PropertyReader.getProperty("dlc.content-model.multivolume.id");
+			volumeContentModelId = PropertyReader.getProperty("dlc.content-model.volume.id");
+		} catch (Exception e) 
+		{
+			logger.error("Error while initializing static properties for Search Bean", e);
+		}
+	}
+	
+	public enum VolumeTypes{
+		MONOGRAPH(monographContentModelId),
+		MULTIVOLUME(multivolumeContentModelId),
+		VOLUME(volumeContentModelId);
 		
+		private String contentModelId;
+		
+		private VolumeTypes(String contentModelId)
+		{
+			this.contentModelId=contentModelId;
+		}
+
+		public String getContentModelId() {
+			return contentModelId;
+		}
+
 	}
 	
 	private static TransformerFactory transfFact;
@@ -121,45 +151,10 @@ public class VolumeServiceBean {
 		}
 	}
 	
-	public VolumeSearchResult retrieveContextMultiVolumes(String contextId, String userHandle) throws Exception
-	{
-		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-
-		String contentModelId = PropertyReader.getProperty("dlc.content-model.multivolume.id");
-		String cqlQuery ="escidoc.content-model.objid=\"" + contentModelId + "\" and escidoc.context.objid=\"" + contextId + "\"";
- 
-		SearchRetrieveResponse resp = shc.search(cqlQuery, "escidoc_all");
-
-		List<Volume> volumeList = new ArrayList<Volume>();
-
-		for(SearchResultRecord rec : resp.getRecords())
-		{ 
-			Item item = (Item)rec.getRecordData().getContent();
-			volumeList.add(createVolumeFromItem(item, userHandle));
-		}
-		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
-	}
 	
 	
-	public VolumeSearchResult retrieveVolumes(int limit, int offset, String userHandle) throws Exception
-	{
-		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\"";
-		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
-		List<Volume> volumeList = new ArrayList<Volume>();
-
-		for(SearchResultRecord rec : resp.getRecords())
-		{ 
-			Item item = (Item)rec.getRecordData().getContent(); 
-			if(!item.getObjid().equals("escidoc:1007"))
-				//updateMultiVolume(item, userHandle);
-				volumeList.add(createVolumeFromItem(item, userHandle));
-		}
-		
-		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
-		
-	}
+	
+	
 	
 //	//delete relations of MultiVolume
 //	public Volume updateMultiVolume(Item item, String userHandle) throws Exception
@@ -193,26 +188,7 @@ public class VolumeServiceBean {
 //		return vol;
 //	}
 	
-	
-	
-	public VolumeSearchResult retrieveContextVolumes(String contextId, int limit, int offset, String userHandle) throws Exception
-	{
-		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" and escidoc.context.objid=\"" + contextId + "\"";
-		
-		
-		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
-		List<Volume> volumeList = new ArrayList<Volume>();
 
-		for(SearchResultRecord rec : resp.getRecords())
-		{
-			Item item = (Item)rec.getRecordData().getContent();
-			if(!item.getObjid().equals("escidoc:1007"))
-				volumeList.add(createVolumeFromItem(item, userHandle));
-		}
-		return new VolumeSearchResult(volumeList, resp.getNumberOfRecords());
-		
-	}
 	
 	public Volume retrieveVolume(String id, String userHandle) throws Exception
 	{
@@ -849,7 +825,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	private static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
+	public static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1265,25 +1241,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
-	{
-		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		String cqlQuery ="escidoc.content-model.objid=\"" + PropertyReader.getProperty("dlc.content-model.monograph.id") +"\" or escidoc.content-model.objid=\""+ PropertyReader.getProperty("dlc.content-model.multivolume.id")+"\" and escidoc.metadata=\"" + query + "\"";
-
-		logger.info(cqlQuery);
-		SearchRetrieveResponse resp = shc.search(cqlQuery, offset, limit, null, "escidoc_all");
-		
-		List<Volume> volumeResult = new ArrayList<Volume>();
-		
-		for(SearchResultRecord rec : resp.getRecords())
-		{
-			Item item = (Item)rec.getRecordData().getContent();
-			if(!item.getObjid().equals("escidoc:1007"))
-				volumeResult.add(createVolumeFromItem(item, null));
-			
-		}
-		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
-	}
+	
 	
 	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
 	{
@@ -1351,7 +1309,7 @@ public class VolumeServiceBean {
         
         Div div = (Div)v.getTeiSd().getDivMap().get(divId);
         return div;
-		
+
 	
 	}
 	

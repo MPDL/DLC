@@ -22,11 +22,16 @@ import org.apache.log4j.Logger;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.search.SearchBean;
+import de.mpg.mpdl.dlc.search.SearchCriterion;
+import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
@@ -79,6 +84,8 @@ public class IngestBean implements Serializable {
 	@EJB
 	private VolumeServiceBean volumeService;
 
+	@EJB
+	private SearchBean searchBean;
 	public IngestBean() throws Exception
 	{
 		addModsMetadata();
@@ -474,7 +481,11 @@ public class IngestBean implements Serializable {
 
 	public List<SelectItem> getMultiVolItems() throws Exception{
 		multiVolItems.clear();
-		for(Volume vol : volumeService.retrieveContextMultiVolumes(getSelectedContextId(),loginBean.getUserHandle()).getVolumes())
+		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+		scList.add(new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId()));
+		
+		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, 1000, 0);
+		for(Volume vol : vsr.getVolumes())
 		{
 			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
 		}
