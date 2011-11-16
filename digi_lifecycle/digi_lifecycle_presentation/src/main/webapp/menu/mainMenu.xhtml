@@ -1,0 +1,43 @@
+<ui:composition encoding="UTF-8"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+    
+<div class="mainMenu">
+	<menu>
+		<li>
+			<section class="level1">
+				<h:outputLink id="lnkHome" title="#{tlt.Home}" value="/#{applicationBean.contextPath}/" rendered="true">
+					<h:outputText value="#{lbl.navigation_lnk_start}" />
+				</h:outputLink>
+			</section>
+		</li>
+		
+		<li>
+			<section class="level1">
+				<h:outputLink id="lnkBrowse" title="#{tlt.Collection}" value="/#{applicationBean.contextPath}/volumes/all" rendered="true">
+					<h:outputText value="#{lbl.navigation_lnk_viewtree}" />
+				</h:outputLink>
+			</section>
+		</li>
+		
+		<li>
+			<section class="level1">
+				<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/ingest.xhtml" rendered="#{loginBean.login}">
+					<h:outputText value="#{lbl.navigation_lnk_Upload}" />
+				</h:outputLink>
+			</section>
+		</li>
+		
+		<li>
+			<section class="level1">
+				<h:outputLink id="lnkUser" title="#{tlt.User}" value="/#{applicationBean.contextPath}/admin.xhtml" rendered="#{loginBean.login}">
+					<h:outputText value="#{lbl.navigation_lnk_Admin}" />
+				</h:outputLink>
+			</section>
+		</li>
+	</menu>
+</div>
+
+</ui:composition>
