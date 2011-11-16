@@ -73,8 +73,6 @@
 						<f:ajax event="change" render="select" onevent="ajaxExecuting"/>
 					</h:selectOneMenu>
 				</h:panelGroup>
-
-				
 				<h:panelGroup>
 					<h:outputText value="Select Context:" />
 					<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
@@ -82,7 +80,7 @@
 						<f:ajax event="change" render="select" />
 					</h:selectOneMenu>
 				</h:panelGroup>
-				
+				<br />
 				<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}" >
 					<h:outputText value="Select Multivolume:"/>
 					<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
