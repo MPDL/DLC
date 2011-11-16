@@ -33,9 +33,11 @@
 -->
 </ui:remove>
 
-
+<h:form>
 <div id="searchMenuSkipLinkAnchor" class="free_area0 searchMenu">
 	<!-- search Menu starts here -->
+	
+	
 	<span class="std_imgArea quickSearchIcon">&#160;</span>
 	<span class="large_area0 quickSearchMenu">
 		<h:inputText id="quickSearchString" styleClass="large_txtInput quickSearchTextInput" value="#{quickSearchBean.searchString}"/>
@@ -50,4 +52,5 @@
 
 	<!-- search Menu ends here -->
 </div>
+</h:form>
 </div>

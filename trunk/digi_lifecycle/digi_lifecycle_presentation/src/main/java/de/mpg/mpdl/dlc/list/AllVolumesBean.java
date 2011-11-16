@@ -19,6 +19,9 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.search.SearchBean;
+import de.mpg.mpdl.dlc.search.SearchCriterion;
+import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -29,6 +32,9 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 @URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes/#{allVolumesBean.contextId}")
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	private static Logger logger = Logger.getLogger(AllVolumesBean.class);
+	
+	@EJB
+	private SearchBean searchBean;
 	
 	@EJB
 	private VolumeServiceBean volServiceBean;
@@ -85,10 +91,17 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 		VolumeSearchResult res = null;
 		if(context != null)
 		{
-			 res = volServiceBean.retrieveContextVolumes(contextId, limit, offset, loginBean.getUserHandle());
+			SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, contextId);
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			scList.add(sc);
+			res = searchBean.advancedSearchVolumes(scList, limit, offset);
 		}
 		else
-			res = volServiceBean.retrieveVolumes(limit, offset, loginBean.getUserHandle());
+		{
+			//empty list
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			res = searchBean.advancedSearchVolumes(scList, limit, offset);
+		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 
 

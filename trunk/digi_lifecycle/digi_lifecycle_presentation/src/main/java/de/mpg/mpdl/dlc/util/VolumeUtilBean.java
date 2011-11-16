@@ -49,6 +49,20 @@ public class VolumeUtilBean {
 		}
 	}
 	
+	public static String getDigilibScalerUrlForPagebreak(Pagebreak pb, int width, int height)
+	{
+		try {
+			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
+			String url = null;
+			if(pb.getFacs()!=null)
+				url = digilibUrl + "?fn=" + URLEncoder.encode(pb.getFacs(), "UTF-8") + "&dh=" + height + "&dw=" + width;
+			return url;
+		} catch (Exception e) {
+			logger.error("Error getting URL for page " + pb + "(" + width + "," + height + ")", e);
+			return null;
+		}
+	}
+	
 	public static String getDigilibJQueryUrlForPage(Page p)
 	{
 		try {

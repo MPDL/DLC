@@ -25,11 +25,11 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	private String query;
 	
 	@EJB
-	private VolumeServiceBean volumeServiceBean;
+	private SearchBean searchBean;
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
-		VolumeSearchResult res = volumeServiceBean.quickSearchVolumes(query, limit, offset);
+		VolumeSearchResult res = searchBean.quickSearchVolumes(query, limit, offset);
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 		return res.getVolumes();
 	}
