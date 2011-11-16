@@ -341,6 +341,7 @@ th .selectMenu {
 
 .listItem .shortView, .listItem .mediumView {
 	padding-bottom: 0.65em;
+	padding-top:1.6em;
 }
 
 	/*ITEM HEADER*/
