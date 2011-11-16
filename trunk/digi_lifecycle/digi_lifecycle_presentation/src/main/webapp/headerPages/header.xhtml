@@ -1,0 +1,84 @@
+<!DOCTYPE html [
+<!ENTITY nbsp "&#160;">
+]>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+
+<div class="standardHeader">
+
+	<div class="id_headerMetaMenu">
+		<menu class="metaMenu">
+			
+			<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.userAccount.properties.loginName}" rendered="#{loginBean.login}"></h:outputLabel>
+			<h:panelGroup class="separator" rendered="#{loginBean.login}">&nbsp;</h:panelGroup>
+
+			<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
+				value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+			</h:commandLink>
+	
+			<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
+				value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+			</h:commandLink> 
+			<div class="separator">&nbsp;</div>
+
+			<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
+				value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
+				<h:outputText value="#{lbl.header_lnk_imprint}" />
+			</h:outputLink>
+			<div class="separator">&nbsp;</div>
+			
+			<h:outputLink id="lnkCopyright" title="#{tlt.Copyright}"
+				value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
+				<h:outputText value="#{lbl.header_lnk_copyright}" />
+			</h:outputLink> 
+			<div class="separator">&nbsp;</div>
+
+			<h:outputLink id="lnkHelp" title="#{tlt.Help}"
+				value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
+				<h:outputText value="#{lbl.header_lnk_help}" />
+			</h:outputLink> 
+			
+			<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
+				valueChangeListener="#{applicationBean.changeLanguage}">
+				<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
+				<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
+			</h:selectOneMenu> 
+		</menu>
+	</div>
+	
+	
+	<div class="solutionLogo" title="Go to homepage" onclick="alert('click');">
+		<h:graphicImage id="dlcLogo" value="resources/images/dlc_u160_original.gif" title="Solution Homepage" alt="logo image"/>
+	</div>
+	
+	<div class="id_siteSearchMenu">
+		<div class="simpleSearch">
+
+			<h:inputText id="quickSearchString" name="simpleSearchstring" type="search" placeholder="all collections" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+			<h:commandButton type="submit" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.quick_search_btnStart}"/>
+				
+			<br />
+				
+			<input type="radio" id="simpleSearchType1" name="simpleSearchType" title="title for label 1 or value 1" value="0" checked="checked"/>
+			<label for="simpleSearchType1" title="title for label 1">label 1</label>
+			<input type="radio" id="simpleSearchType2" name="simpleSearchType" title="title for label 2 or value 2" value="1" />
+			<label for="simpleSearchType2" title="title for label 2">label 2</label>
+
+		</div>
+		
+		<br />
+		<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="free_area0_p3 advancedSearchMenu tiny_marginLExcl">
+			<h:outputText value="#{lbl.search_lblAdvancedSearch}"/>
+		</pretty:link>
+
+	</div>
+	
+</div>
+
+</ui:composition>
