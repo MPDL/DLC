@@ -10,7 +10,7 @@
 	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-<ui:composition template="templates/template.xhtml">
+<ui:composition template="templates/template_v3.xhtml">
 
 	<h:outputStylesheet>
         .rf-ac {
@@ -29,23 +29,20 @@
 
 
 	<ui:define name="mainContent">
-		<div class="full_area0 infoPage">
+
 			
-			<div style="margin:0px 20px">
-				<div>
-					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" style="float:left; padding-right:20px;" />
-				</div>	
-				<div style="padding-left: 10px">
+			<div id="dlcInfo" style="margin:40px 20px">
+
+					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" style="float:left;" />
 					Projektbeschreibung ...
 					Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
 					Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
 					ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
 					aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-				</div>	
 			</div>
 
 
-			<div style="margin: 40px 70px">
+			<div style="margin:40px 70px;">
 				<rich:accordion switchType="client" rendered="#{not empty applicationBean.ous}" >
 					<c:forEach items="#{applicationBean.ous}" var="ou">
 						<rich:accordionItem header="#{ou.properties.name}">
@@ -59,7 +56,7 @@
 		            	</rich:accordionItem>		
 		        	</c:forEach>
 		         </rich:accordion>
-	        </div>
+
 
 <ui:remove>
 			<h:panelGroup styleClass="half_area0_p8 mainSection">
