@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.id_header{
+	background-color: #F5F5F5;
+}
+
+.id_mainMenu{
+	background-color: #CCCCCC;
+}
+
+.id_content {
+
+}
+
+.mainMenu li
+{
+	padding:5px;
+}
+
+.id_siteTitle{
+	float:right;
+	font-size: 300%;
+}

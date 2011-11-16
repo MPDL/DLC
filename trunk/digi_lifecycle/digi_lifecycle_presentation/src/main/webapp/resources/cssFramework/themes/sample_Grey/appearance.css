@@ -1,0 +1,583 @@
+@charset "UTF-8";
+
+/*****************************************************************************************************************
+ * 							declacrations for IE7
+ */
+*:first-child+html input {
+	border: solid 0.08333em #B2B2B2;
+	padding:0 0.1666em;
+}
+*:first-child+html input[type="button"] {
+	border:none !important;
+}
+*:first-child+html input[type="submit"] {
+	border:none !important;
+}
+*:first-child+html input[type="radio"] {
+	border:none !important;
+}
+*:first-child+html input[type="checkbox"] {
+	border:none !important;
+}
+
+/*****************************************************************************************************************
+ * 							declacrations for all other browser
+ */
+
+/***              ***
+ * font size base = 12px
+ */
+body {
+	font-size:75%;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	color:#555555;
+}
+
+a {
+	color:#000000;
+	text-decoration: none;
+}
+a:hover {
+	color:#00AA11;
+}
+a:active {
+	color:#00AA11;
+}
+
+*[onclick] {
+	color:#000000;
+	text-decoration: none;
+}
+*[onclick]:hover {
+	color:#00AA11;
+}
+*[onclick]:active {
+	color:#00AA11;
+}
+
+h1 {
+	font-weight:normal;
+}
+h2 {
+	font-weight:normal;
+}
+h3 {
+	font-weight:normal;
+}
+h4 {
+	font-weight:normal;
+}
+h5 {
+	font-weight:normal;
+}
+h6 {
+	font-weight:normal;
+}
+
+input[type="search"] {
+	border: solid 0.08333em #B2B2B2;
+	padding:0 0.1666em;
+}
+select {
+	padding:0;
+	border: solid 0.08333em #B2B2B2;
+}
+
+/***              ***
+ * global id and class declarations
+ */
+.id_wrapper {
+	min-width:75em; /* 900px */
+	width:96%;		/* the result of width + padding = sum of width = 100% */
+	padding:0 2%;
+	background-color:#FFFFFF;
+}
+.id_siteTitle {
+	background-color:#EEF2F0;
+}
+.separator {
+	width:0.08333em;
+	height:1.3333em;
+	background-color:#7F7F7F;
+}
+
+
+
+
+/*****************************************************************************************************************
+ * 							declacrations for components
+ */
+
+
+
+/*****************************************************************************************************************
+ ******************************				dynamic selectbox with JS functions		******************************
+ ******************************					with no maximum width				******************************
+ *****************************************************************************************************************/
+.dynamicSelectBox_js {
+	border: solid 0.08333em #B2B2B2;
+	height:1.6666em;
+	padding:0;
+	font-size:95%;
+	background-image:url('image/All_Sorting_TriangleAscending_15_Active.png'); 
+	background-position:right;
+	text-align: left;
+}
+.dynamicSelectBox_js .selectionContent {
+	width:12em;
+	height:1.6666em;
+	margin-right:0.6666em;
+	padding:0.16666em 0 0 0.6666em;
+}
+.dynamicSelectBox_js select {
+	float:left;
+	clear:left;
+	margin-top:-1.5em;
+	
+	/* set the selectbox invisible to show the selectionContent container */
+	opacity: 0;
+	-moz-opacity: 0;
+}
+.dynamicSelectBox_js .selectionText {
+	padding-top:0.16666em;
+}
+
+/***              ***
+ * .id_mainMenu .mainMenu
+ * **************** under construction **************************
+ */
+.mainMenu * {
+	cursor:pointer;
+}
+.mainMenu *:disabled {
+	cursor:default;
+}
+.mainMenu .level1 {
+	cursor:pointer;
+	text-transform: uppercase;
+}
+.mainMenu menu>li {
+	float:left;
+	display:inline;
+}
+.mainMenu menu>li menu*li {
+	float:none;
+	clear:both;
+}
+.mainMenu .level2 {
+	padding-left:0.6666em;
+}
+.mainMenu .level2 .mpdl_menu_open {
+	background-image: url("image/All_View_TriangleClose_15_Active.png");
+	background-position:-0.3333em 0;
+}
+.mainMenu .level2 .mpdl_menu_default {
+	background-image: none;
+}
+.mainMenu a {
+	clear:both;
+	float:none;
+	color:#000000;
+	padding-left:1.16666em;
+}
+
+
+/*********************************************************************************************************************************
+ ******************************				.standardHeader											******************************
+ ******************************		includes solutionLogo, metaMenu, simple Search, headerNav		****************************** 
+ *********************************************************************************************************************************/
+.standardHeader {
+	width:100%;
+}
+
+/*********************************************************************************************************
+ ******************************				.standardHeader .metaMenu		******************************
+ *********************************************************************************************************/
+.id_headerMetaMenu {
+	width:100%;
+}
+.standardHeader .metaMenu {
+	float:right;
+}
+.standardHeader .metaMenu * {
+	float:left;
+	padding:0.08333em 2em 0.3333em 2em;
+}
+.standardHeader .metaMenu .separator {
+	padding:0;
+}
+.standardHeader .metaMenu .userDetail {
+	font-style:italic;
+	font-size:75%;
+	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
+}
+.standardHeader .metaMenu a:hover {
+	color:#00AA11;
+}
+.standardHeader .metaMenu select {
+	padding:0;
+}
+.standardHeader .metaMenu option {
+	float:none;
+	padding:0;
+}
+.standardHeader .metaMenu .dynamicSelectBox_js {
+	padding:0 0 0 0;
+}
+.standardHeader .metaMenu .dynamicSelectBox_js * {
+	padding:0;
+}
+.standardHeader .metaMenu .dynamicSelectBox_js .selectionContent {
+	padding:0.16666em 0 0 0.6666em;
+	margin-right:0em;
+	font-size: 95%;
+}
+/*************************************************************************************************************
+ ******************************				.standardHeader .solutionLogo		******************************
+ *************************************************************************************************************/
+.standardHeader .solutionLogo {
+	float: left;
+	margin-left:1em;
+	margin-top: 1em;
+	margin-bottom: 2em;
+}
+
+
+/*****************************************************************************************************************
+ ******************************				.standardHeader .id_siteSearchMenu		******************************
+ *****************************************************************************************************************/
+.standardHeader .id_siteSearchMenu {
+	float: right;
+	margin-top:2%;
+	text-align:right;
+}
+.standardHeader .id_siteSearchMenu input[type="radio"] {
+	float: left; 
+}
+.standardHeader .id_siteSearchMenu input[type="radio"]+label {
+	float: left; 
+	margin:0 0.6666em 0 0.3333em; 
+}
+/*********************************************************************************************************
+ ******************************				.standardHeader .headerNav		******************************
+ *********************************************************************************************************/
+.standardHeader .headerNav {
+	float:right;
+	margin-top: 2.16666%;
+	text-align: right;
+}
+.standardHeader .headerNav .navEntry {
+	margin-left: 1.3333em;
+	word-break: keep-all; /* for chinese, korean, and other asian languages - no line breaking */
+	white-space:nowrap;
+}
+
+/*****************************************************************************************************
+ ******************************				bibliographic list			******************************
+ ******************************		list with different listItems		****************************** 
+ *****************************************************************************************************/
+.bibList {
+	width:99.8%;
+	background-color:#EEF2F0;
+	border:solid 0.08333em #B2B2B2;
+}
+
+/*****************************************************************************************************
+ ******************************				.bibList .listHeader		******************************
+ *****************************************************************************************************/
+.bibList .listHeader {
+	width:100%;
+	border: solid 0.08333em #B2B2B2;
+}
+.bibList .listHeader .selectArea {
+	width:21.75%;
+	text-align:center;
+	padding:0.1% 1.6%;
+}
+
+
+.bibList .listHeader .content {
+	width:46.7%;
+	padding:0.1% 1.6%;
+}
+.bibList .listHeader .statusArea {
+	width:21.75%;
+	padding:0.1% 1.6%;
+}
+.bibList .listHeader .statusArea .orderASC_16_16 {
+	width:100%;
+	padding-left:1.3333em;
+	background-position:0 0.08333em;
+	background-image: url("image/All_Sorting_TriangleAscending_15_Active.png");
+}
+.bibList .listHeader .statusArea img {
+	margin-top:0.25em;
+}
+.bibList .listHeader .triangle_collapse_16_16 {
+	padding-left:1.3333em;
+	margin-left:-1.75%;
+	background-image: url("image/All_View_TriangleClose_15_Active.png");
+}
+.bibList .listHeader .triangle_collapse_16_16:hover {
+	padding-left:1.3333em;
+	margin-left:-1.75%;
+	background-image: url("image/All_View_TriangleClose_15_Hover.png");
+}
+.bibList .listHeader .triangle_collapse_16_16:hover a {
+	color:#00AA11;
+}
+.bibList .listHeader .triangle_expand_16_16 {
+	padding-left:1.3333em;
+	margin-left:-1.75%;
+	background-image: url("image/All_View_TriangleOpen_15_Active.png");
+}
+.bibList .listHeader .triangle_expand_16_16:hover {
+	padding-left:1.3333em;
+	margin-left:-1.75%;
+	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
+}
+.bibList .listHeader .triangle_expand_16_16:hover a {
+	color:#00AA11;
+}
+
+
+/*****************************************************************************************************
+ ******************************				.bibList .listBody			******************************
+ *****************************************************************************************************/
+.bibList .listBody {
+	width:100%;
+}
+
+
+/*****************************************************************************************************************
+ ******************************				.bibList .listBody .listItem			******************************
+ *****************************************************************************************************************/
+.bibList .listItem {
+	width:100%;
+	border-bottom:0.08333em solid #7F7F7F;
+}
+.bibList .listItem .itemContent {
+	width:100%;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+.bibList .listItem .checkArea {
+	width:22.88%;
+	text-align:right;
+	padding:1% 1% 0 1%;
+}
+.bibList .listItem .itemHeadline {
+	width:72.8%;
+	padding:0.1666em 1% 0.1666em 1%; 
+}
+.bibList .listItem .itemHeadline .itemTitle {
+	max-width: 50em;
+	line-height: 145%;
+}
+.bibList .listItem .itemHeadline .collectionTitle {
+	max-width: 50em;
+	font-size: 150%;
+	line-height: 125%;
+}
+.bibList .listItem .statusArea {
+	width:22.88%;
+	text-align:right;
+	padding:1% 1% 0 1%;
+}
+.bibList .listItem .statusArea * {
+	float: right;
+}
+
+.bibList .listItem .statusArea .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/All_Status_ItemWithdrawn_31_Static.png");
+}
+.bibList .listItem .statusArea .statusTitle {
+	margin-top:5%;
+	margin-right:5%;
+}
+.bibList .listItem .itemDetailAction_js {
+	padding:1.91666em 1% 0.1666em 1%; 
+}
+.bibList .listItem .itemDetailAction_js .triangle_collapse_16_16 {
+	padding-left:1.3333em;
+	background-image: url("image/All_View_TriangleClose_15_Active.png");
+}
+.bibList .listItem .itemDetailAction_js:hover .triangle_collapse_16_16 {
+	background-image: url("image/All_View_TriangleClose_15_Hover.png");
+}
+.bibList .listItem .itemDetailAction_js:hover .triangle_collapse_16_16 a {
+	color:#00AA11;
+}
+.bibList .listItem .itemDetailAction_js .triangle_expand_16_16 {
+	padding-left:1.3333em;
+	background-image: url("image/All_View_TriangleOpen_15_Active.png");
+}
+.bibList .listItem .itemDetailAction_js:hover .triangle_expand_16_16 {
+	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
+}
+.bibList .listItem .itemDetailAction_js:hover .triangle_expand_16_16 a {
+	color:#00AA11;
+}
+.bibList .listItem .itemDetailsShort {
+	width:100%;
+	margin-top:0.41666em;
+}
+.bibList .listItem .itemDetailsAll {
+	width:100%;
+	display:none;
+	margin-top:0.41666em;
+}
+.bibList .listItem .itemDetailLabel {
+	width:22.8%;
+	text-align:right;
+	padding:0 1% 0 1%;
+}
+.bibList .listItem .itemDetailText {
+	width:72.8%;
+	padding:0 1% 0 1%; 
+}
+
+/*************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMediaAcc			******************************
+ *************************************************************************************************************************/
+.bibList .listItemMediaAcc {
+	width:100%;
+	border-bottom:0.08333em solid #7F7F7F;
+}
+.bibList .listItemMediaAcc:hover {
+	background-color:#EEEEEE;
+}
+.bibList .listItemMediaAcc:hover * .itemContent {
+	background-color:transparent;
+}
+.bibList .listItemMediaAcc:hover * .itemMediabar {
+	background-color:transparent;
+}
+.bibList .listItemMediaAcc .itemContent {
+	width:74.88%;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+.bibList .listItemMediaAcc .checkArea {
+	width:30.08%;
+	text-align:right;
+	padding:1% 1.6% 0 1.6%;
+}
+.bibList .listItemMediaAcc .itemHeadline {
+	width:63.41%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.bibList .listItemMediaAcc .itemHeadline .itemTitle {
+	max-width: 50em;
+	line-height: 145%;
+}
+.bibList .listItemMediaAcc .itemHeadline .collectionTitle {
+	max-width: 50em;
+	font-size: 150%;
+	line-height: 125%;
+}
+.bibList .listItemMediaAcc .statusArea {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.bibList .listItemMediaAcc .statusArea * {
+	float: right;
+}
+.bibList .listItemMediaAcc .statusArea .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/All_Status_ItemWithdrawn_31_Static.png");
+}
+.bibList .listItemMediaAcc .statusArea .statusTitle {
+	margin-top:5%;
+	margin-right:5%;
+}
+.bibList .listItemMediaAcc .itemDetailAction_js {
+	padding:0.91666em 1.6% 0.1666em 1.6%; 
+}
+.bibList .listItemMediaAcc .itemDetailAction_js .triangle_collapse_16_16 {
+	padding-left:1.3333em;
+	background-image: url("image/All_View_TriangleClose_15_Active.png");
+}
+.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_collapse_16_16 {
+	background-image: url("image/All_View_TriangleClose_15_Hover.png");
+}
+.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_collapse_16_16 a {
+	color:#00AA11;
+}
+.bibList .listItemMediaAcc .itemDetailAction_js .triangle_expand_16_16 {
+	padding-left:1.3333em;
+	background-image: url("image/All_View_TriangleOpen_15_Active.png");
+}
+.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_expand_16_16 {
+	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
+}
+.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_expand_16_16 a {
+	color:#00AA11;
+}
+.bibList .listItemMediaAcc .itemDetailsShort {
+	width:100%;
+	margin-top:0.41666em;
+}
+.bibList .listItemMediaAcc .itemDetailsAll {
+	width:100%;
+	display:none;
+	margin-top:0.41666em;
+}
+.bibList .listItemMediaAcc .itemDetailLabel {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.bibList .listItemMediaAcc .itemDetailText {
+	width:63.41%;
+	padding:0 1.6% 0 1.6%; 
+}
+/*************************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMediaAcc .itemMediabar			******************************
+ *************************************************************************************************************************************/
+.bibList .listItemMediaAcc .itemMediabar {
+	padding-left:0.1%;
+	width:24.79%;
+}
+.bibList .listItemMediaAcc .itemMediabar div {
+	width:100%;
+	padding-bottom:0.08333em;
+}
+.bibList .listItemMediaAcc .itemMediabar span.ui-accordion-header  {
+	float:left;
+	width:100%;
+	padding-top:0.1666em;
+	padding-bottom: 0.16666em;
+	cursor:pointer;
+	
+	background-color:#B8B8B8;
+/* start css3 enhancements */
+	/* Background-Gradient */
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#ffffff',EndColorStr='#aaddff'); 
+	background:
+		linear-gradient(top, #fff, #B8B8B8);
+	background: 
+		-ms-linear-gradient(top, #fff, #B8B8B8);
+	background:
+		-moz-linear-gradient(left, #EEF2F0, #CCCCCC);
+	background:
+		-webkit-gradient(linear, left top, left bottom, from(#fff), to(#adf)); 
+	background:
+		-webkit-linear-gradient(top, #fff, #B8B8B8);
+	background:
+		-o-linear-gradient(top, #fff, #B8B8B8);
+/* stop css3 enhancements */
+}
+.bibList .listItemMediaAcc .itemMediabar span.ui-icon {
+	float: left;
+	background: url("image/All_Attached_ClipAttached_15_Static.png") no-repeat 0 0.1666em;
+	display: block;
+    width: 1.41666em;
+    height: 1.41666em;
+    margin-top: -0.1666em;
+    margin-left:0.1666em;
+}
