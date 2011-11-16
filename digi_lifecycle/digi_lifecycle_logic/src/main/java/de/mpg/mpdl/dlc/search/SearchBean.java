@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -109,6 +110,40 @@ public class SearchBean {
 	}
 	
 	
+	public String getAdvancedSearchCQL(List<SearchCriterion> scList) throws Exception
+	{
+		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME};
+		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(volTypes, scList));
+		return cql;
+	}
+	
+	
+	private List<SearchCriterion> getCompleteSearchCriterions(VolumeTypes[] volTypes, List<SearchCriterion> scList)
+	{
+		List<SearchCriterion> scListStandard = getStandardFilterCriterions(volTypes);
+		
+		//throw out empty entries
+		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
+		for(SearchCriterion sc : scList)
+		{
+			if(sc.getText()!=null && !sc.getText().isEmpty() && sc.getSearchType()!=null)
+			{
+				listWithoutEmptyEntries.add(sc);
+			}
+		}
+		
+		//Add a bracket around the given searchcriterions
+		if(listWithoutEmptyEntries!=null && listWithoutEmptyEntries.size()>=1)
+		{
+			listWithoutEmptyEntries.get(0).setOpenBracket(listWithoutEmptyEntries.get(0).getOpenBracket()+1);
+			listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).setCloseBracket(listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).getCloseBracket()+1);
+		}
+		
+		scListStandard.addAll(listWithoutEmptyEntries);
+		return scListStandard;
+		
+	}
+	
 	/**
 	 * Searches in all items, content model can be defined in volume types
 	 * @param scList
@@ -119,16 +154,8 @@ public class SearchBean {
 	 */
 	public VolumeSearchResult search(VolumeTypes[] volTypes, List<SearchCriterion> scList, int limit, int offset) throws Exception
 	{
-		List<SearchCriterion> scListStandard = getStandardFilterCriterions(volTypes);
-		//Add a bracket around the given searchcriterions
-		if(scList!=null && scList.size()>=1)
-		{
-			scList.get(0).setOpenBracket(scList.get(0).getOpenBracket()+1);
-			scList.get(scList.size()-1).setCloseBracket(scList.get(scList.size()-1).getCloseBracket()+1);
-		}
 		
-		scListStandard.addAll(scList);
-		return search(scListStandard, limit, offset, dlcIndexName, null);
+		return search(getCompleteSearchCriterions(volTypes, scList), limit, offset, dlcIndexName, null);
 	}
 	
 	private VolumeSearchResult search(List<SearchCriterion> scList, int limit, int offset, String index, String userHandle) throws Exception
@@ -138,6 +165,13 @@ public class SearchBean {
 		//scList.add(0, itemCriterion);
 		String cqlQuery = SearchCriterion.toCql(scList);
 		return searchByCql(cqlQuery, limit, offset, index, userHandle);
+	}
+	
+	
+	
+	public VolumeSearchResult searchByCql(String cql, int limit, int offset) throws Exception
+	{
+		return searchByCql(cql, limit, offset, dlcIndexName, null);
 	}
 	
 	public VolumeSearchResult searchByCql(String cql, int limit, int offset, String index, String userHandle) throws Exception

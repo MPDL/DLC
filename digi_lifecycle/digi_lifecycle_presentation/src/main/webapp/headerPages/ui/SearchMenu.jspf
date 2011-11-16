@@ -1,7 +1,9 @@
 <div xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core"><ui:remove>
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	<ui:remove>
 	<!--
             /* 
             CDDL HEADER START
@@ -49,7 +51,9 @@
 	</span>
 	<h:commandButton id="btnQuickSearchStart" styleClass="small_txtBtn activeButton quickSearchBtn" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.quick_search_btnStart}"/>
 	
-
+	<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="free_area0_p3 advancedSearchMenu tiny_marginLExcl">
+		<h:outputText value="#{lbl.search_lblAdvancedSearch}"/>
+	</pretty:link>
 	<!-- search Menu ends here -->
 </div>
 </h:form>
