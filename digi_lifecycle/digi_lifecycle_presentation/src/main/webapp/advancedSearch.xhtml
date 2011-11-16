@@ -13,7 +13,7 @@
 	<ui:define name="mainContent">
 
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
-			<rich:panel id="submit">
+			<h:panelGroup id="searchForm">
 				<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
 					<h:selectOneMenu value="#{sc.operator}" rendered="#{rowKey!=0}">						
 						<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
@@ -34,11 +34,18 @@
 					</h:selectOneMenu>
 					
 					<h:inputText value="#{sc.text}" />
-					<br/>
-
+					
+					<h:commandButton value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
+						<f:ajax render=":#{component.parent.parent.clientId}"/>
+					</h:commandButton>
+					<h:commandButton value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
+						<f:ajax render=":#{component.parent.parent.clientId}"/>
+					</h:commandButton>
+					
+					<br/><br/>
 				</a4j:repeat>
 				<h:commandButton value="#{lbl.advancedSearch_startSearchBtn}" action="#{advancedSearchBean.startSearch}" />
-			</rich:panel>
+			</h:panelGroup>
 
 		
 		</h:panelGroup>

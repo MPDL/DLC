@@ -18,7 +18,7 @@ import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 
 
 @ManagedBean
-@RequestScoped
+@ViewScoped
 @URLMapping(id = "advancedSearch", pattern = "/search", viewId = "/advancedSearch.xhtml")
 public class AdvancedSearchBean {
 

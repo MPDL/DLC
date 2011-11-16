@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.search.SearchCriterion;
+import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
@@ -299,6 +301,14 @@ public class VolumeUtilBean {
 		{
 			list.add(new ModsIdentifier());
 		}
+		
+		
+	}
+	
+	public void addNewSearchCriterion(SearchCriterion sc, List<SearchCriterion> scList)
+	{
+		
+			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.FREE, ""));
 		
 		
 	}
