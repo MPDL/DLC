@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- 
+            /* 
+            CDDL HEADER START
+
+            The contents of this file are subject to the terms of the
+            Common Development and Distribution License, Version 1.0 only
+            (the "License"). You may not use this file except in compliance
+            with the License.
+
+            You can obtain a copy of the license at license/ESCIDOC.LICENSE
+            or http://www.escidoc.de/license.
+            See the License for the specific language governing permissions
+            and limitations under the License.
+
+            When distributing Covered Code, include this CDDL HEADER in each
+            file and include the License file at license/ESCIDOC.LICENSE.
+            If applicable, add the following below this CDDL HEADER, with the
+            fields enclosed by brackets "[]" replaced with your own identifying
+            information: Portions Copyright [yyyy] [name of copyright owner]
+
+            CDDL HEADER END
+
+
+            Copyright 2006-2010 Fachinformationszentrum Karlsruhe Gesellschaft
+			für wissenschaftlich-technische Information mbH and Max-Planck-
+            Gesellschaft zur Förderung der Wissenschaft e.V.
+            All rights reserved. Use is subject to license terms.
+             */
+-->
+<f:view encoding="UTF-8" locale="#{applicationBean.userLocaleString}"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<f:loadBundle var="lbl" basename="Label" />
+	<f:loadBundle var="msg" basename="Messages" />
+	<f:loadBundle var="tlt" basename="Tooltips" />
+
+	<html xmlns="http://www.w3.org/1999/xhtml">
+		<h:head>
+			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
+			<meta content="text/html; charset=UTF-8" />
+			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/standard.css" type="text/css" rel="stylesheet" />
+			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/sample_Grey/appearance.css" type="text/css" rel="stylesheet" />
+			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/dlc.css" type="text/css" rel="stylesheet" />
+		
+
+			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/jquery_1.6.3_min.js"></script>
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/default.js"></script>
+
+				
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<meta http-equiv="pragma" content="no-cache" />
+			<meta http-equiv="cache-control" content="no-cache" />
+			<meta http-equiv="expires" content="-1" />
+				
+		</h:head>
+
+		<h:body lang="#{applicationBean.userLocaleString}">
+			<h:panelGroup rendered="#{loginBean.loginState}"/>
+			
+			<h:form id="form1" enctype="multipart/form-data">
+				<div class="id_wrapper">
+					<div class="id_header container_1" rel="section">
+						<!-- import header -->
+						<ui:include src="../headerPages/header.xhtml" />
+					</div>
+					
+
+					<h:panelGroup layout="block" class="id_mainMenu" rel="section">
+						<ui:include src="../menu/mainMenu.xhtml" />
+					</h:panelGroup>
+						
+					<div class="id_siteTitle" rel="section">
+						<h:outputText value="#{headline}" />
+					</div>
+			
+					<div id="messages" rel="section">
+						<ui:include src="" />
+					</div>
+						
+					<div class="id_breadcrump">
+						<!-- 
+						<ui:include src="../headerPages/Breadcrumb.jspf" />
+						 -->
+					</div>
+
+					<div class="id_content container_1"  rel="section">		
+						<!-- Main Content -->
+						<ui:insert name="mainContent">&#160;</ui:insert>
+					</div>
+					
+					<div class="id_footer container_1" rel="section">
+						<!-- <ui:include src="../footerPages/footer.xhtml" />-->
+						footer: <span onclick="void(0);">Impress</span> <span onclick="void(0);">Contact</span>					
+					</div>
+					
+
+				</div>
+
+			</h:form>
+		
+		</h:body>
+	</html>
+</f:view>

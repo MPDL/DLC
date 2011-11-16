@@ -43,13 +43,13 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 <h:head>
 
-	<title><h:outputText
-			value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
+	<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
 
 
 	<link
 		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/main.css"
 		type="text/css" rel="stylesheet" />
+		
 	<link
 		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_highContrast/styles/theme.css"
 		id="highContrastTheme" title="high contrast" type="text/css"
@@ -63,10 +63,7 @@
 		href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/styles/theme.css"
 		id="PubManTheme" title="Virr" type="text/css" rel="stylesheet" />
 
-
-	<link
-		href="#{applicationBean.domain}/images/Virr_Medium_Volume_31_Static.gif"
-		type="image/x-icon" rel="shortcut icon" />
+	<link href="#{applicationBean.domain}/images/Virr_Medium_Volume_31_Static.gif" type="image/x-icon" rel="shortcut icon" />
 		
 	<style type="text/css">
 	.headerLogo {background-image: url("<h:outputText value='#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo.png'/>") !important; background-repeat: norepeat; background-position: top left; }
@@ -87,8 +84,7 @@
 	<script src="#{facesContext.externalContext.requestContextPath}/resources/commonJavaScript/eSciDoc_javascript.js" language="JavaScript" type="text/javascript">;</script>
 </ui:remove>
 
-	<script src="#{applicationBean.contextPath}/resources/scripts.js"
-		language="JavaScript" type="text/javascript">;</script>
+	<script src="#{applicationBean.contextPath}/resources/scripts.js" language="JavaScript" type="text/javascript">;</script>
 		
 		
 	<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
@@ -112,7 +108,10 @@
 				<!-- begin: content section (including elements that visualy belong to the header (breadcrumb, headline, subheader and content menu)) -->
 				<div class="clear">
 					<div class="headerSection">
+					
+					<!-- 
 						<ui:include src="../headerPages/Breadcrumb.jspf" />
+					 -->
 
 						<div id="contentSkipLinkAnchor" class="clear headLine">
 							<!-- Headline starts here, taken from facelets parameter -->
