@@ -107,6 +107,35 @@
 				</span>
 			</h:panelGroup>
 			
+			
+			<h:panelGroup layout="block" styleClass="free_area0_p0 small_marginLIncl endline listItemLine" rendered="true">
+						<span class="huge_area0_p8 endline labelLine">
+							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" /><span class="noDisplay">: </span>
+						</span>
+						<span class="xHuge_area0 endline">
+							<a4j:repeat value="#{var.searchResultHighlight}" var="highlight" >
+								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
+									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(var, highlight.objid)}"/>
+									
+									<pretty:link mappingId="viewPages">
+										<f:param value="#{var.item.objid}"/>
+										<f:param value="#{pageNumber}"/>
+										<h:outputText value="Scan #{pageNumber}"/>
+									</pretty:link>
+									
+									<br/>
+									<a4j:repeat var="textFragment" value="#{highlight.textFragments}" >
+											<h:outputText value="#{volumeUtilBean.getSearchHitStringBeforeHit(textFragment)}"/>
+											<h:outputText styleClass="searchHit" value="#{volumeUtilBean.getSearchHitString(textFragment)}"/>
+											<h:outputText value="#{volumeUtilBean.getSearchHitStringAfterHit(textFragment)}"/>
+											
+									</a4j:repeat>
+									<br/><br/>
+								</h:panelGroup>
+							</a4j:repeat>
+						</span>
+			</h:panelGroup>
+			
 			<h:panelGroup layout="block" styleClass="full_area0 shortView" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
 				<div class="free_area0_p0  small_marginLIncl endline listItemLine">
 					<span class="huge_area0_p8 endline labelLine">
@@ -167,6 +196,10 @@
 					</span>
 				</h:panelGroup>
 </ui:remove>
+
+				
+
+
 				<h:panelGroup layout="block" styleClass="free_area0_p0  small_marginLIncl endline listItemLine" rendered="#{var.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
 					<span class="huge_area0_p8 endline labelLine">
 						<h:outputText value="Number of Volumes"/><span class="noDisplay">: </span>

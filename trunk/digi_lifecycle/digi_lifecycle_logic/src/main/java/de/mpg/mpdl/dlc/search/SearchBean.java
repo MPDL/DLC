@@ -186,8 +186,11 @@ public class SearchBean {
 		
 		for(SearchResultRecord rec : resp.getRecords())
 		{
+			
 			Item item = (Item)rec.getRecordData().getContent();
-			volumeResult.add(VolumeServiceBean.createVolumeFromItem(item, null));
+			Volume vol = VolumeServiceBean.createVolumeFromItem(item, null);
+			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
+			volumeResult.add(vol);
 		}
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
