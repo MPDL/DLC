@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.Stateless;
+
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.ContextHandlerClient;
@@ -16,6 +18,7 @@ import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
+@Stateless
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
 	
