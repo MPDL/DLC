@@ -15,6 +15,8 @@ public class UserAccountServicebean {
 	public static void main(String[] args) throws Exception {
 		String userAccountID = "escidoc:15006";
         String roleId = "escidoc:role-ou-administrator";
+        //String roleId = "escidoc:role-context-administrator";
+        //String roleId = "escidoc:role-user-account-administrator";
 		addOUAdminRole(userAccountID, roleId);
 	}
 
