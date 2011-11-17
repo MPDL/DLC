@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.util;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import de.escidoc.core.resources.sb.search.TextFragment;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
@@ -77,7 +79,7 @@ public class VolumeUtilBean {
 		}
 	}
 	
-	public static int getSize(List<Object> objs)
+	public static int getSize(Collection<Object> objs)
 	{
 		if(objs != null)
 			return objs.size();
@@ -310,6 +312,40 @@ public class VolumeUtilBean {
 		
 			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.FREE, ""));
 		
+		
+	}
+	
+	public String  getSearchHitStringBeforeHit(TextFragment f)
+	{
+		int startIndex = (int) f.getHitWords().get(0).getStartIndex();
+		return f.getTextFragmentData().substring(0, startIndex);
+	}
+	
+	public String  getSearchHitString(TextFragment f)
+	{
+		int startIndex = (int) f.getHitWords().get(0).getStartIndex();
+		int endIndex = (int) f.getHitWords().get(0).getEndIndex();
+		return f.getTextFragmentData().substring(startIndex, endIndex+1);
+	}
+	
+	public String  getSearchHitStringAfterHit(TextFragment f)
+	{
+		
+		int endIndex = (int) f.getHitWords().get(0).getEndIndex();
+		return f.getTextFragmentData().substring(endIndex+1, f.getTextFragmentData().length());
+	}
+	
+	public int getPageNumberForPageId(Volume v, String pageId)
+	{
+		for(Page p : v.getPages())
+		{
+			if(p.getId().equals(pageId))
+			{
+				return v.getPages().indexOf(p) + 1;
+			}
+		}
+		
+		return 0;
 		
 	}
 	

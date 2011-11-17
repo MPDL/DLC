@@ -15,6 +15,7 @@ import org.w3c.dom.Document;
 
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
+import de.escidoc.core.resources.sb.search.Highlight;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
@@ -71,6 +72,9 @@ public class Volume {
 	
 	@XmlTransient
 	private List<String> relatedVolumes;
+	
+	@XmlTransient
+	private Highlight searchResultHighlight;
 
 	public Volume ()
 	{
@@ -260,6 +264,14 @@ public class Volume {
 
 	public void setRelatedVolumes(List<String> relatedVolumes) {
 		this.relatedVolumes = relatedVolumes;
+	}
+
+	public Highlight getSearchResultHighlight() {
+		return searchResultHighlight;
+	}
+
+	public void setSearchResultHighlight(Highlight searchResultHighlight) {
+		this.searchResultHighlight = searchResultHighlight;
 	}
 	
 
