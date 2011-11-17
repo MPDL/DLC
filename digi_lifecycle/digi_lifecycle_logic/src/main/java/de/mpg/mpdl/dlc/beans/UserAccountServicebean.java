@@ -2,12 +2,16 @@ package de.mpg.mpdl.dlc.beans;
 
 import java.net.URL;
 
+import javax.ejb.Stateless;
+
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.UserAccountHandlerClient;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.GrantProperties;
 import de.escidoc.core.resources.common.reference.RoleRef;
 
+
+@Stateless
 public class UserAccountServicebean {
 	
 	
