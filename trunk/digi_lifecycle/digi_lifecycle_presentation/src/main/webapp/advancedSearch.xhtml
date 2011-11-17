@@ -8,11 +8,11 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
 
 
-<ui:composition template="templates/template.xhtml">
+<ui:composition template="templates/template_v3.xhtml">
 
 	<ui:define name="mainContent">
 
-		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		<h:panelGroup layout="block">
 			<h:panelGroup id="searchForm">
 				<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
 					<h:selectOneMenu value="#{sc.operator}" rendered="#{rowKey!=0}">						
