@@ -73,7 +73,9 @@ public class ApplicationBean
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
     @EJB
-    private ApplicationServiceBean appServiceBean;
+    private ContextServiceBean contextServiceBean;
+    @EJB
+    private OrganizationalUnitServiceBean ouServiceBean;
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
@@ -95,8 +97,9 @@ public class ApplicationBean
     {
     	try {
 			InitialContext context = new InitialContext();
-			this.appServiceBean = (ApplicationServiceBean) context.lookup("java:module/ApplicationServiceBean");
-		} catch (NamingException ex) {
+			this.contextServiceBean = (ContextServiceBean) context.lookup("java:module/ApplicationServiceBean");
+			this.ouServiceBean = (OrganizationalUnitServiceBean) context.lookup("java:module/OrganizationalUnitServiceBean");
+    	} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
 		}
     	
@@ -131,7 +134,7 @@ public class ApplicationBean
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
-	    	this.ous = appServiceBean.retrieveOus();
+	    	this.ous = ouServiceBean.retrieveOus();
 	    	this.cmMono = PropertyReader.getProperty("dlc.content-model.monograph.id");
 	    	this.cmMultiVol = PropertyReader.getProperty("dlc.content-model.multivolume.id");
 	    	this.cmVolume = PropertyReader.getProperty("dlc.content-model.volume.id");
@@ -152,7 +155,7 @@ public class ApplicationBean
 	public List<Context> getContext(OrganizationalUnit ou)
 	{
 		try {
-			return appServiceBean.retrieveOUContexts(ou);
+			return contextServiceBean.retrieveOUContexts(ou);
 		} catch (Exception e) {
 			return null;
 		}
