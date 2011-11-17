@@ -16,7 +16,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
-import de.mpg.mpdl.dlc.beans.ApplicationServiceBean;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.search.SearchBean;
@@ -40,7 +40,7 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	private VolumeServiceBean volServiceBean;
 	
 	@EJB
-	private ApplicationServiceBean appServiceBean;
+	private ContextServiceBean contextServiceBean;
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
@@ -63,7 +63,7 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 		if(contextId != null && !contextId.equalsIgnoreCase("all"))
 		{
 			try {
-				this.context = appServiceBean.retrieveContext(contextId, null);
+				this.context = contextServiceBean.retrieveContext(contextId, null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
