@@ -44,4 +44,20 @@ public class ContextServiceBean {
 		}
         return contextList;		
 	}
+	
+	public List<Context> retrieveAllcontexts() throws Exception
+	{
+        List<Context> contextList = new ArrayList<Context>();
+        SearchRetrieveResponse response = null;
+		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+		req.setQuery(" \"/properties/type\"=DLC");
+		response = contextClient.retrieveContexts(req);
+		for(SearchResultRecord rec : response.getRecords())
+		{
+			Context context = (Context)rec.getRecordData().getContent();
+			contextList.add(context);
+		}
+        return contextList;		
+	}
 }
