@@ -20,6 +20,7 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
@@ -30,6 +31,7 @@ import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
+import de.mpg.mpdl.dlc.vo.UserRole;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
@@ -72,17 +74,13 @@ public class IngestBean implements Serializable {
 	private List<SelectItem> multiVolItems = new ArrayList<SelectItem>();
 	
 	private boolean hasMab = true;
-	private boolean useMultiVolMab;
-	public boolean isUseMultiVolMab() {
-		return useMultiVolMab;
-	}
 
-	public void setUseMultiVolMab(boolean useMultiVolMab) {
-		this.useMultiVolMab = useMultiVolMab;
-	}
 
 	@EJB
 	private VolumeServiceBean volumeService;
+	
+	@EJB 
+	private ContextServiceBean contextServiceBean;
 
 	@EJB
 	private SearchBean searchBean;
@@ -98,13 +96,37 @@ public class IngestBean implements Serializable {
 	  
 	@PostConstruct
 	public void init()
-	{
+	{ 
+		this.contextSelectItems.clear();
+		SelectItem item;
+		List<String> ids = new ArrayList();
 		//init contexts
-		for(Context c : loginBean.getDepositorContexts())
-		{
-			this.contextSelectItems.add(new SelectItem(c.getObjid(), c.getProperties().getName()));
+		for(UserRole role: loginBean.getUser().getUserRoles())
+		{ 
+			try
+			{
+				if(role.getRoleName().equals(PropertyReader.getProperty("dlc.role.system.admin")))
+				{
+					for(Context c: contextServiceBean.retrieveAllcontexts())
+						this.contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
+				}
+				else {
+					for(Context c : role.getContexts())
+					{  
+						if(!ids.contains(c.getObjid()))
+						{
+							ids.add(c.getObjid());
+							item = new SelectItem(c.getObjid(),c.getProperties().getName());
+							this.contextSelectItems.add(item);
+						}
+					}
+				}
+			}catch(Exception e)
+			{
+					
+			}
 		}
-		this.selectedContextId = (String)contextSelectItems.get(0).getValue();	
+		this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
 	}
 
 
