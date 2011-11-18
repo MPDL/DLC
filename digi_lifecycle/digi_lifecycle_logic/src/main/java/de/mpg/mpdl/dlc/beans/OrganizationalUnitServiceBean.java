@@ -39,13 +39,12 @@ public class OrganizationalUnitServiceBean {
 		return ous;
 	}
 	
+	public OrganizationalUnit retrieveOu(String id) throws Exception
 	
-	
-	
-	
-	
-	
-	
+	{
+		OrganizationalUnitHandlerClient ouClient = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		return ouClient.retrieve(id);
+	}
 	
 	
 	
