@@ -1,15 +1,11 @@
 package de.mpg.mpdl.dlc.beans;
 
-import gov.loc.www.zing.srw.SearchRetrieveRequestType;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -23,18 +19,14 @@ import org.richfaces.event.ItemChangeEvent;
 import com.ocpsoft.pretty.PrettyContext;
 
 import de.escidoc.core.client.ContextHandlerClient;
-import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.UserAccountHandlerClient;
-import de.escidoc.core.resources.ResourceType;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
-import de.escidoc.core.resources.oum.OrganizationalUnit;
-import de.escidoc.core.resources.sb.search.SearchResultRecord;
-import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.User;
 
 
 
@@ -47,10 +39,10 @@ public class LoginBean
     private static final String LOGIN_URL = "aa/login?target=$1";
     public static final String LOGOUT_URL = "aa/logout?target=$1";
     private String userHandle;
-    private UserAccount userAccount;
-    private Grants grants;
-    private List<Context> depositorContexts = new ArrayList<Context>();
+    private User user;
     private String tab = "toc";
+    @EJB
+    private UserAccountServicebean userAccountServiceBean;
     
     public String getTab() 
     {
@@ -61,8 +53,6 @@ public class LoginBean
 	{
 		this.tab = tab;
 	}
-	
-	
 	
 
 
@@ -76,7 +66,9 @@ public class LoginBean
 	public LoginBean()
 	{
 
-
+		this.login = false;
+		this.user = null;
+		this.userHandle = null;
 	}
 	
 
@@ -103,29 +95,15 @@ public class LoginBean
                 {  
                 	this.userHandle = newUserHandle;
                     this.login = true;
-                    UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-                    client.setHandle(userHandle);
-                    this.userAccount = client.retrieveCurrentUser();
-                    this.setGrants(client.retrieveCurrentGrants(userAccount));
-                    
-                    ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-                    depositorContexts.clear();
-                    for(Grant grant : grants)
-                    {
-                    	if(grant.getProperties().getRole().getObjid().equals("escidoc:role-depositor"))
-                    	{
-                    		Context c = contextClient.retrieve(grant.getProperties().getAssignedOn().getObjid());
-                    		depositorContexts.add(c);
-                    	}
-                    	
-                    }
+                    this.user = userAccountServiceBean.retriveUser(newUserHandle);
+
                     MessageHelper.infoMessage("You have logged in successfully!");
                 }
                 catch (Exception e)
                 {
                     this.userHandle = null;
                     this.login = false;
-                    this.userAccount = null;
+                    this.user = null;
                     logger.error("Error authenticating user", e);
                 }
             }
@@ -145,14 +123,6 @@ public class LoginBean
 		this.login = login;
 	} 
  
-	public UserAccount getUserAccount() 
-	{ 
-		return userAccount;
-	}
-
-	public void setUserAccount(UserAccount userAccount) {
-		this.userAccount = userAccount;
-	}
 
 	public String getUserHandle() 
 	{
@@ -164,6 +134,14 @@ public class LoginBean
 		this.userHandle = userHandle;
 	}
     
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public final String login()
 	{    
 		FacesContext fc = FacesContext.getCurrentInstance();
@@ -174,6 +152,7 @@ public class LoginBean
         {
     		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
 			fc.getExternalContext().redirect(getLoginUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
+	        
 		} 
         catch (Exception e) 
         {
@@ -190,7 +169,7 @@ public class LoginBean
 			{
 				this.userHandle = null;
 				this.login = false;
-				this.userAccount = null;
+				this.user = null;
 				FacesContext fc = FacesContext.getCurrentInstance();
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		        session.invalidate();
@@ -223,24 +202,5 @@ public class LoginBean
     }
 
 
-	public Grants getGrants() {
-		return grants;
-	}
-
-
-	public void setGrants(Grants grants) {
-		this.grants = grants;
-	}
-
-
-	public List<Context> getDepositorContexts() {
-		return depositorContexts;
-	}
-
-
-	public void setDepositorContexts(List<Context> depositorContexts) {
-		this.depositorContexts = depositorContexts;
-	}
-    
 
 }

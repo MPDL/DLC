@@ -83,7 +83,7 @@
 	</h:commandLink> 
 	<h:panelGroup styleClass="seperator"></h:panelGroup> 
 	 
-	<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.userAccount.properties.loginName}" rendered="#{loginBean.login}"></h:outputLabel>
+	<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.user.loginName}" rendered="#{loginBean.login}"></h:outputLabel>
 
 	<!-- meta Menu ends here -->
 </div>
