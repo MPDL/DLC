@@ -1,36 +1,29 @@
 package de.mpg.mpdl.dlc.viewer;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 
-import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
+import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
-import de.mpg.mpdl.dlc.beans.LoginBean;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.tei.TEITransformer;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.MetsDiv;
 import de.mpg.mpdl.dlc.vo.Page;
-import de.mpg.mpdl.dlc.vo.Volume;
-import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
 @ViewScoped
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml")
 public class ViewPages extends VolumeLoaderBean{
+	
+	@URLQueryParameter("fm")
+	private String fulltextMatches;
 	
 	enum ViewType{
 		SINGLE, RECTO_VERSO, FULLTEXT
@@ -136,9 +129,6 @@ public class ViewPages extends VolumeLoaderBean{
 	public Page getSelectedPage() {
 		return selectedPage;
 	}
-	
-	
-
 
 	public void setSelectedPageNumber(int selectedPageNumber) {
 		this.selectedPageNumber = selectedPageNumber;
@@ -264,10 +254,24 @@ public class ViewPages extends VolumeLoaderBean{
 	
 	public String getXhtmlForPage() throws Exception
 	{
-		String tei = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getPagedTei());
+		String teiHtml = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getPagedTei());
 		//logger.info(tei);
-		return tei;
+		return teiHtml;
 	}
+	
+	public String[] getFulltextMatchesAsArray()
+	{
+		String[] matches = new String[0];
+		if(fulltextMatches!=null)
+		{
+			matches = fulltextMatches.split(",");
+		}
+		
+		return matches;
+		//return new String[]{"folgenden Stücke", "erhält"};
+	}
+	
+
 
 	public Page getSelectedRightPage() {
 		return selectedRightPage;
@@ -285,6 +289,14 @@ public class ViewPages extends VolumeLoaderBean{
 		this.viewType = viewType;
 		loadVolume();
 		//PrettyContext.getCurrentInstance().g
+	}
+
+	public String getFulltextMatches() {
+		return fulltextMatches;
+	}
+
+	public void setFulltextMatches(String fulltextMatches) {
+		this.fulltextMatches = fulltextMatches;
 	}
 
 	

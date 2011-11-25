@@ -2,6 +2,12 @@ package de.mpg.mpdl.dlc.search;
 
 import java.util.List;
 
+import org.z3950.zing.cql.CQLAndNode;
+import org.z3950.zing.cql.CQLNode;
+import org.z3950.zing.cql.CQLRelation;
+import org.z3950.zing.cql.CQLTermNode;
+import org.z3950.zing.cql.ModifierSet;
+
 
 public class SearchCriterion {
 
@@ -40,6 +46,7 @@ public class SearchCriterion {
 		public void setIndexes(String[] indexNames) {
 			this.indexNames = indexNames;
 		}
+
 	}
 	
 	private SearchType searchType;
@@ -134,7 +141,7 @@ public class SearchCriterion {
 					{
 						cql += " OR ";
 					}
-					cql += indexName + "=" + sc.getText();
+					cql += indexName + "=\"" + sc.getText() + "\"";
 				}
 				
 				if(sc.getSearchType().getIndexNames().length > 1)
@@ -150,6 +157,9 @@ public class SearchCriterion {
 			}
 			
 		}
+		
+		
+	
 		return cql;
 	}
 
@@ -168,7 +178,27 @@ public class SearchCriterion {
 	public void setCloseBracket(int closeBracket) {
 		this.closeBracket = closeBracket;
 	}
+	
+	public static void main(String[] args)
 
+	{
+		// Building a parse-tree by hand
+//		CQLNode n1 = new CQLTermNode("dc.author", new CQLRelation("="),
+//					     "kernighan");
+//		CQLNode n2 = new CQLTermNode("dc.title", new CQLRelation("all"),
+//					     "elements style");
+//		CQLNode root = new CQLAndNode(n1, n2, new ModifierSet("and"));
+//		CQL
+//		System.out.println(root.toCQL());
+
+		// Parsing a CQL query
+//		CQLParser parser = new CQLParser();
+//		CQLNode root = parser.parse("title=dinosaur");
+//		System.out.print(root.toXCQL(0));
+//		System.out.println(root.toCQL());
+//		System.out.println(root.toPQF(config));
+		// ... where `config' specifies CQL-qualfier => Z-attr mapping
+	}
 	
 	
 	
