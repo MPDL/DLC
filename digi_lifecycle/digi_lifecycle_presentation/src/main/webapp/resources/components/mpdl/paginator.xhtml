@@ -12,6 +12,7 @@
 <!-- INTERFACE -->
 <cc:interface>
 	<cc:attribute name="paginatorBean" required="true"/>
+	
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
@@ -72,10 +73,13 @@
 		 	</div>
 		 </h:panelGroup>
 		 
-		 
-		<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-		 	<cc:insertChildren/>
-		</a4j:repeat>
+		 <div class="full_area0 listHeader">&#160;</div>
+		 	<ol>
+				<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
+				 	
+				 	<cc:insertChildren/>
+				</a4j:repeat>
+			</ol>
 		
 		
 		

@@ -299,7 +299,7 @@
 							
 							
 							<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
-								<h:outputText value="#{viewPages.xhtmlForPage}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
+								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
 							</div>
 			
 						</h:panelGroup>

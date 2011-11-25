@@ -4,6 +4,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -346,6 +348,81 @@ public class VolumeUtilBean {
 		}
 		
 		return 0;
+		
+	}
+	
+	
+	/**
+	 * Creates a HTML <span> Element with the given styleClass around every case-insensitive occurrence of the given words in the text.
+	 * Also splitted words with dashes(-) are taken into account
+	 */
+	public String emphasizeWordsinHtml(String html, String[] words, String styleClass)
+	{
+		StringBuffer emphasizedText = new StringBuffer();
+		StringBuffer wordPattern = new StringBuffer();
+		
+		int n=0;
+		for(String word : words)
+		{
+
+			if(word.trim().length()>0)
+			{
+			
+			
+				if(n>0)
+				{
+					wordPattern.append("|");
+				}
+				wordPattern.append("(\\b");
+				
+				//Also match words that are seperated by a dash and a linebreak
+				StringBuffer wordWithDashMatches = new StringBuffer();
+				for(char c : word.toCharArray())
+				{
+					if(c != ' ')
+					{
+						wordWithDashMatches.append(c + "(\\-<br\\s*/>){0,1}");
+					}
+					else wordWithDashMatches.append(c);
+				}
+				
+				word = wordWithDashMatches.toString();
+				
+				String[] splittedWords = word.split(" ");
+				
+				//Replace blanks with a pattern that matches any whitespaces and any empty html element.
+				for(int i = 0; i<splittedWords.length; i++)
+				{
+					String splittedWord = splittedWords[i];
+					if(i>0)
+					{
+						wordPattern.append("(\\s+|\\s*<[\\S]+\\s*/>\\s*)");
+					}
+					wordPattern.append(splittedWord);
+				}
+				wordPattern.append("\\b)");
+				n++;
+			}
+
+		}
+		//System.out.println(wordPattern);
+		
+		if(n>0)
+		{
+			Pattern myPattern = Pattern.compile(wordPattern.toString(), Pattern.CASE_INSENSITIVE);
+			Matcher matcher = myPattern.matcher(html);
+			
+			//add a <span> element around each match
+			while(matcher.find())
+			{
+				
+				matcher.appendReplacement(emphasizedText, "<span class=\"" + styleClass + "\">" + matcher.group() + "</span>");
+			}
+			matcher.appendTail(emphasizedText);
+			
+			return emphasizedText.toString();
+		}
+		return html;
 		
 	}
 	
