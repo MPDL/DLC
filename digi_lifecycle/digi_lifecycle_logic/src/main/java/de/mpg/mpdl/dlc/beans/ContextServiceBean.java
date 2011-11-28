@@ -22,42 +22,90 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
 	
-	public Context retrieveContext(String contextId, String userHandle) throws Exception
+	public Context retrieveContext(String contextId, String userHandle)
 	{
-		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		contextClient.setHandle(userHandle);
-		return contextClient.retrieve(contextId);
+		logger.info("Retrieving Context " + contextId);
+        Context context = new Context();
+        try
+        {
+			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			contextClient.setHandle(userHandle);
+			context = contextClient.retrieve(contextId);
+        }catch(Exception e)
+        {
+        	logger.error("Error while retrieving Context", e);
+        }
+		return context;
 	}
 	
-	public List<Context> retrieveOUContexts(OrganizationalUnit ou) throws Exception
+	public List<Context> retrieveOUContexts(OrganizationalUnit ou) 
 	{
+		logger.info("Retrieving OU contexts " + ou.getObjid());
         List<Context> contextList = new ArrayList<Context>();
-        SearchRetrieveResponse response = null;
-		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery(" \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
-		response = contextClient.retrieveContexts(req);
-		for(SearchResultRecord rec : response.getRecords())
-		{
-			Context context = (Context)rec.getRecordData().getContent();
-			contextList.add(context);
-		}
+        try
+        {
+	        SearchRetrieveResponse response = null;
+			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			req.setQuery(" \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+			response = contextClient.retrieveContexts(req);
+			for(SearchResultRecord rec : response.getRecords())
+			{
+				Context context = (Context)rec.getRecordData().getContent();
+				contextList.add(context);
+			}
+			logger.info("OU contexts retrieved " + ou.getObjid());
+        }catch(Exception e)
+        {
+        	logger.error("Error while retrieving OU contexts", e);
+        }
         return contextList;		
 	}
 	
-	public List<Context> retrieveAllcontexts() throws Exception
+	public List<Context> retrieveContextsCreatedBy(String id)
 	{
+		logger.info("Retrieving OU contexts created by" + id);
         List<Context> contextList = new ArrayList<Context>();
-        SearchRetrieveResponse response = null;
-		ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery(" \"/properties/type\"=DLC");
-		response = contextClient.retrieveContexts(req);
-		for(SearchResultRecord rec : response.getRecords())
-		{
-			Context context = (Context)rec.getRecordData().getContent();
-			contextList.add(context);
-		}
+        try
+        {
+	        SearchRetrieveResponse response = null;
+			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			req.setQuery(" \"/properties/type\"=DLC and" +"\"/properties/created-by/id\"="+ id);
+			response = contextClient.retrieveContexts(req);
+			for(SearchResultRecord rec : response.getRecords())
+			{
+				Context context = (Context)rec.getRecordData().getContent();
+				contextList.add(context);
+			}
+
+        }catch(Exception e)
+        {
+        	logger.error("Error while retrieving OU contexts", e);
+        }
+        return contextList;	
+	}
+	
+	public List<Context> retrieveAllcontexts()
+	{
+		logger.info("Retrieving all contexts");
+        List<Context> contextList = new ArrayList<Context>();
+        try
+        {
+	        SearchRetrieveResponse response = null;
+			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			req.setQuery(" \"/properties/type\"=DLC");
+			response = contextClient.retrieveContexts(req);
+			for(SearchResultRecord rec : response.getRecords())
+			{
+				Context context = (Context)rec.getRecordData().getContent();
+				contextList.add(context);
+			}
+        }catch(Exception e)
+        {
+        	logger.error("Error while retrieving all contexts", e);
+        }
         return contextList;		
 	}
 }
