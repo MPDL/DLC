@@ -1,0 +1,71 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:define name="mainContent">
+
+		<h:panelGroup layout="block" id="createdOUs" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+			<h3>Created Organizations:</h3>
+			<a4j:repeat value="#{loginBean.user.createdOUs}" var="ou">
+				<pretty:link mappingId="ou">
+					<f:param value="#{ou.objid}" />
+			    	<h:outputText value="#{ou.properties.name}"/>
+			    </pretty:link>
+			   <br />
+	      	</a4j:repeat>
+		 
+		    <rich:toolbar height="26px" width="100px">
+		        <h:outputLink value="#" id="ll">
+		            <rich:componentControl event="click" operation="show" target="popup">
+		                <a4j:param name="event" value="event" noEscape="true" />
+		                <rich:hashParam>
+		                    <a4j:param noEscape="true" name="top"
+		                        value="jQuery(#{rich:element('ll')}.parentNode).offset().top + jQuery(#{rich:element('ll')}.parentNode).height()" />
+		                    <a4j:param noEscape="true" name="left"
+		                        value="jQuery(#{rich:element('ll')}.parentNode).offset().left" />
+		                </rich:hashParam>
+		            </rich:componentControl>
+		            Create new OU:</h:outputLink>
+		    </rich:toolbar>
+		    
+   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" />
+
+
+		</h:panelGroup>
+		
+		<h:panelGroup layout="block" rendered="#{loginBean.login}">
+			<h3>Created Collections:</h3>
+			<a4j:repeat value="#{loginBean.user.createdContexts}" var="context">
+				<pretty:link mappingId="volumes">
+					<f:param value="#{context.objid}" />
+			    	<h:outputText value="#{context.properties.name}"/>
+			    </pretty:link>
+			   <br />
+	      	</a4j:repeat>
+		 	
+		 	
+
+		</h:panelGroup>
+
+		<h:panelGroup layout="block" rendered="#{loginBean.login}">
+			<h3>Created Users:</h3>
+			<a4j:repeat value="#{loginBean.user.createdUserAccounts}" var="ua">
+			    <h:outputText value="#{ua.properties.name}"/>
+			   <br />
+	      	</a4j:repeat>
+		 
+
+		</h:panelGroup>
+	</ui:define>
+
+
+</ui:composition>
+
+</html>

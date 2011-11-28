@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+	<ui:define name="mainContent">
+	
+		<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" />
+		<br/>
+		<h:outputText value="#{viewOU.orga.escidocMd.title}"/>
+
+		<h:outputText value=":#{viewOU.orga.escidocMd.description}"  />
+		<br/>
+		<h:outputText value="#{viewOU.orga.escidocMd.country}" />
+		<br/>
+		<h:outputText value="#{viewOU.orga.escidocMd.city}" />
+		<br />		
+		<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" />	
+		<br/>
+		<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" />	
+		<br/>
+
+ 	<h:commandButton value="edit" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id )}">
+        <rich:componentControl target="popup" operation="show" />
+    </h:commandButton>
+    
+    <mpdl:ouEditor target="popup" title="Edit" organization="#{viewOU.orga}" save="#{viewOU.save}"/>
+    
+
+	</ui:define>
+</ui:composition>
+
+</html>

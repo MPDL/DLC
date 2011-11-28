@@ -19,6 +19,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 
+import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
@@ -31,7 +32,6 @@ import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
-import de.mpg.mpdl.dlc.vo.UserRole;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
@@ -100,18 +100,27 @@ public class IngestBean implements Serializable {
 		this.contextSelectItems.clear();
 		SelectItem item;
 		List<String> ids = new ArrayList();
-		//init contexts
-		for(UserRole role: loginBean.getUser().getUserRoles())
+		//init contexts 
+		for(Grant grant: loginBean.getUser().getGrants())
 		{ 
 			try
 			{
-				if(role.getRoleName().equals(PropertyReader.getProperty("dlc.role.system.admin")))
+				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")) || grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
 				{
-					for(Context c: contextServiceBean.retrieveAllcontexts())
+					for(Context c: loginBean.getUser().getCreatedContexts())
 						this.contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
 				}
 				else {
-					for(Context c : role.getContexts())
+					for(Context c : loginBean.getUser().getDepositorContexts())
+					{  
+						if(!ids.contains(c.getObjid()))
+						{
+							ids.add(c.getObjid());
+							item = new SelectItem(c.getObjid(),c.getProperties().getName());
+							this.contextSelectItems.add(item);
+						}
+					}
+					for(Context c : loginBean.getUser().getModeratorContexts())
 					{  
 						if(!ids.contains(c.getObjid()))
 						{

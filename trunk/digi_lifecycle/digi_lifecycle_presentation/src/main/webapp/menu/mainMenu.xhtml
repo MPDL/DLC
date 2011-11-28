@@ -32,7 +32,7 @@
 		
 		<li>
 			<section class="level1">
-				<h:outputLink id="lnkUser" title="#{tlt.Admin}" value="/#{applicationBean.contextPath}/admin.xhtml" rendered="#{loginBean.login and (loginBean.user.userRoles[0].roleName == 'dlc:role-system-admin' || loginBean.user.userRoles[0].roleName == 'dlc:role-ou-admin')}">
+				<h:outputLink id="lnkUser" title="#{tlt.Admin}" value="/#{applicationBean.contextPath}/admin.xhtml" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' )}">
 					<h:outputText value="#{lbl.navigation_lnk_Admin}" />
 				</h:outputLink>
 			</section>
