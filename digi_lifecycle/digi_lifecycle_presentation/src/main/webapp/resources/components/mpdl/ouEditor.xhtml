@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="target" required="true"/>
+	<cc:attribute name="title" requied="false" />
+	<cc:attribute name="organization" required="true" />
+
+</cc:interface>	
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>	
+
+	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()">
+        <f:facet name="header">
+            <h:outputText value="#{cc.attrs.title}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+            	X
+            </h:outputLink>
+        </f:facet>
+        
+
+        <h:panelGrid columns="2">
+            <h:outputText value="Title" />
+            <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
+            
+            <h:outputText value="Desciption" />
+            <h:inputText value="#{cc.attrs.organization.escidocMd.description}"/>
+            
+            <h:outputText value="Logo(URL)" />
+            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imgURL}"/>
+            <h:outputText value="Homepage(URL)" />
+            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.homePageURL}"/>
+            <h:outputText value="Email" />
+            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.email}"/>
+            <h:outputText value="Country" />
+            <h:inputText value="#{cc.attrs.organization.escidocMd.country}" />
+            <h:outputText value="City" />
+            <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
+
+			<a4j:commandButton value="save" action="#{adminBean.create}" execute="@form"/>
+        </h:panelGrid>
+
+    </rich:popupPanel>
+
+</cc:implementation>
+	
+	
+</html>

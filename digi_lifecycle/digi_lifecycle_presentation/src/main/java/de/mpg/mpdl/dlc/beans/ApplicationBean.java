@@ -134,7 +134,7 @@ public class ApplicationBean
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
 	    	this.appTitle = PropertyReader.getProperty("dlc.app.title");
-	    	this.ous = ouServiceBean.retrieveOus();
+	    	this.ous = ouServiceBean.retrieveOUs();
 	    	this.cmMono = PropertyReader.getProperty("dlc.content-model.monograph.id");
 	    	this.cmMultiVol = PropertyReader.getProperty("dlc.content-model.multivolume.id");
 	    	this.cmVolume = PropertyReader.getProperty("dlc.content-model.volume.id");
@@ -143,7 +143,7 @@ public class ApplicationBean
 		}      
     }
         
-	public List<OrganizationalUnit> getOus() {
+	public List<OrganizationalUnit> getOus() throws Exception {
 		return ous;
 	}
 

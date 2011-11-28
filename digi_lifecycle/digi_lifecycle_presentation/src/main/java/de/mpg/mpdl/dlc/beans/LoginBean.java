@@ -62,10 +62,8 @@ public class LoginBean
 	}
 	
 
-
 	public LoginBean()
 	{
-
 		this.login = false;
 		this.user = null;
 		this.userHandle = null;
@@ -95,7 +93,7 @@ public class LoginBean
                 {  
                 	this.userHandle = newUserHandle;
                     this.login = true;
-                    this.user = userAccountServiceBean.retriveUser(newUserHandle);
+                    this.user = userAccountServiceBean.retrieveUser(newUserHandle);
 
                     MessageHelper.infoMessage("You have logged in successfully!");
                 }
@@ -177,7 +175,7 @@ public class LoginBean
 //				HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
 //				String requestURL = request.getRequestURL().toString();
 	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
-	    		if(requestURL.equals("http://localhost:8080/digi_lifecycle/upload"))
+	    		if(requestURL.equals("http://localhost:8080/digi_lifecycle/upload") || requestURL.equals("http://localhost:8080/digi_lifecycle/admin") )
 	    			requestURL = "http://localhost:8080/digi_lifecycle/";
 	    		FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
 

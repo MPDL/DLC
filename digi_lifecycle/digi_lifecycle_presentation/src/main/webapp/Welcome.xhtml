@@ -21,6 +21,11 @@
         .rf-ac-itm-c {
             height: 550px;
         }
+        
+        .rf-ac-itm-lbl-act
+        {	
+        	color:red;
+        }
 
 
     </h:outputStylesheet>
@@ -47,18 +52,24 @@
 
 					<rich:accordion switchType="client" rendered="#{not empty applicationBean.ous}" >
 						<c:forEach items="#{applicationBean.ous}" var="ou">
-							<rich:accordionItem header="#{ou.properties.name}">
+							<rich:accordionItem  header="#{ou.properties.name}" >
+								<pretty:link mappingId="ou">
+									<f:param value="#{ou.objid}" />
+							    	<h:outputText value="#{lbl.goto} #{ou.properties.name}" style="float:right;"	/>
+							    </pretty:link>
+							    <br />
+	
 								<a4j:repeat value="#{applicationBean.getContext(ou)}" var="context">
 									<pretty:link mappingId="volumes">
 										<f:param value="#{context.objid}" />
 										<h:outputText value="#{context.properties.name}"/><br/>
 									</pretty:link>
 								</a4j:repeat>
-								
-			            	</rich:accordionItem>		
+			            	</rich:accordionItem>
+
 			        	</c:forEach>
 			         </rich:accordion>
-
+			   
 
 <ui:remove>
 			<h:panelGroup styleClass="half_area0_p8 mainSection">
