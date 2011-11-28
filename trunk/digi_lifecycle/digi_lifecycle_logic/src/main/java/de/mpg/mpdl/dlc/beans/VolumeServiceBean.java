@@ -235,7 +235,7 @@ public class VolumeServiceBean {
 		} 
 
 		return item;
-	}
+	}  
 	
 	public Volume createNewMultiVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
 	{

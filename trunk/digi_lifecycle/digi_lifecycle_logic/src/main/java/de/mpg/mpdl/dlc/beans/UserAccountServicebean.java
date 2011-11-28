@@ -15,17 +15,13 @@ import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.UserAccountHandlerClient;
 import de.escidoc.core.resources.aa.useraccount.Attributes;
 import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.escidoc.core.resources.aa.useraccount.GrantProperties;
 import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
-import de.escidoc.core.resources.common.reference.RoleRef;
 import de.escidoc.core.resources.om.context.Context;
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.User;
-import de.mpg.mpdl.dlc.vo.UserRole;
 
 
 @Stateless
@@ -48,71 +44,90 @@ public class UserAccountServicebean {
 			logger.error("Erroe init other ejbx " + e.getMessage());
 		}
 	}
-	public User retriveUser(String userHandle) throws Exception
+	public User retrieveUser(String userHandle)
 	{
 		User user = new User();
-		List<UserRole> roles = new ArrayList<UserRole>();
-		UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-        
-
-		if(userHandle != null)
+		logger.info("Retrieving login User");
+		try
 		{
-			client.setHandle(userHandle);
-		}
-		UserAccount userAccount = client.retrieveCurrentUser();
-		user.setLoginName(userAccount.getProperties().getLoginName());
-	  	
-		Grants grants = client.retrieveCurrentGrants(userAccount);
-		for(Grant grant : grants)
-		{
-			user.getGrants().add(grant);
-			if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
+			UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+	
+			if(userHandle != null)
 			{
-				//TODO ous, contexts for system-admin
-				List<UserAccount> createdUserAccounts = retrieveCreatedUsers(client, userAccount.getObjid());
-				roles.add(new UserRole(PropertyReader.getProperty("dlc.role.system.admin"),null, createdUserAccounts, null));
+				client.setHandle(userHandle);
 			}
-			
-			else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
-        	{
-				List<UserAccount> createdUserAccounts = retrieveCreatedUsers(client, userAccount.getObjid());	
-				Attributes attributes = client.retrieveAttributes(userAccount.getObjid());
-				String ouID = attributes.get(0).getValue();
-				OrganizationalUnit ou = ouServiceBean.retrieveOu(ouID);
-				List<Context> contexts = contextServiceBean.retrieveOUContexts(ou);
-				roles.add(new UserRole(PropertyReader.getProperty("dlc.role.ou.admin"),contexts, createdUserAccounts, ou));
-        	}
-			
-			else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
-        	{
-				List<Context> contexts = new ArrayList<Context>();
-				Context c = contextServiceBean.retrieveContext(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-				contexts.add(c);
-				roles.add(new UserRole(PropertyReader.getProperty("dlc.role.user.depositor"),contexts, null, null));
-        	}
-			else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
-        	{
-				List<Context> contexts = new ArrayList<Context>();
-				Context c = contextServiceBean.retrieveContext(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-				contexts.add(c);
-				roles.add(new UserRole(PropertyReader.getProperty("dlc.role.user.moderator"),contexts, null, null));
-        	}
-
+			UserAccount userAccount = client.retrieveCurrentUser();
+			String userId = userAccount.getObjid();
+			user.setId(userId);
+			user.setLoginName(userAccount.getProperties().getLoginName());
+		  	
+			Grants grants = client.retrieveCurrentGrants(userAccount);
+			for(Grant grant : grants)
+			{
+	//			user.getGrants().add(grant);
+				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
+				{
+					user.getGrants().add(grant);
+					user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userHandle, userId));
+					user.setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(userId));
+					user.setCreatedUserAccounts(retrieveCreatedUsers(userHandle,userId));
+				}
+				
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
+	        	{
+					user.getGrants().add(grant);
+					Attributes attributes = client.retrieveAttributes(userAccount.getObjid());
+					String ouID = attributes.get(0).getValue();
+					user.setOu(ouServiceBean.retrieveOU(ouID));
+					
+	//				user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userId));
+					user.setCreatedContexts(contextServiceBean.retrieveOUContexts(user.getOu()));
+					user.setCreatedUserAccounts(retrieveCreatedUsers(userHandle,userId));
+	        	}
+				
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
+	        	{
+					user.getGrants().add(grant);
+					Context c = contextServiceBean.retrieveContext(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					user.getDepositorContexts().add(c);
+	        	}			
+				
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
+	        	{
+					user.getGrants().add(grant);
+					Context c = contextServiceBean.retrieveContext(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					user.getModeratorContexts().add(c);
+	        	}
+	
+			}
+		}catch(Exception e)
+		{
+			logger.error("Error while Retrieving login User", e);
 		}
-		user.setUserRoles(roles);
+
 		return user;
 	}
 	
-	public List<UserAccount> retrieveCreatedUsers(UserAccountHandlerClient client,String id) throws Exception
+	public List<UserAccount> retrieveCreatedUsers(String userHandle, String id)
 	{
+		logger.info("Retrieving created Users by " + id);
 		List<UserAccount> uas = new ArrayList<UserAccount>();
-		SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-		req.setQuery("\"/properties/created-by/id\"="+id);
-		SearchRetrieveResponse resp = client.retrieveUserAccounts(req);
-		for(SearchResultRecord rec:resp.getRecords())
+		
+		try
 		{
-			UserAccount ua= (UserAccount)rec.getRecordData().getContent();
-			uas.add(ua);
+			UserAccountHandlerClient client =  new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			req.setQuery("\"/properties/created-by/id\"="+id);
+			SearchRetrieveResponse resp = client.retrieveUserAccounts(req);
+			for(SearchResultRecord rec:resp.getRecords())
+			{
+				UserAccount ua= (UserAccount)rec.getRecordData().getContent();
+				uas.add(ua);
+			}
+		}catch(Exception e)
+		{
+			logger.error("Error while Retrieving created Users", e);
 		}
 		return uas;
 	}
@@ -145,17 +160,17 @@ public class UserAccountServicebean {
 
 	}
 
-	private static void addOUAdminRole(String userAccountId,String roleId) throws Exception {
-        Grant grant = new Grant();
-        GrantProperties grantProperties = new GrantProperties();
-        grantProperties.setGrantRemark("new context grant");
-        RoleRef roleRef = new RoleRef(roleId);
-        grantProperties.setRole(roleRef);
-        grant.setGrantProperties(grantProperties);
-        grant = createGrant(userAccountId, grant);
-        
-        System.out.println("Grants set for User Account with user account id='" + userAccountId + "' at '" + grant.getLastModificationDate() + "'.");
-	}
+//	private static void addOUAdminRole(String userAccountId,String roleId) throws Exception {
+//        Grant grant = new Grant();
+//        GrantProperties grantProperties = new GrantProperties();
+//        grantProperties.setGrantRemark("new context grant");
+//        RoleRef roleRef = new RoleRef(roleId);
+//        grantProperties.setRole(roleRef);
+//        grant.setGrantProperties(grantProperties);
+//        grant = createGrant(userAccountId, grant);
+//        
+//        System.out.println("Grants set for User Account with user account id='" + userAccountId + "' at '" + grant.getLastModificationDate() + "'.");
+//	}
 	
 	
     private static Grant createGrant(final String userAccountId, final Grant grant) throws Exception
