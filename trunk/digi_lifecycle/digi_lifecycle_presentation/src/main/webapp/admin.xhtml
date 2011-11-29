@@ -22,21 +22,20 @@
 	      	</a4j:repeat>
 		 
 		    <rich:toolbar height="26px" width="100px">
-		        <h:outputLink value="#" id="ll">
+		        <h:outputLink value="#" id="newOU">
 		            <rich:componentControl event="click" operation="show" target="popup">
 		                <a4j:param name="event" value="event" noEscape="true" />
 		                <rich:hashParam>
 		                    <a4j:param noEscape="true" name="top"
-		                        value="jQuery(#{rich:element('ll')}.parentNode).offset().top + jQuery(#{rich:element('ll')}.parentNode).height()" />
+		                        value="jQuery(#{rich:element('newOU')}.parentNode).offset().top + jQuery(#{rich:element('newOU')}.parentNode).height()" />
 		                    <a4j:param noEscape="true" name="left"
-		                        value="jQuery(#{rich:element('ll')}.parentNode).offset().left" />
+		                        value="jQuery(#{rich:element('newOU')}.parentNode).offset().left" />
 		                </rich:hashParam>
 		            </rich:componentControl>
 		            Create new OU:</h:outputLink>
 		    </rich:toolbar>
 		    
    			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" />
-
 
 		</h:panelGroup>
 		
@@ -51,6 +50,21 @@
 	      	</a4j:repeat>
 		 	
 		 	
+		    <rich:toolbar height="26px" width="100px">
+		        <h:outputLink value="#" id="newContext">
+		            <rich:componentControl event="click" operation="show" target="popupContext">
+		                <a4j:param name="event" value="event" noEscape="true" />
+		                <rich:hashParam>
+		                    <a4j:param noEscape="true" name="top"
+		                        value="jQuery(#{rich:element('newContext')}.parentNode).offset().top + jQuery(#{rich:element('newContext')}.parentNode).height()" />
+		                    <a4j:param noEscape="true" name="left"
+		                        value="jQuery(#{rich:element('newContext')}.parentNode).offset().left" />
+		                </rich:hashParam>
+		            </rich:componentControl>
+		            Create new Collection:</h:outputLink>
+		    </rich:toolbar>
+
+   			<mpdl:contextEditor target="popupContext" title="Create new" collection="#{adminBean.collection}" />
 
 		</h:panelGroup>
 
@@ -61,8 +75,24 @@
 			   <br />
 	      	</a4j:repeat>
 		 
+		    <rich:toolbar height="26px" width="100px">
+		        <h:outputLink value="#" id="newUA">
+		            <rich:componentControl event="click" operation="show" target="popupUser">
+		                <a4j:param name="event" value="event" noEscape="true" />
+		                <rich:hashParam>
+		                    <a4j:param noEscape="true" name="top"
+		                        value="jQuery(#{rich:element('newUA')}.parentNode).offset().top + jQuery(#{rich:element('newUA')}.parentNode).height()" />
+		                    <a4j:param noEscape="true" name="left"
+		                        value="jQuery(#{rich:element('newUA')}.parentNode).offset().left" />
+		                </rich:hashParam>
+		            </rich:componentControl>
+		            Create new User:</h:outputLink>
+		    </rich:toolbar>
+
+   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" />
 
 		</h:panelGroup>
+
 	</ui:define>
 
 

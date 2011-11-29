@@ -26,7 +26,7 @@ import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-import de.mpg.mpdl.dlc.vo.User;
+import de.mpg.mpdl.dlc.vo.user.User;
 
 
 
