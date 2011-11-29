@@ -475,8 +475,6 @@ public class IngestBean implements Serializable {
 	}
 
 	public List<SelectItem> getContextSelectItems() {
-
-
 		return contextSelectItems;
 	}
 	

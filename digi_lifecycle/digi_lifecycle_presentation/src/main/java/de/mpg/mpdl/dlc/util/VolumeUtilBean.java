@@ -39,7 +39,7 @@ import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 public class VolumeUtilBean {
 
 	private static Logger logger = Logger.getLogger(VolumeUtilBean.class);
-
+ 
 	
 	public static String getDigilibScalerUrlForPage(Page p, int width, int height)
 	{

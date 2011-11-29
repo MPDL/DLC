@@ -32,7 +32,7 @@
         
 
         <h:panelGrid columns="2">
-            <h:outputText value="Title" />
+            <h:outputText value="Name" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
             
             <h:outputText value="Desciption" />
@@ -49,7 +49,7 @@
             <h:outputText value="City" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
 
-			<a4j:commandButton value="save" action="#{adminBean.create}" execute="@form"/>
+			<a4j:commandButton value="save" action="#{adminBean.createNewOrga}" execute="@form"/>
         </h:panelGrid>
 
     </rich:popupPanel>
