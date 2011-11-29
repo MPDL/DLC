@@ -34,6 +34,7 @@ import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
+import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.oum.OrganizationalUnitProperties;
 import de.escidoc.core.resources.oum.Parents;
@@ -181,7 +182,7 @@ public class OrganizationalUnitServiceBean {
 		 
 	}
 	
-	public OrganizationalUnit createOU(Organization orga, String userHandle)
+	public OrganizationalUnit createNewOU(Organization orga, String userHandle)
 	{   
 		logger.info("Trying to create a new organization");
 		OrganizationalUnit ou = new OrganizationalUnit();
@@ -229,7 +230,11 @@ public class OrganizationalUnitServiceBean {
 			ou.setMetadataRecords(mdRecords);
 	  
 			ou = client.create(ou);
-			//TODO open new ou
+			//TODO open OU
+//			TaskParam taskParam=new TaskParam(); 
+//		    taskParam.setComment("Open Organizational Unit");
+//		    taskParam.setLastModificationDate(ou.getLastModificationDate());
+//			client.open(ou, taskParam);
 			logger.info("new Organization created: " + ou.getObjid());
 		
 		}catch(Exception e){

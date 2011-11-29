@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,6 @@ public class User {
 	}
 
 	public List<OrganizationalUnit> getCreatedOUs() {
-		System.out.println(createdOUs.size());
 		return createdOUs;
 	}
 	
@@ -71,7 +70,6 @@ public class User {
 	}
 	
 	public List<Context> getCreatedContexts() {
-		createdContexts.get(0).getProperties().getName();
 		return createdContexts;
 	}
 	
