@@ -21,7 +21,7 @@ import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-import de.mpg.mpdl.dlc.vo.User;
+import de.mpg.mpdl.dlc.vo.user.User;
 
 
 @Stateless
@@ -69,7 +69,7 @@ public class UserAccountServicebean {
 				{
 					user.getGrants().add(grant);
 					user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userHandle, userId));
-					user.setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(userId));
+					user.setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(userHandle,userId));
 					user.setCreatedUserAccounts(retrieveCreatedUsers(userHandle,userId));
 				}
 				
@@ -81,7 +81,7 @@ public class UserAccountServicebean {
 					user.setOu(ouServiceBean.retrieveOU(ouID));
 					
 	//				user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userId));
-					user.setCreatedContexts(contextServiceBean.retrieveOUContexts(user.getOu()));
+					user.setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(userHandle, userId));
 					user.setCreatedUserAccounts(retrieveCreatedUsers(userHandle,userId));
 	        	}
 				

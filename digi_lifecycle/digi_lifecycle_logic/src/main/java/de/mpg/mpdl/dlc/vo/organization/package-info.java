@@ -16,6 +16,7 @@ package de.mpg.mpdl.dlc.vo.organization;
 
 import javax.xml.bind.annotation.XmlAccessType;
 
+
 import javax.xml.bind.annotation.adapters.*;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlNsForm;
