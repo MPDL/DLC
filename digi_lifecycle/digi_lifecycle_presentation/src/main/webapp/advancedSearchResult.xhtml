@@ -12,9 +12,7 @@
 <ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
-			<h:outputText value="XX#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}"/>
 			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
-			
 				<mpdl:list volume="#{var}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}">
 				</mpdl:list>
 			</mpdl:paginator>
