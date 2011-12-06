@@ -13,12 +13,14 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import de.escidoc.core.resources.sb.search.HitWord;
 import de.escidoc.core.resources.sb.search.TextFragment;
+
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
-import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
@@ -317,24 +319,41 @@ public class VolumeUtilBean {
 		
 	}
 	
-	public String  getSearchHitStringBeforeHit(TextFragment f)
-	{
-		int startIndex = (int) f.getHitWords().get(0).getStartIndex();
-		return f.getTextFragmentData().substring(0, startIndex);
-	}
-	
-	public String  getSearchHitString(TextFragment f)
-	{
-		int startIndex = (int) f.getHitWords().get(0).getStartIndex();
-		int endIndex = (int) f.getHitWords().get(0).getEndIndex();
-		return f.getTextFragmentData().substring(startIndex, endIndex+1);
-	}
-	
-	public String  getSearchHitStringAfterHit(TextFragment f)
+	public String emphasizeWordsinTextFragment(TextFragment tf, String styleClass)
 	{
 		
-		int endIndex = (int) f.getHitWords().get(0).getEndIndex();
-		return f.getTextFragmentData().substring(endIndex+1, f.getTextFragmentData().length());
+		StringBuffer emphasizedText = new StringBuffer();
+		
+		int lastEnd = -1;
+		
+		for(HitWord hw : tf.getHitWords())
+		{
+
+			int startIndex = (int) hw.getStartIndex();
+			int endIndex = (int) hw.getEndIndex();
+		
+			
+			//Add string before hit
+			emphasizedText.append(tf.getTextFragmentData().substring(lastEnd + 1, startIndex));
+			
+			//Add opening <span> tag
+			emphasizedText.append("<span class=\"" + styleClass + "\">");
+			
+			//Add search hit
+			emphasizedText.append(tf.getTextFragmentData().substring(startIndex, endIndex+1));
+			
+			//Add closing </span> tag
+			emphasizedText.append("</span>");
+			
+			lastEnd = endIndex;
+		}
+		
+		//Add string after last search hit
+		emphasizedText.append(tf.getTextFragmentData().substring(lastEnd + 1, tf.getTextFragmentData().length()));
+		
+		return emphasizedText.toString();
+		
+		
 	}
 	
 	public int getPageNumberForPageId(Volume v, String pageId)
