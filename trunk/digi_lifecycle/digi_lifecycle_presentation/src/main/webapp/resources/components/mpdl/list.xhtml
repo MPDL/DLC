@@ -131,9 +131,7 @@
 									
 									<br/>
 									<a4j:repeat var="textFragment" value="#{highlight.textFragments}" >
-											<h:outputText value="#{volumeUtilBean.getSearchHitStringBeforeHit(textFragment)}"/>
-											<h:outputText styleClass="searchHit" value="#{volumeUtilBean.getSearchHitString(textFragment)}"/>
-											<h:outputText value="#{volumeUtilBean.getSearchHitStringAfterHit(textFragment)}"/>
+											<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'searchHit')}" escape="false"/>
 											<br/>
 											<br/>
 									</a4j:repeat>
