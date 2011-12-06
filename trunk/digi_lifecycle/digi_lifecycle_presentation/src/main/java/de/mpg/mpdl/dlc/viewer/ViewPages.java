@@ -13,8 +13,8 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.vo.MetsDiv;
-import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
