@@ -1,10 +1,11 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.mets;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+
 
 public class Page{
 	

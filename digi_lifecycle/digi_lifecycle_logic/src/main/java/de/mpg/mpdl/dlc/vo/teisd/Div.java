@@ -15,7 +15,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 public class Div extends PbOrDiv {
 	
 	
-	@XmlPath("/tei:head/text()")
+	@XmlPath("tei:head/text()")
 	private String head;
 	
 	

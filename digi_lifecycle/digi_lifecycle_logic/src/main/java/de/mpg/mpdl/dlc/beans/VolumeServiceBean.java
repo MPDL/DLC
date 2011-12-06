@@ -87,10 +87,11 @@ import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-import de.mpg.mpdl.dlc.vo.MetsFile;
-import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
+import de.mpg.mpdl.dlc.vo.mets.Mets;
+import de.mpg.mpdl.dlc.vo.mets.MetsFile;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
@@ -222,7 +223,7 @@ public class VolumeServiceBean {
 			item.setMetadataRecords(mdRecs);
 				
 			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });		
+			JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });		
 			Marshaller marshaller = ctx.createMarshaller();
 			marshaller.marshal(modsMetadata, d);
 			mdRec.setContent(d.getDocumentElement());
@@ -243,7 +244,7 @@ public class VolumeServiceBean {
 		Volume vol= new Volume();
 		try
 		{
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		
 		vol.setProperties(item.getProperties());
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
@@ -275,7 +276,9 @@ public class VolumeServiceBean {
 		File teiFileWithPbConvention = null;
 		try 
 		{
-			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });			
+			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Mets.class });			
+			Mets metsData = new Mets();
+			
 			File teiFileWithIds = null;
 			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
 			if(teiFile==null)
@@ -288,7 +291,7 @@ public class VolumeServiceBean {
 					f.setMimeType(fileItem.getContentType());
 					f.setLocatorType("OTHER");
 					f.setHref(dirs.get(pos));
-					vol.getFiles().add(f);
+					metsData.getFiles().add(f);
 
 					Page p = new Page();
 					p.setId("page_" + pos);
@@ -296,7 +299,7 @@ public class VolumeServiceBean {
 					p.setOrderLabel("");
 					p.setType("page");
 					p.setFile(f);
-					vol.getPages().add(p);
+					metsData.getPages().add(p);
 					}
 			}
 			else
@@ -306,14 +309,15 @@ public class VolumeServiceBean {
 				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
-				vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
+				metsData = (Mets)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
 				for(FileItem fileItem : images)
 				{
 	
 					int pos = images.indexOf(fileItem);
-					vol.getFiles().get(pos).setHref(dirs.get(pos));
+					metsData.getFiles().get(pos).setHref(dirs.get(pos));
 					}
 			}
+			vol.setMets(metsData);
 			vol.setProperties(item.getProperties());
 			vol.setModsMetadata(modsMetadata);
 			vol.setItem(item);
@@ -495,19 +499,22 @@ public class VolumeServiceBean {
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document modsDoc = builder.newDocument();
         
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class, Mets.class });
 		Marshaller m = ctx.createMarshaller();
+		
+		
+		//Set MODS in md-record
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		mdRec.setContent(modsDoc.getDocumentElement());
 		
 		
+		//upload METS
 		StringWriter sw = new StringWriter();
-		m.marshal(vol, sw);
+		m.marshal(vol.getMets(), sw);
 		sw.flush();
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		sthc.setHandle(userHandle);
-		
 		URL uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
 
 		//Check if component already exists
@@ -529,9 +536,6 @@ public class VolumeServiceBean {
 			
 			if(teiFile!=null)
 			{
-
-
-				
 				//Transform TEI to Tei-SD and add to component
 				
 				String teiSd = transformTeiToTeiSd(new FileInputStream(teiFile));
@@ -835,13 +839,14 @@ public class VolumeServiceBean {
 		String tei = null;
 		String pagedTei = null;
 		
-		/*
+		
+		//Unbmarshall mods from md-record and set in item
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(item.getMetadataRecords().get(0).getContent());
 		vol = new Volume();
 		vol.setModsMetadata(md);
-		*/
+		
 		
 		for(Component c : item.getComponents())
 		{
@@ -850,20 +855,17 @@ public class VolumeServiceBean {
 			{
 				
 				long start = System.currentTimeMillis();
-				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-				Unmarshaller unmarshaller = ctx.createUnmarshaller();
-				vol = (Volume)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid()));
+				vol.setMets((Mets)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid())));
 				long time = System.currentTimeMillis()-start;
 				System.out.println("Time METS: " + time);
 				
 
 			}
 			
+			
 			else if (c.getProperties().getContentCategory().equals("tei-sd"))
 			{
 				long start = System.currentTimeMillis();
-				JAXBContext ctx = JAXBContext.newInstance(new Class[] { TeiSd.class });
-				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
 				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(item.getObjid(), c.getObjid()));
@@ -986,7 +988,7 @@ public class VolumeServiceBean {
 	public static ModsMetadata createModsMetadataFromXml(InputStream xml) throws Exception
 	{
 		
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(xml);
 
@@ -1263,8 +1265,8 @@ public class VolumeServiceBean {
         }
 		Page page = new Page();
 		page.setId(pageId);
-        int pageIndex = v.getPages().indexOf(page);
-        return v.getPages().get(pageIndex);
+        int pageIndex = v.getMets().getPages().indexOf(page);
+        return v.getMets().getPages().get(pageIndex);
 		
 	
 	}

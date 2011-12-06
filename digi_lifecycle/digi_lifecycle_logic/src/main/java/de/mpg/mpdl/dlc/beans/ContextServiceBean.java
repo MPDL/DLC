@@ -23,11 +23,11 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-import de.mpg.mpdl.dlc.vo.MetsFile;
-import de.mpg.mpdl.dlc.vo.Page;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.collection.DLCAdminDescriptor;
 import de.mpg.mpdl.dlc.vo.collection.PageDescriptor;
+import de.mpg.mpdl.dlc.vo.mets.MetsFile;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 
 @Stateless
 public class ContextServiceBean {

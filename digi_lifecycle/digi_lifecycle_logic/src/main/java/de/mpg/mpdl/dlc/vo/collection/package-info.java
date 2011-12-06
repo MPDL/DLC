@@ -18,4 +18,5 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlNsForm;
 import javax.xml.bind.annotation.XmlSchema;
 import javax.xml.bind.annotation.XmlNs;
-import de.mpg.mpdl.dlc.vo.StringAdapter;
+
+import de.mpg.mpdl.dlc.vo.util.StringAdapter;

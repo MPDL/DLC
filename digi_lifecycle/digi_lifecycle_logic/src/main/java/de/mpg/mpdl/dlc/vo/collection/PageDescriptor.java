@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
-import de.mpg.mpdl.dlc.vo.MetsFile;
-import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.mets.MetsFile;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 
 @XmlRootElement(name="page")
 public class PageDescriptor {

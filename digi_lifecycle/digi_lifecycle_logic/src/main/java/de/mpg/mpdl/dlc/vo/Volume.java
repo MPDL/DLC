@@ -16,40 +16,30 @@ import org.w3c.dom.Document;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 import de.escidoc.core.resources.sb.search.Highlight;
+import de.mpg.mpdl.dlc.vo.mets.Mets;
+import de.mpg.mpdl.dlc.vo.mets.MetsFile;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
-@XmlRootElement(name="mets", namespace="http://www.loc.gov/METS/")
-@XmlAccessorType(XmlAccessType.FIELD)
+
 public class Volume {
 
-	@XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
+	//@XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
 	private ModsMetadata modsMetadata;
 	
+	/*
 	@XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div")
 	private List<Page> pages = new ArrayList<Page>();
 	
 	@XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file")
 	private List<MetsFile> files = new ArrayList<MetsFile>();
-	
-	/*
-	
-	@XmlPath("mets:structMap[@TYPE='logical']/mets:div")
-	private List<MetsDiv> logicalStructure;
 	*/
 	
-	//Doesn't currently work, see http://stackoverflow.com/questions/6882337/xmladapter-and-xmlidref-in-moxy-jaxb
-	//@XmlJavaTypeAdapter(SmLinkAdapter.class)
-	//@XmlElement(name="structLink", namespace="http://www.loc.gov/METS/")
-	//private StructuralLinks structuralLinks;
-	
-	/*
-	@XmlPath("mets:structLink")
-	private MetsStructLink metsStructLink;
-	*/
+	private Mets mets;
 	
 	@XmlTransient
 	private ItemProperties properties;
@@ -60,7 +50,7 @@ public class Volume {
 	@XmlTransient
 	private String tei;
 	
-	@XmlTransient
+	
 	private TeiSd teiSd;
 	
 
@@ -135,16 +125,7 @@ public class Volume {
 	}
 	*/
 
-	public void setPages(List<Page> pages) {
-		this.pages = pages;
-	}
-
-	public List<Page> getPages() {
-		return pages;
-	}
-
 	
-
 	public void setProperties(ItemProperties properties) {
 		this.properties = properties;
 	}
@@ -169,61 +150,12 @@ public class Volume {
 		return modsMetadata;
 	}
 
-	public void setFiles(List<MetsFile> files) {
-		this.files = files;
-	}
-
-	public List<MetsFile> getFiles() {
-		return files;
-	}
-
+	
 
 	
 
 	
-/*
-	public Map<MetsDiv, List<Page>> getPageMap() {
-		if(pageMap==null)
-		{
 
-			pageMap = new HashMap<MetsDiv, List<Page>>();
-			
-			if(metsStructLink!=null)
-			{
-				for(MetsSmLink smLink : metsStructLink.getSmLinks())
-				{
-
-					if(pageMap.get(smLink.getFrom()) == null)
-					{
-						pageMap.put(smLink.getFrom(), new ArrayList<Page>());
-					}
-					
-					List<Page> pageListForDiv = pageMap.get(smLink.getFrom());
-					
-					
-					pageListForDiv.add(smLink.getTo());
-					
-				}
-			}
-			
-		}
-		
-		return pageMap;
-	}
-
-	public void setPageMap(Map<MetsDiv, List<Page>> pageMap) {
-		this.pageMap = pageMap;
-	}
-
-	public List<MetsDiv> getLogicalStructure() {
-		return logicalStructure;
-	}
-
-	public void setLogicalStructure(List<MetsDiv> logicalStructure) {
-		this.logicalStructure = logicalStructure;
-	}
-	
-*/	
 	public String getTei() {
 		return this.tei;
 	}
@@ -272,6 +204,18 @@ public class Volume {
 
 	public void setSearchResultHighlight(Highlight searchResultHighlight) {
 		this.searchResultHighlight = searchResultHighlight;
+	}
+
+	public Mets getMets() {
+		return mets;
+	}
+
+	public void setMets(Mets mets) {
+		this.mets = mets;
+	}
+	
+	public List<Page> getPages() {
+		return getMets().getPages();
 	}
 	
 

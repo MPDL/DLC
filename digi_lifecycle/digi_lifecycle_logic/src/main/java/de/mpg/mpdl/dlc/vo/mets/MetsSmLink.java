@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.mets;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlEnum;
@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+
 
 
 public class MetsSmLink {
