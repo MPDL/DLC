@@ -63,8 +63,8 @@
 							<br/>
 							<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title}" />
 							<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher || not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>
- 							<h:outputText value=" , #{volumeUtilBean.getPublicationDates(volume)[0]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 0}"/>
-							<h:outputText value="-#{volumeUtilBean.getPublicationDates(volume)[1]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 1}" />
+ 							<h:outputText value=" , #{volumeUtilBean.getPublicationDates(cc.attrs.volume)[0]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 0}"/>
+							<h:outputText value="-#{volumeUtilBean.getPublicationDates(cc.attrs.volume)[1]}" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes) > 1}" />
 						</pretty:link>
 						
 						<pretty:link mappingId="viewPages"  rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMono}" >
