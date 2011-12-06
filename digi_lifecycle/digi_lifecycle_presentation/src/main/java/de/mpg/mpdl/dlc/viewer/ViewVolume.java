@@ -13,7 +13,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.list.ThumbnailsBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 

@@ -17,7 +17,7 @@ import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.viewer.ViewPages;
-import de.mpg.mpdl.dlc.vo.Page;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
