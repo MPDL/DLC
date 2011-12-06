@@ -12,8 +12,10 @@
 <ui:composition template="templates/template.xhtml">
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
-			<mpdl:list paginatorBean="#{quickSearchResultBean}">
-			</mpdl:list>
+			<mpdl:paginator paginatorBean="#{quickSearchResultBean}">
+				<mpdl:list volume="#{var}">
+				</mpdl:list>
+			</mpdl:paginator>
 		</h:panelGroup>
 	</ui:define>
 </ui:composition>
