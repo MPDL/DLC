@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.util;
 
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;

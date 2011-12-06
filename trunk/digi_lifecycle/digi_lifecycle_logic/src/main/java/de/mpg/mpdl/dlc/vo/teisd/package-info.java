@@ -11,4 +11,5 @@ package de.mpg.mpdl.dlc.vo.teisd;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.*;
-import de.mpg.mpdl.dlc.vo.*;
+import de.mpg.mpdl.dlc.vo.util.StringAdapter;
+

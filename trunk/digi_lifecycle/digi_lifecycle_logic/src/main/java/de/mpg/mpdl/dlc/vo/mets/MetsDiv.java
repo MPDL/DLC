@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.mets;
 
 import java.util.ArrayList;
 import java.util.List;

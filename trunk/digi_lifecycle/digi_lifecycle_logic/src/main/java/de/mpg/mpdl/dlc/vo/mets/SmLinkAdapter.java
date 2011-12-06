@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.vo;
+package de.mpg.mpdl.dlc.vo.mets;
 
 
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
+
 
 public class SmLinkAdapter extends XmlAdapter<MetsStructLink, StructuralLinks> {
 

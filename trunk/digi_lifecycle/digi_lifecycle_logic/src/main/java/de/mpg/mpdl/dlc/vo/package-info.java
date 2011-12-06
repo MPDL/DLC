@@ -3,7 +3,8 @@
 		   xmlns = {
 				   @XmlNs (prefix = "mods", namespaceURI="http://www.loc.gov/mods/v3"),
 				   @XmlNs (prefix = "xlink", namespaceURI = "http://www.w3.org/1999/xlink"),
-				   @XmlNs (prefix = "mets", namespaceURI = "http://www.loc.gov/METS/")
+				   @XmlNs (prefix = "mets", namespaceURI = "http://www.loc.gov/METS/"),
+				   @XmlNs (prefix = "tei", namespaceURI = "http://www.tei-c.org/ns/1.0")
 		   }
 )
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -12,3 +13,5 @@ package de.mpg.mpdl.dlc.vo;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.*;
+import de.mpg.mpdl.dlc.vo.util.StringAdapter;
+
