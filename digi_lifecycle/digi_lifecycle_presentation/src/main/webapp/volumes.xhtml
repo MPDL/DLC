@@ -14,7 +14,10 @@
 
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
-			<mpdl:list paginatorBean="#{allVolumesBean}" />
+			<mpdl:paginator paginatorBean="#{allVolumesBean}">
+				<mpdl:list volume="#{var}">
+				</mpdl:list>
+			</mpdl:paginator>
 		</h:panelGroup>
 	</ui:define>
 </ui:composition>
