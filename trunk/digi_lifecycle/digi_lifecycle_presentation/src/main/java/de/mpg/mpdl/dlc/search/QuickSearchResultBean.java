@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
@@ -52,5 +53,6 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	public void setQuery(String query) {
 		this.query = query;
 	}
-
+	
+	
 }
