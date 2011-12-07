@@ -19,6 +19,55 @@
 *:first-child+html input[type="checkbox"] {
 	border:none !important;
 }
+*:first-child+html .standardHeader .id_siteSearchMenu input[type="radio"] {
+	margin-top:-0.16666em;
+	margin-left:-0.25em;
+}
+*:first-child+html .standardHeader .id_siteSearchMenu input[type="checkbox"] {
+	margin-top:-0.16666em;
+	margin-left:-0.25em;
+}
+*:first-child+html .optionBox .optionBoxLabel {
+	margin:0 0 1em 0;
+}
+*:first-child+html .optionBox li {
+	clear:left;
+}
+*:first-child+html .optionBox li a{
+	margin:0 0 0.75% 0;
+}
+
+
+/*main menu */
+*:first-child+html .menuBox {
+	padding-bottom: 2em;
+}
+*:first-child+html label.menuLevel1Menu {
+	float:none;
+	clear:both;
+	display: block;
+}
+*:first-child+html label.menuLevel1Label {
+	float:none;
+	clear:both;
+	display: block;
+}
+*:first-child+html .menuLevel2 {
+	float:none;
+	clear:both;
+	left:0;
+	width:95%;
+}
+*:first-child+html .menuLevel3 {
+	width:95%;
+}
+*:first-child+html .menuLevel3 li {
+	padding:0;
+	margin:0;
+	height:120%;
+	padding-left:0.5em;
+}
+
 
 /*****************************************************************************************************************
  * 							declacrations for all other browser
@@ -43,7 +92,12 @@ a:hover {
 a:active {
 	color:#00AA11;
 }
-
+a[disabled] {
+	color:#999999;
+}
+*[disabled] {
+	color:#999999;
+}
 *[onclick] {
 	color:#000000;
 	text-decoration: none;
@@ -78,13 +132,17 @@ input[type="search"] {
 	border: solid 0.08333em #B2B2B2;
 	padding:0 0.1666em;
 }
+input[type="number"] {
+	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+	padding:0 0.1666em;
+}
 select {
 	padding:0;
 	border: solid 0.08333em #B2B2B2;
 }
 
 /***              ***
- * global id and class declarations
+ * global id-class and class declarations
  */
 .id_wrapper {
 	min-width:75em; /* 900px */
@@ -92,7 +150,34 @@ select {
 	padding:0 2%;
 	background-color:#FFFFFF;
 }
+.id_header {
+	width:100%;
+}
+.id_headerMetaMenu {
+	width:100%;
+}
+.id_mainMenu {
+	width:100%;
+	overflow: visible !important;
+	z-index:12;
+}
+.id_mainMenu * {
+	overflow: visible !important;
+}
+.id_optionBox {
+	width:100%;
+	padding:0 0 0 0.83333%;
+}
+.id_optionBox.vertikal { /* conditions for vertical option menu */
+	padding:0 0 0 0.16666%;
+}
+.id_contentDescription {
+	width:100%;
+}
 .id_siteTitle {
+	float:right;
+	padding:0 1.6%;
+	font-size:150%;
 	background-color:#EEF2F0;
 }
 .separator {
@@ -102,12 +187,9 @@ select {
 }
 
 
-
-
 /*****************************************************************************************************************
  * 							declacrations for components
  */
-
 
 
 /*****************************************************************************************************************
@@ -115,19 +197,31 @@ select {
  ******************************					with no maximum width				******************************
  *****************************************************************************************************************/
 .dynamicSelectBox_js {
-	border: solid 0.08333em #B2B2B2;
 	height:1.6666em;
 	padding:0;
 	font-size:95%;
-	background-image:url('image/All_Sorting_TriangleAscending_15_Active.png'); 
-	background-position:right;
+	background-image:url('image/_default_16_16.png'); 
+	background-position:right top;
 	text-align: left;
 }
+.dynamicSelectBox_js * {
+	cursor: pointer;
+}
+.dynamicSelectBox_js *[disabled] {
+	cursor: default;
+}
 .dynamicSelectBox_js .selectionContent {
-	width:12em;
-	height:1.6666em;
-	margin-right:0.6666em;
-	padding:0.16666em 0 0 0.6666em;
+	margin-right:1.6666em;
+	padding:0 0.6666em 0.16666em 0.6666em;
+	font-size: 97%;
+	height: 1.16666em;
+	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+}
+.dynamicSelectBox_js .selectionText {
+	display:block;
+	overflow:hidden;
+	white-space:nowrap;
+	text-align: left;
 }
 .dynamicSelectBox_js select {
 	float:left;
@@ -137,49 +231,12 @@ select {
 	/* set the selectbox invisible to show the selectionContent container */
 	opacity: 0;
 	-moz-opacity: 0;
-}
-.dynamicSelectBox_js .selectionText {
-	padding-top:0.16666em;
+	filter: alpha(opacity=0); /* for IE 7 & IE 8 necessary */
 }
 
-/***              ***
- * .id_mainMenu .mainMenu
- * **************** under construction **************************
- */
-.mainMenu * {
-	cursor:pointer;
-}
-.mainMenu *:disabled {
-	cursor:default;
-}
-.mainMenu .level1 {
-	cursor:pointer;
-	text-transform: uppercase;
-}
-.mainMenu menu>li {
-	float:left;
-	display:inline;
-}
-.mainMenu menu>li menu*li {
-	float:none;
-	clear:both;
-}
-.mainMenu .level2 {
-	padding-left:0.6666em;
-}
-.mainMenu .level2 .mpdl_menu_open {
-	background-image: url("image/All_View_TriangleClose_15_Active.png");
-	background-position:-0.3333em 0;
-}
-.mainMenu .level2 .mpdl_menu_default {
-	background-image: none;
-}
-.mainMenu a {
-	clear:both;
-	float:none;
-	color:#000000;
-	padding-left:1.16666em;
-}
+
+
+
 
 
 /*********************************************************************************************************************************
@@ -191,46 +248,45 @@ select {
 }
 
 /*********************************************************************************************************
- ******************************				.standardHeader .metaMenu		******************************
+ ******************************				.standardHeader .id_headerMetaMenu .metaMenu		******************************
  *********************************************************************************************************/
-.id_headerMetaMenu {
-	width:100%;
-}
-.standardHeader .metaMenu {
+.id_headerMetaMenu .metaMenu {
 	float:right;
 }
-.standardHeader .metaMenu * {
+.id_headerMetaMenu .metaMenu * {
 	float:left;
 	padding:0.08333em 2em 0.3333em 2em;
 }
-.standardHeader .metaMenu .separator {
+.id_headerMetaMenu .metaMenu nav {
 	padding:0;
 }
-.standardHeader .metaMenu .userDetail {
+.id_headerMetaMenu .metaMenu select {
+	padding:0;
+}
+.id_headerMetaMenu .metaMenu option {
+	float:none;
+	padding:0;
+}
+.metaMenu a:hover {
+	color:#00AA11;
+}
+.metaMenu .separator {
+	padding:0;
+}
+.metaMenu .userDetail {
 	font-style:italic;
 	font-size:75%;
 	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
 }
-.standardHeader .metaMenu a:hover {
-	color:#00AA11;
+.metaMenu .dynamicSelectBox_js {
+	padding:0;
+	background-position:right top;
 }
-.standardHeader .metaMenu select {
+.metaMenu .dynamicSelectBox_js * {
 	padding:0;
 }
-.standardHeader .metaMenu option {
-	float:none;
-	padding:0;
-}
-.standardHeader .metaMenu .dynamicSelectBox_js {
-	padding:0 0 0 0;
-}
-.standardHeader .metaMenu .dynamicSelectBox_js * {
-	padding:0;
-}
-.standardHeader .metaMenu .dynamicSelectBox_js .selectionContent {
-	padding:0.16666em 0 0 0.6666em;
-	margin-right:0em;
-	font-size: 95%;
+.metaMenu .dynamicSelectBox_js .selectionContent {
+	padding:0 0.6666em 0.16666em 0.6666em;
 }
 /*************************************************************************************************************
  ******************************				.standardHeader .solutionLogo		******************************
@@ -251,25 +307,359 @@ select {
 	margin-top:2%;
 	text-align:right;
 }
-.standardHeader .id_siteSearchMenu input[type="radio"] {
-	float: left; 
+.id_siteSearchMenu .icon_quickSearch_16_16 {
+	background-image: url("image/_default_32_32.png");
+	width:2.66666em;
+	height:2.66666em;
+	margin-right: 0.5em;
 }
-.standardHeader .id_siteSearchMenu input[type="radio"]+label {
+.quickSearchMenu label {
 	float: left; 
-	margin:0 0.6666em 0 0.3333em; 
+	margin:0 1.3333em 0 0.5em; 
 }
+.quickSearchMenu input {
+	float: left;
+}
+.quickSearchMenu input[type="radio"] {
+	margin: 0.16666em 0 0 0;
+}
+.quickSearchMenu input[type="submit"] {
+	margin-left:0.75em;
+}
+
 /*********************************************************************************************************
  ******************************				.standardHeader .headerNav		******************************
  *********************************************************************************************************/
 .standardHeader .headerNav {
 	float:right;
-	margin-top: 2.16666%;
+	margin-top: 2.083333%;
 	text-align: right;
 }
-.standardHeader .headerNav .navEntry {
+.standardHeader .headerNav a.navEntry {
+	float:none;
 	margin-left: 1.3333em;
 	word-break: keep-all; /* for chinese, korean, and other asian languages - no line breaking */
 	white-space:nowrap;
+}
+
+
+/*************************************************************************************************************
+ ******************************				.id_mainMenu						******************************
+ ******************************		includes mainMenu with 3 level		 		****************************** 
+ *************************************************************************************************************/
+.mainMenu {
+	width:100%;
+	margin-bottom: 2em;
+	padding-left:1.6%;
+}
+.menuBox * {
+	cursor:pointer;
+}
+.menuBox *[disabled] {
+	cursor:default;
+}
+.menuBox .menuLevel1 {
+	float:left;
+	position: relative;
+	text-align: center;
+	padding:0 0.5em;
+	color:#CCCCCC;
+	background-color:#555555;
+}
+.menuLevel1Label {
+	color:#00FFFF;
+	font-size: 150%;
+	color:#00FFFF;
+}
+.menuLevel1Label * {
+	color:#00FFFF;
+}
+.menuLevel1Menu {
+	background-image: url("image/_default_16_16.png");
+	background-position: right;
+	padding-right:1.5em;
+	font-size: 150%;
+}
+.menuBox .menuLevel2 {
+	display:none;
+	float:left;
+	overflow: visible;
+	text-align: left;
+}
+.menuBox .menuLevel1:hover .menuLevel2 {
+	display:block;
+	position: absolute;
+	background-color: #777777;
+}
+.menuLevel2 li {
+	background-color: #777777;
+}
+
+.menuLevel2Label {
+	padding-left:0.5em;
+	color:#222222;
+}
+.menuBox .menuLevel2Entry {
+	height:2em; 
+	line-height:2em;
+	width:100%;
+	padding-right:1.5em;
+}
+.menuBox .menuLevel2EntryMenu {
+	height:2em; 
+	line-height:2em;
+	width:100%;
+	background-image: url("image/_default_16_16.png");
+	background-position: right;
+	padding-right:1.5em;
+}
+.menuBox .menuLevel2Entry:hover {
+	background-color: #999999;
+}
+.menuBox .menuLevel2EntryMenu:hover {
+	background-color: #999999;
+}
+.menuBox .menuLevel2Entry:hover .menuLevel3 {
+	display: block;
+	position: absolute;
+	top:0;
+	left:99.8%;
+	height:2em; line-height:2em;
+}
+.menuBox .menuLevel2EntryMenu:hover .menuLevel3 {
+	display: block;
+	position: absolute;
+	top:0;
+	left:99.8%;
+	height:2em; line-height:2em;
+}
+
+.menuBox .menuLevel3 {
+	float:left;
+	display: none;
+	color:#000000;
+}
+.menuBox .menuLevel3 li {
+	background-color: #CCCCCC;
+	padding-left:0.5em;
+	padding-right:0.5em;
+	white-space:nowrap;
+}
+.menuBox .menuLevel3 li:hover {
+	background-color: #00FFFF;
+}
+
+
+
+/*************************************************************************************************************************
+ ******************************				id_optionBox									******************************
+ ******************************			includes: options & actions for current context		******************************
+ *************************************************************************************************************************/
+.id_optionBox.vertikal .optionBox { /* conditions for optionBox in vertical option menu */
+	clear:both;
+	float:none;
+	margin-top:1em;
+}
+.id_optionBox.vertikal .optionBox+.optionBox { /* conditions for optionBox in vertical option menu */
+	clear:both;
+	float:none;
+	margin-left:0;
+}
+.id_optionBox.vertikal menu menu { /* conditions for sub-menu in vertical option menu */
+	padding:0 0 0 0.16666%;
+}
+.optionBox {
+	padding:0;
+	margin:0 0 1.5em 1.6%;
+}
+.optionBox .optionBoxLabel {
+	display: block;
+	margin-bottom:1em;
+	padding:0 1.3333em;
+}
+.optionBox menu menu {
+	padding:0 1.3333em;
+}
+.optionBox:first-child {
+	display:block;
+	margin-left:0%;
+}
+.optionBox label {
+	display:block;
+}
+
+.optionBox li a {
+	float:left;
+	clear:left;
+	display:block;
+	margin-bottom:0.5em;
+}
+.optionBox a+a {
+	clear:none;
+	margin-left:1.3333em;
+}
+.optionBox .dynamicSelectBox_js {
+	display:block;
+	float:none;
+	margin-bottom:1em;
+}
+.optionBox select option[selected] {
+	color:#00AA11;
+}
+.optionBox .active {
+	color:#00AA11;
+}
+
+
+
+/*************************************************************************************************************
+ ******************************				MessageArea							******************************
+ ******************************			for: error, warning, success, info		******************************
+ *************************************************************************************************************/
+.messageArea {
+	width:46.7%;
+	padding:1% 1.6%;
+}
+.messageArea span {
+	display:block;
+}
+.messageError {
+	color:#FF0000;
+}
+.messageWarning {
+	color:#FF6666;
+}
+.messageSuccess {
+	color:#00AA11;
+}
+.messageInfo {
+	color:#555555;
+	font-style:italic;
+}
+/*************************************************************************************************************
+ ******************************				breadcrump & siteTitle				******************************
+ ******************************													******************************
+ *************************************************************************************************************/
+.breadTitle {
+    /* (class which includes the breadcrump and siteTitle) */
+    width:46.7%;
+    padding:0.9% 1.6% 1% 1.6%;
+    text-align:right;
+}
+.breadcrump {
+	line-height:150%;
+}
+
+
+/*****************************************************************************************************************************
+ ******************************				PAGINATOR											******************************
+ ******************************		includes paginatorWave										****************************** 
+ *****************************************************************************************************************************/
+.paginatorWave {
+	width: 100%;
+	margin:0 0 0.2% 0;
+}
+.paginatorWave * {
+	text-align: center;
+}
+.paginatorWave .iconActionLabel {
+	margin-left:0.5em;
+	margin-right:0.5em;
+	cursor: pointer;
+}
+.paginatorWave .rangeSelector {
+	width:14.38%;
+	padding:0.75em 0 0 1.6%;
+}
+.paginatorWave .rangeSelector .dynamicSelectBox_js {
+	margin:0.08333em 0 0;
+}
+.paginatorWave .rangeSelector .selectionText {
+	float:left;
+}
+.paginatorWave .rangeSelector .selectLabel {
+	float:left;
+	margin-top:0.25em;
+	margin-left:0.91666em;
+}
+.paginatorWave .rangeSelector select {
+	width:3.5em;
+}
+.paginatorWave .pageBrowser {
+	width:66.6%
+}
+.paginatorWave .pageBrowser * {
+	cursor: pointer;
+}
+.paginatorWave .pageBrowser *:disabled {
+	cursor: default;
+}
+.paginatorWave .icon_skipTofirst_16_16 {
+	background-image: url("image/_default_16_16.png");
+	background-position: right;
+	text-align:left;
+	padding:0.0833em 1.3333em 0.0833em 0;
+}
+.icon_skipTofirst_16_16:hover .iconActionLabel {
+	color:#00AA11;
+}
+.paginatorWave .icon_backward_16_16 {
+	background-image: url("image/_default_16_16.png");
+	background-position: right;
+	padding:0.0833em 1.3333em 0.0833em 0;
+}
+.paginatorWave .icon_forward_16_16 {
+	background-image: url("image/_default_16_16.png");
+	padding:0.0833em 0 0.0833em 1.3333em;
+}
+.paginatorWave .icon_skipTolast_16_16 {
+	background-image: url("image/_default_16_16.png");
+	text-align:left;
+	padding:0.0833em 0 0.0833em 1.3333em;
+}
+.icon_skipTolast_16_16:hover .iconActionLabel {
+	color:#00AA11;
+}
+.paginatorWave .pageNumber.active {
+	font-size: 200%;
+}
+.paginatorWave .pageNumber.prev {
+	font-size: 150%;
+}
+.paginatorWave .pageNumber.next {
+	font-size: 150%;
+}
+.paginatorWave .pageNumber.neighbour {
+	font-size: 125%;
+}
+.paginatorWave .gotoBox {
+	width:16.6%;
+	padding:0.83333em 0 0 0;
+}
+.paginatorWave .gotoInput {
+	width:23%;
+	padding:0 0.2%;
+}
+.paginatorWave .inputLabel {
+	margin-left:0.16666em;
+}
+
+
+/* for smallest pageBrowser */
+.paginatorWave .pageBrowserMin {
+	width:66.6%;
+}
+.paginatorWave .pageBrowserMin * {
+	cursor: pointer;
+}
+.paginatorWave .pageBrowserMin *:disabled {
+	cursor: default;
+}
+.pageBrowserMin .icon_backward_16_16 {
+	margin-right:1em;
+}
+.pageBrowserMin .icon_forward_16_16 {
+	margin-left:1em;
 }
 
 /*****************************************************************************************************
@@ -278,165 +668,167 @@ select {
  *****************************************************************************************************/
 .bibList {
 	width:99.8%;
-	background-color:#EEF2F0;
-	border:solid 0.08333em #B2B2B2;
+/*	background-color:#EEF2F0; */
+/*	background-color:#33F2F0; */
+	border:solid 0.09em #B2B2B2; /* because of webkit-engine, the border-value must be up-rounded */
+}
+.bibList .iconActionLabel {
+	margin-left:0.8333em;
+	margin-right:0.8333em;
+	cursor: pointer;
 }
 
+.bibList .icon_collapse_16_16 {
+	height:1.3333em;
+	padding-top:0.2%;
+	padding-left:1.3333em;
+	background-image: url("image/_default_16_16.png");
+	cursor: pointer;
+}
+.bibList .icon_collapse_16_16:hover {
+	background-image: url("image/_default_32_32.png");
+}
+.bibList .icon_collapse_16_16:hover .iconActionLabel {
+	color:#00AA11;
+}
+
+.bibList .icon_expand_16_16 {
+	height:1.3333em;
+	padding-top:0.2%;
+	padding-left:1.3333em;
+	background-image: url("image/_default_16_16.png");
+	cursor: pointer;
+}
+.bibList .icon_expand_16_16:hover {
+	background-image: url("image/_default_32_32.png");
+}
+.bibList .icon_expand_16_16:hover .iconActionLabel {
+	color:#00AA11;
+}
+
+.bibList .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/_default_32_32.png");
+}
 /*****************************************************************************************************
  ******************************				.bibList .listHeader		******************************
  *****************************************************************************************************/
 .bibList .listHeader {
 	width:100%;
-	border: solid 0.08333em #B2B2B2;
+/*	border: solid 0.08333em #B2B2B2; */
+	height:2.08333em;
 }
 .bibList .listHeader .selectArea {
-	width:21.75%;
-	text-align:center;
-	padding:0.1% 1.6%;
+	width:22.95%;
+	padding:0.3% 1% 0 1%;
+	height:100%;
 }
-
-
 .bibList .listHeader .content {
-	width:46.7%;
-	padding:0.1% 1.6%;
+	width:47.47%;
+	padding:0.3% 1.2% 0 1.2%;
+	height:100%;
 }
-.bibList .listHeader .statusArea {
-	width:21.75%;
-	padding:0.1% 1.6%;
-}
-.bibList .listHeader .statusArea .orderASC_16_16 {
-	width:100%;
-	padding-left:1.3333em;
-	background-position:0 0.08333em;
-	background-image: url("image/All_Sorting_TriangleAscending_15_Active.png");
-}
-.bibList .listHeader .statusArea img {
-	margin-top:0.25em;
-}
-.bibList .listHeader .triangle_collapse_16_16 {
-	padding-left:1.3333em;
-	margin-left:-1.75%;
-	background-image: url("image/All_View_TriangleClose_15_Active.png");
-}
-.bibList .listHeader .triangle_collapse_16_16:hover {
-	padding-left:1.3333em;
-	margin-left:-1.75%;
-	background-image: url("image/All_View_TriangleClose_15_Hover.png");
-}
-.bibList .listHeader .triangle_collapse_16_16:hover a {
-	color:#00AA11;
-}
-.bibList .listHeader .triangle_expand_16_16 {
-	padding-left:1.3333em;
-	margin-left:-1.75%;
-	background-image: url("image/All_View_TriangleOpen_15_Active.png");
-}
-.bibList .listHeader .triangle_expand_16_16:hover {
-	padding-left:1.3333em;
-	margin-left:-1.75%;
-	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
-}
-.bibList .listHeader .triangle_expand_16_16:hover a {
-	color:#00AA11;
+.bibList .listHeader .showHideAll_js {
+	cursor:pointer;
 }
 
-
+.bibList .listHeader .mediabarActionArea {
+/*	width:23.95%; */
+	width:25%;
+	padding-left:0.1%;
+/*	padding:0.3% 0.58333% 0 0.58333%; */
+	background-color:#EEEEEE;
+	height:100%;
+}
+.bibList .listHeader .toggleListItemVolume {
+	cursor:pointer;
+	margin-left:0.8333em;
+	margin-top:0.3333em;
+}
 /*****************************************************************************************************
  ******************************				.bibList .listBody			******************************
  *****************************************************************************************************/
 .bibList .listBody {
 	width:100%;
 }
+.bibList .itemHeadline .itemTitle {
+	max-width: 50em;
+	font-size:133%;
+	line-height: 125%;
+}
+.bibList .itemHeadline .seasonTitle {
+	max-width: 50em;
+	font-size: 166%;
+	line-height: 125%;
+}
+.bibList .shortView_js {
+	width:100%;
+	margin-top:0.41666em;
+}
+.bibList .mediumView_js {
+	width:100%;
+	display:none;
+	margin-top:0.41666em;
+}
 
-
+.bibList .itemMediabar .itemMediabarCategory {
+	padding-left:1.8333em;
+	background-image: url("image/_default_16_16.png");
+	margin-bottom:0.25em;
+}
 /*****************************************************************************************************************
  ******************************				.bibList .listBody .listItem			******************************
  *****************************************************************************************************************/
 .bibList .listItem {
 	width:100%;
-	border-bottom:0.08333em solid #7F7F7F;
+	border-top:0.08333em solid #7F7F7F;
 }
+.bibList .listItem:hover .itemContent {
+	background-color:#EEF2F0;
+}
+
 .bibList .listItem .itemContent {
 	width:100%;
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
-.bibList .listItem .checkArea {
-	width:22.88%;
+.bibList .listItem .itemSelectArea {
+	width:22.58%;
 	text-align:right;
-	padding:1% 1% 0 1%;
+	padding:1% 1.2% 0 1.2%;
 }
 .bibList .listItem .itemHeadline {
-	width:72.8%;
-	padding:0.1666em 1% 0.1666em 1%; 
-}
-.bibList .listItem .itemHeadline .itemTitle {
-	max-width: 50em;
-	line-height: 145%;
-}
-.bibList .listItem .itemHeadline .collectionTitle {
-	max-width: 50em;
-	font-size: 150%;
-	line-height: 125%;
+	width:72.4%;
+	padding:0.1666em 1.2% 0.1666em 1.2%; 
 }
 .bibList .listItem .statusArea {
 	width:22.88%;
 	text-align:right;
-	padding:1% 1% 0 1%;
+	padding:0 1% 0 1%;
 }
 .bibList .listItem .statusArea * {
 	float: right;
 }
-
-.bibList .listItem .statusArea .icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/All_Status_ItemWithdrawn_31_Static.png");
-}
 .bibList .listItem .statusArea .statusTitle {
-	margin-top:5%;
+	margin-top:2.5%;
 	margin-right:5%;
 }
+.bibList .listItem .itemContentOptions {
+	width:72.4%;
+	padding:0 1.3%;
+}
 .bibList .listItem .itemDetailAction_js {
-	padding:1.91666em 1% 0.1666em 1%; 
+	margin-top:0.75%; 
 }
-.bibList .listItem .itemDetailAction_js .triangle_collapse_16_16 {
-	padding-left:1.3333em;
-	background-image: url("image/All_View_TriangleClose_15_Active.png");
-}
-.bibList .listItem .itemDetailAction_js:hover .triangle_collapse_16_16 {
-	background-image: url("image/All_View_TriangleClose_15_Hover.png");
-}
-.bibList .listItem .itemDetailAction_js:hover .triangle_collapse_16_16 a {
-	color:#00AA11;
-}
-.bibList .listItem .itemDetailAction_js .triangle_expand_16_16 {
-	padding-left:1.3333em;
-	background-image: url("image/All_View_TriangleOpen_15_Active.png");
-}
-.bibList .listItem .itemDetailAction_js:hover .triangle_expand_16_16 {
-	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
-}
-.bibList .listItem .itemDetailAction_js:hover .triangle_expand_16_16 a {
-	color:#00AA11;
-}
-.bibList .listItem .itemDetailsShort {
-	width:100%;
-	margin-top:0.41666em;
-}
-.bibList .listItem .itemDetailsAll {
-	width:100%;
-	display:none;
-	margin-top:0.41666em;
-}
-.bibList .listItem .itemDetailLabel {
+.bibList .listItem .metaLabel {
 	width:22.8%;
 	text-align:right;
 	padding:0 1% 0 1%;
 }
-.bibList .listItem .itemDetailText {
-	width:72.8%;
-	padding:0 1% 0 1%; 
+.bibList .listItem .metaValue {
+	width:72.4%;
+	padding:0 1.3% 0 1.3%; 
 }
 
 /*************************************************************************************************************************
@@ -444,15 +836,16 @@ select {
  *************************************************************************************************************************/
 .bibList .listItemMediaAcc {
 	width:100%;
-	border-bottom:0.08333em solid #7F7F7F;
+	border-top:0.08333em solid #7F7F7F;
+	background-color:#EEF2F0;
 }
 .bibList .listItemMediaAcc:hover {
 	background-color:#EEEEEE;
 }
-.bibList .listItemMediaAcc:hover * .itemContent {
+.bibList .listItemMediaAcc:hover .itemContent {
 	background-color:transparent;
 }
-.bibList .listItemMediaAcc:hover * .itemMediabar {
+.bibList .listItemMediaAcc:hover * .itemMediabar_js {
 	background-color:transparent;
 }
 .bibList .listItemMediaAcc .itemContent {
@@ -460,7 +853,7 @@ select {
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
-.bibList .listItemMediaAcc .checkArea {
+.bibList .listItemMediaAcc .itemSelectArea {
 	width:30.08%;
 	text-align:right;
 	padding:1% 1.6% 0 1.6%;
@@ -468,15 +861,6 @@ select {
 .bibList .listItemMediaAcc .itemHeadline {
 	width:63.41%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
-}
-.bibList .listItemMediaAcc .itemHeadline .itemTitle {
-	max-width: 50em;
-	line-height: 145%;
-}
-.bibList .listItemMediaAcc .itemHeadline .collectionTitle {
-	max-width: 50em;
-	font-size: 150%;
-	line-height: 125%;
 }
 .bibList .listItemMediaAcc .statusArea {
 	width:30.08%;
@@ -489,71 +873,48 @@ select {
 .bibList .listItemMediaAcc .statusArea .icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
-	background-image: url("image/All_Status_ItemWithdrawn_31_Static.png");
+	background-image: url("image/_default_32_32.png");
 }
 .bibList .listItemMediaAcc .statusArea .statusTitle {
-	margin-top:5%;
+	margin-top:2.75%;
 	margin-right:5%;
 }
+.bibList .listItemMediaAcc .itemContentOptions {
+	width:63.41%;
+	padding:0 1.6%;
+}
 .bibList .listItemMediaAcc .itemDetailAction_js {
-	padding:0.91666em 1.6% 0.1666em 1.6%; 
+	margin-top:1.25%; 
 }
-.bibList .listItemMediaAcc .itemDetailAction_js .triangle_collapse_16_16 {
-	padding-left:1.3333em;
-	background-image: url("image/All_View_TriangleClose_15_Active.png");
-}
-.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_collapse_16_16 {
-	background-image: url("image/All_View_TriangleClose_15_Hover.png");
-}
-.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_collapse_16_16 a {
-	color:#00AA11;
-}
-.bibList .listItemMediaAcc .itemDetailAction_js .triangle_expand_16_16 {
-	padding-left:1.3333em;
-	background-image: url("image/All_View_TriangleOpen_15_Active.png");
-}
-.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_expand_16_16 {
-	background-image: url("image/All_View_TriangleOpen_15_Hover.png");
-}
-.bibList .listItemMediaAcc .itemDetailAction_js:hover .triangle_expand_16_16 a {
-	color:#00AA11;
-}
-.bibList .listItemMediaAcc .itemDetailsShort {
-	width:100%;
-	margin-top:0.41666em;
-}
-.bibList .listItemMediaAcc .itemDetailsAll {
-	width:100%;
-	display:none;
-	margin-top:0.41666em;
-}
-.bibList .listItemMediaAcc .itemDetailLabel {
+.bibList .listItemMediaAcc .metaLabel {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.bibList .listItemMediaAcc .itemDetailText {
+.bibList .listItemMediaAcc .metaValue {
 	width:63.41%;
 	padding:0 1.6% 0 1.6%; 
 }
-/*************************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMediaAcc .itemMediabar			******************************
- *************************************************************************************************************************************/
-.bibList .listItemMediaAcc .itemMediabar {
+
+/*****************************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMediaAcc .itemMediabar_js			******************************
+ *****************************************************************************************************************************************/
+.bibList .listItemMediaAcc .itemMediabar_js {
 	padding-left:0.1%;
 	width:24.79%;
 }
-.bibList .listItemMediaAcc .itemMediabar div {
+.bibList .listItemMediaAcc .itemMediabar_js div {
 	width:100%;
+	padding-left:2.66666em;
 	padding-bottom:0.08333em;
 }
-.bibList .listItemMediaAcc .itemMediabar span.ui-accordion-header  {
+.bibList .listItemMediaAcc .itemMediabar_js span.ui-accordion-header  {
 	float:left;
 	width:100%;
+	padding-left:0.8333em;
 	padding-top:0.1666em;
 	padding-bottom: 0.16666em;
 	cursor:pointer;
-	
 	background-color:#B8B8B8;
 /* start css3 enhancements */
 	/* Background-Gradient */
@@ -572,12 +933,284 @@ select {
 		-o-linear-gradient(top, #fff, #B8B8B8);
 /* stop css3 enhancements */
 }
-.bibList .listItemMediaAcc .itemMediabar span.ui-icon {
+.bibList .listItemMediaAcc .itemMediabar_js span.ui-icon {
 	float: left;
-	background: url("image/All_Attached_ClipAttached_15_Static.png") no-repeat 0 0.1666em;
+	background: url("image/_default_16_16.png") no-repeat 0 0.1666em;
+	background-position:left top;
 	display: block;
-    width: 1.41666em;
-    height: 1.41666em;
-    margin-top: -0.1666em;
-    margin-left:0.1666em;
+    width: 1.25em;
+    height: 1.25em;
+    margin-right:0.8333em;
 }
+
+
+
+
+/*********************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMultiVolume	COLORIZING		******************************
+ ******************************							mvColor == multi volume color				******************************
+ *********************************************************************************************************************************/
+.mvColor_1 {
+	background-color:#00AA11;
+}
+/* .mvColor_1:hover {
+	background-color:#006FF0;
+} */
+.mvColor_2 {
+	background-color:#CCAA11;
+}
+/* .mvColor_2:hover {
+	background-color:#CC6FF0;
+}*/ 
+.mvColor_3 {
+	background-color:#99FF99;
+}
+.mvColor_4 {
+	background-color:#DD003C;
+}
+
+
+
+
+
+
+
+
+
+/*************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMultiVolume			******************************
+ *************************************************************************************************************************/
+.bibList .listItemMultiVolume {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+}
+.bibList .listItemMultiVolume:hover .itemContent {
+	background-color:#EEF2F0;
+}
+.bibList .listItemMultiVolume:hover .itemContentData {
+	background-color:transparent;
+}
+.bibList .listItemMultiVolume:hover .itemMediabar {
+	background-color:transparent;
+}
+.bibList .listItemMultiVolume .itemContent {
+	width:99%;
+	background-color:#EEF2F0;
+}
+.bibList .listItemMultiVolume .itemContentData {
+	width:75.5%;
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+
+.bibList .listItemMultiVolume .statusArea {
+	width:31%;
+	text-align:right;
+	padding:0.5em 1.2% 0 1.2%;
+}
+.bibList .listItemMultiVolume .statusArea * {
+	float: right;
+}
+.bibList .listItemMultiVolume .statusArea .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/_default_32_32.png");
+}
+.bibList .listItemMultiVolume .statusArea .statusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.bibList .listItemMultiVolume .itemHeadline {
+	width:63.1%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.bibList .listItemMultiVolume .metaLabel {
+	width:31%;
+	text-align:right;
+	padding:0 1.2%;
+}
+.bibList .listItemMultiVolume .metaValue {
+	width:63.1%;
+	padding:0 1.6% 0.1666em 1.6%; 
+}
+
+/*****************************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemMultiVolume .itemMediabar			******************************
+ *****************************************************************************************************************************************/
+.bibList .listItemMultiVolume .itemMediabar {
+	padding-top:0.75em;
+	padding-left:0.8333em;
+	width:22%;
+	background-color:#EEF2F0;
+}
+.bibList .listItemMultiVolume .itemMediabar div {
+	width:100%;
+	padding-bottom:0.08333em;
+}
+.bibList .listItemMultiVolume .itemMediabar .itemContentOptions {
+	margin-bottom:1em;
+}
+
+
+
+/*************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemVolume			******************************
+ *************************************************************************************************************************/
+.bibList .listItemVolume {
+	width:100%;
+	padding-top:0.3333em;
+	padding-bottom:0.16666em;
+	display:none;
+}
+
+.bibList .listItemVolume+.listItemVolume {
+	padding-top:0.16666em;
+}
+.bibList .listItemVolume:hover .itemContent {
+	background-color:#EEF2F0;
+}
+.bibList .listItemVolume:hover .itemContentData {
+	background-color:transparent;
+}
+.bibList .listItemVolume:hover .itemMediabar {
+	background-color:transparent;
+}
+.bibList .listItemVolume .itemContent {
+	width:99%;
+	background-color:#EEF2F0;
+}
+.bibList .listItemVolume .itemContentData {
+	width:75.5%;
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+
+.bibList .listItemVolume .statusArea {
+	width:31%;
+	text-align:right;
+	padding:0.5em 1.2% 0 1.2%;
+}
+.bibList .listItemVolume .statusArea * {
+	float: right;
+}
+.bibList .listItemVolume .statusArea .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/_default_32_32.png");
+}
+.bibList .listItemVolume .statusArea .statusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.bibList .listItemVolume .itemHeadline {
+	width:63.1%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.bibList .listItemVolume .metaLabel {
+	width:31%;
+	text-align:right;
+	padding:0 1.2%;
+}
+.bibList .listItemVolume .metaValue {
+	width:63.1%;
+	padding:0 1.6% 0.1666em 1.6%; 
+}
+
+/*****************************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemVolume .itemMediabar			******************************
+ *****************************************************************************************************************************************/
+.bibList .listItemVolume .itemMediabar {
+	padding-top:1.25em;
+	padding-left:0.75em;
+	width:22%;
+	background-color:#EEF2F0;
+}
+.bibList .listItemVolume .itemMediabar div {
+	width:100%;
+	padding-bottom:0.08333em;
+}
+.bibList .listItemVolume .itemMediabar .itemMediabarThumb {
+	width:auto;
+	margin-bottom:0.5em;
+}
+.bibList .listItemVolume .itemMediabar .itemContentOptions {
+	margin-left:0.5em;
+	width:auto;
+}
+
+
+
+
+/*************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemSingleVolume			******************************
+ *************************************************************************************************************************/
+.bibList .listItemSingleVolume {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+	background-color:#EEF2F0;
+}
+.bibList .listItemSingleVolume:hover {
+	background-color:#EEF2F0;
+}
+.bibList .listItemSingleVolume:hover .itemContent {
+	background-color:transparent;
+}
+.bibList .listItemSingleVolume:hover .itemMediabar {
+	background-color:transparent;
+}
+.bibList .listItemSingleVolume .itemContent {
+	width:74.88%;
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+.bibList .listItemSingleVolume .itemHeadline {
+	width:63.41%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.bibList .listItemSingleVolume .statusArea {
+	width:30.08%;
+	text-align:right;
+	padding:0.5em 1.6% 0 1.6%;
+}
+.bibList .listItemSingleVolume .statusArea * {
+	float: right;
+}
+.bibList .listItemSingleVolume .statusArea .icon_withdrawn_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/_default_32_32.png");
+}
+.bibList .listItemSingleVolume .statusArea .statusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.bibList .listItemSingleVolume .metaLabel {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.bibList .listItemSingleVolume .metaValue {
+	width:63.41%;
+	padding:0 1.6% 0 1.6%; 
+}
+
+/*****************************************************************************************************************************************
+ ******************************				.bibList .listBody .listItemSingleVolume .itemMediabar_js			******************************
+ *****************************************************************************************************************************************/
+.bibList .listItemSingleVolume .itemMediabar {
+	padding-top:1.25em;
+	padding-left:0.8333em;
+	width:23.79%;
+}
+
+.bibList .listItemSingleVolume .itemContentOptions {
+	width:63.41%;
+	padding:0 1.6%;
+}
+.bibList .listItemSingleVolume .itemMediabarThumb {
+	margin-bottom:0.5em;
+}
+
