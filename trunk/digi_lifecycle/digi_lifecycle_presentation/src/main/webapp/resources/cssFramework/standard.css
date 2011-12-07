@@ -39,13 +39,12 @@ body * {
  * global definitions for div container
  */
 div {
-/*	overflow:hidden; */
+	float:left;
 }
 
 a {
 	cursor: pointer;
 }
-
 *[onclick] {
 	cursor:pointer;
 }
@@ -68,6 +67,16 @@ br {
 	clear:both;
 }
 
+nav {
+	display:inline;
+	white-space:normal;
+}
+nav a {
+	white-space: nowrap;
+}
+option {
+	white-space: nowrap;
+}
 
 /*
  * global id declarations
@@ -95,8 +104,19 @@ br {
 .floatLeft {
 	float:left !important;
 }
-
-
+.clearLeft {
+	clear:left;
+}
+.clearRight {
+	clear:right;
+}
+.clearBoth {
+	clear:both;
+}
+.clearAll {
+	float:none;
+	clear:both;
+}
 /*
  * global grid-size definitions
  */
@@ -195,11 +215,3 @@ br {
 .container_1 { /* = 1 */
 	width:100%;
 }
-
-
-
-
-
-
-
-
