@@ -77,6 +77,7 @@ public abstract class VolumeLoaderBean {
 					} catch (Exception e) {
 						logger.error("cannot retrieve parent Volume" + e.getMessage());
 					}
+					volServiceBean.loadTeiSd(volume, null);
 					volServiceBean.loadTei(volume, null);
 					volServiceBean.loadPagedTei(volume, null);
 				}
