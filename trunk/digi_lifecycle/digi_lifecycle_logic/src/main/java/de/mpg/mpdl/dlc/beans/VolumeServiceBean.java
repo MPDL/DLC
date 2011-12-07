@@ -843,7 +843,7 @@ public class VolumeServiceBean {
 		//Unbmarshall mods from md-record and set in item
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
-		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(item.getMetadataRecords().get(0).getContent());
+		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
 		vol = new Volume();
 		vol.setModsMetadata(md);
 		
@@ -862,7 +862,7 @@ public class VolumeServiceBean {
 
 			}
 			
-			
+			/*
 			else if (c.getProperties().getContentCategory().equals("tei-sd"))
 			{
 				long start = System.currentTimeMillis();
@@ -873,7 +873,7 @@ public class VolumeServiceBean {
 				long time = System.currentTimeMillis()-start;
 				System.out.println("Time TEI-SD: " + time);
 			}
-			
+			*/
 			
 			/*
 			else if (c.getProperties().getContentCategory().equals("tei"))
@@ -937,6 +937,35 @@ public class VolumeServiceBean {
 		}
 		vol.setTei(tei);
 		return tei;
+	}
+	
+	public TeiSd loadTeiSd(Volume vol, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+
+		
+		TeiSd teiSd = null;
+		for(Component c : vol.getItem().getComponents())
+		{
+			
+			
+			if (c.getProperties().getContentCategory().equals("tei-sd"))
+			{
+
+				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
+				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+				fac.setNamespaceAware(true);
+				Document teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				teiSd = (TeiSd)unmarshaller.unmarshal(teiSdXml);
+
+				
+				
+			}
+		}
+		vol.setTeiSd(teiSd);
+		return teiSd;
 	}
 	
 	public String loadPagedTei(Volume vol, String userHandle) throws Exception
