@@ -50,6 +50,7 @@ public abstract class VolumeLoaderBean {
 				this.volume = volServiceBean.retrieveVolume(volumeId, null);
 				if(volume.getItem().getProperties().getContentModel().getObjid().equals(appBean.getCmMono()))
 				{
+					volServiceBean.loadTeiSd(volume, null);
 					volServiceBean.loadTei(volume, null);
 					volServiceBean.loadPagedTei(volume, null);					
 				}
