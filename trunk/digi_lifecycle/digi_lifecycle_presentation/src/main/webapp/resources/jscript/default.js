@@ -3,27 +3,6 @@
  * @version 0.5
  */
 
-/*
- * global function
- * to locate and select all GET parameter
- * - saving into HTTP_GET array
- * - used on index.html 
- */
-var HTTP_GET = new Array();
-function READ_HTTP_GET(variabl) {
-	if(!location.search){
-		return 'undefined';
-	} else {
-		var vars = new Array();
-		vars = location.search.substring(1, location.search.length).split("&");
-		
-		for (var cc = 0; cc < vars.length; cc++) {
-			var tmpVar = vars[cc].split("=");
-			HTTP_GET[tmpVar[0]] = tmpVar[1];
-		}
-	}
-}
-
 //global function to combine all functions to stop immediately default actions
 function stopDefaultAction(e) {
 	e.preventDefault();
@@ -41,137 +20,123 @@ function searchParentTag(source_obj, searchTagString) {
 	return false;
 }
 
+/* this function updates the selectText container with the selected item of selectbox */
+function updateCustomeSelectBox(obj) {
+	$(obj).prev().find('.selectionText').text(obj.options[obj.selectedIndex].text);
+}
+
 /* 
- * this function uses ajax to load content to the wished section 
- * at first: load the content via ajax to the right area
- * at second: switch the source to save the source as VAR & VALUE in HTTP_GET array
- * @param source:String - with path and file (e.g. sample/sample.html)
- * @param target:String - object reference (e.g. an ID -> ".id_id")
- * @param callbackfunc:Function - call as String (e.g. "sample('param1')")
+ * function to focus all or one selectbox 
  */
-function loadAjaxContent(loadURL, target, callbackfunc) {
-	$.ajax({
-		type: "GET",
-		url: loadURL,
-		cache: false,
-		success: function(returndata){
-			$(target).html(returndata);
-			if (callbackfunc) {
-				setTimeout(callbackfunc, 20);
-			} 
-		},
-		error: function() {
-			$(target).html("content not available");
+function focusSelectBox(obj) {
+	
+	if (obj === "all") {
+		$(".dynamicSelectBox_js select").focus();
+	} else {
+		$(obj).focus();
+	}
+}
+
+/* 
+ * resize all dynamic selectBox container to the correct size of invisible selectbox 
+ */
+function resizeSelectBox() {
+	$(".dynamicSelectBox_js").each(function(ind){
+		var selCont = null;
+		if (typeof(selCont = $(this).find(".selectionContent")) != "undefined") {
+			var selectTag = $(this).find('select');
+			var padL = Number(selCont.css("padding-left").replace("px", ""));
+			var padR = Number(selCont.css("padding-right").replace("px", ""));
+			var marL = Number(selCont.css("margin-left").replace("px", ""));
+			var marR = Number(selCont.css("margin-right").replace("px", ""));
+			var newInfoWidth = Math.floor( (selectTag.width() - marR) );
+			var newContainerWidth = Math.floor( (newInfoWidth + marR + marL + padR + padL) )
+			selCont.css("width", newInfoWidth);
+			$(this).css("width", newContainerWidth);
+			selectTag.css("width", newContainerWidth);
+			selectTag.bind("focus", function(evt) { updateCustomeSelectBox(this); } );
+			selectTag.bind("change", function(evt) { updateCustomeSelectBox(this); } );
+		}
+	});
+	/* focus every rendered selectboxes on the page at this time */
+	setTimeout("focusSelectBox('all')", 70);
+}
+
+
+function addShowHideAction() {
+	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
+	$('.showHideAll_js').click(function(e){
+		$(this).toggleClass("icon_collapse_16_16 icon_expand_16_16");
+		stopDefaultAction(e);
+		var listBody = null;
+		
+		for (var i=0; i < $(this).parents().length; i++) {
+			//read the parents array to listHeader and stop, take the listHeader as parent and starting point for selection
+			if ($($(this).parents()[i]).hasClass('listHeader')) {
+				listHead = $($(this).parents()[i]);
+				listBody = $($(this).parents()[i]).siblings();
+				break;
+			}
+		}
+		if (listBody) {
+			var allItemDetailActions = $(listBody.find(".itemDetailAction_js"));
+			if ( !$(this).attr("detailStatus") || $(this).attr("detailStatus") == 'undefined' || $(this).attr("detailStatus") == undefined ) {
+				$(this).attr("detailStatus", "open");
+				$(this).html($.trim($(this).html()).replace("Open ", "Close "));
+				listBody.find('.mediumView_js').show();
+				allItemDetailActions.find("div").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
+				allItemDetailActions.find(".itemActionLabel").text("Less");
+			} else {
+				$(this).attr("detailStatus", "");
+				$(this).html($.trim($(this).html()).replace("Close ", "Open "));
+				listBody.find('.mediumView_js').hide();
+				allItemDetailActions.find("div").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
+				allItemDetailActions.find(".itemActionLabel").text("More");
+			}
 		}
 	});
 	
-	switch (target) {
-		case '.id_content':
-			HTTP_GET["page"] = loadURL;
-			loadAjaxDocu('.id_siteContent');
-			break;
-		case '.id_header':
-			HTTP_GET["header"] = loadURL;
-			break;
-		case '.id_mainMenu':
-			HTTP_GET["menu"] = loadURL;
-			break;
-	}
-}
-
-/*
- * primary use for directly page call
- * use as callback function
- * @param source:String - with path and file (e.g. sample/sample.html)
- */
-function updatePageTitle(source) {
-	var linkTag = $("[onclick*='"+source+"']");
-	$(".id_siteTitle").text(linkTag.attr("title"));
-	
-	
-	
-	var mainMenu = $(".mainMenu");
-	var level1_Ar = mainMenu.find(".level1");
-	console.log(level1_Ar);
-	for (var i = 0; i < level1_Ar.length; i++) {
-		var ind = $(level1_Ar.get(i));
-		console.log(ind.next());
-		if (ind.next().children().find(linkTag)) {
-			console.log('found: '+ind.contents().length);
-		}
-	}
-}
-
-/* 
- * this function uses ajax to load content to the wished section !as text! 
- * at first: switch the content to read the right var from HTTP_GET array
- * at second: load the content to the docu textarea
- * at last: set position for the docu dialog and show it
- * @param source:String - with path and file (e.g. sample/sample.html)
- * @param callbackfunc:Function - call as String (e.g. "sample('param1')")
- */
-function loadAjaxDocu(source, callbackfunc) {
-	
-	var loadURL = '';
-	switch (source) {
-		case '.id_siteHeader':
-			loadURL = HTTP_GET["header"];
-			break;
-		case '.id_siteContent':
-			loadURL = HTTP_GET["page"];
-			break;
-		default:
-			loadURL = source;
-			break;
-	}
-	if (loadURL != '') {
-		$.ajax({
-			type: "GET",
-			url: loadURL,
-			cache: false,
-			success: function(returndata){
-				$(".id_templateDoc.id_").text(returndata);
-				if (callbackfunc) {
-					setTimeout(callbackfunc, 12);
-				} 
-			},
-			error: function() {
-				$(".id_templateDocu").text("content not available");
+	//append listener to the image tag for opening and closing the current item details
+	$('.listItem .itemDetailAction_js, .listItemMediaAcc .itemDetailAction_js').click(function(e){
+		stopDefaultAction(e);
+		
+		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
+			
+		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
+		
+		var allDetails = null;
+		//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
+		if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
+			allDetails.toggle();
+		};
+		
+		//from here: comfort function to handle the showHideAll_js button
+		var list = searchParentTag(this, 'bibList');
+		var showHideAll_jsBtn = list.find('.showHideAll_js');
+		if (showHideAll_jsBtn) {
+			if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
+				showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
+				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
+				list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
+			} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
+				showHideAll_jsBtn.attr("detailStatus", "");
+				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
+				list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
 			}
-		});
-		/*
-		var windowWidth = null;
-		var windowHeight = null;
-		var yOffset = null;
-		
-		// browser switch to get the right values
-		if (window.innerWidth) {
-			windowWidth = window.innerWidth;
-			windowHeight = window.innerHeight;
-			yOffset = window.pageYOffset;
-		} else {
-			windowWidth = document.body.clientWidth;
-			windowHeight = document.body.clientHeight;
-			yOffset = document.body.scrollTop;
 		}
-		
-		$(".id_templateDocu").css("height", (windowHeight * 0.7));
-		$(".id_templateDocuField").css("left", (windowWidth - $(".id_templateDocuField").width())/2);
-		$(".id_templateDocuField").css("top", ((windowHeight - $(".id_templateDocuField").height())/2) + yOffset);
-		*/
-		$(".id_templateDocuField").show();
-	}
+	});
+	
+	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
+		var volume = searchParentTag(this, "listItemMultiVolume").next();
+		volume.toggle();
+		while (volume.next().hasClass("listItemVolume")) {
+			volume = volume.next();
+			volume.toggle();
+		}
+	});
 }
 
-/* default ready function to start the js-action on page */
-$(document).ready(function(ev){
-//	loadAjaxContent("components/menu/templateMenu_accordion_01.html", ".id_mainMenu");
-//	loadAjaxContent("components/header/standard_header.html", ".id_header");
-	
-	READ_HTTP_GET();
-	if (HTTP_GET["page"] != "undefined" && HTTP_GET["page"] != undefined) {
-		loadAjaxContent(HTTP_GET["page"]+".html", ".id_content", "updatePageTitle('"+HTTP_GET["page"]+".html')");
-	} 
-	
-	$(".id_templateDocuField").draggable();
-});
+
+$(document).ready(function(e){
+	resizeSelectBox();
+})

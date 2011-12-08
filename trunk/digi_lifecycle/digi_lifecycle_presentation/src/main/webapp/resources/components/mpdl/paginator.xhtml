@@ -17,75 +17,138 @@
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
-	<h:panelGroup layout="block" id="paginatorList">
-	<h:panelGroup layout="block" id="paginatorTop" styleClass="full_area0 paginator">
-		
-			<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+
+
+
+<div id="#{cc.clientId}">
+	<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+	<h:panelGroup  layout="block" styleClass="paginatorWave">
+		<div class="rangeSelector" align="center">
 			
-		 	<div class="large_area0 small_marginLIncl rangeSelector">
-		 		<h:selectOneMenu id="extSelectTop" styleClass="free_select" value="#{cc.attrs.paginatorBean.elementsPerPageTop}">
-		 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
-		 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
-		 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
-		 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
-		 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
-		 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
-		 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render="paginatorList"/>
-		 		</h:selectOneMenu>
-		 		<h:outputLabel id="lblItemList_ObjectsPerPage" for="extSelectTop" styleClass="free_label hitsLabel" value=" #{lbl.paginator_objectsPerPage}" />
-		 	</div>
-		
-		 	<div id="pageBrowser" class="small_marginLExcl pageBrowser">
-		 		<label id="lblPage" class="noDisplay pageLabel">Page</label>
-		 		<h:commandButton id="btPartListSize" styleClass="min_imgBtn skipToFirst" value=" " title="#{tlt.Pag_First}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}">
-		 			<f:ajax render="paginatorList"/>
-		 		</h:commandButton>
-		 		<h:commandButton id="btList_lkPrevious" styleClass="backward" value="#{lbl.paginator_previous}" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
-		 			<f:ajax render="paginatorList"/>
-		 		</h:commandButton>
-		 		<h:panelGroup styleClass="seperator" />
+				<div style="width: 59px;" class="dynamicSelectBox_js">
+					<div style="width: 26px;" class="selectionContent">
+						<span class="selectionText"></span>
+					</div>
+					<h:selectOneMenu style="width: 59px;" id="extSelectTop" value="#{cc.attrs.paginatorBean.elementsPerPageTop}">
+			 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
+			 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+			 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+			 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+			 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+			 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
+			 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render=":#{cc.clientId}"/>
+			 		</h:selectOneMenu>
+				</div>
+				<h:outputLabel styleClass="selectLabel" value="je Seite" title="???placeholder???"/>
+			
+		</div>
+		<div class="pageBrowser">
+			<nav>
+				<h:commandLink id="btPartListSize" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}">
+		 			<span class="icon_skipTofirst_16_16" >
+		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_First}" title="#{tlt.Pag_First}"/>
+		 			</span>
+		 			<f:ajax render=":#{cc.clientId}"/>
+		 		</h:commandLink>
+		 		<h:commandLink id="btList_lkPrevious" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
+		 			<span class="icon_backward_16_16">
+		 				<h:outputText value="&#160;" />
+		 			</span>
+		 			
+		 			<f:ajax render=":#{cc.clientId}"/>
+		 		</h:commandLink>
+		 		
+		 		
 		 		<a4j:repeat id="paginator" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
 		 	
-		 			<h:commandButton id="btPageNumber1" styleClass="xSmall_txtBtn" value="#{paginatorPage.number}"  action="#{paginatorPage.goToPage}" rendered="#{!(paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber)}">
-		 				<f:ajax render=":#{cc.clientId}:paginatorList"/>
-		 			</h:commandButton>
-		 			<h:commandButton id="btPageNumber2" styleClass="xSmall_txtBtn actual" value="#{paginatorPage.number}"  disabled="true" rendered="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
-		 			</h:commandButton>
-		 			<h:panelGroup styleClass="seperator" />
-		 		
+		 			<h:commandLink id="btPageNumber1" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
+		 				<h:panelGroup styleClass="pageNumber #{
+				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
+				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
+				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
+				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
+		 					<h:outputText value="#{paginatorPage.number}"  />
+		 				</h:panelGroup>
+		 				<f:ajax render=":#{cc.clientId}"/>
+		 			</h:commandLink>
 		 		</a4j:repeat>
-		 		<h:commandButton id="btList_lkNext" styleClass="forward" value="#{lbl.paginator_next}" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
-		 			<f:ajax render="paginatorList"/>
-		 		</h:commandButton>
-		 		<h:commandButton id="btLinkForLastPage" styleClass="min_imgBtn skipToLast" value=" " title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
-		 			<f:ajax render="paginatorList"/>
-		 		</h:commandButton>
-		 	</div>
+
+				<h:commandLink id="btList_lkNext" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
+		 			<span class="icon_forward_16_16">
+		 				<h:outputText value="&#160;" />
+		 			</span>
+		 			
+		 			<f:ajax render=":#{cc.clientId}"/>
+		 		</h:commandLink>
+		 		<h:commandLink id="btLinkForLastPage" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
+		 			<span class="icon_skipTolast_16_16" >
+		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
+		 			</span>
+		 			<f:ajax render=":#{cc.clientId}"/>
+		 		</h:commandLink>
+
+			</nav>
+		</div>
 		
-		 	<div class="gotoBox">
-		 		<label class="free_label gotoLabel"><h:outputText id="lblList_lblGoToPage" value="#{lbl.paginator_goToPage}"/></label>
-		 		<h:inputText id="inpGoToPageTop" styleClass="tiny_txtInput" value="#{cc.attrs.paginatorBean.goToPageTop}"/>
-		 		<h:outputLabel id="lblItemList_of" styleClass="free_label" value="#{lbl.paginator_of} " />
-		 		<h:outputLabel id="lblPaginatorPageSize" styleClass="free_label" value="#{cc.attrs.paginatorBean.paginatorPageSize}" />
-		 		<h:commandButton id="btList_btGo" styleClass="xTiny_txtBtn paginatorFallbackGoBtn" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
-		 			<f:ajax event="click" render="paginatorList"/>
-		 		</h:commandButton>
-		 	</div>
-		 </h:panelGroup>
-		 
-		 <div class="full_area0 listHeader">&#160;</div>
-		 	<ol>
+		<div class="gotoBox">
+			<h:inputText id="inpGoToPageTop" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
+			<h:outputLabel id="lblItemListPageSize" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+			<h:commandButton id="btList_btGo" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+		 		<f:ajax event="click" render=":#{cc.clientId}"/>
+		 	</h:commandButton>
+		</div>
+		
+		
+	</h:panelGroup>
+	
+
+		<div class="bibList">
+			<div class="listHeader">
+				<div class="selectArea">
+					<div style="width: 154px;" class="dynamicSelectBox_js">
+						<div style="width: 121px;" class="selectionContent">
+							<span class="selectionText"></span>
+						</div>
+						<select style="width: 154px;" name="bibListSelect" title="???placeholder???">
+							<option>-- choose --</option>
+							<optgroup label="check">
+								<option>Check all on page</option>
+								<option>Check all on result</option>
+							</optgroup>
+							<optgroup label="-----------"></optgroup>
+							<optgroup label="uncheck">
+								<option>Uncheck all on page</option>
+								<option>Uncheck all on result</option>
+							</optgroup>
+						</select>
+					</div>
+				</div>
+				
+				<div class="content">
+					<div class="showHideAll_js icon_collapse_16_16" title="???placeholder???">
+						<a class="iconActionLabel" title="???placeholder???" target="_self">Open all</a>
+					</div>
+				</div>
+				
+				<div class="mediabarActionArea">
+					<div class="toggleListItemVolume icon_collapse_16_16" title="???placeholder???">
+						<a class="iconActionLabel" title="???placeholder???">Open / Close MediabarItems</a>
+					</div>
+				</div>
+			</div>
+			<div class="listBody">
 				<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
 				 	
 				 	<cc:insertChildren/>
 				</a4j:repeat>
-			</ol>
+			</div>
+		</div>
 		
 		
 		
 		
 		
 		
-	</h:panelGroup>
+	</div>
 </cc:implementation>
 </html>
