@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.vo.collection;
 
+import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 
@@ -10,7 +11,7 @@ public class Collection {
 	
 	private String description;
 	
-	private String orgaId;
+	private String ouId;
 	
 	private DLCAdminDescriptor dlcAD;
 
@@ -38,12 +39,13 @@ public class Collection {
 		this.description = description;
 	}
 
-	public String getOrgaId() {
-		return orgaId;
+
+	public String getOuId() {
+		return ouId;
 	}
 
-	public void setOrgaId(String orgaId) {
-		this.orgaId = orgaId;
+	public void setOuId(String ouId) {
+		this.ouId = ouId;
 	}
 
 	public DLCAdminDescriptor getDlcAD() {

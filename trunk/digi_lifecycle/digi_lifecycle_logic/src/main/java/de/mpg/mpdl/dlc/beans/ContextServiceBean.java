@@ -58,7 +58,8 @@ public class ContextServiceBean {
 	        SearchRetrieveResponse response = null;
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-			req.setQuery(" \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+			//TODO
+			req.setQuery("\"/properties/public-status\" =opened or " + "\"/properties/public-status\" =created and "  + " \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
@@ -83,6 +84,7 @@ public class ContextServiceBean {
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			contextClient.setHandle(userHandle);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+			//TODO
 			req.setQuery("\"/properties/public-status\" =opened or " + "\"/properties/public-status\" =created and "  + " \"/properties/type\"=DLC and" +"\"/properties/created-by/id\"="+ id);
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
@@ -123,7 +125,7 @@ public class ContextServiceBean {
 	
 	
 	public Context createNewContext(Collection c, String userHandle)
-	{
+	{ 
 		logger.info("Creating new context");
 		Context context =prepareContext(c,userHandle);
 		try
@@ -148,7 +150,7 @@ public class ContextServiceBean {
 	}
 	
 	private Context prepareContext(Collection c, String userHandle)
-	{
+	{  
 		logger.info("Preparing new Context");
 		Context context = new Context();
         ContextProperties properties = new ContextProperties();
@@ -156,7 +158,7 @@ public class ContextServiceBean {
         properties.setDescription(c.getDescription());
         properties.setType("DLC");
         OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
-        ous.add(new OrganizationalUnitRef(c.getOrgaId()));
+        ous.add(new OrganizationalUnitRef(c.getOuId()));
         properties.setOrganizationalUnitRefs(ous);
         context.setProperties(properties);       
 		return context;
