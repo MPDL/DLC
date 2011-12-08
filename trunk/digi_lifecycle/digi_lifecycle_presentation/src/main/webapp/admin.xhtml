@@ -35,7 +35,7 @@
 		            Create new OU:</h:outputLink>
 		    </rich:toolbar>
 		    
-   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" />
+   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" command="#{adminBean.createNewOrga}"/>
 
 		</h:panelGroup>
 		
@@ -71,7 +71,8 @@
 		<h:panelGroup layout="block" rendered="#{loginBean.login}">
 			<h3>Created Users:</h3>
 			<a4j:repeat value="#{loginBean.user.createdUserAccounts}" var="ua">
-			    <h:outputText value="#{ua.properties.name}"/>
+			    <h:outputText value=" loginname: #{ua.properties.loginName} "/>
+			    <h:outputText value=" (name: #{ua.properties.name}) "/>
 			   <br />
 	      	</a4j:repeat>
 		 
@@ -89,7 +90,7 @@
 		            Create new User:</h:outputLink>
 		    </rich:toolbar>
 
-   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" />
+   			<mpdl:userEditor target="popupUser" title="Create new" user="#{adminBean.user}" />
 
 		</h:panelGroup>
 

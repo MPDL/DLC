@@ -14,7 +14,7 @@
 	<cc:attribute name="target" required="true"/>
 	<cc:attribute name="title" requied="false" />
 	<cc:attribute name="organization" required="true" />
-
+	<cc:attribute name="command"  method-signature="java.lang.String action()" required="false" />
 </cc:interface>	
 
 <!-- IMPLEMENTATION -->
@@ -32,7 +32,7 @@
         
 
         <h:panelGrid columns="2">
-            <h:outputText value="Name" />
+            <h:outputText value="Name*" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
             
             <h:outputText value="Desciption" />
@@ -49,7 +49,7 @@
             <h:outputText value="City" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
 
-			<a4j:commandButton value="save" action="#{adminBean.createNewOrga}" execute="@form"/>
+			<a4j:commandButton value="save" action="#{cc.attrs.command}" execute="@form"/>
         </h:panelGrid>
 
     </rich:popupPanel>

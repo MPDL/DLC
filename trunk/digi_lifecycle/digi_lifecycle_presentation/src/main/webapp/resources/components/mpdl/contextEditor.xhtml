@@ -32,19 +32,37 @@
         
 
         <h:panelGrid columns="2">
-            <h:outputText value="Name" />
-            <h:inputText value="#{cc.attrs.collection.name}"/>
-            
-            <h:outputText value="Desciption" />
-            <h:inputText value="#{cc.attrs.collection.description}"/>
-            
-            <h:panelGroup rendered="loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'">
-	            <h:outputText value="Organization" />
-				<h:selectOneMenu id="contextId" value="#{cc.attrs.collection.orgaId}">
-					<f:selectItems value="#{adminBean.contextSelectItems}" />
+
+            <h:outputText value="Name*"/>
+            <h:inputText id="contextName" value="#{cc.attrs.collection.name}">
+            </h:inputText>
+			
+            <h:outputText value="Desciption*"/>
+            <h:inputText id="contextDes" value="#{cc.attrs.collection.description}">
+             </h:inputText>
+ 
+         
+            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+	            <h:outputText value="In" />
+	        </h:panelGroup>
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+				<h:selectOneMenu id="contextId1" value="#{cc.attrs.collection.ouId}">
+					<f:selectItems value="#{adminBean.ouSelectItems}" />
 				</h:selectOneMenu>
 			</h:panelGroup>
+			
+             <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">
+	            <h:outputText value="In" />
+	        </h:panelGroup>
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">
+				<h:selectOneMenu id="contextId2" value="#{cc.attrs.collection.ouId}">
+					<f:selectItems value="#{adminBean.ouSelectItems}" />
+				</h:selectOneMenu>
+			</h:panelGroup> 
+			
 			<a4j:commandButton value="save" action="#{adminBean.createNewContext}" execute="@form"/>
+
+
         </h:panelGrid>
 
     </rich:popupPanel>

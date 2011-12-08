@@ -22,6 +22,7 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.UserAccountServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.collection.DLCAdminDescriptor;
@@ -48,19 +49,25 @@ public class AdminBean{
 	
 	@EJB
 	private ContextServiceBean contextServiceBean;
+	
+	@EJB
+	private UserAccountServiceBean uaServiceBean;
 
 	
 	private Organization orga = new Organization();
-	
 	private Collection collection = new Collection();
-	private List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
-	
 	private User user = new User();
+	
+	private List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
+
+	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
+	
+
 	
 	public AdminBean() throws Exception
 	{
 		initOrganization();
-		initCollection();
+//		initCollection();
 
 	}
 	
@@ -75,41 +82,48 @@ public class AdminBean{
 	public void initCollection()
 	{
 		DLCAdminDescriptor dlcAD = new DLCAdminDescriptor();
-		collection.setDlcAD(dlcAD);
+		this.collection.setDlcAD(dlcAD);
 		
 	}
+
 	@PostConstruct
-	public void initContexts()
+	public void init()
 	{           
-//		this.ouSelectItems.clear();
-		SelectItem item;
-		List<String> ids = new ArrayList();
+		this.ouSelectItems.clear();
+		this.contextSelectItems.clear();
+
 		for(Grant grant: loginBean.getUser().getGrants())
 		{ 
 			try
-			{
+			{   
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
-				{
+				{ 
 					for(OrganizationalUnit ou : loginBean.getUser().getCreatedOUs())
-						this.ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+					{
+						this.ouSelectItems.add(new SelectItem(ou.getObjid(), ou.getProperties().getName()));
+					}
 				}else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
-				{
+				{  
 					this.ouSelectItems.add(new SelectItem(loginBean.getUser().getOu().getObjid(),loginBean.getUser().getOu().getProperties().getName()));
+			  		
+					for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu()))
+						this.contextSelectItems.add(new SelectItem(context.getObjid()+"|"+context.getProperties().getName(), context.getProperties().getName()));
 				}
 			}catch(Exception e)
 			{
-					
+				logger.error("Error init seleteItem ", e);
 			}
-		}
-		this.collection.setOrgaId((String) ouSelectItems.get(0).getValue());	
-	}
+		}   
 
-	
-	
+	}
+  
 	public String createNewOrga() throws Exception
-	{       
+	{
+
 		ouServiceBean.createNewOU(orga, loginBean.getUserHandle());
 		loginBean.getUser().setCreatedOUs( ouServiceBean.retrieveOUsCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
+		applicationBean.setOus(ouServiceBean.retrieveOUs());
+		init();
 		return "pretty:admin";
 	}
 	
@@ -117,11 +131,14 @@ public class AdminBean{
 	{
 		contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
 		loginBean.getUser().setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
+		init();
 		return "pretty:admin";
 	}
-	
+	   
 	public String createNewUser() throws Exception
-	{
+	{      
+		uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
+		loginBean.getUser().setCreatedUserAccounts(uaServiceBean.retrieveCreatedUsers(loginBean.getUserHandle(), loginBean.getUser().getId()));
 		return "pretty:admin";
 	}
 
@@ -164,4 +181,25 @@ public class AdminBean{
 	public void setApplicationBean(ApplicationBean applicationBean) {
 		this.applicationBean = applicationBean;
 	}
+
+	public List<SelectItem> getOuSelectItems() {
+		return ouSelectItems;
+	}
+
+	public void setOuSelectItems(List<SelectItem> ouSelectItems) {
+		this.ouSelectItems = ouSelectItems;
+	}
+
+	public List<SelectItem> getContextSelectItems() {
+		return contextSelectItems;
+	}
+
+	public void setContextSelectItems(List<SelectItem> contextSelectItems) {
+		this.contextSelectItems = contextSelectItems;
+	}  
+
+
+	
+	
+	
 }

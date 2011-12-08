@@ -42,7 +42,7 @@ public class LoginBean
     private User user;
     private String tab = "toc";
     @EJB
-    private UserAccountServicebean userAccountServiceBean;
+    private UserAccountServiceBean userAccountServiceBean;
     
     public String getTab() 
     {
