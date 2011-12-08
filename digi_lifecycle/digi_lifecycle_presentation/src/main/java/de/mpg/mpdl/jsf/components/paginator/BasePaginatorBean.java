@@ -122,7 +122,7 @@ public abstract class BasePaginatorBean<ListElementType>
     public void reset()
     {
         setCurrentPageNumber(1);
-        setElementsPerPage(25);
+        setElementsPerPage(12);
     }
 
     // Must be called by PrettyFaces action method
