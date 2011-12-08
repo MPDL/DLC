@@ -9,14 +9,22 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.UserAccountHandlerClient;
+import de.escidoc.core.resources.aa.useraccount.Attribute;
 import de.escidoc.core.resources.aa.useraccount.Attributes;
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.aa.useraccount.GrantProperties;
 import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
+import de.escidoc.core.resources.aa.useraccount.UserAccountProperties;
+import de.escidoc.core.resources.common.TaskParam;
+import de.escidoc.core.resources.common.reference.ContextRef;
+import de.escidoc.core.resources.common.reference.Reference;
+import de.escidoc.core.resources.common.reference.RoleRef;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
@@ -25,13 +33,13 @@ import de.mpg.mpdl.dlc.vo.user.User;
 
 
 @Stateless
-public class UserAccountServicebean {
-	private static Logger logger = Logger.getLogger(UserAccountServicebean.class);
+public class UserAccountServiceBean {
+	private static Logger logger = Logger.getLogger(UserAccountServiceBean.class);
 	
 	private ContextServiceBean contextServiceBean;
 	private OrganizationalUnitServiceBean ouServiceBean;
 	
-	public UserAccountServicebean()
+	public UserAccountServiceBean()
 	{
 		try
 		{
@@ -132,6 +140,102 @@ public class UserAccountServicebean {
 		return uas;
 	}
 	
+	
+	public UserAccount createNewUserAccount(User user, String userHandle) 
+	{
+		logger.info("Creating new user Account");
+		UserAccount ua = prepareUserAccount(user);
+		try
+		{
+			UserAccountHandlerClient client =  new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			ua = client.create(ua);
+			
+			//update Password
+			TaskParam taskParam = new TaskParam();
+			taskParam.setPassword(user.getPassword());
+			taskParam.setLastModificationDate(ua.getLastModificationDate());
+			client.updatePassword(ua.getObjid(), taskParam);
+			
+			//Set Grant
+			Grant grant = new Grant();
+			if(user.getOuId() != null)
+			{
+				grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.ou.admin"));
+				client.createGrant(ua.getObjid(), grant);
+				grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.context.admin"));
+				client.createGrant(ua.getObjid(), grant);
+				grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.userAccount.admin"));
+				client.createGrant(ua.getObjid(), grant);
+				
+				//set Attribute
+				Attribute attribute = new Attribute("o", user.getOuId());
+				client.createAttribute(ua.getObjid(), attribute);
+			}
+			if(user.getDepositorContextIds() != null)
+			{
+				for(String contextInfo : user.getDepositorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+				}				
+			}
+			if(user.getModeratorContextIds() != null)
+			{
+				for(String contextInfo : user.getModeratorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+				}
+			}
+						
+			
+			
+			
+		}catch(Exception e)
+		{
+			logger.error("Error while creating new user", e);
+		}
+		return ua;
+	}
+	
+	private Grant newGrant(Grant grant, String roleId) throws Exception {
+
+		GrantProperties grantProperties = new GrantProperties();
+	 	grantProperties.setGrantRemark("new context grant");
+	 	RoleRef roleRef = new RoleRef(roleId);
+	 	grantProperties.setRole(roleRef);
+	 	grant.setGrantProperties(grantProperties);
+	 	return grant;
+	}
+	
+	private Grant newGrant(Grant grant, String roleId, String contextInfo) throws Exception {
+
+		GrantProperties grantProperties = new GrantProperties();
+	 	grantProperties.setGrantRemark("new context grant");
+	 	RoleRef roleRef = new RoleRef(roleId);
+	 	grantProperties.setRole(roleRef);
+	 	String[] info= contextInfo.split("\\|");
+	 	Reference ref = new ContextRef("/ir/context/"+info[0] , info[1]);
+	 	
+	 	grantProperties.setAssignedOn(ref);
+	 	grant.setGrantProperties(grantProperties);
+	 	return grant;
+	}
+	
+    private UserAccount prepareUserAccount(User user) {
+
+        UserAccount userAccount = new UserAccount();
+
+        UserAccountProperties properties = new UserAccountProperties();
+        properties.setLoginName(user.getLoginName());
+        properties.setName(user.getName());
+        userAccount.setProperties(properties);
+
+        return userAccount;
+    }
+
+	
 
 	public static void main(String[] args) throws Exception {
 		String userAccountID = "escidoc:15006";
@@ -182,5 +286,6 @@ public class UserAccountServicebean {
 
 		return client.createGrant(userAccountId, grant);
 }
+
 
 }

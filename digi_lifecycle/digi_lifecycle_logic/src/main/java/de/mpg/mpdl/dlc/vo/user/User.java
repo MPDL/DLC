@@ -11,10 +11,13 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 public class User {
 	
 	private String id;
+	private String name;
 	private String loginName;
+	private String password;
 	private List<Grant> grants = new ArrayList<Grant>();
 	
 	private OrganizationalUnit ou = new OrganizationalUnit();
+	private String ouId;
 	
 	private List<OrganizationalUnit> createdOUs = new ArrayList<OrganizationalUnit>();
 	private List<Context> createdContexts = new ArrayList<Context>();
@@ -23,11 +26,9 @@ public class User {
 	private List<Context> depositorContexts = new ArrayList<Context>();
 	private List<Context> moderatorContexts = new ArrayList<Context>();
 	
+	private List<String> depositorContextIds = new ArrayList<String>();
+	private List<String> moderatorContextIds = new ArrayList<String>();
 
-	public User()
-	{
-		
-	}
 	
 	public String getId() {
 		return id;
@@ -37,6 +38,14 @@ public class User {
 		this.id = id;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getLoginName() {
 		return loginName;
 	}
@@ -45,6 +54,14 @@ public class User {
 		this.loginName = loginName;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public List<Grant> getGrants() {
 		return grants;
 	}
@@ -59,6 +76,16 @@ public class User {
 
 	public void setOu(OrganizationalUnit ou) {
 		this.ou = ou;
+	}
+	
+	
+
+	public String getOuId() {
+		return ouId;
+	}
+
+	public void setOuId(String ouId) {
+		this.ouId = ouId;
 	}
 
 	public List<OrganizationalUnit> getCreatedOUs() {
@@ -100,6 +127,26 @@ public class User {
 	public void setModeratorContexts(List<Context> moderatorContexts) {
 		this.moderatorContexts = moderatorContexts;
 	}
+
+	public List<String> getDepositorContextIds() {
+		return depositorContextIds;
+	}
+
+	public void setDepositorContextIds(List<String> depositorContextIds) {
+		this.depositorContextIds = depositorContextIds;
+	}
+
+	public List<String> getModeratorContextIds() {
+		return moderatorContextIds;
+	}
+
+	public void setModeratorContextIds(List<String> moderatorContextIds) {
+		this.moderatorContextIds = moderatorContextIds;
+	}
+
+
+	
+	
 
 
 

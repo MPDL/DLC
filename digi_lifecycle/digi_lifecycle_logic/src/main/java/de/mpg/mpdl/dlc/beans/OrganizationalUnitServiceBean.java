@@ -183,7 +183,7 @@ public class OrganizationalUnitServiceBean {
 	}
 	
 	public OrganizationalUnit createNewOU(Organization orga, String userHandle)
-	{   
+	{      
 		logger.info("Trying to create a new organization");
 		OrganizationalUnit ou = new OrganizationalUnit();
 		try{
