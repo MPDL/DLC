@@ -78,7 +78,7 @@ public class ViewOU {
 	}
 
 	public String save() throws Exception
-	{
+	{  
 		ouServiceBean.updateOU(orga, loginBean.getUserHandle());
 		this.orga = update(orga.getId());
 		return "pretty:ou";
@@ -89,8 +89,4 @@ public class ViewOU {
 		return ouServiceBean.retrieveOrganization(id);
 	}
 	
-
-
-	
-
 }

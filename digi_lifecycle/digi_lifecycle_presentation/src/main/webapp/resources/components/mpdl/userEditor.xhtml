@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="target" required="true"/>
+	<cc:attribute name="title" requied="false" />
+	<cc:attribute name="user" required="true" />
+
+</cc:interface>	
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>	
+
+
+
+	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popupUser')}.hide()">
+        <f:facet name="header">
+            <h:outputText value="#{cc.attrs.title}" />
+        </f:facet>
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('popupUser')}.hide(); return false;">
+            	X
+            </h:outputLink>
+        </f:facet>
+        
+
+        <h:panelGrid columns="2">
+
+            <h:outputText value="name*"/>
+            <h:inputText id="name" value="#{cc.attrs.user.name}" />
+
+            <h:outputText value="loginname*"/>
+            <h:inputText id="loginName" value="#{cc.attrs.user.loginName}" />
+			
+            <h:outputText value="Password*"/>
+            <h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}" />
+
+            
+            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+				<h:outputText value="Admin of*: "/>
+			</h:panelGroup>
+           <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+				<h:selectOneMenu value="#{cc.attrs.user.ouId}">
+					<f:selectItems value="#{adminBean.ouSelectItems}" />
+				</h:selectOneMenu>
+			</h:panelGroup>
+			
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:outputText value="Depositor of: "/>
+			</h:panelGroup>
+            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyListbox  value="#{cc.attrs.user.depositorContextIds}">
+					<f:selectItems  value="#{adminBean.contextSelectItems}" />
+				</h:selectManyListbox>
+			</h:panelGroup>	
+			
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:outputText value="Moderator of: "/>
+			</h:panelGroup>
+            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyListbox value="#{cc.attrs.user.moderatorContextIds}">
+					<f:selectItems value="#{adminBean.contextSelectItems}" />
+				</h:selectManyListbox>
+			</h:panelGroup>	
+
+
+
+			<a4j:commandButton value="save" action="#{adminBean.createNewUser}" execute="@form"/>
+
+
+        </h:panelGrid>
+
+    </rich:popupPanel>
+
+</cc:implementation>
+	
+	
+</html>
