@@ -943,7 +943,7 @@ public class VolumeServiceBean {
 	{
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
-
+		Document teiSdXml = null;
 		
 		TeiSd teiSd = null;
 		for(Component c : vol.getItem().getComponents())
@@ -957,7 +957,7 @@ public class VolumeServiceBean {
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				Document teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
 				teiSd = (TeiSd)unmarshaller.unmarshal(teiSdXml);
 
 				
@@ -965,6 +965,7 @@ public class VolumeServiceBean {
 			}
 		}
 		vol.setTeiSd(teiSd);
+		vol.setTeiSdXml(teiSdXml);
 		return teiSd;
 	}
 	
