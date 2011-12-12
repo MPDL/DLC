@@ -243,7 +243,7 @@ public abstract class BasePaginatorBean<ListElementType>
      */
     public int getOffset()
     {
-        return ((currentPageNumber - 1) * elementsPerPage);
+        return ((currentPageNumber - 1) * elementsPerPage) + 1;
     }
 
     /*
@@ -327,7 +327,8 @@ public abstract class BasePaginatorBean<ListElementType>
     {
         setElementsPerPage(getElementsPerPageTop());
         // set new PageNumber to a number where the first element of the current Page is still displayed
-        setCurrentPageNumber(((currentPageNumber - 1 * elementsPerPage + 1) / (elementsPerPage)) + 1);
+        //setCurrentPageNumber(((currentPageNumber - 1 * elementsPerPage + 1) / (elementsPerPage)) + 1);
+        setCurrentPageNumber(1);
         return getNavigationString();
     }
 
@@ -341,7 +342,8 @@ public abstract class BasePaginatorBean<ListElementType>
     {
         setElementsPerPage(getElementsPerPageBottom());
         // set new PageNumber to a number where the first element of the current Page is still displayed
-        setCurrentPageNumber(((currentPageNumber - 1 * elementsPerPage + 1) / (elementsPerPage)) + 1);
+        //setCurrentPageNumber(((currentPageNumber - 1 * elementsPerPage + 1) / (elementsPerPage)) + 1);
+        setCurrentPageNumber(1);
         return getNavigationString();
     }
 
