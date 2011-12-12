@@ -25,3 +25,7 @@
 input{
 	border: solid 1px;
 }
+
+.searchHit {
+    background-color: #A1CBDA;
+}
