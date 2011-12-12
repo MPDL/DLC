@@ -127,7 +127,6 @@ function addShowHideAction() {
 	});
 	
 	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
-		alert("sldfkjsdfk");
 		var volume = searchParentTag(this, "listItemMultiVolume").next();
 		volume.toggle();
 		while (volume.next().hasClass("listItemVolume")) {

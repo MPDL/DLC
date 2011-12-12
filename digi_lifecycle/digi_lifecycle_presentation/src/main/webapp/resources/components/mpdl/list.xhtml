@@ -49,10 +49,10 @@
 					<div class="metaLabel">Creator(s)</div>
 					<div class="metaValue">Name, Prename, Address</div>
 					
-					<div class="metaLabel">
+					<h:panelGroup layout="block" class="metaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
-					</div>
-					<div class="metaValue">
+					</h:panelGroup>
+					<h:panelGroup layout="block" class="metaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 							<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
 								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
@@ -72,7 +72,7 @@
 								<br/><br/>
 							</h:panelGroup>
 						</a4j:repeat>
-					</div>
+					</h:panelGroup>
 					
 
 				</div>
@@ -144,6 +144,31 @@
 					<div class="shortView_js">
 						<div class="metaLabel"><h:outputText value="Number of Volumes"/></div>
 						<div class="metaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes)}"/></div>
+						
+						<h:panelGroup layout="block" class="metaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="metaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
+								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
+									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
+									
+									<pretty:link mappingId="viewPages">
+										<f:param value="#{cc.attrs.volume.item.objid}"/>
+										<f:param value="#{pageNumber}"/>
+										<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+										<h:outputText value="Scan #{pageNumber}"/>
+									</pretty:link>
+									
+									<br/>
+									<a4j:repeat var="textFragment" value="#{highlight.textFragments}" >
+										<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'searchHit')}" escape="false"/>
+										<br/><br/>
+									</a4j:repeat>
+									<br/><br/>
+								</h:panelGroup>
+							</a4j:repeat>
+						</h:panelGroup>					
 					</div>
 				</div>
 			
