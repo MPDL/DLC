@@ -13,12 +13,10 @@
 	<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 
 	<ui:define name="mainContent">
-		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
-			<mpdl:paginator paginatorBean="#{allVolumesBean}">
-				<mpdl:list volume="#{var}">
-				</mpdl:list>
-			</mpdl:paginator>
-		</h:panelGroup>
+		<mpdl:paginator paginatorBean="#{allVolumesBean}">
+			<mpdl:list volume="#{var}">
+			</mpdl:list>
+		</mpdl:paginator>
 	</ui:define>
 </ui:composition>
 

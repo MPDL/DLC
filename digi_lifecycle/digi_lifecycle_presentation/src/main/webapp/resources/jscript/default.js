@@ -84,6 +84,7 @@ function addShowHideAction() {
 				$(this).attr("detailStatus", "open");
 				$(this).html($.trim($(this).html()).replace("Open ", "Close "));
 				listBody.find('.mediumView_js').show();
+				
 				allItemDetailActions.find("div").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
 				allItemDetailActions.find(".itemActionLabel").text("Less");
 			} else {
@@ -99,7 +100,6 @@ function addShowHideAction() {
 	//append listener to the image tag for opening and closing the current item details
 	$('.listItem .itemDetailAction_js, .listItemMediaAcc .itemDetailAction_js').click(function(e){
 		stopDefaultAction(e);
-		
 		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
 			
 		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
@@ -127,6 +127,7 @@ function addShowHideAction() {
 	});
 	
 	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
+		alert("sldfkjsdfk");
 		var volume = searchParentTag(this, "listItemMultiVolume").next();
 		volume.toggle();
 		while (volume.next().hasClass("listItemVolume")) {
@@ -139,4 +140,5 @@ function addShowHideAction() {
 
 $(document).ready(function(e){
 	resizeSelectBox();
+	addShowHideAction();
 })
