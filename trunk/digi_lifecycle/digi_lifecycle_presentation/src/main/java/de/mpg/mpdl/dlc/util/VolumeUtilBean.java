@@ -47,7 +47,7 @@ public class VolumeUtilBean {
 	{
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
-			String url = null;
+			String url = null; 
 			if(p.getFile().getHref()!=null)
 				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getFile().getHref(), "UTF-8") + "&dh=" + height + "&dw=" + width;
 			return url;

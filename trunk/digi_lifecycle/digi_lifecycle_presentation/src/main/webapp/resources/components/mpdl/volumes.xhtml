@@ -18,18 +18,67 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<h:panelGroup layout="block" styleClass="listItem free_area0_p0 xLarge_marginLIncl endline listItemLine noTopBorder" style="border-top-width: 0px !important;">
-			<span class="xHuge_area0 endline itemHeadline noPaddingTopBottom">
-				<b> <pretty:link mappingId="viewPages">
-						<f:param value="#{volume.item.objid}" />
-						<f:param value="1" />
-						<br />
-						<h:outputText value="#{lbl.view_dtls_volume_txt}" />
-					</pretty:link> 
-					<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" />
-					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}" />
-			</b> </span>
-		</h:panelGroup>
+		<div class="listItemVolume mvColor_3">
+			
+			<div class="itemContent">
+				<div class="itemContentData">
+					<div class="statusArea">
+						<div class="icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+						<span class="statusTitle">Withdrawn</span>
+					</div>
+					<div class="itemHeadline">
+						<div class="itemTitle">
+							<pretty:link mappingId="viewPages">
+								<f:param value="#{volume.item.objid}" />
+								<f:param value="1" />
+								<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" />
+								<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}" />
+							</pretty:link> 
+						</div> 
+					</div>
+				
+				
+					
+					<div class="shortView_js">
+						<div class="metaLabel">Creator(s)</div>
+						<div class="metaValue">Name, Prename, Address</div>
+						<div class="metaLabel">Date(s)</div>
+						<div class="metaValue">YYYY-MM-DD</div>
+						<div class="metaLabel">Genre</div>
+						<div class="metaValue">Article</div>
+						<div class="metaLabel">Files</div>
+						<div class="metaValue">not available</div>
+					</div>
+					<div class="mediumView_js">
+						<div class="metaLabel">Journal Title</div>
+						<div class="metaValue">Astrophysical Journal Letters</div>
+						<div class="metaLabel">Degree</div>
+						<div class="metaValue">Degree Type</div>
+						<div class="metaLabel">Publishing Info</div>
+						<div class="metaValue">Edition, Place: Publisher</div>
+						<div class="metaLabel">Title</div>
+						<div class="metaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
+						<div class="metaLabel">Visibility</div>
+						<div class="metaValue">Public</div>
+						<div class="metaLabel">Fulltext Hits</div>
+						<div class="metaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
+					</div>
+				</div>
+			
+				<div class="itemMediabar">
+					<div class="itemMediabarThumb">
+						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(cc.attrs.volume.pages[0],50,100)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+					</div>
+					
+					<br/>
+					<div class="itemMediabarCategory">Kodikologische Daten</div>
+					<br/>
+					<div class="itemMediabarCategory">Volltext</div>
+					<br/>
+					<div class="itemMediabarCategory">Sammlung</div>
+				</div>
+			</div>
+		</div>
 	</a4j:repeat>
 </cc:implementation>
 </html>
