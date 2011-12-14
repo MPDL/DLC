@@ -301,9 +301,9 @@ public class VolumeServiceBean {
 					p.setFile(f);
 					metsData.getPages().add(p);
 					}
-			}
+			}  
 			else
-			{
+			{    
 				logger.info("TEI file found");
 				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
 				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
