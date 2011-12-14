@@ -139,11 +139,16 @@
 											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 												<rich:treeNode expanded="#{true}"  rendered="#{utilBean.getUnqualifiedClassName(divItem) != 'Pagebreak'}">
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
+														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+														<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+														<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+														<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+														<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
 														<f:ajax render="@all"/>
 													</h:commandLink>
-													<h:outputText value="#{divItem.head}" />
+													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
 												</rich:treeNode>
 										
 												<ui:remove>
