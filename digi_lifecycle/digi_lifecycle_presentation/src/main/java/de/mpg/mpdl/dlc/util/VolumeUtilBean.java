@@ -445,6 +445,14 @@ public class VolumeUtilBean {
 		
 	}
 	
+	public String replaceLineBreaksWithBlanks(String teiText)
+	{
+		
+		String replacedText = teiText.replaceAll("<lb\\s*/>", " ");
+		return replacedText;
+		
+	}
+	
 	
 
 		
