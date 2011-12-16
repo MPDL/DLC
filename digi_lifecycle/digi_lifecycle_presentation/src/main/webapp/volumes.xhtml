@@ -12,6 +12,8 @@
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 
+
+
 	<ui:define name="mainContent">
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
 			<mpdl:list volume="#{var}">
