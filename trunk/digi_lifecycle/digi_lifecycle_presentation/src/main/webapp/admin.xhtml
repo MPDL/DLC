@@ -7,19 +7,32 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-<ui:composition template="templates/template_v3.xhtml">
+<ui:composition template="templates/template.xhtml">
+
+	<h:outputStylesheet>
+
+        .rf-p  {
+            width: 500px;
+        }
+ 
+
+
+    </h:outputStylesheet>
 
 	<ui:define name="mainContent">
 
-		<h:panelGroup layout="block" id="createdOUs" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
-			<h3>Created Organizations:</h3>
-			<a4j:repeat value="#{loginBean.user.createdOUs}" var="ou">
+		<rich:panel layout="block" id="createdOUs" header="Created Organizations:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+			<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
 				<pretty:link mappingId="ou">
-					<f:param value="#{ou.objid}" />
-			    	<h:outputText value="#{ou.properties.name}"/>
+					<f:param value="#{orga.id}" />
+			    	<h:outputText value="#{orga.escidocMd.title}"/>
+					<h:commandButton value="Close" action="#{adminBean.closeOrganization(orga)}" />
+			    	<h:commandButton value="Edit"  />
 			    </pretty:link>
 			   <br />
 	      	</a4j:repeat>
+
+	      	
 		 
 		    <rich:toolbar height="26px" width="100px">
 		        <h:outputLink value="#" id="newOU">
@@ -37,14 +50,15 @@
 		    
    			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" command="#{adminBean.createNewOrga}"/>
 
-		</h:panelGroup>
+		</rich:panel>
 		
-		<h:panelGroup layout="block" rendered="#{loginBean.login}">
-			<h3>Created Collections:</h3>
-			<a4j:repeat value="#{loginBean.user.createdContexts}" var="context">
+		<rich:panel layout="block" id="createdContexts" header="Created Collections:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
+			<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
 				<pretty:link mappingId="volumes">
-					<f:param value="#{context.objid}" />
-			    	<h:outputText value="#{context.properties.name}"/>
+					<f:param value="#{collection.id}" />
+			    	<h:outputText value="#{collection.name}"/>
+			    	<h:commandButton value="Close" action="#{adminBean.closeCollection(collection)}" />
+			    	<h:commandButton value="Edit"  />
 			    </pretty:link>
 			   <br />
 	      	</a4j:repeat>
@@ -66,13 +80,15 @@
 
    			<mpdl:contextEditor target="popupContext" title="Create new" collection="#{adminBean.collection}" />
 
-		</h:panelGroup>
+		</rich:panel>
 
-		<h:panelGroup layout="block" rendered="#{loginBean.login}">
-			<h3>Created Users:</h3>
-			<a4j:repeat value="#{loginBean.user.createdUserAccounts}" var="ua">
-			    <h:outputText value=" loginname: #{ua.properties.loginName} "/>
-			    <h:outputText value=" (name: #{ua.properties.name}) "/>
+		<rich:panel layout="block" id="createdUAs" header="All Users:" rendered="#{loginBean.login}">
+			<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
+			    <h:outputText value=" loginname: #{user.loginName} "/>
+			    <h:outputText value=" (name: #{user.name}) "/>
+			    <h:commandButton value="Delete" action="#{adminBean.deleteUser(user)}" rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+			    <h:commandButton value="Edit"  />
+			    
 			   <br />
 	      	</a4j:repeat>
 		 
@@ -92,7 +108,9 @@
 
    			<mpdl:userEditor target="popupUser" title="Create new" user="#{adminBean.user}" />
 
-		</h:panelGroup>
+		</rich:panel>
+
+
 
 	</ui:define>
 

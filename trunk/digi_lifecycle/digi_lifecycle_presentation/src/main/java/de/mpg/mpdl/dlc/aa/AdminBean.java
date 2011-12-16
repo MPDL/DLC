@@ -16,6 +16,7 @@ import org.jboss.logging.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
@@ -98,9 +99,9 @@ public class AdminBean{
 			{   
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
 				{ 
-					for(OrganizationalUnit ou : loginBean.getUser().getCreatedOUs())
+					for(Organization orga : loginBean.getUser().getCreatedOrgas())
 					{
-						this.ouSelectItems.add(new SelectItem(ou.getObjid(), ou.getProperties().getName()));
+						this.ouSelectItems.add(new SelectItem(orga.getId(), orga.getEscidocMd().getTitle()));
 					}
 				}else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
 				{  
@@ -117,28 +118,55 @@ public class AdminBean{
 
 	}
   
+
+	
 	public String createNewOrga() throws Exception
 	{
+  
+		OrganizationalUnit ou = ouServiceBean.createNewOU(orga, loginBean.getUserHandle());
 
-		ouServiceBean.createNewOU(orga, loginBean.getUserHandle());
-		loginBean.getUser().setCreatedOUs( ouServiceBean.retrieveOUsCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
-		applicationBean.setOus(ouServiceBean.retrieveOUs());
+		applicationBean.getOus().add(ou);
+		loginBean.getUser().getCreatedOrgas().add(ouServiceBean.retrieveOrganization(ou.getObjid()));
+		init();
+		return "pretty:admin";
+	}
+	
+	public String closeOrganization(Organization orga) throws Exception
+	{  
+		OrganizationalUnit ou = ouServiceBean.closeOU(orga.getId(), loginBean.getUserHandle());
+		applicationBean.getOus().remove(ou);
+		loginBean.getUser().getCreatedOrgas().remove(orga); 
 		init();
 		return "pretty:admin";
 	}
 	
 	public String createNewContext() throws Exception
 	{
-		contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
-		loginBean.getUser().setCreatedContexts(contextServiceBean.retrieveContextsCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
+		Context c = contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
+		loginBean.getUser().getCreatedCollections().add(contextServiceBean.retrieveCollection(c.getObjid(), loginBean.getUserHandle()));
+		init();
+		return "pretty:admin";
+	}
+	
+	public String closeCollection(Collection collection) throws Exception
+	{
+		Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
+		loginBean.getUser().getCreatedCollections().remove(collection);
 		init();
 		return "pretty:admin";
 	}
 	   
 	public String createNewUser() throws Exception
 	{      
-		uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
-		loginBean.getUser().setCreatedUserAccounts(uaServiceBean.retrieveCreatedUsers(loginBean.getUserHandle(), loginBean.getUser().getId()));
+		UserAccount ua = uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
+		loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(),loginBean.getUserHandle()));
+		return "pretty:admin";
+	}
+	
+	public String deleteUser(User user) throws Exception
+	{
+		String id = uaServiceBean.deleteUserAccount(user.getId(), loginBean.getUserHandle());
+		loginBean.getUser().getCreatedUsers().remove(user);
 		return "pretty:admin";
 	}
 

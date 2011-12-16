@@ -93,7 +93,7 @@ public class LoginBean
                 {  
                 	this.userHandle = newUserHandle;
                     this.login = true;
-                    this.user = userAccountServiceBean.retrieveUser(newUserHandle);
+                    this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
 
                     MessageHelper.infoMessage("You have logged in successfully!");
                 }

@@ -29,7 +29,6 @@ function updateCustomeSelectBox(obj) {
  * function to focus all or one selectbox 
  */
 function focusSelectBox(obj) {
-	
 	if (obj === "all") {
 		$(".dynamicSelectBox_js select").focus();
 	} else {
@@ -84,7 +83,6 @@ function addShowHideAction() {
 				$(this).attr("detailStatus", "open");
 				$(this).html($.trim($(this).html()).replace("Open ", "Close "));
 				listBody.find('.mediumView_js').show();
-				
 				allItemDetailActions.find("div").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
 				allItemDetailActions.find(".itemActionLabel").text("Less");
 			} else {
@@ -97,9 +95,34 @@ function addShowHideAction() {
 		}
 	});
 	
+	
+}
+
+/**
+ * these function controls the display attribute of the volume items in a multivolume
+ *//*
+function addMultiVolumeDisplayControl() {
+	/*
+	 * select all itemDetailAction_js elements to configure the click behavior 
+	 *//*
+	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
+		var volume = searchParentTag(this, "listItemMultiVolume").next();
+		volume.toggle();
+		while (volume.next().hasClass("listItemVolume")) {
+			volume = volume.next();
+			volume.toggle();
+		}
+	});
+}
+*/
+/**
+ * these function controls the display attribute of the listItems
+ *//*
+function addListItemDisplayControl() {
 	//append listener to the image tag for opening and closing the current item details
-	$('.listItem .itemDetailAction_js, .listItemMediaAcc .itemDetailAction_js').click(function(e){
+	$('.listItem .itemDetailAction_js').click(function(e){
 		stopDefaultAction(e);
+		
 		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
 			
 		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
@@ -125,19 +148,135 @@ function addShowHideAction() {
 			}
 		}
 	});
+}
+*/
+/**
+ * these function controls the display attribute of the listItems
+ */
+/*
+function addListItemMediaAccDisplayControl() {
+	//append listener to the image tag for opening and closing the current item details
+	$('.listItemMediaAcc .itemDetailAction_js').click(function(e){
+		stopDefaultAction(e);
+		
+		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
+			
+		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
+		
+		var allDetails = null;
+		//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
+		if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
+			allDetails.toggle();
+		};
+		
+		//from here: comfort function to handle the showHideAll_js button
+		var list = searchParentTag(this, 'bibList');
+		var showHideAll_jsBtn = list.find('.showHideAll_js');
+		if (showHideAll_jsBtn) {
+			if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
+				showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
+				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
+				list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
+			} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
+				showHideAll_jsBtn.attr("detailStatus", "");
+				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
+				list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
+			}
+		}
+	});
+}
+*/
+
+
+
+function addDisplayControl(target) {
+	switch (target) {
+		case ".listItemMediaAcc":
+		case ".listItem":
+			$(target+" .itemDetailAction_js").click(function(e){
+				stopDefaultAction(e);
+				
+				$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
+					
+				$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
+				
+				var allDetails = null;
+				//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
+				if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
+					allDetails.toggle();
+				};
+				/*
+				 * following code is deprecated and should be rebuild with new function
+				//from here: comfort function to handle the showHideAll_js button
+				var list = searchParentTag(this, 'bibList');
+				var showHideAll_jsBtn = list.find('.showHideAll_js');
+				if (showHideAll_jsBtn) {
+					if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
+						showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
+						$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
+						list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
+					} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
+						showHideAll_jsBtn.attr("detailStatus", "");
+						$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
+						list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
+					}
+				}
+				*/
+			});
+			break;
+		case '.listItemMultiVolume':
+			$(target + " .itemDetailAction_js").click(function(e) {
+				var volume = searchParentTag(this, "listItemMultiVolume").next();
+				
+				if (volume.hasClass("listItemVolume")) {
+					while (volume.hasClass("listItemVolume")) {
+						volume.toggle();
+						volume = volume.next();
+					}
+				}
+			});
+			break;
+	}
+}
+
+/*
+ * function to add function for show or hide all wished elements (e.g. child-elements)
+ */
+function addShowHideAll(element, child_elements, component) {
+	var showHideAllBtn = null;
 	
-	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
-		var volume = searchParentTag(this, "listItemMultiVolume").next();
-		volume.toggle();
-		while (volume.next().hasClass("listItemVolume")) {
-			volume = volume.next();
-			volume.toggle();
+	//if the caller has a component, component will be formatted to an jquery object and the showHideAll button will be search into component
+	if (component) {
+		component = $(component);
+		showHideAllBtn = component.find(element);
+	} else { //else the showHideAll button will be search in document
+		showHideAllBtn = $(element);
+	}
+	
+	showHideAllBtn.click(function(e) {
+		if ($(child_elements+':hidden').length > 0) {
+			$(child_elements).show();
+		} else {
+			$(child_elements).hide();
 		}
 	});
 }
 
 
-$(document).ready(function(e){
-	resizeSelectBox();
-	addShowHideAction();
-})
+$(document).ready(function(e) {
+	/*
+	 * use the setTimeout method only if you load the content via ajax 
+	 * alternative: create an ajax handler to refer the function after successed loading with dynamic time
+	 */
+	setTimeout("addDisplayControl('.listItem')", 290);
+	setTimeout("addDisplayControl('.listItemMediaAcc')", 290);
+	setTimeout("addDisplayControl('.listItemMultiVolume')", 290);
+	
+//	use it on every page, because of language selectbox in metamenu
+	setTimeout("resizeSelectBox()", 290);
+	
+	setTimeout("addShowHideAll('.showHideAll_js', '.listItem .mediumView_js', '.bibList')", 290);
+	setTimeout("addShowHideAll('.showHideAll_js', '.listItemMediaAcc .mediumView_js', '.bibList')", 290);
+	setTimeout("addShowHideAll('.toggleListItemVolume_js', '.listItemVolume', '.bibList')", 290);
+	
+});

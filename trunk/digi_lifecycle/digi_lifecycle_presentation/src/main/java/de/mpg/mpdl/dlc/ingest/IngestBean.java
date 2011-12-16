@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -33,6 +34,7 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
@@ -103,29 +105,29 @@ public class IngestBean implements Serializable {
 		//init contexts 
 		for(Grant grant: loginBean.getUser().getGrants())
 		{ 
-			try
+			try  
 			{
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")) || grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
 				{
-					for(Context c: loginBean.getUser().getCreatedContexts())
-						this.contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
+					for(Collection c : loginBean.getUser().getCreatedCollections())
+						this.contextSelectItems.add(new SelectItem(c.getId(),c.getName()));
 				}
 				else {
-					for(Context c : loginBean.getUser().getDepositorContexts())
+					for(Collection c : loginBean.getUser().getDepositorCollections())
 					{  
-						if(!ids.contains(c.getObjid()))
+						if(!ids.contains(c.getId()))
 						{
-							ids.add(c.getObjid());
-							item = new SelectItem(c.getObjid(),c.getProperties().getName());
+							ids.add(c.getId());
+							item = new SelectItem(c.getId(),c.getName());
 							this.contextSelectItems.add(item);
 						}
 					}
-					for(Context c : loginBean.getUser().getModeratorContexts())
+					for(Collection c : loginBean.getUser().getModeratorCollections())
 					{  
-						if(!ids.contains(c.getObjid()))
+						if(!ids.contains(c.getId()))
 						{
-							ids.add(c.getObjid());
-							item = new SelectItem(c.getObjid(),c.getProperties().getName());
+							ids.add(c.getId());
+							item = new SelectItem(c.getId(),c.getName());
 							this.contextSelectItems.add(item);
 						}
 					}
@@ -135,7 +137,8 @@ public class IngestBean implements Serializable {
 					
 			}
 		}
-		this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
+		if(contextSelectItems.size()>0)
+			this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
 	}
 
 
