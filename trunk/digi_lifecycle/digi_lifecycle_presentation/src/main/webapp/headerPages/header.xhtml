@@ -61,7 +61,7 @@
 		<div class="simpleSearch">
 
 			<h:inputText id="quickSearchString" name="simpleSearchstring" type="search" placeholder="all collections" autocomplete="on" value="#{quickSearchBean.searchString}"/>
-			<h:commandButton type="submit" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.quick_search_btnStart}"/>
+			<h:commandButton type="submit" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
 				
 			<br />
 				
@@ -74,7 +74,7 @@
 		
 		<br />
 		<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="free_area0_p3 advancedSearchMenu tiny_marginLExcl">
-			<h:outputText value="#{lbl.search_lblAdvancedSearch}"/>
+			<h:outputText value="#{lbl.header_advancedSearch}"/>
 		</pretty:link>
 
 	</div>
