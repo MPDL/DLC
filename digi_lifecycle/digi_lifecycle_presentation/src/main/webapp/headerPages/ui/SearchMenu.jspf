@@ -49,10 +49,10 @@
 		</h:panelGroup>
 		-->
 	</span>
-	<h:commandButton id="btnQuickSearchStart" styleClass="small_txtBtn activeButton quickSearchBtn" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.quick_search_btnStart}"/>
+	<h:commandButton id="btnQuickSearchStart" styleClass="small_txtBtn activeButton quickSearchBtn" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
 	
 	<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="free_area0_p3 advancedSearchMenu tiny_marginLExcl">
-		<h:outputText value="#{lbl.search_lblAdvancedSearch}"/>
+		<h:outputText value="#{lbl.header_advancedSearch}"/>
 	</pretty:link>
 	<!-- search Menu ends here -->
 </div>
