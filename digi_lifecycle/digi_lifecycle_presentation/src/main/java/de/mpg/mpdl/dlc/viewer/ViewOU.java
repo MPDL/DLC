@@ -38,7 +38,7 @@ public class ViewOU {
 	
 	@URLAction(onPostback=false)
 	public void loadOu()
-	{  
+	{     
 		try{
 			if(orga==null || !id.equals(orga.getId()))
 			{
@@ -81,12 +81,19 @@ public class ViewOU {
 	{  
 		ouServiceBean.updateOU(orga, loginBean.getUserHandle());
 		this.orga = update(orga.getId());
+		this.orga.setEditable(false);
 		return "pretty:ou";
 	}
 
 	public Organization update(String id) throws Exception
 	{
 		return ouServiceBean.retrieveOrganization(id);
+	}
+	
+	public String edit()
+	{
+		this.orga.setEditable(true);
+		return "pretty:ou";
 	}
 	
 }
