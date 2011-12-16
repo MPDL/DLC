@@ -13,6 +13,8 @@ public class Collection {
 	
 	private String ouId;
 	
+	private String type;
+	
 	private DLCAdminDescriptor dlcAD;
 
 	public String getId() {
@@ -46,6 +48,15 @@ public class Collection {
 
 	public void setOuId(String ouId) {
 		this.ouId = ouId;
+	}
+	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public DLCAdminDescriptor getDlcAD() {

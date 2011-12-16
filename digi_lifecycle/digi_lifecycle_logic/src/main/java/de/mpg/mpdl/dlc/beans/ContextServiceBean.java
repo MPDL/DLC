@@ -33,6 +33,19 @@ import de.mpg.mpdl.dlc.vo.mets.Page;
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
 	
+	
+	public Collection retrieveCollection(String id, String userHandle)
+	{
+		Collection collection = new Collection();
+		collection.setId(id);
+		Context context = retrieveContext(id, userHandle);
+		collection.setName(context.getProperties().getName());
+		collection.setDescription(context.getProperties().getDescription());
+		collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
+		collection.setType(context.getProperties().getType());
+		return collection;
+	}
+	
 	public Context retrieveContext(String contextId, String userHandle)
 	{
 		logger.info("Retrieving Context " + contextId);
@@ -59,7 +72,7 @@ public class ContextServiceBean {
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
-			req.setQuery("\"/properties/public-status\" =opened or " + "\"/properties/public-status\" =created and "  + " \"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
@@ -74,6 +87,15 @@ public class ContextServiceBean {
         return contextList;		
 	}
 	
+	public List<Collection> retrieveCollectionsCreatedBy(String userHandle, String id)
+	{  
+		logger.info("Retrieving DLC Collections Created by" + id);
+		List<Collection> collections = new ArrayList<Collection>();
+		for(Context c : retrieveContextsCreatedBy(userHandle, id))
+			collections.add(retrieveCollection(c.getObjid(), userHandle));
+		return collections;
+	}
+	
 	public List<Context> retrieveContextsCreatedBy(String userHandle, String id)
 	{
 		logger.info("Retrieving OU contexts created by" + id);
@@ -85,7 +107,7 @@ public class ContextServiceBean {
 			contextClient.setHandle(userHandle);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
-			req.setQuery("\"/properties/public-status\" =opened or " + "\"/properties/public-status\" =created and "  + " \"/properties/type\"=DLC and" +"\"/properties/created-by/id\"="+ id);
+			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/created-by/id\"="+ id);
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
@@ -135,11 +157,11 @@ public class ContextServiceBean {
 	    	context = client.create(context);
 	    	
 	    	//open context
-//			TaskParam taskParam=new TaskParam(); 
-//		    taskParam.setComment("Open Context");
-//		    taskParam.setLastModificationDate(context.getLastModificationDate());
-//		    
-//		    client.open(context, taskParam);
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Open Context");
+		    taskParam.setLastModificationDate(context.getLastModificationDate());
+		    
+		    client.open(context, taskParam);
 	    	
 		}catch(Exception e)
 		{	
@@ -162,6 +184,32 @@ public class ContextServiceBean {
         properties.setOrganizationalUnitRefs(ous);
         context.setProperties(properties);       
 		return context;
+	}
+	
+	public Context closeContext(String id, String userHandle) 
+	{
+		logger.info("Closing new context");
+		Context c;
+		try
+		{
+	    	ContextHandlerClient  client = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+	    	client.setHandle(userHandle);
+	    	c = client.retrieve(id);
+	    	
+	    	TaskParam taskParam = new TaskParam();
+	    	taskParam.setComment("Close Context");
+	    	c = client.retrieve(c.getObjid());
+	    	taskParam.setLastModificationDate(c.getLastModificationDate());
+	    	
+	    	client.close(c.getObjid(), taskParam);
+
+		}catch(Exception e)
+		{	
+			c= null;
+			logger.error("Error while closing new context",e);
+		}
+		
+		return c;
 	}
 	
 	
@@ -238,4 +286,6 @@ public class ContextServiceBean {
 		
 		return sw.toString();
 	}
+
+
 }
