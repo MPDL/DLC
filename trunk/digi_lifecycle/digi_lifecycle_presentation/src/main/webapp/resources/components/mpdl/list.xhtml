@@ -50,7 +50,7 @@
 					<div class="metaValue">Name, Prename, Address</div>
 					
 					<h:panelGroup layout="block" class="metaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
-						<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
+						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 					</h:panelGroup>
 					<h:panelGroup layout="block" class="metaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
