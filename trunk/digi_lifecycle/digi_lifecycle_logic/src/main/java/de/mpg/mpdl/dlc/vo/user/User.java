@@ -7,6 +7,8 @@ import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 public class User {
 	
@@ -16,15 +18,18 @@ public class User {
 	private String password;
 	private List<Grant> grants = new ArrayList<Grant>();
 	
+	//just for OU-Admin
 	private OrganizationalUnit ou = new OrganizationalUnit();
 	private String ouId;
 	
-	private List<OrganizationalUnit> createdOUs = new ArrayList<OrganizationalUnit>();
-	private List<Context> createdContexts = new ArrayList<Context>();
-	private List<UserAccount> createdUserAccounts = new ArrayList<UserAccount>();
 	
-	private List<Context> depositorContexts = new ArrayList<Context>();
-	private List<Context> moderatorContexts = new ArrayList<Context>();
+	
+	private List<Organization> createdOrgas = new ArrayList<Organization>();
+	private List<Collection> createdCollections = new ArrayList<Collection>();
+	private List<User> createdUsers = new ArrayList<User>();
+	
+	private List<Collection> depositorCollections = new ArrayList<Collection>();
+	private List<Collection> moderatorCollections = new ArrayList<Collection>();
 	
 	private List<String> depositorContextIds = new ArrayList<String>();
 	private List<String> moderatorContextIds = new ArrayList<String>();
@@ -77,8 +82,6 @@ public class User {
 	public void setOu(OrganizationalUnit ou) {
 		this.ou = ou;
 	}
-	
-	
 
 	public String getOuId() {
 		return ouId;
@@ -88,44 +91,44 @@ public class User {
 		this.ouId = ouId;
 	}
 
-	public List<OrganizationalUnit> getCreatedOUs() {
-		return createdOUs;
-	}
-	
-	public void setCreatedOUs(List<OrganizationalUnit> createdOUs) {
-		this.createdOUs = createdOUs;
-	}
-	
-	public List<Context> getCreatedContexts() {
-		return createdContexts;
-	}
-	
-	public void setCreatedContexts(List<Context> createdContexts) {
-		this.createdContexts = createdContexts;
-	}
-	
-	public List<UserAccount> getCreatedUserAccounts() {
-		return createdUserAccounts;
-	}
-	
-	public void setCreatedUserAccounts(List<UserAccount> createdUserAccounts) {
-		this.createdUserAccounts = createdUserAccounts;
+	public List<Organization> getCreatedOrgas() {
+		return createdOrgas;
 	}
 
-	public List<Context> getDepositorContexts() {
-		return depositorContexts;
+	public void setCreatedOrgas(List<Organization> createdOrgas) {
+		this.createdOrgas = createdOrgas;
 	}
 
-	public void setDepositorContexts(List<Context> depositorContexts) {
-		this.depositorContexts = depositorContexts;
+	public List<Collection> getCreatedCollections() {
+		return createdCollections;
 	}
 
-	public List<Context> getModeratorContexts() {
-		return moderatorContexts;
+	public void setCreatedCollections(List<Collection> createdCollections) {
+		this.createdCollections = createdCollections;
 	}
 
-	public void setModeratorContexts(List<Context> moderatorContexts) {
-		this.moderatorContexts = moderatorContexts;
+	public List<User> getCreatedUsers() {
+		return createdUsers;
+	}
+
+	public void setCreatedUsers(List<User> createdUsers) {
+		this.createdUsers = createdUsers;
+	}
+
+	public List<Collection> getDepositorCollections() {
+		return depositorCollections;
+	}
+
+	public void setDepositorCollections(List<Collection> depositorCollections) {
+		this.depositorCollections = depositorCollections;
+	}
+
+	public List<Collection> getModeratorCollections() {
+		return moderatorCollections;
+	}
+
+	public void setModeratorCollections(List<Collection> moderatorCollections) {
+		this.moderatorCollections = moderatorCollections;
 	}
 
 	public List<String> getDepositorContextIds() {

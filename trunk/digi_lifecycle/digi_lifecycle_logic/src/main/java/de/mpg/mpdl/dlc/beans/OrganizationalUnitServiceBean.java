@@ -67,6 +67,16 @@ public class OrganizationalUnitServiceBean {
 		}
 		return ous;
 	}
+	
+	public List<Organization> retrieveOrgasCreatedBy(String userHandle, String id)
+	{
+		logger.info("Retrieving DLC Organizations created by" + id);
+		List<Organization> orgas = new ArrayList<Organization>();
+		for(OrganizationalUnit ou : retrieveOUsCreatedBy(userHandle, id))
+			orgas.add(retrieveOrganization(ou.getObjid()));
+		return orgas;
+	}
+	
 	 
 	public List<OrganizationalUnit> retrieveOUsCreatedBy(String userHandle, String id)
 	{
@@ -77,7 +87,7 @@ public class OrganizationalUnitServiceBean {
 			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-			req.setQuery("\"/properties/public-status\" =opened or " + "\"/properties/public-status\" =created and " + "\"/properties/created-by/id\"=" + id+" and " + "\"/md-records/md-record/organizational-unit/organization-type\"=DLC");
+			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/created-by/id\"=" + id+" and " + "\"/md-records/md-record/organizational-unit/organization-type\"=DLC");
 			ous =  client.retrieveOrganizationalUnitsAsList(req);
 		}catch(Exception e)
 		{
@@ -100,6 +110,8 @@ public class OrganizationalUnitServiceBean {
 		}
 		return ou;
 	}
+	
+	
 	
 	public Organization retrieveOrganization(String id)
 	{  
@@ -182,6 +194,31 @@ public class OrganizationalUnitServiceBean {
 		 
 	}
 	
+	public OrganizationalUnit closeOU(String id, String userHandle)
+	{
+		logger.info("Trying to close an organization");
+		OrganizationalUnit ou;
+		try{
+			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			ou = client.retrieve(id);
+			
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Close Organizational Unit");
+		    ou = client.retrieve(ou.getObjid());
+		    taskParam.setLastModificationDate(ou.getLastModificationDate());
+		    
+			client.close(ou.getObjid(), taskParam);
+
+		}catch(Exception e){
+			ou = null;
+			logger.error("Error while closing OrganizationalUnit Object", e);
+		}
+		
+		return ou;
+	}
+	
+
 	public OrganizationalUnit createNewOU(Organization orga, String userHandle)
 	{      
 		logger.info("Trying to create a new organization");
@@ -202,7 +239,7 @@ public class OrganizationalUnitServiceBean {
 			marschaller.marshal(dlc, d);
 	        MetadataRecord dlcMd = new MetadataRecord("dlc");
 			dlcMd.setContent(d.getDocumentElement());
-			System.out.println(dlcMd.getContent().getTextContent());
+
 	
 	 
 			jxbc = JAXBContext.newInstance(new Class[]{ EscidocMetadata.class});
@@ -230,11 +267,14 @@ public class OrganizationalUnitServiceBean {
 			ou.setMetadataRecords(mdRecords);
 	  
 			ou = client.create(ou);
-			//TODO open OU
-//			TaskParam taskParam=new TaskParam(); 
-//		    taskParam.setComment("Open Organizational Unit");
-//		    taskParam.setLastModificationDate(ou.getLastModificationDate());
-//			client.open(ou, taskParam);
+			//open OU
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Open Organizational Unit");
+		    taskParam.setLastModificationDate(ou.getLastModificationDate());
+			client.open(ou, taskParam);
+			
+//			ou = client.update(ou);
+			
 			logger.info("new Organization created: " + ou.getObjid());
 		
 		}catch(Exception e){
@@ -244,29 +284,45 @@ public class OrganizationalUnitServiceBean {
 		return ou;
 	}
 	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	public static void main(String[] args) throws Exception
 	{
-		String ouId = "escidoc:6002";
+		String ouId = "escidoc:16050";
 
 		
 //        System.out.println(removeParents(ouId));
 //		addOU_DLCMDRecord(ouId);
-		createNew();
+//		createNew();
+//		deleteOU(ouId);
+		closeOU(ouId);
+	}
+	  
+	public static void closeOU(String ouId) throws Exception
+	{
+		String url = "http://latest-coreservice.mpdl.mpg.de";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlc");
+		OrganizationalUnitHandlerClient ouc = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
+        ouc.setHandle(auth.getHandle());
+        OrganizationalUnit ou = ouc.retrieve(ouId);
+          
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Close Organizational Unit");
+	    taskParam.setLastModificationDate(ou.getLastModificationDate());
+	    
+		ouc.close(ou.getObjid(), taskParam);
 	}
 	
+
+	
+	public static void deleteOU(String ouId) throws Exception
+	{
+		String url = "http://latest-coreservice.mpdl.mpg.de";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlc");
+		OrganizationalUnitHandlerClient ouc = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
+        ouc.setHandle(auth.getHandle());
+        ouc.delete(ouId);
+	}
+
 	
 	public static Organization createNew() throws Exception
 	{

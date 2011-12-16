@@ -10,6 +10,8 @@ public class Organization {
 	
 	private DLCMetadata dlcMd;
 	
+	private boolean editable;
+	
 	
 	public String getId() {
 		return id;
@@ -34,6 +36,15 @@ public class Organization {
 	public void setDlcMd(DLCMetadata dlcMd) {
 		this.dlcMd = dlcMd;
 	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+	
 	
 
 	
