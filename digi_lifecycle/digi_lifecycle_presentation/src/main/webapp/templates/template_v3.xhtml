@@ -66,6 +66,7 @@
 			<h:panelGroup rendered="#{loginBean.loginState}"/>
 			
 			<h:form id="form1" enctype="multipart/form-data">
+			
 				<div class="id_wrapper">
 					<div class="id_header" rel="section">
 						<!-- import header -->
@@ -73,23 +74,38 @@
 					</div>
 					
 
-					<h:panelGroup layout="block" class="id_mainMenu" rel="section">
+					<h:panelGroup layout="block" styleClass="id_mainMenu" rel="section">
 						<ui:include src="../menu/mainMenu.xhtml" />
 					</h:panelGroup>
 						
-					<div class="id_siteTitle" rel="section">
-						<h:outputText value="#{headline}" />
-					</div>
-			
-					<div id="messages" rel="section">
-						<ui:include src="" />
-					</div>
+					
+					<div class="id_contentDescription">
+						<div class="messageArea">
+							
+							<h:messages styleClass="singleMessage" errorClass="messageError"  
+								warnClass="messageWarning" fatalClass="messageFatal"
+								infoClass="messageSuccess" layout="list" globalOnly="true"
+								showDetail="true" showSummary="true"/>
+								
 						
-					<div class="id_breadcrump">
-						<!-- 
-						<ui:include src="../headerPages/Breadcrumb.jspf" />
-						 -->
+						</div>
+						<div class="breadTitle">
+							<!-- 
+							<ui:remove>
+							<nav class="breadcrump" rel="section">
+								<a href="#" title="Start">Start / </a> 
+								<a href="#" title="Start">Start / </a> 
+							</nav>
+							</ui:remove>
+		
+		 					-->
+							<span class="id_siteTitle" rel="section">
+								<h:outputText value="#{headline}" />
+							</span>
+						</div>
+					
 					</div>
+
 
 					<div class="id_content container_1"  rel="section">		
 						<!-- Main Content -->
