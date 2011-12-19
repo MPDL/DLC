@@ -14,13 +14,13 @@
 	<cc:attribute name="target" required="true"/>
 	<cc:attribute name="title" requied="false" />
 	<cc:attribute name="organization" required="true" />
-	<cc:attribute name="command"  method-signature="java.lang.String action()" required="false" />
+	<cc:attribute name="command"  method-signature="java.lang.String action()" required="true" />
 </cc:interface>	
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>	
 
-	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()">
+	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()" width="400" height="400">
         <f:facet name="header">
             <h:outputText value="#{cc.attrs.title}" />
         </f:facet>
@@ -31,7 +31,7 @@
         </f:facet>
         
 
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" id="editOrga">
             <h:outputText value="Name*" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
             
@@ -48,9 +48,8 @@
             <h:inputText value="#{cc.attrs.organization.escidocMd.country}" />
             <h:outputText value="City" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
-
-			<a4j:commandButton value="save" action="#{cc.attrs.command}" execute="@form"/>
         </h:panelGrid>
+    	<a4j:commandButton value="save" action="#{cc.attrs.command}" execute="@form"/>
 
     </rich:popupPanel>
 
