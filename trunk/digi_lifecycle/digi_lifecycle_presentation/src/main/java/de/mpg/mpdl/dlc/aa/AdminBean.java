@@ -1,6 +1,6 @@
 package de.mpg.mpdl.dlc.aa;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +63,16 @@ public class AdminBean{
 
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
 	
+	private String editOrgaId;
 
+	
+	public String getEditOrgaId() {
+		return editOrgaId;
+	}
+
+	public void setEditOrgaId(String editOrgaId) {
+		this.editOrgaId = editOrgaId;
+	}
 	
 	public AdminBean() throws Exception
 	{
@@ -122,21 +131,34 @@ public class AdminBean{
 	
 	public String createNewOrga() throws Exception
 	{
-  
-		OrganizationalUnit ou = ouServiceBean.createNewOU(orga, loginBean.getUserHandle());
-
-		applicationBean.getOus().add(ou);
-		loginBean.getUser().getCreatedOrgas().add(ouServiceBean.retrieveOrganization(ou.getObjid()));
-		init();
+        
+		if(editOrgaId != null && editOrgaId.equals(orga.getId()))
+		{
+			ouServiceBean.updateOU(orga, loginBean.getUserHandle());
+			this.orga = ouServiceBean.retrieveOrganization(orga.getId());
+			applicationBean.setOus(ouServiceBean.retrieveOUs());
+			initOrganization();
+			this.editOrgaId = "";
+		}
+		else
+		{
+			OrganizationalUnit ou = ouServiceBean.createNewOU(orga, loginBean.getUserHandle());
+			applicationBean.getOus().add(ou);
+			Organization o = ouServiceBean.retrieveOrganization(ou.getObjid());
+			loginBean.getUser().getCreatedOrgas().add(ouServiceBean.retrieveOrganization(ou.getObjid()));
+			initOrganization();
+			init();
+		}
 		return "pretty:admin";
 	}
 	
-	public String closeOrganization(Organization orga) throws Exception
+	public String closeOrganization() throws Exception
 	{  
 		OrganizationalUnit ou = ouServiceBean.closeOU(orga.getId(), loginBean.getUserHandle());
 		applicationBean.getOus().remove(ou);
 		loginBean.getUser().getCreatedOrgas().remove(orga); 
 		init();
+		initOrganization();
 		return "pretty:admin";
 	}
 	

@@ -26,8 +26,17 @@
 				<pretty:link mappingId="ou">
 					<f:param value="#{orga.id}" />
 			    	<h:outputText value="#{orga.escidocMd.title}"/>
-					<h:commandButton value="Close" action="#{adminBean.closeOrganization(orga)}" />
-			    	<h:commandButton value="Edit"  />
+			    	
+			    	<a4j:commandLink execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                    	<h:graphicImage value="/resources/images/Delete.png" alt="delete" />
+                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
+               		</a4j:commandLink> 
+               		
+               		<a4j:commandLink execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+                    	<h:graphicImage value="/resources/images/edit.gif" alt="edit" />
+                    	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
+                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
+               		</a4j:commandLink> 
 			    </pretty:link>
 			   <br />
 	      	</a4j:repeat>
@@ -47,6 +56,13 @@
 		            </rich:componentControl>
 		            Create new OU:</h:outputLink>
 		    </rich:toolbar>
+
+    		<rich:popupPanel id="confirmPane" autosized="true"> 
+    			 Are you sure you want to close this organization?
+        		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+        		<a4j:commandButton value="Delete" action="#{adminBean.closeOrganization}"/>
+    		</rich:popupPanel>
+
 		    
    			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" command="#{adminBean.createNewOrga}"/>
 
