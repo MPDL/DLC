@@ -55,7 +55,8 @@ public class AdminBean{
 	private UserAccountServiceBean uaServiceBean;
 
 	
-	private Organization orga = new Organization();
+	private Organization orga;
+	private Organization newEmptyOrga;
 	private Collection collection = new Collection();
 	private User user = new User();
 	
@@ -66,28 +67,23 @@ public class AdminBean{
 	private String editOrgaId;
 
 	
-	public String getEditOrgaId() {
-		return editOrgaId;
-	}
 
-	public void setEditOrgaId(String editOrgaId) {
-		this.editOrgaId = editOrgaId;
-	}
-	
+
 	public AdminBean() throws Exception
 	{
-		initOrganization();
+		this.newEmptyOrga = initOrganization();
 //		initCollection();
-
 	}
 	
-	public void initOrganization() {
+	public Organization initOrganization() {  
+		Organization o = new Organization();
 		FoafOrganization foafOU = new FoafOrganization();
 		DLCMetadata dlc = new DLCMetadata();
 		dlc.setFoafOrganization(foafOU);
 		EscidocMetadata escidoc = new EscidocMetadata();
-		this.orga.setDlcMd(dlc);
-		this.orga.setEscidocMd(escidoc);
+		o.setDlcMd(dlc);
+		o.setEscidocMd(escidoc);
+		return o;
 	}
 	public void initCollection()
 	{
@@ -126,10 +122,8 @@ public class AdminBean{
 		}   
 
 	}
-  
-
-	
-	public String createNewOrga() throws Exception
+ 	
+	public String editOrga() throws Exception
 	{
         
 		if(editOrgaId != null && editOrgaId.equals(orga.getId()))
@@ -137,8 +131,8 @@ public class AdminBean{
 			ouServiceBean.updateOU(orga, loginBean.getUserHandle());
 			this.orga = ouServiceBean.retrieveOrganization(orga.getId());
 			applicationBean.setOus(ouServiceBean.retrieveOUs());
-			initOrganization();
 			this.editOrgaId = "";
+			init();
 		}
 		else
 		{
@@ -146,7 +140,6 @@ public class AdminBean{
 			applicationBean.getOus().add(ou);
 			Organization o = ouServiceBean.retrieveOrganization(ou.getObjid());
 			loginBean.getUser().getCreatedOrgas().add(ouServiceBean.retrieveOrganization(ou.getObjid()));
-			initOrganization();
 			init();
 		}
 		return "pretty:admin";
@@ -158,7 +151,6 @@ public class AdminBean{
 		applicationBean.getOus().remove(ou);
 		loginBean.getUser().getCreatedOrgas().remove(orga); 
 		init();
-		initOrganization();
 		return "pretty:admin";
 	}
 	
@@ -248,7 +240,21 @@ public class AdminBean{
 		this.contextSelectItems = contextSelectItems;
 	}  
 
+	public String getEditOrgaId() {
+		return editOrgaId;
+	}
 
+	public void setEditOrgaId(String editOrgaId) {
+		this.editOrgaId = editOrgaId;
+	}
+	
+	public Organization getNewEmptyOrga() {
+		return newEmptyOrga;
+	}
+
+	public void setNewEmptyOrga(Organization newEmptyOrga) {
+		this.newEmptyOrga = newEmptyOrga;
+	}
 	
 	
 	

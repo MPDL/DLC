@@ -27,44 +27,31 @@
 					<f:param value="#{orga.id}" />
 			    	<h:outputText value="#{orga.escidocMd.title}"/>
 			    	
-			    	<a4j:commandLink execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
-                    	<h:graphicImage value="/resources/images/Delete.png" alt="delete" />
+			    	<a4j:commandButton value="Delete" execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+                    	<!-- <h:graphicImage value="/resources/images/Delete.png" alt="delete" /> -->
                    		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
-               		</a4j:commandLink> 
+               		</a4j:commandButton> 
                		
-               		<a4j:commandLink execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
-                    	<h:graphicImage value="/resources/images/edit.gif" alt="edit" />
+               		<a4j:commandButton value="Edit" execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
                     	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
                    		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
-               		</a4j:commandLink> 
+               		</a4j:commandButton> 
 			    </pretty:link>
 			   <br />
 	      	</a4j:repeat>
 
-	      	
-		 
-		    <rich:toolbar height="26px" width="100px">
-		        <h:outputLink value="#" id="newOU">
-		            <rich:componentControl event="click" operation="show" target="popup">
-		                <a4j:param name="event" value="event" noEscape="true" />
-		                <rich:hashParam>
-		                    <a4j:param noEscape="true" name="top"
-		                        value="jQuery(#{rich:element('newOU')}.parentNode).offset().top + jQuery(#{rich:element('newOU')}.parentNode).height()" />
-		                    <a4j:param noEscape="true" name="left"
-		                        value="jQuery(#{rich:element('newOU')}.parentNode).offset().left" />
-		                </rich:hashParam>
-		            </rich:componentControl>
-		            Create new OU:</h:outputLink>
-		    </rich:toolbar>
+            <a4j:commandButton execute="@this" value="Create New Organization" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+            	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
+              	<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}" />
+            </a4j:commandButton> 
 
     		<rich:popupPanel id="confirmPane" autosized="true"> 
     			 Are you sure you want to close this organization?
         		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
         		<a4j:commandButton value="Delete" action="#{adminBean.closeOrganization}"/>
     		</rich:popupPanel>
-
 		    
-   			<mpdl:ouEditor target="popup" title="Create new" organization="#{adminBean.orga}" command="#{adminBean.createNewOrga}"/>
+   			<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
 
 		</rich:panel>
 		
