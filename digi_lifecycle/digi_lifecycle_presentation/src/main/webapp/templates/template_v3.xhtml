@@ -44,7 +44,6 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<h:head>
 			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
-			<meta content="text/html; charset=UTF-8" />
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/standard.css" type="text/css" rel="stylesheet" />
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/sample_Grey/appearance.css" type="text/css" rel="stylesheet" />
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/dlc.css" type="text/css" rel="stylesheet" />
@@ -65,7 +64,7 @@
 		<h:body lang="#{applicationBean.userLocaleString}">
 			<h:panelGroup rendered="#{loginBean.loginState}"/>
 			
-			<h:form id="form1" enctype="multipart/form-data">
+			<h:form id="form1">
 			
 				<div class="id_wrapper">
 					<div class="id_header" rel="section">
