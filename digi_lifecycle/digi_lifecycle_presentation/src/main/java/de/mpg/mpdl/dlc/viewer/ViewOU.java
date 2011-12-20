@@ -13,6 +13,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
@@ -30,6 +31,9 @@ public class ViewOU {
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
+	
+	@ManagedProperty("#{applicationBean}")
+	private ApplicationBean applicationBean;
 	
 	@EJB
 	private OrganizationalUnitServiceBean ouServiceBean;
@@ -51,6 +55,22 @@ public class ViewOU {
 		
 	}
 	
+	public String save() throws Exception
+	{  
+		ouServiceBean.updateOU(orga, loginBean.getUserHandle());
+		this.orga = ouServiceBean.retrieveOrganization(orga.getId());
+		this.orga.setEditable(false);
+		applicationBean.setOus(ouServiceBean.retrieveOUs());
+		loginBean.getUser().setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
+		return "pretty:ou";
+	}
+
+	public String edit()
+	{
+		this.orga.setEditable(true);
+		return "pretty:ou";
+	}
+	
 	public String getId() {
 		return id;
 	}
@@ -67,7 +87,13 @@ public class ViewOU {
 		this.loginBean = loginBean;
 	}
 
+	public ApplicationBean getApplicationBean() {
+		return applicationBean;
+	}
 
+	public void setApplicationBean(ApplicationBean applicationBean) {
+		this.applicationBean = applicationBean;
+	}
 
 	public Organization getOrga() {
 		return orga;
@@ -76,24 +102,4 @@ public class ViewOU {
 	public void setOrga(Organization orga) {
 		this.orga = orga;
 	}
-
-	public String save() throws Exception
-	{  
-		ouServiceBean.updateOU(orga, loginBean.getUserHandle());
-		this.orga = update(orga.getId());
-		this.orga.setEditable(false);
-		return "pretty:ou";
-	}
-
-	public Organization update(String id) throws Exception
-	{
-		return ouServiceBean.retrieveOrganization(id);
-	}
-	
-	public String edit()
-	{
-		this.orga.setEditable(true);
-		return "pretty:ou";
-	}
-	
 }
