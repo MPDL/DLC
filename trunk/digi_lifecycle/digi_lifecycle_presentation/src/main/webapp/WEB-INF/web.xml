@@ -58,6 +58,14 @@
 		<param-name>facelets.DEVELOPMENT</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	
+
+	<context-param>
+	    <param-name>javax.faces.PROJECT_STAGE</param-name>
+	    <param-value>Development</param-value>
+    </context-param>
+
+
 
 	<!-- RichFaces File Upload -->
 	<context-param>
@@ -130,6 +138,8 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	
+
 
 	<session-config>
 		<session-timeout>180</session-timeout>

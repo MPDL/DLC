@@ -41,7 +41,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * @link http://balusc.blogspot.com/2009/12/uploading-files-in-servlet-30.html
  */
 
-@WebFilter(displayName = "FileUploadFilter", urlPatterns = { "/*" })
+@WebFilter(filterName = "FileUploadFilter", urlPatterns = { "/*" })
 public class MultipartRequestFilter implements Filter {
 
     // Constants ----------------------------------------------------------------------------------
