@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- 
             /* 
@@ -44,16 +44,23 @@
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<h:head>
 			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
+			
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/standard.css" type="text/css" rel="stylesheet" />
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/sample_Grey/appearance.css" type="text/css" rel="stylesheet" />
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/dlc.css" type="text/css" rel="stylesheet" />
 		
+
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/jquery-1.4.min.js"></script>
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/jquery-ui-1.8.16.custom.min.js"></script>
+			
 			
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/default.js"></script>
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/template.js"></script>
 				
+			<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
+			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
+			
+
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 			<meta http-equiv="pragma" content="no-cache" />
 			<meta http-equiv="cache-control" content="no-cache" />
@@ -84,7 +91,7 @@
 							<h:messages errorClass="messageError"  
 								warnClass="messageWarning" fatalClass="messageFatal"
 								infoClass="messageSuccess" layout="list" globalOnly="true"
-								showDetail="true" showSummary="true"/>
+								showDetail="false" showSummary="true"/>
 								
 						
 						</div>
