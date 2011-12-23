@@ -31,7 +31,7 @@
         </f:facet>
         
 
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" id="editCollection">
 
             <h:outputText value="Name*"/>
             <h:inputText id="contextName" value="#{cc.attrs.collection.name}">
@@ -60,7 +60,7 @@
 				</h:selectOneMenu>
 			</h:panelGroup> 
 			
-			<a4j:commandButton value="save" action="#{adminBean.createNewContext}" execute="@form"/>
+			<a4j:commandButton value="save" action="#{adminBean.editContext}" execute="@form"/>
 
 
         </h:panelGrid>
