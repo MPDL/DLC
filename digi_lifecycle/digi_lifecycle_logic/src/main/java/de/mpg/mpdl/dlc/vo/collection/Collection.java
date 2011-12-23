@@ -1,9 +1,5 @@
 package de.mpg.mpdl.dlc.vo.collection;
 
-import de.escidoc.core.resources.oum.OrganizationalUnit;
-import de.mpg.mpdl.dlc.vo.organization.Organization;
-
-
 public class Collection {
 	private String id;
 	

@@ -146,10 +146,33 @@ public class ContextServiceBean {
 	}
 	
 	
+	public Context updateContext(Collection collection, String userHandle) 
+	{
+		logger.info("Updating context " + collection.getId() );
+		Context context = new Context();
+		try
+		{
+	    	ContextHandlerClient  client = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+	    	client.setHandle(userHandle);
+	    	context = client.retrieve(collection.getId());
+	    	
+	    	context = prepareContext(context, collection);
+	    	
+	    	context = client.update(context);
+			
+		}catch(Exception e)
+		{
+			logger.error("Error while updating context", e);
+		}
+		return context;
+	}
+
+	
 	public Context createNewContext(Collection c, String userHandle)
 	{ 
 		logger.info("Creating new context");
-		Context context =prepareContext(c,userHandle);
+		Context context = new Context();
+		context = prepareContext(context, c);
 		try
 		{
 	    	ContextHandlerClient  client = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -171,16 +194,15 @@ public class ContextServiceBean {
 		return context;
 	}
 	
-	private Context prepareContext(Collection c, String userHandle)
+	private Context prepareContext(Context context, Collection collection)
 	{  
 		logger.info("Preparing new Context");
-		Context context = new Context();
         ContextProperties properties = new ContextProperties();
-        properties.setName(c.getName());
-        properties.setDescription(c.getDescription());
+        properties.setName(collection.getName());
+        properties.setDescription(collection.getDescription());
         properties.setType("DLC");
         OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
-        ous.add(new OrganizationalUnitRef(c.getOuId()));
+        ous.add(new OrganizationalUnitRef(collection.getOuId()));
         properties.setOrganizationalUnitRefs(ous);
         context.setProperties(properties);       
 		return context;
@@ -286,6 +308,7 @@ public class ContextServiceBean {
 		
 		return sw.toString();
 	}
+
 
 
 }
