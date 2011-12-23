@@ -33,7 +33,7 @@
         </f:facet>
         
 
-        <h:panelGrid columns="2">
+        <h:panelGrid columns="2" id="editUser">
 
             <h:outputText value="name*"/>
             <h:inputText id="name" value="#{cc.attrs.user.name}" />
@@ -74,7 +74,7 @@
 
 
 
-			<a4j:commandButton value="save" action="#{adminBean.createNewUser}" execute="@form"/>
+			<a4j:commandButton value="save" action="#{adminBean.editUser}" execute="@form"/>
 
 
         </h:panelGrid>

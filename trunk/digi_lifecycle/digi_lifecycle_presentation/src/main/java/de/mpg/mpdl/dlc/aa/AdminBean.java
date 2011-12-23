@@ -8,7 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
 import org.jboss.logging.Logger;
@@ -34,7 +34,7 @@ import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.user.User;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 @URLMapping(id="admin", pattern = "/admin", viewId = "/admin.xhtml", onPostback=true)
 public class AdminBean{
 	private static Logger logger = Logger.getLogger(AdminBean.class);
@@ -57,22 +57,30 @@ public class AdminBean{
 	
 	private Organization orga;
 	private Organization newEmptyOrga;
-	private Collection collection = new Collection();
-	private User user = new User();
+	private Collection collection;
+	private Collection newEmptyCollection;
+	private User user;
+	private User newEmptyUser;
 	
 	private List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
 
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
 	
-	private String editOrgaId;
+	private String editOrgaId="";
+	
+	private String editUserId="";
+	
+	private String editCollectionId="";
 
 	
-
-
 	public AdminBean() throws Exception
 	{
+		this.orga = initOrganization();
 		this.newEmptyOrga = initOrganization();
-//		initCollection();
+		this.collection = initCollection();
+		this.newEmptyCollection = initCollection();
+		this.user = new User();
+		this.newEmptyUser = new User();
 	}
 	
 	public Organization initOrganization() {  
@@ -85,11 +93,13 @@ public class AdminBean{
 		o.setEscidocMd(escidoc);
 		return o;
 	}
-	public void initCollection()
+	
+	public Collection initCollection()
 	{
+		Collection c = new Collection();
 		DLCAdminDescriptor dlcAD = new DLCAdminDescriptor();
-		this.collection.setDlcAD(dlcAD);
-		
+		c.setDlcAD(dlcAD);
+		return c;
 	}
 
 	@PostConstruct
@@ -129,8 +139,8 @@ public class AdminBean{
 		if(editOrgaId != null && editOrgaId.equals(orga.getId()))
 		{
 			ouServiceBean.updateOU(orga, loginBean.getUserHandle());
-			this.orga = ouServiceBean.retrieveOrganization(orga.getId());
 			applicationBean.setOus(ouServiceBean.retrieveOUs());
+			loginBean.getUser().setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
 			this.editOrgaId = "";
 			init();
 		}
@@ -154,15 +164,22 @@ public class AdminBean{
 		return "pretty:admin";
 	}
 	
-	public String createNewContext() throws Exception
+	public String editContext() throws Exception
 	{
+		if(editCollectionId != null && editCollectionId.equals(collection.getId()))
+		{
+			contextServiceBean.updateContext(collection, loginBean.getUserHandle());
+		}
+		else
+		{
 		Context c = contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
 		loginBean.getUser().getCreatedCollections().add(contextServiceBean.retrieveCollection(c.getObjid(), loginBean.getUserHandle()));
 		init();
+		}
 		return "pretty:admin";
 	}
 	
-	public String closeCollection(Collection collection) throws Exception
+	public String closeCollection() throws Exception
 	{
 		Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
 		loginBean.getUser().getCreatedCollections().remove(collection);
@@ -170,21 +187,37 @@ public class AdminBean{
 		return "pretty:admin";
 	}
 	   
-	public String createNewUser() throws Exception
-	{      
+	public String editUser() throws Exception
+	{         
+		if(editUserId !=null && editUserId.equals(user.getId()))
+		{     
+			UserAccount ua = uaServiceBean.updateUserAccount(user, loginBean.getUserHandle());
+			loginBean.getUser().getCreatedUsers().add(user);
+			for(User u :loginBean.getUser().getCreatedUsers())
+			{
+				if(u.getId().equals(ua.getObjid()))
+				{
+					loginBean.getUser().getCreatedUsers().remove(u);
+
+				}
+			}
+		}
+		else
+		{
 		UserAccount ua = uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
 		loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(),loginBean.getUserHandle()));
+		}
 		return "pretty:admin";
 	}
 	
-	public String deleteUser(User user) throws Exception
+	public String deleteUser() throws Exception
 	{
 		String id = uaServiceBean.deleteUserAccount(user.getId(), loginBean.getUserHandle());
 		loginBean.getUser().getCreatedUsers().remove(user);
 		return "pretty:admin";
 	}
 
-	public Organization getOrga() {
+	public Organization getOrga() { 
 		return orga;
 	}
 
@@ -192,7 +225,7 @@ public class AdminBean{
 		this.orga = orga;
 	}
 	
-	public Collection getCollection() {
+	public Collection getCollection() { 
 		return collection;
 	}
 
@@ -200,7 +233,7 @@ public class AdminBean{
 		this.collection = collection;
 	}
 
-	public User getUser() {
+	public User getUser() {  
 		return user;
 	}
 
@@ -255,7 +288,37 @@ public class AdminBean{
 	public void setNewEmptyOrga(Organization newEmptyOrga) {
 		this.newEmptyOrga = newEmptyOrga;
 	}
-	
-	
-	
+
+	public Collection getNewEmptyCollection() {
+		return newEmptyCollection;
+	}
+
+	public void setNewEmptyCollection(Collection newEmptyCollection) {
+		this.newEmptyCollection = newEmptyCollection;
+	}
+
+	public User getNewEmptyUser() {
+		return newEmptyUser;
+	}
+
+	public void setNewEmptyUser(User newEmptyUser) {
+		this.newEmptyUser = newEmptyUser;
+	}
+
+	public String getEditUserId() {
+		return editUserId;
+	}
+
+	public void setEditUserId(String editUserId) {
+		this.editUserId = editUserId;
+	}
+
+	public String getEditCollectionId() {
+		return editCollectionId;
+	}
+
+	public void setEditCollectionId(String editCollectionId) {
+		this.editCollectionId = editCollectionId;
+	}
+
 }

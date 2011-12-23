@@ -27,7 +27,7 @@
 					<f:param value="#{orga.id}" />
 			    	<h:outputText value="#{orga.escidocMd.title}"/>
 			    	
-			    	<a4j:commandButton value="Delete" execute="@this" render="@none" oncomplete="#{rich:component('confirmPane')}.show()">
+			    	<a4j:commandButton value="Delete" execute="@this" render="@none" oncomplete="#{rich:component('confirmOrgaPane')}.show()">
                     	<!-- <h:graphicImage value="/resources/images/Delete.png" alt="delete" /> -->
                    		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
                		</a4j:commandButton> 
@@ -41,13 +41,12 @@
 	      	</a4j:repeat>
 
             <a4j:commandButton execute="@this" value="Create New Organization" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
-            	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
               	<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}" />
             </a4j:commandButton> 
 
-    		<rich:popupPanel id="confirmPane" autosized="true"> 
+    		<rich:popupPanel id="confirmOrgaPane" autosized="true"> 
     			 Are you sure you want to close this organization?
-        		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmPane')}.hide(); return false;" />
+        		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" />
         		<a4j:commandButton value="Delete" action="#{adminBean.closeOrganization}"/>
     		</rich:popupPanel>
 		    
@@ -60,26 +59,31 @@
 				<pretty:link mappingId="volumes">
 					<f:param value="#{collection.id}" />
 			    	<h:outputText value="#{collection.name}"/>
-			    	<h:commandButton value="Close" action="#{adminBean.closeCollection(collection)}" />
-			    	<h:commandButton value="Edit"  />
+			    	
+				    <a4j:commandButton value="Delete" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
+    	               	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
+        	       	</a4j:commandButton> 
+               		
+            	   	<a4j:commandButton value="Edit" execute="@this" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+                	    <a4j:param value="#{collection.id}" assignTo="#{adminBean.editCollectionId}" />
+                   		<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
+               		</a4j:commandButton> 			    	
+			    	
 			    </pretty:link>
 			   <br />
 	      	</a4j:repeat>
+
+
+    		<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
+    			 Are you sure you want to close this organization?
+        		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
+        		<a4j:commandButton value="Delete" action="#{adminBean.closeCollection}"/>
+    		</rich:popupPanel>		 	
 		 	
-		 	
-		    <rich:toolbar height="26px" width="100px">
-		        <h:outputLink value="#" id="newContext">
-		            <rich:componentControl event="click" operation="show" target="popupContext">
-		                <a4j:param name="event" value="event" noEscape="true" />
-		                <rich:hashParam>
-		                    <a4j:param noEscape="true" name="top"
-		                        value="jQuery(#{rich:element('newContext')}.parentNode).offset().top + jQuery(#{rich:element('newContext')}.parentNode).height()" />
-		                    <a4j:param noEscape="true" name="left"
-		                        value="jQuery(#{rich:element('newContext')}.parentNode).offset().left" />
-		                </rich:hashParam>
-		            </rich:componentControl>
-		            Create new Collection:</h:outputLink>
-		    </rich:toolbar>
+            <a4j:commandButton execute="@this" value="Create New Collection" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+              	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{adminBean.newEmptyCollection}" />
+            </a4j:commandButton> 
+
 
    			<mpdl:contextEditor target="popupContext" title="Create new" collection="#{adminBean.collection}" />
 
@@ -89,25 +93,27 @@
 			<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
 			    <h:outputText value=" loginname: #{user.loginName} "/>
 			    <h:outputText value=" (name: #{user.name}) "/>
-			    <h:commandButton value="Delete" action="#{adminBean.deleteUser(user)}" rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-			    <h:commandButton value="Edit"  />
-			    
+
+			    <a4j:commandButton value="Delete" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
+                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
+               	</a4j:commandButton> 
+               		
+               	<a4j:commandButton value="Edit" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+                    <a4j:param value="#{user.id}" assignTo="#{adminBean.editUserId}" />
+                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
+               	</a4j:commandButton> 
 			   <br />
 	      	</a4j:repeat>
+
+    		<rich:popupPanel id="confirmUserPane" autosized="true"> 
+    			 Are you sure you want to close this organization?
+        		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
+        		<a4j:commandButton value="Delete" action="#{adminBean.deleteUser}"/>
+    		</rich:popupPanel>
 		 
-		    <rich:toolbar height="26px" width="100px">
-		        <h:outputLink value="#" id="newUA">
-		            <rich:componentControl event="click" operation="show" target="popupUser">
-		                <a4j:param name="event" value="event" noEscape="true" />
-		                <rich:hashParam>
-		                    <a4j:param noEscape="true" name="top"
-		                        value="jQuery(#{rich:element('newUA')}.parentNode).offset().top + jQuery(#{rich:element('newUA')}.parentNode).height()" />
-		                    <a4j:param noEscape="true" name="left"
-		                        value="jQuery(#{rich:element('newUA')}.parentNode).offset().left" />
-		                </rich:hashParam>
-		            </rich:componentControl>
-		            Create new User:</h:outputLink>
-		    </rich:toolbar>
+            <a4j:commandButton execute="@this" value="Create New User" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+              	<f:setPropertyActionListener target="#{adminBean.user}" value="#{adminBean.newEmptyUser}" />
+            </a4j:commandButton> 
 
    			<mpdl:userEditor target="popupUser" title="Create new" user="#{adminBean.user}" />
 
