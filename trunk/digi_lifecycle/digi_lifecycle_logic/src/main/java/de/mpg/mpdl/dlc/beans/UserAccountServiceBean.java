@@ -245,11 +245,85 @@ public class UserAccountServiceBean {
 		return uas;		
 	}
 	
+	public UserAccount updateUserAccount(User user, String userHandle)
+	{  
+		logger.info("updating user account " + user.getId());
+		UserAccount ua = new UserAccount();
+		try
+		{ 
+			UserAccountHandlerClient client =  new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			ua = client.retrieve(user.getId());
+			
+			ua = prepareUserAccount(ua, user);
+
+			ua = client.update(ua);
+			
+			TaskParam taskParam = new TaskParam();
+			//update Password
+			if(user.getPassword()!=null && user.getPassword() != "")
+			{
+				taskParam.setPassword(user.getPassword());
+				taskParam.setLastModificationDate(ua.getLastModificationDate());
+				client.updatePassword(ua.getObjid(), taskParam);	
+			
+				ua = client.retrieve(ua.getObjid());
+			}
+			//update Grant
+			if(user.getOuId() != null )
+			{
+				Attribute a = client.retrieveAttributes(ua.getObjid()).get(0);
+				if(!user.getOuId().equals(a.getValue()))
+				{    
+//					//remove old Attribute
+//					client.deleteAttribute(ua.getObjid(), a.getObjid());
+	 				
+				a.setLastModificationDate(ua.getLastModificationDate());
+				a.setValue(user.getOuId());
+				client.updateAttribute(ua.getObjid(), a);
+				ua = client.retrieve(ua.getObjid());
+//					//set new Attribute
+//					Attribute attribute = new Attribute("o", user.getOuId());
+//					client.createAttribute(ua.getObjid(), attribute);
+				}
+			} 
+			Grant grant = new Grant();
+			if(user.getDepositorContextIds().size()>0 || user.getModeratorContextIds().size()>0)
+			{
+
+				for(Grant g : client.retrieveCurrentGrants(ua.getObjid()))
+				{
+					taskParam = new TaskParam();
+					taskParam.setLastModificationDate(ua.getLastModificationDate());
+					client.revokeGrant(ua.getObjid(), g.getObjid(), taskParam);
+				}
+				
+				for(String contextInfo : user.getDepositorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+				}				
+				for(String contextInfo : user.getModeratorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+				}
+				ua = client.retrieve(ua.getObjid());
+			}
+			
+		}catch(Exception e)
+		{
+			logger.error("Error while Updating ua", e);
+		}
+		return ua;
+	}
+	
 	
 	public UserAccount createNewUserAccount(User user, String userHandle) 
 	{
 		logger.info("Creating new user Account");
-		UserAccount ua = prepareUserAccount(user);
+		UserAccount ua = new UserAccount();
+		ua = prepareUserAccount(ua, user);
 		try
 		{
 			UserAccountHandlerClient client =  new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -277,7 +351,7 @@ public class UserAccountServiceBean {
 				Attribute attribute = new Attribute("o", user.getOuId());
 				client.createAttribute(ua.getObjid(), attribute);
 			}
-			if(user.getDepositorContextIds() != null)
+			if(user.getDepositorContextIds().size()>0)
 			{
 				for(String contextInfo : user.getDepositorContextIds())
 				{
@@ -285,7 +359,7 @@ public class UserAccountServiceBean {
 					client.createGrant(ua.getObjid(), grant);
 				}				
 			}
-			if(user.getModeratorContextIds() != null)
+			if(user.getModeratorContextIds().size()>0)
 			{
 				for(String contextInfo : user.getModeratorContextIds())
 				{
@@ -293,9 +367,6 @@ public class UserAccountServiceBean {
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
-						
-			
-			
 			
 		}catch(Exception e)
 		{
@@ -328,16 +399,14 @@ public class UserAccountServiceBean {
 	 	return grant;
 	}
 	
-    private UserAccount prepareUserAccount(User user) {
-
-        UserAccount userAccount = new UserAccount();
+    private UserAccount prepareUserAccount(UserAccount ua, User user) {
 
         UserAccountProperties properties = new UserAccountProperties();
         properties.setLoginName(user.getLoginName());
         properties.setName(user.getName());
-        userAccount.setProperties(properties);
+        ua.setProperties(properties);
 
-        return userAccount;
+        return ua;
     }
 
 	public String deleteUserAccount(String id, String userHandle) 
