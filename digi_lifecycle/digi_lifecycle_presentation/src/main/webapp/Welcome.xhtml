@@ -12,23 +12,8 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 
-	<h:outputStylesheet>
-
-        .rf-ac {
-            width: 500px;
-        }
- 
-        .rf-ac-itm-c {
-            height: 550px;
-        }
-        
-        .rf-ac-itm-lbl-act
-        {	
-        	color:red;
-        }
 
 
-    </h:outputStylesheet>
 
 	<ui:param name="browserTitle" value="#{lbl.HomePage}" />
 	<ui:param name="headline" value="#{lbl.HomePage}" style="float:left"/>
@@ -37,7 +22,26 @@
 
 	<ui:define name="mainContent">
 
-			
+			<style type="text/css">
+		        .rf-ac{
+		        	width: 600px;
+		        }
+		        .rf-ac div {
+		        	float:none;
+		        }
+		 
+		        .rf-ac-itm-c {
+		            height: 550px;
+		        }
+		        
+		        .rf-ac-itm-lbl-act
+		        {	
+		        	color:red;
+		        }
+
+		 
+			</style>
+						
 			<div id="dlcInfo" style="margin:40px 20px">
 
 					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" style="float:left;" />
@@ -47,8 +51,10 @@
 					ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
 					aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
 			</div>
+			
 
-			<div class="container_1_2" style="margin:40px 70px;">
+
+			<div style="margin:40px 70px;">
 
 					<rich:accordion switchType="client" rendered="#{not empty applicationBean.ous}" >
 						<c:forEach items="#{applicationBean.ous}" var="ou">
