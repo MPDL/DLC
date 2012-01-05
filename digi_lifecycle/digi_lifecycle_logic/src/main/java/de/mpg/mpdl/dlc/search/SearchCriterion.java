@@ -109,8 +109,8 @@ public class SearchCriterion {
 	
 	public static String toCql(List<SearchCriterion> scList)
 	{
-		
-		String cql = "";
+		  
+		String cql = "";  
 		for(int i=0; i<scList.size(); i++)
 		{
 			SearchCriterion sc = scList.get(i);

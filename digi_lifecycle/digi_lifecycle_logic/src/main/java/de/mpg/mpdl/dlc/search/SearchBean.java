@@ -47,7 +47,12 @@ public class SearchBean {
 			//first with "and" and opening bracket
 			if(i==0)
 			{
-				SearchCriterion scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 2, 0);
+				SearchCriterion scContentModel;
+				if(volTypes.length >1)
+					scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 2, 0);
+				else
+					scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 1, 0);
+					
 				scList.add(scContentModel);
 			}
 			//last with "or" and closing brakcket
@@ -159,7 +164,7 @@ public class SearchBean {
 	}
 	
 	private VolumeSearchResult search(List<SearchCriterion> scList, int limit, int offset, String index, String userHandle) throws Exception
-	{
+	{  
 		
 		//SearchCriterion itemCriterion = new SearchCriterion(SearchType.OBJECTTYPE, "item");
 		//scList.add(0, itemCriterion);
