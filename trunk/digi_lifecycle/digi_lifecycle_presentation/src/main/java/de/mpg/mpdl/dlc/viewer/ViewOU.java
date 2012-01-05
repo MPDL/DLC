@@ -1,18 +1,15 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.event.ValueChangeEvent;
 
 import org.jboss.logging.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
@@ -42,13 +39,10 @@ public class ViewOU {
 	
 	@URLAction(onPostback=false)
 	public void loadOu()
-	{     
+	{    
 		try{
-			if(orga==null || !id.equals(orga.getId()))
-			{
 				this.orga = ouServiceBean.retrieveOrganization(id);
 				logger.info("load ou " + id);
-			}
 		}catch(Exception e){
 			logger.error("Problem with loading ou", e);
 		}
@@ -64,9 +58,9 @@ public class ViewOU {
 		loginBean.getUser().setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(loginBean.getUserHandle(), loginBean.getUser().getId()));
 		return "pretty:ou";
 	}
-
+  
 	public String edit()
-	{
+	{  
 		this.orga.setEditable(true);
 		return "pretty:ou";
 	}

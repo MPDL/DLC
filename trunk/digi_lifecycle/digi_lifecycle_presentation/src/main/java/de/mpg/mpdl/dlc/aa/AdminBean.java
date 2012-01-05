@@ -188,19 +188,12 @@ public class AdminBean{
 	}
 	   
 	public String editUser() throws Exception
-	{         
+	{           
 		if(editUserId !=null && editUserId.equals(user.getId()))
-		{     
+		{          
+			loginBean.getUser().getCreatedUsers().remove(user);
 			UserAccount ua = uaServiceBean.updateUserAccount(user, loginBean.getUserHandle());
-			loginBean.getUser().getCreatedUsers().add(user);
-			for(User u :loginBean.getUser().getCreatedUsers())
-			{
-				if(u.getId().equals(ua.getObjid()))
-				{
-					loginBean.getUser().getCreatedUsers().remove(u);
-
-				}
-			}
+			loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(), loginBean.getUserHandle()));
 		}
 		else
 		{
@@ -232,8 +225,10 @@ public class AdminBean{
 	public void setCollection(Collection collection) {
 		this.collection = collection;
 	}
-
+   
 	public User getUser() {  
+		if(user!=null && user.getOu()!=null)
+			user.setOuId(user.getOu().getObjid());
 		return user;
 	}
 
@@ -307,7 +302,7 @@ public class AdminBean{
 
 	public String getEditUserId() {
 		return editUserId;
-	}
+	}  
 
 	public void setEditUserId(String editUserId) {
 		this.editUserId = editUserId;
