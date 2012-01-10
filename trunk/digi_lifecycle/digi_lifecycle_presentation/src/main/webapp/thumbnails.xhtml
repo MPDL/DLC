@@ -9,27 +9,25 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
-<ui:composition template="templates/template.xhtml">
+<ui:composition template="templates/template_v3.xhtml">
 
 	<ui:define name="mainContent">
-		<mpdl:paginator paginatorBean="#{thumbnailsBean}" />	
+		<mpdl:paginator paginatorBean="#{thumbnailsBean}">	
 		
-		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
-			<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
-				<a4j:repeat id="pictureList" var="var" value="#{thumbnailsBean.currentPartList}" rows="0" rowKeyVar="index">
-					<li class="large_area0 itemTile">
-						<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1 matrixItem">
-							<pretty:link mappingId="viewPages">
-								<f:param value="#{thumbnailsBean.volumeId}" />
-								<f:param value="#{var.order}" />
-								<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
-							</pretty:link>
-						</h:panelGroup>
-					</li>
-				</a4j:repeat>
-			</ul>
-		</h:panelGroup>
-
+			<h:panelGroup layout="block">
+				<ul>
+						<li>
+							<h:panelGroup layout="block" id="imgFrame" >
+								<pretty:link mappingId="viewPages">
+									<f:param value="#{thumbnailsBean.volumeId}" />
+									<f:param value="#{var.order}" />
+									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
+								</pretty:link>
+							</h:panelGroup>
+						</li>
+				</ul>
+			</h:panelGroup>
+		</mpdl:paginator>
 
 <ui:remove>	
 		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
