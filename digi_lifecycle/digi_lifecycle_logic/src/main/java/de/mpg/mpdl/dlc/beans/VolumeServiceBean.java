@@ -264,10 +264,11 @@ public class VolumeServiceBean {
 	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
 	{
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+		Volume parent = null;
 		
 		if(multiVolumeId != null)
 		{
-			Volume parent = retrieveVolume(multiVolumeId, userHandle);
+			parent = retrieveVolume(multiVolumeId, userHandle);
 			parent = updateMultiVolume(parent, item.getObjid(), userHandle);
 			parent = releaseVolume(parent, userHandle);
 		}
@@ -322,7 +323,7 @@ public class VolumeServiceBean {
 			vol.setModsMetadata(modsMetadata);
 			vol.setItem(item);
 
-			vol = updateVolume(vol, multiVolumeId,teiFileWithIds, userHandle, true);
+			vol = updateVolume(vol, parent, teiFileWithIds, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
 		} 
 		catch (Exception e) 
@@ -379,8 +380,14 @@ public class VolumeServiceBean {
 	public Volume updateMultiVolume(Volume vol, String relationId, String userHandle) throws Exception
 	{
 		logger.info("Trying to update Multivolume item" + vol.getProperties().getVersion().getObjid());
+		
+		
+		
+		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
+		
+		
 		Item item = vol.getItem();
 		Relations relations = new Relations();
 		Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
@@ -399,7 +406,36 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public Volume updateVolume(Volume vol, String relationId, File teiFile, String userHandle, boolean initial) throws Exception
+	/**
+	 * Adds a relation to the given item, means adding a volume to a multivolume
+	 * @param vol
+	 * @param relationId
+	 * @param userHandle
+	 * @return
+	 * @throws Exception
+	 */
+	public Volume addRelationToMultivolume(Volume vol, String relationId, String userHandle) throws Exception
+	{
+		logger.info("Adding relation " + relationId + " to multivolume " + vol.getProperties().getVersion().getObjid());
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		Item item = vol.getItem();
+		
+		String filter = "<param last-modification-date=\"" + item.getLastModificationDate() +"\"><relation>" +
+				  "<targetId>" + relationId + "</targetId>" +
+				  "<predicate>http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart</predicate>" +
+				  "</relation></param>";
+		
+		
+		
+		client.addContentRelations(item, filter);
+		
+		return retrieveVolume(item.getObjid(), userHandle);
+	}
+	
+	
+	public Volume updateVolume(Volume vol, Volume parent, File teiFile, String userHandle, boolean initial) throws Exception
 	{
 		
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
@@ -412,12 +448,19 @@ public class VolumeServiceBean {
 		MetadataRecords mdRecs = new MetadataRecords();
 		MetadataRecord mdRec = new MetadataRecord("escidoc");
 		mdRecs.add(mdRec);
+		
 		item.setMetadataRecords(mdRecs);
 		
-		if(relationId != null)
+		if(parent != null)
 		{
+			//Also add the md record of the multivolume to each volume for indexing etc.
+			MetadataRecord mdRecMv = new MetadataRecord("multivolume");
+			mdRecMv.setContent(parent.getItem().getMetadataRecords().get("escidoc").getContent());
+			item.getMetadataRecords().add(mdRecMv);
+			
+			//Add the relation to the multivolume
 			Relations relations = new Relations();
-			Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
+			Reference ref = new ItemRef("/ir/item/"+parent.getItem().getObjid(),"Item "+ parent.getItem().getObjid());
 			
 			Relation relation = new Relation(ref);
 			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
