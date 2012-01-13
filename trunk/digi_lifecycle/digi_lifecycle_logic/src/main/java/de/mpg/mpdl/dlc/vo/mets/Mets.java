@@ -18,8 +18,53 @@ public class Mets {
 	@XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div")
 	private List<Page> pages = new ArrayList<Page>();
 	
-	@XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file")
-	private List<MetsFile> files = new ArrayList<MetsFile>();
+	@XmlPath("mets:fileSec/mets:fileGrp[@USE='THUMBS']/mets:file")
+	private List<MetsFile> thumbnailResFiles = new ArrayList<MetsFile>();
+	
+	@XmlPath("mets:fileSec/mets:fileGrp[@USE='DEFAULT']/mets:file")
+	private List<MetsFile> defaultResFiles = new ArrayList<MetsFile>();
+	
+	@XmlPath("mets:fileSec/mets:fileGrp[@USE='MAX']/mets:file")
+	private List<MetsFile> maxResFiles = new ArrayList<MetsFile>();
+	
+	@XmlPath("mets:fileSec/mets:fileGrp[@USE='DIGILIB']/mets:file")
+	private List<MetsFile> digilibFiles = new ArrayList<MetsFile>();
+	
+	public List<MetsFile> getThumbnailResFiles() {
+		return thumbnailResFiles;
+	}
+
+	public void setThumbnailResFiles(List<MetsFile> thumbnailResFiles) {
+		this.thumbnailResFiles = thumbnailResFiles;
+	}
+
+	public List<MetsFile> getDefaultResFiles() {
+		return defaultResFiles;
+	}
+
+	public void setDefaultResFiles(List<MetsFile> defaultResFiles) {
+		this.defaultResFiles = defaultResFiles;
+	}
+
+	public List<MetsFile> getMaxResFiles() {
+		return maxResFiles;
+	}
+
+	public void setMaxResFiles(List<MetsFile> maxResFiles) {
+		this.maxResFiles = maxResFiles;
+	}
+
+	public List<MetsFile> getDigilibFiles() {
+		return digilibFiles;
+	}
+
+	public void setDigilibFiles(List<MetsFile> digilibFiles) {
+		this.digilibFiles = digilibFiles;
+	}
+
+
+
+	
 
 	public List<Page> getPages() {
 		return pages;
@@ -29,13 +74,7 @@ public class Mets {
 		this.pages = pages;
 	}
 
-	public List<MetsFile> getFiles() {
-		return files;
-	}
-
-	public void setFiles(List<MetsFile> files) {
-		this.files = files;
-	}
+	
 	
 /*
 	

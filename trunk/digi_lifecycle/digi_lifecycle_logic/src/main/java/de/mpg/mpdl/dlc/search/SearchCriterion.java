@@ -19,13 +19,13 @@ public class SearchCriterion {
 	public enum SearchType
 	{
 		FREE(new String[]{"escidoc.metadata"}), 
-		AUTHOR(new String[]{"escidoc.namePart"}), 
-		TITLE(new String[]{"escidoc.title"}), 
-		PLACE(new String[]{"escidoc.placeTerm"}), 
-		PUBLISHER(new String[]{"escidoc.publisher"}),
-		YEAR(new String[]{"escidoc.dateIssued"}), 
-		KEYWORD(new String[]{"escidoc.note"}), 
-		ID(new String[]{"escidoc.identifier"}), 
+		AUTHOR(new String[]{"dlc.author"}), 
+		TITLE(new String[]{"dlc.title"}), 
+		PLACE(new String[]{"dlc.place"}), 
+		PUBLISHER(new String[]{"dlc.publisher"}),
+		YEAR(new String[]{"dlc.year"}), 
+		KEYWORD(new String[]{"dlc.subject"}), 
+		ID(new String[]{"dlc.identifier"}), 
 		FULLTEXT(new String[]{"escidoc.fulltext"}),
 		
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}),
