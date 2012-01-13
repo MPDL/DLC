@@ -167,7 +167,7 @@
 								<rich:tab header="Thumbs" id="thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
 										<h:commandLink action="#{viewPages.goToPage(var)}">
-											<h:graphicImage id="img" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,120,200)}" style="width:120px;" />
+											<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}" style="width:120px;" />
 											<f:ajax render="@all"/>
 										</h:commandLink>
 									</load:lazyLoad>
@@ -260,7 +260,7 @@
 							</span>
 							
 							<div class="quad_area1 splitBlockBody noTopBorder sameHeightMaster digilib">
-								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,360,1000)}" style="cursor:pointer"/>
+								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.defaultFile.href)}" style="cursor:pointer"/>
 							</div>
 						</h:panelGroup>
 						
@@ -280,7 +280,7 @@
 							</span>
 							
 							<span class="quad_area1 splitBlockBody noTopBorder sameHeightMaster">
-								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedRightPage,360,1000)}" style="cursor:pointer"/>
+								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.defaultFile.href)}" style="cursor:pointer"/>
 							</span>
 							
 						</h:panelGroup>

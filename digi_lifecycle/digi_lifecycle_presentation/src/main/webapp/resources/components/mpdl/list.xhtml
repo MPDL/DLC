@@ -94,7 +94,7 @@
 			
 			<div class="itemMediabar">
 				<div class="itemMediabarThumb">
-					<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(cc.attrs.volume.pages[0],50,100)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].thumbnailFile.href)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 				</div>
 				
 				<br/>

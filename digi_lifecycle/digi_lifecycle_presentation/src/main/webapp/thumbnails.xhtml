@@ -21,7 +21,7 @@
 								<pretty:link mappingId="viewPages">
 									<f:param value="#{thumbnailsBean.volumeId}" />
 									<f:param value="#{var.order}" />
-									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
+									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}"/>
 								</pretty:link>
 							</h:panelGroup>
 						</li>
@@ -40,7 +40,7 @@
 								<pretty:link mappingId="viewPages">
 									<f:param value="#{thumbnailsBean.volumeId}" />
 									<f:param value="#{var.order}" />
-									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getDigilibScalerUrlForPage(var,50,100)}"/>
+									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}"/>
 								</pretty:link>
 							</h:panelGroup>
 						</li>
