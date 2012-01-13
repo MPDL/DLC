@@ -41,8 +41,11 @@ public class ViewOU {
 	public void loadOu()
 	{    
 		try{
+			if(orga==null || !id.equals(orga.getId()))
+			{
 				this.orga = ouServiceBean.retrieveOrganization(id);
 				logger.info("load ou " + id);
+			}
 		}catch(Exception e){
 			logger.error("Problem with loading ou", e);
 		}
@@ -80,6 +83,7 @@ public class ViewOU {
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
 	}
+
 
 	public ApplicationBean getApplicationBean() {
 		return applicationBean;
