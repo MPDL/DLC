@@ -1,10 +1,16 @@
 package de.mpg.mpdl.dlc.vo.mets;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlIDREF;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
+
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 
 public class Page{
@@ -22,12 +28,32 @@ public class Page{
 	@XmlAttribute(name = "ORDERLABEL")
 	private String orderLabel;
 	
-	@XmlPath("mets:fptr/@FILEID")
+	@XmlPath("mets:fptr[1]/@FILEID")
 	@XmlIDREF
-	private MetsFile file;
+	private MetsFile thumbnailFile = new MetsFile();
+	
+	@XmlPath("mets:fptr[2]/@FILEID")
+	@XmlIDREF
+	private MetsFile defaultFile = new MetsFile();
+	
+	@XmlPath("mets:fptr[3]/@FILEID")
+	@XmlIDREF
+	private MetsFile maxFile = new MetsFile();
+	
+	@XmlPath("mets:fptr[4]/@FILEID")
+	@XmlIDREF
+	private MetsFile digilibFile = new MetsFile();
 
 	
-
+	
+	
+	/*
+	public void afterUnmarshal(Unmarshaller u, Object parent) {
+		
+		this.setParent((PbOrDiv)parent);
+	  }
+	*/
+	
 	public String getType() {
 		return type;
 	}
@@ -52,14 +78,7 @@ public class Page{
 		this.orderLabel = orderLabel;
 	}
 
-	public MetsFile getFile() {
-		return file;
-	}
-
-	public void setFile(MetsFile file) {
-		this.file = file;
-	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -67,6 +86,8 @@ public class Page{
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+
 
 	@Override
 	public boolean equals(Object o) {
@@ -81,10 +102,38 @@ public class Page{
 		}
 			
 	}
-	
-	
-	
-	
+
+	public MetsFile getThumbnailFile() {
+		return thumbnailFile;
+	}
+
+	public void setThumbnailFile(MetsFile thumbnailFile) {
+		this.thumbnailFile = thumbnailFile;
+	}
+
+	public MetsFile getDefaultFile() {
+		return defaultFile;
+	}
+
+	public void setDefaultFile(MetsFile defaultFile) {
+		this.defaultFile = defaultFile;
+	}
+
+	public MetsFile getMaxFile() {
+		return maxFile;
+	}
+
+	public void setMaxFile(MetsFile maxFile) {
+		this.maxFile = maxFile;
+	}
+
+	public MetsFile getDigilibFile() {
+		return digilibFile;
+	}
+
+	public void setDigilibFile(MetsFile digilibFile) {
+		this.digilibFile = digilibFile;
+	}
 
 
 }

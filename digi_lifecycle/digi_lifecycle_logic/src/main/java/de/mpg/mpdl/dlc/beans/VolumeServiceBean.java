@@ -282,42 +282,99 @@ public class VolumeServiceBean {
 			
 			File teiFileWithIds = null;
 			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
-			if(teiFile==null)
-			{
-				for(FileItem fileItem : images)
-				{
-					int pos = images.indexOf(fileItem);
-					MetsFile f = new MetsFile();
-					f.setId("img_" + pos);
-					f.setMimeType(fileItem.getContentType());
-					f.setLocatorType("OTHER");
-					f.setHref(dirs.get(pos));
-					metsData.getFiles().add(f);
-
-					Page p = new Page();
-					p.setId("page_" + pos);
-					p.setOrder(pos);
-					p.setOrderLabel("");
-					p.setType("page");
-					p.setFile(f);
-					metsData.getPages().add(p);
-					}
-			}  
-			else
+			List<String> pbIds = new ArrayList<String>();
+			
+			if(teiFile!=null)	
 			{    
 				logger.info("TEI file found");
 				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
 				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
+				pbIds = getAllPbIds(teiFile.getInputStream());
+				
+				/*
 				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
 				Unmarshaller unmarshaller = ctx.createUnmarshaller();
 				metsData = (Mets)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
+				
+				
 				for(FileItem fileItem : images)
 				{
 	
 					int pos = images.indexOf(fileItem);
 					metsData.getFiles().get(pos).setHref(dirs.get(pos));
 					}
+					*/
 			}
+			
+			
+			
+				for(FileItem fileItem : images)
+				{
+					
+					int pos = images.indexOf(fileItem);
+					
+					
+					String thumbnailDir = "thumbnails/" + dirs.get(pos);
+					MetsFile thumbFile = new MetsFile();
+					thumbFile.setId("img_thumb_" + pos);
+					thumbFile.setMimeType(fileItem.getContentType());
+					thumbFile.setLocatorType("OTHER");
+					thumbFile.setHref(thumbnailDir);
+					metsData.getThumbnailResFiles().add(thumbFile);
+					
+					String defaultDir = "web/" + dirs.get(pos);
+					MetsFile defaultFile = new MetsFile();
+					defaultFile.setId("img_default_" + pos);
+					defaultFile.setMimeType(fileItem.getContentType());
+					defaultFile.setLocatorType("OTHER");
+					defaultFile.setHref(defaultDir);
+					metsData.getDefaultResFiles().add(defaultFile);
+					
+					String maxDir = "original/" + dirs.get(pos);
+					MetsFile maxFile = new MetsFile();
+					maxFile.setId("img_max_" + pos);
+					maxFile.setMimeType(fileItem.getContentType());
+					maxFile.setLocatorType("OTHER");
+					maxFile.setHref(maxDir);
+					metsData.getMaxResFiles().add(maxFile);
+					
+					String digilibDir = dirs.get(pos);
+					MetsFile digilibFile = new MetsFile();
+					digilibFile.setId("img_digilib_" + pos);
+					digilibFile.setMimeType(fileItem.getContentType());
+					digilibFile.setLocatorType("OTHER");
+					digilibFile.setHref(digilibDir);
+					metsData.getDigilibFiles().add(digilibFile);
+
+					Page p = new Page();
+					
+					if(teiFile!=null)
+					{
+						p.setId(pbIds.get(pos));
+					}
+					else
+					{
+						p.setId("page_" + pos);
+					}
+					
+					
+					
+					p.setOrder(pos);
+					p.setOrderLabel("");
+					p.setType("page");
+					p.setThumbnailFile(thumbFile);
+					p.setDefaultFile(defaultFile);
+					p.setMaxFile(maxFile);
+					p.setDigilibFile(digilibFile);
+					
+					metsData.getPages().add(p);
+					}
+			
+			
+			
+			
+			
+			
 			vol.setMets(metsData);
 			vol.setProperties(item.getProperties());
 			vol.setModsMetadata(modsMetadata);
@@ -1243,6 +1300,8 @@ public class VolumeServiceBean {
          XQResultSequence res = exp.executeQuery("declare namespace tei='http://www.tei-c.org/ns/1.0'; count(//tei:pb)");
          res.next();
          int pbNumber = Integer.parseInt(res.getItemAsString(null));
+         conn.commit();
+         conn.close();
          System.out.println("Found " + pbNumber + " <pb> elements");
          return pbNumber;
 		
@@ -1314,6 +1373,54 @@ public class VolumeServiceBean {
 		
 	}
 	
+	
+	
+	
+	
+	private  List<String> getAllPbIds(InputStream tei) throws Exception
+	{
+
+		List<String> pbIds = new ArrayList<String>();
+		
+		XQDataSource ds = new SaxonXQDataSource();
+        XQConnection conn = ds.getConnection();
+        XQExpression exp = conn.createExpression();
+        exp.bindDocument(XQConstants.CONTEXT_ITEM, tei, null, null);
+        XQResultSequence res = exp.executeQuery("declare namespace tei='http://www.tei-c.org/ns/1.0'; //tei:pb/@xml:id");
+        while(res.next())
+        {
+        	pbIds.add(res.getNode().getTextContent());
+        }
+       
+        
+        conn.commit();
+        conn.close();
+        
+        return pbIds;
+		
+		
+		/*
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:pb/@xml:id");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.wrap(tei);
+        selector.setContextItem(xdmDoc);
+        
+        for(XdmItem item : selector) {
+            XdmNode node = (XdmNode)item;
+            Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+            pbIds.add(attribute.getTextContent());
+        }
+		
+        return pbIds;
+		
+	*/
+	}
 	
 	
 	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
