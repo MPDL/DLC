@@ -244,11 +244,10 @@ public class VolumeServiceBean {
 		Volume vol= new Volume();
 		try
 		{
-		
 		vol.setProperties(item.getProperties());
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
-		vol = updateVolume(vol, null,null,userHandle, true);
+		vol = updateVolume(vol, null,null,userHandle, false);
 		vol = releaseVolume(vol, userHandle);
 		}
 		catch(Exception e)
@@ -610,12 +609,16 @@ public class VolumeServiceBean {
 		
 		
 		//upload METS
-		StringWriter sw = new StringWriter();
-		m.marshal(vol.getMets(), sw);
-		sw.flush();
+		URL uploadedMets = new URL(PropertyReader.getProperty("escidoc.common.framework.url"));
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		sthc.setHandle(userHandle);
-		URL uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+		if(! vol.getItem().getProperties().getContentModel().getObjid().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
+		{
+			StringWriter sw = new StringWriter();
+			m.marshal(vol.getMets(), sw);
+			sw.flush();
+			sthc.setHandle(userHandle);
+			uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+		}
 
 		//Check if component already exists
 		if (initial)
