@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.UserAccountHandlerClient;
+import de.escidoc.core.client.UserGroupHandlerClient;
 import de.escidoc.core.resources.aa.useraccount.Attribute;
 import de.escidoc.core.resources.aa.useraccount.Attributes;
 import de.escidoc.core.resources.aa.useraccount.Grant;
@@ -22,6 +23,8 @@ import de.escidoc.core.resources.aa.useraccount.GrantProperties;
 import de.escidoc.core.resources.aa.useraccount.Grants;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.aa.useraccount.UserAccountProperties;
+import de.escidoc.core.resources.aa.usergroup.UserGroup;
+import de.escidoc.core.resources.aa.usergroup.UserGroupProperties;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.common.reference.Reference;
@@ -46,8 +49,8 @@ public class UserAccountServiceBean {
 		try
 		{
 		InitialContext context = new InitialContext();
-		this.contextServiceBean = (ContextServiceBean) context.lookup("java:module/ContextServiceBean");
-		this.ouServiceBean = (OrganizationalUnitServiceBean) context.lookup("java:module/OrganizationalUnitServiceBean");
+		this.contextServiceBean = new ContextServiceBean();
+		this.ouServiceBean = new OrganizationalUnitServiceBean();
 
 		}catch(Exception e)
 		{
@@ -451,6 +454,50 @@ public class UserAccountServiceBean {
 			}
 		Attributes attributes = client.retrieveAttributes(userAccountID);
 		System.out.println(attributes.get(0).getValue());
+	}
+	
+	
+	private static void newUserGroup() throws Exception
+	{
+		String url = "http://latest-coreservice.mpdl.mpg.de";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlc");
+		UserGroupHandlerClient ugc = new UserGroupHandlerClient(auth.getServiceAddress());
+		ugc.setHandle(auth.getHandle());
+		
+		UserGroup ug = new UserGroup();
+		
+		UserGroupProperties properties = new UserGroupProperties();
+        properties.setName("test");
+		ug.setProperties(properties);
+		
+		ugc.create(ug);
+		
+		
+		//Set Grant
+		Grant grant = new Grant();
+
+		GrantProperties grantProperties = new GrantProperties();
+		
+		
+	 	grantProperties.setGrantRemark("new usergroup grant");
+	 	RoleRef roleRef = new RoleRef("escidoc.role.userAccount.admin");
+	 	grantProperties.setRole(roleRef);
+	 	grant.setGrantProperties(grantProperties);
+	 	ugc.createGrant(ug, grant);	 	
+	 	
+	 	grantProperties.setGrantRemark("new context grant");
+	 	RoleRef roleRef2 = new RoleRef("escidoc.role.user.depositor");
+	 	grantProperties.setRole(roleRef);
+
+	 	Reference ref = new ContextRef("" , "");
+	 	
+	 	grantProperties.setAssignedOn(ref);
+	 	grant.setGrantProperties(grantProperties);
+		
+		
+
+
+		
 	}
 	
 
