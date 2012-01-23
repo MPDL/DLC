@@ -3,7 +3,7 @@ package de.mpg.mpdl.dlc.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
@@ -26,8 +26,8 @@ public class AdvancedSearchBean {
 	
 	private List<SearchCriterion> searchCriterionList;
 	
-	@EJB
-	private SearchBean searchBean;
+	
+	private SearchBean searchBean = new SearchBean();
 	
 	@ManagedProperty("#{advancedSearchResultBean}")
 	private AdvancedSearchResultBean advancedSearchResultBean;

@@ -3,7 +3,7 @@ package de.mpg.mpdl.dlc.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -33,14 +33,14 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 public class AllVolumesBean extends BasePaginatorBean<Volume> {
 	private static Logger logger = Logger.getLogger(AllVolumesBean.class);
 	
-	@EJB
-	private SearchBean searchBean;
+
+	private SearchBean searchBean = new SearchBean();
 	
-	@EJB
-	private VolumeServiceBean volServiceBean;
+
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
-	@EJB
-	private ContextServiceBean contextServiceBean;
+
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;

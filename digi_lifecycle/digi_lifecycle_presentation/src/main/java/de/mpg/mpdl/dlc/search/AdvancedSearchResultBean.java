@@ -3,7 +3,6 @@ package de.mpg.mpdl.dlc.search;
 import java.io.IOException;
 import java.util.List;
 
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,8 +37,8 @@ public class AdvancedSearchResultBean extends BasePaginatorBean<Volume> {
 	@URLQueryParameter("q")
 	private String cqlQuery;
 	
-	@EJB
-	private SearchBean searchBean;
+	
+	private SearchBean searchBean = new SearchBean();
 	
 	private List<SearchCriterion> searchCriterionList;	
 	
