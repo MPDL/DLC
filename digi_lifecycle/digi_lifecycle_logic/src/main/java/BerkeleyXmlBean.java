@@ -1,13 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
 
 import com.sleepycat.dbxml.XmlContainer;
 import com.sleepycat.dbxml.XmlManager;
 
 
-@Stateless
+
 public class BerkeleyXmlBean implements BerkeleyXmlService {
 
 	@Override

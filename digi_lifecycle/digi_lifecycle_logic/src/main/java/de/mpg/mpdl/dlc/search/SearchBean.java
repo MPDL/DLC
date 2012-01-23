@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ejb.Stateless;
+
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +23,7 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 
-@Stateless
+
 public class SearchBean {
 	
 	private static Logger logger = Logger.getLogger(SearchBean.class);

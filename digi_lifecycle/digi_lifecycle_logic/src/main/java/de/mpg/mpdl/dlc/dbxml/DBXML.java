@@ -2,7 +2,7 @@ package de.mpg.mpdl.dlc.dbxml;
 
 import java.io.Serializable;
 
-import javax.ejb.EJB;
+
 
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
