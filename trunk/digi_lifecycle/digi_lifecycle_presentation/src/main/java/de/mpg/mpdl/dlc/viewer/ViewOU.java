@@ -1,11 +1,13 @@
 package de.mpg.mpdl.dlc.viewer;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
+
+
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -32,8 +34,8 @@ public class ViewOU {
 	@ManagedProperty("#{applicationBean}")
 	private ApplicationBean applicationBean;
 	
-	@EJB
-	private OrganizationalUnitServiceBean ouServiceBean;
+
+	private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
 	
 	private Organization orga;
 	

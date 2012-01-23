@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,8 +41,8 @@ public class LoginBean
     private String userHandle;
     private User user;
     private String tab = "toc";
-    @EJB
-    private UserAccountServiceBean userAccountServiceBean;
+    
+    private UserAccountServiceBean userAccountServiceBean = new UserAccountServiceBean();
     
     public String getTab() 
     {

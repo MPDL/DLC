@@ -1,6 +1,6 @@
 package de.mpg.mpdl.dlc.viewer;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -23,8 +23,8 @@ import de.mpg.mpdl.dlc.vo.Volume;
 public class ViewVolume {
 	private static Logger logger = Logger.getLogger(ViewVolume.class);
 	
-	@EJB
-	private VolumeServiceBean volServiceBean;
+
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	private String volumeId;
 	private Volume volume;

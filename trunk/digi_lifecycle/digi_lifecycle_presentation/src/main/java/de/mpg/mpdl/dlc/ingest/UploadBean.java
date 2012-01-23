@@ -7,7 +7,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -40,8 +40,8 @@ public class UploadBean
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
-	@EJB
-	private VolumeServiceBean volumeService;
+
+	private VolumeServiceBean volumeService = new VolumeServiceBean();
 
 	public UploadBean()
 	{

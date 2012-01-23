@@ -1,7 +1,6 @@
 package de.mpg.mpdl.dlc.aa;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -28,8 +27,8 @@ public class UserBean {
 	
 	private User user;
 	
-	@EJB
-	private UserAccountServiceBean uaServiceBean;
+	
+	private UserAccountServiceBean uaServiceBean = new UserAccountServiceBean();
 	
 	public UserBean() throws Exception
 	{

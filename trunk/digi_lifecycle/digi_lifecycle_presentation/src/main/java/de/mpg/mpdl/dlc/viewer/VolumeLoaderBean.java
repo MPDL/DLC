@@ -3,7 +3,7 @@ package de.mpg.mpdl.dlc.viewer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedProperty;
 
 import org.apache.log4j.Logger;
@@ -26,8 +26,7 @@ public abstract class VolumeLoaderBean {
 	@ManagedProperty("#{applicationBean}")
 	protected ApplicationBean appBean;
 	
-	@EJB
-	protected VolumeServiceBean volServiceBean;
+	protected VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	protected String volumeId;
 	

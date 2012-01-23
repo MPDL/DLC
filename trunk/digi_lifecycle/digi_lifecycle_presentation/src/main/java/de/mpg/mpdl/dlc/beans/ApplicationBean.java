@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -72,10 +72,10 @@ public class ApplicationBean
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
-    @EJB
-    private ContextServiceBean contextServiceBean;
-    @EJB
-    private OrganizationalUnitServiceBean ouServiceBean;
+    
+    private ContextServiceBean contextServiceBean = new ContextServiceBean();
+   
+    private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 

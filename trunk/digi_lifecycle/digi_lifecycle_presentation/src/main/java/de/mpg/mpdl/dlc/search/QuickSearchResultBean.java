@@ -2,7 +2,7 @@ package de.mpg.mpdl.dlc.search;
 
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -25,8 +25,8 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	@URLQueryParameter("q")
 	private String query;
 	
-	@EJB
-	private SearchBean searchBean;
+	
+	private SearchBean searchBean = new SearchBean();
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {

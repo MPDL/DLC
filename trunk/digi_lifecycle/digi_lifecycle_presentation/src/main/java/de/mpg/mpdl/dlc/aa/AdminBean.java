@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
-import org.jboss.logging.Logger;
+import org.apache.log4j.Logger;
+
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
@@ -45,14 +46,14 @@ public class AdminBean{
 	@ManagedProperty("#{applicationBean}")
 	private ApplicationBean applicationBean;
 	
-	@EJB
-	private OrganizationalUnitServiceBean ouServiceBean;
 	
-	@EJB
-	private ContextServiceBean contextServiceBean;
+	private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
 	
-	@EJB
-	private UserAccountServiceBean uaServiceBean;
+	
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	
+	
+	private UserAccountServiceBean uaServiceBean = new UserAccountServiceBean();
 
 	
 	private Organization orga;

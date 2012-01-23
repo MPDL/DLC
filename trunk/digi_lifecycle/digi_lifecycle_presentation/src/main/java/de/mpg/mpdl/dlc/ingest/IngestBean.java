@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -78,16 +77,18 @@ public class IngestBean implements Serializable {
 	private boolean hasMab = true;
 
 
-	@EJB
-	private VolumeServiceBean volumeService;
 	
-	@EJB 
-	private ContextServiceBean contextServiceBean;
+	private VolumeServiceBean volumeService = new VolumeServiceBean();
+	
+	
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 
-	@EJB
-	private SearchBean searchBean;
+	
+	private SearchBean searchBean = new SearchBean();
+	
 	public IngestBean() throws Exception
 	{
+		MabXmlTransformation test = new MabXmlTransformation();
 		addModsMetadata();
 		//init contentModel
 		this.contentModelItems.add(new SelectItem("Monograph", "Monograph"));

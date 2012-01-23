@@ -3,7 +3,7 @@ package de.mpg.mpdl.dlc.list;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.EJB;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -29,8 +29,8 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	
 	private static Logger logger = Logger.getLogger(ThumbnailsBean.class); 
 
-	@EJB 
-	private VolumeServiceBean volServiceBean;
+	
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
