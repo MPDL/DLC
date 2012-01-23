@@ -97,8 +97,8 @@ public class ApplicationBean
     {
     	try {
 			InitialContext context = new InitialContext();
-			this.contextServiceBean = (ContextServiceBean) context.lookup("java:module/ContextServiceBean");
-			this.ouServiceBean = (OrganizationalUnitServiceBean) context.lookup("java:module/OrganizationalUnitServiceBean");
+			this.contextServiceBean = new ContextServiceBean();
+			this.ouServiceBean =  new OrganizationalUnitServiceBean();
     	} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
 		}
