@@ -7,7 +7,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
+
 import javax.naming.InitialContext;
 
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -34,7 +34,7 @@ import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.user.User;
 
 
-@Stateless
+
 public class UserAccountServiceBean {
 	private static Logger logger = Logger.getLogger(UserAccountServiceBean.class);
 	

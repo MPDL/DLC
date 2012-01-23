@@ -14,7 +14,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
@@ -44,7 +43,7 @@ import de.mpg.mpdl.dlc.vo.organization.EscidocMetadata;
 import de.mpg.mpdl.dlc.vo.organization.FoafOrganization;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 
-@Stateless
+
 public class OrganizationalUnitServiceBean {
 	
 	private static Logger logger = Logger.getLogger(OrganizationalUnitServiceBean.class);

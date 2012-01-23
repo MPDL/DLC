@@ -3,7 +3,7 @@ package de.mpg.mpdl.dlc.dbxml;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.ejb.Stateless;
+
 
 import com.sleepycat.db.DatabaseException;
 import com.sleepycat.db.Environment;
@@ -16,7 +16,7 @@ import com.sleepycat.dbxml.XmlManager;
 import com.sleepycat.dbxml.XmlManagerConfig;
 import com.sleepycat.dbxml.XmlTransaction;
 
-@Stateless
+
 public class DBXMLBean implements DBXMLRemote, DBXMLLocal {
 
 	private static final long serialVersionUID = 1L;

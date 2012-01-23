@@ -7,7 +7,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 
@@ -29,7 +28,7 @@ import de.mpg.mpdl.dlc.vo.collection.PageDescriptor;
 import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 
-@Stateless
+
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
 	
