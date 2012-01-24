@@ -217,6 +217,27 @@ public class OrganizationalUnitServiceBean {
 		return ou;
 	}
 	
+	
+	public OrganizationalUnit deleteOU(String id, String userHandle)
+	{
+		logger.info("Trying to close an organization");
+		OrganizationalUnit ou;
+		try{
+			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			ou = client.retrieve(id);
+			
+			client.delete(ou.getObjid());
+			
+
+		}catch(Exception e){
+			ou = null;
+			logger.error("Error while closing OrganizationalUnit Object", e);
+		}
+		
+		return ou;
+	}
+	
 
 	public OrganizationalUnit createNewOU(Organization orga, String userHandle)
 	{      
