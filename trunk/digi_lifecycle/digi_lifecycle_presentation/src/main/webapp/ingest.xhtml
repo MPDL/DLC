@@ -96,16 +96,16 @@
 			</rich:panel>
 
 
-			<rich:panel id="modsInfo" header="Metadata Information" style="display:#{ingestBean.hasMab ?'':'none'} ">
+			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}" />
 				<mpdl:modsEditor modsMetadata="#{ingestBean.modsMetadata}" />
 			</rich:panel>
 			
-			<!--  
-			<rich:panel id="modsInfo2" header="Metadata Information" style="display: #{ingestBean.hasMab ?'none':'' }">
-				<h:outputText value="#{lbl.mods_title}" />
-			</rich:panel>
-			-->
+
+			
+			
+			
+
 
 			<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<h:outputText
