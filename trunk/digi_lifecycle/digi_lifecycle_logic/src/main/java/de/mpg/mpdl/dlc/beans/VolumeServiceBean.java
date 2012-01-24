@@ -279,7 +279,12 @@ public class VolumeServiceBean {
 			Mets metsData = new Mets();
 			
 			File teiFileWithIds = null;
+			
+			long start = System.currentTimeMillis();			
 			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
+			long time = System.currentTimeMillis()-start;
+			System.out.println("Time Upload images: " + time);
+			
 			List<String> pbIds = new ArrayList<String>();
 			
 			if(teiFile!=null)	

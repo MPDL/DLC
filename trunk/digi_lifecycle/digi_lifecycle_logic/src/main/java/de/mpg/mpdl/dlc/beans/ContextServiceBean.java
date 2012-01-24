@@ -233,6 +233,28 @@ public class ContextServiceBean {
 		return c;
 	}
 	
+	
+	public Context deleteContext(String id, String userHandle) 
+	{
+		logger.info("Closing new context");
+		Context c;
+		try
+		{
+	    	ContextHandlerClient  client = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+	    	client.setHandle(userHandle);
+	    	c = client.retrieve(id);
+	
+	    	client.delete(c.getObjid());
+
+		}catch(Exception e)
+		{	
+			c= null;
+			logger.error("Error while closing new context",e);
+		}
+		
+		return c;
+	}
+	
 	/*
 	public static void main(String[] args) throws Exception {
 		System.out.println(createContextAdminDescriptor());
