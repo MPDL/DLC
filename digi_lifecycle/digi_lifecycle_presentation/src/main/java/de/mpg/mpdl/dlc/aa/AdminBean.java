@@ -165,6 +165,15 @@ public class AdminBean{
 		return "pretty:admin";
 	}
 	
+	public String deleteOrganization() throws Exception
+	{  
+		OrganizationalUnit ou = ouServiceBean.deleteOU(orga.getId(), loginBean.getUserHandle());
+		applicationBean.getOus().remove(ou);
+		loginBean.getUser().getCreatedOrgas().remove(orga); 
+		init();
+		return "pretty:admin";
+	}
+	
 	public String editContext() throws Exception
 	{
 		if(editCollectionId != null && editCollectionId.equals(collection.getId()))
@@ -183,6 +192,15 @@ public class AdminBean{
 	public String closeCollection() throws Exception
 	{
 		Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
+		loginBean.getUser().getCreatedCollections().remove(collection);
+		init();
+		return "pretty:admin";
+	}
+	
+	
+	public String deleteCollection() throws Exception
+	{
+		Context c = contextServiceBean.deleteContext(collection.getId(), loginBean.getUserHandle());
 		loginBean.getUser().getCreatedCollections().remove(collection);
 		init();
 		return "pretty:admin";
@@ -230,6 +248,23 @@ public class AdminBean{
 	public User getUser() {  
 		if(user!=null && user.getOu()!=null)
 			user.setOuId(user.getOu().getObjid());
+//		if(user!=null && user.getDepositorCollections().size()>0)
+//		{
+//			System.out.println(user.getDepositorCollections().size());
+//			user.getDepositorContextIds().clear();
+//			for(Collection c : user.getDepositorCollections())
+//			{
+//				
+//				user.getDepositorContextIds().add(c.getId());
+//			}
+//			System.out.println("after = "+user.getDepositorContextIds().size());
+//		}
+//		if(user!=null && user.getModeratorCollections().size()>0)
+//		{
+//			user.getModeratorContextIds().clear();
+//			for(Collection c : user.getModeratorCollections())
+//				user.getModeratorContextIds().add(c.getId());
+//		}
 		return user;
 	}
 
