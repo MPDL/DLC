@@ -22,9 +22,9 @@
 			
 			<div class="itemContent">
 				<div class="itemContentData">
-					<div class="statusArea">
+					<div class="itemStatusArea">
 						<div class="icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="statusTitle">Withdrawn</span>
+						<span class="itemStatusTitle">Withdrawn</span>
 					</div>
 					<div class="itemHeadline">
 						<div class="itemTitle">
@@ -40,13 +40,13 @@
 				
 					
 					<div class="shortView_js">
-						<div class="metaLabel">Creator(s)</div>
-						<div class="metaValue">Name, Prename, Address</div>
+						<div class="itemMetaLabel">Creator(s)</div>
+						<div class="itemMetaValue">Name, Prename, Address</div>
 						
-						<h:panelGroup layout="block" class="metaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
 						</h:panelGroup>
-						<h:panelGroup layout="block" class="metaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
 									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
@@ -74,18 +74,18 @@
 
 					</div>
 					<div class="mediumView_js">
-						<div class="metaLabel">Journal Title</div>
-						<div class="metaValue">Astrophysical Journal Letters</div>
-						<div class="metaLabel">Degree</div>
-						<div class="metaValue">Degree Type</div>
-						<div class="metaLabel">Publishing Info</div>
-						<div class="metaValue">Edition, Place: Publisher</div>
-						<div class="metaLabel">Title</div>
-						<div class="metaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
-						<div class="metaLabel">Visibility</div>
-						<div class="metaValue">Public</div>
-						<div class="metaLabel">Fulltext Hits</div>
-						<div class="metaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
+						<div class="itemMetaLabel">Journal Title</div>
+						<div class="itemMetaValue">Astrophysical Journal Letters</div>
+						<div class="itemMetaLabel">Degree</div>
+						<div class="itemMetaValue">Degree Type</div>
+						<div class="itemMetaLabel">Publishing Info</div>
+						<div class="itemMetaValue">Edition, Place: Publisher</div>
+						<div class="itemMetaLabel">Title</div>
+						<div class="itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
+						<div class="itemMetaLabel">Visibility</div>
+						<div class="itemMetaValue">Public</div>
+						<div class="itemMetaLabel">Fulltext Hits</div>
+						<div class="itemMetaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
 					</div>
 				</div>
 			
