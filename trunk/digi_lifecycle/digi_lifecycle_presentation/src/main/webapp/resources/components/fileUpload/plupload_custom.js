@@ -12,7 +12,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 		preinit: attachCallbacks,
 		runtimes : 'html5',
 		url : url + ';jsessionid=' + sessionId,
-		max_file_size : '10mb',
+		max_file_size : '200mb',
 		flash_swf_url : flashUrl,
 		multi_selection : true,
 		multipart : true,
