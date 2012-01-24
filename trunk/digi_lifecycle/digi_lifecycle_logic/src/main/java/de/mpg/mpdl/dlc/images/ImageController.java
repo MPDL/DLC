@@ -24,6 +24,7 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.mets.Mets;
 
 public class ImageController {
 	
@@ -75,7 +76,11 @@ public class ImageController {
 			{
 				try 
 				{
+					long start = System.currentTimeMillis();
 					String dir = uploadFileToImageServer(item, directory);
+					long time = System.currentTimeMillis()-start;
+					System.out.println("Time Upload one image: " + time);
+
 					dirs[items.indexOf(item)] =  dir;
 				} catch (Exception e) {
 					logger.warn("Failed upload for file " + item.getName() + "\nWill retry later...", e);
