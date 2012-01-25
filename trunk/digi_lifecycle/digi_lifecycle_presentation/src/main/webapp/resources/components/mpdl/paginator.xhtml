@@ -103,48 +103,11 @@
 	</h:panelGroup>
 	
 
-		<div class="bibList">
-			<div class="listHeader">
-				<div class="selectArea">
-					<div style="width: 154px;" class="dynamicSelectBox_js">
-						<div style="width: 121px;" class="selectionContent">
-							<span class="selectionText"></span>
-						</div>
-						<select style="width: 154px;" name="bibListSelect" title="???placeholder???">
-							<option>-- choose --</option>
-							<optgroup label="check">
-								<option>Check all on page</option>
-								<option>Check all on result</option>
-							</optgroup>
-							<optgroup label="-----------"></optgroup>
-							<optgroup label="uncheck">
-								<option>Uncheck all on page</option>
-								<option>Uncheck all on result</option>
-							</optgroup>
-						</select>
-					</div>
-				</div>
-				
-				<div class="content">
-					<div class="showHideAll_js icon_collapse_16_16" title="???placeholder???">
-						<a class="iconActionLabel" title="???placeholder???" target="_self">Open all</a>
-					</div>
-				</div>
-				
-				<div class="mediabarActionArea">
-					<div class="toggleListItemVolume_js icon_collapse_16_16" title="???placeholder???">
-						<a class="iconActionLabel" title="???placeholder???">Open / Close MediabarItems</a>
-					</div>
-				</div>
-			</div>
-			<div class="listBody">
-				<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-				 	<cc:insertChildren/>
-				</a4j:repeat>
-			</div>
-		</div>
+
 		
 		
+		<cc:insertChildren/>
+
 		
 		<!-- Bottom Paginator -->
 		<h:panelGroup  layout="block" styleClass="paginatorWave" rendered="#{cc.attrs.bottomPaginator}">
