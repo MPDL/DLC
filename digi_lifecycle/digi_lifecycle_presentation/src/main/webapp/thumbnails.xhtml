@@ -13,41 +13,52 @@
 
 	<ui:define name="mainContent">
 		<mpdl:paginator paginatorBean="#{thumbnailsBean}">	
-		
-			<h:panelGroup layout="block">
-				<ul>
-						<li>
-							<h:panelGroup layout="block" id="imgFrame" >
-								<pretty:link mappingId="viewPages">
-									<f:param value="#{thumbnailsBean.volumeId}" />
-									<f:param value="#{var.order}" />
-									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}"/>
-								</pretty:link>
-							</h:panelGroup>
-						</li>
-				</ul>
-			</h:panelGroup>
+			<div class="tiledList">
+				<div class="listHeader">
+				</div>
+				<div class="listBody">
+					<ul>
+						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
+							<li class="listItem">
+								<h:panelGroup layout="block" class="itemContent">
+									<div class="itemIconArea">
+										<span class="itemIconBorder">
+	
+										
+										
+										<pretty:link mappingId="viewPages">
+											<f:param value="#{thumbnailsBean.volumeId}" />
+											<f:param value="#{var.order}" />
+											<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}"/>
+										</pretty:link>
+										</span>
+										
+										
+									</div>
+									<div class="itemControlArea">
+										<input type="checkbox"></input>
+									</div>
+									<div class="itemContentData fiveRows">
+										<div class="itemMetaLabel">Label</div>
+										<div class="itemMetaValue">Value</div>
+										<br></br>
+										<span class="itemMetaText">Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of </span>
+									</div>
+								</h:panelGroup>
+							</li>
+						</a4j:repeat>
+					</ul>
+				</div>
+			</div>
+
+
+
+
+			
+
 		</mpdl:paginator>
 
-<ui:remove>	
-		<h:panelGroup layout="block" styleClass="full_area0 noTopBorder">
-				<div class="small_area0">&#160;</div>
-				<div class="clear"></div>
-				<ul class="free_area0 fullBrowse small_marginLIncl noTopBorder">
-					<mpdl:paginator paginatorBean="#{thumbnailsBean}">
-						<li class="large_area0 itemTile">
-							<h:panelGroup layout="block" id="imgFrame" styleClass="large_area1_p2 tileIconArea  free_area1">
-								<pretty:link mappingId="viewPages">
-									<f:param value="#{thumbnailsBean.volumeId}" />
-									<f:param value="#{var.order}" />
-									<h:graphicImage alt="#{var.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(var.thumbnailFile.href)}"/>
-								</pretty:link>
-							</h:panelGroup>
-						</li>
-					</mpdl:paginator>
-				</ul>
-		</h:panelGroup>
-</ui:remove>
+
 	</ui:define>
 
 </ui:composition>
