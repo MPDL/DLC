@@ -284,11 +284,17 @@ public class ViewPages extends VolumeLoaderBean{
 	public ViewType getViewType() {
 		return viewType;
 	}
-
+ 
 	public void setViewType(ViewType viewType) {
 		this.viewType = viewType;
 		loadVolume();
-		//PrettyContext.getCurrentInstance().g
+
+	}
+	
+	public void switchViewType(String viewType)
+	{
+		this.viewType =ViewType.valueOf(viewType);
+		loadVolume();	
 	}
 
 	public String getFulltextMatches() {
