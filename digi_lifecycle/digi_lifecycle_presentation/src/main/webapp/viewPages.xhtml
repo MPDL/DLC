@@ -61,9 +61,9 @@
 
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
-					<h:commandButton value="Zoom " action="#{viewPages.setViewType('SINGLE')}" styleClass="large_imgBtn groupBtn"/>
-					<h:commandButton value="Recto/Verso " action="#{viewPages.setViewType('RECTO_VERSO')}" styleClass="large_imgBtn groupBtn"/>
-					<h:commandButton value="Fulltext " action="#{viewPages.setViewType('FULLTEXT')}" styleClass="large_imgBtn groupBtn"/>
+					<h:commandButton value="Zoom " action="#{viewPages.switchViewType('SINGLE')}" styleClass="large_imgBtn groupBtn"/>
+					<h:commandButton value="Recto/Verso " action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="large_imgBtn groupBtn"/>
+					<h:commandButton value="Fulltext " action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="large_imgBtn groupBtn"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
 					<pretty:urlbuffer var="pageUrl" mappingId="viewPages">
