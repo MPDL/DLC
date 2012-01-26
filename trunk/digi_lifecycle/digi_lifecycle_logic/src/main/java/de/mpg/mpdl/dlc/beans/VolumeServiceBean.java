@@ -292,7 +292,7 @@ public class VolumeServiceBean {
 				logger.info("TEI file found");
 				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
 				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
-				pbIds = getAllPbIds(teiFile.getInputStream());
+				pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
 				
 				/*
 				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
