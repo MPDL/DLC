@@ -28,6 +28,13 @@ public class Page{
 	@XmlAttribute(name = "ORDERLABEL")
 	private String orderLabel;
 	
+	@XmlAttribute(name = "LABEL")
+	private String label;
+	
+	@XmlAttribute(name = "CONTENTIDS")
+	private String contentIds;
+	
+	/*
 	@XmlPath("mets:fptr[1]/@FILEID")
 	@XmlIDREF
 	private MetsFile thumbnailFile = new MetsFile();
@@ -44,7 +51,7 @@ public class Page{
 	@XmlIDREF
 	private MetsFile digilibFile = new MetsFile();
 
-	
+	*/
 	
 	
 	/*
@@ -54,6 +61,22 @@ public class Page{
 	  }
 	*/
 	
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public String getContentIds() {
+		return contentIds;
+	}
+
+	public void setContentIds(String contentIds) {
+		this.contentIds = contentIds;
+	}
+
 	public String getType() {
 		return type;
 	}
@@ -103,6 +126,8 @@ public class Page{
 			
 	}
 
+	
+	/*
 	public MetsFile getThumbnailFile() {
 		return thumbnailFile;
 	}
@@ -134,6 +159,7 @@ public class Page{
 	public void setDigilibFile(MetsFile digilibFile) {
 		this.digilibFile = digilibFile;
 	}
+	*/
 
 
 }

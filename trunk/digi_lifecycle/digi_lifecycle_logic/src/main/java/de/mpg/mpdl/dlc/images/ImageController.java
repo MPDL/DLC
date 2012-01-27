@@ -12,6 +12,7 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
+import org.apache.commons.httpclient.methods.multipart.FilePartSource;
 import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
 import org.apache.commons.httpclient.methods.multipart.Part;
 import org.apache.commons.httpclient.methods.multipart.StringPart;
@@ -31,7 +32,7 @@ public class ImageController {
 	private static Logger logger = Logger.getLogger(ImageController.class);
 	
 	
-	public static String uploadFileToImageServer(FileItem item, String directory) throws Exception
+	public static String uploadFileToImageServer(File item, String directory, String filename) throws Exception
 	{
 		/*
 		File tmpFile = File.createTempFile(item.getName(), "tmp");
@@ -39,11 +40,11 @@ public class ImageController {
 		*/
 		HttpClient client = new HttpClient( );
 
-		String weblintURL = PropertyReader.getProperty("image-upload.url");
+		String weblintURL = PropertyReader.getProperty("image-upload.url.upload");
     	PostMethod method = new PostMethod(weblintURL);
     	Part[] parts = new Part[2];
     	parts[0] = new StringPart("directory", directory);
-    	parts[1] = new FilePart(item.getName(), new ByteArrayPartSource(item.getName(), item.get()));
+    	parts[1] = new FilePart(filename, new FilePartSource(filename, item));
     	
     	//parts[1] = new FilePart( item.getName(), tmpFile );
     	HttpMethodParams params = new HttpMethodParams();
@@ -51,7 +52,7 @@ public class ImageController {
     	String username = PropertyReader.getProperty("image-upload.username");
     	String password = PropertyReader.getProperty("image-upload.password");
     	String handle = "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes()));
-    	method.addRequestHeader("authorization", handle);
+    	method.addRequestHeader("Authorization", handle);
     	// Execute and print response
     	client.executeMethod( method );
     	String response = method.getResponseBodyAsString( );
@@ -65,12 +66,13 @@ public class ImageController {
     	return response;
 	}
 	
-	public static List<String> uploadFilesToImageServer(List<FileItem> items, String directory) throws Exception
+	/*
+	public static List<String> uploadFilesToImageServer(List<File> items, String directory) throws Exception
 	{
 		String[] dirs = new String[items.size()];
 		List<FileItem> retry = new ArrayList<FileItem>();
 		
-		for(FileItem item : items)
+		for(File item : items)
 		{
 			if(item != null)
 			{
@@ -101,7 +103,7 @@ public class ImageController {
 		return Arrays.asList(dirs);
 	}
 	
-	
+	*/
 	/*
 	
 	public static void uploadFilesViaFtp(String targetDir, List<File> fileList, List<String> filenames)

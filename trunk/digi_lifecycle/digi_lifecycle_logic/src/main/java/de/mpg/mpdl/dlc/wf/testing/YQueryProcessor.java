@@ -36,7 +36,7 @@ public class YQueryProcessor {
 			// System.out.println(meta.getProductName() + "  " + meta.getProductVersion());
 			XQStaticContext context = conn.getStaticContext();
 			//context.setBaseURI("http://latest-coreservice.mpdl.mpg.de:8080");
-			context.setBaseURI("http://dlc.mpdl.mpg.de:8080");
+			context.setBaseURI("http://latest-coreservice.mpdl.mpg.de:8080");
 			context.declareNamespace("mets", "http://www.loc.gov/METS/");
 			context.declareNamespace("item", "http://www.escidoc.de/schemas/item/0.10");
 			context.declareNamespace("comp", "http://www.escidoc.de/schemas/components/0.9");

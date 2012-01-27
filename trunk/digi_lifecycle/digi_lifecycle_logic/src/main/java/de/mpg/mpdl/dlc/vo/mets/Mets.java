@@ -18,6 +18,7 @@ public class Mets {
 	@XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div")
 	private List<Page> pages = new ArrayList<Page>();
 	
+	/*
 	@XmlPath("mets:fileSec/mets:fileGrp[@USE='THUMBS']/mets:file")
 	private List<MetsFile> thumbnailResFiles = new ArrayList<MetsFile>();
 	
@@ -29,6 +30,9 @@ public class Mets {
 	
 	@XmlPath("mets:fileSec/mets:fileGrp[@USE='DIGILIB']/mets:file")
 	private List<MetsFile> digilibFiles = new ArrayList<MetsFile>();
+	
+	
+	
 	
 	public List<MetsFile> getThumbnailResFiles() {
 		return thumbnailResFiles;
@@ -64,7 +68,7 @@ public class Mets {
 
 
 
-	
+	*/
 
 	public List<Page> getPages() {
 		return pages;

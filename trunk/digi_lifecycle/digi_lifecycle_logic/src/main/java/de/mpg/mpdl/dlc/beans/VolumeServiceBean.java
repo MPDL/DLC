@@ -49,6 +49,7 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -84,6 +85,8 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
+import de.mpg.mpdl.dlc.images.ImageHelper;
+import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -259,7 +262,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<FileItem> images, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
 	{
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
 		Volume parent = null;
@@ -280,10 +283,9 @@ public class VolumeServiceBean {
 			
 			File teiFileWithIds = null;
 			
-			long start = System.currentTimeMillis();			
-			List<String> dirs = ImageController.uploadFilesToImageServer(images, item.getObjid());
-			long time = System.currentTimeMillis()-start;
-			System.out.println("Time Upload images: " + time);
+			
+			
+
 			
 			List<String> pbIds = new ArrayList<String>();
 			
@@ -311,73 +313,116 @@ public class VolumeServiceBean {
 			
 			
 			
-				for(FileItem fileItem : images)
+			//Convert and upload images 
+			long start = System.currentTimeMillis();			
+			for(DiskFileItem imageItem : images)
+			{
+				String filename = getJPEGFilename(imageItem.getName());
+				
+				
+				
+				
+				String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
+				
+				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+				File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
+				String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+								
+				String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+				File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
+				String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+				
+				String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+				File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
+				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+				
+				
+				int pos = images.indexOf(imageItem);
+				Page p = new Page();
+				
+				if(teiFile!=null)
 				{
-					
-					int pos = images.indexOf(fileItem);
-					
-					
-					String thumbnailDir = "thumbnails/" + dirs.get(pos);
-					MetsFile thumbFile = new MetsFile();
-					thumbFile.setId("img_thumb_" + pos);
-					thumbFile.setMimeType(fileItem.getContentType());
-					thumbFile.setLocatorType("OTHER");
-					thumbFile.setHref(thumbnailDir);
-					metsData.getThumbnailResFiles().add(thumbFile);
-					
-					String defaultDir = "web/" + dirs.get(pos);
-					MetsFile defaultFile = new MetsFile();
-					defaultFile.setId("img_default_" + pos);
-					defaultFile.setMimeType(fileItem.getContentType());
-					defaultFile.setLocatorType("OTHER");
-					defaultFile.setHref(defaultDir);
-					metsData.getDefaultResFiles().add(defaultFile);
-					
-					String maxDir = "original/" + dirs.get(pos);
-					MetsFile maxFile = new MetsFile();
-					maxFile.setId("img_max_" + pos);
-					maxFile.setMimeType(fileItem.getContentType());
-					maxFile.setLocatorType("OTHER");
-					maxFile.setHref(maxDir);
-					metsData.getMaxResFiles().add(maxFile);
-					
-					String digilibDir = dirs.get(pos);
-					MetsFile digilibFile = new MetsFile();
-					digilibFile.setId("img_digilib_" + pos);
-					digilibFile.setMimeType(fileItem.getContentType());
-					digilibFile.setLocatorType("OTHER");
-					digilibFile.setHref(digilibDir);
-					metsData.getDigilibFiles().add(digilibFile);
+					p.setId(pbIds.get(pos));
+				}
+				else
+				{
+					p.setId("page_" + pos);
+				}
+				
+				
+				
+				p.setOrder(pos);
+				p.setOrderLabel("");
+				p.setType("page");
+				p.setContentIds(itemIdWithoutColon + "/"+ filename);
+				metsData.getPages().add(p);
+				
+				
+			}
+			long time = System.currentTimeMillis()-start;
+			System.out.println("Time to Upload images: " + time);
+			
+			
+			/*
+			for(FileItem fileItem : images)
+			{
 
-					Page p = new Page();
-					
-					if(teiFile!=null)
-					{
-						p.setId(pbIds.get(pos));
-					}
-					else
-					{
-						p.setId("page_" + pos);
-					}
-					
-					
-					
-					p.setOrder(pos);
-					p.setOrderLabel("");
-					p.setType("page");
-					p.setThumbnailFile(thumbFile);
-					p.setDefaultFile(defaultFile);
-					p.setMaxFile(maxFile);
-					p.setDigilibFile(digilibFile);
-					
-					metsData.getPages().add(p);
-					}
-			
-			
-			
-			
-			
-			
+				String thumbnailDir = "thumbnails/" + dirs.get(pos);
+				MetsFile thumbFile = new MetsFile();
+				thumbFile.setId("img_thumb_" + pos);
+				thumbFile.setMimeType(fileItem.getContentType());
+				thumbFile.setLocatorType("OTHER");
+				thumbFile.setHref(thumbnailDir);
+				metsData.getThumbnailResFiles().add(thumbFile);
+				
+				String defaultDir = "web/" + dirs.get(pos);
+				MetsFile defaultFile = new MetsFile();
+				defaultFile.setId("img_default_" + pos);
+				defaultFile.setMimeType(fileItem.getContentType());
+				defaultFile.setLocatorType("OTHER");
+				defaultFile.setHref(defaultDir);
+				metsData.getDefaultResFiles().add(defaultFile);
+				
+				String maxDir = "original/" + dirs.get(pos);
+				MetsFile maxFile = new MetsFile();
+				maxFile.setId("img_max_" + pos);
+				maxFile.setMimeType(fileItem.getContentType());
+				maxFile.setLocatorType("OTHER");
+				maxFile.setHref(maxDir);
+				metsData.getMaxResFiles().add(maxFile);
+				
+				String digilibDir = dirs.get(pos);
+				MetsFile digilibFile = new MetsFile();
+				digilibFile.setId("img_digilib_" + pos);
+				digilibFile.setMimeType(fileItem.getContentType());
+				digilibFile.setLocatorType("OTHER");
+				digilibFile.setHref(digilibDir);
+				metsData.getDigilibFiles().add(digilibFile);
+	
+				Page p = new Page();
+				
+				if(teiFile!=null)
+				{
+					p.setId(pbIds.get(pos));
+				}
+				else
+				{
+					p.setId("page_" + pos);
+				}
+				
+				
+				
+				p.setOrder(pos);
+				p.setOrderLabel("");
+				p.setType("page");
+				p.setThumbnailFile(thumbFile);
+				p.setDefaultFile(defaultFile);
+				p.setMaxFile(maxFile);
+				p.setDigilibFile(digilibFile);
+				
+				
+			}
+			*/
 			vol.setMets(metsData);
 			vol.setProperties(item.getProperties());
 			vol.setModsMetadata(modsMetadata);
@@ -393,6 +438,20 @@ public class VolumeServiceBean {
 			throw new Exception(e);
 			}
 		return vol;
+	}
+	
+	private static String getJPEGFilename(String filename)
+	{
+		
+		if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
+		{
+			return filename;
+		}
+		else
+		{
+		
+			return filename + ".jpg";
+		}
 	}
 
 
@@ -507,8 +566,9 @@ public class VolumeServiceBean {
 		
 		MetadataRecords mdRecs = new MetadataRecords();
 		MetadataRecord mdRec = new MetadataRecord("escidoc");
+		MetadataRecord metsMdRec = new MetadataRecord("mets");
 		mdRecs.add(mdRec);
-		
+		mdRecs.add(metsMdRec);
 		item.setMetadataRecords(mdRecs);
 		
 		if(parent != null)
@@ -601,32 +661,41 @@ public class VolumeServiceBean {
 		
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document modsDoc = builder.newDocument();
+        Document metsDoc = builder.newDocument();
         
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class, Mets.class });
 		Marshaller m = ctx.createMarshaller();
-		
 		
 		//Set MODS in md-record
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		mdRec.setContent(modsDoc.getDocumentElement());
 		
+		m.marshal(vol.getMets(), metsDoc);
+		metsMdRec.setContent(metsDoc.getDocumentElement());
+		
+		
+		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		sthc.setHandle(userHandle);
 		
 		//upload METS
+		/*
 		URL uploadedMets = new URL(PropertyReader.getProperty("escidoc.common.framework.url"));
-		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		
 		if(! vol.getItem().getProperties().getContentModel().getObjid().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 		{
 			StringWriter sw = new StringWriter();
 			m.marshal(vol.getMets(), sw);
 			sw.flush();
-			sthc.setHandle(userHandle);
+			
 			uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
 		}
-
+		*/
+		
 		//Check if component already exists
 		if (initial)
 		{
+			/*
 			Component metsComponent = new Component();
 			ComponentProperties props = new ComponentProperties();
 			metsComponent.setProperties(props);
@@ -639,7 +708,7 @@ public class VolumeServiceBean {
 			metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 			metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
 			item.getComponents().add(metsComponent);
-			
+			*/
 			
 			if(teiFile!=null)
 			{
@@ -701,6 +770,7 @@ public class VolumeServiceBean {
 			
 			
 		}
+		/*
 		else
 		{
 			for(Component comp : item.getComponents())
@@ -712,6 +782,7 @@ public class VolumeServiceBean {
 				}
 			}
 		}
+		*/
 		
 		
 		
@@ -954,20 +1025,30 @@ public class VolumeServiceBean {
 		vol = new Volume();
 		vol.setModsMetadata(md);
 		
+		if(item.getMetadataRecords().get("mets")!=null)
+		{
+			long start = System.currentTimeMillis();
+			vol.setMets((Mets)unmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent()));
+			long time = System.currentTimeMillis()-start;
+			System.out.println("Time METS: " + time);
+		}
+		
+		
 		
 		for(Component c : item.getComponents())
 		{
-			
+			/*
 			if (c.getProperties().getContentCategory().equals("mets"))
 			{
 				
 				long start = System.currentTimeMillis();
-				vol.setMets((Mets)unmarshaller.unmarshal(client.retrieveContent(item.getObjid(), c.getObjid())));
+				vol.setMets((Mets)unmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent());
 				long time = System.currentTimeMillis()-start;
 				System.out.println("Time METS: " + time);
 				
 
 			}
+			*/
 			
 			/*
 			else if (c.getProperties().getContentCategory().equals("tei-sd"))

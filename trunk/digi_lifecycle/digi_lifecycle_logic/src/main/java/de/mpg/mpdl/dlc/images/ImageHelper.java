@@ -1,21 +1,27 @@
 package de.mpg.mpdl.dlc.images;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 
 
 public class ImageHelper{
 	
-	
+	static Logger logger = Logger.getLogger(ImageHelper.class);
 	
 	public enum Type
 	{
@@ -23,118 +29,155 @@ public class ImageHelper{
 	}
 	
 	
+	public static String THUMBNAILS_DIR;
+	public static String WEB_DIR;
+	public static String ORIGINAL_DIR;
+	
+	static 
+	{
+		try {
+			THUMBNAILS_DIR = PropertyReader.getProperty("image-upload.thumbnailsDir") + "/";
+			WEB_DIR =  PropertyReader.getProperty("image-upload.webDir") + "/";
+			ORIGINAL_DIR = PropertyReader.getProperty("image-upload.originalDir")  + "/";
+		} catch (Exception e) 
+		{
+			logger.error("Error while reading properties for image-upload", e);
+		}
+	}
+	
+	public static String getFullImageUrl(String subUrl, Type type)
+	{
+		try {
+			String mainUrl = PropertyReader.getProperty("image-upload.url.download");
+			String typeUrl = "";
+			switch(type) 
+	    	{
+	    		case THUMBNAIL :
+		    	{
+		    		typeUrl = THUMBNAILS_DIR;
+		    		break;
+		    	}
+	    		case WEB :
+		    	{
+		    		typeUrl = WEB_DIR;
+		    		break;
+		    	}
+	    		case ORIGINAL :
+		    	{
+		    		typeUrl = ORIGINAL_DIR;
+		    		break;
+		    	}
+	    	}
+			
+			String url = mainUrl + typeUrl + subUrl;
+			return url;
+		} catch (Exception e) {
+			logger.error("Error getting URL for sub url page " + subUrl, e);
+			return null;
+		}
+	}
 	
 	
-    public static File scaleAndStoreImage(String destDir, int res, BufferedImage input, String fileName, String imgType, Type type) throws Exception{
-	         	BufferedImage scaledImage;
-		       
+	
+	
+	
+    public static File scaleImage(File inputFile, String fileName, Type type) throws Exception{
+	         	
+    	
+    	File tmpFile = File.createTempFile(fileName + type.name(), "jpg.tmp");
+    	BufferedImage inputImage = ImageIO.read(inputFile);
+    	
+    	
+    	String widthString = "";
+    	String heightString = "";
+    	switch(type) 
+    	{
+    		case THUMBNAIL :
+	    	{
+	    		widthString = PropertyReader.getProperty("image.thumbnail.maxWidth");
+	    		heightString = PropertyReader.getProperty("image.thumbnail.maxHeight");
+	    		break;
+	    	}
+    		case WEB :
+	    	{
+	    		widthString = PropertyReader.getProperty("image.web.maxWidth");
+	    		heightString = PropertyReader.getProperty("image.web.maxHeight");
+	    		break;
+	    	}
+    		case ORIGINAL :
+	    	{
+	    		widthString = PropertyReader.getProperty("image.original.maxWidth");
+	    		heightString = PropertyReader.getProperty("image.original.maxHeight");
+	    		break;
+	    	}
+    	}
+    	
 
-		       
-		        scaledImage = scaleImage(input, res, type);
-		        
-		        
-		        File destDirFile = new File(destDir);
-		        if(!destDirFile.exists())
-				{
-					destDirFile.mkdirs();
-				}
-		        
-		       
-		        File file = new File(destDir,fileName);
-		        if(!file.exists())
-		        {
-		        	file.createNewFile();
-		        }
-		        
-		        
-		        FileOutputStream output = new FileOutputStream(file);
-	        	ImageIO.write(scaledImage, imgType, output);
-	        	output.flush();
-	        	output.close();
-	        	return file;
-		        
-		       
-		        // use imageIO.write to encode the image back into a byte[]
-		        
-        	
-		        /*
-        	catch(Exception e){
-        		Navigation navigation = (Navigation)BeanHelper.getApplicationBean(Navigation.class);
-        		String test = navigation.getApplicationUrl() + "resources/icon/defaultThumb.gif";
-        		URL noThumbUrl = new URL(test);
-        		int contentLength = noThumbUrl.openConnection().getContentLength();
-        		InputStream openStream =noThumbUrl.openStream();
-        		byte[] data = new byte[contentLength];
-        		openStream.read(data);
-        		openStream.close();
+    	int width = Integer.parseInt(widthString);
+    	int height = Integer.parseInt(heightString);
 
-        		url = ImageHelper.uploadFile(data, mimetype, userHandle);
-        		*/
+    	BufferedImage scaledImage = scaleImage(inputImage, width, height);
+
+        FileOutputStream output = new FileOutputStream(tmpFile);
+    	ImageIO.write(scaledImage, "jpg", output);
+    	output.flush();
+    	output.close();
+    	return tmpFile;
+		             
         
     	} 
     
 
     
-    public static BufferedImage scaleImage(BufferedImage image, int size, Type type) throws Exception{
-    	int width = image.getWidth(null);
-    	int height = image.getHeight(null);
-    	BufferedImage newImg = null;
-    	Image rescaledImage;
+    public static BufferedImage scaleImage(BufferedImage image, int width, int height) throws Exception{
+    	
+    	float originalWidth = image.getWidth();
+    	float originalHeight = image.getHeight();
+    	
+    	//if()
     	
     	
-    	if(Type.ORIGINAL.equals(type))
+    	float widthRatio = originalWidth/width;  
+    	float heightRatio = originalHeight/height;  
+    	
+    	//If new image is larger than old, do nothing
+    	if(widthRatio < 1 || heightRatio < 1 )
     	{
-    		 rescaledImage = image;
+    		return image;
     	}
     	
-    	else{
-    		
-    	
-    		/*
-	    	if(width > height)
-	    	{
-	    		if(Type.THUMBNAIL.equals(type))
-	    		{
-		    		newImg= new BufferedImage(height, height,BufferedImage.TYPE_INT_RGB);
-		        	Graphics g1 = newImg.createGraphics();
-		        	g1.drawImage(image, (height-width)/2, 0, null);
-		        	if(height>size)
-		        		rescaledImage = newImg.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
-		        	else
-		        		rescaledImage = newImg;
-	    		}
-	    		else
-	    			rescaledImage = image.getScaledInstance(size, -1, Image.SCALE_SMOOTH);
-	    	}
-	    	else  
-	    	{
-	    	
-	    		if(Type.THUMBNAIL.equals(type))
-	    		{
-		    		newImg= new BufferedImage(width, width,BufferedImage.TYPE_INT_RGB);
-		        	Graphics g1 = newImg.createGraphics();
-		        	g1.drawImage(image, 0, (width-height)/2, null);
-		        	if(width>size)
-		        		rescaledImage = newImg.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
-		        	else
-		        		rescaledImage = newImg;
-	    		}
-	    		else
-	    		*/
-	            	rescaledImage = image.getScaledInstance(-1, size, Image.SCALE_SMOOTH);
-	
-	    	//}
-	    	
-	        
-    	}
-    	
-    	BufferedImage rescaledBufferedImage = new BufferedImage(rescaledImage.getWidth(null), rescaledImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        Graphics g2 = rescaledBufferedImage.getGraphics();
-        g2.drawImage(rescaledImage, 0, 0, null);
+    	BufferedImage resizeImageJpg = null;  
+    	  
+    	if (widthRatio > heightRatio)  
+    	{  
+    	  
+    	float newHeight = (float)originalHeight/(float)originalWidth * width;  
+    	  
+    	resizeImageJpg = resizeImage(image, width, (int) newHeight);  
+    	}  
+    	else  
+    	{  
+    	  
+    	float newWidth = (float)originalWidth/(float)originalHeight * height;  
+    	  
+    	resizeImageJpg = resizeImage(image, (int) newWidth, height);  
+    	}  
 
-        return rescaledBufferedImage;
+        return resizeImageJpg;
     }
     
+    
+    
+	    private static BufferedImage resizeImage(BufferedImage image, int width, int height)  
+	    {  
+		    BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);  
+		    Graphics2D g = resizedImage.createGraphics();  
+		    g.drawImage(image, 0, 0, width, height, null);  
+		    g.dispose();  
+		    return resizedImage;  
+	    }  
+    
+	    /*
     public static void main(String[] arg) throws Exception
     {
     	File f = new File("C:\\Users\\haarlae1\\Pictures\\TestBilder\\1.jpg");
@@ -143,7 +186,7 @@ public class ImageHelper{
     	String imgType="jpg";
     	
 		String dir = PropertyReader.getProperty("image-upload.destDir") + "/original/" + destDir;
-		ImageHelper.scaleAndStoreImage(dir, 0, bufferedImage, f.getName(), imgType, Type.ORIGINAL);
+		ImageHelper.scaleAndStoreImage(f, f.getName(), bufferedImage, f.getName(), imgType, Type.ORIGINAL);
 		
 		dir = PropertyReader.getProperty("image-upload.destDir") + "/web/" + destDir;
 		ImageHelper.scaleAndStoreImage(dir, Integer.parseInt(PropertyReader.getProperty("image-upload.resolution.web")), bufferedImage, f.getName(), imgType, Type.WEB);
@@ -152,6 +195,7 @@ public class ImageHelper{
 		ImageHelper.scaleAndStoreImage(dir, Integer.parseInt(PropertyReader.getProperty("image-upload.resolution.thumbnail")), bufferedImage,f.getName(), imgType, Type.THUMBNAIL);
  		
     }
+    */
     
    
 
