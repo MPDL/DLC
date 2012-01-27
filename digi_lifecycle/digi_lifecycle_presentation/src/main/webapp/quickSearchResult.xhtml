@@ -13,8 +13,20 @@
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
 			<mpdl:paginator paginatorBean="#{quickSearchResultBean}">
-				<mpdl:list volume="#{var}">
-				</mpdl:list>
+
+
+				<div class="bibList">
+					<div class="listHeader">
+						<ui:include src="listHeader.xhtml" />
+					</div>
+					
+					<div class="listBody">
+						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
+					 		<mpdl:list volume="#{var}"/>
+						</a4j:repeat>
+					</div>
+				</div>
+
 			</mpdl:paginator>
 		</h:panelGroup>
 	</ui:define>
