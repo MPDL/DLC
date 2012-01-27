@@ -173,8 +173,8 @@ public class PropertyReader
         // First try to search in file system
         try
         {
-        	String jbossHome = System.getProperty("jboss.home.dir");
-        	String path = jbossHome + "/standalone/configuration/"  + filepath;
+        	String jbossHome = System.getProperty("catalina.base");
+        	String path = jbossHome + "/conf/"  + filepath;
         	instream = new FileInputStream(path);
             
         	Logger.getLogger(PropertyReader.class).info("Properties loaded from File" + path);

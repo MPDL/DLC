@@ -8,7 +8,7 @@
   <groupId>de.mpg.escidoc.digi_lifecycle</groupId>
   <artifactId>digi_lifecycle_logic</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <packaging>ejb</packaging>
+  <packaging>jar</packaging>
   
   
   <!-- Creates a client.jar file, maybe activate this later -->

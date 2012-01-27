@@ -31,6 +31,9 @@ public class MetsDiv {
 	@XmlAttribute(name = "LABEL")
 	private String label;
 	
+	@XmlAttribute(name = "CONTENTIDS")
+	private String contentIds;
+	
 	@XmlElement(name="div", namespace="http://www.loc.gov/METS/")
 	private List<MetsDiv> divs = new ArrayList<MetsDiv>();
 	
