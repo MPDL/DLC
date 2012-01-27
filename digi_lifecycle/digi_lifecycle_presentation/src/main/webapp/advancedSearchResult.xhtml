@@ -21,9 +21,7 @@
 					
 					<div class="listBody">
 						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-							<mpdl:list volume="#{var}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}">
-							</mpdl:list>
-						</a4j:repeat>
+							<mpdl:item volume="#{var}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" />						</a4j:repeat>
 					</div>
 				</div>
 			</mpdl:paginator>

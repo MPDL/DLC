@@ -19,13 +19,14 @@
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
 			
 				<div class="bibList">
+				
 					<div class="listHeader">
 						<ui:include src="listHeader.xhtml" />
 					</div>
 					
 					<div class="listBody">
 						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-					 		<mpdl:list volume="#{var}"/>
+					 		<mpdl:item volume="#{var}"/>
 						</a4j:repeat>
 					</div>
 				</div>
