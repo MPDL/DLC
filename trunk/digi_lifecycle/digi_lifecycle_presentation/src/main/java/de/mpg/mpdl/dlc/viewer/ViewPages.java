@@ -303,15 +303,6 @@ public class ViewPages extends VolumeLoaderBean{
 
 	public void setFulltextMatches(String fulltextMatches) {
 		this.fulltextMatches = fulltextMatches;
-	}
-
-	
-
-	
-	
-
-	
-	
-	
+	}	
 
 }

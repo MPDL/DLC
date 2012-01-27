@@ -14,12 +14,25 @@
 
 <!-- INTERFACE -->
 <cc:interface>
+
 	<cc:attribute name="volume" required="true"/>
 	<cc:attribute name="fulltextHits"/>
+
+
+
+	
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
+
+
+
+
+
+
+
+
 
 
 		<h:panelGroup layout="block" class="listItemSingleVolume" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMono}">
@@ -186,8 +199,10 @@
 		</h:panelGroup>
 
 		<h:panelGroup layout="block" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
-	 	   <mpdl:volumes volumes="#{allVolumesBean.getRelatedVolumes(cc.attrs.volume)}" ></mpdl:volumes>
+	 	   <mpdl:volumes volumes="#{allVolumesBean.getRelatedVolumes(cc.attrs.volume)}" >
+	 	   </mpdl:volumes>
 	    </h:panelGroup>
+
 
 </cc:implementation>
 </html>
