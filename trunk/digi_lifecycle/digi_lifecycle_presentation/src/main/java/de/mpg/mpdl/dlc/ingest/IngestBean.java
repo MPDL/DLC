@@ -54,7 +54,7 @@ public class IngestBean implements Serializable {
  
 	private static Logger logger = Logger.getLogger(IngestBean.class);
    
-	private ArrayList<FileItem> imageFiles = new ArrayList<FileItem>();
+	private ArrayList<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
 	private FileItem mabFile;
 	private ModsMetadata modsMetadata  = new ModsMetadata();
 	private FileItem teiFile;
@@ -190,11 +190,11 @@ public class IngestBean implements Serializable {
         return System.currentTimeMillis();
     }
  
-    public ArrayList<FileItem> getImageFiles() {
+    public ArrayList<DiskFileItem> getImageFiles() {
         return imageFiles; 
     }
  
-    public void setImageFiles(ArrayList<FileItem> files) {
+    public void setImageFiles(ArrayList<DiskFileItem> files) {
         this.imageFiles = files;
     }
     
@@ -323,7 +323,7 @@ public class IngestBean implements Serializable {
 			}
 			else
 			{
-				imageFiles.add(fue.getFileItem());
+				imageFiles.add((DiskFileItem)fue.getFileItem());
 			}
 		}
 	}

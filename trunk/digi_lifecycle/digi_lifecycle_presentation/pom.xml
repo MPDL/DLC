@@ -34,6 +34,17 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.1.1</version>
+		        <configuration>
+		        	<!-- Exclude dlc.properties from war file, because it should be copied to tomcat conf directory -->
+		        	<packagingExcludes>**/dlc.properties</packagingExcludes>
+		        </configuration> 
+		    </plugin>
+			
+			
 			<!-- 
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
@@ -328,10 +339,10 @@
 								<configuration>
 									<tasks>
 										<!-- copy over the configuration file -->
-										<!-- 
+										
 										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${tomcat.install.dir}/conf">
 										</copy>
-										-->
+										
 										
 										<copy overwrite="true" file="${project.build.directory}/${project.build.finalName}.${project.packaging}" tofile="${tomcat.install.dir}/webapps/digi_lifecycle.war">
 										</copy>
