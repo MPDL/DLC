@@ -18,6 +18,8 @@ import de.escidoc.core.resources.sb.search.TextFragment;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.images.ImageHelper;
+import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.vo.mets.MetsFile;
@@ -49,8 +51,8 @@ public class VolumeUtilBean {
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
 			String url = null; 
-			if(p.getDigilibFile()!=null)
-				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getDigilibFile().getHref(), "UTF-8") + "&dh=" + height + "&dw=" + width;
+			if(p.getContentIds()!=null)
+				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getContentIds(), "UTF-8") + "&dh=" + height + "&dw=" + width;
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for page " + p + "(" + width + "," + height + ")", e);
@@ -72,24 +74,16 @@ public class VolumeUtilBean {
 		}
 	}
 	
-	public static String getImageServerUrl(String subUrl)
+	public static String getImageServerUrl(String subUrl, String type)
 	{
-		try {
-			String digilibUrl = PropertyReader.getProperty("image-upload.url");
-			String url = null;
-			url = digilibUrl + subUrl;
-			return url;
-		} catch (Exception e) {
-			logger.error("Error getting URL for sub url page " + subUrl, e);
-			return null;
-		}
+		return ImageHelper.getFullImageUrl(subUrl, Type.valueOf(type));
 	}
 	
 	public static String getDigilibJQueryUrlForPage(Page p)
 	{
 		try {
 			String digilibUrl = PropertyReader.getProperty("digilib.jquery.url");
-			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getDigilibFile().getHref(), "UTF-8");
+			String url = digilibUrl + "?fn=" + URLEncoder.encode(p.getContentIds(), "UTF-8");
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for image", e);

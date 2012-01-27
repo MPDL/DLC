@@ -191,12 +191,12 @@ public class LoginBean
 
     public static String getLoginUrl() throws Exception
     {
-    	return PropertyReader.getProperty("escidoc.common.framework.url")+LOGIN_URL;
+    	return PropertyReader.getProperty("escidoc.common.login.url")+LOGIN_URL;
     }
     
     public static String getLogoutUrl() throws Exception
     {
-    	return PropertyReader.getProperty("escidoc.common.framework.url")+LOGOUT_URL;
+    	return PropertyReader.getProperty("escidoc.common.login.url")+LOGOUT_URL;
     }
 
 

@@ -27,7 +27,7 @@
 					<pretty:link mappingId="viewPages">
 						<f:param value="#{thumbnailsBean.volumeId}" />
 						<f:param value="#{cc.attrs.volume.order}" />
-						<h:graphicImage alt="#{cc.attrs.volume.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.thumbnailFile.href)}"/>
+						<h:graphicImage alt="#{cc.attrs.volume.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.contentIds, 'THUMBNAIL')}"/>
 					</pretty:link>
 				</span>
 			</div>
