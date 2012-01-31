@@ -41,7 +41,7 @@ public class ViewPages extends VolumeLoaderBean{
 	
 	private List<Page> pageList = new ArrayList<Page>();
 	
-	private ViewType viewType = ViewType.SINGLE;
+	private ViewType viewType = ViewType.RECTO_VERSO;
 	private boolean hasSelected = false;
 	
 	
@@ -54,6 +54,7 @@ public class ViewPages extends VolumeLoaderBean{
 	@Override
 	protected void volumeLoaded() {
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
+		this.setSelectedPage(pageforNumber);
 		
 		if(ViewType.RECTO_VERSO.equals(viewType))
 		{
@@ -83,10 +84,9 @@ public class ViewPages extends VolumeLoaderBean{
 		
 			
 		}
-		else
-		{
-			this.setSelectedPage(pageforNumber);
-		}
+
+			
+		
 		
 		
 		
@@ -94,7 +94,15 @@ public class ViewPages extends VolumeLoaderBean{
 		{
 			if(getVolume().getPagedTei() != null && hasSelected == false)
 			{
-				this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
+				if(getSelectedPage()!=null)
+				{
+					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
+				}
+				else if (getSelectedRightPage()!=null)
+				{
+					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedRightPage());
+				}
+				
 			}
 			else
 			{
