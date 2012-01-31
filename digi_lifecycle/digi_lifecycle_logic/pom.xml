@@ -12,9 +12,10 @@
   
   
   <!-- Creates a client.jar file, maybe activate this later -->
-  <!-- 
+ 
   <build>
     <plugins>
+     <!-- 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-ejb-plugin</artifactId>
@@ -24,10 +25,40 @@
           <generateClient>true</generateClient>
         </configuration>
       </plugin>
+        -->
+        
+      <plugin>
+		  <groupId>org.jibx</groupId>
+		  <artifactId>jibx-maven-plugin</artifactId>
+		  <version>1.2.3</version>
+		   <configuration>
+			    <schemaBindingDirectory>src/main/resources/jibx</schemaBindingDirectory>
+			    <includeSchemaBindings>
+			      <includeSchemaBindings>*_binding.xml</includeSchemaBindings>
+			    </includeSchemaBindings>
+			    <verbose>true</verbose>
+		  </configuration>
+		  <executions>
+		    <execution>
+		      <goals>
+		        <goal>bind</goal>
+		      </goals>
+		    </execution>
+		  </executions>
+		</plugin>
+      
     </plugins>
   </build>
-  -->
+
+  
+
   <dependencies>
+  
+		<dependency>
+		  <groupId>org.jibx</groupId>
+		  <artifactId>jibx-run</artifactId>
+		  <version>1.2.3</version>
+		</dependency>
   
 		  <dependency>
 		    <groupId>org.escidoc.core</groupId>
