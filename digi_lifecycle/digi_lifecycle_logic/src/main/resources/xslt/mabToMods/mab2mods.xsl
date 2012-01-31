@@ -81,9 +81,26 @@
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '410')">
 					<xsl:call-template name="mab410ToOriginInfo"/>
+					<!--
+						mab410ToOriginInfo
+						includes 410, 410x, 412, 412x
+						checks for 403 and 425
+					-->
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '415')">
 					<xsl:call-template name="mab415ToOriginInfo"/>
+					<!--
+						mab415ToOriginInfo
+						includes 415, 417
+						checks for 403 and 425
+					-->
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '425')">
+					<xsl:call-template name="mab425ToOriginInfo"/>
+					<!--
+						mab425ToOriginInfo
+						necessary if there is no 410
+					-->
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '429')">
 					<xsl:call-template name="mab429ToNote"/>
@@ -95,6 +112,9 @@
 					<xsl:call-template name="mab432ToNote"/>
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '433')">
+					<xsl:call-template name="mab433ToPhysicalDescription"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '434')">
 					<xsl:call-template name="mab433ToPhysicalDescription"/>
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '435')">
@@ -127,8 +147,49 @@
 				<xsl:for-each select="key('fields', '580')">
 					<xsl:call-template name="mab580ToIdentifier"/>
 				</xsl:for-each>
+				<xsl:for-each select="key('fields', '590')">
+					<xsl:call-template name="mab590ToRelatedItem"/>
+				</xsl:for-each>
+				<!-- 
+					611 - 659 MISSING!
+					concrete sample required for implementation.
+				-->
+								<!-- 
 				
-
+				<xsl:for-each select="key('fields', '700')">
+					<xsl:call-template name="mab700ToClassification"/>
+				</xsl:for-each>
+				-->
+				<xsl:for-each select="key('fields', '902')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '907')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '912')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '917')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '922')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '927')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '932')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '937')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '942')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
+				<xsl:for-each select="key('fields', '947')">
+					<xsl:call-template name="mab902ToSubject"/>
+				</xsl:for-each>
 		</xsl:element>
 	</xsl:template>
 	
@@ -190,9 +251,27 @@
 		<xsl:element name="name">
 			<xsl:if test="@ind=' ' or @ind='a'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:if test="@nr='100'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'author1'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='104'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'author2'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='108'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'author3'"/></xsl:attribute>
+				</xsl:if>
 			</xsl:if>
 			<xsl:if test="not(@ind=' ' or @ind='a')">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, concat(@nr, @ind))"/></xsl:attribute>
+				<xsl:if test="@nr='100'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'editor1'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='104'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'editor2'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='108'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'editor3'"/></xsl:attribute>
+				</xsl:if>
 			</xsl:if>
 			<xsl:attribute name="type"><xsl:value-of select="'personal'"/></xsl:attribute>
 			<xsl:attribute name="authority"><xsl:value-of select="'pnd'"/></xsl:attribute>
@@ -218,9 +297,27 @@
 		<xsl:element name="name">
 			<xsl:if test="@ind=' ' or @ind='a'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:if test="@nr='200'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body1'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='204'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body2'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='208'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body3'"/></xsl:attribute>
+				</xsl:if>
 			</xsl:if>
 			<xsl:if test="not(@ind=' ' or @ind='a')">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, concat(@nr, @ind))"/></xsl:attribute>
+				<xsl:if test="@nr='200'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body4'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='204'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body5'"/></xsl:attribute>
+				</xsl:if>
+				<xsl:if test="@nr='208'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'body6'"/></xsl:attribute>
+				</xsl:if>
 			</xsl:if>
 			<xsl:attribute name="type"><xsl:value-of select="'corporate'"/></xsl:attribute>
 			<xsl:attribute name="authority"><xsl:value-of select="'gkd'"/></xsl:attribute>
@@ -256,6 +353,9 @@
 		<xsl:element name="titleInfo">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="$ALTERNATIVE_TITLE"/></xsl:attribute>
+			<xsl:if test="@nr='341'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'parallelTitle'"/></xsl:attribute>
+			</xsl:if>
 			<xsl:element name="title">
 				<xsl:value-of select="."/>
 			</xsl:element>
@@ -265,6 +365,7 @@
 	<xsl:template name="mab331ToMainTitle">
 		<xsl:element name="titleInfo">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'mainTitle'"/></xsl:attribute>
 			<xsl:element name="title">
 				<xsl:value-of select="."/>
 			</xsl:element>
@@ -329,7 +430,7 @@
 	<xsl:template name="mab410ToOriginInfo">
 		<xsl:element name="originInfo">
 			<xsl:if test="@ind=' '">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
@@ -344,7 +445,7 @@
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, concat(@nr, @ind))"/></xsl:attribute>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'printer1'"/></xsl:attribute>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
@@ -375,7 +476,12 @@
 	
 	<xsl:template name="mab415ToOriginInfo">
 		<xsl:element name="originInfo">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+		<xsl:if test="@ind=' '">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher2'"/></xsl:attribute>
+		</xsl:if>
+		<xsl:if test="@ind='a'">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'printer2'"/></xsl:attribute>
+		</xsl:if>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
@@ -400,6 +506,23 @@
 				</xsl:element>
 			</xsl:if>
 		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab425ToOriginInfo">
+		<xsl:choose>
+			<xsl:when test="key('fields', '410')">
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="originInfo">
+					<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+					<xsl:element name="dateIssued">
+						<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
+						<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
+						<xsl:value-of select="key('fields', '425')"/>
+					</xsl:element>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="mab429ToNote">
@@ -437,6 +560,12 @@
 	
 	<xsl:template name="mab451ToRelatedItem">
 		<xsl:element name="relatedItem">
+		<xsl:if test="@ind=' '">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'series1'"/></xsl:attribute>
+		</xsl:if>
+		<xsl:if test="@ind='a'">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'series2'"/></xsl:attribute>
+		</xsl:if>
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'series'"/></xsl:attribute>
 			<xsl:element name="titleInfo">
@@ -515,6 +644,28 @@
 			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'local'"/></xsl:attribute>
 			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab590ToRelatedItem">
+		<xsl:element name="relatedItem">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
+			<xsl:element name="titleInfo">
+				<xsl:element name="title">
+					<xsl:value-of select="."/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab902ToSubject">
+		<xsl:element name="subject">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="authority"><xsl:value-of select="'rswk'"/></xsl:attribute>
+			<xsl:element name="topic">
+					<xsl:value-of select="."/>
+			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
