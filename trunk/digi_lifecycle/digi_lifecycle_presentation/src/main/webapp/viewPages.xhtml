@@ -7,7 +7,6 @@
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
-	xmlns:tree="http://java.sun.com/jsf/composite/components/tree"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:composition template="templates/template.xhtml">
@@ -149,11 +148,11 @@
 										
 										
 										
+										<!-- 										<tree:tree rootNodes="#{viewPages.volume.teiSd.pbOrDiv}"/>
+										-->
 										
-										<tree:tree rootNodes="#{viewPages.volume.teiSd.pbOrDiv}"/>
 										
-										<ui:remove>
-										<rich:tree toggleType="ajax" var="divItem" >
+										<rich:tree toggleType="client" var="divItem" >
 											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 												<rich:treeNode expanded="#{true}"  rendered="#{utilBean.getUnqualifiedClassName(divItem) != 'Pagebreak'}">
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
@@ -182,7 +181,7 @@
 												</ui:remove>
 											</rich:treeModelRecursiveAdaptor>
 										</rich:tree>
-										</ui:remove>
+										
 								</rich:tab>
 								<rich:tab header="Thumbs" id="thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
