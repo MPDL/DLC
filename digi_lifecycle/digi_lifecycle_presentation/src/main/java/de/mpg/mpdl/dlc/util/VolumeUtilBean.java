@@ -462,6 +462,23 @@ public class VolumeUtilBean {
 	}
 	
 	
+	public static List<PbOrDiv> getListWithoutPagebreaks(List<PbOrDiv> givenList)
+	
+	{
+		List<PbOrDiv> returnList = new ArrayList<PbOrDiv>();
+		for(PbOrDiv given : givenList)
+		{
+			if(!(given instanceof Pagebreak))
+			{
+				returnList.add(given);
+			}
+		}
+		return returnList;
+		
+		
+	}
+	
+	
 
 		
 }
