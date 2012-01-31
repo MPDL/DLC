@@ -54,6 +54,7 @@ public class UtilBean {
 	
 	public static String getUnqualifiedClassName(Object obj)
 	{
+		long start = System.currentTimeMillis();
 		if(obj!=null)
 		{
 			Class cls = obj.getClass();
@@ -63,8 +64,11 @@ public class UtilBean {
 		      name = name.substring(name.lastIndexOf('.') + 1); // Map$Entry
 		      name = name.replace('$', '.');      // Map.Entry
 		    }
+		    long time = System.currentTimeMillis() - start;
+			System.out.println("Unqualified classname for " + obj + " took " +time);
 		    return name;
 		}
+		
 		return "null";
 		
 	}

@@ -7,6 +7,7 @@
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:tree="http://java.sun.com/jsf/composite/components/tree"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:composition template="templates/template.xhtml">
@@ -135,6 +136,23 @@
 						<span class="double_area0" style="position:absolute; z-index: 2;">		
 							<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 				     			<rich:tab header="Toc" id="toc"  style="height:97em;overflow:auto" onmouseover="$('span.double_area0').width('60em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+										
+										
+										
+										
+										
+									
+										
+										
+										
+										
+										
+										
+										
+										
+										<tree:tree rootNodes="#{viewPages.volume.teiSd.pbOrDiv}"/>
+										
+										<ui:remove>
 										<rich:tree toggleType="ajax" var="divItem" >
 											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 												<rich:treeNode expanded="#{true}"  rendered="#{utilBean.getUnqualifiedClassName(divItem) != 'Pagebreak'}">
@@ -149,6 +167,7 @@
 														<f:ajax render="@all"/>
 													</h:commandLink>
 													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
 												</rich:treeNode>
 										
 												<ui:remove>
@@ -163,6 +182,7 @@
 												</ui:remove>
 											</rich:treeModelRecursiveAdaptor>
 										</rich:tree>
+										</ui:remove>
 								</rich:tab>
 								<rich:tab header="Thumbs" id="thumbs">
 									<load:lazyLoad pageList="#{viewPages}">
