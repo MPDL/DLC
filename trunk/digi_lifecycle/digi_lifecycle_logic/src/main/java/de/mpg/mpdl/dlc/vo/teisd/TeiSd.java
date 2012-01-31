@@ -43,6 +43,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TeiSd {
 
+	
 	@XmlElements
 	(value = {
 			@XmlElement(type=de.mpg.mpdl.dlc.vo.teisd.Front.class),
@@ -59,6 +60,7 @@ public class TeiSd {
 			@XmlPath("tei:text/tei:front/tei:div"),
 			@XmlPath("tei:text/tei:front/tei:pb")
 	})
+	
 	private List<PbOrDiv> pbOrDiv = new ArrayList<PbOrDiv>();
 	
 
@@ -97,7 +99,10 @@ public class TeiSd {
 	}
 
 	
-
+	public static List<PbOrDiv> pbOrDivListFactory()
+	{
+		return new ArrayList<PbOrDiv>();
+	}
 
 
 	public static void main (String[] args) throws Exception

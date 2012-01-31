@@ -19,6 +19,7 @@ import java.util.List;
 
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +52,10 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IUnmarshallingContext;
+import org.jibx.runtime.JiBXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -88,6 +93,7 @@ import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.util.JaxBWrapper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -108,6 +114,16 @@ public class VolumeServiceBean {
 	public static String monographContentModelId;
 	public static String multivolumeContentModelId;
 	public static String volumeContentModelId;
+	
+	//private static JAXBContext jaxbVolumeContext;
+	private static JAXBContext jaxbTeiContext;
+	private static JAXBContext jaxbModsContext;
+	private static JAXBContext jaxbMetsContext;
+	
+	private static IBindingFactory bfactMets;
+	private static IBindingFactory bfactTei;
+	//private static IBindingFactory bfactMods;
+	
 
 
 	static
@@ -120,6 +136,26 @@ public class VolumeServiceBean {
 		} catch (Exception e) 
 		{
 			logger.error("Error while initializing static properties for Search Bean", e);
+		}
+		
+		try {
+			//jaxbVolumeContext = JAXBContext.newInstance(Volume.class);
+			jaxbTeiContext = JAXBContext.newInstance(TeiSd.class);
+			jaxbModsContext = JAXBContext.newInstance(ModsMetadata.class);
+			jaxbMetsContext = JAXBContext.newInstance(Mets.class);
+			
+		} catch (JAXBException e) {
+			logger.error("Error while creating JAXB context", e);
+		}
+		
+		
+		try {
+			bfactMets = BindingDirectory.getFactory(Mets.class);
+			bfactTei = BindingDirectory.getFactory(TeiSd.class);
+			//bfactMods = BindingDirectory.getFactory(ModsMetadata.class);
+		} catch (JiBXException e) {
+			// TODO Auto-generated catch block
+			logger.error("Error while creating JibX binding factory", e);
 		}
 	}
 	
@@ -663,14 +699,16 @@ public class VolumeServiceBean {
         Document modsDoc = builder.newDocument();
         Document metsDoc = builder.newDocument();
         
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class, Mets.class });
-		Marshaller m = ctx.createMarshaller();
+		
+		Marshaller m = jaxbModsContext.createMarshaller();
 		
 		//Set MODS in md-record
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		mdRec.setContent(modsDoc.getDocumentElement());
 		
+		
+		m = jaxbMetsContext.createMarshaller();
 		m.marshal(vol.getMets(), metsDoc);
 		metsMdRec.setContent(metsDoc.getDocumentElement());
 		
@@ -1019,16 +1057,39 @@ public class VolumeServiceBean {
 		
 		
 		//Unbmarshall mods from md-record and set in item
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-		Unmarshaller unmarshaller = ctx.createUnmarshaller();
-		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
+		long startMods = System.currentTimeMillis();
+		Unmarshaller modsUnmarshaller = jaxbModsContext.createUnmarshaller();
+
+		
+		//Unmarshaller unmarshaller = JaxBWrapper.getInstance("", schemaLocation)
+		ModsMetadata md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
+		
 		vol = new Volume();
 		vol.setModsMetadata(md);
+		long timeMods = System.currentTimeMillis()-startMods;
+		System.out.println("Time MODS: " + timeMods);
 		
 		if(item.getMetadataRecords().get("mets")!=null)
 		{
 			long start = System.currentTimeMillis();
-			vol.setMets((Mets)unmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent()));
+			
+			IUnmarshallingContext uctx = bfactMets.createUnmarshallingContext();
+			  
+		    DOMSource source = new DOMSource(item.getMetadataRecords().get("mets").getContent());  
+		    StringWriter xmlAsWriter = new StringWriter();  
+		    StreamResult result = new StreamResult(xmlAsWriter);  
+		    TransformerFactory.newInstance().newTransformer().transform(source, result); 
+		    //System.out.println(xmlAsWriter.toString());
+		      
+		    // write changes  
+		    InputStream inputStream = new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8"));  
+			vol.setMets((Mets) uctx.unmarshalDocument(inputStream, null));
+			
+			/* 
+			 Unmarshaller metsUnmarshaller = jaxbMetsContext.createUnmarshaller();
+			vol.setMets((Mets)metsUnmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent()));
+			*/
+			
 			long time = System.currentTimeMillis()-start;
 			System.out.println("Time METS: " + time);
 		}
@@ -1141,12 +1202,25 @@ public class VolumeServiceBean {
 			if (c.getProperties().getContentCategory().equals("tei-sd"))
 			{
 
-				JAXBContext ctx = JAXBContext.newInstance(new Class[] { Volume.class });
-				Unmarshaller unmarshaller = ctx.createUnmarshaller();
+				long start = System.currentTimeMillis();
+
+				IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
+				teiSd = (TeiSd) uctx.unmarshalDocument(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
+
+
+
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
 				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+	/*
+				Unmarshaller unmarshaller = jaxbTeiContext.createUnmarshaller();
+				
 				teiSd = (TeiSd)unmarshaller.unmarshal(teiSdXml);
+	*/
+				
+				
+				long time = System.currentTimeMillis() - start;
+				System.out.println("TIME TEI: " + time);
 
 				
 				
@@ -1542,7 +1616,7 @@ public class VolumeServiceBean {
 	
 	public Div getDivForPage(Volume v, Page p) throws Exception
 	{
-
+		long start = System.currentTimeMillis();
 		String divId = "";
 		Processor proc = new Processor(false);
         net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
@@ -1576,6 +1650,9 @@ public class VolumeServiceBean {
         }
         
         Div div = (Div)v.getTeiSd().getDivMap().get(divId);
+        long time = System.currentTimeMillis() - start;
+        System.out.println("Time for finding div: " + time);
+        
         return div;
 
 	

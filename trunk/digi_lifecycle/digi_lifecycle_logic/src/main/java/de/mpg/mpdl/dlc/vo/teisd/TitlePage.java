@@ -15,19 +15,41 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 public class TitlePage extends Div {
 	
 	
-	@XmlPath("/tei:docTitle/tei:titlePart/text()")
-	private String head;
+	@XmlPath("/tei:docTitle/tei:titlePart")
+	private List<DocTitle> docTitles;
+	
+	private List<DocTitle> titleParts;
+
+
+	public List<DocTitle> getDocTitles() {
+		return docTitles;
+	}
+
+
+	public void setDocTitles(List<DocTitle> docTitles) {
+		this.docTitles = docTitles;
+	}
+
+
+	public List<DocTitle> getTitleParts() {
+		return titleParts;
+	}
+
+
+	public void setTitleParts(List<DocTitle> titleParts) {
+		this.titleParts = titleParts;
+	}
+
+
+	public static List<DocTitle> docTitleListFactory()
+	{
+		return new ArrayList<DocTitle>();
+	}
 	
 	
 
 	
-	public String getHead() {
-		return head;
-	}
 
-	public void setHead(String head) {
-		this.head = head;
-	}
 
 	
 }

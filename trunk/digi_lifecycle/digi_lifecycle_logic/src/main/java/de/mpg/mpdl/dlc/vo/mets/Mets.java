@@ -79,7 +79,14 @@ public class Mets {
 	}
 
 	
-	
+	/**
+	 * JiBX Helper method
+	 * 
+	 */
+	private static List<Page> pageListFactory()
+	{
+		return new ArrayList<Page>();
+	}
 /*
 	
 	@XmlPath("mets:structMap[@TYPE='logical']/mets:div")

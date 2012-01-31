@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<binding>
+	<mapping name="mets" class="de.mpg.mpdl.dlc.vo.mets.Mets">
+		<namespace uri="http://www.loc.gov/METS/" prefix="mets" default="elements"/>
+		<structure name="structMap">
+			<value style="attribute" name="TYPE" constant="physical"/>
+			
+			<structure name="div">
+				<value style="attribute" name="DMDID" constant="dmd_0"/>
+				<collection field="pages" factory = "de.mpg.mpdl.dlc.vo.mets.Mets.pageListFactory">
+					<structure name="div" type="de.mpg.mpdl.dlc.vo.mets.Page">
+						<value style="attribute" name="ID" field="id" usage="optional"/>
+						<value style="attribute" name="TYPE" field="type" usage="optional"/>
+						<value style="attribute" name="ORDER" field="order" usage="optional"/>
+						
+						<value style="attribute" name="ORDERLABEL" field="orderLabel" usage="optional"/>
+						<value style="attribute" name="CONTENTIDS" field="contentIds" usage="optional"/>
+					
+					</structure>
+				
+				</collection>
+			</structure>
+		
+		</structure>
+	</mapping>
+
+
+
+</binding>
+
+
+
