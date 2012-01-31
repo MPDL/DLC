@@ -65,7 +65,7 @@ public class UtilBean {
 		      name = name.replace('$', '.');      // Map.Entry
 		    }
 		    long time = System.currentTimeMillis() - start;
-			System.out.println("Unqualified classname for " + obj + " took " +time);
+			//System.out.println("Unqualified classname for " + obj + " took " +time);
 		    return name;
 		}
 		
