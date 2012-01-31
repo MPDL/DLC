@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<binding>
+	<namespace uri="http://www.tei-c.org/ns/1.0" prefix="tei" default="elements"/>
+	<mapping name="TEI" class="de.mpg.mpdl.dlc.vo.teisd.TeiSd">
+		
+
+		<structure name="text">
+				<collection field="pbOrDiv" factory="de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
+					<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" usage="optional"/>
+				</collection>
+		</structure>
+
+	 </mapping>
+	 
+
+	 <mapping class="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" abstract="true">
+	 	<value style="attribute" name="id" ns="http://www.w3.org/XML/1998/namespace" field="id" usage="optional"/>
+	 	<value style="attribute" name="n" field="numeration" usage="optional"/>
+	 	<value style="attribute" name="type" field="type" usage="optional"/>
+	 	<collection field="pbOrDiv" factory = "de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 	</collection>
+	 </mapping>
+	 
+	 <mapping name="front" class="de.mpg.mpdl.dlc.vo.teisd.Front" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv">
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="body" class="de.mpg.mpdl.dlc.vo.teisd.Body" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv">
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="back" class="de.mpg.mpdl.dlc.vo.teisd.Back" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 
+	 <mapping name="div" class="de.mpg.mpdl.dlc.vo.teisd.Div" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 	<value style="attribute" name="author1" field="author1" usage="optional"/>
+	 	<value style="attribute" name="author2" field="author2" usage="optional"/>
+	 	<value style="attribute" name="author3" field="author3" usage="optional"/>
+	 	<value style="attribute" name="author1inv" field="author1inv" usage="optional"/>
+	 	<value style="attribute" name="author2inv" field="author2inv" usage="optional"/>
+	 	<value style="attribute" name="author3inv" field="author3inv" usage="optional"/>
+	 	
+	 	<value style="element" name="head" field="head" usage="optional"/>
+	 	
+	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 <mapping name="pb" class="de.mpg.mpdl.dlc.vo.teisd.Pagebreak" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false"> 
+	 		<value style="attribute" name="facs" field="facs" usage="optional"/>
+	 		<value style="attribute" name="next" field="next" usage="optional"/>
+	 		<value style="attribute" name="prev" field="prev" usage="optional"/>
+	 		<value style="attribute" name="subtype" field="subtype" usage="optional"/>
+	 
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 
+	 </mapping>
+	 
+	  <mapping name="titlePage" class="de.mpg.mpdl.dlc.vo.teisd.TitlePage" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 		<structure name="docTitle" ordered="false">
+	 			<collection field="docTitles" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory">
+	 				
+	 				<structure name="titlePart">
+		 				<value style="attribute" name="type" field="type" usage="optional"/>
+		 				<value style="text" field="title" usage="optional"/>
+	 				</structure>
+	 			</collection>
+	 		</structure>
+	 		
+	 	
+ 			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory">
+ 				
+ 				<structure name="titlePart">
+	 				<value style="attribute" name="type" field="type" usage="optional"/>
+	 				<value style="text" field="title" usage="optional"/>
+ 				</structure>
+ 			</collection>
+
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+
+</binding>
+
+
+
