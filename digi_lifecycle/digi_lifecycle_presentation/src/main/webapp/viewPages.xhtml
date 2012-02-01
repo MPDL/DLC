@@ -136,28 +136,10 @@
 							<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 				     			<rich:tab header="Toc" id="toc"  style="height:97em;overflow:auto" onmouseover="$('span.double_area0').width('60em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 										
-										
-										
-										
-										
-									
-										
-										
-										
-										
-										
-										
-										
-										<!-- 										<tree:tree rootNodes="#{viewPages.volume.teiSd.pbOrDiv}"/>
-										-->
-										
 										<rich:tree toggleType="ajax" var="divItem" >
 											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{volumeUtilBean.getListWithoutPagebreaks(divItem.pbOrDiv)}">
 											
 												<rich:treeNode expanded="#{true}" rendered="#{true}">
-													<h:outputText value="[#{divItem.id}] " rendered="#{not empty divItem.id}"/>
-													
-													
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 														
 														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
