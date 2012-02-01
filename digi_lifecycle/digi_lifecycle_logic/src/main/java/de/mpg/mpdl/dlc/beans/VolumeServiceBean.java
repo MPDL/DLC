@@ -40,6 +40,7 @@ import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
+import net.sf.saxon.dom.DocumentWrapper;
 import net.sf.saxon.om.NamespaceConstant;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.XPathCompiler;
@@ -54,6 +55,7 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 import org.w3c.dom.Document;
@@ -697,9 +699,10 @@ public class VolumeServiceBean {
 		
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document modsDoc = builder.newDocument();
-        Document metsDoc = builder.newDocument();
+        
         
 		
+        
 		Marshaller m = jaxbModsContext.createMarshaller();
 		
 		//Set MODS in md-record
@@ -708,8 +711,12 @@ public class VolumeServiceBean {
 		mdRec.setContent(modsDoc.getDocumentElement());
 		
 		
-		m = jaxbMetsContext.createMarshaller();
-		m.marshal(vol.getMets(), metsDoc);
+		
+		IMarshallingContext mCont = bfactMets.createMarshallingContext();
+		StringWriter sw = new StringWriter();
+		mCont.marshalDocument(vol.getMets(), "UTF-8", null, sw);
+		sw.close();
+		Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
 		metsMdRec.setContent(metsDoc.getDocumentElement());
 		
 		
@@ -727,7 +734,7 @@ public class VolumeServiceBean {
 			sw.flush();
 			
 			uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
-		}
+		}builder 
 		*/
 		
 		//Check if component already exists
