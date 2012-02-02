@@ -95,7 +95,6 @@ import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
-import de.mpg.mpdl.dlc.util.JaxBWrapper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -597,7 +596,7 @@ public class VolumeServiceBean {
 	
 	public Volume updateVolume(Volume vol, Volume parent, File teiFile, String userHandle, boolean initial) throws Exception
 	{
-		
+		  
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -608,8 +607,12 @@ public class VolumeServiceBean {
 		MetadataRecords mdRecs = new MetadataRecords();
 		MetadataRecord mdRec = new MetadataRecord("escidoc");
 		MetadataRecord metsMdRec = new MetadataRecord("mets");
+		
+		if(vol.getMets() != null)
+		{
+			mdRecs.add(metsMdRec);
+		}
 		mdRecs.add(mdRec);
-		mdRecs.add(metsMdRec);
 		item.setMetadataRecords(mdRecs);
 		
 		if(parent != null)
@@ -714,13 +717,16 @@ public class VolumeServiceBean {
 		mdRec.setContent(modsDoc.getDocumentElement());
 		
 		
-		
-		IMarshallingContext mCont = bfactMets.createMarshallingContext();
-		StringWriter sw = new StringWriter();
-		mCont.marshalDocument(vol.getMets(), "UTF-8", null, sw);
-		sw.close();
-		Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
-		metsMdRec.setContent(metsDoc.getDocumentElement());
+		if(vol.getMets() != null)
+		{
+			IMarshallingContext mCont = bfactMets.createMarshallingContext();
+			StringWriter sw = new StringWriter();
+			mCont.marshalDocument(vol.getMets(), "UTF-8", null, sw);
+			sw.close();
+			Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
+			metsMdRec.setContent(metsDoc.getDocumentElement());
+		}
+
 		
 		
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1286,7 +1292,7 @@ public class VolumeServiceBean {
             return "";
         }
     }
-	
+	 
 	public static ModsMetadata createModsMetadataFromXml(InputStream xml) throws Exception
 	{
 		
