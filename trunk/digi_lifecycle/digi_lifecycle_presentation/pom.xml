@@ -16,7 +16,11 @@
 		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</developerConnection>
 		<url>https://zim02.gwdg.de/repos/virr/</url>
 	</scm>
+	<properties>
+                <project.warName>dlc</project.warName>
+     </properties>
 	<build>
+		
 		<plugins>
 	<!-- 			
 			<plugin>
@@ -41,9 +45,24 @@
 		        <configuration>
 		        	<!-- Exclude dlc.properties from war file, because it should be copied to tomcat conf directory -->
 		        	<packagingExcludes>**/dlc.properties</packagingExcludes>
+		        	<warName>${project.warName}</warName>
 		        </configuration> 
 		    </plugin>
-			
+		    
+		    <!-- 
+		    <plugin>
+		          <groupId>org.codehaus.mojo</groupId>
+		          <artifactId>tomcat-maven-plugin</artifactId>
+		          <version>1.1</version>
+		        <configuration>
+		        	<warFile>${project.build.directory}/${project.warName}.war</warFile>
+		          <url>http://localhost:8080/manager</url>
+		          <path>/dlc</path>
+		          
+		        </configuration>
+		        
+		    </plugin>
+			 -->
 			
 			<!-- 
 			<plugin>
@@ -277,7 +296,13 @@
 		    <version>6.0</version>
 		    <scope>provided</scope>
 		</dependency>
-		
+		<!-- 
+		<dependency>
+		  <groupId>javax.el</groupId>
+		  <artifactId>javax.el-api</artifactId>
+		  <version>2.2.1</version>
+		</dependency>
+		-->
 		<dependency>
   			<groupId>javax.servlet</groupId>
   			<artifactId>jstl</artifactId>
@@ -336,19 +361,24 @@
 								<goals>
 									<goal>run</goal>
 								</goals>
+							
 								<configuration>
 									<tasks>
 										<!-- copy over the configuration file -->
+										<delete quiet="true" file="${tomcat.install.dir}/webapps/${project.warName}.war"/>
+										<delete quiet="true" dir="${tomcat.install.dir}/webapps/${project.warName}"/>
+										
 										
 										<copy overwrite="true" file="${project.build.directory}/classes/dlc.properties" todir="${tomcat.install.dir}/conf">
 										</copy>
 										
 										
-										<copy overwrite="true" file="${project.build.directory}/${project.build.finalName}.${project.packaging}" tofile="${tomcat.install.dir}/webapps/digi_lifecycle.war">
+										<copy overwrite="true" file="${project.build.directory}/${project.warName}.${project.packaging}" todir="${tomcat.install.dir}/webapps">
 										</copy>
 										
 									</tasks>
 								</configuration>
+								
 							</execution>
 						</executions>
 						<dependencies>

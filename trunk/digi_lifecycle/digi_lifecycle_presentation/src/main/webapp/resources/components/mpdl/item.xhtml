@@ -56,6 +56,7 @@
 					<h:panelGroup layout="block" class="itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 					</h:panelGroup>
+				
 					<h:panelGroup layout="block" class="itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 							<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
@@ -77,6 +78,7 @@
 							</h:panelGroup>
 						</a4j:repeat>
 					</h:panelGroup>
+					
 					
 
 				</div>

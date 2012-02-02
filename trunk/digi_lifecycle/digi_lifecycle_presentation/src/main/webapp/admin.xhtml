@@ -20,7 +20,7 @@
     </h:outputStylesheet>
 
 	<ui:define name="mainContent">
-
+		<h:form>
 		<rich:panel layout="block" id="createdOUs" header="Created Organizations:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
 			<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
 				<pretty:link mappingId="ou">
@@ -119,7 +119,7 @@
 
 		</rich:panel>
 
-
+	</h:form>
 
 	</ui:define>
 

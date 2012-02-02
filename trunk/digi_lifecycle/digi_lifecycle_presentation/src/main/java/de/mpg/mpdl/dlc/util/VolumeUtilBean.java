@@ -329,7 +329,7 @@ public class VolumeUtilBean {
 	
 	public String emphasizeWordsinTextFragment(TextFragment tf, String styleClass)
 	{
-		
+		//long start = System.currentTimeMillis();
 		StringBuffer emphasizedText = new StringBuffer();
 		
 		int lastEnd = -1;
@@ -359,6 +359,8 @@ public class VolumeUtilBean {
 		//Add string after last search hit
 		emphasizedText.append(tf.getTextFragmentData().substring(lastEnd + 1, tf.getTextFragmentData().length()));
 		
+		//long time = System.currentTimeMillis() - start;
+		//System.out.println("Time emphasizing: " + time);
 		return emphasizedText.toString();
 		
 		
