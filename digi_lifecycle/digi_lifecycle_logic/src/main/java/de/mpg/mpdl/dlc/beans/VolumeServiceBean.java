@@ -127,6 +127,7 @@ public class VolumeServiceBean {
 	//private static IBindingFactory bfactMods;
 	
 
+	private static TransformerFactory transfFact;
 
 	static
 	{
@@ -159,6 +160,12 @@ public class VolumeServiceBean {
 			// TODO Auto-generated catch block
 			logger.error("Error while creating JibX binding factory", e);
 		}
+		
+		if(transfFact==null)
+		{
+			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+			transfFact = TransformerFactory.newInstance();
+		}
 	}
 	
 	public enum VolumeTypes{
@@ -179,15 +186,11 @@ public class VolumeServiceBean {
 
 	}
 	
-	private static TransformerFactory transfFact;
+	
 
 	public VolumeServiceBean()
 	{
-		if(transfFact==null)
-		{
-			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-			transfFact = TransformerFactory.newInstance();
-		}
+		
 	}
 	
 	
