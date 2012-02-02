@@ -430,7 +430,7 @@
 	<xsl:template name="mab410ToOriginInfo">
 		<xsl:element name="originInfo">
 			<xsl:if test="@ind=' '">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
@@ -445,7 +445,7 @@
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="'printer1'"/></xsl:attribute>
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'printer1'"/></xsl:attribute>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
@@ -514,7 +514,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:element name="originInfo">
-					<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+					<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
 					<xsl:element name="dateIssued">
 						<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 						<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
