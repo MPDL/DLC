@@ -15,7 +15,7 @@
 <!-- INTERFACE -->
 <cc:interface>
 
-	<cc:attribute name="volume" required="true"/>
+	<cc:attribute name="page" required="true"/>
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
@@ -26,8 +26,8 @@
 				<span class="itemIconBorder">
 					<pretty:link mappingId="viewPages">
 						<f:param value="#{thumbnailsBean.volumeId}" />
-						<f:param value="#{cc.attrs.volume.order}" />
-						<h:graphicImage alt="#{cc.attrs.volume.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.contentIds, 'THUMBNAIL')}"/>
+						<f:param value="#{cc.attrs.page.order}" />
+						<h:graphicImage alt="#{cc.attrs.page.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(cc.attrs.page.contentIds, 'THUMBNAIL')}"/>
 					</pretty:link>
 				</span>
 			</div>
@@ -35,10 +35,15 @@
 				<input type="checkbox"></input>
 			</div>
 			<div class="itemContentData fiveRows">
-				<div class="itemMetaLabel">Label</div>
-				<div class="itemMetaValue">Value</div>
+				<div class="itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_page}:"/></div>
+				<div class="itemMetaValue"><h:outputText value=" #{cc.attrs.page.order}"/></div>
+				<br/>
+				<div class="itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_pagination}:"/></div>
+				<div class="itemMetaValue"><h:outputText value=" #{cc.attrs.page.orderLabel}"/></div>
 				<br></br>
+				<ui:remove>
 				<span class="itemMetaText">Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of </span>
+				</ui:remove>
 			</div>
 		</h:panelGroup>
 	</li>
