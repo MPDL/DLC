@@ -20,7 +20,7 @@
 
 
 	<ui:define name="mainContent">
-	    
+	    <h:form>
         <h:panelGrid columns="2">	    
 		    <h:outputText value="loginname"/>
 			<h:outputLabel value="#{userBean.user.loginName}"></h:outputLabel>
@@ -30,6 +30,7 @@
 	        
 	        <a4j:commandButton value="save" action="#{userBean.editUser}" execute="@form"/>
         </h:panelGrid>
+        </h:form>
 
 	</ui:define>
 

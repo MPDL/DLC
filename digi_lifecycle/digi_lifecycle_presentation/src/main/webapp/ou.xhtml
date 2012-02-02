@@ -9,6 +9,7 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
+        <h:form>
         <h:panelGrid columns="2">	
 		<h:outputText value="Logo(URL):" />
 		<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}"/>
@@ -48,7 +49,7 @@
 		
 		<h:commandButton value="Edit" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
 		<h:commandButton value="Save Changes" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
-
+		</h:form>
 <ui:remove>
  	<h:commandButton value="edit" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id )}">
         <rich:componentControl target="popup" operation="show" />
