@@ -22,6 +22,7 @@
 
 <div id="#{cc.clientId}">
 	<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+	<h:form>
 	<h:panelGroup  layout="block" styleClass="paginatorWave">
 		<div class="rangeSelector" align="center">
 			
@@ -101,7 +102,7 @@
 		
 		
 	</h:panelGroup>
-	
+	</h:form>
 
 
 		
@@ -110,6 +111,7 @@
 
 		
 		<!-- Bottom Paginator -->
+		<h:form>
 		<h:panelGroup  layout="block" styleClass="paginatorWave" rendered="#{cc.attrs.bottomPaginator}">
 		<div class="rangeSelector" align="center">
 			
@@ -189,6 +191,7 @@
 		
 		
 	</h:panelGroup>
+	</h:form>
 		
 		
 		
