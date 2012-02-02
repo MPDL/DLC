@@ -181,6 +181,7 @@ public class SearchBean {
 	
 	public VolumeSearchResult searchByCql(String cql, int limit, int offset, String index, String userHandle) throws Exception
 	{
+		long start = System.currentTimeMillis();
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 
 		logger.info("Search Query: " + cql);
@@ -197,6 +198,8 @@ public class SearchBean {
 			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
 			volumeResult.add(vol);
 		}
+		long time = System.currentTimeMillis() - start;
+		System.out.println("Time search: " + time );
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
 
