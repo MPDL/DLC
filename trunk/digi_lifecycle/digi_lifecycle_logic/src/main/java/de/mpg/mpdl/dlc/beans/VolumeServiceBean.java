@@ -281,7 +281,7 @@ public class VolumeServiceBean {
 	}  
 	
 	public Volume createNewMultiVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
-	{
+	{  
 		Item item = createNewEmptyItem(contentModel, contextId, userHandle, modsMetadata);
 		Volume vol= new Volume();
 		try
@@ -596,7 +596,7 @@ public class VolumeServiceBean {
 	
 	public Volume updateVolume(Volume vol, Volume parent, File teiFile, String userHandle, boolean initial) throws Exception
 	{
-		  
+		    
 		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -619,7 +619,7 @@ public class VolumeServiceBean {
 				
 
 		MetadataRecord metsMdRec = mdRecs.get("mets"); 
-		if(metsMdRec ==null)
+		if(metsMdRec ==null && vol.getMets() != null)
 		{
 			metsMdRec = new MetadataRecord("mets");
 			mdRecs.add(metsMdRec);
