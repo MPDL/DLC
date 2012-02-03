@@ -603,17 +603,28 @@ public class VolumeServiceBean {
 		
 		Item item = vol.getItem();
 		
-		
-		MetadataRecords mdRecs = new MetadataRecords();
-		MetadataRecord mdRec = new MetadataRecord("escidoc");
-		MetadataRecord metsMdRec = new MetadataRecord("mets");
-		
-		if(vol.getMets() != null)
+		MetadataRecords mdRecs = item.getMetadataRecords();
+		if(mdRecs==null)
 		{
+			mdRecs = new MetadataRecords();
+			item.setMetadataRecords(mdRecs);
+		}
+		
+		MetadataRecord mdRec = mdRecs.get("escidoc");
+		if(mdRec == null)
+		{
+			mdRec = new MetadataRecord("escidoc");
+			mdRecs.add(mdRec);
+		}
+				
+
+		MetadataRecord metsMdRec = mdRecs.get("mets"); 
+		if(metsMdRec ==null)
+		{
+			metsMdRec = new MetadataRecord("mets");
 			mdRecs.add(metsMdRec);
 		}
-		mdRecs.add(mdRec);
-		item.setMetadataRecords(mdRecs);
+		
 		
 		if(parent != null)
 		{
@@ -733,36 +744,40 @@ public class VolumeServiceBean {
 		sthc.setHandle(userHandle);
 		
 		//upload METS
-		/*
+		
 		URL uploadedMets = new URL(PropertyReader.getProperty("escidoc.common.framework.url"));
 		
-		if(! vol.getItem().getProperties().getContentModel().getObjid().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
+		if(vol.getMets()!=null)
 		{
+
+			IMarshallingContext mCont = bfactMets.createMarshallingContext();
 			StringWriter sw = new StringWriter();
-			m.marshal(vol.getMets(), sw);
-			sw.flush();
-			
+			mCont.marshalDocument(vol.getMets(), "UTF-8", null, sw);
+			sw.close();
 			uploadedMets = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
-		}builder 
-		*/
+		}
+		
 		
 		//Check if component already exists
 		if (initial)
 		{
-			/*
-			Component metsComponent = new Component();
-			ComponentProperties props = new ComponentProperties();
-			metsComponent.setProperties(props);
+			if(vol.getMets()!=null)
+			{
+				Component metsComponent = new Component();
+				ComponentProperties props = new ComponentProperties();
+				metsComponent.setProperties(props);
+				
+				metsComponent.getProperties().setMimeType("text/xml");
+				metsComponent.getProperties().setContentCategory("mets");
+				metsComponent.getProperties().setVisibility("public");
+				ComponentContent content = new ComponentContent();
+				metsComponent.setContent(content);
+				metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
+				item.getComponents().add(metsComponent);
+				
+			}
 			
-			metsComponent.getProperties().setMimeType("text/xml");
-			metsComponent.getProperties().setContentCategory("mets");
-			metsComponent.getProperties().setVisibility("public");
-			ComponentContent content = new ComponentContent();
-			metsComponent.setContent(content);
-			metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-			metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
-			item.getComponents().add(metsComponent);
-			*/
 			
 			if(teiFile!=null)
 			{
@@ -824,7 +839,7 @@ public class VolumeServiceBean {
 			
 			
 		}
-		/*
+		
 		else
 		{
 			for(Component comp : item.getComponents())
@@ -836,7 +851,7 @@ public class VolumeServiceBean {
 				}
 			}
 		}
-		*/
+		
 		
 		
 		
