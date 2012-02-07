@@ -18,6 +18,9 @@ public class ModsName {
 	@XmlAttribute(name = "authority")
 	private String authority = "pnd";
 	
+	@XmlAttribute(name="displayLabel")
+	private String displayLabel;
+	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/@authority")
 	private String roleTermAuthority;
 	
@@ -64,6 +67,16 @@ public class ModsName {
 
 	public void setAuthority(String authority) {
 		this.authority = authority;
+	}
+
+	
+	public String getDisplayLabel() {
+		return displayLabel;
+	}
+
+
+	public void setDisplayLabel(String displayLabel) {
+		this.displayLabel = displayLabel;
 	}
 
 

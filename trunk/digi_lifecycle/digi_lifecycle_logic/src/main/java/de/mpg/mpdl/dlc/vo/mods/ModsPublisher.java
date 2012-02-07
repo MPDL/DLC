@@ -13,8 +13,6 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsPublisher {
 
-	@XmlAttribute(name="displayLabel")
-	private String mabId;
 
 	@XmlPath("mods:place/mods:placeTerm[@type='text']/text()")
 	private String place;
@@ -28,17 +26,9 @@ public class ModsPublisher {
 	@XmlPath("mods:dateIssued")
 	private ModsDate dateIssued_425;
 	
+	@XmlAttribute(name="displayLabel")
+	private String displayLabel;
 	
-	
-	
-	public String getMabId() {
-		return mabId;
-	}
-
-	public void setMabId(String mabId) {
-		this.mabId = mabId;
-	}
-
 	public String getPlace() {
 		return place;
 	}
@@ -70,6 +60,18 @@ public class ModsPublisher {
 	public void setDateIssued_425(ModsDate dateIssued_425) {
 		this.dateIssued_425 = dateIssued_425;
 	}
+
+	public String getDisplayLabel() {
+		return displayLabel;
+	}
+
+	public void setDisplayLabel(String displayLabel) {
+		this.displayLabel = displayLabel;
+	}
+	
+	
+	
+	
 
 
 }
