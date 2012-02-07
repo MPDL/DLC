@@ -16,7 +16,7 @@
 			<mpdl:paginator paginatorBean="#{quickSearchResultBean}">
 				
 				<list:bibList_default>
-					<a4j:repeat var="volume" value="#{cc.attrs.paginatorBean.currentPartList}">
+					<a4j:repeat var="volume" value="#{quickSearchResultBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
 					</a4j:repeat>

@@ -18,6 +18,7 @@ import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
@@ -30,7 +31,7 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes/#{allVolumesBean.contextId}")
-public class AllVolumesBean extends BasePaginatorBean<Volume> {
+public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private static Logger logger = Logger.getLogger(AllVolumesBean.class);
 	
 
@@ -94,13 +95,13 @@ public class AllVolumesBean extends BasePaginatorBean<Volume> {
 			SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, contextId);
 			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 			scList.add(sc);
-			res = searchBean.advancedSearchVolumes(scList, limit, offset);
+			res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
 		else
 		{
 			//empty list
 			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-			res = searchBean.advancedSearchVolumes(scList, limit, offset);
+			res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 
