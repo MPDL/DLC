@@ -3,14 +3,10 @@ package de.mpg.mpdl.dlc.vo.mods;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModsTitle {
-	
-	@XmlAttribute(name = "ID")
-	private String mabId;
+public class ModsSeries {
 	
 	@XmlAttribute(name = "type")
 	private String type;
@@ -18,11 +14,8 @@ public class ModsTitle {
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
-	@XmlPath("mods:title/text()")
-	private String title;
-	
-	@XmlPath("mods:subTitle/text()")
-	private String subTitle;
+	@XmlPath("mods:titleInfo/mods:title/text()")
+	private String seriesTitle;
 
 	public String getType() {
 		return type;
@@ -31,7 +24,7 @@ public class ModsTitle {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
 	public String getDisplayLabel() {
 		return displayLabel;
 	}
@@ -40,30 +33,16 @@ public class ModsTitle {
 		this.displayLabel = displayLabel;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getSeriesTitle() {
+		return seriesTitle;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setSeriesTitle(String seriesTitle) {
+		this.seriesTitle = seriesTitle;
 	}
 
-	public String getMabId() {
-		return mabId;
-	}
 
-	public String getSubTitle() {
-		return subTitle;
-	}
 
-	public void setSubTitle(String subTitle) {
-		this.subTitle = subTitle;
-	}
 
-	public void setMabId(String mabId) {
-		this.mabId = mabId;
-	}
-	
-	
 
 }

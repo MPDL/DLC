@@ -61,14 +61,19 @@ public class ModsMetadata {
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
 
 	
-	@XmlPath("mods:physicalDescription/mods:extent/text()")
-	private String extent_433;
+//	@XmlPath("mods:physicalDescription/mods:extent/text()")
+//	private String extent_433;
 	
+//	@XmlPath("mods:physicalDescription/mods:extent/text()")
+//	private String format_435;
 	@XmlPath("mods:physicalDescription/mods:extent/text()")
-	private String format_435;
+	private List<String> extents = new ArrayList<String>();
 	
-	@XmlPath("mods:relatedItem[@type='series']/mods:titleInfo/mods:title/text()")
-	private String seriesTitle_451;
+//	@XmlPath("mods:relatedItem[@type='series']/mods:titleInfo/mods:title/text()")
+//	private String seriesTitle_451;
+	
+	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
+	private List<ModsSeries> seriess = new ArrayList<ModsSeries>();	
 	
 	
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
@@ -77,6 +82,12 @@ public class ModsMetadata {
 	
 	@XmlPath("mods:location/mods:shelfLocator/text()")
 	private String signature_544;
+	
+	@XmlPath("mods:relatedItem[@type='host']/mods:titleInfo/mods:title/text()")
+	private String source_590;	
+	
+	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
+	private List<String> keyWords = new ArrayList<String>();
 	
 
 	public ModsMetadata()
@@ -89,16 +100,9 @@ public class ModsMetadata {
 		return catalogueId_001;
 	}
 
-
-
 	public void setCatalogueId_001(String catalogueId_001) {
 		this.catalogueId_001 = catalogueId_001;
 	}
-
-
-
-	
-
 
 	public String getParentId_010() {
 		return parentId_010;
@@ -236,40 +240,24 @@ public class ModsMetadata {
 
 
 
-	public String getExtent_433() {
-		return extent_433;
+	public List<String> getExtents() {
+		return extents;
 	}
 
 
-
-	public void setExtent_433(String extent_433) {
-		this.extent_433 = extent_433;
+	public void setExtents(List<String> extents) {
+		this.extents = extents;
 	}
 
 
-
-	public String getFormat_435() {
-		return format_435;
+	public List<ModsSeries> getSeriess() {
+		return seriess;
 	}
 
 
-
-	public void setFormat_435(String format_435) {
-		this.format_435 = format_435;
+	public void setSeriess(List<ModsSeries> seriess) {
+		this.seriess = seriess;
 	}
-
-
-
-	public String getSeriesTitle_451() {
-		return seriesTitle_451;
-	}
-
-
-
-	public void setSeriesTitle_451(String seriesTitle_451) {
-		this.seriesTitle_451 = seriesTitle_451;
-	}
-
 
 
 	public String getSignature_544() {
@@ -282,6 +270,26 @@ public class ModsMetadata {
 		this.signature_544 = signature_544;
 	}
 
+
+
+	public String getSource_590() {
+		return source_590;
+	}
+
+
+	public void setSource_590(String source_590) {
+		this.source_590 = source_590;
+	}
+
+
+	public List<String> getKeyWords() {
+		return keyWords;
+	}
+
+
+	public void setKeyWords(List<String> keyWords) {
+		this.keyWords = keyWords;
+	}
 
 
 	public static void main(String[] args) throws Exception

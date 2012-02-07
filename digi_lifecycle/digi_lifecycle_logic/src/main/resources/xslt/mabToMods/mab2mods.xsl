@@ -77,7 +77,7 @@
 					<xsl:call-template name="mab365ToNote"/>
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '369')">
-					<xsl:call-template name="mab359ToNote"/>
+					<xsl:call-template name="mab369ToNote"/>
 				</xsl:for-each>
 				<xsl:for-each select="key('fields', '410')">
 					<xsl:call-template name="mab410ToOriginInfo"/>
@@ -261,7 +261,7 @@
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'author3'"/></xsl:attribute>
 				</xsl:if>
 			</xsl:if>
-			<xsl:if test="not(@ind=' ' or @ind='a')">
+			<xsl:if test="not(@ind=' ' or @ind='a' or @ind='f')">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, concat(@nr, @ind))"/></xsl:attribute>
 				<xsl:if test="@nr='100'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'editor1'"/></xsl:attribute>
@@ -285,9 +285,13 @@
 					<xsl:if test="@ind=' ' or @ind='a'">
 						<xsl:value-of select="'aut'"/>
 					</xsl:if>
-					<xsl:if test="not(@ind=' ' or @ind='a')">
+					<xsl:if test="@ind=' ' or @ind='f'">
+						<xsl:value-of select="'hnr'"/>
+					</xsl:if>
+					<xsl:if test="not(@ind=' ' or @ind='a' or @ind='f')">
 						<xsl:value-of select="'asn'"/>
 					</xsl:if>
+				
 				</xsl:element>
 			</xsl:element>
 		</xsl:element>
@@ -425,18 +429,26 @@
 			<xsl:attribute name="type"><xsl:value-of select="'remainder of title for whole item'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
+	</xsl:template>
+	
+	<xsl:template name="mab369ToNote">
+		<xsl:element name="note">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'reponsibility for whole item'"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
 	</xsl:template>	
 	
 	<xsl:template name="mab410ToOriginInfo">
 		<xsl:element name="originInfo">
 			<xsl:if test="@ind=' '">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
-			<xsl:element name="place">
-				<xsl:element name="placeTerm">
-					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
-					<xsl:value-of select="."/>
+				<xsl:element name="place">
+					<xsl:element name="placeTerm">
+						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
+						<xsl:value-of select="."/>
+					</xsl:element>
 				</xsl:element>
-			</xsl:element>
 				<xsl:variable name="publisher" select="key('fields', '412')[@ind=' ']"/>
 				<xsl:if test="$publisher">
 					<xsl:element name="publisher">
@@ -446,12 +458,12 @@
 			</xsl:if>
 			<xsl:if test="@ind='a'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'printer1'"/></xsl:attribute>
-			<xsl:element name="place">
-				<xsl:element name="placeTerm">
-					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
-					<xsl:value-of select="."/>
+				<xsl:element name="place">
+					<xsl:element name="placeTerm">
+						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
+						<xsl:value-of select="."/>
+					</xsl:element>
 				</xsl:element>
-			</xsl:element>
 				<xsl:variable name="printer" select="key('fields', '412')[@ind='a']"/>
 				<xsl:if test="$printer">
 					<xsl:element name="publisher">
@@ -461,8 +473,8 @@
 			</xsl:if>
 			<xsl:if test="key('fields', '425')">
 				<xsl:element name="dateIssued">
-				<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
-				<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
+					<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
+					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 					<xsl:value-of select="key('fields', '425')"/>
 				</xsl:element>
 			</xsl:if>
