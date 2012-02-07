@@ -19,6 +19,8 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.search.SearchCriterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortIndex;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortOrder;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -29,9 +31,6 @@ public class SearchBean {
 	private static Logger logger = Logger.getLogger(SearchBean.class);
 	
 	private static String dlcIndexName = "dlc_index";
-	
-	
-	
 	
 	
 	
@@ -96,7 +95,7 @@ public class SearchBean {
 		SearchCriterion scFree = new SearchCriterion(Operator.AND, SearchType.FREE, query);
 		scList.add(scFree);
 
-		return search(volTypes, scList, limit, offset);
+		return search(volTypes, scList, SortCriterion.getStandardSortCriteria(), limit, offset);
 	}
 	
 	/**
@@ -107,11 +106,11 @@ public class SearchBean {
 	 * @return
 	 * @throws Exception
 	 */
-	public VolumeSearchResult advancedSearchVolumes(List<SearchCriterion> scList, int limit, int offset) throws Exception
+	public VolumeSearchResult advancedSearchVolumes(List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
 		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME};
 		
-		return search(volTypes, scList, limit, offset);
+		return search(volTypes, scList, sortList, limit, offset);
 	}
 	
 	
@@ -157,31 +156,45 @@ public class SearchBean {
 	 * @return
 	 * @throws Exception
 	 */
-	public VolumeSearchResult search(VolumeTypes[] volTypes, List<SearchCriterion> scList, int limit, int offset) throws Exception
+	public VolumeSearchResult search(VolumeTypes[] volTypes, List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
 		
-		return search(getCompleteSearchCriterions(volTypes, scList), limit, offset, dlcIndexName, null);
+		return search(getCompleteSearchCriterions(volTypes, scList), sortList, limit, offset, dlcIndexName, null);
 	}
 	
-	private VolumeSearchResult search(List<SearchCriterion> scList, int limit, int offset, String index, String userHandle) throws Exception
+	private VolumeSearchResult search(List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset, String index, String userHandle) throws Exception
 	{  
 		
 		//SearchCriterion itemCriterion = new SearchCriterion(SearchType.OBJECTTYPE, "item");
 		//scList.add(0, itemCriterion);
 		String cqlQuery = SearchCriterion.toCql(scList);
-		return searchByCql(cqlQuery, limit, offset, index, userHandle);
+		
+		return searchByCql(cqlQuery, sortList, limit, offset, index, userHandle);
 	}
 	
 	
 	
-	public VolumeSearchResult searchByCql(String cql, int limit, int offset) throws Exception
+	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
-		return searchByCql(cql, limit, offset, dlcIndexName, null);
+		return searchByCql(cql, sortList, limit, offset, dlcIndexName, null);
 	}
 	
-	public VolumeSearchResult searchByCql(String cql, int limit, int offset, String index, String userHandle) throws Exception
+	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset, String index, String userHandle) throws Exception
 	{
 		long start = System.currentTimeMillis();
+		
+		
+		if(sortList!=null && sortList.size()>0)
+		{
+			cql += " sortby";
+			for(SortCriterion sc : sortList)
+			{
+				cql += " " + sc.getSortIndex().getIndexName() + " " + sc.getSortOrder().getOrderName();
+			}
+		}
+		
+		
+		
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 
 		logger.info("Search Query: " + cql);
