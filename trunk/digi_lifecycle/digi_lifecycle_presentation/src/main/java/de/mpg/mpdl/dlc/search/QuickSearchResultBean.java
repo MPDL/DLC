@@ -43,7 +43,7 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	@Override
 	public String getNavigationString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "pretty:quickSearchResult";
 	}
 
 	public String getQuery() {
