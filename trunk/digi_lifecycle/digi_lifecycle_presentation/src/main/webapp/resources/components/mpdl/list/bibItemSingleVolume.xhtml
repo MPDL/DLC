@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<!-- INTERFACE -->
+<cc:interface>
+
+	<cc:attribute name="volume" required="true"/>
+	<cc:attribute name="fulltextHits"/>
+	
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+
+		<h:panelGroup layout="block" styleClass="listItemSingleVolume">
+			<h:panelGroup layout="block" styleClass="itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
+			<h:panelGroup layout="block" styleClass="itemContent">
+				<div class="itemStatusArea">
+					<div class="icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<span class="itemStatusTitle">Released</span>
+				</div>
+				
+				<div class="itemHeadline">
+					<div class="itemTitle">
+						<pretty:link mappingId="viewPages">
+							<f:param value="#{cc.attrs.volume.item.objid}" />
+							<f:param value="1" />
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}"/>
+							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}"/>
+							<br/>
+							<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title} "/>
+							<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>
+							<h:outputText value=" , #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}"/>
+						</pretty:link>
+					</div>
+				</div>
+				
+				<div class="shortView_js">
+					<div class="itemMetaLabel">Creator(s)</div>
+					<div class="itemMetaValue">Name, Prename, Address</div>
+					
+					<h:panelGroup layout="block" class="itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
+					</h:panelGroup>
+				
+					<h:panelGroup layout="block" class="itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
+							<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
+								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
+								
+								<pretty:link mappingId="viewPages">
+									<f:param value="#{cc.attrs.volume.item.objid}"/>
+									<f:param value="#{pageNumber}"/>
+									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+									<h:outputText value="Scan #{pageNumber}"/>
+								</pretty:link>
+								
+								<br/>
+								<a4j:repeat var="textFragment" value="#{highlight.textFragments}" >
+									<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'searchHit')}" escape="false"/>
+									<br/><br/>
+								</a4j:repeat>
+								<br/><br/>
+							</h:panelGroup>
+						</a4j:repeat>
+					</h:panelGroup>
+					
+				</div>
+				<div class="mediumView_js">
+					<div class="itemMetaLabel">Journal Title</div>
+					<div class="itemMetaValue">Astrophysical Journal Letters</div>
+					<div class="itemMetaLabel">Degree</div>
+					<div class="itemMetaValue">Degree Type</div>
+					<div class="itemMetaLabel">Publishing Info</div>
+					<div class="itemMetaValue">Edition, Place: Publisher</div>
+					<div class="itemMetaLabel">Title</div>
+					<div class="itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
+					<div class="itemMetaLabel">Visibility</div>
+					<div class="itemMetaValue">Public</div>
+					<div class="itemMetaLabel">Fulltext Hits</div>
+					<div class="itemMetaValue">this is a irgendwie gearteter Text this is a irgendwie gearteter Text</div>
+				</div>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="itemMediabar">
+				<div class="itemMediabarThumb">
+					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+				</div>
+				
+				<br/>
+				<h:panelGroup layout="block" class="itemMediabarCategory">
+					<pretty:link mappingId="thumbnails">
+						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<h:outputText value="Thumbnails"/>
+					</pretty:link>
+				</h:panelGroup>
+				<br/>
+				<div class="itemMediabarCategory">Kodikologische Daten</div>
+				<br/>
+				<div class="itemMediabarCategory">Volltext</div>
+				<br/>
+				<div class="itemMediabarCategory">Sammlung</div>
+			</h:panelGroup>
+		</h:panelGroup>
+
+
+</cc:implementation>
+</html>

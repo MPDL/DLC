@@ -21,20 +21,25 @@ function searchParentTag(source_obj, searchTagString) {
 }
 
 /* this function updates the selectText container with the selected item of selectbox */
-function updateCustomeSelectBox(obj) {
-	$(obj).prev().find('.selectionText').text(obj.options[obj.selectedIndex].text);
-}
-
-/* 
- * function to focus all or one selectbox 
- */
-function focusSelectBox(obj) {
-	if (obj === "all") {
-		$(".dynamicSelectBox_js select").focus();
+function updateCustomSelectBox(obj) {
+	if (!obj) {
+		$("select").each(function(i){
+			var parent = null;
+			if (parent = searchParentTag(this, "dynamicSelectBox_js")) {
+				var val = $(this).val();
+				$(this).find("option").each(function(i){
+					if ($(this).val() == val) {
+						val = $(this).text();
+					}
+				});
+				$(parent).find(".selectionText").html(val);
+			}
+		});
 	} else {
-		$(obj).focus();
+		$(obj).prev().find('.selectionText').text(obj.options[obj.selectedIndex].text);
 	}
 }
+
 
 /* 
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
@@ -53,12 +58,13 @@ function resizeSelectBox() {
 			selCont.css("width", newInfoWidth);
 			$(this).css("width", newContainerWidth);
 			selectTag.css("width", newContainerWidth);
-			selectTag.bind("focus", function(evt) { updateCustomeSelectBox(this); } );
-			selectTag.bind("change", function(evt) { updateCustomeSelectBox(this); } );
+			/* add behaviour for change and focus */
+			selectTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
+			selectTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
 		}
 	});
-	/* focus every rendered selectboxes on the page at this time */
-	setTimeout("focusSelectBox('all')", 70);
+	
+	updateCustomSelectBox();
 }
 
 
@@ -97,96 +103,6 @@ function addShowHideAction() {
 	
 	
 }
-
-/**
- * these function controls the display attribute of the volume items in a multivolume
- *//*
-function addMultiVolumeDisplayControl() {
-	/*
-	 * select all itemDetailAction_js elements to configure the click behavior 
-	 *//*
-	$(".listItemMultiVolume .itemDetailAction_js").click(function(e) {
-		var volume = searchParentTag(this, "listItemMultiVolume").next();
-		volume.toggle();
-		while (volume.next().hasClass("listItemVolume")) {
-			volume = volume.next();
-			volume.toggle();
-		}
-	});
-}
-*/
-/**
- * these function controls the display attribute of the listItems
- *//*
-function addListItemDisplayControl() {
-	//append listener to the image tag for opening and closing the current item details
-	$('.listItem .itemDetailAction_js').click(function(e){
-		stopDefaultAction(e);
-		
-		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
-			
-		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
-		
-		var allDetails = null;
-		//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
-		if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
-			allDetails.toggle();
-		};
-		
-		//from here: comfort function to handle the showHideAll_js button
-		var list = searchParentTag(this, 'bibList');
-		var showHideAll_jsBtn = list.find('.showHideAll_js');
-		if (showHideAll_jsBtn) {
-			if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
-				showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
-				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
-				list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
-			} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
-				showHideAll_jsBtn.attr("detailStatus", "");
-				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
-				list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
-			}
-		}
-	});
-}
-*/
-/**
- * these function controls the display attribute of the listItems
- */
-/*
-function addListItemMediaAccDisplayControl() {
-	//append listener to the image tag for opening and closing the current item details
-	$('.listItemMediaAcc .itemDetailAction_js').click(function(e){
-		stopDefaultAction(e);
-		
-		$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
-			
-		$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
-		
-		var allDetails = null;
-		//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
-		if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
-			allDetails.toggle();
-		};
-		
-		//from here: comfort function to handle the showHideAll_js button
-		var list = searchParentTag(this, 'bibList');
-		var showHideAll_jsBtn = list.find('.showHideAll_js');
-		if (showHideAll_jsBtn) {
-			if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
-				showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
-				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
-				list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
-			} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
-				showHideAll_jsBtn.attr("detailStatus", "");
-				$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
-				list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
-			}
-		}
-	});
-}
-*/
-
 
 
 function addDisplayControl(target) {
@@ -273,7 +189,8 @@ $(document).ready(function(e) {
 	setTimeout("addDisplayControl('.listItemMultiVolume')", 290);
 	
 //	use it on every page, because of language selectbox in metamenu
-	setTimeout("resizeSelectBox()", 290);
+	// setTimeout("resizeSelectBox()", 290);
+	resizeSelectBox();
 	
 	setTimeout("addShowHideAll('.showHideAll_js', '.listItem .mediumView_js', '.bibList')", 290);
 	setTimeout("addShowHideAll('.showHideAll_js', '.listItemMediaAcc .mediumView_js', '.bibList')", 290);

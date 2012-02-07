@@ -142,7 +142,9 @@ select {
 	padding:0;
 	border: solid 0.08333em #B2B2B2;
 }
-
+button:disabled {
+	color:#AAAAAA;
+}
 /***              ***
  * global id-class and class declarations
  */
@@ -184,6 +186,9 @@ select {
 }
 .id_sidebarLeft {
 	width:24.75%;
+}
+.overflow {
+	overflow:visible !important;
 	z-index:20;
 }
 
@@ -278,6 +283,9 @@ select {
 	float:left;
 	padding:0.08333em 2em 0.3333em 2em;
 }
+.id_headerMetaMenu .metaMenu form {
+	padding:0;
+}
 .id_headerMetaMenu .metaMenu nav {
 	padding:0;
 }
@@ -334,18 +342,19 @@ select {
 	height:2.66666em;
 	margin-right: 0.5em;
 }
-.quickSearchMenu label {
+.simpleSearch label {
 	float: left; 
 	margin:0 1.3333em 0 0.5em; 
 }
-.quickSearchMenu input {
+.simpleSearch input {
 	float: left;
 }
-.quickSearchMenu input[type="radio"] {
+.simpleSearch input[type="radio"] {
 	margin: 0.16666em 0 0 0;
 }
-.quickSearchMenu input[type="submit"] {
+.simpleSearch input[type="submit"] {
 	margin-left:0.75em;
+	padding:0 0.25em;
 }
 
 /*********************************************************************************************************
@@ -692,7 +701,7 @@ select {
 
 /*****************************************************************************************************
  ******************************				bibliographic list			******************************
- ******************************		list with different listItems		****************************** 
+ ******************************		list with different 		****************************** 
  *****************************************************************************************************/
 .bibList {
 	width:99.8%;
@@ -774,9 +783,10 @@ select {
 	cursor:pointer;
 	margin-left:0.8333em;
 }
-/*****************************************************************************************************
- ******************************				.bibList .listBody			******************************
- *****************************************************************************************************/
+/*********************************************************************************************************
+ ******************************				.bibList .listBody				******************************
+ ******************************			global definitions for bibList		******************************
+ *********************************************************************************************************/
 .bibList .listBody {
 	width:100%;
 }
@@ -785,7 +795,7 @@ select {
 	font-size:133%;
 	line-height: 125%;
 }
-.bibList .itemHeadline .itemSeasonTitle {
+.bibList .itemHeadline .itemMultiTitle {
 	max-width: 50em;
 	font-size: 166%;
 	line-height: 125%;
@@ -841,7 +851,7 @@ select {
 .bibList .listItem .itemStatusArea .itemStatusTitle {
 	margin-top:2.5%;
 	margin-right:5%;
-}l
+}
 .bibList .listItem .itemContentOptions {
 	width:72.4%;
 	padding:0 1.3%;
@@ -870,7 +880,7 @@ select {
 .bibList .listItemMediaAcc:hover {
 	background-color:#EEEEEE;
 }
-.bibList .listItemMediaAcc:hover .itemContent {
+.bibList .listItemMediaAcc:hover .itemContentBg {
 	background-color:transparent;
 }
 .bibList .listItemMediaAcc:hover * .itemMediabar_js {
@@ -879,6 +889,11 @@ select {
 .bibList .listItemMediaAcc .itemContent {
 	width:74.88%;
 	padding-bottom:0.5em;
+}
+.bibList .listItemMediaAcc .itemContentBg {
+	position:absolute;
+	width:74.88%;
+	height:100%;
 	background-color:#FFFFFF;
 }
 .bibList .listItemMediaAcc .itemSelectArea {
@@ -928,8 +943,7 @@ select {
  ******************************				.bibList .listBody .listItemMediaAcc .itemMediabar_js			******************************
  *****************************************************************************************************************************************/
 .bibList .listItemMediaAcc .itemMediabar_js {
-	padding-left:0.1%;
-	width:24.79%;
+	width:25%;
 }
 .bibList .listItemMediaAcc .itemMediabar_js div {
 	width:100%;
@@ -939,6 +953,7 @@ select {
 .bibList .listItemMediaAcc .itemMediabar_js span.ui-accordion-header  {
 	float:left;
 	width:100%;
+	margin-left:0.1%;
 	padding-left:0.8333em;
 	padding-top:0.1666em;
 	padding-bottom: 0.16666em;
@@ -976,24 +991,24 @@ select {
 
 /*********************************************************************************************************************************
  ******************************				.bibList .listBody .listItemMultiVolume	COLORIZING		******************************
- ******************************							mvColor == multi volume color				******************************
+ ******************************					multiVolumeBG == multi volume background			******************************
  *********************************************************************************************************************************/
-.mvColor_1 {
+.multiVolumeBG_1 {
 	background-color:#00AA11;
 }
-/* .mvColor_1:hover {
+/* .multiVolumeBG_1:hover {
 	background-color:#006FF0;
 } */
-.mvColor_2 {
+.multiVolumeBG_2 {
 	background-color:#CCAA11;
 }
-/* .mvColor_2:hover {
+/* .multiVolumeBG_2:hover {
 	background-color:#CC6FF0;
 }*/ 
-.mvColor_3 {
+.multiVolumeBG_3 {
 	background-color:#99FF99;
 }
-.mvColor_4 {
+.multiVolumeBG_4 {
 	background-color:#DD003C;
 }
 
@@ -1015,7 +1030,7 @@ select {
 .bibList .listItemMultiVolume:hover .itemContent {
 	background-color:#EEF2F0;
 }
-.bibList .listItemMultiVolume:hover .itemContentData {
+.bibList .listItemMultiVolume:hover .itemContentBg {
 	background-color:transparent;
 }
 .bibList .listItemMultiVolume:hover .itemMediabar {
@@ -1025,11 +1040,16 @@ select {
 	width:99%;
 	background-color:#EEF2F0;
 }
+.bibList .listItemMultiVolume .itemContentBg {
+	position:absolute;
+	width:75.5%;
+	height:100%;
+	background-color:#FFFFFF;
+}
 .bibList .listItemMultiVolume .itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
-	background-color:#FFFFFF;
 }
 
 .bibList .listItemMultiVolume .itemStatusArea {
@@ -1108,6 +1128,12 @@ select {
 	width:99%;
 	background-color:#EEF2F0;
 }
+.bibList .listItemVolume .itemContentBg {
+	position:absolute; 
+	width:75.5%;
+	height:100%; 
+	background-color:#FFFFFF;
+}
 .bibList .listItemVolume .itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
@@ -1146,34 +1172,24 @@ select {
 	padding:0 1.6% 0.1666em 1.6%; 
 }
 
-/*****************************************************************************************************************************************
- ******************************				.bibList .listBody .listItemVolume .itemMediabar			******************************
- *****************************************************************************************************************************************/
+/******************************		.bibList .listBody .listItemVolume .itemMediabar	******************************/
 .bibList .listItemVolume .itemMediabar {
 	padding-top:1.25em;
-	padding-left:0.75em;
-	width:22%;
-	background-color:#EEF2F0;
+	padding-bottom:0.5em; 
 }
-.bibList .listItemVolume .itemMediabar div {
-	width:100%;
-	padding-bottom:0.08333em;
-}
-.bibList .listItemVolume .itemMediabar .itemMediabarThumb {
-	width:auto;
+.bibList .listItemVolume .itemMediabarThumb {
 	margin-bottom:0.5em;
+	margin-left:0.8333em;
 }
-.bibList .listItemVolume .itemMediabar .itemContentOptions {
-	margin-left:0.5em;
-	width:auto;
+.bibList .listItemVolume .itemMediabarCategory {
+	margin-left:0.8333em;
+	width:100%;
 }
 
 
-
-
-/*************************************************************************************************************************
+/*****************************************************************************************************************************
  ******************************				.bibList .listBody .listItemSingleVolume			******************************
- *************************************************************************************************************************/
+ *****************************************************************************************************************************/
 .bibList .listItemSingleVolume {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
@@ -1188,10 +1204,19 @@ select {
 .bibList .listItemSingleVolume:hover .itemMediabar {
 	background-color:transparent;
 }
+.bibList .listItemSingleVolume:hover .itemContentBg {
+	background-color:transparent;
+}
+
 .bibList .listItemSingleVolume .itemContent {
-	width:74.88%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
+	width:74.82%;
+}
+.bibList .listItemSingleVolume .itemContentBg {
+	position:absolute; 
+	height:100%; 
+	width:74.82%;
 	background-color:#FFFFFF;
 }
 .bibList .listItemSingleVolume .itemHeadline {
@@ -1225,22 +1250,21 @@ select {
 	padding:0 1.6% 0 1.6%; 
 }
 
-/*****************************************************************************************************************************************
- ******************************				.bibList .listBody .listItemSingleVolume .itemMediabar_js			******************************
- *****************************************************************************************************************************************/
+/******************************		.bibList .listBody .listItemSingleVolume .itemMediabar	******************************/
 .bibList .listItemSingleVolume .itemMediabar {
 	padding-top:1.25em;
-	padding-left:0.8333em;
-	width:23.79%;
-}
-
-.bibList .listItemSingleVolume .itemContentOptions {
-	width:63.41%;
-	padding:0 1.6%;
+	padding-bottom:0.5em; 
+	width:25%;
 }
 .bibList .listItemSingleVolume .itemMediabarThumb {
 	margin-bottom:0.5em;
+	margin-left:0.8333em;
 }
+.bibList .listItemSingleVolume .itemMediabarCategory {
+	margin-left:0.8333em;
+	width:100%;
+}
+
 
 
 
@@ -1373,58 +1397,129 @@ select {
  ******************************				tiled list thumb						******************************
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
-.id_sidebarLeft:hover {
-	overflow:visible !important;
-}
 
-
-.tiledListThumb {
-	width:100%; 
+.tiledListThumbOverlay {
+	width:98%; 
 	padding:0 1.6%;
-	height:58.3333em;
 }
-.tiledListThumb:hover {
-	background-color:#f38d0c;
+.tiledListThumbOverlay.overlay {
+	background-color:#ffffff;
 	min-width:200%;
-	overflow:scroll;
 }
-.tiledListThumb .listHeader {
+.tiledListThumbOverlay .listHeader {
 	width:100%;
 }
-.tiledListThumb .listBody {
+.tiledListThumbOverlay .listBody {
 	width:100%;
+	height:56.75em;
+	overflow-y:auto;
 }
-.tiledListThumb li.listItem {
+.tiledListThumbOverlay li.listItem {
 	float:left;
 	margin:0.5em 1.6% 1em 1.6%;
 	width:16.78%; 
 	max-width:5.666666667em;
 }
-.tiledListThumb .listItem:hover {
+.tiledListThumbOverlay .listItem:hover {
 	background-color:#BfBfBf;
 }
 .tiledListThumb .itemContent {
 	width:100%;
 }
-.tiledListThumb .itemContent:hover .itemIconArea .itemIconBorder {
+.tiledListThumbOverlay .itemContent:hover .itemIconArea .itemIconBorder {
 	background-color:#DDDDDD;
 }
-.tiledListThumb .itemIconArea {
+.tiledListThumbOverlay .itemIconArea {
 	width:100%;
 }
-.tiledListThumb .itemIconArea img {
+.tiledListThumbOverlay .itemIconArea img {
 	width:100%;
 }
-.tiledListThumb .itemIconBorder {
+.tiledListThumbOverlay .itemIconBorder {
 	display:block;
 	width:89%;
 /*	padding:0.3333em; */
 	padding:5%; 
 	background-color:#aaaaaa;
 }
-.tiledListThumb .itemContentData {
+.tiledListThumbOverlay .itemContentData {
 	width:100%;
 }
-.tiledListThumb .itemControlArea {
+.tiledListThumbOverlay .itemContentData .itemMetaText {
+	font-size:75%;
+}
+.tiledListThumbOverlay .itemControlArea {
 	width:100%;
+}
+
+
+
+
+/*****************************************************************************************************
+ ******************************				image view single						******************************
+ ******************************				view with paginator				****************************** 
+ *****************************************************************************************************/
+.menuTabHorzOverlay {
+	width:100%;
+	z-index:50;
+	overflow:visible !important;
+}
+.menuTabHorzOverlay .menuHeader {
+	
+}
+.menuTabHorzOverlay .menuHeader .horizontalTab {
+	float:left;
+	border-bottom:solid 0.09em #000000;
+}
+.menuTabHorzOverlay .menuHeader .horizontalTab.active {
+	background-color:#000000; 
+	color:#FFFFFF;
+}
+.menuTabHorzOverlay .menuHeader .horizontalTab .menuEntry {
+	margin-left:0.5em;
+	padding-top:0.5em;
+}
+
+.menuTabHorzOverlay .menuBody {
+	position:absolute;
+	width:100%;
+	margin-top:1.25em;
+}
+.menuTabHorzOverlay .menuBody .menuTabContent .menuTabBg {
+	position:absolute; 
+	height:100%;
+	width:100%; 
+	background-color:#CCCCCC;
+	opacity:0.3; 
+	-moz-opacity:0.3;
+	-o-opacity:0.3;
+	filter: Alpha(opacity=30);
+}
+
+.menuTabHorzOverlay .menuTabContent {
+	float:none;
+	margin:0 auto;
+	display:none;
+}
+.menuTabHorzOverlay .paginatorWave .pageBrowserMin {
+	width:100%;
+}
+
+.menuTabHorzOverlay .gotoBox {
+	width:100%;
+	text-align:center;
+	display:none;
+	padding-top:0.3333em;
+	padding-bottom:0.5em;
+}
+.menuTabHorzOverlay .gotoBox input[type="number"] {
+	max-width:25%;
+	text-align:center;
+}
+
+
+
+.icon_editBtn_16_16 {
+	width:1.3333em;
+	height:1.3333em;
 }

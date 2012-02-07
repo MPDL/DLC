@@ -9,199 +9,199 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 
-<!-- INTERFACE -->
-<cc:interface>
-	<cc:attribute name="paginatorBean" required="true" />
-	<cc:attribute name="bottomPaginator" default="true" /> 
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
-
-
-
-<div id="#{cc.clientId}">
-	<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="paginatorBean" required="true" />
+		<cc:attribute name="bottomPaginator" default="true" /> 
+	</cc:interface>
 	
-	<h:panelGroup  layout="block" styleClass="paginatorWave">
-		<div class="rangeSelector" align="center">
-			
-				<div style="width: 59px;" class="dynamicSelectBox_js">
-					<div style="width: 26px;" class="selectionContent">
-						<span class="selectionText"></span>
-					</div>
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+
+
+
+	<div id="#{cc.clientId}">
+		<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+		
+		<h:panelGroup layout="block" styleClass="paginatorWave">
+			<h:panelGroup layout="block" styleClass="rangeSelector">
+				
+					<h:panelGroup layout="block" styleClass="dynamicSelectBox_js">
+						<h:panelGroup layout="block" styleClass="selectionContent">
+							<h:panelGroup styleClass="selectionText"></h:panelGroup>
+						</h:panelGroup>
+						<h:form>
+							<h:selectOneMenu id="extSelectTop" value="#{cc.attrs.paginatorBean.elementsPerPageTop}">
+					 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
+					 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
+					 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+					 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+					 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+					 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+					 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
+					 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render=":#{cc.clientId}"/>
+					 		</h:selectOneMenu>
+				 		</h:form>
+					</h:panelGroup>
+					<h:outputLabel styleClass="selectLabel" value="je Seite" title="???placeholder???"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="pageBrowser">
+				<nav>
 					<h:form>
-					<h:selectOneMenu style="width: 59px;" id="extSelectTop" value="#{cc.attrs.paginatorBean.elementsPerPageTop}">
-			 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
-			 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
-			 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
-			 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
-			 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
-			 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
-			 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
-			 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render=":#{cc.clientId}"/>
-			 		</h:selectOneMenu>
-			 		</h:form>
-				</div>
-				<h:outputLabel styleClass="selectLabel" value="je Seite" title="???placeholder???"/>
-			
-		</div>
-		<div class="pageBrowser">
-			<nav>
-			<h:form>
-				<h:commandLink id="btList_lkFirstTop" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}" title="#{tlt.Pag_First}">
-		 			<span class="icon_skipTofirst_16_16" >
-		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_First}" />
-		 			</span>
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		<h:commandLink id="btList_lkPreviousTop" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
-		 			<span class="icon_backward_16_16">
-		 				<h:outputText value="&#160;" />
-		 			</span>
-		 			
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		
-		 		
-		 		<a4j:repeat id="paginatorTop" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
-		 	
-		 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
-		 				<h:panelGroup styleClass="pageNumber #{
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
-		 					<h:outputText value="#{paginatorPage.number}"  />
-		 				</h:panelGroup>
-		 				<f:ajax render=":#{cc.clientId}"/>
-		 			</h:commandLink>
-		 		</a4j:repeat>
-
-				<h:commandLink id="btList_lkNextTop" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
-		 			<span class="icon_forward_16_16">
-		 				<h:outputText value="&#160;" />
-		 			</span>
-		 			
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		<h:commandLink id="btLinkForLastPageTop" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
-		 			<span class="icon_skipTolast_16_16" >
-		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_Last}"/>
-		 			</span>
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-			</h:form>
-			</nav>
-		</div>
+						<h:commandLink id="btList_lkFirstTop" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}" title="#{tlt.Pag_First}">
+				 			<h:panelGroup styleClass="icon_skipTofirst_16_16" >
+				 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_First}" />
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		<h:commandLink id="btList_lkPreviousTop" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
+				 			<h:panelGroup styleClass="icon_backward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		
+				 		<a4j:repeat id="paginatorTop" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
+				 	
+				 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
+				 				<h:panelGroup styleClass="pageNumber #{
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
+				 					<h:outputText value="#{paginatorPage.number}"  />
+				 				</h:panelGroup>
+				 				<f:ajax render=":#{cc.clientId}"/>
+				 			</h:commandLink>
+				 		</a4j:repeat>
 		
-		<div class="gotoBox">
-		<h:form>
-				<h:inputText id="inpGoToPageTop" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
-				<h:outputLabel id="lblItemListPageSizeTop" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
-				<h:commandButton type="submit" id="btList_btGoTop" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
-			 		<f:ajax event="action" render=":#{cc.clientId}" execute="@form"/>
-			 	</h:commandButton>
-			</h:form>
-		</div>
+						<h:commandLink id="btList_lkNextTop" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
+				 			<h:panelGroup styleClass="icon_forward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		<h:commandLink id="btLinkForLastPageTop" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
+				 			<h:panelGroup styleClass="icon_skipTolast_16_16" >
+				 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_Last}"/>
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+					</h:form>
+				</nav>
+			</h:panelGroup>
+		
+			<h:panelGroup layout="block" styleClass="gotoBox">
+				<h:form>
+					<h:inputText type="text" id="inpGoToPageTop" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
+					
+					<h:outputLabel id="lblItemListPageSizeTop" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+					<h:commandButton type="submit" id="btList_btGoTop" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+				 		<f:ajax event="action" render=":#{cc.clientId}" execute="@form"/>
+				 	</h:commandButton>
+				</h:form>
+			</h:panelGroup>
 		
 		
-	</h:panelGroup>
-
-
+		</h:panelGroup>
 		
 		
 		<cc:insertChildren/>
 
 		
 		<!-- Bottom Paginator -->
-		
-		<h:panelGroup  layout="block" styleClass="paginatorWave" rendered="#{cc.attrs.bottomPaginator}">
-		<div class="rangeSelector" align="center">
+		<h:panelGroup layout="block" styleClass="paginatorWave" rendered="#{cc.attrs.bottomPaginator}">
 			
-				<div style="width: 59px;" class="dynamicSelectBox_js">
-					<div style="width: 26px;" class="selectionContent">
-						<span class="selectionText"></span>
-					</div>
+			<h:panelGroup layout="block" styleClass="rangeSelector">
+				<h:panelGroup layout="block" styleClass="dynamicSelectBox_js">
+					<h:panelGroup layout="block" styleClass="selectionContent">
+						<h:panelGroup styleClass="selectionText"></h:panelGroup>
+					</h:panelGroup>
 					<h:form>
-					<h:selectOneMenu style="width: 59px;" id="extSelectBottom" value="#{cc.attrs.paginatorBean.elementsPerPageBottom}">
-			 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
-			 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
-			 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
-			 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
-			 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
-			 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
-			 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
-			 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageBottom}" render=":#{cc.clientId}"/>
-			 		</h:selectOneMenu>
+						<h:selectOneMenu id="extSelectBottom" value="#{cc.attrs.paginatorBean.elementsPerPageBottom}">
+				 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
+				 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
+				 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+				 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+				 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+				 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+				 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
+				 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageBottom}" render=":#{cc.clientId}"/>
+				 		</h:selectOneMenu>
 			 		</h:form>
-				</div>
+				</h:panelGroup>
 				<h:outputLabel styleClass="selectLabel" value="je Seite" title="???placeholder???"/>
+			</h:panelGroup>
 			
-		</div>
-		<div class="pageBrowser">
-			<nav>
+			<h:panelGroup layout="block" styleClass="pageBrowser">
+				<nav>
+					<h:form>
+						<h:commandLink id="btList_lkFirstBottom" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}">
+				 			<h:panelGroup styleClass="icon_skipTofirst_16_16" >
+				 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_First}" title="#{tlt.Pag_First}"/>
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		<h:commandLink id="btList_lkPreviousBottom" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
+				 			<h:panelGroup styleClass="icon_backward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+			 		
+			 		
+				 		<a4j:repeat id="paginatorBottom" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
+				 	
+				 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
+				 				<h:panelGroup styleClass="pageNumber #{
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
+				 					<h:outputText value="#{paginatorPage.number}"  />
+				 				</h:panelGroup>
+				 				<f:ajax render=":#{cc.clientId}"/>
+				 			</h:commandLink>
+				 		</a4j:repeat>
+		
+						<h:commandLink id="btList_lkNextBottom" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
+				 			<h:panelGroup styleClass="icon_forward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		<h:commandLink id="btLinkForLastPageBottom" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
+				 			<h:panelGroup styleClass="icon_skipTolast_16_16" >
+				 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+					</h:form>
+				</nav>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="gotoBox">
 				<h:form>
-				<h:commandLink id="btList_lkFirstBottom" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}">
-		 			<span class="icon_skipTofirst_16_16" >
-		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_First}" title="#{tlt.Pag_First}"/>
-		 			</span>
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		<h:commandLink id="btList_lkPreviousBottom" title="#{tlt.Pag_Prev}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}">
-		 			<span class="icon_backward_16_16">
-		 				<h:outputText value="&#160;" />
-		 			</span>
-		 			
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		
-		 		
-		 		<a4j:repeat id="paginatorBottom" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
-		 	
-		 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
-		 				<h:panelGroup styleClass="pageNumber #{
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
-				 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
-		 					<h:outputText value="#{paginatorPage.number}"  />
-		 				</h:panelGroup>
-		 				<f:ajax render=":#{cc.clientId}"/>
-		 			</h:commandLink>
-		 		</a4j:repeat>
-
-				<h:commandLink id="btList_lkNextBottom" title="#{tlt.Pag_Next}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}">
-		 			<span class="icon_forward_16_16">
-		 				<h:outputText value="&#160;" />
-		 			</span>
-		 			
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-		 		<h:commandLink id="btLinkForLastPageBottom" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
-		 			<span class="icon_skipTolast_16_16" >
-		 				<h:outputLabel styleClass="iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
-		 			</span>
-		 			<f:ajax render=":#{cc.clientId}"/>
-		 		</h:commandLink>
-			</h:form>
-			</nav>
-		</div>
-		
-		<div class="gotoBox">
-		<h:form>
-			<h:inputText id="inpGoToPageBottom" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
-			<h:outputLabel id="lblItemListPageSizeBottom" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
-			<h:commandButton type="submit" id="btList_btGoBottom" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
-		 		<f:ajax event="action" render=":#{cc.clientId}"/>
-		 	</h:commandButton>
-		</h:form>
-		</div>
+					<h:inputText type="text" id="inpGoToPageBottom" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
+					
+					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+					<h:commandButton type="submit" id="btList_btGoBottom" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+				 		<f:ajax event="action" render=":#{cc.clientId}"/>
+				 	</h:commandButton>
+				</h:form>
+			</h:panelGroup>
+			
+		</h:panelGroup>
 		
 		
-	</h:panelGroup>
-		
-		
+		<script type="text/javascript">
+			resizeSelectBox();
+		</script>
 		
 	</div>
 </cc:implementation>

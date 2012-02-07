@@ -224,3 +224,63 @@ option {
 }
 
 
+/* CSS3 ENHANCEMENTS */
+
+.borderradius_5 { /* used by simpleSerch input-tag and submit-button */
+	border-radius:0.4166667em;
+	-webkit-border-radius:0.4166667em;
+	-moz-border-radius:0.4166667em;
+	-ms-border-radius:0.4166667em;
+	-o-border-radius:0.4166667em;
+}
+.borderradius_5_bottom { /* in use for tab menu overlay */
+	border-bottom-left-radius: 0.4166667em;
+	border-bottom-right-radius: 0.4166667em;
+	-webkit-border-bottom-left-radius: 0.4166667em;
+	-webkit-border-bottom-right-radius: 0.4166667em;
+	-moz-border-bottom-left-radius: 0.4166667em;
+	-moz-border-bottom-right-radius: 0.4166667em;
+	-o-border-bottom-left-radius: 0.4166667em;
+	-o-border-bottom-right-radius: 0.4166667em;
+	-ms-border-bottom-left-radius: 0.4166667em;
+	-ms-border-bottom-right-radius: 0.4166667em;
+}
+.borderradius_5_top { /* in use for tab menu */
+	border-top-left-radius: 0.4166667em;
+	border-top-right-radius: 0.4166667em;
+	-webkit-border-top-left-radius: 0.4166667em;
+	-webkit-border-top-right-radius: 0.4166667em;
+	-moz-border-top-left-radius: 0.4166667em;
+	-moz-border-top-right-radius: 0.4166667em;
+	-o-border-top-left-radius: 0.4166667em;
+	-o-border-top-right-radius: 0.4166667em;
+	-ms-border-top-left-radius: 0.4166667em;
+	-ms-border-top-right-radius: 0.4166667em;
+}
+/* not in use a.t.m.
+
+.borderradius_5_right {
+	border-bottom-right-radius: 0.4166667em;
+	border-top-right-radius: 0.4166667em;
+	-webkit-border-bottom-right-radius: 0.4166667em;
+	-webkit-border-top-right-radius: 0.4166667em;
+	-moz-border-bottom-right-radius: 0.4166667em;
+	-moz-border-top-right-radius: 0.4166667em;
+	-o-border-bottom-right-radius: 0.4166667em;
+	-o-border-top-right-radius: 0.4166667em;
+	-ms-border-bottom-right-radius: 0.4166667em;
+	-ms-border-top-right-radius: 0.4166667em;
+}
+.borderradius_5_left {
+	border-bottom-left-radius: 0.4166667em;
+	border-top-left-radius: 0.4166667em;
+	-webkit-border-bottom-left-radius: 0.4166667em;
+	-webkit-border-top-left-radius: 0.4166667em;
+	-moz-border-bottom-left-radius: 0.4166667em;
+	-moz-border-top-left-radius: 0.4166667em;
+	-o-border-bottom-left-radius: 0.4166667em;
+	-o-border-top-left-radius: 0.4166667em;
+	-ms-border-bottom-left-radius: 0.4166667em;
+	-ms-border-top-left-radius: 0.4166667em;
+}
+*/
