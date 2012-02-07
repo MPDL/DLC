@@ -6,31 +6,23 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 
-
-
 	<ui:define name="mainContent">
 		
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
 			
-				<div class="bibList">
-				
-					<div class="listHeader">
-						<ui:include src="listHeader.xhtml" />
-					</div>
-					
-					<div class="listBody">
-						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-					 		<mpdl:item volume="#{var}"/>
-						</a4j:repeat>
-					</div>
-				</div>
-	
+				<list:bibList_default>
+					<a4j:repeat var="volume" value="#{allVolumesBean.currentPartList}">
+				 		<list:bibItemSingleVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
+				 		<list:bibItemMultiVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
+					</a4j:repeat>
+				</list:bibList_default>
 			
 		</mpdl:paginator>
 	</ui:define>

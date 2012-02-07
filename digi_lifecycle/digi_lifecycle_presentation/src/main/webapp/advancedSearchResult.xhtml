@@ -6,6 +6,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
@@ -13,17 +14,14 @@
 	<ui:define name="mainContent">
 		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
 			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
-
-				<div class="bibList">
-					<div class="listHeader">
-						<ui:include src="listHeader.xhtml" />
-					</div>
-					
-					<div class="listBody">
-						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
-							<mpdl:item volume="#{var}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" />						</a4j:repeat>
-					</div>
-				</div>
+				
+				<list:bibList_default>
+					<a4j:repeat var="volume" value="#{cc.attrs.paginatorBean.currentPartList}">
+				 		<list:bibItemSingleVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
+				 		<list:bibItemMultiVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
+					</a4j:repeat>
+				</list:bibList_default>
+				
 			</mpdl:paginator>
 		</h:panelGroup>
 	</ui:define>

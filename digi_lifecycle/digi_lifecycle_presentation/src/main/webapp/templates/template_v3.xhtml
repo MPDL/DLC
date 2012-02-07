@@ -54,8 +54,7 @@
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/jquery-ui-1.8.16.custom.min.js"></script>
 			
 			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/default.js"></script>
-			<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/jscript/template.js"></script>
-				
+			
 			<h:outputScript name="jsf.js" library="javax.faces" target="head"/>
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
 			
@@ -69,10 +68,8 @@
 
 		<h:body lang="#{applicationBean.userLocaleString}">
 			<h:panelGroup rendered="#{loginBean.loginState}"/>
-			
-			
-			
-				<div class="id_wrapper">
+				
+				<h:panelGroup layout="block" styleClass="id_wrapper">
 					<div class="id_header" rel="section">
 						<!-- import header -->
 						<ui:include src="../headerPages/header.xhtml" />
@@ -84,8 +81,8 @@
 					</h:panelGroup>
 						
 				
-					<div class="id_contentDescription">
-						<div class="messageArea">
+					<h:panelGroup layout="block" styleClass="id_contentDescription">
+						<h:panelGroup layout="block" styleClass="messageArea">
 							
 							<h:messages errorClass="messageError"  
 								warnClass="messageWarning" fatalClass="messageFatal"
@@ -93,8 +90,8 @@
 								showDetail="false" showSummary="true"/>
 								
 						
-						</div>
-						<div class="breadTitle">
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="breadTitle">
 							<!-- 
 							<ui:remove>
 							<nav class="breadcrump" rel="section">
@@ -107,12 +104,12 @@
 							<span class="id_siteTitle" rel="section">
 								<h:outputText value="#{headline}" />
 							</span>
-						</div>
+						</h:panelGroup>
 					
-					</div>
+					</h:panelGroup>
 
 
-					<div class="id_content container_1"  rel="section">		
+					<div class="id_content container_1" rel="section">		
 						<!-- Main Content -->
 						<ui:insert name="mainContent">&#160;</ui:insert>
 					</div>
@@ -121,11 +118,8 @@
 						<!-- <ui:include src="../footerPages/footer.xhtml" />-->
 						footer: <span onclick="void(0);">Impress</span> <span onclick="void(0);">Contact</span>					
 					</div>
-					
 			
-				</div>
-
-			
+				</h:panelGroup>
 		
 		</h:body>
 	</html>
