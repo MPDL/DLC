@@ -19,6 +19,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
+import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -28,7 +29,7 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "searchResult", viewId = "/advancedSearchResult.xhtml", pattern = "/searchresult")
-public class AdvancedSearchResultBean extends BasePaginatorBean<Volume> {
+public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	private static Logger logger = Logger.getLogger(AdvancedSearchResultBean.class);
 	
@@ -45,7 +46,7 @@ public class AdvancedSearchResultBean extends BasePaginatorBean<Volume> {
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
-		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, limit, offset);
+		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, getSortCriterionList(), limit, offset);
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 		return res.getVolumes();
 	}
@@ -58,7 +59,7 @@ public class AdvancedSearchResultBean extends BasePaginatorBean<Volume> {
 	@Override
 	public String getNavigationString() {
 		// TODO Auto-generated method stub
-		return null;
+		return "pretty:searchResult";
 	}
 
 	public String getCqlQuery() {
