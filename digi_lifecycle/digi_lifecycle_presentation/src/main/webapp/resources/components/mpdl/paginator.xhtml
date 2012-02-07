@@ -96,7 +96,7 @@
 		
 			<h:panelGroup layout="block" styleClass="gotoBox">
 				<h:form>
-					<h:inputText type="text" id="inpGoToPageTop" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
+					<h:inputText type="text" id="inpGoToPageTop" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
 					
 					<h:outputLabel id="lblItemListPageSizeTop" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
 					<h:commandButton type="submit" id="btList_btGoTop" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
@@ -187,7 +187,7 @@
 			
 			<h:panelGroup layout="block" styleClass="gotoBox">
 				<h:form>
-					<h:inputText type="text" id="inpGoToPageBottom" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
+					<h:inputText type="text" id="inpGoToPageBottom" styleClass="gotoInput" value="#{cc.attrs.paginatorBean.goToPageBottom}" maxlength="5" />
 					
 					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
 					<h:commandButton type="submit" id="btList_btGoBottom" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
