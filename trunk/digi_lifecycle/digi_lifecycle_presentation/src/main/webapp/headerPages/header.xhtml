@@ -14,57 +14,58 @@
 
 	<h:panelGroup layout="block" styleClass="id_headerMetaMenu">
 		<menu class="metaMenu">
+			<nav>
+				<pretty:link mappingId="user" rendered="#{loginBean.login}">
+					<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.user.loginName}"></h:outputLabel>
+				</pretty:link>			
+				
+				<h:panelGroup styleClass="separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
+				
+				
+				<h:form>
+					<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
+						value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+					</h:commandLink>
 			
-			<pretty:link mappingId="user" rendered="#{loginBean.login}">
-				<h:outputLabel id="txtAccountUserName" styleClass="free_area0_p8 endline" value="#{loginBean.user.loginName}"></h:outputLabel>
-			</pretty:link>			
-			
-			<h:panelGroup styleClass="separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
-			
-			
-			<h:form>
-				<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
-					value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
-				</h:commandLink>
-		
-				<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
-					value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
-				</h:commandLink> 
-			</h:form>
-			
-			<h:panelGroup layout="block" styleClass="separator">&#160;</h:panelGroup>
-
-			<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
-				value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
-				<h:outputText value="#{lbl.header_lnk_imprint}" />
-			</h:outputLink>
-			
-			<h:panelGroup layout="block" styleClass="separator">&#160;</h:panelGroup>
-			
-			<h:outputLink id="lnkCopyright" title="#{tlt.Copyright}"
-				value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
-				<h:outputText value="#{lbl.header_lnk_copyright}" />
-			</h:outputLink> 
-			
-			<h:panelGroup layout="block" styleClass="separator">&#160;</h:panelGroup>
-
-			<h:outputLink id="lnkHelp" title="#{tlt.Help}"
-				value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
-				<h:outputText value="#{lbl.header_lnk_help}" />
-			</h:outputLink> 
-			
-			<h:form>
-				<h:panelGroup layout="block" styleClass="dynamicSelectBox_js" title="???placeholder???">
-					<h:panelGroup layout="block" styleClass="selectionContent">
-						<span class="selectionText"></span>
+					<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
+						value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+					</h:commandLink> 
+				</h:form>
+				
+				<h:panelGroup styleClass="separator">&#160;</h:panelGroup>
+	
+				<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
+					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
+					<h:outputText value="#{lbl.header_lnk_imprint}" />
+				</h:outputLink>
+				
+				<h:panelGroup styleClass="separator">&#160;</h:panelGroup>
+				
+				<h:outputLink id="lnkCopyright" title="#{tlt.Copyright}"
+					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
+					<h:outputText value="#{lbl.header_lnk_copyright}" />
+				</h:outputLink> 
+				
+				<h:panelGroup styleClass="separator">&#160;</h:panelGroup>
+	
+				<h:outputLink id="lnkHelp" title="#{tlt.Help}"
+					value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
+					<h:outputText value="#{lbl.header_lnk_help}" />
+				</h:outputLink> 
+				
+				<h:form>
+					<h:panelGroup layout="block" styleClass="dynamicSelectBox_js" title="???placeholder???">
+						<h:panelGroup layout="block" styleClass="selectionContent">
+							<span class="selectionText"></span>
+						</h:panelGroup>
+						<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
+							valueChangeListener="#{applicationBean.changeLanguage}">
+							<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
+							<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
+						</h:selectOneMenu> 
 					</h:panelGroup>
-					<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
-						valueChangeListener="#{applicationBean.changeLanguage}">
-						<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
-						<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
-					</h:selectOneMenu> 
-				</h:panelGroup>
-			</h:form>
+				</h:form>
+			</nav>
 		</menu>
 	</h:panelGroup>
 	

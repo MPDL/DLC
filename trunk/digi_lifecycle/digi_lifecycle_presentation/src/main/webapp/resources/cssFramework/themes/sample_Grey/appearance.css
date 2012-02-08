@@ -134,6 +134,10 @@ input[type="search"] {
 	border: solid 0.08333em #B2B2B2;
 	padding:0 0.1666em;
 }
+input[type="text"] {
+	border: solid 0.08333em #B2B2B2;
+	padding:0 0.1666em;
+}
 input[type="number"] {
 	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
 	padding:0 0.1666em;
@@ -281,10 +285,9 @@ button:disabled {
 }
 .id_headerMetaMenu .metaMenu * {
 	float:left;
-	padding:0.08333em 2em 0.3333em 2em;
 }
-.id_headerMetaMenu .metaMenu form {
-	padding:0;
+.id_headerMetaMenu .metaMenu a {
+	padding:0.08333em 2em 0.3333em 2em;
 }
 .id_headerMetaMenu .metaMenu nav {
 	padding:0;
@@ -294,7 +297,6 @@ button:disabled {
 }
 .id_headerMetaMenu .metaMenu option {
 	float:none;
-	padding:0;
 }
 .metaMenu a:hover {
 	color:#00AA11;
@@ -315,7 +317,7 @@ button:disabled {
 	padding:0;
 }
 .metaMenu .dynamicSelectBox_js .selectionContent {
-	padding:0 0.6666em 0.16666em 0.6666em;
+	padding:0.0833333em 0.6666em 0 0.6666em;
 }
 /*************************************************************************************************************
  ******************************				.standardHeader .solutionLogo		******************************
