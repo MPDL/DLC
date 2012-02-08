@@ -37,10 +37,10 @@
 						<h:inputText value="#{sc.text}"/>
 						
 						<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-							<f:ajax render=":#{component.parent.parent.clientId}"/>
+							<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
 						</h:commandButton>
 						<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-							<f:ajax render=":#{component.parent.parent.clientId}"/>
+							<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
 						</h:commandButton>
 						
 						<br/><br/>

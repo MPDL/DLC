@@ -9,7 +9,7 @@ import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SortCriterion;
-import de.mpg.mpdl.dlc.search.SortCriterion.SortIndex;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
@@ -29,7 +29,7 @@ public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volu
 	public List<SelectItem> getSortCriterionMenu()
 	{
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		for(SortIndex si : SortIndex.values())
+		for(SortIndices si : SortIndices.values())
 		{
 			scMenuList.add(new SelectItem(si.name(), si.name()));
 			

@@ -6,7 +6,7 @@ import java.util.List;
 public class SortCriterion {
 
 	
-	public enum SortIndex
+	public enum SortIndices
 	{
 		
 		TITLE("sort.dlc.title"),
@@ -16,7 +16,7 @@ public class SortCriterion {
 		
 		private String indexName;
 		
-		SortIndex(String index)
+		SortIndices(String index)
 		{
 			this.setIndexName(index);
 		}
@@ -31,7 +31,7 @@ public class SortCriterion {
 	}
 	
 	
-	public enum SortOrder
+	public enum SortOrders
 	{
 		
 		ASCENDING("/sort.ascending"),
@@ -39,7 +39,7 @@ public class SortCriterion {
 		
 		private String orderName;
 		
-		SortOrder(String orderName)
+		SortOrders(String orderName)
 		{
 			this.setOrderName(orderName);
 		}
@@ -54,46 +54,46 @@ public class SortCriterion {
 	}
 	
 	
-	private SortIndex sortIndex;
+	private SortIndices sortIndex;
 	
 
-	private SortOrder sortOrder;
+	private SortOrders sortOrder;
 	
-	public SortCriterion(SortIndex sortIndex, SortOrder sortOrder)
+	public SortCriterion(SortIndices sortIndex, SortOrders sortOrder)
 	{
 		this.sortIndex = sortIndex;
 		this.sortOrder = sortOrder;
 		
 	}
 	
-	public SortCriterion(SortIndex sortIndex)
+	public SortCriterion(SortIndices sortIndex)
 	{
 		this.sortIndex = sortIndex;
-		this.sortOrder = SortOrder.ASCENDING;
+		this.sortOrder = SortOrders.ASCENDING;
 		
 	}
 	
-	public SortIndex getSortIndex() {
+	public SortIndices getSortIndex() {
 		return sortIndex;
 	}
 
-	public void setSortIndex(SortIndex sortIndex) {
+	public void setSortIndex(SortIndices sortIndex) {
 		this.sortIndex = sortIndex;
 	}
 
 	public void setSortIndexString(String sortIndex) {
-		this.sortIndex = SortIndex.valueOf(sortIndex);
+		this.sortIndex = SortIndices.valueOf(sortIndex);
 	}
 	
 	public String getSortIndexString() {
 		return sortIndex.name();
 	}
 
-	public SortOrder getSortOrder() {
+	public SortOrders getSortOrder() {
 		return sortOrder;
 	}
 
-	public void setSortOrder(SortOrder sortOrder) {
+	public void setSortOrder(SortOrders sortOrder) {
 		this.sortOrder = sortOrder;
 	}
 	
@@ -101,9 +101,9 @@ public class SortCriterion {
 	{
 		
 			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndex.AUTHOR, SortOrder.ASCENDING));
-			scList.add(new SortCriterion(SortIndex.TITLE, SortOrder.ASCENDING));
-			scList.add(new SortCriterion(SortIndex.YEAR, SortOrder.DESCENDING));
+			scList.add(new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING));
+			scList.add(new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING));
+			scList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
 			
 			return scList;
 		
