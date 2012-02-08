@@ -12,18 +12,35 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
-		<h:panelGroup layout="block" styleClass="full_area0 itemList loggedIn">
+			
+			<ui:remove>
+			<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">
+			
+			
+				<h:selectOneMenu value="#{sortCriterion.sortIndex}">
+					<f:selectItems value="#{advancedSearchResultBean.sortCriterionMenu}"/>
+					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/> 
+				</h:selectOneMenu>
+			
+			</a4j:repeat>
+			
+			
+			<h:selectOneMenu value="#{advancedSearchResultBean.sortCriterionList[0].sortIndexString}">
+					<f:selectItem itemValue="AUTHOR"/>
+					<f:selectItem itemValue="TITLE"/>
+					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/> 
+				</h:selectOneMenu>
+			</ui:remove>
 			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
 				
 				<list:bibList_default>
-					<a4j:repeat var="volume" value="#{cc.attrs.paginatorBean.currentPartList}">
+					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
 					</a4j:repeat>
 				</list:bibList_default>
 				
 			</mpdl:paginator>
-		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 
