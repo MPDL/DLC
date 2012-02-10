@@ -395,6 +395,7 @@ public class VolumeServiceBean {
 				p.setOrderLabel("");
 				p.setType("page");
 				p.setContentIds(itemIdWithoutColon + "/"+ filename);
+				p.setLabel(imageItem.getName());
 				metsData.getPages().add(p);
 				
 				
