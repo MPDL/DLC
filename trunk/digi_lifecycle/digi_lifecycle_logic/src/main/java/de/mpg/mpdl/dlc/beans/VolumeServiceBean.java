@@ -1348,7 +1348,7 @@ public class VolumeServiceBean {
 		String pagedTeiResult = getTeiForPage(p, pagedTei);
 		//logger.info(pagedTeiResult);
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei/xhtml2/tei.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
 		
 		SAXSource xsltSource = new SAXSource(new InputSource(url.toExternalForm()));
 		
