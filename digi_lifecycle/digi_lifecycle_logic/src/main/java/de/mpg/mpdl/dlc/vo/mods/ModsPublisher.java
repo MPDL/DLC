@@ -21,7 +21,7 @@ public class ModsPublisher {
 	private String publisher;
 	
 	@XmlElement(name = "edition", namespace="http://www.loc.gov/mods/v3")
-	private String editionStatement;
+	private String edition;
 	
 	@XmlPath("mods:dateIssued")
 	private ModsDate dateIssued_425;
@@ -45,12 +45,12 @@ public class ModsPublisher {
 		this.publisher = publisher;
 	}
 
-	public void setEditionStatement(String editionStatement) {
-		this.editionStatement = editionStatement;
+	public void setEdition(String edition) {
+		this.edition = edition;
 	}
 
-	public String getEditionStatement() {
-		return editionStatement;
+	public String getEdition() {
+		return edition;
 	}
 
 	public ModsDate getDateIssued_425() {

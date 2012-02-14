@@ -13,16 +13,16 @@ public class ModsName {
 	private String mabId;
 	
 	@XmlAttribute(name = "type")
-	private String type = "personal";
+	private String type;
 	
 	@XmlAttribute(name = "authority")
-	private String authority = "pnd";
+	private String authority;
 	
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/@authority")
-	private String roleTermAuthority;
+	private String roleTermAuthority="marcrelator";
 	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/text()")
 	private String role;

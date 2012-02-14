@@ -34,6 +34,9 @@ public class ModsMetadata {
 	@XmlElement(name = "language", namespace="http://www.loc.gov/mods/v3")
 	private ModsLanguage language_037;
 	
+	@XmlPath("mods:part[@type='host']/text()")
+	private String sortField_090;
+	
 	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
 	private String volumeDescriptive_089;
 	
@@ -73,7 +76,7 @@ public class ModsMetadata {
 //	private String seriesTitle_451;
 	
 	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
-	private List<ModsSeries> seriess = new ArrayList<ModsSeries>();	
+	private List<ModsSeries> series = new ArrayList<ModsSeries>();	
 	
 	
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
@@ -87,7 +90,10 @@ public class ModsMetadata {
 	private String source_590;	
 	
 	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
-	private List<String> keyWords = new ArrayList<String>();
+	private List<String> keywords = new ArrayList<String>();
+	
+	@XmlPath("mods:abtract/text()")
+	private String freeText;
 	
 
 	public ModsMetadata()
@@ -133,11 +139,9 @@ public class ModsMetadata {
 	}
 
 
-
 	public void setNames(List<ModsName> names) {
 		this.names = names;
 	}
-
 
 
 	public void setIdentifiers(List<ModsIdentifier> identifiers) {
@@ -162,6 +166,16 @@ public class ModsMetadata {
 		return language_037;
 	}
 
+
+
+	public String getSortField_090() {
+		return sortField_090;
+	}
+
+
+	public void setSortField_090(String sortField_090) {
+		this.sortField_090 = sortField_090;
+	}
 
 
 	public List<ModsTitle> getTitles() {
@@ -250,13 +264,13 @@ public class ModsMetadata {
 	}
 
 
-	public List<ModsSeries> getSeriess() {
-		return seriess;
+	public List<ModsSeries> getSeries() {
+		return series;
 	}
 
 
-	public void setSeriess(List<ModsSeries> seriess) {
-		this.seriess = seriess;
+	public void setSeries(List<ModsSeries> series) {
+		this.series = series;
 	}
 
 
@@ -282,13 +296,26 @@ public class ModsMetadata {
 	}
 
 
-	public List<String> getKeyWords() {
-		return keyWords;
+
+
+
+	public List<String> getKeywords() {
+		return keywords;
 	}
 
 
-	public void setKeyWords(List<String> keyWords) {
-		this.keyWords = keyWords;
+	public void setKeywords(List<String> keywords) {
+		this.keywords = keywords;
+	}
+
+
+	public String getFreeText() {
+		return freeText;
+	}
+
+
+	public void setFreeText(String freeText) {
+		this.freeText = freeText;
 	}
 
 
