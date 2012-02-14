@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.ingest;
 
 import java.io.File;
 
+
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -38,7 +39,6 @@ import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mods.ModsDate;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
-import de.mpg.mpdl.dlc.vo.mods.ModsKeyword;
 import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
@@ -376,6 +376,11 @@ public class IngestBean implements Serializable {
 	
 	public ModsMetadata updateModsMetadata(ModsMetadata md)
 	{     
+		
+
+
+
+		
 		//update ModsNames displayLabel to
 		List<ModsName> names =  new ArrayList<ModsName>();
 		int i = 1,j =1 , k = 1;
@@ -415,10 +420,13 @@ public class IngestBean implements Serializable {
 		//add displayLabel to ModsTitle
 		ModsTitle title = md.getTitles().get(0);
 		title.setDisplayLabel("mainTitle");
+
+
+		
 		
 		//update ModsPublisher displayLabel
 		ModsPublisher publisher = md.getPublishers().get(0);
-		if((publisher.getPublisher() == null || publisher.getPublisher()=="") && (publisher.getPlace() == null || publisher.getPlace() =="") && (publisher.getEdition() == null || publisher.getEdition() ==""))
+		if((publisher.getPublisher() == null || publisher.getPublisher()=="") && (publisher.getPlace() == null || publisher.getPlace() =="") && (publisher.getEdition() == null || publisher.getEdition() =="") && (publisher.getDateIssued_425().getDate() == null || publisher.getDateIssued_425().getDate() ==""))
 			md.setPublishers(null);		
 		else
 		{
@@ -435,9 +443,7 @@ public class IngestBean implements Serializable {
 				md.getPublishers().add(publisher);
 			}
 		}
-		
-
-		
+			
 		if(md.getIdentifiers().get(1).getValue() != null && md.getIdentifiers().get(1).getValue() !="")
 		{
 			md.getIdentifiers().get(1).setType("issn");
@@ -462,11 +468,29 @@ public class IngestBean implements Serializable {
 		}
 		md.setKeywords(keywords);
 		
-		if(md.getLanguage_037().getLanguage()==null || md.getLanguage_037().getLanguage()=="")
+		if(md.getLanguage_037().getLanguage()=="")
 			md.setLanguage_037(null);
 		
-		if(md.getNotes().get(0).getNote() == null || md.getNotes().get(0).getNote() == "")
+		if(md.getNotes().get(0).getNote() == "")
 			md.setNotes(null);
+		else
+		{
+			md.getNotes().get(0).setType("statement of responsibility");
+		}
+
+
+		if(md.getExtents().get(0) == "" )
+			md.setExtents(null);
+
+		this.modsMetadata.getSeries().add(new ModsSeries());
+		
+		if(md.getSeries().get(0).getSeriesTitle() =="")
+			md.setSeries(null);
+		else
+		{
+			md.getSeries().get(0).setDisplayLabel("series1");
+			md.getSeries().get(0).setType("series");
+		}
 		
 		return md;
 	}
