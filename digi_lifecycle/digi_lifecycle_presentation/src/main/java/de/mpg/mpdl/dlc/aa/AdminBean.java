@@ -228,6 +228,13 @@ public class AdminBean{
 		loginBean.getUser().getCreatedUsers().remove(user);
 		return "pretty:admin";
 	}
+	
+	public String deactivateUser() throws Exception
+	{
+		String id = uaServiceBean.deactivateUserAccount(user.getId(), loginBean.getUserHandle());
+		loginBean.getUser().getCreatedUsers().remove(user);
+		return "pretty:admin";
+	}
 
 	public Organization getOrga() { 
 		return orga;
