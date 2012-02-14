@@ -28,6 +28,9 @@
 				<xsl:for-each select="key('fields', '089')">
 					<xsl:call-template name="mab089ToPart"/>
 				</xsl:for-each>
+				<xsl:for-each select="key('fields', '090')">
+					<xsl:call-template name="mab090ToPart"/>
+				</xsl:for-each>
 				<xsl:for-each select="key('fields', '100')">
 					<xsl:call-template name="mab100ToName"/>
 				</xsl:for-each>
@@ -79,6 +82,13 @@
 				<xsl:for-each select="key('fields', '369')">
 					<xsl:call-template name="mab369ToNote"/>
 				</xsl:for-each>
+				<xsl:for-each select="key('fields', '403')">
+					<xsl:call-template name="mab403ToOriginInfo"/>
+					<!--
+						mab425ToOriginInfo
+						necessary if there is no 410
+					-->
+				</xsl:for-each>
 				<xsl:for-each select="key('fields', '410')">
 					<xsl:call-template name="mab410ToOriginInfo"/>
 					<!--
@@ -87,6 +97,7 @@
 						checks for 403 and 425
 					-->
 				</xsl:for-each>
+
 				<xsl:for-each select="key('fields', '415')">
 					<xsl:call-template name="mab415ToOriginInfo"/>
 					<!--
@@ -244,6 +255,15 @@
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
+		</xsl:element>
+	</xsl:template>	
+	
+	<xsl:template name="mab090ToPart">
+		<xsl:element name="part">
+			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
+			<xsl:attribute name="order"><xsl:value-of select="."/></xsl:attribute>
+			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>	
 	
@@ -484,6 +504,21 @@
 				</xsl:element>
 			</xsl:if>
 		</xsl:element>
+	</xsl:template>
+
+	<xsl:template name="mab403ToOriginInfo">
+		<xsl:choose>
+			<xsl:when test="key('fields', '410')">
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:element name="originInfo">
+					<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
+					<xsl:element name="edition">
+						<xsl:value-of select="key('fields', '403')"/>
+					</xsl:element>
+				</xsl:element>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:template name="mab415ToOriginInfo">

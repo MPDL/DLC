@@ -430,6 +430,29 @@ public class UserAccountServiceBean {
 		}
 		return id;
 	}
+	
+	public String deactivateUserAccount(String id, String userHandle)
+	{
+		logger.info("deaktive user Account");
+		UserAccount ua;
+		try
+		{
+			UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			
+			TaskParam taskParam = new TaskParam();
+			taskParam.setComment("deactivate user account");
+			ua = client.retrieve(id);
+			taskParam.setLastModificationDate(ua.getLastModificationDate());
+			
+			client.deactivate(id, taskParam);
+			
+		}catch(Exception e)
+		{
+			
+		}
+		return id;
+	}
 
 	public static void main(String[] args) throws Exception {
 		String userAccountID = "escidoc:15006";
