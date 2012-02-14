@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="modsMetadata" required="true" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+
+
+
+
+<h:form>
+	<h:panelGrid columns="2" >
+		<h:outputText value="#{lbl.mods_names}" />
+		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
+			<h:panelGrid columns="2">
+				<h:selectOneMenu value="#{name.displayLabel}">
+					<f:selectItem itemLabel="author" itemValue="author"/>
+					<f:selectItem itemLabel="editor" itemValue="editor"/>
+					<f:selectItem itemLabel="body" itemValue="body" />
+				</h:selectOneMenu>
+				<h:inputText value="#{name.name}" />
+			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value="+" >
+				 <f:ajax render="@form" execute="@form"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-" >
+				 <f:ajax render="@form" execute="@form"/>
+			</h:commandButton>
+		</a4j:repeat>
+		
+		
+		<h:outputText value="#{lbl.mods_title}" />
+		<h:inputText id="title_Vol" value="#{cc.attrs.modsMetadata.titles[0].title}" />
+
+		<h:outputText value="#{lbl.mods_sortField}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.sortField_090}" />
+
+		<h:outputText value="#{lbl.mods_band}" />
+		<h:panelGrid columns="2">
+			<h:inputText id="band" value="#{cc.attrs.modsMetadata.volumeDescriptive_089}" />
+			<h:message for="band" styleClass="messageError"/>
+		</h:panelGrid>	
+
+		<h:outputText value="#{lbl.mods_publisher_date}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}" />	
+
+		<h:outputText value="#{lbl.mods_freeText}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.freeText}" />
+	</h:panelGrid>
+</h:form>
+
+
+
+</cc:implementation>
+</html>

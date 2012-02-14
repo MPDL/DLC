@@ -108,7 +108,8 @@
     		<rich:popupPanel id="confirmUserPane" autosized="true"> 
     			 Are you sure you want to close this organization?
         		<a4j:commandButton value="Cancel" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
-        		<a4j:commandButton value="Delete" action="#{adminBean.deleteUser}"/>
+        		<a4j:commandButton value="Delete" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+        		<a4j:commandButton value="Delete" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
     		</rich:popupPanel>
 		 
             <a4j:commandButton execute="@this" value="Create New User" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">

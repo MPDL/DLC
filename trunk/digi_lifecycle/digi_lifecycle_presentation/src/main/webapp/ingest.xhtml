@@ -8,7 +8,7 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
 
 
-<ui:composition template="templates/template.xhtml">
+<ui:composition template="templates/template_v3.xhtml">
 
 	<ui:define name="mainContent">
 	<style>
@@ -63,14 +63,15 @@
 					<p>Please be patient, this process may take several minutes</p>
 				</rich:popupPanel>	
 			</rich:panel>
-
+			
+		<h:form>
 			<rich:panel id="select">
-
+				
 				<h:panelGroup >
 					<h:outputText value="Type:" />
 					<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 						<f:selectItems value="#{ingestBean.contentModelItems}" />
-						<f:ajax event="change" render="select" onevent="ajaxExecuting"/>
+						<f:ajax event="change" render="select :modsInfo :teiInfo :imageInfo" />
 					</h:selectOneMenu>
 				</h:panelGroup>
 				<h:panelGroup>
@@ -89,24 +90,32 @@
 				</h:panelGroup>
 				
 			</rich:panel>
+		</h:form>
 
+<ui:remove>
 			<rich:panel id="upload" header="Upload your files...">
-				<fu:fileUpload rerender="form1:imageInfo form1:modsInfo form1:teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
+				<fu:fileUpload rerender="imageInfo modsInfo teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
 				</fu:fileUpload>
 			</rich:panel>
-
+</ui:remove>
 
 			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}" />
-				<mpdl:modsEditor modsMetadata="#{ingestBean.modsMetadata}" />
+				<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
+					<mpdl:modsEditor_view modsMetadata="#{ingestBean.modsMetadata}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Multivolume'}">
+					<mpdl:modsEditor_Multi modsMetadata="#{ingestBean.modsMetadata}" />
+				</h:panelGroup>
+				<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Monograph'}">
+					<mpdl:modsEditor_Mono modsMetadata="#{ingestBean.modsMetadata}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Volume'}">
+					<mpdl:modsEditor_Vol modsMetadata="#{ingestBean.modsMetadata}" />
+				</h:panelGroup>
+			
 			</rich:panel>
 			
-
-			
-			
-			
-
-
 			<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<h:outputText
 					value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />

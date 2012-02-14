@@ -31,6 +31,12 @@
 							<pretty:link mappingId="viewPages">
 								<f:param value="#{volume.item.objid}" />
 								<f:param value="1" />
+								
+							<ui:remove>
+								<h:outputText value="Band. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dataIssued_425.date}" />
+							</ui:remove>	
+								
+								
 								<h:outputText value=":  #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" />
 								<h:outputText value=" - #{volumeUtilBean.getMainPublisher(volume.modsMetadata).dateIssued_425.date}" />
 							</pretty:link> 
