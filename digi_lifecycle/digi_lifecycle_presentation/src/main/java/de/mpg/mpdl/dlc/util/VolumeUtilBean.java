@@ -26,6 +26,7 @@ import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
+import de.mpg.mpdl.dlc.vo.mods.ModsKeyword;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
@@ -113,6 +114,17 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
+	public static ModsTitle getTitle(ModsMetadata md)
+	{
+		for(ModsTitle mt : md.getTitles())
+			if(mt.getType() == "alternative")
+				return mt;
+		for(ModsTitle mt : md.getTitles())
+			if(mt.getDisplayLabel() == "mainTitle")
+				return mt;
+		return new ModsTitle();
+	}
+	
 	public static ModsTitle getUniformTitle(ModsMetadata md)
 	{
 		for(ModsTitle mt : md.getTitles())
@@ -130,6 +142,23 @@ public class VolumeUtilBean {
 		}
 		return new ModsTitle();
 	}
+	
+	public static ModsName getFirstAuthor(ModsMetadata md)
+	{
+		for(ModsName mn : md.getNames())
+			if(mn.getDisplayLabel() == "author1")
+				return mn;
+		return new ModsName();
+	}
+	
+	public static ModsName getFirstEditor(ModsMetadata md)
+	{
+		for(ModsName mn : md.getNames())
+			if(mn.getDisplayLabel() == "editor1")
+				return mn;
+		return new ModsName();
+	}
+	
 	
 	public static ModsName getFirstNamePart(ModsMetadata md)
 	{
@@ -153,6 +182,19 @@ public class VolumeUtilBean {
 		return new ModsName();
 	}
 	
+	public static ModsPublisher getFirstPublisher(ModsMetadata md)
+	{
+		for(ModsPublisher mp : md.getPublishers())
+		{
+			if(mp.getDisplayLabel() == "publisher1")
+				return mp;
+			else if(mp.getDisplayLabel() == "printer1")
+				return mp;
+		}
+		return null;
+	}
+	
+
 	public static ModsPublisher getMainPublisher(ModsMetadata md)
 	{
 		for(ModsPublisher mp : md.getPublishers())
@@ -241,10 +283,18 @@ public class VolumeUtilBean {
 	
 	
 	
-	public void removeListMember (Object pos, List list)
-	{
-		list.remove(pos);
+	public void removeListMember (Integer pos, List list)
+	{  
+		Object o = list.get(pos);
+		list.remove(o);
 	}
+	
+	public void addNewModsKeyword (Integer rowKey, List<String> keywords)
+	{
+		keywords.add(rowKey+1, "");
+	}
+	
+
 	
 	public void addNewModsTitle (ModsTitle pos, List<ModsTitle> list)
 	{
@@ -260,18 +310,12 @@ public class VolumeUtilBean {
 		
 		
 	}
-
-	public void addNewModsName (ModsName pos, List<ModsName> list)
+ 
+	public void addNewModsName (Integer rowKey, List<ModsName> list)
 	{
+  
+		list.add(rowKey+1, new ModsName());
 
-		if(pos!=null)
-		{
-			list.add(list.indexOf(pos)+1, new ModsName());
-		}
-		else
-		{
-			list.add(new ModsName());
-		}
 	}
 	
 	public void addNewModsNote (ModsNote pos, List<ModsNote> list)
@@ -285,8 +329,6 @@ public class VolumeUtilBean {
 		{
 			list.add(new ModsNote());
 		}
-		
-		
 	}
 	
 	public void addNewModsPublisher (ModsPublisher pos, List<ModsPublisher> list)

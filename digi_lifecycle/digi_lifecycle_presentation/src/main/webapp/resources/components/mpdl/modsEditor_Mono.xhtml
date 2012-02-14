@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="modsMetadata" required="true" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+
+
+
+
+<h:form>
+	<h:panelGrid columns="2">
+		<h:outputText value="#{lbl.mods_names}" />
+		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
+			<h:panelGrid columns="2">
+				<h:selectOneMenu value="#{name.displayLabel}">
+					<f:selectItem itemLabel="author" itemValue="author"/>
+					<f:selectItem itemLabel="editor" itemValue="editor"/>
+					<f:selectItem itemLabel="body" itemValue="body" />
+				</h:selectOneMenu>
+				<h:inputText value="#{name.name}" />
+			</h:panelGrid>
+			<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value="+" >
+				 <f:ajax render="@form" execute="@form"/>
+			</h:commandButton>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-" >
+				 <f:ajax render="@form" execute="@form"/>
+			</h:commandButton>
+		</a4j:repeat>
+		
+
+		<h:outputText value="#{lbl.mods_title}" />
+		<h:panelGrid columns="2">
+			<h:inputText id="title_Mono" value="#{cc.attrs.modsMetadata.titles[0].title}" />
+			<h:message for="title_Mono" styleClass="messageError"/>
+		</h:panelGrid>
+	
+	
+		<h:outputText value="#{lbl.mods_statementOfResponsibility}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}" />
+	
+		<h:outputText value="#{lbl.mods_publisher}" />
+		<h:panelGrid columns="2">
+			<h:selectOneMenu value="#{cc.attrs.modsMetadata.publishers[0].displayLabel}">
+				<f:selectItem itemLabel="publisher" itemValue="publisher"/>
+				<f:selectItem itemLabel="printer" itemValue="printer"/>
+			</h:selectOneMenu>
+			<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].publisher}" />	
+		</h:panelGrid>
+		
+		<h:outputText value="#{lbl.mods_publisher_place}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].place}" />	
+
+		<h:outputText value="#{lbl.mods_publisher_date}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}" />		
+	
+		<h:outputText value="#{lbl.mods_publisher_edition}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}" />	
+		
+		<h:outputText value="#{lbl.mods_collation}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.extents[0]}" />
+
+		<h:outputText value="#{lbl.mods_seriesTitle}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.series[0].seriesTitle}" />
+
+		<h:outputText value="#{lbl.mods_isbn}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}" />
+
+		<h:outputText value="#{lbl.mods_signature}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
+		
+		<h:outputText value="#{lbl.mods_keywords}" />
+		<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+			<h:panelGrid columns="3">
+				<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" />
+				<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value="+" >
+					 <f:ajax render="@form" execute="@form"/>
+				</h:commandButton>
+				<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value="-" >
+					 <f:ajax render="@form" execute="@form"/>
+				</h:commandButton>
+			</h:panelGrid>
+		</a4j:repeat>
+		
+		<h:outputText value="#{lbl.mods_language}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" />
+		
+		<h:outputText value="#{lbl.mods_freeText}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.freeText}" />
+	</h:panelGrid>
+	
+
+</h:form>
+
+
+
+</cc:implementation>
+</html>

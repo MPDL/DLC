@@ -36,11 +36,15 @@ import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
+import de.mpg.mpdl.dlc.vo.mods.ModsDate;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
+import de.mpg.mpdl.dlc.vo.mods.ModsKeyword;
+import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
+import de.mpg.mpdl.dlc.vo.mods.ModsSeries;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
@@ -151,7 +155,14 @@ public class IngestBean implements Serializable {
 		this.modsMetadata.getNames().add(new ModsName());
 		this.modsMetadata.getNotes().add(new ModsNote());
 		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
-		this.modsMetadata.getPublishers().add(new ModsPublisher());
+		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
+		ModsPublisher publisher = new ModsPublisher();
+		publisher.setDateIssued_425(new ModsDate());
+    	this.modsMetadata.getPublishers().add(publisher);
+		this.modsMetadata.getKeywords().add("");
+		this.modsMetadata.setLanguage_037(new ModsLanguage());
+		this.modsMetadata.getSeries().add(new ModsSeries());
+		this.modsMetadata.getExtents().add("");
 	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
@@ -333,7 +344,7 @@ public class IngestBean implements Serializable {
     
 	private void processMabFile(FileItem fileItem) {
 		
-		try {
+		try { 
 			if(fileItem instanceof DiskFileItem)
 			{
 				DiskFileItem item = (DiskFileItem) fileItem;
@@ -363,12 +374,111 @@ public class IngestBean implements Serializable {
 		return moveTo;
 	}
 	
+	public ModsMetadata updateModsMetadata(ModsMetadata md)
+	{     
+		//update ModsNames displayLabel to
+		List<ModsName> names =  new ArrayList<ModsName>();
+		int i = 1,j =1 , k = 1;
+		for(ModsName name : md.getNames())
+		{
+			if(name.getName() != null && name.getName() !="")
+			{
+				if(name.getDisplayLabel().equals("author"))
+				{
+					name.setType("personal");
+					name.setAuthority("pnd");
+					name.setDisplayLabel("author"+String.valueOf(i));
+					name.setRole("aut");
+					i++;
+				}
+				else if(name.getDisplayLabel().equals("editor"))
+				{
+					name.setType("personal");
+					name.setAuthority("pnd");
+					name.setDisplayLabel("editor"+String.valueOf(j));
+					name.setRole("asn");
+					j++;
+				}
+				else if(name.getDisplayLabel().equals("body"))
+				{
+					name.setType("corporate");
+					name.setAuthority("gkd");
+					name.setDisplayLabel("body"+String.valueOf(k));
+					name.setRole("asn");
+					k++;
+				}
+				names.add(name);
+			}
+		}
+		md.setNames(names);
+
+		//add displayLabel to ModsTitle
+		ModsTitle title = md.getTitles().get(0);
+		title.setDisplayLabel("mainTitle");
+		
+		//update ModsPublisher displayLabel
+		ModsPublisher publisher = md.getPublishers().get(0);
+		if((publisher.getPublisher() == null || publisher.getPublisher()=="") && (publisher.getPlace() == null || publisher.getPlace() =="") && (publisher.getEdition() == null || publisher.getEdition() ==""))
+			md.setPublishers(null);		
+		else
+		{
+			if(publisher.getDisplayLabel().equals("publisher"))
+			{
+				publisher.setDisplayLabel("printer1");
+				md.getPublishers().remove(0);
+				md.getPublishers().add(publisher);
+			}
+			if(publisher.getDisplayLabel().equals("printer"))
+			{
+				publisher.setDisplayLabel("printer1");
+				md.getPublishers().remove(0);
+				md.getPublishers().add(publisher);
+			}
+		}
+		
+
+		
+		if(md.getIdentifiers().get(1).getValue() != null && md.getIdentifiers().get(1).getValue() !="")
+		{
+			md.getIdentifiers().get(1).setType("issn");
+			md.getIdentifiers().get(1).setInvalid("yes");
+		}
+		else
+			md.getIdentifiers().remove(1);
+
+		if(md.getIdentifiers().get(0).getValue() != null && md.getIdentifiers().get(0).getValue() !="")
+		{
+			md.getIdentifiers().get(0).setType("isbn");
+		}
+		else 
+			md.getIdentifiers().remove(0);
+			
+		
+		List<String> keywords = new ArrayList<String>();
+		for(String keyword : md.getKeywords())
+		{
+			if(keyword != "" && keyword != null)
+				keywords.add(keyword);
+		}
+		md.setKeywords(keywords);
+		
+		if(md.getLanguage_037().getLanguage()==null || md.getLanguage_037().getLanguage()=="")
+			md.setLanguage_037(null);
+		
+		if(md.getNotes().get(0).getNote() == null || md.getNotes().get(0).getNote() == "")
+			md.setNotes(null);
+		
+		return md;
+	}
 	
 	
 	public String save() 
-	{ 
+	{        
 		logger.info("SAVE!!");
 		try {
+			if(mabFile == null)
+				modsMetadata = updateModsMetadata(modsMetadata);
+			
 			if(getSelectedContentModel().equals("Monograph"))
 			{
 	     		if(getImageFiles().size()==0)
@@ -388,6 +498,8 @@ public class IngestBean implements Serializable {
 			}
 			else if(getSelectedContentModel().equals("Multivolume"))
 			{
+
+			
 	    		Volume volume = volumeService.createNewMultiVolume(PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
@@ -496,7 +608,7 @@ public class IngestBean implements Serializable {
 	public void setContentModelItems(List<SelectItem> contentModelItems) {
 		this.contentModelItems = contentModelItems;
 	}
-
+ 
 	public String getSelectedContentModel() {
 		return selectedContentModel;
 	}
