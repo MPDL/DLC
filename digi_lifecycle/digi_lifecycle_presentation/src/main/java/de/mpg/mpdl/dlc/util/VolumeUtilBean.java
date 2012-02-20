@@ -119,7 +119,7 @@ public class VolumeUtilBean {
 			if(mt.getType() == "alternative")
 				return mt;
 		for(ModsTitle mt : md.getTitles())
-			if(mt.getDisplayLabel() == "mainTitle")
+			if(mt.getDisplayLabel().equals("mainTitle"))
 				return mt;
 		return new ModsTitle();
 	}
@@ -145,7 +145,7 @@ public class VolumeUtilBean {
 	public static ModsName getFirstAuthor(ModsMetadata md)
 	{
 		for(ModsName mn : md.getNames())
-			if(mn.getDisplayLabel() == "author1")
+			if(mn.getDisplayLabel().equals("author1"))
 				return mn;
 		return new ModsName();
 	}
@@ -153,7 +153,7 @@ public class VolumeUtilBean {
 	public static ModsName getFirstEditor(ModsMetadata md)
 	{
 		for(ModsName mn : md.getNames())
-			if(mn.getDisplayLabel() == "editor1")
+			if(mn.getDisplayLabel().equals("editor1"))
 				return mn;
 		return new ModsName();
 	}
