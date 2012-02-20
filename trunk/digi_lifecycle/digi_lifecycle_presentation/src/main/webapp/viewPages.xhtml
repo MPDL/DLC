@@ -157,7 +157,7 @@
 													</h:commandLink>
 													
 													
-													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head[0])}" rendered="#{not empty divItem.head}"/>
 													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
 													
 													
