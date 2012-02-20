@@ -67,7 +67,7 @@
 		<h:outputText id="txtUserInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_Admin}" rendered="false" />		
 		
 		
-				
+		<ui:remove>	
 		<!-- 
 		<h:outputLink id="lnkEdit" value="#{applicationBean.contextPath}/edit"
 			rendered="#{EditMetadata.allowed and false}">
@@ -77,6 +77,6 @@
 			value="#{lbl.header_lnk_edit}" rendered="false" />
 			 -->
 		<!-- main Menu ends here -->
-
+		</ui:remove>
 	</div>
 </div>
