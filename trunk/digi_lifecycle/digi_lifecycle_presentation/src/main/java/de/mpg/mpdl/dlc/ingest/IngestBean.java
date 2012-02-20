@@ -420,9 +420,6 @@ public class IngestBean implements Serializable {
 		//add displayLabel to ModsTitle
 		ModsTitle title = md.getTitles().get(0);
 		title.setDisplayLabel("mainTitle");
-
-
-		
 		
 		//update ModsPublisher displayLabel
 		ModsPublisher publisher = md.getPublishers().get(0);

@@ -75,22 +75,52 @@
     </script>
 	<style type="text/css">
 		#upload {
+			float:none;
 			width:100%;
 		}
 		
 		#upload .plupload_filelist {
-			height:25em;
+			height:23em;
+			max-height:23em;
 			width:100%;
 			background-color:#E4E4E4;
+			overflow:auto;
 		}
-		.id_wrapper .full_area0 {
+		#upload div {
 			float:none;
 		}
-		.id_wrapper .full_area0 div {
-			float:none;
-		}
-		.id_wrapper .full_area0 .plupload_file_size, .id_wrapper .full_area0 .plupload_file_status, .id_wrapper .full_area0 .plupload_file_action, .id_wrapper .full_area0 .plupload_file_name {
+		#upload .plupload_file_name {
 			float:left;
+			width:50%;
+		}
+		#upload .plupload_file_size {
+			float:left;
+			width:20%;
+			text-align:right;
+		}
+		#upload .plupload_file_status {
+			float:left;
+			width:10%;
+			text-align:right;
+		}
+		#upload .plupload_file_action {
+			float:left;
+			width:20%;
+		}
+		#upload .plupload_filelist_header {
+			margin-top:0.5em;
+		}
+		#upload .plupload_filelist_footer  .plupload_file_name {
+			float:left;
+			width:70%;
+		}
+		#upload .plupload_filelist_footer .plupload_start {
+			margin-left:1em;
+		}
+		#upload .plupload_filelist_footer .plupload_upload_status {
+			display:block;
+			width:100%;
+			text-align:center;
 		}
 	</style>
 <h:form>

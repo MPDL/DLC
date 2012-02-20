@@ -286,7 +286,7 @@ public class VolumeUtilBean {
 	{  
 		Object o = list.get(pos);
 		list.remove(o);
-	}
+	} 
 	
 	public void addNewModsKeyword (Integer rowKey, List<String> keywords)
 	{
@@ -311,7 +311,7 @@ public class VolumeUtilBean {
 	}
  
 	public void addNewModsName (Integer rowKey, List<ModsName> list)
-	{
+	{ 
   
 		list.add(rowKey+1, new ModsName());
 
