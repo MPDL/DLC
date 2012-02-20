@@ -40,12 +40,23 @@
 							<f:param value="#{cc.attrs.volume.item.objid}" />
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+						
+						<ui:remove>
+							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dataIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dataIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+						</ui:remove>	
+						
+							
+							
 							<h:outputText value="[#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}"/>
 							<h:outputText value="[#{lbl.view_dtls_no_author} (#{lbl.view_dtls_editor_suffix})]" rendered="#{empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}"/>
 							<br/>
 							<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title} "/>
 							<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>
 							<h:outputText value=" , #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}"/>
+						 
+						
+						
 						</pretty:link>
 					</div>
 				</div>
@@ -133,6 +144,14 @@
 							<pretty:link mappingId="viewMultiVol">
 								<f:param value="#{cc.attrs.volume.item.objid}" />
 								<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+								
+							<ui:remove>
+								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+								<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+								
+							</ui:remove>
+								
+								
 								<h:outputText value="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" rendered="#{(volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn') and (not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name)}"/>
 								<h:outputText value="#{lbl.view_dtls_no_author}" rendered="#{(volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn') and (empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name)}"/>
 								<h:outputText value="[#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]" rendered="#{(volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role == 'asn') and (not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name)}"/>
