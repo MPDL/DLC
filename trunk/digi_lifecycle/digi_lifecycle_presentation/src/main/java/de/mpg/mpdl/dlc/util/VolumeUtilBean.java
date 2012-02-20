@@ -26,7 +26,6 @@ import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
-import de.mpg.mpdl.dlc.vo.mods.ModsKeyword;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
