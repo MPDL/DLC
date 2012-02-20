@@ -44,7 +44,9 @@
 	 	<value style="attribute" name="author2inv" field="author2inv" usage="optional"/>
 	 	<value style="attribute" name="author3inv" field="author3inv" usage="optional"/>
 	 	
-	 	<value style="element" name="head" field="head" usage="optional"/>
+	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
+	 		<value name="head" type="java.lang.String" usage="optional"/>
+	 	</collection>
 	 	
 	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>

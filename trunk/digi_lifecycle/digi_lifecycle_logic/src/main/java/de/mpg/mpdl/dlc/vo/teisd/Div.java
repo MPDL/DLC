@@ -38,7 +38,7 @@ public class Div extends PbOrDiv {
 	
 	
 	@XmlPath("tei:head/text()")
-	private String head;
+	private List<String> head;
 	
 	
 	
@@ -90,16 +90,23 @@ public class Div extends PbOrDiv {
 		this.author3inv = author3inv;
 	}
 
-
-
-	
-	public String getHead() {
+	public List<String> getHead() {
 		return head;
 	}
 
-	public void setHead(String head) {
+	public void setHead(List<String> head) {
 		this.head = head;
 	}
+
+	public static List<String> headListFactory()
+	{
+		return new ArrayList<String>();
+	}
+
+
+
+	
+	
 
 	
 }
