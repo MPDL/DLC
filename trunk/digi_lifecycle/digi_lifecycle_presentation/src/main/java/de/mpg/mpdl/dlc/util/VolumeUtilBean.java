@@ -114,20 +114,21 @@ public class VolumeUtilBean {
 	}
 	
 	public static ModsTitle getTitle(ModsMetadata md)
-	{
+	{  
 		for(ModsTitle mt : md.getTitles())
-			if(mt.getType() == "alternative")
+		{
+			if(mt.getType() !=null && mt.getType().equals("alternative"))
 				return mt;
-		for(ModsTitle mt : md.getTitles())
-			if(mt.getDisplayLabel().equals("mainTitle"))
+			else if(mt.getDisplayLabel().equals("mainTitle"))
 				return mt;
+		}
 		return new ModsTitle();
 	}
 	
 	public static ModsTitle getUniformTitle(ModsMetadata md)
 	{
 		for(ModsTitle mt : md.getTitles())
-			if(mt.getType() == "uniform")
+			if(mt.getType().equals("uniform"))
 				return mt;
 		return new ModsTitle();
 	}
@@ -142,11 +143,15 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
+
+	
 	public static ModsName getFirstAuthor(ModsMetadata md)
 	{
 		for(ModsName mn : md.getNames())
+		{
 			if(mn.getDisplayLabel().equals("author1"))
 				return mn;
+		}
 		return new ModsName();
 	}
 	
@@ -185,9 +190,9 @@ public class VolumeUtilBean {
 	{
 		for(ModsPublisher mp : md.getPublishers())
 		{
-			if(mp.getDisplayLabel() == "publisher1")
+			if(mp.getDisplayLabel().equals("publisher1"))
 				return mp;
-			else if(mp.getDisplayLabel() == "printer1")
+			else if(mp.getDisplayLabel().equals("printer1"))
 				return mp;
 		}
 		return null;

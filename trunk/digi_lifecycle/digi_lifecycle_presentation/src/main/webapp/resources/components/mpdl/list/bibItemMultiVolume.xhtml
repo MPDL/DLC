@@ -17,6 +17,7 @@
 <cc:interface>
 
 	<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="rendered" required="false" />
 	<cc:attribute name="fulltextHits"/>
 	
 </cc:interface>
@@ -24,7 +25,7 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 
-		<h:panelGroup layout="block" class="listItemMultiVolume multiVolumeBG_3">
+		<h:panelGroup layout="block" class="listItemMultiVolume multiVolumeBG_3"  rendered="#{cc.attrs.rendered}">
 			
 			<div class="itemContent">
 				<div class="itemContentData">
