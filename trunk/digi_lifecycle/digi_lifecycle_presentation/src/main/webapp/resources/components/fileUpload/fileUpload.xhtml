@@ -6,8 +6,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:cc="http://java.sun.com/jsf/composite"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:a4j="http://richfaces.org/a4j">
 
 <!-- INTERFACE -->
 <cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
@@ -18,7 +17,7 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	
-<!-- 
+<ui:remove>
 	<h:form id="form" prependId="false">
 		<h3>Choose file(s)</h3>
 		<p><input id="files-upload" type="file"/></p>
@@ -30,11 +29,12 @@
 		</ul>
 
 	</h:form>
--->
+
 
 	<!-- 
 	<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
 	-->
+</ui:remove>
 	<h:outputStylesheet library="components/fileUpload/plupload/img" />
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
 	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
@@ -71,17 +71,28 @@
 				}
 				
 			}
+		//	$("link[href$='standard.css']").remove();
     </script>
-
+	<style type="text/css">
+		.id_wrapper .full_area0 {
+			float:none;
+		}
+		.id_wrapper .full_area0 div {
+			float:none;
+		}
+		.id_wrapper .full_area0 .plupload_file_size, .id_wrapper .full_area0 .plupload_file_status, .id_wrapper .full_area0 .plupload_file_action, .id_wrapper .full_area0 .plupload_file_name {
+			float:left;
+		}
+	</style>
 <h:form>
 
 		<div id="#{cc.clientId}">
-
+	 
 		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
 			
-		 	
+<ui:remove>		
 			<!-- 
-			<ui:remove>
+			
 				<div id="filelist">No runtime found.</div>
 				<br />
 				<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
@@ -90,7 +101,7 @@
 					<h:outputText value="[Upload files]"/>
 					
 				</a>
-	</ui:remove>		 
+	
 -->
 <!-- 
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" value="hidden">
@@ -98,7 +109,7 @@
 			</h:commandButton>
 -->
 		
-		
+	</ui:remove>		 	
 	    </div>
 	    </h:form>
 	
