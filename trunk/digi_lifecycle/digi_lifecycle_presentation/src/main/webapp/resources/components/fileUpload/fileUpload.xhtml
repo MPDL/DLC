@@ -36,7 +36,7 @@
 	-->
 </ui:remove>
 	<h:outputStylesheet library="components/fileUpload/plupload/img" />
-	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+
 	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
 	<!-- Load source versions of the plupload script files -->
 	<h:outputScript library="components/fileUpload/plupload" name="plupload.js"/>
@@ -74,6 +74,15 @@
 		//	$("link[href$='standard.css']").remove();
     </script>
 	<style type="text/css">
+		#upload {
+			width:100%;
+		}
+		
+		#upload .plupload_filelist {
+			height:25em;
+			width:100%;
+			background-color:#E4E4E4;
+		}
 		.id_wrapper .full_area0 {
 			float:none;
 		}
@@ -86,9 +95,9 @@
 	</style>
 <h:form>
 
-		<div id="#{cc.clientId}">
+		<div id="#{cc.clientId}" style="width:560px;">
 	 
-		 	<div id="pluploader" style="width: 450px; height: 330px;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
+		 	<div id="pluploader" style="width: 530px; height: 330px;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
 			
 <ui:remove>		
 			<!-- 
