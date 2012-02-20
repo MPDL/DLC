@@ -40,7 +40,7 @@
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 
-					<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
 							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
 
 

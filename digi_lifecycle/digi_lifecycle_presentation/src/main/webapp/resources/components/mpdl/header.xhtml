@@ -24,6 +24,23 @@
 		</h:panelGroup>
 		<h:panelGroup styleClass="seperator" />
 		<h:panelGroup styleClass="free_area0_p8 endline itemHeadline">
+		
+		<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+			<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMono}">
+			<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+			<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+			<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}(#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+		</h:panelGroup>
+		
+<ui:remove>		
 			<h:outputText value="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}:" rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role != 'asn' and not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
 			<h:outputText value="[#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})]:"
 				rendered="#{volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).role == 'asn' and not empty volumeUtilBean.getFirstNamePart(cc.attrs.volume.modsMetadata).name}" />
@@ -53,6 +70,7 @@
 					<h:outputText value=" - #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place} #{volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.volume.modsMetadata).place}"/>	
 				</h:panelGroup>			
 			</b>
+</ui:remove>
 		</h:panelGroup>
 		
 		<h:panelGroup layout="block" styleClass="medium_area0_p4 itemStatusArea" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
