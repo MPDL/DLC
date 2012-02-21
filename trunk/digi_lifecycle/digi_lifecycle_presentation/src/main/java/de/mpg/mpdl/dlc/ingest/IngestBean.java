@@ -375,11 +375,7 @@ public class IngestBean implements Serializable {
 	}
 	
 	public ModsMetadata updateModsMetadata(ModsMetadata md)
-	{     
-		
-
-
-
+	{      
 		
 		//update ModsNames displayLabel to
 		List<ModsName> names =  new ArrayList<ModsName>();
@@ -494,7 +490,7 @@ public class IngestBean implements Serializable {
 	
 	
 	public String save() 
-	{        
+	{         
 		logger.info("SAVE!!");
 		try {
 			if(mabFile == null)
