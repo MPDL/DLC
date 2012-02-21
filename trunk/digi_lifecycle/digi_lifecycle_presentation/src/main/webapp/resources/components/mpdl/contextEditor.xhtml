@@ -20,7 +20,7 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>	
 
-	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popupContext')}.hide()">
+	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popupContext')}.hide()" width="400">
         <f:facet name="header">
             <h:outputText value="#{cc.attrs.title}" />
         </f:facet>
