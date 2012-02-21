@@ -7,6 +7,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
+import org.richfaces.component.UITree;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -43,6 +44,8 @@ public class ViewPages extends VolumeLoaderBean{
 	
 	private ViewType viewType = ViewType.RECTO_VERSO;
 	private boolean hasSelected = false;
+	
+	private boolean showTree = false;
 	
 	
 	@URLAction(onPostback=false)
@@ -81,7 +84,16 @@ public class ViewPages extends VolumeLoaderBean{
 					}
 				}
 			}
-		
+			
+			/*
+			teiTree.get.
+			componentState = (TreeState) sampleTreeBinding.getComponentState();
+			try {
+				componentState.expandAll(sampleTreeBinding);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		*/
 			
 		}
 
@@ -311,6 +323,15 @@ public class ViewPages extends VolumeLoaderBean{
 
 	public void setFulltextMatches(String fulltextMatches) {
 		this.fulltextMatches = fulltextMatches;
+	}
+
+	
+	public boolean isShowTree() {
+		return showTree;
+	}
+
+	public void setShowTree(boolean showTree) {
+		this.showTree = showTree;
 	}	
 
 }

@@ -128,7 +128,10 @@ public abstract class BasePaginatorBean<ListElementType>
     // Must be called by PrettyFaces action method
     public String getInit()
     {
-        update(); 
+        //if(FacesContext.getCurrentInstance().getRenderResponse())
+    	//{
+        	update(); 
+    	//}
         return "";
     }
 

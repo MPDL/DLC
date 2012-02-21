@@ -81,13 +81,7 @@ public class SortCriterion {
 		this.sortIndex = sortIndex;
 	}
 
-	public void setSortIndexString(String sortIndex) {
-		this.sortIndex = SortIndices.valueOf(sortIndex);
-	}
 	
-	public String getSortIndexString() {
-		return sortIndex.name();
-	}
 
 	public SortOrders getSortOrder() {
 		return sortOrder;

@@ -131,18 +131,23 @@
 					value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
 			</rich:panel>
 
+	
 			<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<f:facet name="header">
 					<h:outputText value="Uploaded Images" />
 				</f:facet>
 				<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
+				
 				<rich:dataGrid columns="1" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 					<rich:panel bodyClass="rich-laguna-panel-no-header">
 						<h:panelGrid columns="2">
+							<ui:remove>
 							<a4j:mediaOutput element="img" mimeType="image/jpeg"
 								createContent="#{ingestBean.paint}" value="#{row}"
 								style="width:50px; height:50px;" cacheable="false">
+							
 							</a4j:mediaOutput>
+							</ui:remove>
 							<h:panelGrid columns="2">
 								<h:outputText value="File Name:" />
 								<h:outputText value="#{file.name}" />
@@ -153,6 +158,7 @@
 					</rich:panel>
 
 				</rich:dataGrid>
+				
 				<br />
 				<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
 					<f:ajax execute="@this" render="imageInfo" />

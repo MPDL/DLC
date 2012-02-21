@@ -21,7 +21,9 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
+import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -525,6 +527,8 @@ public class VolumeUtilBean {
 		
 		
 	}
+	
+	
 	
 	
 
