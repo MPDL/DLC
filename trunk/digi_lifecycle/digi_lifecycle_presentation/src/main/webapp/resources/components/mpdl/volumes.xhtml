@@ -99,13 +99,14 @@
 					<div class="itemMediabarThumb">
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(cc.attrs.volume.pages[0],50,100)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 					</div>
-					
+					<ui:remove>
 					<br/>
 					<div class="itemMediabarCategory">Kodikologische Daten</div>
 					<br/>
 					<div class="itemMediabarCategory">Volltext</div>
 					<br/>
 					<div class="itemMediabarCategory">Sammlung</div>
+					</ui:remove>
 				</div>
 			</div>
 		</div>
