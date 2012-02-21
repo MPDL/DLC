@@ -14,16 +14,19 @@
 	<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 
 	<ui:define name="mainContent">
-		
+
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
-			
+			<script src="/dlc/resources/jscript/jquery_1.6.3_min.js" type="text/javascript"></script>	
+			<script type="text/javascript">
+				$(document).ready(function(){addDisplayControl('.listItemMultiVolume');});
+			</script>	
 				<list:bibList_default>
 					<a4j:repeat var="volume" value="#{allVolumesBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
 					</a4j:repeat>
 				</list:bibList_default>
-			
+
 		</mpdl:paginator>
 	</ui:define>
 </ui:composition>
