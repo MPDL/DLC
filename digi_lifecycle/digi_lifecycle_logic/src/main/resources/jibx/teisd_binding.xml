@@ -72,24 +72,26 @@
 	 </mapping>
 	 
 	  <mapping name="titlePage" class="de.mpg.mpdl.dlc.vo.teisd.TitlePage" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
-	 		<structure name="docTitle" ordered="false">
-	 			<collection field="docTitles" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory">
+	 		<structure name="docTitle" ordered="false" usage="optional">
+	 			<collection field="docTitles" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
 	 				
-	 				<structure name="titlePart">
+	 				<structure name="titlePart" usage="optional">
 		 				<value style="attribute" name="type" field="type" usage="optional"/>
 		 				<value style="text" field="title" usage="optional"/>
 	 				</structure>
 	 			</collection>
+	 			
 	 		</structure>
 	 		
-	 	
- 			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory">
+	 		
+ 			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
  				
- 				<structure name="titlePart">
+ 				<structure name="titlePart" usage="optional">
 	 				<value style="attribute" name="type" field="type" usage="optional"/>
 	 				<value style="text" field="title" usage="optional"/>
  				</structure>
  			</collection>
+ 			
 
 	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>
