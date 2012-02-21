@@ -30,11 +30,6 @@
         if (data.status == 'complete') {
            toggleDisplay(document.getElementById('form1:teiInfo'));
            toggleDisplay(document.getElementById('form1:imageInfo'));
-
-
-   
-
-
       }
 
      function toggleDisplay(element) {
@@ -50,15 +45,19 @@
 	</script>
 
 		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		
+			<rich:panel id="upload" header="Upload your files...">
+				<fu:fileUpload rerender="imageInfo modsInfo teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
+				</fu:fileUpload>
+			</rich:panel>
+		
 		<h:form>	
 			<rich:panel id="submit">
-
-				
 				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 				</a4j:commandButton>
 				<h:commandButton action="#{ingestBean.clearAllData}" value="Clear All Data">
-					<f:ajax render=":modsInfo :teiInfo :imageInfo" />
+					<f:ajax render="modsInfo teiInfo imageInfo" />
 				</h:commandButton>
 					
 				<rich:popupPanel id="popup" modal="true" resizeable="false">
@@ -70,19 +69,16 @@
 					<p>Images are uploaded and processed</p>
 					<p>Please be patient, this process may take several minutes</p>
 				</rich:popupPanel>
-					
-	
 			</rich:panel>
 
 		
 			<rich:panel id="select">
-
 				<br/>
 				<h:panelGroup >
 					<h:outputText value="Type:" />
 					<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 						<f:selectItems value="#{ingestBean.contentModelItems}" />
-						<f:ajax event="change" render="select :modsInfo :teiInfo :imageInfo" />
+						<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
 					</h:selectOneMenu>
 				</h:panelGroup>
 				<h:panelGroup>
@@ -100,14 +96,6 @@
 					</h:selectOneMenu>	
 				</h:panelGroup>
 			</rich:panel>
-		</h:form>
-
-
-			<rich:panel id="upload" header="Upload your files...">
-				<fu:fileUpload rerender="imageInfo modsInfo teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
-				</fu:fileUpload>
-			</rich:panel>
-
 
 			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}" />
@@ -123,8 +111,8 @@
 				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Volume'}">
 					<mpdl:modsEditor_Vol modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
-			
 			</rich:panel>
+
 			
 			<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<h:outputText
@@ -164,9 +152,10 @@
 					<f:ajax execute="@this" render="imageInfo" />
 				</h:commandButton>
 			</rich:panel>
+		</h:form>
 		
-			<h:messages />
 		
+		<h:messages />
 		</h:panelGroup>
 
 	</ui:define>

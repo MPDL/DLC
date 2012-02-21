@@ -20,7 +20,6 @@
 
 
 
-<h:form>
 	<h:panelGrid id="editorMulti" columns="2"  >
 		<h:outputText value="#{lbl.mods_names}" />
 		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
@@ -77,10 +76,10 @@
 			<h:panelGrid columns="3">
 				<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" />
 				<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value="+" >
-					 <f:ajax render="@form" execute="@form"/>
+					 <f:ajax render="@this" execute="@form"/>
 				</h:commandButton>
 				<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value="-" >
-					 <f:ajax render="@form" execute="@form"/>
+					 <f:ajax render="@this" execute="@form"/>
 				</h:commandButton>
 			</h:panelGrid>
 		</a4j:repeat>
@@ -91,7 +90,7 @@
 		<h:outputText value="#{lbl.mods_freeText}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.freeText}" />
  	</h:panelGrid>
-</h:form>
+
 
 
 

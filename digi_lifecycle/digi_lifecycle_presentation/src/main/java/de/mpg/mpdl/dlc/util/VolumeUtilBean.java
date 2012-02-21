@@ -101,19 +101,19 @@ public class VolumeUtilBean {
 			return 0;
 	}
 	
-	public static ModsTitle getMainTitle(ModsMetadata md)
-	{
-		
-		for(ModsTitle mt : md.getTitles())
-		{
-			if(mt.getType() == null || mt.getType().isEmpty())
-			{
-				return mt;
-				
-			}
-		}
-		return new ModsTitle();
-	}
+//	public static ModsTitle getMainTitle(ModsMetadata md)
+//	{
+//		
+//		for(ModsTitle mt : md.getTitles())
+//		{
+//			if(mt.getType() == null || mt.getType().isEmpty())
+//			{
+//				return mt;
+//				
+//			}
+//		}
+//		return new ModsTitle();
+//	}
 	
 	public static ModsTitle getTitle(ModsMetadata md)
 	{  
@@ -122,6 +122,26 @@ public class VolumeUtilBean {
 			if(mt.getType() !=null && mt.getType().equals("alternative"))
 				return mt;
 			else if(mt.getDisplayLabel().equals("mainTitle"))
+				return mt;
+		}
+		return new ModsTitle();
+	}
+	
+	public static ModsTitle getAlternativeTitle(ModsMetadata md)
+	{  
+		for(ModsTitle mt : md.getTitles())
+		{
+			if(mt.getType() !=null && mt.getType().equals("alternative"))
+				return mt;
+		}
+		return new ModsTitle();
+	}
+	
+	public static ModsTitle getMainTitle(ModsMetadata md)
+	{  
+		for(ModsTitle mt : md.getTitles())
+		{
+			if(mt.getDisplayLabel().equals("mainTitle"))
 				return mt;
 		}
 		return new ModsTitle();
