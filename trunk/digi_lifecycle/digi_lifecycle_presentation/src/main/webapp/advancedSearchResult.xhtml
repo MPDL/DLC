@@ -13,24 +13,22 @@
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
 			
-			<ui:remove>
+			<h:form>
 			<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">
-			
+				<h:outputText value="#{lbl.sortCriterion}"/>
 			
 				<h:selectOneMenu value="#{sortCriterion.sortIndex}">
-					<f:selectItems value="#{advancedSearchResultBean.sortCriterionMenu}"/>
-					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/> 
+					<f:selectItems value="#{advancedSearchResultBean.sortIndicesMenu}"/>
+					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/>
 				</h:selectOneMenu>
-			
+					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{sortCriterion.sortOrder}">
+						<f:ajax render="@all"/>
+					</h:commandButton>
+			<br/>
 			</a4j:repeat>
+			</h:form>
 			
-			
-			<h:selectOneMenu value="#{advancedSearchResultBean.sortCriterionList[0].sortIndexString}">
-					<f:selectItem itemValue="AUTHOR"/>
-					<f:selectItem itemValue="TITLE"/>
-					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/> 
-				</h:selectOneMenu>
-			</ui:remove>
+		
 			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
 				
 				<list:bibList_default>

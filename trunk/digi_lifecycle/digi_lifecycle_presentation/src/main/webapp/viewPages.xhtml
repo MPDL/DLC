@@ -135,23 +135,27 @@
 						<span class="double_area0" style="position:absolute; z-index: 2;">		
 							<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 				     			<rich:tab header="Toc" id="toc"  style="height:97em;overflow:auto" onmouseover="$('span.double_area0').width('60em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+										<h:panelGroup layout="block" id="tocDiv" >
 										
-										<rich:tree toggleType="ajax" var="divItem" >
+										<rich:tree toggleType="ajax" var="divItem" rowKeyVar="keyvar">
 											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{volumeUtilBean.getListWithoutPagebreaks(divItem.pbOrDiv)}">
 											
-												<rich:treeNode expanded="#{true}" rendered="#{true}">
+												<rich:treeNode rendered="#{true}" expanded="#{true}">
+													
 													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 														
 														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
 														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
 														
-														<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-														<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-														<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-														<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+														<h:panelGroup rendered="utilBean.getUnqualifiedClassName(divItem) == 'Div'">
+															<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+															<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+															<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+															<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+														
 														
 														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-														
+														</h:panelGroup>
 														<f:ajax render="@all"/>
 														
 													</h:commandLink>
@@ -174,7 +178,29 @@
 												</rich:treeNode>
 												</ui:remove>
 											</rich:treeModelRecursiveAdaptor>
+											
 										</rich:tree>
+										</h:panelGroup>
+										
+										<ui:remove>
+										<h:panelGroup rendered="#{!viewPages.showTree}">
+											Loading...
+										</h:panelGroup>
+										
+										
+										<h:commandButton styleClass="showTocDivButton" id="showTocDivButton" value=" " action="#{viewPages.setShowTree(true)}" >
+											<f:ajax render="tocDiv"/>
+										</h:commandButton>
+										
+										<script type="text/javascript">
+								            $(document).ready(function(){
+								                $('.showTocDivButton').click();
+				
+								                
+								            });
+				
+								        </script>
+								        </ui:remove>
 										
 								</rich:tab>
 								<rich:tab header="Thumbs" id="thumbs">
@@ -226,6 +252,8 @@
 				                    };
 				                var $div = $('div.digilib');
 				                $div.digilib(opts);
+
+				                
 				            });
 				
 				        </script>

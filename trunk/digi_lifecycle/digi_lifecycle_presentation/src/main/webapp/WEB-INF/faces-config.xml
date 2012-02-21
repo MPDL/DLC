@@ -33,6 +33,7 @@
     version="2.0">
   
   
+  
   <application>   
     <locale-config>
       <default-locale>en</default-locale>
@@ -45,5 +46,6 @@
     </view-handler>
   -->
   </application>
+  
   
 </faces-config>

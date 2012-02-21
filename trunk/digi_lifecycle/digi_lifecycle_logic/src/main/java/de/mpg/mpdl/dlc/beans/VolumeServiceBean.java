@@ -162,8 +162,10 @@ public class VolumeServiceBean {
 		
 		if(transfFact==null)
 		{
-			System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-			transfFact = TransformerFactory.newInstance();
+			//System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+			transfFact = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
+			//transfFact = TransformerFactory.newInstance();
+					
 		}
 	}
 	
@@ -1348,7 +1350,7 @@ public class VolumeServiceBean {
 		String pagedTeiResult = getTeiForPage(p, pagedTei);
 		//logger.info(pagedTeiResult);
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei/xhtml2/tei.xsl");
 		
 		SAXSource xsltSource = new SAXSource(new InputSource(url.toExternalForm()));
 		
@@ -1358,6 +1360,10 @@ public class VolumeServiceBean {
 		StringWriter wr = new StringWriter();
 		StreamResult res = new StreamResult(wr);
 		Transformer transformer = transfFact.newTransformer(xsltSource);
+		
+		System.out.println(transformer.getClass().getClassLoader());
+		
+		
 		transformer.setParameter("autoToc", "false");
 		transformer.setParameter("autoHead", "false");
 		transformer.setParameter("institution", "");

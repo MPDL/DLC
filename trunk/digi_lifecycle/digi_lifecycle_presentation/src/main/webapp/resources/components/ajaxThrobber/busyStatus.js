@@ -13,4 +13,4 @@ if (!window["busystatus"]) {
 			}
 		};
 		 
-		jsf.ajax.addOnEvent(busystatus.onStatusChange)
+		jsf.ajax.addOnEvent(busystatus.onStatusChange);

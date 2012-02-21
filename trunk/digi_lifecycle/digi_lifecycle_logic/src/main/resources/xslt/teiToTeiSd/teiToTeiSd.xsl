@@ -5,7 +5,7 @@
 		<xsl:output indent="yes"/>
 		
 		<!-- Copy these elements into the TEI SD, ignore others -->
-		<xsl:template match="/tei:TEI|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:docTitle">
+		<xsl:template match="/tei:TEI|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:docTitle|tei:figure">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates />
@@ -15,7 +15,7 @@
 		
 		
 		<!--for head and title tags: copy tag with all attributes, copy the inner text content, replace <lb/> with a blank -->
-		<xsl:template match="tei:head|tei:titlePart">
+		<xsl:template match="tei:head|tei:titlePart|tei:figDesc">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates mode="textContent"/>
