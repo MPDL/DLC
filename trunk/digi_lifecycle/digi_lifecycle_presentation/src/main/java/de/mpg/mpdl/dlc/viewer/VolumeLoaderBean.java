@@ -71,7 +71,7 @@ public abstract class VolumeLoaderBean {
 					try {
 						Volume parent = null;
 						Relation rel = volume.getItem().getRelations().get(0);
-						parent = volServiceBean.retrieveVolume(rel.getObjid(), loginBean.getUserHandle());
+						parent = volServiceBean.retrieveVolume(rel.getObjid(), null);
 						relatedVolumes.add(parent);
 					} catch (Exception e) {
 						logger.error("cannot retrieve parent Volume" + e.getMessage());

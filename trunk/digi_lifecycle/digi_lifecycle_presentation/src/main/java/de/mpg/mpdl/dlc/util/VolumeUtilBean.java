@@ -140,7 +140,7 @@ public class VolumeUtilBean {
 	}
 	
 	public static ModsPublisher getFirstPublisher(ModsMetadata md)
-	{
+	{ 
 		for(ModsPublisher mp : md.getPublishers())
 		{
 			if(mp.getDisplayLabel().equals("publisher1"))
@@ -160,7 +160,7 @@ public class VolumeUtilBean {
 	}
 	
 	public static ModsTitle getMainTitle(ModsMetadata md)
-	{  
+	{   
 		for(ModsTitle mt : md.getTitles())
 		{
 			if(mt.getDisplayLabel().equals("mainTitle"))

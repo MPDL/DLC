@@ -58,7 +58,7 @@ public class ViewPages extends VolumeLoaderBean{
 	protected void volumeLoaded() {
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
 		this.setSelectedPage(pageforNumber);
-		
+		 
 		if(ViewType.RECTO_VERSO.equals(viewType))
 		{
 			if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
