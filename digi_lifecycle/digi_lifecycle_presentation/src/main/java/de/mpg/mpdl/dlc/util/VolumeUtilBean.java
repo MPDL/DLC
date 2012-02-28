@@ -115,6 +115,18 @@ public class VolumeUtilBean {
 //		return new ModsTitle();
 //	}
 	
+	
+	public static ModsName getFirstAuthor(ModsMetadata md)
+	{
+		for(ModsName mn : md.getNames())
+		{
+			if(mn.getDisplayLabel().equals("author1"))
+				return mn;
+		}
+		return new ModsName();
+	}
+	
+	//get alternative title or maintitle for titlelist and head
 	public static ModsTitle getTitle(ModsMetadata md)
 	{  
 		for(ModsTitle mt : md.getTitles())
@@ -127,14 +139,24 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
-	public static ModsTitle getAlternativeTitle(ModsMetadata md)
-	{  
-		for(ModsTitle mt : md.getTitles())
+	public static ModsPublisher getFirstPublisher(ModsMetadata md)
+	{
+		for(ModsPublisher mp : md.getPublishers())
 		{
-			if(mt.getType() !=null && mt.getType().equals("alternative"))
-				return mt;
+			if(mp.getDisplayLabel().equals("publisher1"))
+				return mp;
+			else if(mp.getDisplayLabel().equals("printer1"))
+				return mp;
 		}
-		return new ModsTitle();
+		return null;
+	}
+	
+	public static ModsName getFirstEditor(ModsMetadata md)
+	{
+		for(ModsName mn : md.getNames())
+			if(mn.getDisplayLabel().equals("editor1"))
+				return mn;
+		return new ModsName();
 	}
 	
 	public static ModsTitle getMainTitle(ModsMetadata md)
@@ -145,7 +167,22 @@ public class VolumeUtilBean {
 				return mt;
 		}
 		return new ModsTitle();
+	}	
+	
+	
+	
+	
+	public static ModsTitle getAlternativeTitle(ModsMetadata md)
+	{  
+		for(ModsTitle mt : md.getTitles())
+		{
+			if(mt.getType() !=null && mt.getType().equals("alternative"))
+				return mt;
+		}
+		return new ModsTitle();
 	}
+	
+
 	
 	public static ModsTitle getUniformTitle(ModsMetadata md)
 	{
@@ -167,23 +204,9 @@ public class VolumeUtilBean {
 	
 
 	
-	public static ModsName getFirstAuthor(ModsMetadata md)
-	{
-		for(ModsName mn : md.getNames())
-		{
-			if(mn.getDisplayLabel().equals("author1"))
-				return mn;
-		}
-		return new ModsName();
-	}
+
 	
-	public static ModsName getFirstEditor(ModsMetadata md)
-	{
-		for(ModsName mn : md.getNames())
-			if(mn.getDisplayLabel().equals("editor1"))
-				return mn;
-		return new ModsName();
-	}
+
 	
 	
 	public static ModsName getFirstNamePart(ModsMetadata md)
@@ -208,17 +231,7 @@ public class VolumeUtilBean {
 		return new ModsName();
 	}
 	
-	public static ModsPublisher getFirstPublisher(ModsMetadata md)
-	{
-		for(ModsPublisher mp : md.getPublishers())
-		{
-			if(mp.getDisplayLabel().equals("publisher1"))
-				return mp;
-			else if(mp.getDisplayLabel().equals("printer1"))
-				return mp;
-		}
-		return null;
-	}
+
 	
 
 	public static ModsPublisher getMainPublisher(ModsMetadata md)
