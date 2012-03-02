@@ -19,6 +19,7 @@ import javax.faces.model.SelectItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
+import org.richfaces.event.DropEvent;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.om.context.Context;
@@ -373,6 +374,32 @@ public class IngestBean implements Serializable {
 	public int getMoveTo() {
 		return moveTo;
 	}
+	  
+	public void processDrop(DropEvent e) {
+		FileItem draggedFile = (FileItem)e.getDragValue();
+		FileItem droppedFile = (FileItem)e.getDropValue();
+		int draggedFileIndex = getImageFiles().indexOf(draggedFile);
+		int droppedFileIndex = getImageFiles().indexOf(droppedFile);
+		
+		if(draggedFileIndex < droppedFileIndex)
+		{
+			getImageFiles().remove(draggedFileIndex);
+			getImageFiles().add(droppedFileIndex, (DiskFileItem) draggedFile);
+		}
+		else
+		{
+			getImageFiles().remove(draggedFileIndex);
+			getImageFiles().add(droppedFileIndex, (DiskFileItem)draggedFile);
+		}
+		
+	}
+	
+	public void deleteImage(int i, FileItem file)
+	{
+		getImageFiles().remove(i);
+	}
+	
+	
 	
 	public ModsMetadata updateModsMetadata(ModsMetadata md)
 	{      

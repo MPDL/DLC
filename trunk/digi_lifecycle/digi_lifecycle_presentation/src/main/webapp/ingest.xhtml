@@ -22,7 +22,12 @@
 	{
 	float:none;
 	}
-	</style>
+	
+		
+
+			</style>	
+	
+
 	<script>
 	function ajaxExecuting(data)
 	{
@@ -37,6 +42,7 @@
      	if(document.getElementById('form1:contentModel').value == 'Multivolume')
         	element.style.display = "none";
        	else
+           	
         	element.style.display = "";
     }
 
@@ -119,16 +125,36 @@
 					value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
 			</rich:panel>
 
-	
+
+			<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
+       			 Drag the item to proper area..
+  		  	</rich:dragIndicator>
+  		  	
 			<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 				<f:facet name="header">
 					<h:outputText value="Uploaded Images" />
 				</f:facet>
 				<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
-				
+
+	            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
+	                 <f:facet name="header">
+                        <a4j:commandButton action="#{dragDropBean.reset}" value="Up" render="imageArea" />
+                    </f:facet>
+                    <a4j:outputPanel layout="block" styleClass="rf-ind-drag">
+                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
+                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
+                        <h:outputText value="#{file.name}"></h:outputText>
+						<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
+							<f:ajax execute=":#{component.parent.parent.parent.clientId}" render=":#{component.parent.parent.parent.clientId}" />
+						</h:commandButton>
+                    </a4j:outputPanel>
+                </rich:dataGrid>
+    
+<ui:remove>		
 				<rich:dataGrid columns="1" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 					<rich:panel bodyClass="rich-laguna-panel-no-header">
 						<h:panelGrid columns="2">
+	
 							<ui:remove>
 							<a4j:mediaOutput element="img" mimeType="image/jpeg"
 								createContent="#{ingestBean.paint}" value="#{row}"
@@ -136,6 +162,7 @@
 							
 							</a4j:mediaOutput>
 							</ui:remove>
+
 							<h:panelGrid columns="2">
 								<h:outputText value="File Name:" />
 								<h:outputText value="#{file.name}" />
@@ -144,14 +171,14 @@
 							</h:panelGrid>
 						</h:panelGrid>
 					</rich:panel>
-
 				</rich:dataGrid>
-				
+</ui:remove>				
 				<br />
 				<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
 					<f:ajax execute="@this" render="imageInfo" />
 				</h:commandButton>
 			</rich:panel>
+			
 		</h:form>
 		
 		
