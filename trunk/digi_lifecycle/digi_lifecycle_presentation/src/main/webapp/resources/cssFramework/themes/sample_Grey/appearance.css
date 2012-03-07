@@ -19,49 +19,49 @@
 *:first-child+html input[type="checkbox"] {
 	border:none !important;
 }
-*:first-child+html .standardHeader .id_siteSearchMenu input[type="radio"] {
+*:first-child+html .mpdl_standardHeader .mpdl_id_siteSearchMenu input[type="radio"] {
 	margin-top:-0.16666em;
 	margin-left:-0.25em;
 }
-*:first-child+html .standardHeader .id_siteSearchMenu input[type="checkbox"] {
+*:first-child+html .mpdl_standardHeader .mpdl_id_siteSearchMenu input[type="checkbox"] {
 	margin-top:-0.16666em;
 	margin-left:-0.25em;
 }
-*:first-child+html .optionBox .optionBoxLabel {
+*:first-child+html .mpdl_optionBox .mpdl_optionBoxLabel {
 	margin:0 0 1em 0;
 }
-*:first-child+html .optionBox li {
+*:first-child+html .mpdl_optionBox li {
 	clear:left;
 }
-*:first-child+html .optionBox li a{
+*:first-child+html .mpdl_optionBox li a{
 	margin:0 0 0.75% 0;
 }
 
 
 /*main menu */
-*:first-child+html .menuBox {
+*:first-child+html .mpdl_menuBox {
 	padding-bottom: 2em;
 }
-*:first-child+html label.menuLevel1Menu {
+*:first-child+html label.mpdl_menuLevel1Menu {
 	float:none;
 	clear:both;
 	display: block;
 }
-*:first-child+html label.menuLevel1Label {
+*:first-child+html label.mpdl_menuLevel1Label {
 	float:none;
 	clear:both;
 	display: block;
 }
-*:first-child+html .menuLevel2 {
+*:first-child+html .mpdl_menuLevel2 {
 	float:none;
 	clear:both;
 	left:0;
 	width:95%;
 }
-*:first-child+html .menuLevel3 {
+*:first-child+html .mpdl_menuLevel3 {
 	width:95%;
 }
-*:first-child+html .menuLevel3 li {
+*:first-child+html .mpdl_menuLevel3 li {
 	padding:0;
 	margin:0;
 	height:120%;
@@ -91,7 +91,7 @@ a {
 a:hover {
 	color:#00AA11;
 }
-a:active {
+a:mpdl_active {
 	color:#00AA11;
 }
 a[disabled] {
@@ -107,7 +107,7 @@ a[disabled] {
 *[onclick]:hover {
 	color:#00AA11;
 }
-*[onclick]:active {
+*[onclick]:mpdl_active {
 	color:#00AA11;
 }
 
@@ -152,65 +152,65 @@ button:disabled {
 /***              ***
  * global id-class and class declarations
  */
-.id_wrapper {
+.mpdl_id_wrapper {
 	min-width:75em; /* 900px */
 	width:96%;		/* the result of width + padding = sum of width = 100% */
 	padding:0 2%;
 	background-color:#FFFFFF;
 }
-.id_header {
+.mpdl_id_header {
 	width:100%;
 }
-.id_headerMetaMenu {
+.mpdl_id_headerMetaMenu {
 	width:100%;
 }
-.id_mainMenu {
+.mpdl_id_mainMenu {
 	width:100%;
 	overflow: visible !important;
 	z-index:12;
 }
-.id_mainMenu * {
+.mpdl_id_mainMenu * {
 	overflow: visible !important;
 }
-.id_optionBox { /* options for the current page content, e.g. Order by, Filter by, Download, Export, ... */
+.mpdl_id_optionBox { /* options for the current page mpdl_content, e.mpdl_g. Order by, Filter by, Download, Export, ... */
 	width:100%;
 	padding:0 0 0 0.83333%;
 }
-.id_optionBox.vertikal { /* conditions for vertical option menu */
+.mpdl_id_optionBox.mpdl_vertikal { /* conditions for vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-.id_contentDescription {
+.mpdl_id_contentDescription {
 	width:100%;
 }
-.id_siteTitle {
+.mpdl_id_siteTitle {
 	float:right;
 	padding:0 1.6%;
 	font-size:150%;
 	background-color:#EEF2F0;
 }
-.id_sidebarLeft {
-	width:24.75%;
+.mpdl_id_sidebarLeft {
+	
 }
-.overflow {
+.mpdl_overflow {
 	overflow:visible !important;
 	z-index:20;
 }
 
-.separator {
+.mpdl_separator {
 	width:0.08333em;
 	height:1.3333em;
 	background-color:#7F7F7F;
 }
 
 
-.fiveRows {  /* 1row = 0,166666667em */
+.mpdl_fiveRows {  /* 1row = 0,166666667em */
 	height:6em;
 }
 /* not necessary at the moment
-.sixRows {
+.mpdl_sixRows {
 	height:7.08333em;
 }
-.fiftyRows {
+.mpdl_fiftyRows {
 	height:58.3333em;
 }
 */
@@ -226,7 +226,7 @@ button:disabled {
  ******************************				dynamic selectbox with JS functions		******************************
  ******************************					with no maximum width				******************************
  *****************************************************************************************************************/
-.dynamicSelectBox_js {
+.mpdl_dynamicSelectBox_js {
 	height:1.6666em;
 	padding:0;
 	font-size:95%;
@@ -234,26 +234,26 @@ button:disabled {
 	background-position:right top;
 	text-align: left;
 }
-.dynamicSelectBox_js * {
+.mpdl_dynamicSelectBox_js * {
 	cursor: pointer;
 }
-.dynamicSelectBox_js *[disabled] {
+.mpdl_dynamicSelectBox_js *[disabled] {
 	cursor: default;
 }
-.dynamicSelectBox_js .selectionContent {
+.mpdl_dynamicSelectBox_js .mpdl_selectionContent {
 	margin-right:1.6666em;
 	padding:0 0.6666em 0.16666em 0.6666em;
 	font-size: 97%;
 	height: 1.16666em;
 	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
 }
-.dynamicSelectBox_js .selectionText {
+.mpdl_dynamicSelectBox_js .mpdl_selectionText {
 	display:block;
 	overflow:hidden;
 	white-space:nowrap;
 	text-align: left;
 }
-.dynamicSelectBox_js select {
+.mpdl_dynamicSelectBox_js select {
 	float:left;
 	clear:left;
 	margin-top:-1.5em;
@@ -270,59 +270,59 @@ button:disabled {
 
 
 /*********************************************************************************************************************************
- ******************************				.standardHeader											******************************
- ******************************		includes solutionLogo, metaMenu, simple Search, headerNav		****************************** 
+ ******************************				.mpdl_standardHeader											******************************
+ ******************************		includes solutionLogo, metaMenu, simple Search, mpdl_headerNav		****************************** 
  *********************************************************************************************************************************/
-.standardHeader {
+.mpdl_standardHeader {
 	width:100%;
 }
 
 /*********************************************************************************************************
- ******************************				.standardHeader .id_headerMetaMenu .metaMenu		******************************
+ ******************************				.mpdl_standardHeader .mpdl_id_headerMetaMenu .mpdl_metaMenu		******************************
  *********************************************************************************************************/
-.id_headerMetaMenu .metaMenu {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu {
 	float:right;
 }
-.id_headerMetaMenu .metaMenu * {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu * {
 	float:left;
 }
-.id_headerMetaMenu .metaMenu a {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu a {
 	padding:0.08333em 2em 0.3333em 2em;
 }
-.id_headerMetaMenu .metaMenu nav {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu nav {
 	padding:0;
 }
-.id_headerMetaMenu .metaMenu select {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu select {
 	padding:0;
 }
-.id_headerMetaMenu .metaMenu option {
+.mpdl_id_headerMetaMenu .mpdl_metaMenu option {
 	float:none;
 }
-.metaMenu a:hover {
+.mpdl_metaMenu a:hover {
 	color:#00AA11;
 }
-.metaMenu .separator {
+.mpdl_metaMenu .mpdl_separator {
 	padding:0;
 }
-.metaMenu .userDetail {
+.mpdl_metaMenu .mpdl_userDetail {
 	font-style:italic;
 	font-size:75%;
 	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
 }
-.metaMenu .dynamicSelectBox_js {
+.mpdl_metaMenu .mpdl_dynamicSelectBox_js {
 	padding:0;
 	background-position:right top;
 }
-.metaMenu .dynamicSelectBox_js * {
+.mpdl_metaMenu .mpdl_dynamicSelectBox_js * {
 	padding:0;
 }
-.metaMenu .dynamicSelectBox_js .selectionContent {
+.mpdl_metaMenu .mpdl_dynamicSelectBox_js .mpdl_selectionContent {
 	padding:0.0833333em 0.6666em 0 0.6666em;
 }
 /*************************************************************************************************************
- ******************************				.standardHeader .solutionLogo		******************************
+ ******************************				.mpdl_standardHeader .mpdl_solutionLogo		******************************
  *************************************************************************************************************/
-.standardHeader .solutionLogo {
+.mpdl_standardHeader .mpdl_solutionLogo {
 	float: left;
 	margin-left:1em;
 	margin-top: 1em;
@@ -331,43 +331,43 @@ button:disabled {
 
 
 /*****************************************************************************************************************
- ******************************				.standardHeader .id_siteSearchMenu		******************************
+ ******************************				.mpdl_standardHeader .mpdl_id_siteSearchMenu		******************************
  *****************************************************************************************************************/
-.standardHeader .id_siteSearchMenu {
+.mpdl_standardHeader .mpdl_id_siteSearchMenu {
 	float: right;
 	margin-top:2%;
 	text-align:right;
 }
-.id_siteSearchMenu .icon_quickSearch_16_16 {
+.mpdl_id_siteSearchMenu .mpdl_icon_quickSearch_16_16 {
 	background-image: url("image/_default_32_32.png");
 	width:2.66666em;
 	height:2.66666em;
 	margin-right: 0.5em;
 }
-.simpleSearch label {
+.mpdl_simpleSearch label {
 	float: left; 
 	margin:0 1.3333em 0 0.5em; 
 }
-.simpleSearch input {
+.mpdl_simpleSearch input {
 	float: left;
 }
-.simpleSearch input[type="radio"] {
+.mpdl_simpleSearch input[type="radio"] {
 	margin: 0.16666em 0 0 0;
 }
-.simpleSearch input[type="submit"] {
+.mpdl_simpleSearch input[type="submit"] {
 	margin-left:0.75em;
 	padding:0 0.25em;
 }
 
 /*********************************************************************************************************
- ******************************				.standardHeader .headerNav		******************************
+ ******************************				.mpdl_standardHeader .mpdl_headerNav		******************************
  *********************************************************************************************************/
-.standardHeader .headerNav {
+.mpdl_standardHeader .mpdl_headerNav {
 	float:right;
 	margin-top: 2.083333%;
 	text-align: right;
 }
-.standardHeader .headerNav a.navEntry {
+.mpdl_standardHeader .mpdl_headerNav a.mpdl_navEntry {
 	float:none;
 	margin-left: 1.3333em;
 	word-break: keep-all; /* for chinese, korean, and other asian languages - no line breaking */
@@ -376,21 +376,21 @@ button:disabled {
 
 
 /*************************************************************************************************************
- ******************************				.id_mainMenu						******************************
+ ******************************				.mpdl_id_mainMenu						******************************
  ******************************		includes mainMenu with 3 level		 		****************************** 
  *************************************************************************************************************/
-.mainMenu {
+.mpdl_mainMenu {
 	width:100%;
 	margin-bottom: 2em;
 	padding-left:1.6%;
 }
-.menuBox * {
+.mpdl_menuBox * {
 	cursor:pointer;
 }
-.menuBox *[disabled] {
+.mpdl_menuBox *[disabled] {
 	cursor:default;
 }
-.menuBox .menuLevel1 {
+.mpdl_menuBox .mpdl_menuLevel1 {
 	float:left;
 	position: relative;
 	text-align: center;
@@ -398,46 +398,46 @@ button:disabled {
 	color:#CCCCCC;
 	background-color:#555555;
 }
-.menuLevel1Label {
+.mpdl_menuLevel1Label {
 	color:#00FFFF;
 	font-size: 150%;
 	color:#00FFFF;
 }
-.menuLevel1Label * {
+.mpdl_menuLevel1Label * {
 	color:#00FFFF;
 }
-.menuLevel1Menu {
+.mpdl_menuLevel1Menu {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	padding-right:1.5em;
 	font-size: 150%;
 }
-.menuBox .menuLevel2 {
+.mpdl_menuBox .mpdl_menuLevel2 {
 	display:none;
 	float:left;
 	overflow: visible;
 	text-align: left;
 }
-.menuBox .menuLevel1:hover .menuLevel2 {
+.mpdl_menuBox .mpdl_menuLevel1:hover .mpdl_menuLevel2 {
 	display:block;
 	position: absolute;
 	background-color: #777777;
 }
-.menuLevel2 li {
+.mpdl_menuLevel2 li {
 	background-color: #777777;
 }
 
-.menuLevel2Label {
+.mpdl_menuLevel2Label {
 	padding-left:0.5em;
 	color:#222222;
 }
-.menuBox .menuLevel2Entry {
+.mpdl_menuBox .mpdl_menuLevel2Entry {
 	height:2em; 
 	line-height:2em;
 	width:100%;
 	padding-right:1.5em;
 }
-.menuBox .menuLevel2EntryMenu {
+.mpdl_menuBox .mpdl_menuLevel2EntryMenu {
 	height:2em; 
 	line-height:2em;
 	width:100%;
@@ -445,20 +445,20 @@ button:disabled {
 	background-position: right;
 	padding-right:1.5em;
 }
-.menuBox .menuLevel2Entry:hover {
+.mpdl_menuBox .mpdl_menuLevel2Entry:hover {
 	background-color: #999999;
 }
-.menuBox .menuLevel2EntryMenu:hover {
+.mpdl_menuBox .mpdl_menuLevel2EntryMenu:hover {
 	background-color: #999999;
 }
-.menuBox .menuLevel2Entry:hover .menuLevel3 {
+.mpdl_menuBox .mpdl_menuLevel2Entry:hover .mpdl_menuLevel3 {
 	display: block;
 	position: absolute;
 	top:0;
 	left:99.8%;
 	height:2em; line-height:2em;
 }
-.menuBox .menuLevel2EntryMenu:hover .menuLevel3 {
+.mpdl_menuBox .mpdl_menuLevel2EntryMenu:hover .mpdl_menuLevel3 {
 	display: block;
 	position: absolute;
 	top:0;
@@ -466,79 +466,79 @@ button:disabled {
 	height:2em; line-height:2em;
 }
 
-.menuBox .menuLevel3 {
+.mpdl_menuBox .mpdl_menuLevel3 {
 	float:left;
 	display: none;
 	color:#000000;
 }
-.menuBox .menuLevel3 li {
+.mpdl_menuBox .mpdl_menuLevel3 li {
 	background-color: #CCCCCC;
 	padding-left:0.5em;
 	padding-right:0.5em;
 	white-space:nowrap;
 }
-.menuBox .menuLevel3 li:hover {
+.mpdl_menuBox .mpdl_menuLevel3 li:hover {
 	background-color: #00FFFF;
 }
 
 
 
 /*************************************************************************************************************************
- ******************************				id_optionBox									******************************
+ ******************************				mpdl_id_optionBox									******************************
  ******************************			includes: options & actions for current context		******************************
  *************************************************************************************************************************/
-.id_optionBox.vertikal .optionBox { /* conditions for optionBox in vertical option menu */
+.mpdl_id_optionBox.mpdl_vertikal .mpdl_optionBox { /* conditions for mpdl_optionBox in vertical option menu */
 	clear:both;
 	float:none;
 	margin-top:1em;
 }
-.id_optionBox.vertikal .optionBox+.optionBox { /* conditions for optionBox in vertical option menu */
+.mpdl_id_optionBox.mpdl_vertikal .mpdl_optionBox+.mpdl_optionBox { /* conditions for mpdl_optionBox in vertical option menu */
 	clear:both;
 	float:none;
 	margin-left:0;
 }
-.id_optionBox.vertikal menu menu { /* conditions for sub-menu in vertical option menu */
+.mpdl_id_optionBox.mpdl_vertikal menu menu { /* conditions for sub-menu in vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-.optionBox {
+.mpdl_optionBox {
 	padding:0;
 	margin:0 0 1.5em 1.6%;
 }
-.optionBox .optionBoxLabel {
+.mpdl_optionBox .mpdl_optionBoxLabel {
 	display: block;
 	margin-bottom:1em;
 	padding:0 1.3333em;
 }
-.optionBox menu menu {
+.mpdl_optionBox menu menu {
 	padding:0 1.3333em;
 }
-.optionBox:first-child {
+.mpdl_optionBox:first-child {
 	display:block;
 	margin-left:0%;
 }
-.optionBox label {
+.mpdl_optionBox label {
 	display:block;
 }
 
-.optionBox li a {
+.mpdl_optionBox li a {
 	float:left;
 	clear:left;
 	display:block;
 	margin-bottom:0.5em;
 }
-.optionBox a+a {
+.mpdl_optionBox a+a {
 	clear:none;
 	margin-left:1.3333em;
 }
-.optionBox .dynamicSelectBox_js {
+.mpdl_optionBox .mpdl_dynamicSelectBox_js {
 	display:block;
 	float:none;
 	margin-bottom:1em;
 }
-.optionBox select option[selected] {
+.mpdl_optionBox select option[selected] {
 	color:#00AA11;
 }
-.optionBox .active {
+.mpdl_optionBox .mpdl_active {
 	color:#00AA11;
 }
 
@@ -548,156 +548,156 @@ button:disabled {
  ******************************				MessageArea							******************************
  ******************************			for: error, warning, success, info		******************************
  *************************************************************************************************************/
-.messageArea {
+.mpdl_messageArea {
 	width:46.7%;
 	padding:1% 1.6%;
 }
-.messageArea span {
+.mpdl_messageArea span {
 	display:block;
 }
-.messageError {
+.mpdl_messageError {
 	color:#FF0000;
 }
-.messageWarning {
+.mpdl_messageWarning {
 	color:#FF6666;
 }
-.messageSuccess {
+.mpdl_messageSuccess {
 	color:#00AA11;
 }
-.messageInfo {
+.mpdl_messageInfo {
 	color:#555555;
 	font-style:italic;
 }
 /*************************************************************************************************************
- ******************************				breadcrump & siteTitle				******************************
+ ******************************				mpdl_breadcrump & siteTitle				******************************
  ******************************													******************************
  *************************************************************************************************************/
-.breadTitle {
-    /* (class which includes the breadcrump and siteTitle) */
+.mpdl_breadTitle {
+    /* (class which includes the mpdl_breadcrump and siteTitle) */
     width:46.7%;
     padding:0.9% 1.6% 1% 1.6%;
     text-align:right;
 }
-.breadcrump {
+.mpdl_breadcrump {
 	line-height:150%;
 }
 
 
 /*****************************************************************************************************************************
  ******************************				PAGINATOR											******************************
- ******************************		includes paginatorWave										****************************** 
+ ******************************		includes mpdl_paginatorWave										****************************** 
  *****************************************************************************************************************************/
-.paginatorWave {
+.mpdl_paginatorWave {
 	width: 100%;
 	margin:0 0 0.2% 0;
 }
-.paginatorWave * {
+.mpdl_paginatorWave * {
 	text-align: center;
 }
-.paginatorWave .iconActionLabel {
+.mpdl_paginatorWave .mpdl_iconActionLabel {
 	margin-left:0.5em;
 	margin-right:0.5em;
 	cursor: pointer;
 }
-.paginatorWave .rangeSelector {
+.mpdl_paginatorWave .mpdl_rangeSelector {
 	width:14.38%;
 	padding:0.75em 0 0 1.6%;
 }
-.paginatorWave .rangeSelector .dynamicSelectBox_js {
+.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_dynamicSelectBox_js {
 	margin:0.08333em 0 0;
 }
-.paginatorWave .rangeSelector .selectionText {
+.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_selectionText {
 	float:left;
 }
-.paginatorWave .rangeSelector .selectLabel {
+.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_selectLabel {
 	float:left;
 	margin-top:0.25em;
 	margin-left:0.91666em;
 }
-.paginatorWave .rangeSelector select {
+.mpdl_paginatorWave .mpdl_rangeSelector select {
 	width:3.5em;
 }
-.paginatorWave .pageBrowser {
+.mpdl_paginatorWave .mpdl_pageBrowser {
 	width:66.6%
 }
-.paginatorWave .pageBrowser * {
+.mpdl_paginatorWave .mpdl_pageBrowser * {
 	cursor: pointer;
 }
-.paginatorWave .pageBrowser *:disabled {
+.mpdl_paginatorWave .mpdl_pageBrowser *:disabled {
 	cursor: default;
 }
-.paginatorWave .icon_skipTofirst_16_16 {
+.mpdl_paginatorWave .mpdl_icon_skipTofirst_16_16 {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	text-align:left;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 }
-.icon_skipTofirst_16_16:hover .iconActionLabel {
+.mpdl_icon_skipTofirst_16_16:hover .mpdl_iconActionLabel {
 	color:#00AA11;
 }
-.paginatorWave .icon_backward_16_16 {
+.mpdl_paginatorWave .mpdl_icon_backward_16_16 {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 }
-.paginatorWave .icon_forward_16_16 {
+.mpdl_paginatorWave .mpdl_icon_forward_16_16 {
 	background-image: url("image/_default_16_16.png");
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
 }
-.paginatorWave .icon_skipTolast_16_16 {
+.mpdl_paginatorWave .mpdl_icon_skipTolast_16_16 {
 	background-image: url("image/_default_16_16.png");
 	text-align:left;
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
 }
-.icon_skipTolast_16_16:hover .iconActionLabel {
+.mpdl_icon_skipTolast_16_16:hover .mpdl_iconActionLabel {
 	color:#00AA11;
 }
-.paginatorWave .pageNumber {
+.mpdl_paginatorWave .mpdl_pageNumber {
 	margin:0 0.1666667em;
 }
-.paginatorWave .pageNumber.active {
+.mpdl_paginatorWave .mpdl_pageNumber.mpdl_active {
 	font-size: 200%;
 }
-.paginatorWave .pageNumber.prev {
+.mpdl_paginatorWave .mpdl_pageNumber.mpdl_prev {
 	font-size: 150%;
 }
-.paginatorWave .pageNumber.next {
+.mpdl_paginatorWave .mpdl_pageNumber.mpdl_next {
 	font-size: 150%;
 }
-.paginatorWave .pageNumber.neighbour {
+.mpdl_paginatorWave .mpdl_pageNumber.mpdl_neighbour {
 	font-size: 125%;
 }
-.paginatorWave .gotoBox {
+.mpdl_paginatorWave .mpdl_gotoBox {
 	width:16.6%;
 	padding:0.83333em 0 0 0;
 }
-.paginatorWave .gotoInput {
+.mpdl_paginatorWave .mpdl_gotoInput {
 	width:23%;
 	padding:0 0.2%;
 }
-.paginatorWave .inputLabel {
+.mpdl_paginatorWave .mpdl_inputLabel {
 	margin-left:0.16666em;
 }
 
 
 /* for smallest pageBrowser */
-.paginatorWave .pageBrowserMin {
+.mpdl_paginatorWave .mpdl_pageBrowserMin {
 	width:66.6%;
 }
-.paginatorWave .pageBrowserMin * {
+.mpdl_paginatorWave .mpdl_pageBrowserMin * {
 	cursor: pointer;
 }
-.paginatorWave .pageBrowserMin *:disabled {
+.mpdl_paginatorWave .mpdl_pageBrowserMin *:disabled {
 	cursor: default;
 }
-.pageBrowserMin .icon_backward_16_16 {
+.mpdl_pageBrowserMin .mpdl_icon_backward_16_16 {
 	margin-right:1em;
 }
-.pageBrowserMin .icon_forward_16_16 {
+.mpdl_pageBrowserMin .mpdl_icon_forward_16_16 {
 	margin-left:1em;
 }
 
@@ -705,74 +705,74 @@ button:disabled {
  ******************************				bibliographic list			******************************
  ******************************		list with different 		****************************** 
  *****************************************************************************************************/
-.bibList {
+.mpdl_bibList {
 	width:99.8%;
 /*	background-color:#EEF2F0; */
 /*	background-color:#33F2F0; */
 	border:solid 0.09em #B2B2B2; /* because of webkit-engine, the border-value must be up-rounded */
 }
-.bibList .iconActionLabel {
+.mpdl_bibList .mpdl_iconActionLabel {
 	margin-left:0.8333em;
 	margin-right:0.8333em;
 	cursor: pointer;
 }
 
-.bibList .icon_collapse_16_16 {
+.mpdl_bibList .mpdl_icon_collapse_16_16 {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
 	background-image: url("image/_default_16_16.png");
 	cursor: pointer;
 }
-.bibList .icon_collapse_16_16:hover {
+.mpdl_bibList .mpdl_icon_collapse_16_16:hover {
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .icon_collapse_16_16:hover .iconActionLabel {
+.mpdl_bibList .mpdl_icon_collapse_16_16:hover .mpdl_iconActionLabel {
 	color:#00AA11;
 }
 
-.bibList .icon_expand_16_16 {
+.mpdl_bibList .mpdl_icon_expand_16_16 {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
 	background-image: url("image/_default_16_16.png");
 	cursor: pointer;
 }
-.bibList .icon_expand_16_16:hover {
+.mpdl_bibList .mpdl_icon_expand_16_16:hover {
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .icon_expand_16_16:hover .iconActionLabel {
+.mpdl_bibList .mpdl_icon_expand_16_16:hover .mpdl_iconActionLabel {
 	color:#00AA11;
 }
 
-.bibList .icon_withdrawn_32_32 {
+.mpdl_bibList .mpdl_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
 /*****************************************************************************************************
- ******************************				.bibList .listHeader		******************************
+ ******************************				.mpdl_bibList .mpdl_listHeader		******************************
  *****************************************************************************************************/
-.bibList .listHeader {
+.mpdl_bibList .mpdl_listHeader {
 	width:100%;
 /*	border: solid 0.08333em #B2B2B2; */
 	height:2.08333em;
 }
-.bibList .listHeader .selectArea {
+.mpdl_bibList .mpdl_listHeader .mpdl_selectArea {
 	width:22.95%;
 	padding:0.3% 1% 0 1%;
 	height:100%;
 }
-.bibList .listHeader .content {
+.mpdl_bibList .mpdl_listHeader .mpdl_content {
 	width:47.47%;
 	padding:0.3% 1.2% 0 1.2%;
 	height:100%;
 }
-.bibList .listHeader .showHideAll_js {
+.mpdl_bibList .mpdl_listHeader .mpdl_showHideAll_js {
 	cursor:pointer;
 }
 
-.bibList .listHeader .mediabarActionArea {
+.mpdl_bibList .mpdl_listHeader .mpdl_mediabarActionArea {
 /*	width:23.95%; */
 	width:25%;
 	padding-left:0.1%;
@@ -781,178 +781,178 @@ button:disabled {
 	background-color:#EEEEEE;
 	height:100%;
 }
-.bibList .listHeader .toggleListItemVolume_js {
+.mpdl_bibList .mpdl_listHeader .mpdl_toggleListItemVolume_js {
 	cursor:pointer;
 	margin-left:0.8333em;
 }
 /*********************************************************************************************************
- ******************************				.bibList .listBody				******************************
- ******************************			global definitions for bibList		******************************
+ ******************************				.mpdl_bibList .mpdl_listBody				******************************
+ ******************************			global definitions for mpdl_bibList		******************************
  *********************************************************************************************************/
-.bibList .listBody {
+.mpdl_bibList .mpdl_listBody {
 	width:100%;
 }
-.bibList .itemHeadline .itemTitle {
+.mpdl_bibList .mpdl_itemHeadline .mpdl_itemTitle {
 	max-width: 50em;
 	font-size:133%;
 	line-height: 125%;
 }
-.bibList .itemHeadline .itemMultiTitle {
+.mpdl_bibList .mpdl_itemHeadline .mpdl_itemMultiTitle {
 	max-width: 50em;
 	font-size: 166%;
 	line-height: 125%;
 }
-.bibList .shortView_js {
+.mpdl_bibList .mpdl_shortView_js {
 	width:100%;
 	margin-top:0.41666em;
 }
-.bibList .mediumView_js {
+.mpdl_bibList .mpdl_mediumView_js {
 	width:100%;
 	display:none;
 	margin-top:0.41666em;
 }
 
-.bibList .itemMediabar .itemMediabarCategory {
+.mpdl_bibList .mpdl_itemMediabar .mpdl_itemMediabarCategory {
 	padding-left:1.8333em;
 	background-image: url("image/_default_16_16.png");
 	margin-bottom:0.25em;
 }
 /*****************************************************************************************************************
- ******************************				.bibList .listBody .listItem			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItem			******************************
  *****************************************************************************************************************/
-.bibList .listItem {
+.mpdl_bibList .mpdl_listItem {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 }
-.bibList .listItem:hover .itemContent {
+.mpdl_bibList .mpdl_listItem:hover .mpdl_itemContent {
 	background-color:#EEF2F0;
 }
 
-.bibList .listItem .itemContent {
+.mpdl_bibList .mpdl_listItem .mpdl_itemContent {
 	width:100%;
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
-.bibList .listItem .itemSelectArea {
+.mpdl_bibList .mpdl_listItem .mpdl_itemSelectArea {
 	width:22.58%;
 	text-align:right;
 	padding:1% 1.2% 0 1.2%;
 }
-.bibList .listItem .itemHeadline {
+.mpdl_bibList .mpdl_listItem .mpdl_itemHeadline {
 	width:72.4%;
 	padding:0.1666em 1.2% 0.1666em 1.2%; 
 }
-.bibList .listItem .itemStatusArea {
+.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea {
 	width:22.88%;
 	text-align:right;
 	padding:0 1% 0 1%;
 }
-.bibList .listItem .itemStatusArea * {
+.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea * {
 	float: right;
 }
-.bibList .listItem .itemStatusArea .itemStatusTitle {
+.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea .mpdl_itemStatusTitle {
 	margin-top:2.5%;
 	margin-right:5%;
 }
-.bibList .listItem .itemContentOptions {
+.mpdl_bibList .mpdl_listItem .mpdl_itemContentOptions {
 	width:72.4%;
 	padding:0 1.3%;
 }
-.bibList .listItem .itemDetailAction_js {
+.mpdl_bibList .mpdl_listItem .mpdl_itemDetailAction_js {
 	margin-top:0.75%; 
 }
-.bibList .listItem .itemMetaLabel {
+.mpdl_bibList .mpdl_listItem .mpdl_itemMetaLabel {
 	width:22.8%;
 	text-align:right;
 	padding:0 1% 0 1%;
 }
-.bibList .listItem .itemMetaValue {
+.mpdl_bibList .mpdl_listItem .mpdl_itemMetaValue {
 	width:72.4%;
 	padding:0 1.3% 0 1.3%; 
 }
 
 /*************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMediaAcc			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMediaAcc			******************************
  *************************************************************************************************************************/
-.bibList .listItemMediaAcc {
+.mpdl_bibList .mpdl_listItemMediaAcc {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 	background-color:#EEF2F0;
 }
-.bibList .listItemMediaAcc:hover {
+.mpdl_bibList .mpdl_listItemMediaAcc:hover {
 	background-color:#EEEEEE;
 }
-.bibList .listItemMediaAcc:hover .itemContentBg {
+.mpdl_bibList .mpdl_listItemMediaAcc:hover .mpdl_itemContentBg {
 	background-color:transparent;
 }
-.bibList .listItemMediaAcc:hover * .itemMediabar_js {
+.mpdl_bibList .mpdl_listItemMediaAcc:hover * .mpdl_itemMediabar_js {
 	background-color:transparent;
 }
-.bibList .listItemMediaAcc .itemContent {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContent {
 	width:74.88%;
 	padding-bottom:0.5em;
 }
-.bibList .listItemMediaAcc .itemContentBg {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContentBg {
 	position:absolute;
 	width:74.88%;
 	height:100%;
 	background-color:#FFFFFF;
 }
-.bibList .listItemMediaAcc .itemSelectArea {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemSelectArea {
 	width:30.08%;
 	text-align:right;
 	padding:1% 1.6% 0 1.6%;
 }
-.bibList .listItemMediaAcc .itemHeadline {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemHeadline {
 	width:63.41%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.bibList .listItemMediaAcc .itemStatusArea {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.bibList .listItemMediaAcc .itemStatusArea * {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea * {
 	float: right;
 }
-.bibList .listItemMediaAcc .itemStatusArea .icon_withdrawn_32_32 {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .listItemMediaAcc .itemStatusArea .itemStatusTitle {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea .mpdl_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.bibList .listItemMediaAcc .itemContentOptions {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContentOptions {
 	width:63.41%;
 	padding:0 1.6%;
 }
-.bibList .listItemMediaAcc .itemDetailAction_js {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemDetailAction_js {
 	margin-top:1.25%; 
 }
-.bibList .listItemMediaAcc .itemMetaLabel {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMetaLabel {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.bibList .listItemMediaAcc .itemMetaValue {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMetaValue {
 	width:63.41%;
 	padding:0 1.6% 0 1.6%; 
 }
 
 /*****************************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMediaAcc .itemMediabar_js			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMediaAcc .mpdl_itemMediabar_js			******************************
  *****************************************************************************************************************************************/
-.bibList .listItemMediaAcc .itemMediabar_js {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js {
 	width:25%;
 }
-.bibList .listItemMediaAcc .itemMediabar_js div {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js div {
 	width:100%;
 	padding-left:2.66666em;
 	padding-bottom:0.08333em;
 }
-.bibList .listItemMediaAcc .itemMediabar_js span.ui-accordion-header  {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js span.mpdl_ui-accordion-header  {
 	float:left;
 	width:100%;
 	margin-left:0.1%;
@@ -978,7 +978,7 @@ button:disabled {
 		-o-linear-gradient(top, #fff, #B8B8B8);
 /* stop css3 enhancements */
 }
-.bibList .listItemMediaAcc .itemMediabar_js span.ui-icon {
+.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js span.mpdl_ui-icon {
 	float: left;
 	background: url("image/_default_16_16.png") no-repeat 0 0.1666em;
 	background-position:left top;
@@ -992,25 +992,25 @@ button:disabled {
 
 
 /*********************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMultiVolume	COLORIZING		******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume	COLORIZING		******************************
  ******************************					multiVolumeBG == multi volume background			******************************
  *********************************************************************************************************************************/
-.multiVolumeBG_1 {
+.mpdl_multiVolumeBG_1 {
 	background-color:#00AA11;
 }
-/* .multiVolumeBG_1:hover {
+/* .mpdl_multiVolumeBG_1:hover {
 	background-color:#006FF0;
 } */
-.multiVolumeBG_2 {
+.mpdl_multiVolumeBG_2 {
 	background-color:#CCAA11;
 }
-/* .multiVolumeBG_2:hover {
+/* .mpdl_multiVolumeBG_2:hover {
 	background-color:#CC6FF0;
 }*/ 
-.multiVolumeBG_3 {
+.mpdl_multiVolumeBG_3 {
 	background-color:#99FF99;
 }
-.multiVolumeBG_4 {
+.mpdl_multiVolumeBG_4 {
 	background-color:#DD003C;
 }
 
@@ -1023,246 +1023,246 @@ button:disabled {
 
 
 /*************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMultiVolume			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume			******************************
  *************************************************************************************************************************/
-.bibList .listItemMultiVolume {
+.mpdl_bibList .mpdl_listItemMultiVolume {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 }
-.bibList .listItemMultiVolume:hover .itemContent {
+.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemContent {
 	background-color:#EEF2F0;
 }
-.bibList .listItemMultiVolume:hover .itemContentBg {
+.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemContentBg {
 	background-color:transparent;
 }
-.bibList .listItemMultiVolume:hover .itemMediabar {
+.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemMediabar {
 	background-color:transparent;
 }
-.bibList .listItemMultiVolume .itemContent {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContent {
 	width:99%;
 	background-color:#EEF2F0;
 }
-.bibList .listItemMultiVolume .itemContentBg {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContentBg {
 	position:absolute;
 	width:75.5%;
 	height:100%;
 	background-color:#FFFFFF;
 }
-.bibList .listItemMultiVolume .itemContentData {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 }
 
-.bibList .listItemMultiVolume .itemStatusArea {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea {
 	width:31%;
 	text-align:right;
 	padding:0.5em 1.2% 0 1.2%;
 }
-.bibList .listItemMultiVolume .itemStatusArea * {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea * {
 	float: right;
 }
-.bibList .listItemMultiVolume .itemStatusArea .icon_withdrawn_32_32 {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .listItemMultiVolume .itemStatusArea .itemStatusTitle {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.bibList .listItemMultiVolume .itemHeadline {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemHeadline {
 	width:63.1%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.bibList .listItemMultiVolume .itemMetaLabel {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMetaLabel {
 	width:31%;
 	text-align:right;
 	padding:0 1.2%;
 }
-.bibList .listItemMultiVolume .itemMetaValue {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMetaValue {
 	width:63.1%;
 	padding:0 1.6% 0.1666em 1.6%; 
 }
 
 /*****************************************************************************************************************************************
- ******************************				.bibList .listBody .listItemMultiVolume .itemMediabar			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume .mpdl_itemMediabar			******************************
  *****************************************************************************************************************************************/
-.bibList .listItemMultiVolume .itemMediabar {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar {
 	padding-top:0.75em;
 	padding-left:0.8333em;
 	width:22%;
 	background-color:#EEF2F0;
 }
-.bibList .listItemMultiVolume .itemMediabar div {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar div {
 	width:100%;
 	padding-bottom:0.08333em;
 }
-.bibList .listItemMultiVolume .itemMediabar .itemContentOptions {
+.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar .mpdl_itemContentOptions {
 	margin-bottom:1em;
 }
 
 
 
 /*************************************************************************************************************************
- ******************************				.bibList .listBody .listItemVolume			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemVolume			******************************
  *************************************************************************************************************************/
-.bibList .listItemVolume {
+.mpdl_bibList .mpdl_listItemVolume {
 	width:100%;
 	padding-top:0.3333em;
 	padding-bottom:0.16666em;
 	display:none;
 }
 
-.bibList .listItemVolume+.listItemVolume {
+.mpdl_bibList .mpdl_listItemVolume+.mpdl_listItemVolume {
 	padding-top:0.16666em;
 }
-.bibList .listItemVolume:hover .itemContent {
+.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemContent {
 	background-color:#EEF2F0;
 }
-.bibList .listItemVolume:hover .itemContentData {
+.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemContentData {
 	background-color:transparent;
 }
-.bibList .listItemVolume:hover .itemMediabar {
+.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemMediabar {
 	background-color:transparent;
 }
-.bibList .listItemVolume .itemContent {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContent {
 	width:99%;
 	background-color:#EEF2F0;
 }
-.bibList .listItemVolume .itemContentBg {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContentBg {
 	position:absolute; 
 	width:75.5%;
 	height:100%; 
 	background-color:#FFFFFF;
 }
-.bibList .listItemVolume .itemContentData {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
 
-.bibList .listItemVolume .itemStatusArea {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea {
 	width:31%;
 	text-align:right;
 	padding:0.5em 1.2% 0 1.2%;
 }
-.bibList .listItemVolume .itemStatusArea * {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea * {
 	float: right;
 }
-.bibList .listItemVolume .itemStatusArea .icon_withdrawn_32_32 {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .listItemVolume .itemStatusArea .itemStatusTitle {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.bibList .listItemVolume .itemHeadline {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemHeadline {
 	width:63.1%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.bibList .listItemVolume .itemMetaLabel {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMetaLabel {
 	width:31%;
 	text-align:right;
 	padding:0 1.2%;
 }
-.bibList .listItemVolume .itemMetaValue {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMetaValue {
 	width:63.1%;
 	padding:0 1.6% 0.1666em 1.6%; 
 }
 
-/******************************		.bibList .listBody .listItemVolume .itemMediabar	******************************/
-.bibList .listItemVolume .itemMediabar {
+/******************************		.mpdl_bibList .mpdl_listBody .mpdl_listItemVolume .mpdl_itemMediabar	******************************/
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabar {
 	padding-top:1.25em;
 	padding-bottom:0.5em; 
 }
-.bibList .listItemVolume .itemMediabarThumb {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabarThumb {
 	margin-bottom:0.5em;
 	margin-left:0.8333em;
 }
-.bibList .listItemVolume .itemMediabarCategory {
+.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabarCategory {
 	margin-left:0.8333em;
 	width:100%;
 }
 
 
 /*****************************************************************************************************************************
- ******************************				.bibList .listBody .listItemSingleVolume			******************************
+ ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemSingleVolume			******************************
  *****************************************************************************************************************************/
-.bibList .listItemSingleVolume {
+.mpdl_bibList .mpdl_listItemSingleVolume {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 	background-color:#EEF2F0;
 }
-.bibList .listItemSingleVolume:hover {
+.mpdl_bibList .mpdl_listItemSingleVolume:hover {
 	background-color:#EEF2F0;
 }
-.bibList .listItemSingleVolume:hover .itemContent {
+.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemContent {
 	background-color:transparent;
 }
-.bibList .listItemSingleVolume:hover .itemMediabar {
+.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemMediabar {
 	background-color:transparent;
 }
-.bibList .listItemSingleVolume:hover .itemContentBg {
+.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemContentBg {
 	background-color:transparent;
 }
 
-.bibList .listItemSingleVolume .itemContent {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemContent {
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 	width:74.82%;
 }
-.bibList .listItemSingleVolume .itemContentBg {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemContentBg {
 	position:absolute; 
 	height:100%; 
 	width:74.82%;
 	background-color:#FFFFFF;
 }
-.bibList .listItemSingleVolume .itemHeadline {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemHeadline {
 	width:63.41%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.bibList .listItemSingleVolume .itemStatusArea {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea {
 	width:30.08%;
 	text-align:right;
 	padding:0.5em 1.6% 0 1.6%;
 }
-.bibList .listItemSingleVolume .itemStatusArea * {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea * {
 	float: right;
 }
-.bibList .listItemSingleVolume .itemStatusArea .icon_withdrawn_32_32 {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.bibList .listItemSingleVolume .itemStatusArea .itemStatusTitle {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.bibList .listItemSingleVolume .itemMetaLabel {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMetaLabel {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.bibList .listItemSingleVolume .itemMetaValue {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMetaValue {
 	width:63.41%;
 	padding:0 1.6% 0 1.6%; 
 }
 
-/******************************		.bibList .listBody .listItemSingleVolume .itemMediabar	******************************/
-.bibList .listItemSingleVolume .itemMediabar {
+/******************************		.mpdl_bibList .mpdl_listBody .mpdl_listItemSingleVolume .mpdl_itemMediabar	******************************/
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabar {
 	padding-top:1.25em;
 	padding-bottom:0.5em; 
 	width:25%;
 }
-.bibList .listItemSingleVolume .itemMediabarThumb {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabarThumb {
 	margin-bottom:0.5em;
 	margin-left:0.8333em;
 }
-.bibList .listItemSingleVolume .itemMediabarCategory {
+.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabarCategory {
 	margin-left:0.8333em;
 	width:100%;
 }
@@ -1279,59 +1279,59 @@ button:disabled {
  ******************************				grid list						******************************
  ******************************		list with different dynamic width		****************************** 
  *****************************************************************************************************/
-.gridList {
+.mpdl_gridList {
 	border-spacing:0;
 }
-.gridList th {
+.mpdl_gridList th {
 	text-align: left;
 }
-.gridList td {
+.mpdl_gridList td {
 	vertical-align: top;
 }
-.gridList .itemHeadline {
+.mpdl_gridList .mpdl_itemHeadline {
 	padding: 0.1666em 1.6%;
 	background-color:#EBF7EC;
 }
-/* gridList listHeader */
-.gridList .creatorHeadline {
+/* mpdl_gridList mpdl_listHeader */
+.mpdl_gridList .mpdl_creatorHeadline {
 	padding: 0.1666em 1.6%;
 }
-.gridList .genreHeadline {
+.mpdl_gridList .mpdl_genreHeadline {
 	padding: 0.1666em 1.6%;
 }
-.gridList .dateHeadline {
+.mpdl_gridList .mpdl_dateHeadline {
 	padding: 0.1666em 1.6%;
 }
-.gridList .fileHeadline {
+.mpdl_gridList .mpdl_fileHeadline {
 	padding: 0.1666em 1.6%;
 }
-/* gridList listBody */
-.gridList .itemCreatorArea {
+/* mpdl_gridList mpdl_listBody */
+.mpdl_gridList .mpdl_itemCreatorArea {
 	padding: 0.1666em 1.6%;
 }
-.gridList .itemGenreArea {
+.mpdl_gridList .mpdl_itemGenreArea {
 	padding: 0.1666em 1.6%;
 }
-.gridList .itemDateArea {
+.mpdl_gridList .mpdl_itemDateArea {
 	padding: 0.1666em 1.6%;
 }
-.gridList .itemFileArea {
+.mpdl_gridList .mpdl_itemFileArea {
 	padding: 0.1666em 1.6%;
 }
 
 
-.gridList .listItem td {
+.mpdl_gridList .mpdl_listItem td {
 	padding-top:0.5em;
 	padding-bottom:0.25em;
 	border-top:0.09em solid #ff00ff;
 }
-.gridList .listItem:hover td {
+.mpdl_gridList .mpdl_listItem:hover td {
 	background-color:#CCCCCC;
 	
 }
 
 
-.gridList .itemTitle {
+.mpdl_gridList .mpdl_itemTitle {
 	max-width:50em;
 	width:92%;
 	max-width:50em;
@@ -1346,49 +1346,49 @@ button:disabled {
  ******************************				tiled list						******************************
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
-.tiledList {
+.mpdl_tiledList {
 	width:100%; 
 	padding:0 1.6%;
 }
-.tiledList .listHeader {
+.mpdl_tiledList .mpdl_listHeader {
 	width:100%;
 }
-.tiledList .listBody {
+.mpdl_tiledList .mpdl_listBody {
 	width:100%;
 }
-.tiledList li.listItem {
+.mpdl_tiledList li.mpdl_listItem {
 	float:left;
 	padding:0.5em 1.6% 1em 1.6%;
 	width:13.25%; 
 	max-width:13.916667em;
 }
-.tiledList .listItem:hover {
+.mpdl_tiledList .mpdl_listItem:hover {
 	background-color:#BfBfBf;
 }
 
-.tiledList .itemContent {
+.mpdl_tiledList .mpdl_itemContent {
 	width:100%;  
 }
-.tiledList .itemContent:hover {
+.mpdl_tiledList .mpdl_itemContent:hover {
 	background-color:#DDDDDD;
 }
-.tiledList .itemIconArea {
+.mpdl_tiledList .mpdl_itemIconArea {
 	width:100%;  
 	margin-bottom:0.25em;
 }
-.tiledList .itemIconArea img {
+.mpdl_tiledList .mpdl_itemIconArea img {
 	width:100%;
 }
-.tiledList .itemIconBorder {
+.mpdl_tiledList .mpdl_itemIconBorder {
 	display:block;
 	width:94.75%;
 	padding:0.3333em 0.3333em 0.25em 0.3333em; 
 	background-color:#aaaaaa;
 }
-.tiledList .itemContentData {
+.mpdl_tiledList .mpdl_itemContentData {
 	width:100%;
 }
-.tiledList .itemControlArea {
+.mpdl_tiledList .mpdl_itemControlArea {
 	width:100%;
 }
 
@@ -1400,128 +1400,151 @@ button:disabled {
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
 
-.tiledListThumbOverlay {
+.mpdl_tiledListThumbOverlay {
 	width:98%; 
 	padding:0 1.6%;
 }
-.tiledListThumbOverlay.overlay {
+.mpdl_tiledListThumbOverlay.mpdl_overlay {
 	background-color:#ffffff;
 	min-width:200%;
 }
-.tiledListThumbOverlay .listHeader {
+.mpdl_tiledListThumbOverlay .mpdl_listHeader {
 	width:100%;
 }
-.tiledListThumbOverlay .listBody {
+.mpdl_tiledListThumbOverlay .mpdl_listBody {
 	width:100%;
 	height:56.75em;
 	overflow-y:auto;
 }
-.tiledListThumbOverlay li.listItem {
+.mpdl_tiledListThumbOverlay li.mpdl_listItem {
 	float:left;
 	margin:0.5em 1.6% 1em 1.6%;
 	width:16.78%; 
 	max-width:5.666666667em;
 }
-.tiledListThumbOverlay .listItem:hover {
+.mpdl_tiledListThumbOverlay .mpdl_listItem:hover {
 	background-color:#BfBfBf;
 }
-.tiledListThumb .itemContent {
+.mpdl_tiledListThumb .mpdl_itemContent {
 	width:100%;
 }
-.tiledListThumbOverlay .itemContent:hover .itemIconArea .itemIconBorder {
+.mpdl_tiledListThumbOverlay .mpdl_itemContent:hover .mpdl_itemIconArea .mpdl_itemIconBorder {
 	background-color:#DDDDDD;
 }
-.tiledListThumbOverlay .itemIconArea {
+.mpdl_tiledListThumbOverlay .mpdl_itemIconArea {
 	width:100%;
 }
-.tiledListThumbOverlay .itemIconArea img {
+.mpdl_tiledListThumbOverlay .mpdl_itemIconArea img {
 	width:100%;
 }
-.tiledListThumbOverlay .itemIconBorder {
+.mpdl_tiledListThumbOverlay .mpdl_itemIconBorder {
 	display:block;
 	width:89%;
 /*	padding:0.3333em; */
 	padding:5%; 
 	background-color:#aaaaaa;
 }
-.tiledListThumbOverlay .itemContentData {
+.mpdl_tiledListThumbOverlay .mpdl_itemContentData {
 	width:100%;
 }
-.tiledListThumbOverlay .itemContentData .itemMetaText {
+.mpdl_tiledListThumbOverlay .mpdl_itemContentData .mpdl_itemMetaText {
 	font-size:75%;
 }
-.tiledListThumbOverlay .itemControlArea {
+.mpdl_tiledListThumbOverlay .mpdl_itemControlArea {
 	width:100%;
 }
 
 
 
 
-/*****************************************************************************************************
- ******************************				image view single						******************************
- ******************************				view with paginator				****************************** 
- *****************************************************************************************************/
-.menuTabHorzOverlay {
+/*************************************************************************************************************
+ ******************************				image view single / recto verso		******************************
+ ******************************				view with paginator					****************************** 
+ *************************************************************************************************************/
+.mpdl_menuTabHorzOverlay {
 	width:100%;
 	z-index:50;
 	overflow:visible !important;
 }
-.menuTabHorzOverlay .menuHeader {
+.mpdl_menuTabHorzOverlay .mpdl_menuHeader {
 	
 }
-.menuTabHorzOverlay .menuHeader .horizontalTab {
+.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab {
 	float:left;
 	border-bottom:solid 0.09em #000000;
 }
-.menuTabHorzOverlay .menuHeader .horizontalTab.active {
+.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab.mpdl_active {
 	background-color:#000000; 
 	color:#FFFFFF;
 }
-.menuTabHorzOverlay .menuHeader .horizontalTab .menuEntry {
+.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab .mpdl_menuEntry {
 	margin-left:0.5em;
 	padding-top:0.5em;
 }
 
-.menuTabHorzOverlay .menuBody {
+.mpdl_menuTabHorzOverlay .mpdl_menuBody {
 	position:absolute;
 	width:100%;
 	margin-top:1.25em;
 }
-.menuTabHorzOverlay .menuBody .menuTabContent .menuTabBg {
+.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_menuTabContent .mpdl_menuTabBg {
 	position:absolute; 
-	height:100%;
+	min-height:100%;
 	width:100%; 
 	background-color:#CCCCCC;
-	opacity:0.3; 
-	-moz-opacity:0.3;
-	-o-opacity:0.3;
-	filter: Alpha(opacity=30);
+	opacity:1; 
+	-moz-opacity:1;
+	-o-opacity:1;
+	filter: Alpha(opacity=100);
 }
-
-.menuTabHorzOverlay .menuTabContent {
+.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_pageNumber.mpdl_active {
+	margin:0;
+}
+.mpdl_menuTabHorzOverlay .mpdl_menuTabContent {
 	float:none;
 	margin:0 auto;
 	display:none;
 }
-.menuTabHorzOverlay .paginatorWave .pageBrowserMin {
+.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_menuTabContent.mpdl_active {
+	display:block;
+}
+.mpdl_menuTabHorzOverlay .mpdl_paginatorWave .mpdl_pageBrowserMin {
 	width:100%;
 }
 
-.menuTabHorzOverlay .gotoBox {
+.mpdl_menuTabHorzOverlay .mpdl_gotoBox {
 	width:100%;
 	text-align:center;
 	display:none;
 	padding-top:0.3333em;
 	padding-bottom:0.5em;
 }
-.menuTabHorzOverlay .gotoBox input[type="number"] {
+.mpdl_menuTabHorzOverlay .mpdl_gotoBox input[type="number"] {
 	max-width:25%;
 	text-align:center;
 }
 
 
-
-.icon_editBtn_16_16 {
+/*****************************************************************************************************
+ ******************************				global button elements			**************************
+ *****************************************************************************************************/
+.mpdl_icon_editBtn_16_16 {
 	width:1.3333em;
 	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/edit.gif);
+	background-color:transparent;
+}
+
+
+/*****************************************************************************************************
+ ******************************				image background color			**************************
+ *****************************************************************************************************/
+.mpdl_image_bgColor_1 {
+	background-color:#000000;
+}
+
+
+.digilib img {
+	cursor:pointer;
 }

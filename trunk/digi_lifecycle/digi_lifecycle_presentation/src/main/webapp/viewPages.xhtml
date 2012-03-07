@@ -9,356 +9,316 @@
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-	<ui:composition template="templates/template.xhtml">
-	<ui:define name="mainContent">
-	<style>
-
-	/* span.double_area0:hover
-	{
-	width: 40em; 
-	 opacity:0.9;
-	}*/
-	.rf-trn-hnd-exp
-	{
-	background-image:none;
-	}
-
-	.rf-trn-ico-exp
-	{
-	background-image:none;
-	}
-	
-	.rf-trn-ico
-	{
-	width:0px;
-	}
-	</style>
-
-
-
-		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
-
-			<mpdl:header volume="#{viewPages.volume}" relatedVolumes="#{viewPages.relatedVolumes}"/>
-			<div class="full_area0 itemHeader">
-				<h:panelGroup layout="block" styleClass="xHuge_marginLIncl pageBrowser">
-					<h:commandButton value=" " action="#{viewPages.goToFirstPage}" styleClass="min_imgBtn groupBtn skipToFirst">
-						<f:ajax render="@all"/>
-					</h:commandButton>
-					<h:commandButton value=" " action="#{viewPages.goToPreviousPage}" styleClass="min_imgBtn groupBtn backward">
-						<f:ajax render="@all"/>
-					</h:commandButton>
-					<h:commandButton value=" " action="#{viewPages.goToNextPage}" styleClass="min_imgBtn groupBtn forward">
-						<f:ajax render="@all"/>
-					</h:commandButton>
-					<h:commandButton value=" " action="#{viewPages.goToLastPage}" styleClass="min_imgBtn groupBtn skipToLast">
-						<f:ajax render="@all"/>
-					</h:commandButton>
-<ui:remove>
-					<h:commandButton value="Rerender" styleClass="min_imgBtn groupBtn">
-						<f:ajax render="@all"/>
-					</h:commandButton>
-</ui:remove>
-
-				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
-					<h:commandButton value="B" action="#{viewPages.switchViewType('SINGLE')}" styleClass="large_imgBtn groupBtn" disabled="#{viewPages.viewType == 'SINGLE'}"/>
-					<h:commandButton value="B/B" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="large_imgBtn groupBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
-					<h:commandButton value="B/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="large_imgBtn groupBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
-				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="free_area0 xHuge_marginLIncl">
-					<pretty:urlbuffer var="pageUrl" mappingId="viewPages">
-						<f:param value="#{viewPages.volumeId}"/>
-						<f:param value="#{viewPages.selectedPageNumber}"/>
-					</pretty:urlbuffer>
+	<ui:composition template="templates/template_v3.xhtml">
+		
+		<ui:define name="mainContent">
+			
+			<style type="text/css">
+				
+				/* richfaces tree */
+				.rf-tbp {
+					width:100%;
+				}
+				.rf-tbp.mpdl_widthAuto {
+					width:auto;
+				}
+				.rf-tr div {
+					float:none;
+				}
+				.rf-tbp .rf-tab {
+					height:97em;
+					width:100%;
+					border:0.0833333em solid #BED6F8;
+				}
+				.rf-tbp .rf-tab.mpdl_overflow {
+					width:100%;
+					border:none;
+				}
+				.rf-trn {
+					white-space:normal;
+				}
+				.mpdl_noWrapTrn .rf-trn {
+					white-space:nowrap;
+				}
+				.rf-tbp .rf-tab-cnt {
+					height:97%;
+					overflow:auto;
+					border:none;
+					padding:0;
+					width:98%;
+					margin:0 1%;
+				}
+				.rf-tbp .rf-tab-cnt.mpdl_expand {
+					width:auto;
+					border:0.0833333em inset #BED6F8;
+					margin-left:0;
+				}
+				.rf-tbp .rf-tab-cnt.mpdl_expand.mpdl_expandMax80 {
+					width:80%;
+				}
+				.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+					background:none;
+					border:none;
+					background-color:transparent;
+				}
+			</style>
+			
+			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
+			<h:panelGroup layout="block" styleClass="mpdl_id_sidebarLeft mpdl_container_1_5 mpdl_overflow" style="z-index:150;">
+				<script type="text/javascript">
 					
-					
-					<h:outputText value="URL:" />
-					<h:inputText styleClass="xHuge_txtInput" readonly="true" value="#{applicationBean.domain}#{requestScope.pageUrl}"/>
-
-				</h:panelGroup>
-			<!-- 
-			<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea">
-				<h:outputLink title="firstpic" value="">
-					
-				</h:outputLink>
+					function openOverlay(listButton) {
+						var curList = $(listButton).parent().parent().parent();
+						console.log(curList);
+						
+						if (curList.parent().parent().hasClass("rf-tbp")) {
+							curList.parent().parent().addClass("mpdl_widthAuto");
+						}
+					//	console.log();
+						
+						curList.parent().addClass("mpdl_overflow");
+						curList.addClass("mpdl_noWrapTrn");
+						curList.addClass("mpdl_expand");
+						var objWidth = $(".rf-tr").width();
+						var docWidth = $(document).width();
+						if (objWidth > (docWidth/2)) {
+							if (docWidth >= 500) {
+								curList.addClass("mpdl_expandMax80");
+							}
+							
+						}
+						curList.find('.mpdl_expandOverlay').attr('disabled', 'disabled');
+						
+						var collapseBtn = curList.find('.mpdl_collapseOverlay');
+						collapseBtn.removeAttr('disabled');
+					}
+					function closeOverlay(listButton) {
+						var curList = $(listButton).parent().parent().parent();
+						curList.parent().removeClass("mpdl_overflow");
+						
+						if (curList.parent().parent().hasClass("rf-tbp")) {
+							curList.parent().parent().removeClass("mpdl_widthAuto");
+						}
+						
+					//	curList.parent().css("border", "0.0833333em solid #BED6F8");
+						curList.removeClass("mpdl_noWrapTrn");
+						curList.removeClass("mpdl_expand");
+						curList.removeClass("mpdl_expandMax80");
+						curList.find('.mpdl_collapseOverlay').attr('disabled', 'disabled');
+						curList.find('.mpdl_expandOverlay').removeAttr('disabled');
+					//	console.log($($(".rf-tab-cnt").get(0)).width());
+					}
+				</script>
+				<h:form styleClass="mpdl_overflow" style="z-index:50;">		
+					<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
+		     			<rich:tab header="Toc" id="toc">
+								<h:panelGroup layout="block" styleClass="mpdl_container_1">
+									<h:panelGroup layout="block" styleClass="mpdl_floatRight">
+										<input type="button" class="mpdl_expandOverlay" onclick="openOverlay(this);" value="+"/>
+										<input type="button" class="mpdl_collapseOverlay" onclick="closeOverlay(this);" disabled="disabled" value="-"/>
+										<input type="button" value="print"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								<rich:tree toggleType="ajax" var="divItem" >
+									<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{volumeUtilBean.getListWithoutPagebreaks(divItem.pbOrDiv)}">
+										<rich:treeNode expanded="#{true}" rendered="#{true}">
+											<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+												<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+												<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+												<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+												<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+												<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+												<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+												<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+												<f:ajax render="@all"/>
+											</h:commandLink>
+											
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
+										</rich:treeNode>
+									</rich:treeModelRecursiveAdaptor>
+								</rich:tree>
+								
+						</rich:tab>
+						<rich:tab header="Thumbs" id="thumbs">
+							<load:lazyLoad pageList="#{viewPages}">
+								<h:commandLink action="#{viewPages.goToPage(var)}">
+									<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:60px;" />
+									<f:ajax render="@all"/>
+								</h:commandLink>
+							</load:lazyLoad>
+						</rich:tab>
+						<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+							<mpdl:modsViewer modsMetadata="#{viewPages.volume.modsMetadata}"/>
+						</rich:tab>
+					</rich:tabPanel>
+				</h:form>
+				
 			</h:panelGroup>
-			-->
-			<!-- 
-			<h:panelGroup layout="block" styleClass="medium_area0_p4 statusArea" rendered="#{(ViewPages.selectedBook.type == 'M')}">
-				<h:panelGroup styleClass="big_imgArea statusIcon virrMediaType#{ViewPages.selectedBook.type}"/>
-				<span class="noDisplay">(</span>
-					<h:outputLabel id="lblItemPublicState" styleClass="medium_label endline">
-						<h:outputText value="#{lbl.view_dtls_genre_volume_txt}" rendered="#{(ViewPages.selectedBook.type == 'V')}" />
-						<h:outputText value="#{lbl.view_dtls_genre_mono_txt}" rendered="#{(ViewPages.selectedBook.type == 'MG')}" />
-						<h:outputText value="#{lbl.view_dtls_genre_multi_txt}" rendered="#{(ViewPages.selectedBook.type == 'M')}" />
-					</h:outputLabel>
-					<span class="noDisplay">)</span>
-			</h:panelGroup>	
-			-->
-			</div>
-
-<!-- 
-			<div class="full_area0 itemBlock">
-				<h:panelGroup styleClass="xTiny_area0 endline" >
-					&#160;
-				</h:panelGroup>
-				<h:panelGroup styleClass="seperator" />
-				<h:panelGroup styleClass="quad_area0 endline">
-					&#160; <h:outputText value="#{lbl.view_faximile}" />
-				</h:panelGroup>
-				<h:panelGroup styleClass="seperator" />
-				<h:panelGroup styleClass="quad_area0 endline">
-					&#160; <h:outputText value="#{lbl.view_outline}" />
-				</h:panelGroup>
-			</div>
-			-->
 			
+			<style type="text/css">
+				.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuHeader li {
+					height:1.75em;
+					max-height:1.75em;
+					padding-top:0.5em;
+				}
+				.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuBody {
+					margin-top:2.25em;
+				}
+			</style>
 			
-			
-			<div class="full_area0 itemBlock noTopBorder">
-				<span class="full_area0" style="position:relative; height:100em;">
-
-						<!-- 
-						<span class="double_area1 splitBlockHeader">
-							<span class="double_area0_p4 endline itemHeadline">
-								<b>
-									Volume
-								</b>
-							</span>  
-							<span class="double_area0_p4 lineToolSection">
-								LineToolSection
-							</span>
-							
-						</span>
-						-->
+		
+			<h:panelGroup layout="block" styleClass="mpdl_container_4_5">
+				<h:panelGroup layout="block" styleClass="mpdl_menuTabHorzOverlay mpdl_twoRows">
+					<h:panelGroup layout="block" styleClass="mpdl_menuHeader mpdl_container_1">
+						<ul>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup layout="block" styleClass="mpdl_menuEntry">
+									<h:form>
+										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+										<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									</h:form>
+								</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top mpdl_active" onclick="$('.mpdl_menuBody .mpdl_menuTabContent').toggle(); $(this).toggleClass('mpdl_active');">
+								<h:panelGroup styleClass="mpdl_menuEntry">Page</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
+							</li>
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
+								<h:panelGroup layout="block" styleClass="mpdl_menuEntry mpdl_floatRight">
+									<h:form>
+										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+										<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									</h:form>
+								</h:panelGroup>
+							</li>
+						</ul>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="mpdl_menuBody">
 						
-						<span class="double_area0" style="position:absolute; z-index: 2;">		
-							<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
-				     			<rich:tab header="Toc" id="toc"  style="height:97em;overflow:auto" onmouseover="$('span.double_area0').width('60em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
-										<h:panelGroup layout="block" id="tocDiv" >
-										
-										<rich:tree toggleType="ajax" var="divItem" rowKeyVar="keyvar">
-											<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{volumeUtilBean.getListWithoutPagebreaks(divItem.pbOrDiv)}">
+						<h:panelGroup layout="block" styleClass="mpdl_menuTabContent mpdl_container_1_4 mpdl_active">
+							<h:panelGroup layout="block" styleClass="mpdl_menuTabBg mpdl_borderradius_5_bottom">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="mpdl_paginatorWave">
+								<h:panelGroup layout="block" styleClass="mpdl_pageBrowserMin">
+									<nav>
+										<h:form>
+											<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
+												<h:panelGroup styleClass="mpdl_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+											</h:commandLink>
+											<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
+												<h:panelGroup styleClass="mpdl_icon_backward_16_16">&#160;</h:panelGroup>
+											</h:commandLink>
 											
-												<rich:treeNode rendered="#{true}" expanded="#{true}">
-													
-													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														
-														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-														
-														<h:panelGroup rendered="utilBean.getUnqualifiedClassName(divItem) == 'Div'">
-															<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-															<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-															<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-															<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-														
-														
-														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-														</h:panelGroup>
-														<f:ajax render="@all"/>
-														
-													</h:commandLink>
-													
-													
-													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head[0])}" rendered="#{not empty divItem.head}"/>
-													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
-													
-													
-												</rich:treeNode>
-										
-												<ui:remove>
-												<rich:treeNode expanded="#{true}" rendered="#{divItem.class.name!='Pagebreak'}" handleClass="test" >
-													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
-														<f:ajax render="@all"/>
-													</h:commandLink>
-													<h:outputText value="#{divItem.head}" />
-												</rich:treeNode>
-												</ui:remove>
-											</rich:treeModelRecursiveAdaptor>
-											
-										</rich:tree>
-										</h:panelGroup>
-										
+											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
+											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber}"/>
 										<ui:remove>
-										<h:panelGroup rendered="#{!viewPages.showTree}">
-											Loading...
-										</h:panelGroup>
-										
-										
-										<h:commandButton styleClass="showTocDivButton" id="showTocDivButton" value=" " action="#{viewPages.setShowTree(true)}" >
-											<f:ajax render="tocDiv"/>
-										</h:commandButton>
-										
-										<script type="text/javascript">
-								            $(document).ready(function(){
-								                $('.showTocDivButton').click();
-				
-								                
-								            });
-				
-								        </script>
-								        </ui:remove>
-										
-								</rich:tab>
-								<rich:tab header="Thumbs" id="thumbs">
-									<load:lazyLoad pageList="#{viewPages}">
-										<h:commandLink action="#{viewPages.goToPage(var)}">
-											<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:120px;" />
-											<f:ajax render="@all"/>
-										</h:commandLink>
-									</load:lazyLoad>
-								</rich:tab>
-								<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
-									<mpdl:modsViewer modsMetadata="#{viewPages.volume.modsMetadata}"/>
-								</rich:tab>
-							</rich:tabPanel>
+											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="mpdl_pageNumber mpdl_active">40</h:panelGroup></a>
+										</ui:remove>
+											<button onclick="openSinglePageInput(this);" class="mpdl_icon_editBtn_16_16">&#160;</button>
+											
+											<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
+												<h:panelGroup styleClass="mpdl_icon_forward_16_16"/>
+											</h:commandLink>
+											<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
+												<h:panelGroup styleClass="mpdl_icon_skipTolast_16_16"/>
+											</h:commandLink>
+										</h:form>
+									</nav>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="mpdl_gotoBox">
+								<input class="mpdl_gotoInput mpdl_borderradius_5_bottom mpdl_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="9999" maxlength="5" type="number"/>
+								<label class="mpdl_inputLabel">von 9999</label>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
 					
-						</span>
-		
 				
-				
-				
-					<h:panelGroup rendered="#{viewPages.viewType == 'SINGLE'}" style="margin-left:18.83em;position:absolute; z-index:1; float:right;">
+				<!--  SINGLE VIEW  -->
+				<h:panelGroup layout="block" styleClass="mpdl_singleView mpdl_container_1 mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 
-						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
+					<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
-						<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" />
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" />
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" />
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" />
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" />
-						<script type="text/javascript">
-				            $(document).ready(function(){
-				                var opts = {
-				                	interactionMode : 'embedded',
-				                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
-				                    showRegionNumbers : true,
-				                    logoUrl: '',
-				                    buttonSettings : {
-				                        embedded : {
-				                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
-				                            'buttonSetWidth' : 18,
-				                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-				                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-				                            'arrowSet' : ["up", "down", "left", "right"],
-				                            'buttonSets' : ['standardSet', 'specialSet']
-				                            },
-				                    },
-				                    //scalerInset : -10
-				                    
-				                    };
-				                var $div = $('div.digilib');
-				                $div.digilib(opts);
-
-				                
-				            });
-				
-				        </script>
-						
-
-						
-						<span class="xHuge_area1 splitBlockHeader" style="width:70em;">
-							<span class="xHuge_area0_p4 endline itemHeadline" >
-								<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
-								&#160;	
+					<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+					
+					<h:panelGroup layout="block" styleClass="digilib mpdl_container_1_2 mpdl_containerCenter">
+						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
+					</h:panelGroup>
+					<script type="text/javascript">
+			            $(document).ready(function(){
+			                var opts = {
+			                	interactionMode : 'embedded',
+			                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+			                    showRegionNumbers : true,
+			                    logoUrl: '',
+			                    buttonSettings : {
+			                        embedded : {
+			                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+			                            'buttonSetWidth' : 18,
+			                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+			                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+			                            'arrowSet' : ["up", "down", "left", "right"],
+			                            'buttonSets' : ['standardSet', 'specialSet']
+			                            },
+			                    }
+			                    //, scalerInset : -10
+							}; //end opts
+							$('.mpdl_singleView div.digilib').digilib(opts);
+			            });
+			        </script>
+				</h:panelGroup>
+			
+			
+				<!-- RECTO VERSO VIEW -->
+				<h:panelGroup layout="block" styleClass="mpdl_rectoVersoView mpdl_container_1 mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
+					<h:panelGroup layout="block" styleClass="mpdl_container_1_2" rendered="#{viewPages.selectedPage!=null}">
+						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="mpdl_container_1_2 #{empty viewPages.selectedPage ? 'mpdl_containerCenter' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup layout="block" styleClass="mpdl_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+						<span class="quad_area1 splitBlockHeader">
+							<span class="quad_area0_p4 lineToolSection">
+								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 							</span>
-							
-							<span class="xHuge_area0_p4 lineToolSection">
-								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
-							</span>
-							
 						</span>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup layout="block" styleClass="mpdl_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+						<span class="quad_area1 splitBlockHeader"></span>
 						
-						<div class="digilib xHuge_area1 splitBlockBody noTopBorder sameHeightMaster" style="width:70em;">
-							<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}" style="cursor:pointer"/>
+						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
+							<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
 						</div>
-						
-					</h:panelGroup>
-					
-					
-					
-					
-					
-					
-					
-					
-					<h:panelGroup rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}" style="margin-left:18.83em; position:absolute; z-index:1; float:right;">
-					
-						<h:panelGroup styleClass="quad_area0" rendered="#{viewPages.selectedPage!=null}">
-							<span class="quad_area1 splitBlockHeader">
-								<span class="quad_area0_p4 endline itemHeadline">
-									<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedPage.orderLabel}" />
-									&#160;	
-								</span>
-								
-								<span class="quad_area0_p4 lineToolSection">
-									<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1} #{lbl.toc_edit_of} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
-								</span>
-								
-							</span>
-							
-							<div class="quad_area1 splitBlockBody noTopBorder sameHeightMaster digilib">
-								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}" style="cursor:pointer"/>
-							</div>
-						</h:panelGroup>
-						
-						
-						
-						<h:panelGroup styleClass="quad_area0"  rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
-							<span class="quad_area1 splitBlockHeader">
-								<span class="quad_area0_p4 endline itemHeadline">
-									<h:outputText styleClass="xDouble_area0 xTiny_marginLExcl endline" value="#{viewPages.selectedRightPage.orderLabel}" />
-									&#160;	
-								</span>
-								
-								<span class="quad_area0_p4 lineToolSection">
-									<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
-								</span>
-								
-							</span>
-							
-							<span class="quad_area1 splitBlockBody noTopBorder sameHeightMaster">
-								<h:graphicImage styleClass="quad_area0" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}" style="cursor:pointer"/>
-							</span>
-							
-						</h:panelGroup>
-					
-						
-						<h:panelGroup class="quad_area0"  rendered="#{viewPages.viewType == 'FULLTEXT'}">
-							
-							<span class="quad_area1 splitBlockHeader">
-							<ui:remove>
-								<span class="quad_area0_p4 endline itemHeadline">
-									<b>
-										Volume
-									</b>
-								</span>  
-								<span class="quad_area0_p4 lineToolSection">
-									LineToolSection
-								</span>
-								</ui:remove>
-							</span>
-							
-							
-							
-							<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
-								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
-							</div>
-			
-						</h:panelGroup>
-					</h:panelGroup>
-					
-					
-			</span>
-			
-		</div>
-	</h:panelGroup>
 		
-		
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
 		</ui:define>
 	</ui:composition>
-
 </html>

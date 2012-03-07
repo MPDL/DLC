@@ -20,10 +20,10 @@
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
-	<li class="listItem">
-		<h:panelGroup layout="block" class="itemContent">
-			<div class="itemIconArea">
-				<span class="itemIconBorder">
+	<li class="mpdl_listItem">
+		<h:panelGroup layout="block" class="mpdl_itemContent">
+			<div class="mpdl_itemIconArea">
+				<span class="mpdl_itemIconBorder">
 					<pretty:link mappingId="viewPages">
 						<f:param value="#{thumbnailsBean.volumeId}" />
 						<f:param value="#{cc.attrs.page.order}" />
@@ -31,18 +31,18 @@
 					</pretty:link>
 				</span>
 			</div>
-			<div class="itemControlArea">
+			<div class="mpdl_itemControlArea">
 				<input type="checkbox"></input>
 			</div>
-			<div class="itemContentData fiveRows">
-				<div class="itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_page}:"/></div>
-				<div class="itemMetaValue"><h:outputText value=" #{cc.attrs.page.order}"/></div>
+			<div class="mpdl_itemContentData mpdl_fiveRows">
+				<div class="mpdl_itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_page}:"/></div>
+				<div class="mpdl_itemMetaValue"><h:outputText value=" #{cc.attrs.page.order}"/></div>
 				<br/>
-				<div class="itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_pagination}:"/></div>
-				<div class="itemMetaValue"><h:outputText value=" #{cc.attrs.page.orderLabel}"/></div>
+				<div class="mpdl_itemMetaLabel"><h:outputText value="#{lbl.thumbnailList_pagination}:"/></div>
+				<div class="mpdl_itemMetaValue"><h:outputText value=" #{cc.attrs.page.orderLabel}"/></div>
 				<br></br>
 				<ui:remove>
-				<span class="itemMetaText">Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of </span>
+				<span class="mpdl_itemMetaText">Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of meta tags Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of Textentry; value of </span>
 				</ui:remove>
 			</div>
 		</h:panelGroup>
