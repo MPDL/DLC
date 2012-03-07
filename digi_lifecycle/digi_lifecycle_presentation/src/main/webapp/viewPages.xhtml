@@ -4,9 +4,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
-	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad">
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 	<ui:composition template="templates/template_v3.xhtml">
 		
@@ -224,53 +225,8 @@
 												<h:panelGroup styleClass="mpdl_icon_backward_16_16">&#160;</h:panelGroup>
 											</h:commandLink>
 											
-<<<<<<< .mine
-												<rich:treeNode rendered="#{true}" expanded="#{true}">
-													
-													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														
-														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-														
-														<h:panelGroup rendered="utilBean.getUnqualifiedClassName(divItem) == 'Div'">
-															<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-															<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-															<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-															<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-														
-														
-														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-														</h:panelGroup>
-														<f:ajax render="@all"/>
-														
-													</h:commandLink>
-													
-													
-													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head[0])}" rendered="#{not empty divItem.head}"/>
-													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
-													
-													
-												</rich:treeNode>
-										
-												<ui:remove>
-												<rich:treeNode dragType="" expanded="#{true}" rendered="#{divItem.class.name!='Pagebreak'}" handleClass="test" >
-													<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-														<h:outputText value="#{divItem.type}: " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="section: " rendered="#{empty divItem.type}"/>
-														<f:ajax render="@all"/>
-													</h:commandLink>
-													<h:outputText value="#{divItem.head}" />
-												</rich:treeNode>
-												</ui:remove>
-											</rich:treeModelRecursiveAdaptor>
-											
-										</rich:tree>
-										</h:panelGroup>
-										
-=======
 											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
 											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber}"/>
->>>>>>> .r1412
 										<ui:remove>
 											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="mpdl_pageNumber mpdl_active">40</h:panelGroup></a>
 										</ui:remove>
