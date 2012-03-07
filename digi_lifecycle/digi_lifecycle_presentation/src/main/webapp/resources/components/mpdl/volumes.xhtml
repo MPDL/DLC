@@ -18,16 +18,16 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<div class="listItemVolume mvColor_3">
+		<div class="mpdl_listItemVolume mpdl_multiVolumeBG_3">
 			
-			<div class="itemContent">
-				<div class="itemContentData">
-					<div class="itemStatusArea">
-						<div class="icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="itemStatusTitle">Withdrawn</span>
+			<div class="mpdl_itemContent">
+				<div class="mpdl_itemContentData">
+					<div class="mpdl_itemStatusArea">
+						<div class="mpdl_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+						<span class="mpdl_itemStatusTitle">Withdrawn</span>
 					</div>
-					<div class="itemHeadline">
-						<div class="itemTitle">
+					<div class="mpdl_itemHeadline">
+						<div class="mpdl_itemTitle">
 							<pretty:link mappingId="viewPages">
 								<f:param value="#{volume.item.objid}" />
 								<f:param value="1" />
@@ -41,14 +41,14 @@
 				
 				
 					
-					<div class="shortView_js">
-						<div class="itemMetaLabel">Creator(s)</div>
-						<div class="itemMetaValue">Name, Prename, Address</div>
+					<div class="mpdl_shortView_js">
+						<div class="mpdl_itemMetaLabel">Creator(s)</div>
+						<div class="mpdl_itemMetaValue">Name, Prename, Address</div>
 						
-						<h:panelGroup layout="block" class="itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="mpdl_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
 						</h:panelGroup>
-						<h:panelGroup layout="block" class="itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="mpdl_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
 									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
@@ -75,33 +75,33 @@
 
 
 					</div>
-					<div class="mediumView_js">
-						<div class="itemMetaLabel">Journal Title</div>
-						<div class="itemMetaValue">Astrophysical Journal Letters</div>
-						<div class="itemMetaLabel">Degree</div>
-						<div class="itemMetaValue">Degree Type</div>
-						<div class="itemMetaLabel">Publishing Info</div>
-						<div class="itemMetaValue">Edition, Place: Publisher</div>
-						<div class="itemMetaLabel">Title</div>
-						<div class="itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
-						<div class="itemMetaLabel">Visibility</div>
-						<div class="itemMetaValue">Public</div>
-						<div class="itemMetaLabel">Fulltext Hits</div>
-						<div class="itemMetaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
+					<div class="mpdl_mediumView_js">
+						<div class="mpdl_itemMetaLabel">Journal Title</div>
+						<div class="mpdl_itemMetaValue">Astrophysical Journal Letters</div>
+						<div class="mpdl_itemMetaLabel">Degree</div>
+						<div class="mpdl_itemMetaValue">Degree Type</div>
+						<div class="mpdl_itemMetaLabel">Publishing Info</div>
+						<div class="mpdl_itemMetaValue">Edition, Place: Publisher</div>
+						<div class="mpdl_itemMetaLabel">Title</div>
+						<div class="mpdl_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
+						<div class="mpdl_itemMetaLabel">Visibility</div>
+						<div class="mpdl_itemMetaValue">Public</div>
+						<div class="mpdl_itemMetaLabel">Fulltext Hits</div>
+						<div class="mpdl_itemMetaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
 					</div>
 				</div>
 			
-				<div class="itemMediabar">
-					<div class="itemMediabarThumb">
+				<div class="mpdl_itemMediabar">
+					<div class="mpdl_itemMediabarThumb">
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(cc.attrs.volume.pages[0],50,100)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 					</div>
 					<ui:remove>
 					<br/>
-					<div class="itemMediabarCategory">Kodikologische Daten</div>
+					<div class="mpdl_itemMediabarCategory">Kodikologische Daten</div>
 					<br/>
-					<div class="itemMediabarCategory">Volltext</div>
+					<div class="mpdl_itemMediabarCategory">Volltext</div>
 					<br/>
-					<div class="itemMediabarCategory">Sammlung</div>
+					<div class="mpdl_itemMediabarCategory">Sammlung</div>
 					</ui:remove>
 				</div>
 			</div>

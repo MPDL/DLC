@@ -25,16 +25,16 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 
-		<h:panelGroup layout="block" class="listItemMultiVolume multiVolumeBG_3"  rendered="#{cc.attrs.rendered}">
+		<h:panelGroup layout="block" class="mpdl_listItemMultiVolume mpdl_multiVolumeBG_3"  rendered="#{cc.attrs.rendered}">
 			
-			<div class="itemContent">
-				<div class="itemContentData">
-					<div class="itemStatusArea">
-						<div class="icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="itemStatusTitle">Released</span>
+			<div class="mpdl_itemContent">
+				<div class="mpdl_itemContentData">
+					<div class="mpdl_itemStatusArea">
+						<div class="mpdl_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+						<span class="mpdl_itemStatusTitle">Released</span>
 					</div>
-					<div class="itemHeadline">
-						<div class="itemTitle">
+					<div class="mpdl_itemHeadline">
+						<div class="mpdl_itemTitle">
 							<pretty:link mappingId="viewMultiVol">
 								<f:param value="#{cc.attrs.volume.item.objid}" />
 								<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
@@ -48,16 +48,16 @@
 				
 				
 					
-					<div class="shortView_js">
-						<div class="itemMetaLabel"><h:outputText value="Number of Volumes"/></div>
-						<div class="itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes)}"/></div>
+					<div class="mpdl_shortView_js">
+						<div class="mpdl_itemMetaLabel"><h:outputText value="Number of Volumes"/></div>
+						<div class="mpdl_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes)}"/></div>
 						
-						<h:panelGroup layout="block" class="itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="mpdl_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
 						</h:panelGroup>
-						<h:panelGroup layout="block" class="itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="mpdl_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
-								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
+								<h:panelGroup styleClass="EMPTYCLASS" rendered="#{highlight.type=='FULLTEXT'}">
 									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
 									
 									<pretty:link mappingId="viewPages">
@@ -79,11 +79,11 @@
 					</div>
 				</div>
 			
-				<div class="itemMediabar">
-					<div class="itemContentOptions">
-						<div class="itemDetailAction_js" title="???placeholder???">
-							<div class="icon_collapse_16_16">
-								<label class="iconActionLabel">More / Less</label>
+				<div class="mpdl_itemMediabar">
+					<div class="mpdl_itemContentOptions">
+						<div class="mpdl_itemDetailAction_js" title="???placeholder???">
+							<div class="mpdl_icon_collapse_16_16">
+								<label class="mpdl_iconActionLabel">More / Less</label>
 							</div>
 						</div>
 					</div>

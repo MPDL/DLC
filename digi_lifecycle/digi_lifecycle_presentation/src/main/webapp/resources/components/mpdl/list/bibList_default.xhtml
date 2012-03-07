@@ -19,12 +19,12 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 	
-		<h:panelGroup layout="block" styleClass="bibList">
-			<h:panelGroup layout="block" styleClass="listHeader">
-				<h:panelGroup layout="block" styleClass="selectArea">
-					<h:panelGroup layout="block" styleClass="dynamicSelectBox_js">
-						<h:panelGroup layout="block" styleClass="selectionContent">
-							<span class="selectionText"></span>
+		<h:panelGroup layout="block" styleClass="mpdl_bibList">
+			<h:panelGroup layout="block" styleClass="mpdl_listHeader">
+				<h:panelGroup layout="block" styleClass="mpdl_selectArea">
+					<h:panelGroup layout="block" styleClass="mpdl_dynamicSelectBox_js">
+						<h:panelGroup layout="block" styleClass="mpdl_selectionContent">
+							<span class="mpdl_selectionText"></span>
 						</h:panelGroup>
 						<select name="bibListSelect" title="???placeholder???">
 							<option>-- choose --</option>
@@ -41,20 +41,20 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="content">
-					<h:panelGroup layout="block" styleClass="showHideAll_js icon_collapse_16_16" title="???placeholder???">
-						<a class="iconActionLabel" title="???placeholder???" target="_self">Open all</a>
+				<h:panelGroup layout="block" styleClass="mpdl_content">
+					<h:panelGroup layout="block" styleClass="mpdl_showHideAll_js mpdl_icon_collapse_16_16" title="???placeholder???">
+						<a class="mpdl_iconActionLabel" title="???placeholder???" target="_self">Open all</a>
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="mediabarActionArea">
-					<h:panelGroup layout="block" styleClass="toggleListItemVolume_js icon_collapse_16_16" title="???placeholder???">
-						<a class="iconActionLabel" title="???placeholder???">Open / Close MediabarItems</a>
+				<h:panelGroup layout="block" styleClass="mpdl_mediabarActionArea">
+					<h:panelGroup layout="block" styleClass="mpdl_toggleListItemVolume_js mpdl_icon_collapse_16_16" title="???placeholder???">
+						<a class="mpdl_iconActionLabel" title="???placeholder???">Open / Close MediabarItems</a>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
 			
-			<h:panelGroup layout="block" styleClass="listBody">
+			<h:panelGroup layout="block" styleClass="mpdl_listBody">
 				<cc:insertChildren></cc:insertChildren>
 			</h:panelGroup>
 		</h:panelGroup>

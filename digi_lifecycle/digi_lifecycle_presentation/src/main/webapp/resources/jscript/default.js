@@ -25,18 +25,19 @@ function updateCustomSelectBox(obj) {
 	if (!obj) {
 		$("select").each(function(i){
 			var parent = null;
-			if (parent = searchParentTag(this, "dynamicSelectBox_js")) {
+			if (parent = searchParentTag(this, "mpdl_dynamicSelectBox_js")) {
 				var val = $(this).val();
 				$(this).find("option").each(function(i){
 					if ($(this).val() == val) {
 						val = $(this).text();
 					}
 				});
-				$(parent).find(".selectionText").html(val);
+				$(parent).find(".mpdl_selectionText").html(val);
+				console.log(val);
 			}
 		});
 	} else {
-		$(obj).prev().find('.selectionText').text(obj.options[obj.selectedIndex].text);
+		$(obj).prev().find('.mpdl_selectionText').text(obj.options[obj.selectedIndex].text);
 	}
 }
 
@@ -45,9 +46,9 @@ function updateCustomSelectBox(obj) {
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
  */
 function resizeSelectBox() {
-	$(".dynamicSelectBox_js").each(function(ind){
+	$(".mpdl_dynamicSelectBox_js").each(function(ind){
 		var selCont = null;
-		if (typeof(selCont = $(this).find(".selectionContent")) != "undefined") {
+		if (typeof(selCont = $(this).find(".mpdl_selectionContent")) != "undefined") {
 			var selectTag = $(this).find('select');
 			var padL = Number(selCont.css("padding-left").replace("px", ""));
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
@@ -70,33 +71,33 @@ function resizeSelectBox() {
 
 function addShowHideAction() {
 	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
-	$('.showHideAll_js').click(function(e){
-		$(this).toggleClass("icon_collapse_16_16 icon_expand_16_16");
+	$('.mpdl_showHideAll_js').click(function(e){
+		$(this).toggleClass("mpdl_icon_collapse_16_16 mpdl_icon_expand_16_16");
 		stopDefaultAction(e);
 		var listBody = null;
 		
 		for (var i=0; i < $(this).parents().length; i++) {
 			//read the parents array to listHeader and stop, take the listHeader as parent and starting point for selection
-			if ($($(this).parents()[i]).hasClass('listHeader')) {
+			if ($($(this).parents()[i]).hasClass('mpdl_listHeader')) {
 				listHead = $($(this).parents()[i]);
 				listBody = $($(this).parents()[i]).siblings();
 				break;
 			}
 		}
 		if (listBody) {
-			var allItemDetailActions = $(listBody.find(".itemDetailAction_js"));
-			if ( !$(this).attr("detailStatus") || $(this).attr("detailStatus") == 'undefined' || $(this).attr("detailStatus") == undefined ) {
-				$(this).attr("detailStatus", "open");
+			var allItemDetailActions = $(listBody.find(".mpdl_itemDetailAction_js"));
+			if ( !$(this).attr("mpdl_detailStatus") || $(this).attr("mpdl_detailStatus") == 'undefined' || $(this).attr("mpdl_detailStatus") == undefined ) {
+				$(this).attr("mpdl_detailStatus", "open");
 				$(this).html($.trim($(this).html()).replace("Open ", "Close "));
-				listBody.find('.mediumView_js').show();
-				allItemDetailActions.find("div").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
-				allItemDetailActions.find(".itemActionLabel").text("Less");
+				listBody.find('.mpdl_mediumView_js').show();
+				allItemDetailActions.find("div").removeClass("mpdl_icon_collapse_16_16").addClass("mpdl_icon_expand_16_16");
+				allItemDetailActions.find(".mpdl_itemActionLabel").text("Less");
 			} else {
-				$(this).attr("detailStatus", "");
+				$(this).attr("mpdl_detailStatus", "");
 				$(this).html($.trim($(this).html()).replace("Close ", "Open "));
-				listBody.find('.mediumView_js').hide();
-				allItemDetailActions.find("div").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
-				allItemDetailActions.find(".itemActionLabel").text("More");
+				listBody.find('.mpdl_mediumView_js').hide();
+				allItemDetailActions.find("div").removeClass("mpdl_icon_expand_16_16").addClass("mpdl_icon_collapse_16_16");
+				allItemDetailActions.find(".mpdl_itemActionLabel").text("More");
 			}
 		}
 	});
@@ -107,18 +108,18 @@ function addShowHideAction() {
 
 function addDisplayControl(target) {
 	switch (target) {
-		case ".listItemMediaAcc":
-		case ".listItem":
-			$(target+" .itemDetailAction_js").click(function(e){
+		case ".mpdl_listItemMediaAcc":
+		case ".mpdl_listItem":
+			$(target+" .mpdl_itemDetailAction_js").click(function(e){
 				stopDefaultAction(e);
 				
-				$(this).find("div").toggleClass("icon_expand_16_16, icon_collapse_16_16");
+				$(this).find("div").toggleClass("mpdl_icon_expand_16_16, mpdl_icon_collapse_16_16");
 					
-				$(this).find("div").toggleClass("icon_collapse_16_16, icon_expand_16_16");
+				$(this).find("div").toggleClass("mpdl_icon_collapse_16_16, mpdl_icon_expand_16_16");
 				
 				var allDetails = null;
 				//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
-				if (allDetails = searchParentTag(this, 'itemContent').find('.mediumView_js')) {
+				if (allDetails = searchParentTag(this, 'mpdl_itemContent').find('.mpdl_mediumView_js')) {
 					allDetails.toggle();
 				};
 				/*
@@ -140,12 +141,12 @@ function addDisplayControl(target) {
 				*/
 			});
 			break;
-		case '.listItemMultiVolume':
-			$(target + " .itemDetailAction_js").click(function(e) {
-				var volume = searchParentTag(this, "listItemMultiVolume").next();
+		case '.mpdl_listItemMultiVolume':
+			$(target + " .mpdl_itemDetailAction_js").click(function(e) {
+				var volume = searchParentTag(this, "mpdl_listItemMultiVolume").next();
 				
-				if (volume.hasClass("listItemVolume")) {
-					while (volume.hasClass("listItemVolume")) {
+				if (volume.hasClass("mpdl_listItemVolume")) {
+					while (volume.hasClass("mpdl_listItemVolume")) {
 						volume.toggle();
 						volume = volume.next();
 					}
@@ -154,6 +155,8 @@ function addDisplayControl(target) {
 			break;
 	}
 }
+
+
 
 /*
  * function to add function for show or hide all wished elements (e.g. child-elements)
@@ -184,16 +187,16 @@ $(document).ready(function(e) {
 	 * use the setTimeout method only if you load the content via ajax 
 	 * alternative: create an ajax handler to refer the function after successed loading with dynamic time
 	 */
-	setTimeout("addDisplayControl('.listItem')", 290);
-	setTimeout("addDisplayControl('.listItemMediaAcc')", 290);
-	setTimeout("addDisplayControl('.listItemMultiVolume')", 290);
+	setTimeout("addDisplayControl('.mpdl_listItem')", 290);
+	setTimeout("addDisplayControl('.mpdl_listItemMediaAcc')", 290);
+	setTimeout("addDisplayControl('.mpdl_listItemMultiVolume')", 290);
 	
 //	use it on every page, because of language selectbox in metamenu
 	// setTimeout("resizeSelectBox()", 290);
 	resizeSelectBox();
 	
-	setTimeout("addShowHideAll('.showHideAll_js', '.listItem .mediumView_js', '.bibList')", 290);
-	setTimeout("addShowHideAll('.showHideAll_js', '.listItemMediaAcc .mediumView_js', '.bibList')", 290);
-	setTimeout("addShowHideAll('.toggleListItemVolume_js', '.listItemVolume', '.bibList')", 290);
+	setTimeout("addShowHideAll('.mpdl_showHideAll_js', '.mpdl_listItem .mpdl_mediumView_js', '.mpdl_bibList')", 290);
+	setTimeout("addShowHideAll('.mpdl_showHideAll_js', '.mpdl_listItemMediaAcc .mpdl_mediumView_js', '.mpdl_bibList')", 290);
+	setTimeout("addShowHideAll('.mpdl_toggleListItemVolume_js', '.mpdl_listItemVolume', '.mpdl_bibList')", 290);
 	
 });

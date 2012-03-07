@@ -33,7 +33,7 @@
 </ui:remove> 
 <f:subview id="Breadcrumb">
 
-	<div class="clear breadcrumb"><!-- Breadcrumb starts here -->
+	<div class="mpdl_clear mpdl_breadcrumb"><!-- Breadcrumb starts here -->
 	<ol>
 		<ui:insert name="breadcrumb">
 			<li>&#160;</li>
