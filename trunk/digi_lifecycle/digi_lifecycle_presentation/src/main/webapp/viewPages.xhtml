@@ -120,21 +120,37 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<rich:tree toggleType="ajax" var="divItem" >
-									<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{volumeUtilBean.getListWithoutPagebreaks(divItem.pbOrDiv)}">
-										<rich:treeNode expanded="#{true}" rendered="#{true}">
+									<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
+										
+										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
+										
+										
 											<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-												<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
-												<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-												<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-												<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-												<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-												<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-												<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
+													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+													<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+													<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+													<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+													<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+													<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
+													<h:outputText value="#{divItem.elementType}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
+													<h:outputText value="[#{divItem.elementType}]"/>
+												
+												</h:panelGroup>
+												
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											
 											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
-											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{utilBean.getUnqualifiedClassName(divItem) == 'TitlePage'}"/>
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
+											
 										</rich:treeNode>
 									</rich:treeModelRecursiveAdaptor>
 								</rich:tree>
@@ -220,9 +236,11 @@
 										<h:form>
 											<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
 												<h:panelGroup styleClass="mpdl_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+												<f:ajax render="@all"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
 												<h:panelGroup styleClass="mpdl_icon_backward_16_16">&#160;</h:panelGroup>
+												<f:ajax render="@all"/>
 											</h:commandLink>
 											
 											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
@@ -234,9 +252,11 @@
 											
 											<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
 												<h:panelGroup styleClass="mpdl_icon_forward_16_16"/>
+												<f:ajax render="@all"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
 												<h:panelGroup styleClass="mpdl_icon_skipTolast_16_16"/>
+												<f:ajax render="@all"/>
 											</h:commandLink>
 										</h:form>
 									</nav>
