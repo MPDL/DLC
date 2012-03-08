@@ -174,24 +174,21 @@
 	           		</h:selectOneMenu>
 	             <br/>
 		             <h:outputText value="#{lbl.edit_divHeader}"/>
-		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.head}"/>
+		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.head[0]}"/>
 						   
 	            </h:panelGroup>
 	         
 	              <br/>
 	              
-	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
-	              
-	              
-	              </h:commandButton>
-	              
+	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+
              </h:form>
              </rich:panel>
 
 		</h:panelGroup>
 		
 		
-		<h:panelGroup>
+		<h:panelGroup style="height:800px">
 			<rich:tree toggleType="ajax" var="divItem" >
 									<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 										
