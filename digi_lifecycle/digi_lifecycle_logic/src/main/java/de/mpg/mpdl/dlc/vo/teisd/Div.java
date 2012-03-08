@@ -16,6 +16,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 public class Div extends PbOrDiv {
 	
 	
+	
 	@XmlAttribute(name="author1")
 	private String author1;
 	
@@ -38,9 +39,19 @@ public class Div extends PbOrDiv {
 	
 	
 	@XmlPath("tei:head/text()")
-	private List<String> head;
+	private List<String> head = new ArrayList<String>();
 	
 	
+	public Div() {
+		super(ElementType.DIV);
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Div(ElementType elType) {
+		super(elType);
+		// TODO Auto-generated constructor stub
+	}
+
 	
 	public String getAuthor1() {
 		return author1;

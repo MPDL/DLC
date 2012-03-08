@@ -9,7 +9,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.UIExtendedDataTable;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -17,7 +16,6 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
 import de.mpg.mpdl.dlc.editor.TeiNode.Type;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.util.RomanNumberConverter;
 import de.mpg.mpdl.dlc.viewer.VolumeLoaderBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -170,12 +168,13 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	private static List<TeiElementWrapper> teiSdToFlatTeiElementList(TeiSd teiSd, Volume v)
 	{
 		List<TeiElementWrapper> flatTeiElementList = new ArrayList<TeiElementWrapper>();
-		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getPbOrDiv(), v, 0);
+		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getPbOrDiv(), v, 0, null, new ArrayList<TeiElementWrapper>());
 		return flatTeiElementList;
 		
 	}
 	
-	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, int pbCounter)
+	
+	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, int pbCounter, TeiElementWrapper lastPb, List<TeiElementWrapper> subList)
 	{
 		for(PbOrDiv currentTeiElement : currentTeiElementList)
 		{
@@ -192,14 +191,25 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			}
 			if (ElementType.PB.equals(currentTeiElement.getElementType()))
 			{
+				if(lastPb!=null)
+				{
+					lastPb.setElementsToNextPb(subList);
+					
+				}
+				subList.clear();
 				
+				lastPb = currentTeiStartElementWrapper;
 				currentTeiStartElementWrapper.setPage(volume.getPages().get(pbCounter));
 				pbCounter++;
+			}
+			else
+			{
+				subList.add(currentTeiStartElementWrapper);
 			}
 			
 			
 			
-			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbCounter);
+			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbCounter, lastPb, subList);
 			
 			if(PositionType.START.equals(currentTeiStartElementWrapper.getPositionType()))
 			{
@@ -210,6 +220,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				
 				currentTeiEndElementWrapper.setPartnerElement(currentTeiStartElementWrapper);
 				currentTeiStartElementWrapper.setPartnerElement(currentTeiEndElementWrapper);
+				
+				subList.add(currentTeiEndElementWrapper);
 			}
 			
 			//Clear old childre
@@ -284,7 +296,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	{
 		flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
 	}
-
+	
+	
 	public void selectPb(TeiElementWrapper pb)
 	{
 		this.setSelectedPb(pb);

@@ -9,6 +9,8 @@ public class Pagebreak extends PbOrDiv{
 	
 	
 	
+	
+
 	@XmlAttribute(name="facs")
 	private String facs;
 	
@@ -21,6 +23,12 @@ public class Pagebreak extends PbOrDiv{
 	@XmlAttribute(name="subtype")
 	private String subtype;
 
+	
+	public Pagebreak() {
+		super(ElementType.PB);
+		// TODO Auto-generated constructor stub
+	}
+	
 	public String getFacs() {
 		return facs;
 	}
