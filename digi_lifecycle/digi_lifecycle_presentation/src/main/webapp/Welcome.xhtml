@@ -66,7 +66,7 @@
 							    <br />
 	
 								<a4j:repeat value="#{applicationBean.getContext(ou)}" var="context">
-									<pretty:link mappingId="collection">
+									<pretty:link mappingId="volumes">
 										<f:param value="#{context.objid}" />
 										<h:outputText value="#{context.properties.name}"/><br/>
 									</pretty:link>
