@@ -1,0 +1,242 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<ui:composition template="templates/template_v3.xhtml">
+	<ui:define name="mainContent">
+	
+		
+		<h:outputScript library="jscript" name="jquery_1.6.3_min.js" target="head"/>
+		<h:outputScript library="components/lazyload_new" name="jquery.lazyload.js" target="head"/>
+
+		<h:panelGroup id="thumbsContainer" layout="block" styleClass="mpdl_container1_3" style="height:800px; overflow:auto">
+			
+			
+			<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
+				
+				<h:panelGroup layout="block" styleClass="mpdl_container1 mpdl_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
+					<h:form>
+						
+						<h:panelGroup layout="block" styleClass="mpdl_container1_2">
+							<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
+								
+								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.teiElement.facs, 'THUMBNAIL')}" class="lazy" height="200"/>
+							</h:commandLink>
+							
+							
+							
+						
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="mpdl_container1_2" style="width:150px">
+							<h:outputText value="#{element.page.order + 1}" />
+							<h:outputText value="#{element.teiElement.numeration}" />
+							<h:outputText value="[#{element.teiElement.subtype}]" />
+							
+							
+						</h:panelGroup>
+						
+						
+					</h:form>
+					
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="mpdl_container1" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
+								<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />
+								
+							</h:panelGroup>
+					
+				
+				
+				
+			</a4j:repeat>
+		
+		</h:panelGroup>
+		
+		
+		<script>
+		$("img.lazy").lazyload({
+							container: $("#thumbsContainer"),
+							});
+		</script>
+	
+		
+		<h:panelGroup layout="block" id="view" styleClass="container1_3">
+				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.teiElement.facs, 'WEB')}" />
+		</h:panelGroup>
+		
+		
+		
+		
+		<h:panelGroup layout="block" id="pbForm" styleClass="container1_3">
+			
+			<rich:panel>
+			<h:form>
+			
+				<h:outputText value="#{lbl.edit_order}" />
+				<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
+				<br/>
+			
+			
+				<h:outputText value="#{lbl.edit_pagination}" />
+				<h:inputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
+				<br/>
+				
+				<h:outputText value="#{lbl.edit_pagetype}" />
+				 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+	                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.single}"/>
+	                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.left}"/>
+	                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.right}"/>
+	            </h:selectOneMenu>
+				
+				<br/>
+				<h:outputText value="#{lbl.edit_pagesubtype}" />
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+	                  	 <f:selectItem itemValue="blank page" itemLabel="#{lbl.blank_page}"/>
+	                  	 <f:selectItem itemValue="cover" itemLabel="#{lbl.cover}"/>
+	                  	 <f:selectItem itemValue="colorchart" itemLabel="#{lbl.colorchart}"/>
+	                  	 <f:selectItem itemValue="edge" itemLabel="#{lbl.edge}"/>
+	                  	 <f:selectItem itemValue="boardpaper" itemLabel="#{lbl.boardpaper}"/>
+	                  	 <f:selectItem itemValue="endsheet" itemLabel="#{lbl.endsheet}"/>
+	                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.spine}"/>
+						<!-- 	                  	 
+						Einband / Buchdeckel cover
+						Farbkarte colorchart
+						Leere Seite blank Page
+						Schnitt edge (??)
+						Spiegel boardpaper
+						Vorsatz endsheet
+						RÃ¼cken spine
+						
+						-->
+	                  	 
+	               </h:selectOneMenu>
+
+			</h:form>
+			
+			</rich:panel>
+			
+			
+			
+			<rich:panel>
+			<h:form>
+				<h:outputText value="#{lbl.edit_structuralElementType}"/>
+				<h:selectOneMenu value="#{structuralEditorBean.selectedStructuralType}">
+	                  	
+	                  	 <f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_div}"/>
+	                  	 <f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_titlePage}"/>
+	                  	 <f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_figure}"/>
+	                  	 <f:ajax render="@form" listener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"/>
+	                
+	             </h:selectOneMenu>
+	             
+	        	<br/>
+				<h:panelGroup rendered="#{structuralEditorBean.selectedStructuralType == 'DIV'}">
+
+					<h:outputText value="#{lbl.edit_divtype}"/> 
+					<h:selectOneMenu value="#{structuralEditorBean.currentEditElement.teiElement.type}">
+	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+	                  	 <f:selectItem itemValue="acknowledgement" itemLabel="#{lbl.structuretype_acknowledgement}"/>
+	                  	 <f:selectItem itemValue="additional" itemLabel="#{lbl.structuretype_additional}"/>
+	                  	 <f:selectItem itemValue="advertisement" itemLabel="#{lbl.structuretype_advertisement}"/>
+	                  	 <f:selectItem itemValue="appendix" itemLabel="#{lbl.structuretype_appendix}"/>
+	                  	 <f:selectItem itemValue="article" itemLabel="#{lbl.structuretype_article}"/>
+	                  	 <f:selectItem itemValue="bibliography" itemLabel="#{lbl.structuretype_bibliography}"/>
+	                  	 <f:selectItem itemValue="book" itemLabel="#{lbl.structuretype_book}"/>
+	                  	 <f:selectItem itemValue="chapter" itemLabel="#{lbl.structuretype_chapter}"/>
+	                  	 <f:selectItem itemValue="content" itemLabel="#{lbl.structuretype_content}"/>
+	                  	 <f:selectItem itemValue="corrigenda" itemLabel="#{lbl.structuretype_corrigenda}"/>
+	                     <f:selectItem itemValue="curriculum vitae" itemLabel="#{lbl.structuretype_curriculum_vitae}"/>
+	                     <f:selectItem itemValue="dedication" itemLabel="#{lbl.structuretype_dedication}"/>
+	                     <f:selectItem itemValue="imprimatur" itemLabel="#{lbl.structuretype_imprimatur}"/>
+	                     <f:selectItem itemValue="imprint" itemLabel="#{lbl.structuretype_imprint}"/>
+	                     <f:selectItem itemValue="index" itemLabel="#{lbl.structuretype_index}"/>
+	                     <f:selectItem itemValue="letter" itemLabel="#{lbl.structuretype_letter}"/>
+	                     <f:selectItem itemValue="miscellaneous" itemLabel="#{lbl.structuretype_miscellaneous}"/>
+	                     <f:selectItem itemValue="miscellany" itemLabel="#{lbl.structuretype_miscellany}"/>
+	                     <f:selectItem itemValue="musical notation" itemLabel="#{lbl.structuretype_musical_notation}"/>
+	                     <f:selectItem itemValue="part" itemLabel="#{lbl.structuretype_part}"/>
+	                     <f:selectItem itemValue="preface" itemLabel="#{lbl.structuretype_preface}"/>
+	                     <f:selectItem itemValue="privileges" itemLabel="#{lbl.structuretype_privileges}"/>
+	                     <f:selectItem itemValue="provenance" itemLabel="#{lbl.structuretype_provenance}"/>
+	                     <f:selectItem itemValue="review" itemLabel="#{lbl.structuretype_review}"/>
+	                     <f:selectItem itemValue="section" itemLabel="#{lbl.structuretype_section}"/>
+
+	           		</h:selectOneMenu>
+	             <br/>
+		             <h:outputText value="#{lbl.edit_divHeader}"/>
+		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.head}"/>
+						   
+	            </h:panelGroup>
+	         
+	              <br/>
+	              
+	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
+	              
+	              
+	              </h:commandButton>
+	              
+             </h:form>
+             </rich:panel>
+
+		</h:panelGroup>
+		
+		
+		<h:panelGroup>
+			<rich:tree toggleType="ajax" var="divItem" >
+									<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
+										
+										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
+										
+										
+											
+												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
+													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+													<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+													<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+													<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+													<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+													<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
+													<h:outputText value="#{divItem.elementType}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
+													<h:outputText value="[#{divItem.elementType}]"/>
+												
+												</h:panelGroup>
+												
+												
+										
+											
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
+											
+										</rich:treeNode>
+									</rich:treeModelRecursiveAdaptor>
+								</rich:tree>
+		
+		
+		
+		</h:panelGroup>
+		
+			
+		
+		</ui:define>
+		
+		
+	</ui:composition>
+
+</html>
