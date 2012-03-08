@@ -68,6 +68,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		currentEditElement = new TeiElementWrapper();
 		Div div = new Div();
 		div.setType("chapter");
+		div.getHead().add("");
 		currentEditElement.setTeiElement(div);
 	}
 	
@@ -123,17 +124,30 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		teiSd.getPbOrDiv().clear();
 		PbOrDiv parentTeiElement = null;
 		
+		//clear old children
+		for(TeiElementWrapper teiElementWrapper : flatTeiElementList)
+		{
+			teiElementWrapper.getTeiElement().getPbOrDiv().clear();
+		}
+		
+		
+		
 		for(TeiElementWrapper teiElementWrapper : flatTeiElementList)
 		{
 			
-			if(parentTeiElement == null)
+			
+			if(PositionType.START.equals(teiElementWrapper.getPositionType()) || PositionType.EMPTY.equals(teiElementWrapper.getPositionType()))
 			{
-				teiSd.getPbOrDiv().add(teiElementWrapper.getTeiElement());
+				if(parentTeiElement == null)
+				{
+					teiSd.getPbOrDiv().add(teiElementWrapper.getTeiElement());
+				}
+				else
+				{
+					parentTeiElement.getPbOrDiv().add(teiElementWrapper.getTeiElement());
+				}
 			}
-			else
-			{
-				parentTeiElement.getPbOrDiv().add(teiElementWrapper.getTeiElement());
-			}
+			
 			
 			
 			if(PositionType.START.equals(teiElementWrapper.getPositionType()))
@@ -197,6 +211,9 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				currentTeiEndElementWrapper.setPartnerElement(currentTeiStartElementWrapper);
 				currentTeiStartElementWrapper.setPartnerElement(currentTeiEndElementWrapper);
 			}
+			
+			//Clear old childre
+			
 
 		}
 		
@@ -212,6 +229,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				currentEditElement = new TeiElementWrapper();
 				Div div = new Div();
 				div.setType("chapter");
+				div.getHead().add("");
+				
 				currentEditElement.setTeiElement(div);
 				break;
 			}
