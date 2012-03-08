@@ -55,7 +55,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 			{
 				//$('#'+clientId).find('.hiddenUploadCompleteButton').click();
 				var element = document.getElementById(clientId);
-				jsf.ajax.request(element, null, {render: rerender});
+				jsf.ajax.request(element, null, {execute:this.id, render:rerender});
 			}
 			
 		});

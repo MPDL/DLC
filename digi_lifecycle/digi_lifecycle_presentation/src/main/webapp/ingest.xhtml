@@ -22,11 +22,7 @@
 	{
 	float:none;
 	}
-	
-		
-
-			</style>	
-	
+	</style>	
 
 	<script>
 	function ajaxExecuting(data)
@@ -48,9 +44,10 @@
 
       }
 
+
 	</script>
 
-		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		<h:panelGroup layout="block" id="test">
 		
 			<rich:panel id="upload" header="Upload your files...">
 				<fu:fileUpload rerender="form2:imageInfo form2:modsInfo form2:teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
@@ -138,14 +135,16 @@
 
 	            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 	                 <f:facet name="header">
-                        <a4j:commandButton action="#{dragDropBean.reset}" value="Up" render="imageArea" />
+						<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
+							<f:ajax render=":#{component.parent.parent.clientId}" />
+						</h:commandButton>
                     </f:facet>
                     <a4j:outputPanel layout="block" styleClass="rf-ind-drag">
                         <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
                         <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
                         <h:outputText value="#{file.name}"></h:outputText>
 						<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
-							<f:ajax execute=":#{component.parent.parent.parent.clientId}" render=":#{component.parent.parent.parent.clientId}" />
+							<f:ajax execute=":#{component.parent.parent.parent.clientId}" render=":#{component.parent.parent.parent.clientId}"/>
 						</h:commandButton>
                     </a4j:outputPanel>
                 </rich:dataGrid>
@@ -173,10 +172,7 @@
 					</rich:panel>
 				</rich:dataGrid>
 </ui:remove>				
-				<br />
-				<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
-					<f:ajax execute="@this" render="imageInfo" />
-				</h:commandButton>
+
 			</rich:panel>
 			
 		</h:form>
