@@ -157,7 +157,7 @@
 								
 						</rich:tab>
 						<rich:tab header="Thumbs" id="thumbs">
-							<load:lazyLoad pageList="#{viewPages}">
+							<load:lazyLoad pageList="#{viewPages.pageList}">
 								<h:commandLink action="#{viewPages.goToPage(var)}">
 									<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:60px;" />
 									<f:ajax render="@all"/>

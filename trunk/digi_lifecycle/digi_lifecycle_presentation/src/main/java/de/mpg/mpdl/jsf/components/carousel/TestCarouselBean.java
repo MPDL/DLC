@@ -13,9 +13,14 @@ public class TestCarouselBean {
 	
 	public TestCarouselBean() 
 	{  
-		img.add("http://localhost:8080/digi_lifecycle/resources/images/carousell/p1.jpg");
-		img.add("http://localhost:8080/digi_lifecycle/resources/images/carousell/p2.jpg");
-		img.add("http://localhost:8080/digi_lifecycle/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p1.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p2.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
+		img.add("http://localhost:8080/dlc/resources/images/carousell/p3.jpg");
 
 
 	}

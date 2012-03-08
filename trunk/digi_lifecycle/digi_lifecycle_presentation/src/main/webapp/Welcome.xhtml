@@ -54,7 +54,7 @@
 			
 
 
-			<div style="margin:40px 70px;">
+			<div id="acco" style="margin:40px 70px;">
 
 					<rich:accordion switchType="client" rendered="#{not empty applicationBean.ous}" >
 						<c:forEach items="#{applicationBean.ous}" var="ou">
@@ -66,7 +66,7 @@
 							    <br />
 	
 								<a4j:repeat value="#{applicationBean.getContext(ou)}" var="context">
-									<pretty:link mappingId="volumes">
+									<pretty:link mappingId="collection">
 										<f:param value="#{context.objid}" />
 										<h:outputText value="#{context.properties.name}"/><br/>
 									</pretty:link>
@@ -79,7 +79,7 @@
 
 <ui:remove>
 			<h:panelGroup styleClass="half_area0_p8 mainSection">
-				<ca:carousel value1="#{testCarouselBean}" displayTime="600"/>
+				<ca:carousel images="#{testCarouselBean.img}" displayTime="600"/>
 			</h:panelGroup>
 </ui:remove>
 			

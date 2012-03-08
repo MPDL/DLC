@@ -1,0 +1,65 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+	
+	
+	<ui:define name="mainContent">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+		<style type="text/css">
+			.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
+		</style>
+
+
+
+		<pretty:link mappingId="volumes" >
+			<f:param value="#{viewCollection.col.id}" />
+			<h:outputText value="Zeige Sammlung"/><br/>
+		</pretty:link>
+		<br/>
+
+	    <h:panelGrid columns="2">	
+			<h:outputText value="Title:" />		
+			<h:outputText value="#{viewCollection.col.name}" />
+
+			<h:outputText value="Description:" />
+			<h:outputText value="#{viewCollection.col.description}"  />
+		</h:panelGrid>
+			
+
+		
+		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.imgs}">
+			<h:panelGroup layout="block" class="wrapper">
+				<ul>
+					<ui:repeat id="image" value="#{viewCollection.imgs}" var="img">
+						<li><h:graphicImage value="#{img}" width="75" height="75"> </h:graphicImage></li>
+					</ui:repeat>
+				</ul>
+			</h:panelGroup>
+		</h:panelGroup>
+
+<ui:remove>				
+			<h:panelGroup>
+				<ca:ca_scrollButtons images="#{testCarouselBean.img}"/>
+			</h:panelGroup>
+</ui:remove>
+
+
+
+
+			
+	
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -82,10 +82,7 @@ public class IngestBean implements Serializable {
 	
 	private boolean hasMab = true;
 
-
-	
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
-	
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 

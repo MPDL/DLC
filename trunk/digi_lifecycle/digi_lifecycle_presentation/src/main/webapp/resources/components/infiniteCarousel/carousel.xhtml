@@ -11,7 +11,7 @@
 	
 <!-- INTERFACE -->
 <cc:interface>
-	<cc:attribute name="value1" required="true"/>
+	<cc:attribute name="images" required="true"/>
 	<cc:attribute name="displayTime" type="java.lang.Integer" />
 </cc:interface>	
 
@@ -29,9 +29,9 @@
 
 
 		<ul>
-			<ui:repeat id="value1" value="#{cc.attrs.value1.img}" var="img">
+			<ui:repeat id="image" value="#{cc.attrs.images}" var="img">
 					<li>
-						<h:graphicImage value="#{img}" width="500" height="213"> </h:graphicImage>
+						<h:graphicImage value="#{img}" width="75" height="75"> </h:graphicImage>
 					</li>
 			</ui:repeat>
 		</ul>
