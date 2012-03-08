@@ -1,11 +1,16 @@
 package de.mpg.mpdl.dlc.vo.teisd;
 
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
+
 public class DocTitle 
 {
 
+	
 	private String type;
 	
 	private String title;
+	
+	
 	
 	public String getType() {
 		return type;

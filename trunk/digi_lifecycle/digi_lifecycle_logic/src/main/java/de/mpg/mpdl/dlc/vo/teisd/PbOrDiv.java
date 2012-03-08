@@ -11,8 +11,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 
-public class PbOrDiv {
+public abstract class PbOrDiv {
 
+	@XmlTransient
+	public enum ElementType
+	{
+		PB, DIV, FRONT, BODY, BACK, FIGURE, TITLE_PAGE
+	}
+	
 	@XmlAttribute(name = "id", namespace = "http://www.w3.org/XML/1998/namespace")
 	private String id;
 	
@@ -32,6 +38,19 @@ public class PbOrDiv {
 	
 	@XmlTransient
 	private PbOrDiv parent;
+	
+	@XmlTransient
+	private ElementType elementType;
+	
+	
+	public PbOrDiv(ElementType type)
+	{
+		this.elementType = type;
+	}
+	
+	public PbOrDiv()
+	{
+	}
 	
 	public String getId() {
 		return id;
@@ -79,6 +98,15 @@ public class PbOrDiv {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	public ElementType getElementType() {
+		return elementType;
+	}
+
+	public void setElementType(ElementType elementType) {
+		this.elementType = elementType;
+	}
+	
 	
 
 }

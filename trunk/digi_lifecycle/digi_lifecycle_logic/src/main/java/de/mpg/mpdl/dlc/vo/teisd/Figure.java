@@ -4,10 +4,17 @@ import java.util.List;
 
 public class Figure extends PbOrDiv {
 	
+	
 	private String figDesc;
 	
 	private List<String> head;
 
+	public Figure() {
+		super(ElementType.FIGURE);
+	}
+
+	
+	
 	public String getFigDesc() {
 		return figDesc;
 	}

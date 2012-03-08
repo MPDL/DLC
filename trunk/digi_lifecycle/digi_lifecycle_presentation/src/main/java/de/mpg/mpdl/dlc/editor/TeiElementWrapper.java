@@ -1,5 +1,8 @@
 package de.mpg.mpdl.dlc.editor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
@@ -17,6 +20,8 @@ public class TeiElementWrapper {
 	private PositionType positionType;
 
 	private PbOrDiv teiElement;
+	
+	private List<TeiElementWrapper> elementsToNextPb = new ArrayList<TeiElementWrapper>();
 	
 	//Link to METS page element, if a pagebreak 
 	private Page page;
@@ -60,6 +65,16 @@ public class TeiElementWrapper {
 
 	public void setPage(Page page) {
 		this.page = page;
+	}
+
+
+	public List<TeiElementWrapper> getElementsToNextPb() {
+		return elementsToNextPb;
+	}
+
+
+	public void setElementsToNextPb(List<TeiElementWrapper> elementsToNextPb) {
+		this.elementsToNextPb = elementsToNextPb;
 	}
 	
 	
