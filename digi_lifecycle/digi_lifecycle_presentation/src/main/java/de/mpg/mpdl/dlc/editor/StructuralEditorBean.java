@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
 
@@ -29,7 +30,7 @@ import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 @URLMapping(id = "structuralEditor", pattern = "/edit/#{structuralEditorBean.volumeId}", viewId = "/structuralEditor.xhtml")
 public class StructuralEditorBean extends VolumeLoaderBean {
 
@@ -39,6 +40,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	//Flat list of Treee
 	private List<TeiElementWrapper> flatTeiElementList;
+	
+	private List<TreeWrapperNode> treeWrapperNodes;
 	
 	
 	private TeiElementWrapper selectedPb;
@@ -97,8 +100,16 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		}
 		
 		
+		flatTeiElementList = new ArrayList<TeiElementWrapper>();
+		treeWrapperNodes = new ArrayList<TreeWrapperNode>();
 		
+		
+		//Transform TEI-SD to flat element list
 		this.flatTeiElementList = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
+		//Transform flat TEI to TreeWrapper
+		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
+		
+		
 		for(TeiElementWrapper teiElWrapper : flatTeiElementList)
 		{
 			if(ElementType.PB.equals(teiElWrapper.getTeiElement().getElementType()))
@@ -107,14 +118,10 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				break;
 			}
 		}
-		
-		
-		
-		//this.flatTeiTree = TeiTreeNode.teiSdToTreeNodes(volume.getTeiSd());
-		
+
 	}
 	
-	
+
 	private static TeiSd flatTeiElementListToTeiSd(List<TeiElementWrapper> flatTeiElementList, TeiSd teiSd)
 	{
 		
@@ -165,6 +172,75 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	
 	
+	private static List<TreeWrapperNode> flatTeiElementListToTreeWrapper(List<TeiElementWrapper> flatTeiElementList)
+	{
+		
+		List<TreeWrapperNode> wrapperNodeList = new ArrayList<TreeWrapperNode>();
+		
+		
+		TreeWrapperNode parent = null;
+		PbOrDiv parentTeiElement = null;
+		
+		//clear old children
+		for(TeiElementWrapper teiElementWrapper : flatTeiElementList)
+		{
+			teiElementWrapper.getTeiElement().getPbOrDiv().clear();
+		}
+		
+		
+		
+		for(TeiElementWrapper teiElementWrapper : flatTeiElementList)
+		{
+			
+			
+			if(PositionType.START.equals(teiElementWrapper.getPositionType()) || PositionType.EMPTY.equals(teiElementWrapper.getPositionType()))
+			{
+				TreeWrapperNode treeWrapperNode = new TreeWrapperNode();
+				treeWrapperNode.setTeiElementWrapper(teiElementWrapper);
+				treeWrapperNode.setParent(parent);
+				
+				teiElementWrapper.getTeiElement().setParent(parentTeiElement);
+				teiElementWrapper.setTreeWrapperNode(treeWrapperNode);
+				
+				if(parent == null)
+				{
+					wrapperNodeList.add(treeWrapperNode);
+					
+				}
+				else
+				{
+					parent.getChildren().add(treeWrapperNode);
+					parentTeiElement.getPbOrDiv().add(teiElementWrapper.getTeiElement());
+				}
+				
+				
+				if(PositionType.START.equals(teiElementWrapper.getPositionType()))
+				{
+					parentTeiElement = teiElementWrapper.getTeiElement();
+					parent = treeWrapperNode;
+				}
+				
+			}
+
+			else if (PositionType.END.equals(teiElementWrapper.getPositionType()))
+			{
+				parentTeiElement = teiElementWrapper.getPartnerElement().getTeiElement().getParent();
+				parent = teiElementWrapper.getPartnerElement().getTreeWrapperNode().getParent();
+			}
+		}
+		
+		return wrapperNodeList;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private static List<TeiElementWrapper> teiSdToFlatTeiElementList(TeiSd teiSd, Volume v)
 	{
 		List<TeiElementWrapper> flatTeiElementList = new ArrayList<TeiElementWrapper>();
@@ -173,7 +249,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 	}
 	
-	
+
 	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, int pbCounter, TeiElementWrapper lastPb, List<TeiElementWrapper> subList)
 	{
 		for(PbOrDiv currentTeiElement : currentTeiElementList)
@@ -181,32 +257,47 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			TeiElementWrapper currentTeiStartElementWrapper = new TeiElementWrapper();
 			flatTeiElementList.add(currentTeiStartElementWrapper);
 			currentTeiStartElementWrapper.setTeiElement(currentTeiElement);
-			if(currentTeiElement.getPbOrDiv() == null || currentTeiElement.getPbOrDiv().isEmpty())
-			{
-				currentTeiStartElementWrapper.setPositionType(PositionType.EMPTY);
-			}
-			else
-			{
-				currentTeiStartElementWrapper.setPositionType(PositionType.START);
-			}
+			
+			
+			
+			
 			if (ElementType.PB.equals(currentTeiElement.getElementType()))
 			{
+				currentTeiStartElementWrapper.setPositionType(PositionType.EMPTY);
+				
+				/*
 				if(lastPb!=null)
 				{
 					lastPb.setElementsToNextPb(subList);
+					System.out.println("PB" + lastPb.getTeiElement().getId() + "got sublist with " + subList.size());
 					
 				}
-				subList.clear();
+				subList = new ArrayList<TeiElementWrapper>();
+				
+				if(lastPb!=null)
+				{
+					System.out.println("PB" + lastPb.getTeiElement().getId() + "has sublist with " + lastPb.getElementsToNextPb().size());
+				}
 				
 				lastPb = currentTeiStartElementWrapper;
+				*/
 				currentTeiStartElementWrapper.setPage(volume.getPages().get(pbCounter));
 				pbCounter++;
 			}
+			
 			else
 			{
-				subList.add(currentTeiStartElementWrapper);
+				currentTeiStartElementWrapper.setPositionType(PositionType.START);
+				//subList.add(currentTeiStartElementWrapper);
 			}
-			
+			/*
+			else if(!(ElementType.FRONT.equals(currentTeiElement.getElementType()) || ElementType.BODY.equals(currentTeiElement.getElementType())   
+					|| ElementType.BACK.equals(currentTeiElement.getElementType())))
+			{
+				
+				System.out.println(currentTeiElement.getId() + "  added to sublist" );
+			}
+			*/
 			
 			
 			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbCounter, lastPb, subList);
@@ -222,10 +313,16 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				currentTeiStartElementWrapper.setPartnerElement(currentTeiEndElementWrapper);
 				
 				subList.add(currentTeiEndElementWrapper);
+				
+				/*
+				if(!(ElementType.FRONT.equals(currentTeiElement.getElementType()) || ElementType.BODY.equals(currentTeiElement.getElementType())   
+						|| ElementType.BACK.equals(currentTeiElement.getElementType())))
+				{
+					subList.add(currentTeiEndElementWrapper);
+				}
+				*/
 			}
-			
-			//Clear old childre
-			
+		
 
 		}
 		
@@ -288,13 +385,67 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		selectedStructuralElementTypeChanged();
 		
 		updateTree();
+		//updateFlatList();
 		
+		System.out.println("test");
 		
 	}
 	
+	public List<TeiElementWrapper> getElementsToNextPb(TeiElementWrapper wrapper)
+	{
+		int index = flatTeiElementList.indexOf(wrapper);
+		int endIndex = -1;
+		for(int i = index + 1; i < flatTeiElementList.size(); i++)
+		{
+			if(ElementType.PB.equals(flatTeiElementList.get(i).getTeiElement().getElementType()))
+			{
+				endIndex = i;
+				break;
+			}
+		}
+		
+		if(endIndex==-1)
+		{
+			endIndex=flatTeiElementList.size();
+		}
+		return flatTeiElementList.subList(index+1, endIndex);
+	}
+	
+
+	public TeiElementWrapper getEndPageForElement(TeiElementWrapper wrapper)
+	{
+		int index = flatTeiElementList.indexOf(wrapper);
+		int endIndex = flatTeiElementList.indexOf(wrapper.getPartnerElement());
+		
+		for(int i=endIndex; i==0; i--)
+		{
+			if(ElementType.PB.equals(flatTeiElementList.get(i).getTeiElement().getElementType()))
+			{
+				return flatTeiElementList.get(i);
+			}
+		}
+		
+		return null;
+		
+	}
+	
+	/*
+	public TreeWrapperNode getSubTreeForPb(TeiElementWrapper pbWrapper)
+	{
+		int index = flatTeiElementList.indexOf(pbWrapper);
+		
+		
+	}
+	*/
+	
 	private void updateTree()
 	{
-		flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
+	}
+	
+	private void updateFlatList()
+	{
+		this.flatTeiElementList = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
 	}
 	
 	
@@ -333,6 +484,14 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 
 	public void setCurrentEditElement(TeiElementWrapper currentEditElement) {
 		this.currentEditElement = currentEditElement;
+	}
+
+	public List<TreeWrapperNode> getTreeWrapperNodes() {
+		return treeWrapperNodes;
+	}
+
+	public void setTreeWrapperNodes(List<TreeWrapperNode> treeWrapperNodes) {
+		this.treeWrapperNodes = treeWrapperNodes;
 	}
 	
 	

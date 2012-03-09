@@ -40,6 +40,8 @@
 							<h:outputText value="#{element.page.order + 1}" />
 							<h:outputText value="#{element.teiElement.numeration}" />
 							<h:outputText value="[#{element.teiElement.subtype}]" />
+							<br/>
+							<h:outputText value="#{structuralEditorBean.getElementsToNextPb(element)}" />
 							
 							
 						</h:panelGroup>
@@ -129,6 +131,55 @@
 			
 			<rich:panel>
 			<h:form>
+			
+			
+			
+			
+			
+			
+			
+			<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(structuralEditorBean.selectedPb)}">
+						
+						
+						<h:outputText value="#{wrapper.teiElement.elementType}"/>
+						
+						
+						<h:panelGroup rendered="#{wrapper.teiElement.elementType=='DIV' or wrapper.teiElement.elementType=='TITLE_PAGE'}">
+								<h:outputText value="[#{wrapper.teiElement.type}] " rendered="#{not empty wrapper.teiElement.type}"/>
+								<h:outputText value="[Section] " rendered="#{empty wrapper.teiElement.type}"/>
+								<h:outputText value="#{wrapper.teiElement.numeration} " rendered="#{not empty wrapper.teiElement.numeration}"/>
+								<h:outputText value="#{wrapper.teiElement.author1inv}" rendered="#{not empty wrapper.teiElement.author1inv}"/>
+								<h:outputText value="; #{wrapper.teiElement.author2inv}" rendered="#{not empty wrapper.teiElement.author2inv}"/>
+								<h:outputText value="; #{wrapper.teiElement.author3inv}" rendered="#{not empty wrapper.teiElement.author3inv}"/>
+								<h:outputText value=" : " rendered="#{(not empty wrapper.teiElement.author1inv or not empty wrapper.teiElement.author2inv or not empty wrapper.teiElement.author3inv) and not empty wrapper.teiElement.head}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup rendered="#{wrapper.teiElement.elementType=='FRONT' or wrapper.teiElement.elementType=='BODY' or wrapper.teiElement.elementType=='BACK'}">
+								<h:outputText value="#{wrapper.teiElement.elementType}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup rendered="#{wrapper.teiElement.elementType=='FIGURE'}">
+								<h:outputText value="[#{wrapper.teiElement.elementType}]"/>
+							
+							</h:panelGroup>
+
+						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(wrapper.teiElement.head)}" rendered="#{not empty wrapper.teiElement.head}"/>
+						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(wrapper.teiElement.docTitles[0].title)}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+						
+						<h:outputText value="Pages: #{structuralEditorBean.selectedPb.page.order + 1} / #{structuralEditorBean.selectedPb.page.orderLabel}"/>
+						<h:outputText value=" - #{structuralEditorBean.getEndPageForElement(wrapper).page.order + 1} / #{structuralEditorBean.getEndPageForElement(wrapper).page.orderLabel}"/>
+						
+						
+						
+					<br/>
+			</a4j:repeat>
+			
+			
+			
+			
+			
+			
+			
 				<h:outputText value="#{lbl.edit_structuralElementType}"/>
 				<h:selectOneMenu value="#{structuralEditorBean.selectedStructuralType}">
 	                  	
@@ -190,40 +241,38 @@
 		
 		<h:panelGroup style="height:800px">
 			<rich:tree toggleType="ajax" var="divItem" >
-									<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
-										
-										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
-										
-										
-											
-												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
-													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
-													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-													<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-													<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-													<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-													<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-													<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-												</h:panelGroup>
-												
-												<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
-													<h:outputText value="#{divItem.elementType}"/>
-												</h:panelGroup>
-												
-												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
-													<h:outputText value="[#{divItem.elementType}]"/>
-												
-												</h:panelGroup>
-												
-												
-										
-											
-											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
-											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
-											
-										</rich:treeNode>
-									</rich:treeModelRecursiveAdaptor>
-								</rich:tree>
+				<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
+					
+					<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
+
+							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
+								<h:outputText value="[#{divItem.teiElementWrapper.teiElement.type}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
+								<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
+								<h:outputText value="#{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
+								<h:outputText value="#{divItem.teiElementWrapper.teiElement.author1inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author1inv}"/>
+								<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author2inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author2inv}"/>
+								<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author3inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author3inv}"/>
+								<h:outputText value=" : " rendered="#{(not empty divItem.teiElementWrapper.teiElement.author1inv or not empty divItem.teiElementWrapper.teiElement.author2inv or not empty divItem.teiElementWrapper.teiElement.author3inv) and not empty divItem.teiElementWrapper.teiElement.head}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+								<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
+								<h:outputText value="[#{divItem.teiElementWrapper.teiElement.elementType}]"/>
+							
+							</h:panelGroup>
+							
+							
+					
+						
+						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head)}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
+						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}" rendered="#{divItem.teiElementWrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+						
+					</rich:treeNode>
+				</rich:treeModelRecursiveAdaptor>
+			</rich:tree>
 		
 		
 		
