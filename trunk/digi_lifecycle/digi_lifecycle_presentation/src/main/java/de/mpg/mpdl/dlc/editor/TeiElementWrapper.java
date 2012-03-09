@@ -21,7 +21,7 @@ public class TeiElementWrapper {
 
 	private PbOrDiv teiElement;
 	
-	private List<TeiElementWrapper> elementsToNextPb = new ArrayList<TeiElementWrapper>();
+	private TreeWrapperNode treeWrapperNode;
 	
 	//Link to METS page element, if a pagebreak 
 	private Page page;
@@ -68,6 +68,17 @@ public class TeiElementWrapper {
 	}
 
 
+	public TreeWrapperNode getTreeWrapperNode() {
+		return treeWrapperNode;
+	}
+
+
+	public void setTreeWrapperNode(TreeWrapperNode treeWrapperNode) {
+		this.treeWrapperNode = treeWrapperNode;
+	}
+
+
+	/*
 	public List<TeiElementWrapper> getElementsToNextPb() {
 		return elementsToNextPb;
 	}
@@ -76,6 +87,7 @@ public class TeiElementWrapper {
 	public void setElementsToNextPb(List<TeiElementWrapper> elementsToNextPb) {
 		this.elementsToNextPb = elementsToNextPb;
 	}
+	*/
 	
 	
 	
