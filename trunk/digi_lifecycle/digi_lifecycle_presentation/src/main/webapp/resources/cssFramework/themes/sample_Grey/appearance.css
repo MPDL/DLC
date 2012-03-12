@@ -152,37 +152,37 @@ button:disabled {
 /***              ***
  * global id-class and class declarations
  */
-.mpdl_id_wrapper {
+body .mpdl_id_wrapper {
 	min-width:75em; /* 900px */
 	width:96%;		/* the result of width + padding = sum of width = 100% */
 	padding:0 2%;
 	background-color:#FFFFFF;
 }
-.mpdl_id_header {
+body .mpdl_id_header {
 	width:100%;
 }
-.mpdl_id_headerMetaMenu {
+body .mpdl_id_headerMetaMenu {
 	width:100%;
 }
-.mpdl_id_mainMenu {
+body .mpdl_id_mainMenu {
 	width:100%;
 	overflow: visible !important;
 	z-index:12;
 }
-.mpdl_id_mainMenu * {
+body .mpdl_id_mainMenu * {
 	overflow: visible !important;
 }
-.mpdl_id_optionBox { /* options for the current page mpdl_content, e.mpdl_g. Order by, Filter by, Download, Export, ... */
+body .mpdl_id_optionBox { /* options for the current page mpdl_content, e.mpdl_g. Order by, Filter by, Download, Export, ... */
 	width:100%;
 	padding:0 0 0 0.83333%;
 }
-.mpdl_id_optionBox.mpdl_vertikal { /* conditions for vertical option menu */
+body .mpdl_id_optionBox.mpdl_vertikal { /* conditions for vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-.mpdl_id_contentDescription {
+body .mpdl_id_contentDescription {
 	width:100%;
 }
-.mpdl_id_siteTitle {
+body .mpdl_id_siteTitle {
 	float:right;
 	padding:0 1.6%;
 	font-size:150%;
@@ -1454,12 +1454,40 @@ button:disabled {
 	width:100%;
 }
 
-
-
-
 /*************************************************************************************************************
  ******************************				image view single / recto verso		******************************
  ******************************				view with paginator					****************************** 
+ *************************************************************************************************************/
+.mpdl_pageView {
+	
+}
+.mpdl_pageView .mpdl_singleView {
+	width:100%;
+}
+
+.mpdl_pageView .mpdl_singleView .mpdl_pageView_imgContainer {
+	float:none;
+	width:50%;
+	margin:0 auto;
+}
+.mpdl_pageView .mpdl_singleView div.digilib div.scaler {
+	width:100% !important;
+	height:auto !important;
+}
+.mpdl_pageView .mpdl_singleView div.digilib div.scaler img {
+	width:100%;
+}
+
+
+.mpdl_pageView .mpdl_dualView {
+	width:100%;
+}
+.mpdl_pageView .mpdl_dualView .mpdl_pageView_imgContainer {
+	width:50%;
+}
+
+/*************************************************************************************************************
+ ******************************				overlay menu with tabs				******************************
  *************************************************************************************************************/
 .mpdl_menuTabHorzOverlay {
 	width:100%;
@@ -1523,7 +1551,14 @@ button:disabled {
 	max-width:25%;
 	text-align:center;
 }
-
+.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuHeader li { /* used in pageView */
+	height:1.75em;
+	max-height:1.75em;
+	padding-top:0.5em;
+}
+.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuBody { /* used in pageView */
+	margin-top:2.25em;
+}
 
 /*****************************************************************************************************
  ******************************				global button elements			**************************
@@ -1545,6 +1580,79 @@ button:disabled {
 }
 
 
+
+
+
+/*********************************************************************************************************
+ *********************************************************************************************************
+ ******************************				EXTERNAL CLASS DEFINITIONS			**************************
+ *********************************************************************************************************
+ *********************************************************************************************************/
+ 
+ 
+/*****************************************************************************************************
+ ******************************				Richfaces Tree					**************************
+ ******************************				with MPDL extensions			**************************
+ *****************************************************************************************************/
+.rf-tbp {
+	width:100%;
+}
+.rf-tbp.mpdl_widthAuto {
+	width:auto;
+}
+.rf-tr div {
+	float:none;
+}
+.rf-tbp .rf-tab {
+	height:97em;
+	width:100%;
+	border:0.0833333em solid #BED6F8;
+}
+.rf-tbp .rf-tab.mpdl_overflow {
+	width:100%;
+	border:none;
+}
+.rf-trn {
+	white-space:normal;
+}
+.mpdl_noWrapTrn .rf-trn {
+	white-space:nowrap;
+}
+.rf-tbp .rf-tab-cnt {
+	height:97%;
+	overflow:auto;
+	border:none;
+	padding:0;
+	width:98%;
+	margin:0 1%;
+}
+.rf-tbp .rf-tab-cnt.mpdl_expand {
+	width:auto;
+	border:0.0833333em inset #BED6F8;
+	margin-left:0;
+}
+.rf-tbp .rf-tab-cnt.mpdl_expand.mpdl_expandMax80 {
+	width:80%;
+}
+.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+	background:none;
+	border:none;
+	background-color:transparent;
+}
+
+/*****************************************************************************************************
+ ******************************						DIGILIB					**************************
+ ******************************				Buttonbar & Image				**************************
+ *****************************************************************************************************/
+.digilib .keep.buttons {
+	width:2.5em;
+	background-color:#FFFFFF !important;
+	padding:0.75em 0.25em !important;
+	cursor:move;
+}
+.digilib .keep.buttons img.button:hover {
+	background-color:#CCCCCC !important;
+}
 .digilib img {
 	cursor:pointer;
 }
