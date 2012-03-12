@@ -99,26 +99,31 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			volume.setTeiSd(teiSd);
 		}
 		
-		
-		flatTeiElementList = new ArrayList<TeiElementWrapper>();
-		treeWrapperNodes = new ArrayList<TreeWrapperNode>();
-		
-		
-		//Transform TEI-SD to flat element list
-		this.flatTeiElementList = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
-		
-		//Transform flat TEI to TreeWrapper
-		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
-		
-		
-		for(TeiElementWrapper teiElWrapper : flatTeiElementList)
+		if(flatTeiElementList == null)
 		{
-			if(ElementType.PB.equals(teiElWrapper.getTeiElement().getElementType()))
+			flatTeiElementList = new ArrayList<TeiElementWrapper>();
+			treeWrapperNodes = new ArrayList<TreeWrapperNode>();
+			
+			
+			//Transform TEI-SD to flat element list
+			this.flatTeiElementList = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
+			
+			//Transform flat TEI to TreeWrapper
+			this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
+			
+			
+			for(TeiElementWrapper teiElWrapper : flatTeiElementList)
 			{
-				this.selectedPb = teiElWrapper;
-				break;
+				if(ElementType.PB.equals(teiElWrapper.getTeiElement().getElementType()))
+				{
+					this.selectedPb = teiElWrapper;
+					break;
+				}
 			}
 		}
+		
+		
+		System.out.println("volumeLoaded");
 
 	}
 	
@@ -259,14 +264,20 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			flatTeiElementList.add(currentTeiStartElementWrapper);
 			currentTeiStartElementWrapper.setTeiElement(currentTeiElement);
 			
-			if(lastPb!=null)
+			
+			
+			
+			if (!ElementType.PB.equals(currentTeiElement.getElementType()))
 			{
-				currentTeiStartElementWrapper.setPagebreakWrapper(lastPb);
-				//currentTeiStartElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+				currentTeiStartElementWrapper.setPositionType(PositionType.START);
+				//subList.add(currentTeiStartElementWrapper);
+				if(lastPb!=null)
+				{
+					currentTeiStartElementWrapper.setPagebreakWrapper(lastPb);
+					//currentTeiStartElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+				}
 			}
-			
-			
-			if (ElementType.PB.equals(currentTeiElement.getElementType()))
+			else
 			{
 				currentTeiStartElementWrapper.setPositionType(PositionType.EMPTY);
 				
@@ -295,11 +306,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				pbCounter++;
 			}
 			
-			else
-			{
-				currentTeiStartElementWrapper.setPositionType(PositionType.START);
-				//subList.add(currentTeiStartElementWrapper);
-			}
+	
 			/*
 			else if(!(ElementType.FRONT.equals(currentTeiElement.getElementType()) || ElementType.BODY.equals(currentTeiElement.getElementType())   
 					|| ElementType.BACK.equals(currentTeiElement.getElementType())))
@@ -384,7 +391,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public void createStructuralElement()
 	{
-		int selectedPbIndex = flatTeiElementList.indexOf(selectedPb);
+		//int selectedPbIndex = flatTeiElementList.indexOf(selectedPb);
 		
 		currentEditElement.setPositionType(PositionType.START);
 		currentEditElement.setPagebreakWrapper(selectedPb);
@@ -398,9 +405,9 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		currentEditElement.setPartnerElement(endEditElement);
 		
 		
-		
-		flatTeiElementList.add(selectedPbIndex + 1, currentEditElement);
-		flatTeiElementList.add(selectedPbIndex + 2, endEditElement);
+		int nextPbIndex = flatTeiElementList.indexOf(selectedPb.getNextPagebreak());
+		flatTeiElementList.add(nextPbIndex, endEditElement);
+		flatTeiElementList.add(nextPbIndex, currentEditElement);
 		
 		selectedStructuralElementTypeChanged();
 		
@@ -467,11 +474,81 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	}
 	
 	
-	public List<SelectItem> getEndPagesSelectItemsForElement(TeiElementWrapper teiElementWrapper)
+	public List<SelectItem> getEndPagesSelectItemsForElement(TeiElementWrapper startTeiElementWrapper)
 	{
 		List<SelectItem> list = new ArrayList<SelectItem>();
 		
-		int startIndex = flatTeiElementList.indexOf(teiElementWrapper);
+		int startPbIndex = flatTeiElementList.indexOf(startTeiElementWrapper.getPagebreakWrapper());
+		
+		//End page can only be mobved inside the parent element
+		
+		TeiElementWrapper endWrapper = null;
+		int endIndex = flatTeiElementList.size();
+		if(startTeiElementWrapper.getTreeWrapperNode().getParent()!=null)
+		{
+			 endWrapper = startTeiElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper().getPartnerElement();
+			 endIndex = flatTeiElementList.indexOf(endWrapper);
+		}
+		
+		
+		
+		if(startPbIndex == -1)
+		{
+			startPbIndex = 0; 
+		}
+		
+		
+		boolean started = false;
+		for(int i = startPbIndex; i<=endIndex; i++)
+		{
+			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
+			
+			if(currentTeiElementWrapper.equals(startTeiElementWrapper))
+			{
+				System.out.println("Found start element");
+				started=true;
+				
+			}
+
+			else if(ElementType.PB.equals(currentTeiElementWrapper.getTeiElement().getElementType()))
+			{
+				list.add(new SelectItem(currentTeiElementWrapper.getTeiElement().getId(), currentTeiElementWrapper.getPage().getOrder() + 1 + " / " + currentTeiElementWrapper.getPage().getOrderLabel()));
+			}
+			
+			else if (started && PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
+			{
+				TeiElementWrapper nextPagebreakWrapper = currentTeiElementWrapper.getPartnerElement().getPagebreakWrapper();
+				if(flatTeiElementList.indexOf(nextPagebreakWrapper) > i)
+				{
+					i = flatTeiElementList.indexOf(currentTeiElementWrapper.getPartnerElement().getPagebreakWrapper());
+				}
+				
+				
+			
+			}
+			
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
+		
+		
+		int startIndex = flatTeiElementList.indexOf(teiElementWrapper.getPagebreakWrapper());
+		if(startIndex == -1)
+		{
+			startIndex = 0;
+		}
 		
 		for(int i = startIndex; i< flatTeiElementList.size(); i++)
 		{
@@ -491,6 +568,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				
 			}
 		}
+		*/
 		return list;
 	}
 	
@@ -570,31 +648,39 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		}
 		
 		endElement.setPagebreakWrapper(pageBreakToMoveTo);
-		int startElementIndex = flatTeiElementList.indexOf(startElementWrapper);
+		int startElementIndex = flatTeiElementList.indexOf(startElementWrapper.getPagebreakWrapper());
 		
 		
 		flatTeiElementList.remove(endElement);
 		
 		int balanceCounter = 0;
 		boolean set = false;
-		for(int i = startElementIndex+1; i<flatTeiElementList.size(); i++)
+		boolean started = false;
+		for(int i = startElementIndex; i<flatTeiElementList.size(); i++)
 		{
 			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
+			if(currentTeiElementWrapper.equals(startElementWrapper))
+			{
+				System.out.println("Found start element");
+				started=true;
+				balanceCounter--;
+			}
+			
 			if(currentTeiElementWrapper.equals(pageBreakToMoveTo))
 			{
-				System.out.println("Found pagebreak to move to: " + currentTeiElementWrapper.getPagebreakWrapper().getTeiElement().getId());
+				System.out.println("Found pagebreak to move to: " + currentTeiElementWrapper.getTeiElement().getId());
 				set=true;
 			}
-			else if (PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
+			else if (started && PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
 			{
 				balanceCounter++;
 			}
-			else if (PositionType.END.equals(currentTeiElementWrapper.getPositionType()))
+			else if (started && PositionType.END.equals(currentTeiElementWrapper.getPositionType()))
 			{
 				balanceCounter--;
 			}
 			
-			if(set && balanceCounter==0)
+			if(started && set && balanceCounter==0)
 			{
 				System.out.println("Set end element to pos " + i+1);
 				flatTeiElementList.add(i+1, endElement);
