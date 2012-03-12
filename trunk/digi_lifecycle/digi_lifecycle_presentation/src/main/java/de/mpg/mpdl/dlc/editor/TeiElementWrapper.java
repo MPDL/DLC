@@ -3,6 +3,9 @@ package de.mpg.mpdl.dlc.editor;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.faces.bean.ManagedProperty;
+
+import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
@@ -13,7 +16,8 @@ public class TeiElementWrapper {
 		START, END, EMPTY;
 	}
 	
-	
+	@ManagedProperty("#{structuralEditorBean}")
+	private StructuralEditorBean structuralEditorBean;
 	
 	private TeiElementWrapper partnerElement;
 	
@@ -23,8 +27,20 @@ public class TeiElementWrapper {
 	
 	private TreeWrapperNode treeWrapperNode;
 	
+	
+	
+	//The pagebreak this element belongs to
+	private TeiElementWrapper pagebreakWrapper;
+	
+	//The pagebreak id this element should belong to
+	private String pagebreakIdToMoveTo;
+	
+	//For Pagebreaks:
 	//Link to METS page element, if a pagebreak 
 	private Page page;
+	
+	private TeiElementWrapper nextPagebreak;
+	
 
 
 	public PositionType getPositionType() {
@@ -77,6 +93,48 @@ public class TeiElementWrapper {
 		this.treeWrapperNode = treeWrapperNode;
 	}
 
+
+	public TeiElementWrapper getPagebreakWrapper() {
+		return pagebreakWrapper;
+	}
+
+
+	public void setPagebreakWrapper(TeiElementWrapper pagebreakWrapper) {
+		this.pagebreakWrapper = pagebreakWrapper;
+		
+	}
+
+
+	public TeiElementWrapper getNextPagebreak() {
+		return nextPagebreak;
+	}
+
+
+	public void setNextPagebreak(TeiElementWrapper nextPagebreak) {
+		this.nextPagebreak = nextPagebreak;
+	}
+
+
+
+	
+
+
+	public String getPagebreakIdToMoveTo() {
+		return pagebreakIdToMoveTo;
+	}
+
+
+	public void setPagebreakIdToMoveTo(String pagebreakId) {
+		this.pagebreakIdToMoveTo = pagebreakId;
+		/*
+		try {
+			System.out.println("Page: " + getPagebreakWrapper().getTeiElement().getId() + " set to " + pagebreakId);
+		} catch (Exception e) {
+			System.out.println("NullPointerException");
+		}
+		*/
+	}
+	
 
 	/*
 	public List<TeiElementWrapper> getElementsToNextPb() {
