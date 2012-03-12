@@ -8,6 +8,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.model.SelectItem;
+import javax.persistence.criteria.Selection;
 
 import org.apache.log4j.Logger;
 
@@ -35,8 +37,6 @@ import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 public class StructuralEditorBean extends VolumeLoaderBean {
 
 	private static Logger logger = Logger.getLogger(StructuralEditorBean.class);
-	
-	
 	
 	//Flat list of Treee
 	private List<TeiElementWrapper> flatTeiElementList;
@@ -106,6 +106,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 		//Transform TEI-SD to flat element list
 		this.flatTeiElementList = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
+		
 		//Transform flat TEI to TreeWrapper
 		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
 		
@@ -258,7 +259,11 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			flatTeiElementList.add(currentTeiStartElementWrapper);
 			currentTeiStartElementWrapper.setTeiElement(currentTeiElement);
 			
-			
+			if(lastPb!=null)
+			{
+				currentTeiStartElementWrapper.setPagebreakWrapper(lastPb);
+				//currentTeiStartElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+			}
 			
 			
 			if (ElementType.PB.equals(currentTeiElement.getElementType()))
@@ -282,6 +287,11 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				lastPb = currentTeiStartElementWrapper;
 				*/
 				currentTeiStartElementWrapper.setPage(volume.getPages().get(pbCounter));
+				if(lastPb!=null)
+				{
+					lastPb.setNextPagebreak(currentTeiStartElementWrapper);
+				}
+				lastPb = currentTeiStartElementWrapper;
 				pbCounter++;
 			}
 			
@@ -312,7 +322,14 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				currentTeiEndElementWrapper.setPartnerElement(currentTeiStartElementWrapper);
 				currentTeiStartElementWrapper.setPartnerElement(currentTeiEndElementWrapper);
 				
-				subList.add(currentTeiEndElementWrapper);
+				
+				if(lastPb!=null)
+				{
+					currentTeiEndElementWrapper.setPagebreakWrapper(lastPb);
+					//currentTeiEndElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+				}
+				
+				//subList.add(currentTeiEndElementWrapper);
 				
 				/*
 				if(!(ElementType.FRONT.equals(currentTeiElement.getElementType()) || ElementType.BODY.equals(currentTeiElement.getElementType())   
@@ -370,11 +387,14 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		int selectedPbIndex = flatTeiElementList.indexOf(selectedPb);
 		
 		currentEditElement.setPositionType(PositionType.START);
-		
+		currentEditElement.setPagebreakWrapper(selectedPb);
+		//currentEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
 		TeiElementWrapper endEditElement = new TeiElementWrapper();
 		endEditElement.setPositionType(PositionType.END);
 		endEditElement.setPartnerElement(currentEditElement);
 		endEditElement.setTeiElement(currentEditElement.getTeiElement());
+		endEditElement.setPagebreakWrapper(selectedPb);
+		//endEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
 		currentEditElement.setPartnerElement(endEditElement);
 		
 		
@@ -429,6 +449,163 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 	}
 	
+	public TeiElementWrapper getEndPageForPagebreak(TeiElementWrapper pbWrapper)
+	{
+		int index = flatTeiElementList.indexOf(pbWrapper);
+		
+		
+		for(int i=index+1; i<flatTeiElementList.size(); i++)
+		{
+			if(ElementType.PB.equals(flatTeiElementList.get(i).getTeiElement().getElementType()))
+			{
+				return flatTeiElementList.get(i);
+			}
+		}
+		
+		return pbWrapper;
+		
+	}
+	
+	
+	public List<SelectItem> getEndPagesSelectItemsForElement(TeiElementWrapper teiElementWrapper)
+	{
+		List<SelectItem> list = new ArrayList<SelectItem>();
+		
+		int startIndex = flatTeiElementList.indexOf(teiElementWrapper);
+		
+		for(int i = startIndex; i< flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			
+			if(ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+			{
+				list.add(new SelectItem(wrapper.getTeiElement().getId(), wrapper.getPage().getOrder() + 1 + " / " + wrapper.getPage().getOrderLabel()));
+			}
+			else
+			{
+				if(PositionType.START.equals(wrapper.getPositionType()))
+				{
+					//Jump to end of Element
+					i = flatTeiElementList.indexOf(wrapper.getPartnerElement());
+				}
+				
+			}
+		}
+		return list;
+	}
+	
+	public List<TreeWrapperNode> getSubTree(TeiElementWrapper pbWrapper)
+	{
+		
+		List<TreeWrapperNode> subTreeList = new ArrayList<TreeWrapperNode>();
+		
+		TreeWrapperNode firstParent = null;
+		int index = flatTeiElementList.indexOf(pbWrapper);
+		
+		for(int i = index + 1; i < flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
+			if((!ElementType.PB.equals(currentTeiElementWrapper.getTeiElement().getElementType())) && PositionType.START.equals(currentTeiElementWrapper.getPositionType()) )
+			{
+				if(firstParent == null)
+				{
+					firstParent = currentTeiElementWrapper.getTreeWrapperNode().getParent();
+				}
+				else
+				{
+					if(flatTeiElementList.indexOf(firstParent) > flatTeiElementList.indexOf(currentTeiElementWrapper.getTreeWrapperNode().getParent()))
+					{
+						firstParent = currentTeiElementWrapper.getTreeWrapperNode().getParent();
+					}
+				}
+				
+			}
+			else
+			{
+				//Stop when PB is reached
+				break;
+			}
+
+		}
+		
+		if(firstParent == null)
+		{
+			return treeWrapperNodes;
+		}
+		
+		subTreeList.add(firstParent);
+		return subTreeList;
+		
+	}
+	
+	public boolean getIsEditable(TeiElementWrapper wrapper)
+	{
+		List<TeiElementWrapper> elementsToNextPb = getElementsToNextPb(selectedPb);
+		return elementsToNextPb.contains(wrapper);
+		
+	}
+	
+	
+	public void moveEndPageTo(TeiElementWrapper startElementWrapper, String pageBreakToMoveToId)
+	{
+		System.out.println("Move " + startElementWrapper.getTeiElement().getType() + " to "  + pageBreakToMoveToId);
+		
+		TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
+		TeiElementWrapper pageBreakToMoveTo = null;;
+		
+		for(TeiElementWrapper teiElementWrapper : flatTeiElementList)
+		{
+			String id = teiElementWrapper.getTeiElement().getId();
+			try {
+					if(id!=null && pageBreakToMoveToId.equals(id))
+					{
+						
+							pageBreakToMoveTo = teiElementWrapper;
+						
+					}
+				} catch (NullPointerException e) {
+					System.out.println("NPE for " + teiElementWrapper.getTeiElement());
+				}
+			
+		}
+		
+		endElement.setPagebreakWrapper(pageBreakToMoveTo);
+		int startElementIndex = flatTeiElementList.indexOf(startElementWrapper);
+		
+		
+		flatTeiElementList.remove(endElement);
+		
+		int balanceCounter = 0;
+		boolean set = false;
+		for(int i = startElementIndex+1; i<flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
+			if(currentTeiElementWrapper.equals(pageBreakToMoveTo))
+			{
+				System.out.println("Found pagebreak to move to: " + currentTeiElementWrapper.getPagebreakWrapper().getTeiElement().getId());
+				set=true;
+			}
+			else if (PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
+			{
+				balanceCounter++;
+			}
+			else if (PositionType.END.equals(currentTeiElementWrapper.getPositionType()))
+			{
+				balanceCounter--;
+			}
+			
+			if(set && balanceCounter==0)
+			{
+				System.out.println("Set end element to pos " + i+1);
+				flatTeiElementList.add(i+1, endElement);
+				//endElement.s
+				break;
+			}
+			
+		}
+		updateTree();
+	
+	}
 	/*
 	public TreeWrapperNode getSubTreeForPb(TeiElementWrapper pbWrapper)
 	{
