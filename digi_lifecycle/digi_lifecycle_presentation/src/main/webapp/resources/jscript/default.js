@@ -33,7 +33,7 @@ function updateCustomSelectBox(obj) {
 					}
 				});
 				$(parent).find(".mpdl_selectionText").html(val);
-				console.log(val);
+//				console.log(val);
 			}
 		});
 	} else {
@@ -182,17 +182,79 @@ function addShowHideAll(element, child_elements, component) {
 }
 
 
+/************************************************
+ * open / close overlay menu
+ * e.g. sidebar in pageView
+ */
+/**
+ * function mpdl_openOverlay
+ * open the current content to see the content in a maximum container
+ * listButton: object whose be clicked
+ */
+function mpdl_openOverlay(listButton) {
+	//define the current list
+	var curList = $(listButton).parent().parent().parent();
+	//console.log(curList);
+	
+	//check if the parent of the list is a richfaces tabpanel
+	if (curList.parent().parent().hasClass("rf-tbp")) {
+		curList.parent().parent().addClass("mpdl_widthAuto"); //set the width attribute to auto
+	}
+	// add classes to the current list to make it larger
+	curList.parent().addClass("mpdl_overflow");
+	curList.addClass("mpdl_noWrapTrn");
+	curList.addClass("mpdl_expand");
+	//check the width of the tree
+	var objWidth = $(".rf-tr").width();
+	var docWidth = $(document).width();
+	//compare the width of tree and document
+	if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
+		if (docWidth >= 500) { //and the document width is larger than 500px 
+			curList.addClass("mpdl_expandMax80"); //reduce the current content container to a width of 80 percent
+		}
+	}
+	//disable the expand button
+	curList.find('.mpdl_expandOverlay').attr('disabled', 'disabled');
+	//enable the collapse button
+	var collapseBtn = curList.find('.mpdl_collapseOverlay');
+	collapseBtn.removeAttr('disabled');
+}
+/**
+ * function mpdl_openOverlay
+ * close the current content to see the content in a minimized container
+ * listButton: object whose be clicked
+ */
+function mpdl_closeOverlay(listButton) {
+	//define the current list
+	var curList = $(listButton).parent().parent().parent();
+	//remove the overflow class from the current list parent
+	curList.parent().removeClass("mpdl_overflow");
+	
+	//check if the parent of the list is a richfaces tabpanel
+	if (curList.parent().parent().hasClass("rf-tbp")) {
+		curList.parent().parent().removeClass("mpdl_widthAuto"); //remove the auto width class
+	}
+	//remove all additional extension classes to the default behaviour
+	curList.removeClass("mpdl_noWrapTrn");
+	curList.removeClass("mpdl_expand");
+	curList.removeClass("mpdl_expandMax80");
+	//disable the collapse button
+	curList.find('.mpdl_collapseOverlay').attr('disabled', 'disabled');
+	//enable the expand button
+	curList.find('.mpdl_expandOverlay').removeAttr('disabled');
+}
+
+
+
 $(document).ready(function(e) {
 	/*
 	 * use the setTimeout method only if you load the content via ajax 
 	 * alternative: create an ajax handler to refer the function after successed loading with dynamic time
 	 */
-	setTimeout("addDisplayControl('.mpdl_listItem')", 290);
-	setTimeout("addDisplayControl('.mpdl_listItemMediaAcc')", 290);
-	setTimeout("addDisplayControl('.mpdl_listItemMultiVolume')", 290);
+	addDisplayControl('.mpdl_listItem');
+	addDisplayControl('.mpdl_listItemMediaAcc');
+	addDisplayControl('.mpdl_listItemMultiVolume');
 	
-//	use it on every page, because of language selectbox in metamenu
-	// setTimeout("resizeSelectBox()", 290);
 	resizeSelectBox();
 	
 	setTimeout("addShowHideAll('.mpdl_showHideAll_js', '.mpdl_listItem .mpdl_mediumView_js', '.mpdl_bibList')", 290);

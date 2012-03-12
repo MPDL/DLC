@@ -124,8 +124,8 @@ option {
 	display:block !important;
 }
 .mpdl_containerCenter {
-	margin:0 auto;
 	float:none;
+	margin:0 auto;
 }
 
 /*

@@ -12,110 +12,16 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		
 		<ui:define name="mainContent">
-			
-			<style type="text/css">
-				
-				/* richfaces tree */
-				.rf-tbp {
-					width:100%;
-				}
-				.rf-tbp.mpdl_widthAuto {
-					width:auto;
-				}
-				.rf-tr div {
-					float:none;
-				}
-				.rf-tbp .rf-tab {
-					height:97em;
-					width:100%;
-					border:0.0833333em solid #BED6F8;
-				}
-				.rf-tbp .rf-tab.mpdl_overflow {
-					width:100%;
-					border:none;
-				}
-				.rf-trn {
-					white-space:normal;
-				}
-				.mpdl_noWrapTrn .rf-trn {
-					white-space:nowrap;
-				}
-				.rf-tbp .rf-tab-cnt {
-					height:97%;
-					overflow:auto;
-					border:none;
-					padding:0;
-					width:98%;
-					margin:0 1%;
-				}
-				.rf-tbp .rf-tab-cnt.mpdl_expand {
-					width:auto;
-					border:0.0833333em inset #BED6F8;
-					margin-left:0;
-				}
-				.rf-tbp .rf-tab-cnt.mpdl_expand.mpdl_expandMax80 {
-					width:80%;
-				}
-				.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
-					background:none;
-					border:none;
-					background-color:transparent;
-				}
-			</style>
-			
 			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 			<h:panelGroup layout="block" styleClass="mpdl_id_sidebarLeft mpdl_container_1_5 mpdl_overflow" style="z-index:150;">
-				<script type="text/javascript">
-					
-					function openOverlay(listButton) {
-						var curList = $(listButton).parent().parent().parent();
-						console.log(curList);
-						
-						if (curList.parent().parent().hasClass("rf-tbp")) {
-							curList.parent().parent().addClass("mpdl_widthAuto");
-						}
-					//	console.log();
-						
-						curList.parent().addClass("mpdl_overflow");
-						curList.addClass("mpdl_noWrapTrn");
-						curList.addClass("mpdl_expand");
-						var objWidth = $(".rf-tr").width();
-						var docWidth = $(document).width();
-						if (objWidth > (docWidth/2)) {
-							if (docWidth >= 500) {
-								curList.addClass("mpdl_expandMax80");
-							}
-							
-						}
-						curList.find('.mpdl_expandOverlay').attr('disabled', 'disabled');
-						
-						var collapseBtn = curList.find('.mpdl_collapseOverlay');
-						collapseBtn.removeAttr('disabled');
-					}
-					function closeOverlay(listButton) {
-						var curList = $(listButton).parent().parent().parent();
-						curList.parent().removeClass("mpdl_overflow");
-						
-						if (curList.parent().parent().hasClass("rf-tbp")) {
-							curList.parent().parent().removeClass("mpdl_widthAuto");
-						}
-						
-					//	curList.parent().css("border", "0.0833333em solid #BED6F8");
-						curList.removeClass("mpdl_noWrapTrn");
-						curList.removeClass("mpdl_expand");
-						curList.removeClass("mpdl_expandMax80");
-						curList.find('.mpdl_collapseOverlay').attr('disabled', 'disabled');
-						curList.find('.mpdl_expandOverlay').removeAttr('disabled');
-					//	console.log($($(".rf-tab-cnt").get(0)).width());
-					}
-				</script>
-				<h:form styleClass="mpdl_overflow" style="z-index:50;">		
+				
+				<h:form styleClass="mpdl_overflow" style="z-index:50;">	
 					<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 		     			<rich:tab header="Toc" id="toc">
 								<h:panelGroup layout="block" styleClass="mpdl_container_1">
 									<h:panelGroup layout="block" styleClass="mpdl_floatRight">
-										<input type="button" class="mpdl_expandOverlay" onclick="openOverlay(this);" value="+"/>
-										<input type="button" class="mpdl_collapseOverlay" onclick="closeOverlay(this);" disabled="disabled" value="-"/>
+										<input type="button" class="mpdl_expandOverlay" onclick="mpdl_openOverlay(this);" value="+"/>
+										<input type="button" class="mpdl_collapseOverlay" onclick="mpdl_closeOverlay(this);" disabled="disabled" value="-"/>
 										<input type="button" value="print"/>
 									</h:panelGroup>
 								</h:panelGroup>
@@ -171,20 +77,8 @@
 				</h:form>
 				
 			</h:panelGroup>
-			
-			<style type="text/css">
-				.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuHeader li {
-					height:1.75em;
-					max-height:1.75em;
-					padding-top:0.5em;
-				}
-				.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuBody {
-					margin-top:2.25em;
-				}
-			</style>
-			
 		
-			<h:panelGroup layout="block" styleClass="mpdl_container_4_5">
+			<h:panelGroup layout="block" styleClass="mpdl_container_4_5 mpdl_pageView">
 				<h:panelGroup layout="block" styleClass="mpdl_menuTabHorzOverlay mpdl_twoRows">
 					<h:panelGroup layout="block" styleClass="mpdl_menuHeader mpdl_container_1">
 						<ul>
@@ -272,7 +166,7 @@
 					
 				
 				<!--  SINGLE VIEW  -->
-				<h:panelGroup layout="block" styleClass="mpdl_singleView mpdl_container_1 mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
+				<h:panelGroup layout="block" styleClass="mpdl_singleView mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 
 					<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
@@ -282,7 +176,7 @@
 					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 					
-					<h:panelGroup layout="block" styleClass="digilib mpdl_container_1_2 mpdl_containerCenter">
+					<h:panelGroup layout="block" styleClass="digilib mpdl_pageView_imgContainer">
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
 					</h:panelGroup>
 					<script type="text/javascript">
@@ -300,22 +194,23 @@
 			                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
 			                            'arrowSet' : ["up", "down", "left", "right"],
 			                            'buttonSets' : ['standardSet', 'specialSet']
-			                            },
+			                            }
 			                    }
 			                    //, scalerInset : -10
 							}; //end opts
 							$('.mpdl_singleView div.digilib').digilib(opts);
+							$('.mpdl_singleView div.digilib .keep.buttons').draggable();
 			            });
 			        </script>
 				</h:panelGroup>
 			
 			
 				<!-- RECTO VERSO VIEW -->
-				<h:panelGroup layout="block" styleClass="mpdl_rectoVersoView mpdl_container_1 mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
-					<h:panelGroup layout="block" styleClass="mpdl_container_1_2" rendered="#{viewPages.selectedPage!=null}">
+				<h:panelGroup layout="block" styleClass="mpdl_dualView mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
+					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer" rendered="#{viewPages.selectedPage!=null}">
 						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="mpdl_container_1_2 #{empty viewPages.selectedPage ? 'mpdl_containerCenter' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer #{empty viewPages.selectedPage ? 'mpdl_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
 						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
 					
