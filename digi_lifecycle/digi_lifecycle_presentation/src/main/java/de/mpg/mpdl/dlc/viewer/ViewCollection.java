@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import org.apache.log4j.Logger;
@@ -36,13 +35,8 @@ public class ViewCollection {
 	
 	private String id;
 	
-	@ManagedProperty("#{loginBean}")
+
 	protected LoginBean loginBean;
-	
-	@ManagedProperty("#{applicationBean}")
-	protected ApplicationBean appBean;
-	
-	private ApplicationBean applicationBean;
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
@@ -69,10 +63,11 @@ public class ViewCollection {
 				List<SortCriterion> sortList = new ArrayList<SortCriterion>();
 				sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
 				SearchBean searchBean = new SearchBean();
-				VolumeSearchResult res = searchBean.advancedSearchVolumes(scList, sortList, 10, 0);
+				VolumeSearchResult res = searchBean.advancedSearchVolumes(scList, sortList, 0, 0);
 				
 				for(Volume vol : res.getVolumes())
 				{ 
+					
 					if(!vol.getItem().getProperties().getContentModel().getObjid().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")) && vol.getPages() != null && vol.getPages().size()>0)
 					{
 						String pageUrl = vol.getPages().get(0).getContentIds();
@@ -104,13 +99,7 @@ public class ViewCollection {
 		this.loginBean = loginBean;
 	}
 
-	public ApplicationBean getApplicationBean() {
-		return applicationBean;
-	}
 
-	public void setApplicationBean(ApplicationBean applicationBean) {
-		this.applicationBean = applicationBean;
-	}
 
 	public Collection getCol() {
 		return col;

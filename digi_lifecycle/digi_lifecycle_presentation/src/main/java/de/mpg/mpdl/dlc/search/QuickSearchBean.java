@@ -36,4 +36,5 @@ public class QuickSearchBean {
 	public void setQuickSearchResultBean(QuickSearchResultBean quickSearchResultBean) {
 		this.quickSearchResultBean = quickSearchResultBean;
 	}
+	
 }
