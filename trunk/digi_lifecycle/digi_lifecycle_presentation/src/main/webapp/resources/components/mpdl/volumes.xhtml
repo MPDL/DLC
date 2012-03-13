@@ -24,23 +24,20 @@
 				<div class="mpdl_itemContentData">
 					<div class="mpdl_itemStatusArea">
 						<div class="mpdl_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="mpdl_itemStatusTitle">Withdrawn</span>
+						<span class="mpdl_itemStatusTitle">Released</span>
 					</div>
 					<div class="mpdl_itemHeadline">
 						<div class="mpdl_itemTitle">
 							<pretty:link mappingId="viewPages">
 								<f:param value="#{volume.item.objid}" />
 								<f:param value="1" />
-								
-							
+
 								<h:outputText value="Band. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(volume.modsMetadata).dateIssued_425.date}." />
 	
 							</pretty:link> 
 						</div> 
 					</div>
 				
-				
-					
 					<div class="mpdl_shortView_js">
 						<div class="mpdl_itemMetaLabel">Creator(s)</div>
 						<div class="mpdl_itemMetaValue">Name, Prename, Address</div>
@@ -69,12 +66,8 @@
 								</h:panelGroup>
 							</a4j:repeat>
 						</h:panelGroup>
-
-
-
-
-
 					</div>
+
 					<div class="mpdl_mediumView_js">
 						<div class="mpdl_itemMetaLabel">Journal Title</div>
 						<div class="mpdl_itemMetaValue">Astrophysical Journal Letters</div>

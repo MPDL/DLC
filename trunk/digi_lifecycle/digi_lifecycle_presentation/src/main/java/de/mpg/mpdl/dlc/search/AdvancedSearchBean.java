@@ -46,8 +46,6 @@ public class AdvancedSearchBean {
 		
 		try {
 			
-			
-			
 			advancedSearchResultBean.setSearchCriterionList(searchCriterionList);
 			String cql = searchBean.getAdvancedSearchCQL(searchCriterionList);
 			advancedSearchResultBean.setCqlQuery(cql);
