@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.editor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -250,13 +251,13 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	private static List<TeiElementWrapper> teiSdToFlatTeiElementList(TeiSd teiSd, Volume v)
 	{
 		List<TeiElementWrapper> flatTeiElementList = new ArrayList<TeiElementWrapper>();
-		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getPbOrDiv(), v, 0, null, new ArrayList<TeiElementWrapper>());
+		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getPbOrDiv(), v, new ArrayList<TeiElementWrapper>(), new ArrayList<TeiElementWrapper>());
 		return flatTeiElementList;
 		
 	}
 	
 
-	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, int pbCounter, TeiElementWrapper lastPb, List<TeiElementWrapper> subList)
+	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, List<TeiElementWrapper> pbList, List<TeiElementWrapper> subList)
 	{
 		for(PbOrDiv currentTeiElement : currentTeiElementList)
 		{
@@ -271,9 +272,9 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			{
 				currentTeiStartElementWrapper.setPositionType(PositionType.START);
 				//subList.add(currentTeiStartElementWrapper);
-				if(lastPb!=null)
+				if(!pbList.isEmpty())
 				{
-					currentTeiStartElementWrapper.setPagebreakWrapper(lastPb);
+					currentTeiStartElementWrapper.setPagebreakWrapper(pbList.get(pbList.size()-1));
 					//currentTeiStartElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
 				}
 			}
@@ -297,13 +298,20 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				
 				lastPb = currentTeiStartElementWrapper;
 				*/
-				currentTeiStartElementWrapper.setPage(volume.getPages().get(pbCounter));
-				if(lastPb!=null)
+				Page dummy = new Page();
+				dummy.setId(currentTeiElement.getId());
+				Page realPage = volume.getPages().get(volume.getPages().indexOf(dummy));
+				currentTeiStartElementWrapper.setPage(realPage);
+				System.out.print("Added Pagebreak: " +  realPage.getOrder());
+				if(!pbList.isEmpty())
 				{
+					TeiElementWrapper lastPb = pbList.get(pbList.size()-1);
+					System.out.println("--- last Pb: " + lastPb.getPage().getOrder());
+					
 					lastPb.setNextPagebreak(currentTeiStartElementWrapper);
 				}
-				lastPb = currentTeiStartElementWrapper;
-				pbCounter++;
+				pbList.add(currentTeiStartElementWrapper);
+				
 			}
 			
 	
@@ -317,7 +325,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			*/
 			
 			
-			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbCounter, lastPb, subList);
+			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbList, subList);
 			
 			if(PositionType.START.equals(currentTeiStartElementWrapper.getPositionType()))
 			{
@@ -330,8 +338,9 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				currentTeiStartElementWrapper.setPartnerElement(currentTeiEndElementWrapper);
 				
 				
-				if(lastPb!=null)
+				if(!pbList.isEmpty())
 				{
+					TeiElementWrapper lastPb = pbList.get(pbList.size()-1);
 					currentTeiEndElementWrapper.setPagebreakWrapper(lastPb);
 					//currentTeiEndElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
 				}
@@ -396,18 +405,63 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		currentEditElement.setPositionType(PositionType.START);
 		currentEditElement.setPagebreakWrapper(selectedPb);
 		//currentEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
+		
+		
 		TeiElementWrapper endEditElement = new TeiElementWrapper();
 		endEditElement.setPositionType(PositionType.END);
 		endEditElement.setPartnerElement(currentEditElement);
 		endEditElement.setTeiElement(currentEditElement.getTeiElement());
-		endEditElement.setPagebreakWrapper(selectedPb);
+		
 		//endEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
 		currentEditElement.setPartnerElement(endEditElement);
 		
-		
 		int nextPbIndex = flatTeiElementList.indexOf(selectedPb.getNextPagebreak());
-		flatTeiElementList.add(nextPbIndex, endEditElement);
+		
 		flatTeiElementList.add(nextPbIndex, currentEditElement);
+		
+		
+		
+		TeiElementWrapper lastParentElement = null;
+		//TeiElementWrapper lastSiblingElement = null;
+		int balanceCounter = 0;
+		for(int i=nextPbIndex-1; i>=0; i--)
+		{
+			TeiElementWrapper currentElementWrapper = flatTeiElementList.get(i);
+			System.out.println(currentElementWrapper.getPositionType() + " " + currentElementWrapper.getTeiElement().getElementType());
+			if(PositionType.END.equals(currentElementWrapper.getPositionType()))
+			{
+				balanceCounter--;
+				
+			}
+			else if(PositionType.START.equals(currentElementWrapper.getPositionType()))
+			{
+				
+				if(balanceCounter==0)
+				{
+					lastParentElement = currentElementWrapper;
+					break;
+				}
+				
+				balanceCounter++;
+				/*
+				if(lastSiblingElement==null)
+				{
+					lastSiblingElement = currentElementWrapper;
+				}
+				*/
+				
+				
+			}
+		}
+		
+		
+		//Add end element directly before end of parent
+		int lastParentIndex = flatTeiElementList.indexOf(lastParentElement.getPartnerElement());
+		flatTeiElementList.add(lastParentIndex, endEditElement);
+		endEditElement.setPagebreakWrapper(lastParentElement.getPartnerElement().getPagebreakWrapper());
+		
+		
+		
 		
 		selectedStructuralElementTypeChanged();
 		
@@ -416,6 +470,48 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 		System.out.println("test");
 		
+	}
+	
+	
+
+	public void moveElementToLeft(TeiElementWrapper startElementWrapper)
+	{
+		//end of parentElement to be moved directly before start of startelement
+		
+	
+		TeiElementWrapper parentWrapper = startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper();
+		TeiElementWrapper parentEndWrapper = parentWrapper.getPartnerElement();
+		
+		flatTeiElementList.remove(parentEndWrapper);
+		int startIndex = flatTeiElementList.indexOf(startElementWrapper);
+		
+		flatTeiElementList.add(startIndex, parentEndWrapper);
+		parentEndWrapper.setPagebreakWrapper(startElementWrapper.getPagebreakWrapper());
+		updateTree();
+	}
+	
+	
+	public void moveElementToRight(TeiElementWrapper startElementWrapper)
+	{
+		//end of sibling-before to be moved directly after end of startElement
+		
+		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
+		
+
+		while(startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent - 1).getTeiElementWrapper().getTeiElement().getElementType().equals(ElementType.PB))
+		{
+			startElementIndexInParent--;
+			
+		}
+		
+		TeiElementWrapper siblingBeforeWrapperEnd = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent - 1).getTeiElementWrapper().getPartnerElement();
+		
+		flatTeiElementList.remove(siblingBeforeWrapperEnd);
+		int endIndex = flatTeiElementList.indexOf(startElementWrapper.getPartnerElement());
+		
+		flatTeiElementList.add(endIndex+1, siblingBeforeWrapperEnd);
+		siblingBeforeWrapperEnd.setPagebreakWrapper(startElementWrapper.getPartnerElement().getPagebreakWrapper());
+		updateTree();
 	}
 	
 	public List<TeiElementWrapper> getElementsToNextPb(TeiElementWrapper wrapper)
