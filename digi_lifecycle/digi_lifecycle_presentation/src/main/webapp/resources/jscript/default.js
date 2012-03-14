@@ -244,6 +244,29 @@ function mpdl_closeOverlay(listButton) {
 	curList.find('.mpdl_expandOverlay').removeAttr('disabled');
 }
 
+/**
+ * switchInputType is a function to change to container, whose controls input type formats
+ * @param hide_element:String - used in case of jQuery selection
+ * @param show_element:String - used in case of jQuery selection
+ * @param escListener:Boolean - if set, the escape listener will change the input formats back
+ */
+function mpdl_switchInputType(hide_element, show_element, escListener) {
+	$(hide_element).hide();
+	$(show_element).show();
+	if (escListener && escListener === true) {
+		console.log('escListener found');
+		$(document).keyup(function(e) {
+			switch (e.which) {
+				case 0: //esc button in firefox
+				case 27: //esc button in chrome and IE >= 8
+					mpdl_switchInputType(show_element, hide_element);
+					$(document).unbind("keypress");
+					break;
+			}
+		});
+	}
+}
+
 
 
 $(document).ready(function(e) {
