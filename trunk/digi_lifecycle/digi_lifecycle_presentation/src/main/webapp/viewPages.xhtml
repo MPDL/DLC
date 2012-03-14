@@ -83,34 +83,19 @@
 					<h:panelGroup layout="block" styleClass="mpdl_menuHeader mpdl_container_1">
 						<ul>
 							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup layout="block" styleClass="mpdl_menuEntry">
+								<h:panelGroup layout="block" styleClass="mpdl_menuEntry" rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
 										<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
 									</h:form>
-								</h:panelGroup>
+								</h:panelGroup>&#160;
 							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top mpdl_active" onclick="$('.mpdl_menuBody .mpdl_menuTabContent').toggle(); $(this).toggleClass('mpdl_active');">
+							<li class="mpdl_container_3_4 mpdl_horizontalTab mpdl_borderradius_5_top mpdl_active" onclick="$('.mpdl_menuBody .mpdl_menuTabContent').toggle(); $(this).toggleClass('mpdl_active');">
 								<h:panelGroup styleClass="mpdl_menuEntry">Page</h:panelGroup>
 							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
-							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
-							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
-							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
-							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup styleClass="mpdl_menuEntry">XML</h:panelGroup>
-							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup layout="block" styleClass="mpdl_menuEntry mpdl_floatRight">
+							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">&#160;
+								<h:panelGroup layout="block" styleClass="mpdl_menuEntry mpdl_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -122,7 +107,7 @@
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="mpdl_menuBody">
 						
-						<h:panelGroup layout="block" styleClass="mpdl_menuTabContent mpdl_container_1_4 mpdl_active">
+						<h:panelGroup layout="block" styleClass="mpdl_menuTabContent mpdl_container_3_4 mpdl_active">
 							<h:panelGroup layout="block" styleClass="mpdl_menuTabBg mpdl_borderradius_5_bottom">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="mpdl_paginatorWave">
 								<h:panelGroup layout="block" styleClass="mpdl_pageBrowserMin">
@@ -142,7 +127,7 @@
 										<ui:remove>
 											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="mpdl_pageNumber mpdl_active">40</h:panelGroup></a>
 										</ui:remove>
-											<button onclick="openSinglePageInput(this);" class="mpdl_icon_editBtn_16_16">&#160;</button>
+											<input type="button" onclick="mpdl_switchInputType('.mpdl_menuTabContent .mpdl_paginatorWave', '.mpdl_menuTabContent .mpdl_gotoBox', true);" class="mpdl_icon_editBtn_16_16"/>
 											
 											<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
 												<h:panelGroup styleClass="mpdl_icon_forward_16_16"/>
@@ -157,8 +142,10 @@
 								</h:panelGroup>
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="mpdl_gotoBox">
-								<input class="mpdl_gotoInput mpdl_borderradius_5_bottom mpdl_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="9999" maxlength="5" type="number"/>
-								<label class="mpdl_inputLabel">von 9999</label>
+								<h:form>
+									<input class="mpdl_gotoInput mpdl_borderradius_5_bottom mpdl_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="9999" maxlength="5" type="number"/>
+									<label class="mpdl_inputLabel">von 9999</label>
+								</h:form>
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
@@ -208,10 +195,10 @@
 				<!-- RECTO VERSO VIEW -->
 				<h:panelGroup layout="block" styleClass="mpdl_dualView mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
 					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer" rendered="#{viewPages.selectedPage!=null}">
-						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer #{empty viewPages.selectedPage ? 'mpdl_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
-						<h:graphicImage styleClass="mpdl_container_1" value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
 					
 					

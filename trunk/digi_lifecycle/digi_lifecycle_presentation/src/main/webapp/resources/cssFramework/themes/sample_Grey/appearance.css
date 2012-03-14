@@ -1464,19 +1464,19 @@ body .mpdl_id_siteTitle {
 .mpdl_pageView .mpdl_singleView {
 	width:100%;
 }
-
 .mpdl_pageView .mpdl_singleView .mpdl_pageView_imgContainer {
 	float:none;
 	width:50%;
 	margin:0 auto;
 }
+.mpdl_pageView .mpdl_singleView .mpdl_pageView_imgContainer img {
+	width:100%;
+}
 .mpdl_pageView .mpdl_singleView div.digilib div.scaler {
 	width:100% !important;
 	height:auto !important;
 }
-.mpdl_pageView .mpdl_singleView div.digilib div.scaler img {
-	width:100%;
-}
+
 
 
 .mpdl_pageView .mpdl_dualView {
@@ -1484,6 +1484,9 @@ body .mpdl_id_siteTitle {
 }
 .mpdl_pageView .mpdl_dualView .mpdl_pageView_imgContainer {
 	width:50%;
+}
+.mpdl_pageView .mpdl_dualView .mpdl_pageView_imgContainer img {
+	width:100%;
 }
 
 /*************************************************************************************************************
