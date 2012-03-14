@@ -14,55 +14,6 @@
 	<ui:define name="mainContent">
 	
 	
-		<style type="text/css">
-				
-				/* richfaces tree */
-				.rf-tbp {
-					width:100%;
-				}
-				.rf-tbp.mpdl_widthAuto {
-					width:auto;
-				}
-				.rf-tr div {
-					float:none;
-				}
-				.rf-tbp .rf-tab {
-					height:97em;
-					width:100%;
-					border:0.0833333em solid #BED6F8;
-				}
-				.rf-tbp .rf-tab.mpdl_overflow {
-					width:100%;
-					border:none;
-				}
-				.rf-trn {
-					white-space:normal;
-				}
-				.mpdl_noWrapTrn .rf-trn {
-					white-space:nowrap;
-				}
-				.rf-tbp .rf-tab-cnt {
-					height:97%;
-					overflow:auto;
-					border:none;
-					padding:0;
-					width:98%;
-					margin:0 1%;
-				}
-				.rf-tbp .rf-tab-cnt.mpdl_expand {
-					width:auto;
-					border:0.0833333em inset #BED6F8;
-					margin-left:0;
-				}
-				.rf-tbp .rf-tab-cnt.mpdl_expand.mpdl_expandMax80 {
-					width:80%;
-				}
-				.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
-					background:none;
-					border:none;
-					background-color:transparent;
-				}
-			</style>
 	
 	
 	
@@ -82,7 +33,7 @@
 						<h:panelGroup layout="block" styleClass="mpdl_container1_2">
 							<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
 								
-								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.teiElement.facs, 'THUMBNAIL')}" class="lazy" height="200"/>
+								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
 							</h:commandLink>
 							
 							
@@ -97,6 +48,7 @@
 							<br/>
 							<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
 							<h:outputText  value="#{wrapper.positionType}"/>
+							<h:outputText  value="#{wrapper.teiElement.elementType}"/>
 							<h:outputText  value=" - #{wrapper.teiElement.type}"/>
 							<h:outputText  value=" - #{wrapper.teiElement.head}"/>
 							<br/>
@@ -126,7 +78,7 @@
 	
 		
 		<h:panelGroup layout="block" id="view" styleClass="container1_3">
-				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.teiElement.facs, 'WEB')}" />
+				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}" />
 		</h:panelGroup>
 		
 		
@@ -199,7 +151,7 @@
 					
 					<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
 						
-						<h:commandButton value="left" action="#{structuralEditorBean.moveNodeToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
+						<h:commandButton value="left" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
 					
 						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey'}">
 							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
@@ -230,17 +182,20 @@
 						
 						<h:outputText value="Pages: #{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
 						
-						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}"  rendered= "#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb}"/>
+						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" />
 						
-						<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}">
-							<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
-							<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
-						</h:selectOneMenu>
 						
+						
+						<ui:remove>
+							<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}">
+								<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+								<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
+							</h:selectOneMenu>
+						</ui:remove>
 						
 						</h:panelGroup>
 						
-						<h:commandButton value="right" action="#{structuralEditorBean.moveNodeToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
+						<h:commandButton value="right" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
 					
 					</rich:treeNode>
 					
