@@ -18,13 +18,14 @@
 		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
 		<style type="text/css">
 			.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
+			#zeige { font-weight:bold; color:red; }
 		</style>
 
 
 
 		<pretty:link mappingId="volumes" >
 			<f:param value="#{viewCollection.col.id}" />
-			<h:outputText value="Zeige Sammlung"/><br/>
+			<h:outputText value="Zeige Sammlung" style="font-size:300%; color:red"/><br/>
 		</pretty:link>
 		<br/>
 
