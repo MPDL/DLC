@@ -30,6 +30,7 @@
 			
 		
 			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
+			<h:outputScript library="jscript" name="jquery_1.6.3_min.js"/>
 				
 				<list:bibList_default>
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
