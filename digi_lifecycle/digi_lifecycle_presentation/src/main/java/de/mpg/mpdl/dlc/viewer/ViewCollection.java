@@ -14,6 +14,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
@@ -62,13 +63,14 @@ public class ViewCollection {
 
 				List<SortCriterion> sortList = new ArrayList<SortCriterion>();
 				sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
+				VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
 				SearchBean searchBean = new SearchBean();
-				VolumeSearchResult res = searchBean.advancedSearchVolumes(scList, sortList, 0, 0);
+				VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
 				
 				for(Volume vol : res.getVolumes())
 				{ 
 					
-					if(!vol.getItem().getProperties().getContentModel().getObjid().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")) && vol.getPages() != null && vol.getPages().size()>0)
+					if(vol.getPages() != null && vol.getPages().size()>0)
 					{
 						String pageUrl = vol.getPages().get(0).getContentIds();
 						this.imgs.add(VolumeUtilBean.getImageServerUrl(pageUrl, "THUMBNAIL"));
