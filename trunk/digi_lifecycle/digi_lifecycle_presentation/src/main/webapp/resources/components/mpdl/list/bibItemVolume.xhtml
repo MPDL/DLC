@@ -38,6 +38,7 @@
 						<pretty:link mappingId="viewPages">
 							<f:param value="#{cc.attrs.volume.item.objid}" />
 							<f:param value="1" />
+							<f:param value="RECTO_VERSO" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 
 							<h:outputText value="Band. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getFirstPublisher(volume.modsMetadata).dateIssued_425.date}." />
@@ -63,6 +64,7 @@
 								<pretty:link mappingId="viewPages">
 									<f:param value="#{cc.attrs.volume.item.objid}"/>
 									<f:param value="#{pageNumber}"/>
+									<f:param value="FULLTEXT" />
 									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 									<h:outputText value="Scan #{pageNumber}"/>
 								</pretty:link>

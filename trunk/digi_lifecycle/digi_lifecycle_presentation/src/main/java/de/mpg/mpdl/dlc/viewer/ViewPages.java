@@ -20,7 +20,7 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
 @ViewScoped
-@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml")
+@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}/#{viewPages.viewType}", viewId = "/viewPages.xhtml")
 public class ViewPages extends VolumeLoaderBean{
 	
 	@URLQueryParameter("fm")

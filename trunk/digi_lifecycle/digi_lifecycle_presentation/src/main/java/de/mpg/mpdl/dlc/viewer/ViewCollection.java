@@ -26,6 +26,7 @@ import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 
 @ManagedBean
 @SessionScoped
@@ -42,8 +43,9 @@ public class ViewCollection {
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private Collection col;
-	
-	private List<String> imgs = new ArrayList<String>();
+	private List<Volume> volumes = new ArrayList<Volume>();	
+
+
 	
 	@URLAction(onPostback=false)
 	public void loadCollection()
@@ -54,8 +56,9 @@ public class ViewCollection {
 			if(col==null || !col.getId().equals(id))
 			{
 				this.col = contextServiceBean.retrieveCollection(id, null);
-				this.imgs.clear();
-				
+				if(volumes!=null)
+					this.volumes.clear();
+
 				SearchCriterion sc= new SearchCriterion(SearchType.CONTEXT_ID, id);
 				List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 				scList.add(sc);
@@ -72,8 +75,10 @@ public class ViewCollection {
 					
 					if(vol.getPages() != null && vol.getPages().size()>0)
 					{
-						String pageUrl = vol.getPages().get(0).getContentIds();
-						this.imgs.add(VolumeUtilBean.getImageServerUrl(pageUrl, "THUMBNAIL"));
+//						String pageUrl = vol.getPages().get(0).getContentIds();
+//						this.pages.add(VolumeUtilBean.getImageServerUrl(pageUrl, "THUMBNAIL"));
+						this.volumes.add(vol);
+
 					}
 				}
 			}
@@ -83,6 +88,18 @@ public class ViewCollection {
 		}
 	}
 	
+
+
+	public List<Volume> getVolumes() {
+		return volumes;
+	}
+
+
+
+	public void setVolumes(List<Volume> volumes) {
+		this.volumes = volumes;
+	}
+
 
 
 	public String getId() {
@@ -113,15 +130,10 @@ public class ViewCollection {
 
 
 
-	public List<String> getImgs() {
-		return imgs;
-	}
 
 
 
-	public void setImgs(List<String> imgs) {
-		this.imgs = imgs;
-	}
+
 	
 	
 	

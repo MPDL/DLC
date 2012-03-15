@@ -39,11 +39,18 @@
 			
 
 		
-		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.imgs}">
+		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
 			<h:panelGroup layout="block" class="wrapper">
 				<ul>
-					<ui:repeat id="image" value="#{viewCollection.imgs}" var="img">
-						<li><h:graphicImage value="#{img}" width="75" height="75"> </h:graphicImage></li>
+					<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+						<li>
+							<pretty:link mappingId="viewPages">
+							<f:param value="#{volume.item.objid}" />
+							<f:param value="1" />
+							<f:param value="RECTO_VERSO" />
+								<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+							</pretty:link>
+						</li>
 					</ui:repeat>
 				</ul>
 			</h:panelGroup>
