@@ -200,7 +200,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		{
 			
 			
-			if(PositionType.START.equals(teiElementWrapper.getPositionType()) || PositionType.EMPTY.equals(teiElementWrapper.getPositionType()))
+			if((!ElementType.PB.equals(teiElementWrapper.getTeiElement().getElementType())) && (PositionType.START.equals(teiElementWrapper.getPositionType()) || PositionType.EMPTY.equals(teiElementWrapper.getPositionType())))
 			{
 				TreeWrapperNode treeWrapperNode = new TreeWrapperNode();
 				treeWrapperNode.setTeiElementWrapper(teiElementWrapper);
@@ -476,9 +476,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 
 	public void moveElementToLeft(TeiElementWrapper startElementWrapper)
 	{
-		//end of parentElement to be moved directly before start of startelement
-		
-	
+		//end of parentElement to be moved directly before start of startelement	
 		TeiElementWrapper parentWrapper = startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper();
 		TeiElementWrapper parentEndWrapper = parentWrapper.getPartnerElement();
 		
@@ -487,6 +485,24 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 		flatTeiElementList.add(startIndex, parentEndWrapper);
 		parentEndWrapper.setPagebreakWrapper(startElementWrapper.getPagebreakWrapper());
+		
+		
+		//end of start element to be moved directly after end element of last sibling
+		List<TreeWrapperNode> siblings = startElementWrapper.getTreeWrapperNode().getParent().getChildren();
+		TreeWrapperNode lastSibling = siblings.get(siblings.size()-1);
+		
+		TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
+		flatTeiElementList.remove(endElement);
+		
+		TeiElementWrapper lastSiblingEndElement = lastSibling.getTeiElementWrapper().getPartnerElement();
+		int siblingEndIndex = flatTeiElementList.indexOf(lastSiblingEndElement);
+		flatTeiElementList.add(siblingEndIndex+1, endElement);
+		
+		endElement.setPagebreakWrapper(lastSiblingEndElement.getPagebreakWrapper());
+		
+		
+		
+		
 		updateTree();
 	}
 	
