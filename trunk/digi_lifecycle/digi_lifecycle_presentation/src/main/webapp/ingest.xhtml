@@ -23,7 +23,6 @@
 	float:none;
 	}
 	</style>	
-
 	<script>
 	function ajaxExecuting(data)
 	{
@@ -50,7 +49,7 @@
 		<h:panelGroup layout="block" id="test">
 		
 			<rich:panel id="upload" header="Upload your files...">
-				<fu:fileUpload rerender="form2:imageInfo form2:modsInfo form2:teiInfo" fileUploadListener="#{ingestBean.fileUploaded}">
+				<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}">
 				</fu:fileUpload>
 			</rich:panel>
 		
@@ -114,12 +113,20 @@
 				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Volume'}">
 					<mpdl:modsEditor_Vol modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
+				
+				
+				<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="Clear Uploaded MAB" rendered="#{not empty ingestBean.mabFile}">
+					<f:ajax render=":#{component.parent.clientId}" />
+				</h:commandButton>
 			</rich:panel>
 
 			
 			<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
-				<h:outputText
-					value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
+				<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
+
+				<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="Clear Uploaded tei" rendered="#{ingestBean.numberOfTeiPbs > 0}">
+					<f:ajax render=":#{component.parent.clientId}" />
+				</h:commandButton>
 			</rich:panel>
 
 
@@ -133,21 +140,23 @@
 				</f:facet>
 				<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
 
+
 	            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 	                 <f:facet name="header">
 						<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
 							<f:ajax render=":#{component.parent.parent.clientId}" />
 						</h:commandButton>
                     </f:facet>
-                    <a4j:outputPanel layout="block" styleClass="rf-ind-drag">
+                    <a4j:outputPanel layout="block" >
                         <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
                         <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
                         <h:outputText value="#{file.name}"></h:outputText>
 						<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
-							<f:ajax execute=":#{component.parent.parent.parent.clientId}" render=":#{component.parent.parent.parent.clientId}"/>
+							<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
 						</h:commandButton>
                     </a4j:outputPanel>
                 </rich:dataGrid>
+
     
 <ui:remove>		
 				<rich:dataGrid columns="1" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
