@@ -1,8 +1,3 @@
-
-
-
-
-
 // Custom example logic
 function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, maxFileSize) {
 	
@@ -55,7 +50,16 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 			{
 				//$('#'+clientId).find('.hiddenUploadCompleteButton').click();
 				var element = document.getElementById(clientId);
-				jsf.ajax.request(element, null, {execute:this.id, render:rerender});
+				// dragSource doesn't work after being rerendered via ajax. see: https://issues.jboss.org/browse/RF-10947
+				//	jsf.ajax.request(element, null, {execute:this.id, render:rerender});
+				$.ajax({
+					url: url + ';jsessionid=' + sessionId,
+					success:function(){
+						location.reload();
+
+					}
+				});
+
 			}
 			
 		});
