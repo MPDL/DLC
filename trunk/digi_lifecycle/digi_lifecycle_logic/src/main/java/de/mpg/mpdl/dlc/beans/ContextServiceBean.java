@@ -32,6 +32,7 @@ import de.mpg.mpdl.dlc.vo.mets.Page;
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
 	
+
 	
 	public Collection retrieveCollection(String id, String userHandle)
 	{
@@ -52,7 +53,8 @@ public class ContextServiceBean {
         try
         {
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-			contextClient.setHandle(userHandle);
+			if(userHandle!=null)
+				contextClient.setHandle(userHandle);
 			context = contextClient.retrieve(contextId);
         }catch(Exception e)
         {

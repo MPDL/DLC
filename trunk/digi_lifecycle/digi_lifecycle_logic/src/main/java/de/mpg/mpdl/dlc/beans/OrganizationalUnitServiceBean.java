@@ -307,14 +307,14 @@ public class OrganizationalUnitServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-		String ouId = "escidoc:16050";
+		String ouId = "escidoc:1";
 
 		
 //        System.out.println(removeParents(ouId));
-//		addOU_DLCMDRecord(ouId);
+		addOU_DLCMDRecord(ouId);
 //		createNew();
 //		deleteOU(ouId);
-		closeOU(ouId);
+//		closeOU(ouId);
 	}
 	  
 	public static void closeOU(String ouId) throws Exception
@@ -387,8 +387,8 @@ public class OrganizationalUnitServiceBean {
 	
 	public static String addOU_DLCMDRecord(String ouId) throws Exception
 	{
-		String url = "http://latest-coreservice.mpdl.mpg.de";
-		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlc");
+		String url = "http://dlc.mpdl.mpg.de:8080";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
 		OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
         client.setHandle(auth.getHandle());
         OrganizationalUnit ou = client.retrieve(ouId);
