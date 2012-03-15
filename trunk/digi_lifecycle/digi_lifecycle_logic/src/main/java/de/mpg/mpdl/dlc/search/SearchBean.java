@@ -1,17 +1,16 @@
 package de.mpg.mpdl.dlc.search;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-
-
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.SearchHandlerClient;
+import de.escidoc.core.resources.common.Relation;
+import de.escidoc.core.resources.common.Relations;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
@@ -19,7 +18,6 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.search.SearchCriterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
-import de.mpg.mpdl.dlc.search.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -89,7 +87,7 @@ public class SearchBean {
 	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
 	{
 		
-		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME};
+		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME, VolumeTypes.VOLUME};
 		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 		SearchCriterion scFree = new SearchCriterion(Operator.AND, SearchType.FREE, query);
 		scList.add(scFree);
@@ -115,7 +113,7 @@ public class SearchBean {
 	
 	public String getAdvancedSearchCQL(List<SearchCriterion> scList) throws Exception
 	{
-		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME};
+		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME, VolumeTypes.VOLUME};
 		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(volTypes, scList));
 		return cql;
 	}
@@ -199,19 +197,20 @@ public class SearchBean {
 		logger.info("Search Query: " + cql);
 		
 		SearchRetrieveResponse resp = shc.search(cql, offset, limit, null, index);
-		
-		List<Volume> volumeResult = new ArrayList<Volume>();
-		
+		List<Volume> volumeResult = new ArrayList<Volume>();		
+
 		for(SearchResultRecord rec : resp.getRecords())
 		{
 			
 			Item item = (Item)rec.getRecordData().getContent();
+
 			Volume vol = VolumeServiceBean.createVolumeFromItem(item, null);
-			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
+			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());	
 			volumeResult.add(vol);
-		}
+		} 
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Time search: " + time );
+		
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
 

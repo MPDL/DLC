@@ -2,10 +2,12 @@ package de.mpg.mpdl.dlc.vo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class VolumeSearchResult {
 	
 	private List<Volume> volumes = new ArrayList<Volume>();
+
 	
 	private int numberOfRecords;
 	
@@ -15,7 +17,6 @@ public class VolumeSearchResult {
 		this.numberOfRecords = numberOfRecords;
 	}
 	
-
 	public List<Volume> getVolumes() {
 		return volumes;
 	}
