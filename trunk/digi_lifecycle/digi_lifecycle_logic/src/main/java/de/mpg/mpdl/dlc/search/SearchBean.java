@@ -106,7 +106,6 @@ public class SearchBean {
 	public VolumeSearchResult advancedSearchVolumes(List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
 		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME};
-		
 		return search(volTypes, scList, sortList, limit, offset);
 	}
 	
