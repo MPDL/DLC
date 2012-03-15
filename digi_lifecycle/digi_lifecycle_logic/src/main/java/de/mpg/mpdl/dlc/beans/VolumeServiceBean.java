@@ -552,6 +552,8 @@ public class VolumeServiceBean {
 		
 		Item item = vol.getItem();
 		Relations relations = new Relations();
+		if(item.getRelations()!=null)
+			relations = item.getRelations();
 		Reference ref = new ItemRef("/ir/item/"+relationId,"Item "+relationId);
 		
 		Relation relation = new Relation(ref);
@@ -873,8 +875,24 @@ public class VolumeServiceBean {
 	{
 		
 		
-		String url = "http://latest-coreservice.mpdl.mpg.de";
-		Authentication auth = new Authentication(new URL(url), "sysadmin", "sysadmin");
+		String url = "http://dlc.mpdl.mpg.de:8080";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
+		
+		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
+		client.setHandle(auth.getHandle()); 
+//		Item item = client.retrieve("escidoc:8034");
+//		
+//		
+//		TaskParam taskParam=new TaskParam(); 
+//	    taskParam.setComment("Submit Volume");
+//		taskParam.setLastModificationDate(item.getLastModificationDate());
+//		
+//		Result res = client.submit(item.getObjid(), taskParam);
+//		taskParam=new TaskParam(); 
+//	    taskParam.setComment("Release Volume");
+//		taskParam.setLastModificationDate(res.getLastModificationDate());
+//		client.release("escidoc:8034", taskParam);
+
 		/*
 		
 		
