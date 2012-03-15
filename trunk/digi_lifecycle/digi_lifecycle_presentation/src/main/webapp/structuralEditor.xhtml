@@ -151,7 +151,7 @@
 					
 					<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
 						
-						<h:commandButton value="left" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
+						<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
 					
 						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey'}">
 							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
@@ -195,7 +195,7 @@
 						
 						</h:panelGroup>
 						
-						<h:commandButton value="right" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}"/>
+						<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
 					
 					</rich:treeNode>
 					
@@ -203,45 +203,6 @@
 			</rich:tree>
 				
 				<br/><br/>
-			
-			<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(structuralEditorBean.selectedPb)}">
-
-						
-						<h:panelGroup rendered="#{wrapper.positionType != 'END'}">
-						<h:outputText value="#{wrapper.teiElement.elementType}"/>
-						
-						
-						<h:panelGroup rendered="#{wrapper.teiElement.elementType=='DIV' or wrapper.teiElement.elementType=='TITLE_PAGE'}">
-								<h:outputText value="[#{wrapper.teiElement.type}] " rendered="#{not empty wrapper.teiElement.type}"/>
-								<h:outputText value="[Section] " rendered="#{empty wrapper.teiElement.type}"/>
-								<h:outputText value="#{wrapper.teiElement.numeration} " rendered="#{not empty wrapper.teiElement.numeration}"/>
-								<h:outputText value="#{wrapper.teiElement.author1inv}" rendered="#{not empty wrapper.teiElement.author1inv}"/>
-								<h:outputText value="; #{wrapper.teiElement.author2inv}" rendered="#{not empty wrapper.teiElement.author2inv}"/>
-								<h:outputText value="; #{wrapper.teiElement.author3inv}" rendered="#{not empty wrapper.teiElement.author3inv}"/>
-								<h:outputText value=" : " rendered="#{(not empty wrapper.teiElement.author1inv or not empty wrapper.teiElement.author2inv or not empty wrapper.teiElement.author3inv) and not empty wrapper.teiElement.head}"/>
-							</h:panelGroup>
-							
-							<h:panelGroup rendered="#{wrapper.teiElement.elementType=='FRONT' or wrapper.teiElement.elementType=='BODY' or wrapper.teiElement.elementType=='BACK'}">
-								<h:outputText value="#{wrapper.teiElement.elementType}"/>
-							</h:panelGroup>
-							
-							<h:panelGroup rendered="#{wrapper.teiElement.elementType=='FIGURE'}">
-								<h:outputText value="[#{wrapper.teiElement.elementType}]"/>
-							
-							</h:panelGroup>
-
-						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(wrapper.teiElement.head)}" rendered="#{not empty wrapper.teiElement.head}"/>
-						<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(wrapper.teiElement.docTitles[0].title)}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-						
-						<h:outputText value="Pages: #{structuralEditorBean.selectedPb.page.order + 1} / #{structuralEditorBean.selectedPb.page.orderLabel}"/>
-						<h:outputText value=" - #{structuralEditorBean.getEndPageForElement(wrapper).page.order + 1} / #{structuralEditorBean.getEndPageForElement(wrapper).page.orderLabel}"/>
-						<br/>
-						</h:panelGroup>
-
-			</a4j:repeat>
-			
-			
-			<br/><br/>
 			
 			
 			

@@ -491,18 +491,19 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		List<TreeWrapperNode> siblings = startElementWrapper.getTreeWrapperNode().getParent().getChildren();
 		TreeWrapperNode lastSibling = siblings.get(siblings.size()-1);
 		
-		TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
-		flatTeiElementList.remove(endElement);
-		
-		TeiElementWrapper lastSiblingEndElement = lastSibling.getTeiElementWrapper().getPartnerElement();
-		int siblingEndIndex = flatTeiElementList.indexOf(lastSiblingEndElement);
-		flatTeiElementList.add(siblingEndIndex+1, endElement);
-		
-		endElement.setPagebreakWrapper(lastSiblingEndElement.getPagebreakWrapper());
-		
-		
-		
-		
+		//if the sibling is not the same as the element to move
+		if(!lastSibling.getTeiElementWrapper().equals(startElementWrapper))
+		{
+
+			TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
+			flatTeiElementList.remove(endElement);
+			
+			TeiElementWrapper lastSiblingEndElement = lastSibling.getTeiElementWrapper().getPartnerElement();
+			int siblingEndIndex = flatTeiElementList.indexOf(lastSiblingEndElement);
+			flatTeiElementList.add(siblingEndIndex+1, endElement);
+			
+			endElement.setPagebreakWrapper(lastSiblingEndElement.getPagebreakWrapper());
+		}
 		updateTree();
 	}
 	
