@@ -150,12 +150,6 @@ public class Volume {
 		return modsMetadata;
 	}
 
-	
-
-	
-
-	
-
 	public String getTei() {
 		return this.tei;
 	}
