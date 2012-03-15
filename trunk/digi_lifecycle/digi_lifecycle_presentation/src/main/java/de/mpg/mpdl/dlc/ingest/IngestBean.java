@@ -2,8 +2,6 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.File;
-
-
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -11,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.ResourceDependencies;
+import javax.faces.application.ResourceDependency;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 import org.richfaces.event.DropEvent;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -30,14 +29,14 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
-import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
-import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.mods.ModsDate;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
@@ -54,6 +53,11 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  * @author Ilya Shaikovsky
  *
  */
+@ResourceDependencies({
+    @ResourceDependency(name = "jquery.js"),
+    @ResourceDependency(name = "jquery-ui-core.js"),
+    @ResourceDependency(name = "richfaces-dnd.js")
+})
 @ManagedBean
 @SessionScoped
 public class IngestBean implements Serializable {
@@ -173,6 +177,20 @@ public class IngestBean implements Serializable {
         imageFiles.clear();
         return "";
     }
+    public String clearUploadedTEI() 
+    {    
+    	this.teiFile = null;
+        return "";
+    }
+    
+    public String clearUploadedMAB() 
+    {    
+		this.mabFile = null;
+		modsMetadata = new ModsMetadata();
+		addModsMetadata();
+		return "";
+    }
+    
     
     public String clearAllData()
     {  
@@ -522,20 +540,20 @@ public class IngestBean implements Serializable {
 			
 			if(getSelectedContentModel().equals("Monograph"))
 			{
-	     		if(getImageFiles().size()==0)
-	    		{
-	    			MessageHelper.errorMessage("You have to upload at least Image");
-	    			return "";
-	    		}
-	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-	    		{
-	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
-	    			return "";
-	    		}
-	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
-	    		clearAllData();
-	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+//	     		if(getImageFiles().size()==0)
+//	    		{
+//	    			MessageHelper.errorMessage("You have to upload at least Image");
+//	    			return "";
+//	    		}
+//	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+//	    		{
+//	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+//	    			return "";
+//	    		}
+//	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+//	    		clearAllData();
+//	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+//	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
 			}
 			else if(getSelectedContentModel().equals("Multivolume"))
 			{
