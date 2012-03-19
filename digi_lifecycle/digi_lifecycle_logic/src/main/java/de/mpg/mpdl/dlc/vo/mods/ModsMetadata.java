@@ -46,7 +46,6 @@ public class ModsMetadata {
 	@XmlElement(name="titleInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsTitle> titles = new ArrayList<ModsTitle>();
 	
-
 	@XmlPath("mods:physicalDescription/mods:form[@type=material]/text()")
 	private String materialDesignation_334;
 	
@@ -55,7 +54,6 @@ public class ModsMetadata {
 	
 	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
-	
 	
 	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
 	private String subseries_361;
@@ -78,10 +76,8 @@ public class ModsMetadata {
 	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsSeries> series = new ArrayList<ModsSeries>();	
 	
-	
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
-	
 	
 	@XmlPath("mods:location/mods:shelfLocator/text()")
 	private String signature_544;
