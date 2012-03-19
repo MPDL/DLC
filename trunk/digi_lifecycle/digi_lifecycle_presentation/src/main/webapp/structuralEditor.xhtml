@@ -12,14 +12,7 @@
 
 	<ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
-	
-	
-	
-	
-	
-	
-	
-		
+
 		<h:outputScript library="jscript" name="jquery_1.6.3_min.js" target="head"/>
 		<h:outputScript library="components/lazyload_new" name="jquery.lazyload.js" target="head"/>
 
@@ -27,13 +20,18 @@
 			
 			
 			<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
-				<h:panelGroup layout="block" styleClass="mpdl_container1 mpdl_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
+				
+				<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} mpdl_container1 mpdl_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
 					<h:form>
+						
 						
 						<h:panelGroup layout="block" styleClass="mpdl_container1_2">
 							<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
 								
 								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
+								<ui:remove>
+								<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
+								</ui:remove>
 							</h:commandLink>
 							
 							
@@ -151,9 +149,13 @@
 					
 					<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
 						
+						
+						<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
+						<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
+						&#160;
 						<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
 					
-						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey'}">
+						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'} #{divItem.teiElementWrapper == structuralEditorBean.selectedStructuralElement ? 'font-weight:bolder;' : ''}">
 							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
 								<h:outputText value="[#{divItem.teiElementWrapper.teiElement.type}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
 								<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
@@ -197,6 +199,7 @@
 						
 						<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
 					
+						<h:commandButton action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" value="Select" />
 					</rich:treeNode>
 					
 				</rich:treeModelRecursiveAdaptor>
@@ -259,6 +262,10 @@
 	              <br/>
 	              
 	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+	              <br/>
+	              <h:commandButton value="#{lbl.edit_createStructuralElementBtnSiblingAfter}" action="#{structuralEditorBean.createStructuralElementAsSiblingAfter}"/>
+	              <br/>
+	             
 
              </h:form>
              </rich:panel>
@@ -305,6 +312,30 @@
 		
 		</h:panelGroup>
 		
+		
+		<script>
+		
+			$(document).ready(function(e)
+					{
+						scrollDivs();
+					});
+			
+			function scrollDivs()
+			{
+				var selectedPb = '#{structuralEditorBean.selectedPb.teiElement.id}';
+				//var selectedPb = 'page_300';
+				var pos = $('.' + selectedPb).position();
+				var currentScroll = $('#thumbsContainer').scrollTop();
+				$('#thumbsContainer').scrollTop(pos.top + currentScroll);
+
+			}
+		
+		
+			
+		
+		
+		
+		</script>
 			
 		
 		</ui:define>

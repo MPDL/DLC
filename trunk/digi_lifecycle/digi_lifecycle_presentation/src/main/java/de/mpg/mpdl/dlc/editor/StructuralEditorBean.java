@@ -48,6 +48,10 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	private TeiElementWrapper selectedPb;
 	//private List<PagebreakWrapper> pagebreakWrapperList;
 	
+	
+	private TeiElementWrapper selectedStructuralElement;
+	
+	
 	private TeiElementWrapper currentEditElement;
 	
 	//private PagebreakWrapper selectedPbWrapper;
@@ -117,7 +121,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			{
 				if(ElementType.PB.equals(teiElWrapper.getTeiElement().getElementType()))
 				{
-					this.selectedPb = teiElWrapper;
+					selectPb(teiElWrapper);
+					//this.selectedPb = teiElWrapper;
 					break;
 				}
 			}
@@ -398,10 +403,34 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	}
 	
+	
+	
+	public void createStructuralElementAsSiblingAfter()
+	{
+		
+		createStructuralElementAsSiblingAfterOnPage(currentEditElement, selectedStructuralElement);
+		setSelectedStructuralElement(currentEditElement);
+		selectedStructuralElementTypeChanged();
+	}
+	
 	public void createStructuralElement()
 	{
+		/*
+		if(isFrontBodyBack(selectedStructuralElement))
+		{
+		*/
+			createStructuralElementAtEndOfPage(currentEditElement, selectedPb);
+			/*
+		}
+		else
+		{
+			createStructuralElementAsSiblingAfter(currentEditElement, selectedStructuralElement);
+		}
+		*/
+		
 		//int selectedPbIndex = flatTeiElementList.indexOf(selectedPb);
 		
+		/*
 		currentEditElement.setPositionType(PositionType.START);
 		currentEditElement.setPagebreakWrapper(selectedPb);
 		//currentEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
@@ -443,13 +472,6 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				}
 				
 				balanceCounter++;
-				/*
-				if(lastSiblingElement==null)
-				{
-					lastSiblingElement = currentElementWrapper;
-				}
-				*/
-				
 				
 			}
 		}
@@ -463,13 +485,188 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 		
 		
+		*/
+		
+		setSelectedStructuralElement(currentEditElement);
+		
 		selectedStructuralElementTypeChanged();
+
+		
+	}
+	
+	
+	public void createStructuralElementAtEndOfPage(TeiElementWrapper elementToAdd, TeiElementWrapper pb)
+	{
+		
+		
+		//int selectedPbIndex = flatTeiElementList.indexOf(selectedPb);
+		
+		elementToAdd.setPositionType(PositionType.START);
+		elementToAdd.setPagebreakWrapper(pb);
+		//currentEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
+		
+		
+		TeiElementWrapper endEditElement = new TeiElementWrapper();
+		endEditElement.setPositionType(PositionType.END);
+		endEditElement.setPartnerElement(elementToAdd);
+		endEditElement.setTeiElement(elementToAdd.getTeiElement());
+		
+		//endEditElement.setPagebreakId(selectedPb.getTeiElement().getId());
+		elementToAdd.setPartnerElement(endEditElement);
+		
+		int nextPbIndex = flatTeiElementList.indexOf(pb.getNextPagebreak());
+		
+		//Add start directly before pagebreak
+		flatTeiElementList.add(nextPbIndex, elementToAdd);
+		
+		
+		//Add end before next start or end
+		for(int i = nextPbIndex + 1; i<flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+			{
+				flatTeiElementList.add(i, endEditElement);
+				endEditElement.setPagebreakWrapper(wrapper.getPagebreakWrapper());
+				break;
+			}
+		}
+		
+		//Add end element directly before end of parent
+		//int lastParentIndex = flatTeiElementList.indexOf(parent.getPartnerElement());
+		
 		
 		updateTree();
-		//updateFlatList();
+
+	}
+	
+	
+	
+	
+	
+	
+	public void createStructuralElementAsSiblingAfterOnPage(TeiElementWrapper elementToAdd, TeiElementWrapper selectedElement)
+	{
+		//Only possible if
+		// 1. there is currently no sibling after the current element
+		// 2. there is an sibling after which starts on the same page
 		
-		System.out.println("test");
+		// -> Reset end of selected element and of all its children to start page of selected element
+		// -> add to end of page
 		
+		
+		
+		//TODO MAke method create structuralelement after
+		
+		elementToAdd.setPositionType(PositionType.START);
+
+		TeiElementWrapper endEditElement = new TeiElementWrapper();
+		endEditElement.setPositionType(PositionType.END);
+		endEditElement.setPartnerElement(elementToAdd);
+		endEditElement.setTeiElement(elementToAdd.getTeiElement());
+		elementToAdd.setPartnerElement(endEditElement);
+		
+		
+		int selectedIndex = flatTeiElementList.indexOf(selectedElement);
+		int selectedEndIndex = flatTeiElementList.indexOf(selectedElement.getPartnerElement());
+
+		List<TeiElementWrapper> sublist = new ArrayList<TeiElementWrapper>();
+		for(int i = selectedIndex; i<=selectedEndIndex; i++)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			
+			if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()));
+			{
+				//flatTeiElementList.remove(wrapper);
+				wrapper.setPagebreakWrapper(selectedElement.getPagebreakWrapper());
+				sublist.add(wrapper);
+				
+			}
+		}
+		
+		flatTeiElementList.removeAll(sublist);
+		flatTeiElementList.addAll(selectedIndex, sublist);
+		
+		//Update selectedEndIndex
+		selectedEndIndex = flatTeiElementList.indexOf(selectedElement.getPartnerElement());
+		
+		//Add start element directly after selected end
+		flatTeiElementList.add(selectedEndIndex+1, elementToAdd);
+		elementToAdd.setPagebreakWrapper(selectedElement.getPartnerElement().getPagebreakWrapper());
+		
+		
+		
+		//Add end before next start or end
+		for(int i = selectedEndIndex + 2; i<flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+			{
+				flatTeiElementList.add(i, endEditElement);
+				endEditElement.setPagebreakWrapper(wrapper.getPagebreakWrapper());
+				break;
+			}
+		}
+				
+		
+		updateTree();
+		
+
+	}
+	
+	public void createStructuralElementAsSiblingBefore(TeiElementWrapper elementToAdd, TeiElementWrapper currentElement)
+	{
+		//Only possible if
+		// 1. there is currently no sibling after the current element
+		// 2. there is an sibling which
+		
+
+		elementToAdd.setPositionType(PositionType.START);
+
+		TeiElementWrapper endEditElement = new TeiElementWrapper();
+		endEditElement.setPositionType(PositionType.END);
+		endEditElement.setPartnerElement(elementToAdd);
+		endEditElement.setTeiElement(elementToAdd.getTeiElement());
+		elementToAdd.setPartnerElement(endEditElement);
+		
+		
+		
+		List<TreeWrapperNode> siblings = currentElement.getTreeWrapperNode().getParent().getChildren();
+		int prevSiblingIndex = siblings.indexOf(currentElement) - 1;
+		
+		
+		int indexForAddingStart;
+		TeiElementWrapper startWrapper = null;
+
+		
+		if(prevSiblingIndex < 0)
+		{
+			//if there's no prev sibling, add after parent's start
+			startWrapper = currentElement.getTreeWrapperNode().getParent().getTeiElementWrapper();
+		}
+		else
+		{
+			//else add after previous sibling's end
+			startWrapper = siblings.get(prevSiblingIndex).getTeiElementWrapper().getPartnerElement();
+			
+		}
+		
+		indexForAddingStart = flatTeiElementList.indexOf(startWrapper) + 1;
+		flatTeiElementList.add(indexForAddingStart, elementToAdd);
+		elementToAdd.setPagebreakWrapper(startWrapper.getPagebreakWrapper());
+		
+		
+		
+		//end before current's start
+		int indexForAddingEnd = flatTeiElementList.indexOf(currentElement);
+		flatTeiElementList.add(indexForAddingEnd, endEditElement);
+		endEditElement.setPagebreakWrapper(currentElement.getPagebreakWrapper());
+		
+		
+		
+	
+
+	
 	}
 	
 	
@@ -514,13 +711,14 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		
-
+/*
 		while(startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent - 1).getTeiElementWrapper().getTeiElement().getElementType().equals(ElementType.PB))
 		{
 			startElementIndexInParent--;
 			
 		}
 		
+		*/
 		TeiElementWrapper siblingBeforeWrapperEnd = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent - 1).getTeiElementWrapper().getPartnerElement();
 		
 		flatTeiElementList.remove(siblingBeforeWrapperEnd);
@@ -529,6 +727,55 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		flatTeiElementList.add(endIndex+1, siblingBeforeWrapperEnd);
 		siblingBeforeWrapperEnd.setPagebreakWrapper(startElementWrapper.getPartnerElement().getPagebreakWrapper());
 		updateTree();
+	}
+	
+	
+	public void moveElementUp(TeiElementWrapper startElementWrapper)
+	{
+		//Just exchange the tei element of the start and end with the ones of the sibling before
+		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
+		TeiElementWrapper endElementWrapper = startElementWrapper.getPartnerElement();
+		
+		TeiElementWrapper siblingBeforeElementStart = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent-1).getTeiElementWrapper();
+		TeiElementWrapper siblingBeforeElementEnd = siblingBeforeElementStart.getPartnerElement();
+		
+		
+		PbOrDiv startTeiElement  = startElementWrapper.getTeiElement();
+		
+		
+		PbOrDiv siblingStartTeiElement = siblingBeforeElementStart.getTeiElement();
+		
+		
+		startElementWrapper.setTeiElement(siblingStartTeiElement);
+		endElementWrapper.setTeiElement(siblingStartTeiElement);
+		siblingBeforeElementStart.setTeiElement(startTeiElement);
+		siblingBeforeElementEnd.setTeiElement(startTeiElement);
+		
+		
+		
+	}
+	
+	public void moveElementDown(TeiElementWrapper startElementWrapper)
+	{
+		//Just exchange the tei element of the start and end with the ones of the sibling after
+		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
+		TeiElementWrapper endElementWrapper = startElementWrapper.getPartnerElement();
+		
+		TeiElementWrapper siblingBeforeElementStart = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent+1).getTeiElementWrapper();
+		TeiElementWrapper siblingBeforeElementEnd = siblingBeforeElementStart.getPartnerElement();
+		
+		
+		PbOrDiv startTeiElement  = startElementWrapper.getTeiElement();
+		
+		
+		PbOrDiv siblingStartTeiElement = siblingBeforeElementStart.getTeiElement();
+		
+		
+		startElementWrapper.setTeiElement(siblingStartTeiElement);
+		endElementWrapper.setTeiElement(siblingStartTeiElement);
+		siblingBeforeElementStart.setTeiElement(startTeiElement);
+		siblingBeforeElementEnd.setTeiElement(startTeiElement);
+		
 	}
 	
 	public List<TeiElementWrapper> getElementsToNextPb(TeiElementWrapper wrapper)
@@ -828,6 +1075,38 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	public void selectPb(TeiElementWrapper pb)
 	{
 		this.setSelectedPb(pb);
+		int pbIndex = flatTeiElementList.indexOf(pb);
+		
+		int nextPbIndex = flatTeiElementList.size(); 
+		if(pb.getNextPagebreak()!=null)
+		{
+			nextPbIndex = flatTeiElementList.indexOf(pb.getNextPagebreak());
+		}
+				
+		
+		for (int i=nextPbIndex; i>=0; i--)
+		{
+			TeiElementWrapper currentElementWrapper = flatTeiElementList.get(i); 
+			if(PositionType.START.equals(currentElementWrapper.getPositionType()))
+			{
+				selectedStructuralElement = currentElementWrapper;
+				break;
+			}
+		}
+		System.out.println("Selected Pb: " + selectedPb.getTeiElement().getId());
+		System.out.println("Selected Structural: " + selectedStructuralElement.getTeiElement().getElementType());
+		
+		
+	}
+	
+	public void selectStructuralElement(TeiElementWrapper elementWrapper)
+	{
+		setSelectedStructuralElement(elementWrapper);
+		if(selectedStructuralElement.getPagebreakWrapper()!= selectedPb)
+		{
+			setSelectedPb(selectedStructuralElement.getPagebreakWrapper());
+		}
+
 	}
 	
 	public List<TeiElementWrapper> getFlatTeiElementList() {
@@ -868,6 +1147,21 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 
 	public void setTreeWrapperNodes(List<TreeWrapperNode> treeWrapperNodes) {
 		this.treeWrapperNodes = treeWrapperNodes;
+	}
+
+	public TeiElementWrapper getSelectedStructuralElement() {
+		return selectedStructuralElement;
+	}
+
+	public void setSelectedStructuralElement(TeiElementWrapper selectedStructuralElement) {
+		this.selectedStructuralElement = selectedStructuralElement;
+	}
+	
+	public static boolean isFrontBodyBack(TeiElementWrapper wrapper)
+	{
+		return ElementType.BODY.equals(wrapper.getTeiElement().getElementType()) ||
+				   ElementType.FRONT.equals(wrapper.getTeiElement().getElementType()) ||
+				   ElementType.BACK.equals(wrapper.getTeiElement().getElementType());
 	}
 	
 	
