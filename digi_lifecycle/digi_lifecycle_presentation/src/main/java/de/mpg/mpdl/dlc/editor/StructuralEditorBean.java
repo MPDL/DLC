@@ -575,7 +575,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		{
 			TeiElementWrapper wrapper = flatTeiElementList.get(i);
 			
-			if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()));
+			if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
 			{
 				//flatTeiElementList.remove(wrapper);
 				wrapper.setPagebreakWrapper(selectedElement.getPagebreakWrapper());
@@ -616,51 +616,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public void createStructuralElementAsSiblingBefore(TeiElementWrapper elementToAdd, TeiElementWrapper currentElement)
 	{
-		//Only possible if
-		// 1. there is currently no sibling after the current element
-		// 2. there is an sibling which
 		
-
-		elementToAdd.setPositionType(PositionType.START);
-
-		TeiElementWrapper endEditElement = new TeiElementWrapper();
-		endEditElement.setPositionType(PositionType.END);
-		endEditElement.setPartnerElement(elementToAdd);
-		endEditElement.setTeiElement(elementToAdd.getTeiElement());
-		elementToAdd.setPartnerElement(endEditElement);
-		
-		
-		
-		List<TreeWrapperNode> siblings = currentElement.getTreeWrapperNode().getParent().getChildren();
-		int prevSiblingIndex = siblings.indexOf(currentElement) - 1;
-		
-		
-		int indexForAddingStart;
-		TeiElementWrapper startWrapper = null;
-
-		
-		if(prevSiblingIndex < 0)
-		{
-			//if there's no prev sibling, add after parent's start
-			startWrapper = currentElement.getTreeWrapperNode().getParent().getTeiElementWrapper();
-		}
-		else
-		{
-			//else add after previous sibling's end
-			startWrapper = siblings.get(prevSiblingIndex).getTeiElementWrapper().getPartnerElement();
-			
-		}
-		
-		indexForAddingStart = flatTeiElementList.indexOf(startWrapper) + 1;
-		flatTeiElementList.add(indexForAddingStart, elementToAdd);
-		elementToAdd.setPagebreakWrapper(startWrapper.getPagebreakWrapper());
-		
-		
-		
-		//end before current's start
-		int indexForAddingEnd = flatTeiElementList.indexOf(currentElement);
-		flatTeiElementList.add(indexForAddingEnd, endEditElement);
-		endEditElement.setPagebreakWrapper(currentElement.getPagebreakWrapper());
 		
 		
 		
@@ -732,7 +688,100 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public void moveElementUp(TeiElementWrapper startElementWrapper)
 	{
+		
+		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
+		
+		if(indexInParent > 0)
+		{
+			TeiElementWrapper siblingBeforeWrapper = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(indexInParent - 1).getTeiElementWrapper();
+			
+			int startIndex = flatTeiElementList.indexOf(startElementWrapper);
+			int endIndex = flatTeiElementList.indexOf(startElementWrapper.getPartnerElement());
+
+			
+			
+			List<TeiElementWrapper> sublist = new ArrayList<TeiElementWrapper>();
+			for(int i = startIndex; i<=endIndex; i++)
+			{
+				TeiElementWrapper wrapper = flatTeiElementList.get(i);
+				
+				if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+				{
+					//flatTeiElementList.remove(wrapper);
+					wrapper.setPagebreakWrapper(siblingBeforeWrapper.getPagebreakWrapper());
+					sublist.add(wrapper);
+					
+				}
+			}
+			
+			
+			int startSiblingBeforeIndex = flatTeiElementList.indexOf(siblingBeforeWrapper);
+			int endSiblingBeforeIndex = flatTeiElementList.indexOf(siblingBeforeWrapper.getPartnerElement());
+			List<TeiElementWrapper> siblingsEndElements = new ArrayList<TeiElementWrapper>();
+			
+			
+			
+			for(int i = endSiblingBeforeIndex; i>=0; i--)
+			{
+				TeiElementWrapper wrapper = flatTeiElementList.get(i);
+				
+				if(PositionType.END.equals(wrapper.getPositionType()))
+				{
+					siblingsEndElements.add(wrapper);
+					
+					
+				}
+				else
+				{
+					break;
+				}
+				
+			}
+			
+			
+			
+			flatTeiElementList.removeAll(sublist);
+			
+			int indexOfSiblingBefore = flatTeiElementList.indexOf(siblingBeforeWrapper);
+			flatTeiElementList.addAll(indexOfSiblingBefore, sublist);
+			
+			
+			//Update selectedEndIndex
+			endSiblingBeforeIndex = flatTeiElementList.indexOf(siblingBeforeWrapper.getPartnerElement());
+			
+			
+			//Add ends before next start or end
+			TeiElementWrapper addEndsBefore = flatTeiElementList.get(flatTeiElementList.size()-1);
+
+			for(int i = endSiblingBeforeIndex + 1; i<flatTeiElementList.size(); i++)
+			{
+				TeiElementWrapper wrapper = flatTeiElementList.get(i);
+				if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+				{
+					addEndsBefore = wrapper;
+					
+					for(TeiElementWrapper endElement : siblingsEndElements)
+					{
+						endElement.setPagebreakWrapper(wrapper.getPagebreakWrapper());
+					}
+
+					break;
+				}
+			}
+			
+			flatTeiElementList.removeAll(siblingsEndElements);
+			flatTeiElementList.addAll(flatTeiElementList.indexOf(addEndsBefore), siblingsEndElements);
+			
+		}
+		
+		
+		updateTree();
+		
+		
+		
+		
 		//Just exchange the tei element of the start and end with the ones of the sibling before
+		/*
 		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		TeiElementWrapper endElementWrapper = startElementWrapper.getPartnerElement();
 		
@@ -750,6 +799,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		endElementWrapper.setTeiElement(siblingStartTeiElement);
 		siblingBeforeElementStart.setTeiElement(startTeiElement);
 		siblingBeforeElementEnd.setTeiElement(startTeiElement);
+		*/
 		
 		
 		
@@ -758,6 +808,20 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	public void moveElementDown(TeiElementWrapper startElementWrapper)
 	{
 		//Just exchange the tei element of the start and end with the ones of the sibling after
+		
+		
+		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
+		
+		//if node has sibling after
+		if(indexInParent + 1 <= startElementWrapper.getTreeWrapperNode().getParent().getChildren().size())
+		{
+			TeiElementWrapper siblingAfter = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(indexInParent + 1).getTeiElementWrapper();
+			moveElementUp(siblingAfter);
+		}
+			
+			
+		
+		/*
 		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		TeiElementWrapper endElementWrapper = startElementWrapper.getPartnerElement();
 		
@@ -775,6 +839,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		endElementWrapper.setTeiElement(siblingStartTeiElement);
 		siblingBeforeElementStart.setTeiElement(startTeiElement);
 		siblingBeforeElementEnd.setTeiElement(startTeiElement);
+		*/
 		
 	}
 	
