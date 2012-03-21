@@ -724,6 +724,10 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	}
 	
 	
+	/** Moves an element up, that means setting it in front of its preceding sibling.
+	 * The end elements of the preceding sibling are automatically adjusted to the next following structural element
+	 * @param startElementWrapper
+	 */
 	public void moveElementUp(TeiElementWrapper startElementWrapper)
 	{
 		
@@ -756,13 +760,12 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 
 			flatTeiElementList.removeAll(sublist);
 			
-			int indexOfSiblingBefore = flatTeiElementList.indexOf(siblingBeforeWrapper);
-			flatTeiElementList.addAll(indexOfSiblingBefore, sublist);
+			int siblingBeforeStartIndex = flatTeiElementList.indexOf(siblingBeforeWrapper);
+			flatTeiElementList.addAll(siblingBeforeStartIndex, sublist);
 			
 
 			
 			//now extend the ends of the sibling to the next div element...
-			int siblingBeforeStartIndex = flatTeiElementList.indexOf(siblingBeforeWrapper);
 			int siblingBeforeEndIndex = flatTeiElementList.indexOf(siblingBeforeWrapper.getPartnerElement());
 
 			//..at first, get all end elements of the sibling and its last childs...
@@ -845,41 +848,20 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public void moveElementDown(TeiElementWrapper startElementWrapper)
 	{
-		//Just exchange the tei element of the start and end with the ones of the sibling after
-		
-		
+
 		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		
 		//if node has sibling after
 		if(indexInParent + 1 <= startElementWrapper.getTreeWrapperNode().getParent().getChildren().size())
 		{
 			TeiElementWrapper siblingAfter = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(indexInParent + 1).getTeiElementWrapper();
+			
+			//move up sibling-after
 			moveElementUp(siblingAfter);
 		}
-			
-			
-		
-		/*
-		int startElementIndexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
-		TeiElementWrapper endElementWrapper = startElementWrapper.getPartnerElement();
-		
-		TeiElementWrapper siblingBeforeElementStart = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(startElementIndexInParent+1).getTeiElementWrapper();
-		TeiElementWrapper siblingBeforeElementEnd = siblingBeforeElementStart.getPartnerElement();
-		
-		
-		PbOrDiv startTeiElement  = startElementWrapper.getTeiElement();
-		
-		
-		PbOrDiv siblingStartTeiElement = siblingBeforeElementStart.getTeiElement();
-		
-		
-		startElementWrapper.setTeiElement(siblingStartTeiElement);
-		endElementWrapper.setTeiElement(siblingStartTeiElement);
-		siblingBeforeElementStart.setTeiElement(startTeiElement);
-		siblingBeforeElementEnd.setTeiElement(startTeiElement);
-		*/
-		
+
 	}
+	
 	
 	public List<TeiElementWrapper> getElementsToNextPb(TeiElementWrapper wrapper)
 	{
