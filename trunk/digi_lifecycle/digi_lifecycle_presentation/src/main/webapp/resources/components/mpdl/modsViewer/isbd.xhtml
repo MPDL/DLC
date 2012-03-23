@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="modsMetadata" required="true" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<h:outputText value="&lt;br/&gt;" escape="false"/>
+	<h:outputText
+		value="#{volumeUtilBean.getFirstBody(cc.attrs.modsMetadata).name}:"
+		rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}" />
+	<h:outputText
+		value="#{volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}:"
+		rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}" />
+	<h:outputText
+		value="[#{volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}] #{volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title} : #{volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).subTitle} = #{volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title} / #{volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}. #{cc.attrs.modsMetadata.subseries_361}. #{volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}." />
+	<h:outputText value=" - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).edition}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).dateIssued_425.date}" />
+	<h:outputText value=". - #{cc.attrs.modsMetadata.extents[0]}. - #{volumeUtilBean.getSeries451(cc.attrs.modsMetadata).seriesTitle}&lt;br /&gt;" escape="false" />
+	<h:outputText value=" #{volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).seriesTitle}&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).seriesTitle}"/>
+	<h:outputText value="#{volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}&lt;br/&gt;"  escape="false" rendered="#{not empty volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}"/>
+	<a4j:repeat var="footnote" value="#{volumeUtilBean.getFootNotes(cc.attrs.modsMetadata)}" rendered = "#{volumeUtilBean.getFootNotes(cc.attrs.modsMetadata).size() > 0}">
+		<h:outputText value="#{footnote.note}\n" escape="false" />
+	</a4j:repeat>
+	<h:outputText value="#{volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}&lt;br/&gt;"  escape="false" rendered="#{not empty volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}"/>
+	<h:outputText value="#{volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}&lt;br/&gt;"  escape="false" rendered="#{not empty volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}"/>
+
+
+	<h:outputText value="&lt;br/&gt;Schlagwort&lt;br/&gt;"  escape="false" rendered="#{cc.attrs.modsMetadata.keywords.size()>0}"/>
+	<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.keywords.size()>0}">
+		<h:outputText value="#{keyword}" rendered="#{(rowKey+1) % 3 == 1}"/>
+		<h:outputText value=" / #{keyword}" rendered="#{(rowKey+1) % 3 == 2}"/>
+		<h:outputText value=" / #{keyword}&lt;br/&gt;" escape="false" rendered="#{(rowKey+1) % 3 == 0}"/>
+	</a4j:repeat>	
+
+
+	<h:outputText value="" />
+	<h:outputText value="#{cc.attrs.modsMetadata.notes[0].note}" />
+
+</cc:implementation>
+</html>

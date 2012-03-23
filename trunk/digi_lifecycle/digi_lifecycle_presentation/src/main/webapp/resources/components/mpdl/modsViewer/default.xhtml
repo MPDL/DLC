@@ -96,10 +96,10 @@
 				</h:panelGrid>
 			</a4j:repeat>
 
-			<h:outputText value="#{lbl.mods_keywords}" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}"  rowKeyVar="rowKey"/>
-			<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}">
+			<h:outputText value="#{lbl.mods_keywords}" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}"  />
+			<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}">
 				<h:panelGrid columns="1">
-					<h:outputText value="#{keyword[rowKey]}" rendered="#{not empty keyword[rowKey]}"/>
+					<h:outputText value="#{keyword}" rendered="#{not empty keyword}"/>
 				</h:panelGrid>
 			</a4j:repeat>
 			
@@ -159,10 +159,10 @@
 			<h:outputText value="#{lbl.mods_signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
 			<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
 
-			<h:outputText value="#{lbl.mods_extents}" rendered = "#{cc.attrs.modsMetadata.extents.size() > 0}"  rowKeyVar="rowKey"/>
-			<a4j:repeat var="extent" value="#{cc.attrs.modsMetadata.extents}" rendered = "#{cc.attrs.modsMetadata.extents.size() > 0}">
+			<h:outputText value="#{lbl.mods_extents}" rendered = "#{cc.attrs.modsMetadata.extents.size() > 0}"/>
+			<a4j:repeat var="extent" value="#{cc.attrs.modsMetadata.extents}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.extents.size() > 0}">
 				<h:panelGrid columns="1">
-					<h:outputText value="#{extent[rowKey]}" rendered="#{not empty extent[rowKey]}"/>
+					<h:outputText value="#{extent}" rendered="#{not empty extent}"/>
 				</h:panelGrid>
 			</a4j:repeat>
 			

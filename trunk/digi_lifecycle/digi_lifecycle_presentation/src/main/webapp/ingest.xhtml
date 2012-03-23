@@ -5,7 +5,9 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
-	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:modsEditor="http://java.sun.com/jsf/composite/components/mpdl/modsEditor"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 
 <ui:composition template="templates/template_v3.xhtml">
@@ -104,16 +106,16 @@
 			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}" />
 				<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
-					<mpdl:modsEditor_view modsMetadata="#{ingestBean.modsMetadata}"/>
+					<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Multivolume'}">
-					<mpdl:modsEditor_Multi modsMetadata="#{ingestBean.modsMetadata}" />
+					<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
 				<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Monograph'}">
-					<mpdl:modsEditor_Mono modsMetadata="#{ingestBean.modsMetadata}"/>
+					<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Volume'}">
-					<mpdl:modsEditor_Vol modsMetadata="#{ingestBean.modsMetadata}" />
+					<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
 				
 				<br/>
