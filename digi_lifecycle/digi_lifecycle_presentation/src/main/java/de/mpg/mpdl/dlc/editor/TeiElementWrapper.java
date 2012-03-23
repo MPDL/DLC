@@ -40,6 +40,7 @@ public class TeiElementWrapper {
 	private Page page;
 	
 	private TeiElementWrapper nextPagebreak;
+	private TeiElementWrapper lastPagebreak;
 	
 
 
@@ -134,6 +135,16 @@ public class TeiElementWrapper {
 			System.out.println("NullPointerException");
 		}
 		*/
+	}
+
+
+	public TeiElementWrapper getLastPagebreak() {
+		return lastPagebreak;
+	}
+
+
+	public void setLastPagebreak(TeiElementWrapper lastPagebreak) {
+		this.lastPagebreak = lastPagebreak;
 	}
 	
 

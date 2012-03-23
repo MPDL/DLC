@@ -40,7 +40,7 @@
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="mpdl_container1_2" style="width:150px">
-							<h:outputText value="#{element.page.order + 1}" />
+							<h:outputText value="#{element.page.order + 1} / " />
 							<h:outputText value="#{element.teiElement.numeration}" />
 							<h:outputText value="[#{element.teiElement.subtype}]" />
 							<br/>
@@ -92,8 +92,25 @@
 				<br/>
 			
 			
-				<h:outputText value="#{lbl.edit_pagination}" />
-				<h:inputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
+				<h:outputText value="#{lbl.edit_paginationCurentValue}" />
+				<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
+				<br/>
+			
+			
+				<h:outputText value="#{lbl.edit_paginationType}" />
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
+					<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
+					<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
+					<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
+				</h:selectOneMenu>
+				<br/>
+					
+				<h:outputText value="#{lbl.edit_paginationStartValue}" />
+				<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
+				<br/>
+				
+				<h:outputText value="#{lbl.edit_paginationPattern}" />
+				<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
 				<br/>
 				
 				<h:outputText value="#{lbl.edit_pagetype}" />
@@ -127,6 +144,18 @@
 						-->
 	                  	 
 	               </h:selectOneMenu>
+				<br/>
+				
+				
+				
+				<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+					<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+					
+				</h:selectOneMenu>
+				<br/>
+				
+				<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPagination}" />
 
 			</h:form>
 			
@@ -183,17 +212,17 @@
 						
 						
 						<h:outputText value="Pages: #{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
-						
-						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" />
-						
-						
-						
 						<ui:remove>
+						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" />
+						</ui:remove>
+						
+						
+						
 							<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}">
 								<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
 								<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
 							</h:selectOneMenu>
-						</ui:remove>
+						
 						
 						</h:panelGroup>
 						
@@ -263,10 +292,6 @@
 	              
 	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
 	              <br/>
-	              <h:commandButton value="#{lbl.edit_createStructuralElementBtnSiblingAfter}" action="#{structuralEditorBean.createStructuralElementAsSiblingAfter}"/>
-	              <br/>
-	             
-
              </h:form>
              </rich:panel>
 
