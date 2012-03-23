@@ -13,6 +13,7 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.viewer.ViewPages.ViewType;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 
@@ -35,7 +36,13 @@ public abstract class VolumeLoaderBean {
 	protected List<Volume> relatedVolumes = new ArrayList<Volume>();
 
 	protected abstract void volumeLoaded();
+	
+	private B_MDType b_mdType = B_MDType.DEFAULT;
 
+	
+	enum B_MDType{
+		DEFAULT, ISBD
+	}
 	
 	
 	public void loadVolume()
@@ -139,6 +146,20 @@ public abstract class VolumeLoaderBean {
 	}
 
 
+	public B_MDType getB_mdType() {
+		return b_mdType;
+	}
+
+
+	public void setB_mdType(B_MDType b_mdType) {
+		this.b_mdType = b_mdType;
+	}
+
+	public void switchB_MDType(String b_mdType)
+	{
+		this.b_mdType =B_MDType.valueOf(b_mdType);
+		loadVolume();	
+	}
 
 	
 	

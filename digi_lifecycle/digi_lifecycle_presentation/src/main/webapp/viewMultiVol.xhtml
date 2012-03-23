@@ -7,7 +7,8 @@
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 
 <ui:composition template="templates/template.xhtml">
@@ -44,6 +45,20 @@
 					<h:outputText value="#{lbl.view_dtls_biblMD}" />&#160;
 				</h:panelGroup>
 				<h:panelGroup styleClass="seperator" />
+				
+	<h:commandButton value="ISBD">
+		<rich:componentControl target="isbdPopup" operation="show" />
+	</h:commandButton>
+    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>
+        </f:facet>
+			<modsViewer:isbd modsMetadata="#{viewMultiVol.volume.modsMetadata}" />
+			<a4j:repeat var="vol" value="#{viewMultiVol.relatedVolumes}">
+				<modsViewer:isbd_vol modsMetadata="#{vol.modsMetadata}" />
+			</a4j:repeat>
+    </rich:popupPanel>					
+				
 				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
 					<mpdl:biblMD volume="#{viewMultiVol.volume}"/>
 				</h:panelGroup>

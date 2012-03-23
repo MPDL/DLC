@@ -32,6 +32,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
+import de.mpg.mpdl.dlc.vo.mods.ModsSeries;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Back;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
@@ -126,6 +127,17 @@ public class VolumeUtilBean {
 		return new ModsName();
 	}
 	
+	public static ModsName getFirstBody(ModsMetadata md)
+	{
+		for(ModsName mn : md.getNames())
+		{
+			if(mn.getDisplayLabel().equals("body1"))
+				return mn;
+		}
+		return new ModsName();
+	}
+	
+	
 	//get alternative title or maintitle for titlelist and head
 	public static ModsTitle getTitle(ModsMetadata md)
 	{  
@@ -139,7 +151,7 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
-	public static ModsPublisher getFirstPublisher(ModsMetadata md)
+	public static ModsPublisher getPublisher(ModsMetadata md)
 	{ 
 		for(ModsPublisher mp : md.getPublishers())
 		{
@@ -150,6 +162,17 @@ public class VolumeUtilBean {
 		}
 		return null;
 	}
+
+	public static ModsPublisher getFirstPublisher(ModsMetadata md)
+	{ 
+		for(ModsPublisher mp : md.getPublishers())
+		{
+			if(mp.getDisplayLabel().equals("publisher1"))
+				return mp;
+		}
+		return null;
+	}
+	
 	
 	public static ModsName getFirstEditor(ModsMetadata md)
 	{
@@ -160,7 +183,7 @@ public class VolumeUtilBean {
 	}
 	
 	public static ModsTitle getMainTitle(ModsMetadata md)
-	{   
+	{    
 		for(ModsTitle mt : md.getTitles())
 		{
 			if(mt.getDisplayLabel().equals("mainTitle"))
@@ -169,7 +192,7 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}	
 	
-	
+
 	
 	
 	public static ModsTitle getAlternativeTitle(ModsMetadata md)
@@ -202,11 +225,81 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}
 	
-
+	public static ModsTitle getParallelTitle(ModsMetadata md)
+	{
+		for(ModsTitle mt : md.getTitles())
+			if(mt.getDisplayLabel() !=null && mt.getDisplayLabel().equals("parallelTitle"))
+				return mt;
+		return new ModsTitle();
+	}
 	
 
 	
 
+	public static ModsSeries getSeries451(ModsMetadata md)
+	{
+		for(ModsSeries ms : md.getSeries())
+			if(ms.getDisplayLabel()=="series1")
+				return ms;
+		return new ModsSeries();
+	}
+	
+	
+	public static ModsSeries getSeries451a(ModsMetadata md)
+	{
+		for(ModsSeries ms : md.getSeries())
+			if(ms.getDisplayLabel()=="series2")
+				return ms;
+		return new ModsSeries();
+	}
+	
+	public static ModsNote getNoteThesis(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if(mn.getType() == "thesis")
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static List<ModsNote> getFootNotes(ModsMetadata md)
+	{
+		List<ModsNote> mns = new ArrayList<ModsNote>();
+		for(ModsNote mn : md.getNotes())
+			if(mn.getType()=="" && mn.getNote() != "")
+				mns.add(mn);
+		return mns;
+	}
+	
+	public static ModsIdentifier getISBN(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if(mi.getType()=="isbn" && mi.getInvalid()!="yes")
+				return mi;
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getISSN(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if(mi.getType()=="issn" && mi.getInvalid()!="yes")
+				return mi;
+		return new ModsIdentifier();
+	}	
+//	
+//	public static List<String> getKeywordsISBD(ModsMetadata md)
+//	{
+//		List<String> keywords = new ArrayList<String>();
+//		int i =1;
+//		String keyword="";
+//		for(String kw : md.getKeywords())
+//		{
+//			keyword += kw;
+//			i++;
+//			if(i)
+//			
+//		}
+//		return keywords;
+//	}
 	
 	
 	public static ModsName getFirstNamePart(ModsMetadata md)
@@ -269,7 +362,15 @@ public class VolumeUtilBean {
 	public static ModsNote getNoteSOR(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())
-			if(mn.getType() == "statementOfResponsibility")
+			if(mn.getType() == "statement of responsibility")
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsNote getNoteSubseries(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if(mn.getType() == "subseries")
 				return mn;
 		return new ModsNote();
 	}

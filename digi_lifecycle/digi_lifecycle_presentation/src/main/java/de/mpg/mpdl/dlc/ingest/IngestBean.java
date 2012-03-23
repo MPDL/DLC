@@ -540,20 +540,20 @@ public class IngestBean implements Serializable {
 			
 			if(getSelectedContentModel().equals("Monograph"))
 			{
-//	     		if(getImageFiles().size()==0)
-//	    		{
-//	    			MessageHelper.errorMessage("You have to upload at least Image");
-//	    			return "";
-//	    		}
-//	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-//	    		{
-//	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
-//	    			return "";
-//	    		}
-//	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
-//	    		clearAllData();
-//	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-//	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+	     		if(getImageFiles().size()==0)
+	    		{
+	    			MessageHelper.errorMessage("You have to upload at least Image");
+	    			return "";
+	    		}
+	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+	    		{
+	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+	    			return "";
+	    		}
+	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		clearAllData();
+	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
 			}
 			else if(getSelectedContentModel().equals("Multivolume"))
 			{

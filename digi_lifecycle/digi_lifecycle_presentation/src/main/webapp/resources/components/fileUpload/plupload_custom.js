@@ -48,7 +48,8 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 			//If last file was uploaded
 			if ((uploader.total.uploaded + 1) == uploader.files.length)
 			{
-//				$('#'+clientId).find('.hiddenUploadCompleteButton').click();
+//				alert($('#'+clientId).find('.hiddenUploadCompleteButton'));
+				$('#'+clientId).find('.hiddenUploadCompleteButton').click();
 		
 //				var element = document.getElementById(clientId);
 				// dragSource doesn't work after being rerendered via ajax. see: https://issues.jboss.org/browse/RF-10947

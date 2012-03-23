@@ -7,7 +7,8 @@
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 	<ui:composition template="templates/template_v3.xhtml">
 		
@@ -71,7 +72,26 @@
 							</load:lazyLoad>
 						</rich:tab>
 						<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
-							<mpdl:modsEditor_view modsMetadata="#{viewPages.volume.modsMetadata}"/>
+							<h:commandButton value="ISBD">
+								<rich:componentControl target="isbdPopup" operation="show" />
+							</h:commandButton>
+							<h:panelGroup>
+								<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" />
+								<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}" />
+							</h:panelGroup>
+    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>
+        </f:facet>
+        <h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2001'}">
+			<modsViewer:isbd modsMetadata="#{viewPages.volume.modsMetadata}" />
+		</h:panelGroup>
+		<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2003'}">
+			<modsViewer:isbd_vol modsMetadata="#{viewPages.volume.modsMetadata}" />
+		</h:panelGroup>
+    </rich:popupPanel>							
+							
+
 						</rich:tab>
 					</rich:tabPanel>
 				</h:form>
