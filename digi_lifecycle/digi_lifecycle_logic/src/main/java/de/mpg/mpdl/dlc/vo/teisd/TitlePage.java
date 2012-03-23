@@ -21,6 +21,11 @@ public class TitlePage extends Div {
 	private List<DocTitle> titleParts;
 
 
+	public TitlePage()
+	{
+		super(ElementType.TITLE_PAGE);
+	}
+	
 	public List<DocTitle> getDocTitles() {
 		return docTitles;
 	}
