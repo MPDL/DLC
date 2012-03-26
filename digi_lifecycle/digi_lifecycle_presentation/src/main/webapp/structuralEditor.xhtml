@@ -16,16 +16,16 @@
 		<h:outputScript library="jscript" name="jquery_1.6.3_min.js" target="head"/>
 		<h:outputScript library="components/lazyload_new" name="jquery.lazyload.js" target="head"/>
 
-		<h:panelGroup id="thumbsContainer" layout="block" styleClass="mpdl_container1_3" style="height:800px; overflow:auto">
+		<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_container1_3" style="height:800px; overflow:auto">
 			
 			
 			<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
 				
-				<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} mpdl_container1 mpdl_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
+				<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container1 eg3_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
 					<h:form>
 						
 						
-						<h:panelGroup layout="block" styleClass="mpdl_container1_2">
+						<h:panelGroup layout="block" styleClass="eg3_container1_2">
 							<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
 								
 								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
@@ -39,7 +39,7 @@
 						
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="mpdl_container1_2" style="width:150px">
+						<h:panelGroup layout="block" styleClass="eg3_container1_2" style="width:150px">
 							<h:outputText value="#{element.page.order + 1} / " />
 							<h:outputText value="#{element.teiElement.numeration}" />
 							<h:outputText value="[#{element.teiElement.subtype}]" />
@@ -60,7 +60,7 @@
 					
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="mpdl_container1 mpdl_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
+				<h:panelGroup layout="block" styleClass="eg3_container1 eg3_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
 					<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
 				</h:panelGroup>
 			</a4j:repeat>

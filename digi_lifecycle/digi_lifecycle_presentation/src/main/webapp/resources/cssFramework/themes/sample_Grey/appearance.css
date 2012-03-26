@@ -19,49 +19,49 @@
 *:first-child+html input[type="checkbox"] {
 	border:none !important;
 }
-*:first-child+html .mpdl_standardHeader .mpdl_id_siteSearchMenu input[type="radio"] {
+*:first-child+html .eg3_standardHeader .eg3_id_siteSearchMenu input[type="radio"] {
 	margin-top:-0.16666em;
 	margin-left:-0.25em;
 }
-*:first-child+html .mpdl_standardHeader .mpdl_id_siteSearchMenu input[type="checkbox"] {
+*:first-child+html .eg3_standardHeader .eg3_id_siteSearchMenu input[type="checkbox"] {
 	margin-top:-0.16666em;
 	margin-left:-0.25em;
 }
-*:first-child+html .mpdl_optionBox .mpdl_optionBoxLabel {
+*:first-child+html .eg3_optionBox .eg3_optionBoxLabel {
 	margin:0 0 1em 0;
 }
-*:first-child+html .mpdl_optionBox li {
+*:first-child+html .eg3_optionBox li {
 	clear:left;
 }
-*:first-child+html .mpdl_optionBox li a{
+*:first-child+html .eg3_optionBox li a{
 	margin:0 0 0.75% 0;
 }
 
 
 /*main menu */
-*:first-child+html .mpdl_menuBox {
+*:first-child+html .eg3_menuBox {
 	padding-bottom: 2em;
 }
-*:first-child+html label.mpdl_menuLevel1Menu {
+*:first-child+html label.eg3_menuLevel1Menu {
 	float:none;
 	clear:both;
 	display: block;
 }
-*:first-child+html label.mpdl_menuLevel1Label {
+*:first-child+html label.eg3_menuLevel1Label {
 	float:none;
 	clear:both;
 	display: block;
 }
-*:first-child+html .mpdl_menuLevel2 {
+*:first-child+html .eg3_menuLevel2 {
 	float:none;
 	clear:both;
 	left:0;
 	width:95%;
 }
-*:first-child+html .mpdl_menuLevel3 {
+*:first-child+html .eg3_menuLevel3 {
 	width:95%;
 }
-*:first-child+html .mpdl_menuLevel3 li {
+*:first-child+html .eg3_menuLevel3 li {
 	padding:0;
 	margin:0;
 	height:120%;
@@ -91,7 +91,7 @@ a {
 a:hover {
 	color:#00AA11;
 }
-a:mpdl_active {
+a:eg3_active {
 	color:#00AA11;
 }
 a[disabled] {
@@ -107,7 +107,7 @@ a[disabled] {
 *[onclick]:hover {
 	color:#00AA11;
 }
-*[onclick]:mpdl_active {
+*[onclick]:eg3_active {
 	color:#00AA11;
 }
 
@@ -152,65 +152,65 @@ button:disabled {
 /***              ***
  * global id-class and class declarations
  */
-body .mpdl_id_wrapper {
+body .eg3_id_wrapper {
 	min-width:75em; /* 900px */
 	width:96%;		/* the result of width + padding = sum of width = 100% */
 	padding:0 2%;
 	background-color:#FFFFFF;
 }
-body .mpdl_id_header {
+body .eg3_id_header {
 	width:100%;
 }
-body .mpdl_id_headerMetaMenu {
+body .eg3_id_headerMetaMenu {
 	width:100%;
 }
-body .mpdl_id_mainMenu {
+body .eg3_id_mainMenu {
 	width:100%;
 	overflow: visible !important;
 	z-index:12;
 }
-body .mpdl_id_mainMenu * {
+body .eg3_id_mainMenu * {
 	overflow: visible !important;
 }
-body .mpdl_id_optionBox { /* options for the current page mpdl_content, e.mpdl_g. Order by, Filter by, Download, Export, ... */
+body .eg3_id_optionBox { /* options for the current page eg3_content, e.eg3_g. Order by, Filter by, Download, Export, ... */
 	width:100%;
 	padding:0 0 0 0.83333%;
 }
-body .mpdl_id_optionBox.mpdl_vertikal { /* conditions for vertical option menu */
+body .eg3_id_optionBox.eg3_vertikal { /* conditions for vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-body .mpdl_id_contentDescription {
+body .eg3_id_contentDescription {
 	width:100%;
 }
-body .mpdl_id_siteTitle {
+body .eg3_id_siteTitle {
 	float:right;
 	padding:0 1.6%;
 	font-size:150%;
 	background-color:#EEF2F0;
 }
-.mpdl_id_sidebarLeft {
+.eg3_id_sidebarLeft {
 	
 }
-.mpdl_overflow {
+.eg3_overflow {
 	overflow:visible !important;
 	z-index:20;
 }
 
-.mpdl_separator {
+.eg3_separator {
 	width:0.08333em;
 	height:1.3333em;
 	background-color:#7F7F7F;
 }
 
 
-.mpdl_fiveRows {  /* 1row = 0,166666667em */
+.eg3_fiveRows {  /* 1row = 0,166666667em */
 	height:6em;
 }
 /* not necessary at the moment
-.mpdl_sixRows {
+.eg3_sixRows {
 	height:7.08333em;
 }
-.mpdl_fiftyRows {
+.eg3_fiftyRows {
 	height:58.3333em;
 }
 */
@@ -226,7 +226,7 @@ body .mpdl_id_siteTitle {
  ******************************				dynamic selectbox with JS functions		******************************
  ******************************					with no maximum width				******************************
  *****************************************************************************************************************/
-.mpdl_dynamicSelectBox_js {
+.eg3_dynamicSelectBox_js {
 	height:1.6666em;
 	padding:0;
 	font-size:95%;
@@ -234,26 +234,26 @@ body .mpdl_id_siteTitle {
 	background-position:right top;
 	text-align: left;
 }
-.mpdl_dynamicSelectBox_js * {
+.eg3_dynamicSelectBox_js * {
 	cursor: pointer;
 }
-.mpdl_dynamicSelectBox_js *[disabled] {
+.eg3_dynamicSelectBox_js *[disabled] {
 	cursor: default;
 }
-.mpdl_dynamicSelectBox_js .mpdl_selectionContent {
+.eg3_dynamicSelectBox_js .eg3_selectionContent {
 	margin-right:1.6666em;
 	padding:0 0.6666em 0.16666em 0.6666em;
 	font-size: 97%;
 	height: 1.16666em;
 	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
 }
-.mpdl_dynamicSelectBox_js .mpdl_selectionText {
+.eg3_dynamicSelectBox_js .eg3_selectionText {
 	display:block;
 	overflow:hidden;
 	white-space:nowrap;
 	text-align: left;
 }
-.mpdl_dynamicSelectBox_js select {
+.eg3_dynamicSelectBox_js select {
 	float:left;
 	clear:left;
 	margin-top:-1.5em;
@@ -270,59 +270,59 @@ body .mpdl_id_siteTitle {
 
 
 /*********************************************************************************************************************************
- ******************************				.mpdl_standardHeader											******************************
- ******************************		includes solutionLogo, metaMenu, simple Search, mpdl_headerNav		****************************** 
+ ******************************				.eg3_standardHeader											******************************
+ ******************************		includes solutionLogo, metaMenu, simple Search, eg3_headerNav		****************************** 
  *********************************************************************************************************************************/
-.mpdl_standardHeader {
+.eg3_standardHeader {
 	width:100%;
 }
 
 /*********************************************************************************************************
- ******************************				.mpdl_standardHeader .mpdl_id_headerMetaMenu .mpdl_metaMenu		******************************
+ ******************************				.eg3_standardHeader .eg3_id_headerMetaMenu .eg3_metaMenu		******************************
  *********************************************************************************************************/
-.mpdl_id_headerMetaMenu .mpdl_metaMenu {
+.eg3_id_headerMetaMenu .eg3_metaMenu {
 	float:right;
 }
-.mpdl_id_headerMetaMenu .mpdl_metaMenu * {
+.eg3_id_headerMetaMenu .eg3_metaMenu * {
 	float:left;
 }
-.mpdl_id_headerMetaMenu .mpdl_metaMenu a {
+.eg3_id_headerMetaMenu .eg3_metaMenu a {
 	padding:0.08333em 2em 0.3333em 2em;
 }
-.mpdl_id_headerMetaMenu .mpdl_metaMenu nav {
+.eg3_id_headerMetaMenu .eg3_metaMenu nav {
 	padding:0;
 }
-.mpdl_id_headerMetaMenu .mpdl_metaMenu select {
+.eg3_id_headerMetaMenu .eg3_metaMenu select {
 	padding:0;
 }
-.mpdl_id_headerMetaMenu .mpdl_metaMenu option {
+.eg3_id_headerMetaMenu .eg3_metaMenu option {
 	float:none;
 }
-.mpdl_metaMenu a:hover {
+.eg3_metaMenu a:hover {
 	color:#00AA11;
 }
-.mpdl_metaMenu .mpdl_separator {
+.eg3_metaMenu .eg3_separator {
 	padding:0;
 }
-.mpdl_metaMenu .mpdl_userDetail {
+.eg3_metaMenu .eg3_userDetail {
 	font-style:italic;
 	font-size:75%;
 	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
 }
-.mpdl_metaMenu .mpdl_dynamicSelectBox_js {
+.eg3_metaMenu .eg3_dynamicSelectBox_js {
 	padding:0;
 	background-position:right top;
 }
-.mpdl_metaMenu .mpdl_dynamicSelectBox_js * {
+.eg3_metaMenu .eg3_dynamicSelectBox_js * {
 	padding:0;
 }
-.mpdl_metaMenu .mpdl_dynamicSelectBox_js .mpdl_selectionContent {
+.eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
 	padding:0.0833333em 0.6666em 0 0.6666em;
 }
 /*************************************************************************************************************
- ******************************				.mpdl_standardHeader .mpdl_solutionLogo		******************************
+ ******************************				.eg3_standardHeader .eg3_solutionLogo		******************************
  *************************************************************************************************************/
-.mpdl_standardHeader .mpdl_solutionLogo {
+.eg3_standardHeader .eg3_solutionLogo {
 	float: left;
 	margin-left:1em;
 	margin-top: 1em;
@@ -331,43 +331,43 @@ body .mpdl_id_siteTitle {
 
 
 /*****************************************************************************************************************
- ******************************				.mpdl_standardHeader .mpdl_id_siteSearchMenu		******************************
+ ******************************				.eg3_standardHeader .eg3_id_siteSearchMenu		******************************
  *****************************************************************************************************************/
-.mpdl_standardHeader .mpdl_id_siteSearchMenu {
+.eg3_standardHeader .eg3_id_siteSearchMenu {
 	float: right;
 	margin-top:2%;
 	text-align:right;
 }
-.mpdl_id_siteSearchMenu .mpdl_icon_quickSearch_16_16 {
+.eg3_id_siteSearchMenu .eg3_icon_quickSearch_16_16 {
 	background-image: url("image/_default_32_32.png");
 	width:2.66666em;
 	height:2.66666em;
 	margin-right: 0.5em;
 }
-.mpdl_simpleSearch label {
+.eg3_simpleSearch label {
 	float: left; 
 	margin:0 1.3333em 0 0.5em; 
 }
-.mpdl_simpleSearch input {
+.eg3_simpleSearch input {
 	float: left;
 }
-.mpdl_simpleSearch input[type="radio"] {
+.eg3_simpleSearch input[type="radio"] {
 	margin: 0.16666em 0 0 0;
 }
-.mpdl_simpleSearch input[type="submit"] {
+.eg3_simpleSearch input[type="submit"] {
 	margin-left:0.75em;
 	padding:0 0.25em;
 }
 
 /*********************************************************************************************************
- ******************************				.mpdl_standardHeader .mpdl_headerNav		******************************
+ ******************************				.eg3_standardHeader .eg3_headerNav		******************************
  *********************************************************************************************************/
-.mpdl_standardHeader .mpdl_headerNav {
+.eg3_standardHeader .eg3_headerNav {
 	float:right;
 	margin-top: 2.083333%;
 	text-align: right;
 }
-.mpdl_standardHeader .mpdl_headerNav a.mpdl_navEntry {
+.eg3_standardHeader .eg3_headerNav a.eg3_navEntry {
 	float:none;
 	margin-left: 1.3333em;
 	word-break: keep-all; /* for chinese, korean, and other asian languages - no line breaking */
@@ -376,21 +376,21 @@ body .mpdl_id_siteTitle {
 
 
 /*************************************************************************************************************
- ******************************				.mpdl_id_mainMenu						******************************
+ ******************************				.eg3_id_mainMenu						******************************
  ******************************		includes mainMenu with 3 level		 		****************************** 
  *************************************************************************************************************/
-.mpdl_mainMenu {
+.eg3_mainMenu {
 	width:100%;
 	margin-bottom: 2em;
 	padding-left:1.6%;
 }
-.mpdl_menuBox * {
+.eg3_menuBox * {
 	cursor:pointer;
 }
-.mpdl_menuBox *[disabled] {
+.eg3_menuBox *[disabled] {
 	cursor:default;
 }
-.mpdl_menuBox .mpdl_menuLevel1 {
+.eg3_menuBox .eg3_menuLevel1 {
 	float:left;
 	position: relative;
 	text-align: center;
@@ -398,46 +398,46 @@ body .mpdl_id_siteTitle {
 	color:#CCCCCC;
 	background-color:#555555;
 }
-.mpdl_menuLevel1Label {
+.eg3_menuLevel1Label {
 	color:#00FFFF;
 	font-size: 150%;
 	color:#00FFFF;
 }
-.mpdl_menuLevel1Label * {
+.eg3_menuLevel1Label * {
 	color:#00FFFF;
 }
-.mpdl_menuLevel1Menu {
+.eg3_menuLevel1Menu {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	padding-right:1.5em;
 	font-size: 150%;
 }
-.mpdl_menuBox .mpdl_menuLevel2 {
+.eg3_menuBox .eg3_menuLevel2 {
 	display:none;
 	float:left;
 	overflow: visible;
 	text-align: left;
 }
-.mpdl_menuBox .mpdl_menuLevel1:hover .mpdl_menuLevel2 {
+.eg3_menuBox .eg3_menuLevel1:hover .eg3_menuLevel2 {
 	display:block;
 	position: absolute;
 	background-color: #777777;
 }
-.mpdl_menuLevel2 li {
+.eg3_menuLevel2 li {
 	background-color: #777777;
 }
 
-.mpdl_menuLevel2Label {
+.eg3_menuLevel2Label {
 	padding-left:0.5em;
 	color:#222222;
 }
-.mpdl_menuBox .mpdl_menuLevel2Entry {
+.eg3_menuBox .eg3_menuLevel2Entry {
 	height:2em; 
 	line-height:2em;
 	width:100%;
 	padding-right:1.5em;
 }
-.mpdl_menuBox .mpdl_menuLevel2EntryMenu {
+.eg3_menuBox .eg3_menuLevel2EntryMenu {
 	height:2em; 
 	line-height:2em;
 	width:100%;
@@ -445,20 +445,20 @@ body .mpdl_id_siteTitle {
 	background-position: right;
 	padding-right:1.5em;
 }
-.mpdl_menuBox .mpdl_menuLevel2Entry:hover {
+.eg3_menuBox .eg3_menuLevel2Entry:hover {
 	background-color: #999999;
 }
-.mpdl_menuBox .mpdl_menuLevel2EntryMenu:hover {
+.eg3_menuBox .eg3_menuLevel2EntryMenu:hover {
 	background-color: #999999;
 }
-.mpdl_menuBox .mpdl_menuLevel2Entry:hover .mpdl_menuLevel3 {
+.eg3_menuBox .eg3_menuLevel2Entry:hover .eg3_menuLevel3 {
 	display: block;
 	position: absolute;
 	top:0;
 	left:99.8%;
 	height:2em; line-height:2em;
 }
-.mpdl_menuBox .mpdl_menuLevel2EntryMenu:hover .mpdl_menuLevel3 {
+.eg3_menuBox .eg3_menuLevel2EntryMenu:hover .eg3_menuLevel3 {
 	display: block;
 	position: absolute;
 	top:0;
@@ -466,79 +466,79 @@ body .mpdl_id_siteTitle {
 	height:2em; line-height:2em;
 }
 
-.mpdl_menuBox .mpdl_menuLevel3 {
+.eg3_menuBox .eg3_menuLevel3 {
 	float:left;
 	display: none;
 	color:#000000;
 }
-.mpdl_menuBox .mpdl_menuLevel3 li {
+.eg3_menuBox .eg3_menuLevel3 li {
 	background-color: #CCCCCC;
 	padding-left:0.5em;
 	padding-right:0.5em;
 	white-space:nowrap;
 }
-.mpdl_menuBox .mpdl_menuLevel3 li:hover {
+.eg3_menuBox .eg3_menuLevel3 li:hover {
 	background-color: #00FFFF;
 }
 
 
 
 /*************************************************************************************************************************
- ******************************				mpdl_id_optionBox									******************************
+ ******************************				eg3_id_optionBox									******************************
  ******************************			includes: options & actions for current context		******************************
  *************************************************************************************************************************/
-.mpdl_id_optionBox.mpdl_vertikal .mpdl_optionBox { /* conditions for mpdl_optionBox in vertical option menu */
+.eg3_id_optionBox.eg3_vertikal .eg3_optionBox { /* conditions for eg3_optionBox in vertical option menu */
 	clear:both;
 	float:none;
 	margin-top:1em;
 }
-.mpdl_id_optionBox.mpdl_vertikal .mpdl_optionBox+.mpdl_optionBox { /* conditions for mpdl_optionBox in vertical option menu */
+.eg3_id_optionBox.eg3_vertikal .eg3_optionBox+.eg3_optionBox { /* conditions for eg3_optionBox in vertical option menu */
 	clear:both;
 	float:none;
 	margin-left:0;
 }
-.mpdl_id_optionBox.mpdl_vertikal menu menu { /* conditions for sub-menu in vertical option menu */
+.eg3_id_optionBox.eg3_vertikal menu menu { /* conditions for sub-menu in vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-.mpdl_optionBox {
+.eg3_optionBox {
 	padding:0;
 	margin:0 0 1.5em 1.6%;
 }
-.mpdl_optionBox .mpdl_optionBoxLabel {
+.eg3_optionBox .eg3_optionBoxLabel {
 	display: block;
 	margin-bottom:1em;
 	padding:0 1.3333em;
 }
-.mpdl_optionBox menu menu {
+.eg3_optionBox menu menu {
 	padding:0 1.3333em;
 }
-.mpdl_optionBox:first-child {
+.eg3_optionBox:first-child {
 	display:block;
 	margin-left:0%;
 }
-.mpdl_optionBox label {
+.eg3_optionBox label {
 	display:block;
 }
 
-.mpdl_optionBox li a {
+.eg3_optionBox li a {
 	float:left;
 	clear:left;
 	display:block;
 	margin-bottom:0.5em;
 }
-.mpdl_optionBox a+a {
+.eg3_optionBox a+a {
 	clear:none;
 	margin-left:1.3333em;
 }
-.mpdl_optionBox .mpdl_dynamicSelectBox_js {
+.eg3_optionBox .eg3_dynamicSelectBox_js {
 	display:block;
 	float:none;
 	margin-bottom:1em;
 }
-.mpdl_optionBox select option[selected] {
+.eg3_optionBox select option[selected] {
 	color:#00AA11;
 }
-.mpdl_optionBox .mpdl_active {
+.eg3_optionBox .eg3_active {
 	color:#00AA11;
 }
 
@@ -548,156 +548,156 @@ body .mpdl_id_siteTitle {
  ******************************				MessageArea							******************************
  ******************************			for: error, warning, success, info		******************************
  *************************************************************************************************************/
-.mpdl_messageArea {
+.eg3_messageArea {
 	width:46.7%;
 	padding:1% 1.6%;
 }
-.mpdl_messageArea span {
+.eg3_messageArea span {
 	display:block;
 }
-.mpdl_messageError {
+.eg3_messageError {
 	color:#FF0000;
 }
-.mpdl_messageWarning {
+.eg3_messageWarning {
 	color:#FF6666;
 }
-.mpdl_messageSuccess {
+.eg3_messageSuccess {
 	color:#00AA11;
 }
-.mpdl_messageInfo {
+.eg3_messageInfo {
 	color:#555555;
 	font-style:italic;
 }
 /*************************************************************************************************************
- ******************************				mpdl_breadcrump & siteTitle				******************************
+ ******************************				eg3_breadcrump & siteTitle				******************************
  ******************************													******************************
  *************************************************************************************************************/
-.mpdl_breadTitle {
-    /* (class which includes the mpdl_breadcrump and siteTitle) */
+.eg3_breadTitle {
+    /* (class which includes the eg3_breadcrump and siteTitle) */
     width:46.7%;
     padding:0.9% 1.6% 1% 1.6%;
     text-align:right;
 }
-.mpdl_breadcrump {
+.eg3_breadcrump {
 	line-height:150%;
 }
 
 
 /*****************************************************************************************************************************
  ******************************				PAGINATOR											******************************
- ******************************		includes mpdl_paginatorWave										****************************** 
+ ******************************		includes eg3_paginatorWave										****************************** 
  *****************************************************************************************************************************/
-.mpdl_paginatorWave {
+.eg3_paginatorWave {
 	width: 100%;
 	margin:0 0 0.2% 0;
 }
-.mpdl_paginatorWave * {
+.eg3_paginatorWave * {
 	text-align: center;
 }
-.mpdl_paginatorWave .mpdl_iconActionLabel {
+.eg3_paginatorWave .eg3_iconActionLabel {
 	margin-left:0.5em;
 	margin-right:0.5em;
 	cursor: pointer;
 }
-.mpdl_paginatorWave .mpdl_rangeSelector {
+.eg3_paginatorWave .eg3_rangeSelector {
 	width:14.38%;
 	padding:0.75em 0 0 1.6%;
 }
-.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_dynamicSelectBox_js {
+.eg3_paginatorWave .eg3_rangeSelector .eg3_dynamicSelectBox_js {
 	margin:0.08333em 0 0;
 }
-.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_selectionText {
+.eg3_paginatorWave .eg3_rangeSelector .eg3_selectionText {
 	float:left;
 }
-.mpdl_paginatorWave .mpdl_rangeSelector .mpdl_selectLabel {
+.eg3_paginatorWave .eg3_rangeSelector .eg3_selectLabel {
 	float:left;
 	margin-top:0.25em;
 	margin-left:0.91666em;
 }
-.mpdl_paginatorWave .mpdl_rangeSelector select {
+.eg3_paginatorWave .eg3_rangeSelector select {
 	width:3.5em;
 }
-.mpdl_paginatorWave .mpdl_pageBrowser {
+.eg3_paginatorWave .eg3_pageBrowser {
 	width:66.6%
 }
-.mpdl_paginatorWave .mpdl_pageBrowser * {
+.eg3_paginatorWave .eg3_pageBrowser * {
 	cursor: pointer;
 }
-.mpdl_paginatorWave .mpdl_pageBrowser *:disabled {
+.eg3_paginatorWave .eg3_pageBrowser *:disabled {
 	cursor: default;
 }
-.mpdl_paginatorWave .mpdl_icon_skipTofirst_16_16 {
+.eg3_paginatorWave .eg3_icon_skipTofirst_16_16 {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	text-align:left;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 }
-.mpdl_icon_skipTofirst_16_16:hover .mpdl_iconActionLabel {
+.eg3_icon_skipTofirst_16_16:hover .eg3_iconActionLabel {
 	color:#00AA11;
 }
-.mpdl_paginatorWave .mpdl_icon_backward_16_16 {
+.eg3_paginatorWave .eg3_icon_backward_16_16 {
 	background-image: url("image/_default_16_16.png");
 	background-position: right;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 }
-.mpdl_paginatorWave .mpdl_icon_forward_16_16 {
+.eg3_paginatorWave .eg3_icon_forward_16_16 {
 	background-image: url("image/_default_16_16.png");
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
 }
-.mpdl_paginatorWave .mpdl_icon_skipTolast_16_16 {
+.eg3_paginatorWave .eg3_icon_skipTolast_16_16 {
 	background-image: url("image/_default_16_16.png");
 	text-align:left;
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
 }
-.mpdl_icon_skipTolast_16_16:hover .mpdl_iconActionLabel {
+.eg3_icon_skipTolast_16_16:hover .eg3_iconActionLabel {
 	color:#00AA11;
 }
-.mpdl_paginatorWave .mpdl_pageNumber {
+.eg3_paginatorWave .eg3_pageNumber {
 	margin:0 0.1666667em;
 }
-.mpdl_paginatorWave .mpdl_pageNumber.mpdl_active {
+.eg3_paginatorWave .eg3_pageNumber.eg3_active {
 	font-size: 200%;
 }
-.mpdl_paginatorWave .mpdl_pageNumber.mpdl_prev {
+.eg3_paginatorWave .eg3_pageNumber.eg3_prev {
 	font-size: 150%;
 }
-.mpdl_paginatorWave .mpdl_pageNumber.mpdl_next {
+.eg3_paginatorWave .eg3_pageNumber.eg3_next {
 	font-size: 150%;
 }
-.mpdl_paginatorWave .mpdl_pageNumber.mpdl_neighbour {
+.eg3_paginatorWave .eg3_pageNumber.eg3_neighbour {
 	font-size: 125%;
 }
-.mpdl_paginatorWave .mpdl_gotoBox {
+.eg3_paginatorWave .eg3_gotoBox {
 	width:16.6%;
 	padding:0.83333em 0 0 0;
 }
-.mpdl_paginatorWave .mpdl_gotoInput {
+.eg3_paginatorWave .eg3_gotoInput {
 	width:23%;
 	padding:0 0.2%;
 }
-.mpdl_paginatorWave .mpdl_inputLabel {
+.eg3_paginatorWave .eg3_inputLabel {
 	margin-left:0.16666em;
 }
 
 
 /* for smallest pageBrowser */
-.mpdl_paginatorWave .mpdl_pageBrowserMin {
+.eg3_paginatorWave .eg3_pageBrowserMin {
 	width:66.6%;
 }
-.mpdl_paginatorWave .mpdl_pageBrowserMin * {
+.eg3_paginatorWave .eg3_pageBrowserMin * {
 	cursor: pointer;
 }
-.mpdl_paginatorWave .mpdl_pageBrowserMin *:disabled {
+.eg3_paginatorWave .eg3_pageBrowserMin *:disabled {
 	cursor: default;
 }
-.mpdl_pageBrowserMin .mpdl_icon_backward_16_16 {
+.eg3_pageBrowserMin .eg3_icon_backward_16_16 {
 	margin-right:1em;
 }
-.mpdl_pageBrowserMin .mpdl_icon_forward_16_16 {
+.eg3_pageBrowserMin .eg3_icon_forward_16_16 {
 	margin-left:1em;
 }
 
@@ -705,74 +705,74 @@ body .mpdl_id_siteTitle {
  ******************************				bibliographic list			******************************
  ******************************		list with different 		****************************** 
  *****************************************************************************************************/
-.mpdl_bibList {
+.eg3_bibList {
 	width:99.8%;
 /*	background-color:#EEF2F0; */
 /*	background-color:#33F2F0; */
 	border:solid 0.09em #B2B2B2; /* because of webkit-engine, the border-value must be up-rounded */
 }
-.mpdl_bibList .mpdl_iconActionLabel {
+.eg3_bibList .eg3_iconActionLabel {
 	margin-left:0.8333em;
 	margin-right:0.8333em;
 	cursor: pointer;
 }
 
-.mpdl_bibList .mpdl_icon_collapse_16_16 {
+.eg3_bibList .eg3_icon_collapse_16_16 {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
 	background-image: url("image/_default_16_16.png");
 	cursor: pointer;
 }
-.mpdl_bibList .mpdl_icon_collapse_16_16:hover {
+.eg3_bibList .eg3_icon_collapse_16_16:hover {
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_icon_collapse_16_16:hover .mpdl_iconActionLabel {
+.eg3_bibList .eg3_icon_collapse_16_16:hover .eg3_iconActionLabel {
 	color:#00AA11;
 }
 
-.mpdl_bibList .mpdl_icon_expand_16_16 {
+.eg3_bibList .eg3_icon_expand_16_16 {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
 	background-image: url("image/_default_16_16.png");
 	cursor: pointer;
 }
-.mpdl_bibList .mpdl_icon_expand_16_16:hover {
+.eg3_bibList .eg3_icon_expand_16_16:hover {
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_icon_expand_16_16:hover .mpdl_iconActionLabel {
+.eg3_bibList .eg3_icon_expand_16_16:hover .eg3_iconActionLabel {
 	color:#00AA11;
 }
 
-.mpdl_bibList .mpdl_icon_withdrawn_32_32 {
+.eg3_bibList .eg3_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
 /*****************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listHeader		******************************
+ ******************************				.eg3_bibList .eg3_listHeader		******************************
  *****************************************************************************************************/
-.mpdl_bibList .mpdl_listHeader {
+.eg3_bibList .eg3_listHeader {
 	width:100%;
 /*	border: solid 0.08333em #B2B2B2; */
 	height:2.08333em;
 }
-.mpdl_bibList .mpdl_listHeader .mpdl_selectArea {
+.eg3_bibList .eg3_listHeader .eg3_selectArea {
 	width:22.95%;
 	padding:0.3% 1% 0 1%;
 	height:100%;
 }
-.mpdl_bibList .mpdl_listHeader .mpdl_content {
+.eg3_bibList .eg3_listHeader .eg3_content {
 	width:47.47%;
 	padding:0.3% 1.2% 0 1.2%;
 	height:100%;
 }
-.mpdl_bibList .mpdl_listHeader .mpdl_showHideAll_js {
+.eg3_bibList .eg3_listHeader .eg3_showHideAll_js {
 	cursor:pointer;
 }
 
-.mpdl_bibList .mpdl_listHeader .mpdl_mediabarActionArea {
+.eg3_bibList .eg3_listHeader .eg3_mediabarActionArea {
 /*	width:23.95%; */
 	width:25%;
 	padding-left:0.1%;
@@ -781,178 +781,178 @@ body .mpdl_id_siteTitle {
 	background-color:#EEEEEE;
 	height:100%;
 }
-.mpdl_bibList .mpdl_listHeader .mpdl_toggleListItemVolume_js {
+.eg3_bibList .eg3_listHeader .eg3_toggleListItemVolume_js {
 	cursor:pointer;
 	margin-left:0.8333em;
 }
 /*********************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody				******************************
- ******************************			global definitions for mpdl_bibList		******************************
+ ******************************				.eg3_bibList .eg3_listBody				******************************
+ ******************************			global definitions for eg3_bibList		******************************
  *********************************************************************************************************/
-.mpdl_bibList .mpdl_listBody {
+.eg3_bibList .eg3_listBody {
 	width:100%;
 }
-.mpdl_bibList .mpdl_itemHeadline .mpdl_itemTitle {
+.eg3_bibList .eg3_itemHeadline .eg3_itemTitle {
 	max-width: 50em;
 	font-size:133%;
 	line-height: 125%;
 }
-.mpdl_bibList .mpdl_itemHeadline .mpdl_itemMultiTitle {
+.eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
 	max-width: 50em;
 	font-size: 166%;
 	line-height: 125%;
 }
-.mpdl_bibList .mpdl_shortView_js {
+.eg3_bibList .eg3_shortView_js {
 	width:100%;
 	margin-top:0.41666em;
 }
-.mpdl_bibList .mpdl_mediumView_js {
+.eg3_bibList .eg3_mediumView_js {
 	width:100%;
 	display:none;
 	margin-top:0.41666em;
 }
 
-.mpdl_bibList .mpdl_itemMediabar .mpdl_itemMediabarCategory {
+.eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory {
 	padding-left:1.8333em;
 	background-image: url("image/_default_16_16.png");
 	margin-bottom:0.25em;
 }
 /*****************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItem			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItem			******************************
  *****************************************************************************************************************/
-.mpdl_bibList .mpdl_listItem {
+.eg3_bibList .eg3_listItem {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 }
-.mpdl_bibList .mpdl_listItem:hover .mpdl_itemContent {
+.eg3_bibList .eg3_listItem:hover .eg3_itemContent {
 	background-color:#EEF2F0;
 }
 
-.mpdl_bibList .mpdl_listItem .mpdl_itemContent {
+.eg3_bibList .eg3_listItem .eg3_itemContent {
 	width:100%;
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemSelectArea {
+.eg3_bibList .eg3_listItem .eg3_itemSelectArea {
 	width:22.58%;
 	text-align:right;
 	padding:1% 1.2% 0 1.2%;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemHeadline {
+.eg3_bibList .eg3_listItem .eg3_itemHeadline {
 	width:72.4%;
 	padding:0.1666em 1.2% 0.1666em 1.2%; 
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea {
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea {
 	width:22.88%;
 	text-align:right;
 	padding:0 1% 0 1%;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea * {
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea * {
 	float: right;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemStatusArea .mpdl_itemStatusTitle {
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.5%;
 	margin-right:5%;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemContentOptions {
+.eg3_bibList .eg3_listItem .eg3_itemContentOptions {
 	width:72.4%;
 	padding:0 1.3%;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemDetailAction_js {
+.eg3_bibList .eg3_listItem .eg3_itemDetailAction_js {
 	margin-top:0.75%; 
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemMetaLabel {
+.eg3_bibList .eg3_listItem .eg3_itemMetaLabel {
 	width:22.8%;
 	text-align:right;
 	padding:0 1% 0 1%;
 }
-.mpdl_bibList .mpdl_listItem .mpdl_itemMetaValue {
+.eg3_bibList .eg3_listItem .eg3_itemMetaValue {
 	width:72.4%;
 	padding:0 1.3% 0 1.3%; 
 }
 
 /*************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMediaAcc			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMediaAcc			******************************
  *************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemMediaAcc {
+.eg3_bibList .eg3_listItemMediaAcc {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc:hover {
+.eg3_bibList .eg3_listItemMediaAcc:hover {
 	background-color:#EEEEEE;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc:hover .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemMediaAcc:hover .eg3_itemContentBg {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc:hover * .mpdl_itemMediabar_js {
+.eg3_bibList .eg3_listItemMediaAcc:hover * .eg3_itemMediabar_js {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContent {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContent {
 	width:74.88%;
 	padding-bottom:0.5em;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContentBg {
 	position:absolute;
 	width:74.88%;
 	height:100%;
 	background-color:#FFFFFF;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemSelectArea {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemSelectArea {
 	width:30.08%;
 	text-align:right;
 	padding:1% 1.6% 0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemHeadline {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemHeadline {
 	width:63.41%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea * {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea * {
 	float: right;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemStatusArea .mpdl_itemStatusTitle {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemContentOptions {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContentOptions {
 	width:63.41%;
 	padding:0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemDetailAction_js {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemDetailAction_js {
 	margin-top:1.25%; 
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMetaLabel {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMetaLabel {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMetaValue {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMetaValue {
 	width:63.41%;
 	padding:0 1.6% 0 1.6%; 
 }
 
 /*****************************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMediaAcc .mpdl_itemMediabar_js			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMediaAcc .eg3_itemMediabar_js			******************************
  *****************************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js {
 	width:25%;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js div {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js div {
 	width:100%;
 	padding-left:2.66666em;
 	padding-bottom:0.08333em;
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js span.mpdl_ui-accordion-header  {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-accordion-header  {
 	float:left;
 	width:100%;
 	margin-left:0.1%;
@@ -978,7 +978,7 @@ body .mpdl_id_siteTitle {
 		-o-linear-gradient(top, #fff, #B8B8B8);
 /* stop css3 enhancements */
 }
-.mpdl_bibList .mpdl_listItemMediaAcc .mpdl_itemMediabar_js span.mpdl_ui-icon {
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-icon {
 	float: left;
 	background: url("image/_default_16_16.png") no-repeat 0 0.1666em;
 	background-position:left top;
@@ -992,25 +992,25 @@ body .mpdl_id_siteTitle {
 
 
 /*********************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume	COLORIZING		******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume	COLORIZING		******************************
  ******************************					multiVolumeBG == multi volume background			******************************
  *********************************************************************************************************************************/
-.mpdl_multiVolumeBG_1 {
+.eg3_multiVolumeBG_1 {
 	background-color:#00AA11;
 }
-/* .mpdl_multiVolumeBG_1:hover {
+/* .eg3_multiVolumeBG_1:hover {
 	background-color:#006FF0;
 } */
-.mpdl_multiVolumeBG_2 {
+.eg3_multiVolumeBG_2 {
 	background-color:#CCAA11;
 }
-/* .mpdl_multiVolumeBG_2:hover {
+/* .eg3_multiVolumeBG_2:hover {
 	background-color:#CC6FF0;
 }*/ 
-.mpdl_multiVolumeBG_3 {
+.eg3_multiVolumeBG_3 {
 	background-color:#99FF99;
 }
-.mpdl_multiVolumeBG_4 {
+.eg3_multiVolumeBG_4 {
 	background-color:#DD003C;
 }
 
@@ -1023,246 +1023,246 @@ body .mpdl_id_siteTitle {
 
 
 /*************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume			******************************
  *************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemMultiVolume {
+.eg3_bibList .eg3_listItemMultiVolume {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemContent {
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemContent {
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemContentBg {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume:hover .mpdl_itemMediabar {
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemMediabar {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContent {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContent {
 	width:99%;
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContentBg {
 	position:absolute;
 	width:75.5%;
 	height:100%;
 	background-color:#FFFFFF;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemContentData {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 }
 
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea {
 	width:31%;
 	text-align:right;
 	padding:0.5em 1.2% 0 1.2%;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea * {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea * {
 	float: right;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemHeadline {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemHeadline {
 	width:63.1%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMetaLabel {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMetaLabel {
 	width:31%;
 	text-align:right;
 	padding:0 1.2%;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMetaValue {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMetaValue {
 	width:63.1%;
 	padding:0 1.6% 0.1666em 1.6%; 
 }
 
 /*****************************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemMultiVolume .mpdl_itemMediabar			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume .eg3_itemMediabar			******************************
  *****************************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar {
 	padding-top:0.75em;
 	padding-left:0.8333em;
 	width:22%;
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar div {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar div {
 	width:100%;
 	padding-bottom:0.08333em;
 }
-.mpdl_bibList .mpdl_listItemMultiVolume .mpdl_itemMediabar .mpdl_itemContentOptions {
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar .eg3_itemContentOptions {
 	margin-bottom:1em;
 }
 
 
 
 /*************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemVolume			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemVolume			******************************
  *************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemVolume {
+.eg3_bibList .eg3_listItemVolume {
 	width:100%;
 	padding-top:0.3333em;
 	padding-bottom:0.16666em;
 	display:none;
 }
 
-.mpdl_bibList .mpdl_listItemVolume+.mpdl_listItemVolume {
+.eg3_bibList .eg3_listItemVolume+.eg3_listItemVolume {
 	padding-top:0.16666em;
 }
-.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemContent {
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContent {
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemContentData {
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContentData {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemVolume:hover .mpdl_itemMediabar {
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemMediabar {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContent {
+.eg3_bibList .eg3_listItemVolume .eg3_itemContent {
 	width:99%;
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemVolume .eg3_itemContentBg {
 	position:absolute; 
 	width:75.5%;
 	height:100%; 
 	background-color:#FFFFFF;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemContentData {
+.eg3_bibList .eg3_listItemVolume .eg3_itemContentData {
 	width:75.5%;
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 	background-color:#FFFFFF;
 }
 
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea {
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea {
 	width:31%;
 	text-align:right;
 	padding:0.5em 1.2% 0 1.2%;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea * {
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea * {
 	float: right;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemHeadline {
+.eg3_bibList .eg3_listItemVolume .eg3_itemHeadline {
 	width:63.1%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMetaLabel {
+.eg3_bibList .eg3_listItemVolume .eg3_itemMetaLabel {
 	width:31%;
 	text-align:right;
 	padding:0 1.2%;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMetaValue {
+.eg3_bibList .eg3_listItemVolume .eg3_itemMetaValue {
 	width:63.1%;
 	padding:0 1.6% 0.1666em 1.6%; 
 }
 
-/******************************		.mpdl_bibList .mpdl_listBody .mpdl_listItemVolume .mpdl_itemMediabar	******************************/
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabar {
+/******************************		.eg3_bibList .eg3_listBody .eg3_listItemVolume .eg3_itemMediabar	******************************/
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabar {
 	padding-top:1.25em;
 	padding-bottom:0.5em; 
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabarThumb {
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabarThumb {
 	margin-bottom:0.5em;
 	margin-left:0.8333em;
 }
-.mpdl_bibList .mpdl_listItemVolume .mpdl_itemMediabarCategory {
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabarCategory {
 	margin-left:0.8333em;
 	width:100%;
 }
 
 
 /*****************************************************************************************************************************
- ******************************				.mpdl_bibList .mpdl_listBody .mpdl_listItemSingleVolume			******************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemSingleVolume			******************************
  *****************************************************************************************************************************/
-.mpdl_bibList .mpdl_listItemSingleVolume {
+.eg3_bibList .eg3_listItemSingleVolume {
 	width:100%;
 	border-top:0.08333em solid #7F7F7F;
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume:hover {
+.eg3_bibList .eg3_listItemSingleVolume:hover {
 	background-color:#EEF2F0;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemContent {
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemContent {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemMediabar {
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemMediabar {
 	background-color:transparent;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume:hover .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemContentBg {
 	background-color:transparent;
 }
 
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemContent {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemContent {
 	padding-top:0.75em;
 	padding-bottom:0.5em;
 	width:74.82%;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemContentBg {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemContentBg {
 	position:absolute; 
 	height:100%; 
 	width:74.82%;
 	background-color:#FFFFFF;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemHeadline {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemHeadline {
 	width:63.41%;
 	padding:0.1666em 1.6% 0.1666em 1.6%; 
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea {
 	width:30.08%;
 	text-align:right;
 	padding:0.5em 1.6% 0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea * {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea * {
 	float: right;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea .mpdl_icon_withdrawn_32_32 {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/_default_32_32.png");
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemStatusArea .mpdl_itemStatusTitle {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMetaLabel {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMetaLabel {
 	width:30.08%;
 	text-align:right;
 	padding:0 1.6%;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMetaValue {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMetaValue {
 	width:63.41%;
 	padding:0 1.6% 0 1.6%; 
 }
 
-/******************************		.mpdl_bibList .mpdl_listBody .mpdl_listItemSingleVolume .mpdl_itemMediabar	******************************/
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabar {
+/******************************		.eg3_bibList .eg3_listBody .eg3_listItemSingleVolume .eg3_itemMediabar	******************************/
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabar {
 	padding-top:1.25em;
 	padding-bottom:0.5em; 
 	width:25%;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabarThumb {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabarThumb {
 	margin-bottom:0.5em;
 	margin-left:0.8333em;
 }
-.mpdl_bibList .mpdl_listItemSingleVolume .mpdl_itemMediabarCategory {
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabarCategory {
 	margin-left:0.8333em;
 	width:100%;
 }
@@ -1279,59 +1279,59 @@ body .mpdl_id_siteTitle {
  ******************************				grid list						******************************
  ******************************		list with different dynamic width		****************************** 
  *****************************************************************************************************/
-.mpdl_gridList {
+.eg3_gridList {
 	border-spacing:0;
 }
-.mpdl_gridList th {
+.eg3_gridList th {
 	text-align: left;
 }
-.mpdl_gridList td {
+.eg3_gridList td {
 	vertical-align: top;
 }
-.mpdl_gridList .mpdl_itemHeadline {
+.eg3_gridList .eg3_itemHeadline {
 	padding: 0.1666em 1.6%;
 	background-color:#EBF7EC;
 }
-/* mpdl_gridList mpdl_listHeader */
-.mpdl_gridList .mpdl_creatorHeadline {
+/* eg3_gridList eg3_listHeader */
+.eg3_gridList .eg3_creatorHeadline {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_genreHeadline {
+.eg3_gridList .eg3_genreHeadline {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_dateHeadline {
+.eg3_gridList .eg3_dateHeadline {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_fileHeadline {
+.eg3_gridList .eg3_fileHeadline {
 	padding: 0.1666em 1.6%;
 }
-/* mpdl_gridList mpdl_listBody */
-.mpdl_gridList .mpdl_itemCreatorArea {
+/* eg3_gridList eg3_listBody */
+.eg3_gridList .eg3_itemCreatorArea {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_itemGenreArea {
+.eg3_gridList .eg3_itemGenreArea {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_itemDateArea {
+.eg3_gridList .eg3_itemDateArea {
 	padding: 0.1666em 1.6%;
 }
-.mpdl_gridList .mpdl_itemFileArea {
+.eg3_gridList .eg3_itemFileArea {
 	padding: 0.1666em 1.6%;
 }
 
 
-.mpdl_gridList .mpdl_listItem td {
+.eg3_gridList .eg3_listItem td {
 	padding-top:0.5em;
 	padding-bottom:0.25em;
 	border-top:0.09em solid #ff00ff;
 }
-.mpdl_gridList .mpdl_listItem:hover td {
+.eg3_gridList .eg3_listItem:hover td {
 	background-color:#CCCCCC;
 	
 }
 
 
-.mpdl_gridList .mpdl_itemTitle {
+.eg3_gridList .eg3_itemTitle {
 	max-width:50em;
 	width:92%;
 	max-width:50em;
@@ -1346,49 +1346,49 @@ body .mpdl_id_siteTitle {
  ******************************				tiled list						******************************
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
-.mpdl_tiledList {
+.eg3_tiledList {
 	width:100%; 
 	padding:0 1.6%;
 }
-.mpdl_tiledList .mpdl_listHeader {
+.eg3_tiledList .eg3_listHeader {
 	width:100%;
 }
-.mpdl_tiledList .mpdl_listBody {
+.eg3_tiledList .eg3_listBody {
 	width:100%;
 }
-.mpdl_tiledList li.mpdl_listItem {
+.eg3_tiledList li.eg3_listItem {
 	float:left;
 	padding:0.5em 1.6% 1em 1.6%;
 	width:13.25%; 
 	max-width:13.916667em;
 }
-.mpdl_tiledList .mpdl_listItem:hover {
+.eg3_tiledList .eg3_listItem:hover {
 	background-color:#BfBfBf;
 }
 
-.mpdl_tiledList .mpdl_itemContent {
+.eg3_tiledList .eg3_itemContent {
 	width:100%;  
 }
-.mpdl_tiledList .mpdl_itemContent:hover {
+.eg3_tiledList .eg3_itemContent:hover {
 	background-color:#DDDDDD;
 }
-.mpdl_tiledList .mpdl_itemIconArea {
+.eg3_tiledList .eg3_itemIconArea {
 	width:100%;  
 	margin-bottom:0.25em;
 }
-.mpdl_tiledList .mpdl_itemIconArea img {
+.eg3_tiledList .eg3_itemIconArea img {
 	width:100%;
 }
-.mpdl_tiledList .mpdl_itemIconBorder {
+.eg3_tiledList .eg3_itemIconBorder {
 	display:block;
 	width:94.75%;
 	padding:0.3333em 0.3333em 0.25em 0.3333em; 
 	background-color:#aaaaaa;
 }
-.mpdl_tiledList .mpdl_itemContentData {
+.eg3_tiledList .eg3_itemContentData {
 	width:100%;
 }
-.mpdl_tiledList .mpdl_itemControlArea {
+.eg3_tiledList .eg3_itemControlArea {
 	width:100%;
 }
 
@@ -1400,57 +1400,57 @@ body .mpdl_id_siteTitle {
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
 
-.mpdl_tiledListThumbOverlay {
+.eg3_tiledListThumbOverlay {
 	width:98%; 
 	padding:0 1.6%;
 }
-.mpdl_tiledListThumbOverlay.mpdl_overlay {
+.eg3_tiledListThumbOverlay.eg3_overlay {
 	background-color:#ffffff;
 	min-width:200%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_listHeader {
+.eg3_tiledListThumbOverlay .eg3_listHeader {
 	width:100%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_listBody {
+.eg3_tiledListThumbOverlay .eg3_listBody {
 	width:100%;
 	height:56.75em;
 	overflow-y:auto;
 }
-.mpdl_tiledListThumbOverlay li.mpdl_listItem {
+.eg3_tiledListThumbOverlay li.eg3_listItem {
 	float:left;
 	margin:0.5em 1.6% 1em 1.6%;
 	width:16.78%; 
 	max-width:5.666666667em;
 }
-.mpdl_tiledListThumbOverlay .mpdl_listItem:hover {
+.eg3_tiledListThumbOverlay .eg3_listItem:hover {
 	background-color:#BfBfBf;
 }
-.mpdl_tiledListThumb .mpdl_itemContent {
+.eg3_tiledListThumb .eg3_itemContent {
 	width:100%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemContent:hover .mpdl_itemIconArea .mpdl_itemIconBorder {
+.eg3_tiledListThumbOverlay .eg3_itemContent:hover .eg3_itemIconArea .eg3_itemIconBorder {
 	background-color:#DDDDDD;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemIconArea {
+.eg3_tiledListThumbOverlay .eg3_itemIconArea {
 	width:100%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemIconArea img {
+.eg3_tiledListThumbOverlay .eg3_itemIconArea img {
 	width:100%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemIconBorder {
+.eg3_tiledListThumbOverlay .eg3_itemIconBorder {
 	display:block;
 	width:89%;
 /*	padding:0.3333em; */
 	padding:5%; 
 	background-color:#aaaaaa;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemContentData {
+.eg3_tiledListThumbOverlay .eg3_itemContentData {
 	width:100%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemContentData .mpdl_itemMetaText {
+.eg3_tiledListThumbOverlay .eg3_itemContentData .eg3_itemMetaText {
 	font-size:75%;
 }
-.mpdl_tiledListThumbOverlay .mpdl_itemControlArea {
+.eg3_tiledListThumbOverlay .eg3_itemControlArea {
 	width:100%;
 }
 
@@ -1458,67 +1458,67 @@ body .mpdl_id_siteTitle {
  ******************************				image view single / recto verso		******************************
  ******************************				view with paginator					****************************** 
  *************************************************************************************************************/
-.mpdl_pageView {
+.eg3_pageView {
 	
 }
-.mpdl_pageView .mpdl_singleView {
+.eg3_pageView .eg3_singleView {
 	width:100%;
 }
-.mpdl_pageView .mpdl_singleView .mpdl_pageView_imgContainer {
+.eg3_pageView .eg3_singleView .eg3_pageView_imgContainer {
 	float:none;
 	width:50%;
 	margin:0 auto;
 }
-.mpdl_pageView .mpdl_singleView .mpdl_pageView_imgContainer img {
+.eg3_pageView .eg3_singleView .eg3_pageView_imgContainer img {
 	width:100%;
 }
-.mpdl_pageView .mpdl_singleView div.digilib div.scaler {
+.eg3_pageView .eg3_singleView div.digilib div.scaler {
 	width:100% !important;
 	height:auto !important;
 }
 
 
 
-.mpdl_pageView .mpdl_dualView {
+.eg3_pageView .eg3_dualView {
 	width:100%;
 }
-.mpdl_pageView .mpdl_dualView .mpdl_pageView_imgContainer {
+.eg3_pageView .eg3_dualView .eg3_pageView_imgContainer {
 	width:50%;
 }
-.mpdl_pageView .mpdl_dualView .mpdl_pageView_imgContainer img {
+.eg3_pageView .eg3_dualView .eg3_pageView_imgContainer img {
 	width:100%;
 }
 
 /*************************************************************************************************************
  ******************************				overlay menu with tabs				******************************
  *************************************************************************************************************/
-.mpdl_menuTabHorzOverlay {
+.eg3_menuTabHorzOverlay {
 	width:100%;
 	z-index:50;
 	overflow:visible !important;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuHeader {
+.eg3_menuTabHorzOverlay .eg3_menuHeader {
 	
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab {
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab {
 	float:left;
 	border-bottom:solid 0.09em #000000;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab.mpdl_active {
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab.eg3_active {
 	background-color:#000000; 
 	color:#FFFFFF;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuHeader .mpdl_horizontalTab .mpdl_menuEntry {
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab .eg3_menuEntry {
 	margin-left:0.5em;
 	padding-top:0.5em;
 }
 
-.mpdl_menuTabHorzOverlay .mpdl_menuBody {
+.eg3_menuTabHorzOverlay .eg3_menuBody {
 	position:absolute;
 	width:100%;
 	margin-top:1.25em;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_menuTabContent .mpdl_menuTabBg {
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_menuTabContent .eg3_menuTabBg {
 	position:absolute; 
 	min-height:100%;
 	width:100%; 
@@ -1528,45 +1528,45 @@ body .mpdl_id_siteTitle {
 	-o-opacity:1;
 	filter: Alpha(opacity=100);
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_pageNumber.mpdl_active {
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_pageNumber.eg3_active {
 	margin:0;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuTabContent {
+.eg3_menuTabHorzOverlay .eg3_menuTabContent {
 	float:none;
 	margin:0 auto;
 	display:none;
 }
-.mpdl_menuTabHorzOverlay .mpdl_menuBody .mpdl_menuTabContent.mpdl_active {
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_menuTabContent.eg3_active {
 	display:block;
 }
-.mpdl_menuTabHorzOverlay .mpdl_paginatorWave .mpdl_pageBrowserMin {
+.eg3_menuTabHorzOverlay .eg3_paginatorWave .eg3_pageBrowserMin {
 	width:100%;
 }
 
-.mpdl_menuTabHorzOverlay .mpdl_gotoBox {
+.eg3_menuTabHorzOverlay .eg3_gotoBox {
 	width:100%;
 	text-align:center;
 	display:none;
 	padding-top:0.3333em;
 	padding-bottom:0.5em;
 }
-.mpdl_menuTabHorzOverlay .mpdl_gotoBox input[type="number"] {
+.eg3_menuTabHorzOverlay .eg3_gotoBox input[type="number"] {
 	max-width:25%;
 	text-align:center;
 }
-.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuHeader li { /* used in pageView */
+.eg3_menuTabHorzOverlay.eg3_twoRows .eg3_menuHeader li { /* used in pageView */
 	height:1.75em;
 	max-height:1.75em;
 	padding-top:0.5em;
 }
-.mpdl_menuTabHorzOverlay.mpdl_twoRows .mpdl_menuBody { /* used in pageView */
+.eg3_menuTabHorzOverlay.eg3_twoRows .eg3_menuBody { /* used in pageView */
 	margin-top:2.25em;
 }
 
 /*****************************************************************************************************
  ******************************				global button elements			**************************
  *****************************************************************************************************/
-.mpdl_icon_editBtn_16_16 {
+.eg3_icon_editBtn_16_16 {
 	width:1.3333em;
 	height:1.3333em;
 	margin-left:0.33333em;
@@ -1578,7 +1578,7 @@ body .mpdl_id_siteTitle {
 /*****************************************************************************************************
  ******************************				image background color			**************************
  *****************************************************************************************************/
-.mpdl_image_bgColor_1 {
+.eg3_image_bgColor_1 {
 	background-color:#000000;
 }
 
@@ -1600,7 +1600,7 @@ body .mpdl_id_siteTitle {
 .rf-tbp {
 	width:100%;
 }
-.rf-tbp.mpdl_widthAuto {
+.rf-tbp.eg3_widthAuto {
 	width:auto;
 }
 .rf-tr div {
@@ -1611,14 +1611,14 @@ body .mpdl_id_siteTitle {
 	width:100%;
 	border:0.0833333em solid #BED6F8;
 }
-.rf-tbp .rf-tab.mpdl_overflow {
+.rf-tbp .rf-tab.eg3_overflow {
 	width:100%;
 	border:none;
 }
 .rf-trn {
 	white-space:normal;
 }
-.mpdl_noWrapTrn .rf-trn {
+.eg3_noWrapTrn .rf-trn {
 	white-space:nowrap;
 }
 .rf-tbp .rf-tab-cnt {
@@ -1629,12 +1629,12 @@ body .mpdl_id_siteTitle {
 	width:98%;
 	margin:0 1%;
 }
-.rf-tbp .rf-tab-cnt.mpdl_expand {
+.rf-tbp .rf-tab-cnt.eg3_expand {
 	width:auto;
 	border:0.0833333em inset #BED6F8;
 	margin-left:0;
 }
-.rf-tbp .rf-tab-cnt.mpdl_expand.mpdl_expandMax80 {
+.rf-tbp .rf-tab-cnt.eg3_expand.eg3_expandMax80 {
 	width:80%;
 }
 .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {

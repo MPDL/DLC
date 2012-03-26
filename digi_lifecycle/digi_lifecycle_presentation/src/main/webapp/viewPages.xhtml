@@ -14,15 +14,15 @@
 		
 		<ui:define name="mainContent">
 			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
-			<h:panelGroup layout="block" styleClass="mpdl_id_sidebarLeft mpdl_container_1_5 mpdl_overflow" style="z-index:150;">
+			<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="z-index:150;">
 				
-				<h:form styleClass="mpdl_overflow" style="z-index:50;">	
+				<h:form styleClass="eg3_overflow" style="z-index:50;">	
 					<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 		     			<rich:tab header="Toc" id="toc">
-								<h:panelGroup layout="block" styleClass="mpdl_container_1">
-									<h:panelGroup layout="block" styleClass="mpdl_floatRight">
-										<input type="button" class="mpdl_expandOverlay" onclick="mpdl_openOverlay(this);" value="+"/>
-										<input type="button" class="mpdl_collapseOverlay" onclick="mpdl_closeOverlay(this);" disabled="disabled" value="-"/>
+								<h:panelGroup layout="block" styleClass="eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_floatRight">
+										<input type="button" class="eg3_expandOverlay" onclick="eg3_openOverlay(this);" value="+"/>
+										<input type="button" class="eg3_collapseOverlay" onclick="eg3_closeOverlay(this);" disabled="disabled" value="-"/>
 										<input type="button" value="print"/>
 									</h:panelGroup>
 								</h:panelGroup>
@@ -98,12 +98,12 @@
 				
 			</h:panelGroup>
 		
-			<h:panelGroup layout="block" styleClass="mpdl_container_4_5 mpdl_pageView">
-				<h:panelGroup layout="block" styleClass="mpdl_menuTabHorzOverlay mpdl_twoRows">
-					<h:panelGroup layout="block" styleClass="mpdl_menuHeader mpdl_container_1">
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_pageView">
+				<h:panelGroup layout="block" styleClass="eg3_menuTabHorzOverlay eg3_twoRows">
+					<h:panelGroup layout="block" styleClass="eg3_menuHeader eg3_container_1">
 						<ul>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">
-								<h:panelGroup layout="block" styleClass="mpdl_menuEntry" rendered="#{viewPages.selectedPageNumber > 1}">
+							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">
+								<h:panelGroup layout="block" styleClass="eg3_menuEntry" rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -111,11 +111,11 @@
 									</h:form>
 								</h:panelGroup>&#160;
 							</li>
-							<li class="mpdl_container_3_4 mpdl_horizontalTab mpdl_borderradius_5_top mpdl_active" onclick="$('.mpdl_menuBody .mpdl_menuTabContent').toggle(); $(this).toggleClass('mpdl_active');">
-								<h:panelGroup styleClass="mpdl_menuEntry">Page</h:panelGroup>
+							<li class="eg3_container_3_4 eg3_horizontalTab eg3_borderradius_5_top eg3_active" onclick="$('.eg3_menuBody .eg3_menuTabContent').toggle(); $(this).toggleClass('eg3_active');">
+								<h:panelGroup styleClass="eg3_menuEntry">Page</h:panelGroup>
 							</li>
-							<li class="mpdl_container_1_8 mpdl_horizontalTab mpdl_borderradius_5_top">&#160;
-								<h:panelGroup layout="block" styleClass="mpdl_menuEntry mpdl_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
+							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">&#160;
+								<h:panelGroup layout="block" styleClass="eg3_menuEntry eg3_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -125,46 +125,46 @@
 							</li>
 						</ul>
 					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="mpdl_menuBody">
+					<h:panelGroup layout="block" styleClass="eg3_menuBody">
 						
-						<h:panelGroup layout="block" styleClass="mpdl_menuTabContent mpdl_container_3_4 mpdl_active">
-							<h:panelGroup layout="block" styleClass="mpdl_menuTabBg mpdl_borderradius_5_bottom">&#160;</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="mpdl_paginatorWave">
-								<h:panelGroup layout="block" styleClass="mpdl_pageBrowserMin">
+						<h:panelGroup layout="block" styleClass="eg3_menuTabContent eg3_container_3_4 eg3_active">
+							<h:panelGroup layout="block" styleClass="eg3_menuTabBg eg3_borderradius_5_bottom">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_paginatorWave">
+								<h:panelGroup layout="block" styleClass="eg3_pageBrowserMin">
 									<nav>
 										<h:form>
 											<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
-												<h:panelGroup styleClass="mpdl_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
-												<h:panelGroup styleClass="mpdl_icon_backward_16_16">&#160;</h:panelGroup>
+												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											
-											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
-											<h:outputLabel styleClass="mpdl_pageNumber mpdl_active" value="#{viewPages.selectedPageNumber}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPageNumber}"/>
 										<ui:remove>
-											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="mpdl_pageNumber mpdl_active">40</h:panelGroup></a>
+											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="eg3_pageNumber eg3_active">40</h:panelGroup></a>
 										</ui:remove>
-											<input type="button" onclick="mpdl_switchInputType('.mpdl_menuTabContent .mpdl_paginatorWave', '.mpdl_menuTabContent .mpdl_gotoBox', true);" class="mpdl_icon_editBtn_16_16"/>
+											<input type="button" onclick="eg3_switchInputType('.eg3_menuTabContent .eg3_paginatorWave', '.eg3_menuTabContent .eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
 											
 											<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
-												<h:panelGroup styleClass="mpdl_icon_forward_16_16"/>
+												<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
-												<h:panelGroup styleClass="mpdl_icon_skipTolast_16_16"/>
+												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
 												<f:ajax render="@all"/>
 											</h:commandLink>
 										</h:form>
 									</nav>
 								</h:panelGroup>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="mpdl_gotoBox">
+							<h:panelGroup layout="block" styleClass="eg3_gotoBox">
 								<h:form>
-									<input class="mpdl_gotoInput mpdl_borderradius_5_bottom mpdl_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="9999" maxlength="5" type="number"/>
-									<label class="mpdl_inputLabel">von 9999</label>
+									<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="9999" maxlength="5" type="number"/>
+									<label class="eg3_inputLabel">von 9999</label>
 								</h:form>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -173,7 +173,7 @@
 					
 				
 				<!--  SINGLE VIEW  -->
-				<h:panelGroup layout="block" styleClass="mpdl_singleView mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
+				<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 
 					<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
 
@@ -183,7 +183,7 @@
 					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 					<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 					
-					<h:panelGroup layout="block" styleClass="digilib mpdl_pageView_imgContainer">
+					<h:panelGroup layout="block" styleClass="digilib eg3_pageView_imgContainer">
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
 					</h:panelGroup>
 					<script type="text/javascript">
@@ -205,24 +205,24 @@
 			                    }
 			                    //, scalerInset : -10
 							}; //end opts
-							$('.mpdl_singleView div.digilib').digilib(opts);
-							$('.mpdl_singleView div.digilib .keep.buttons').draggable();
+							$('.eg3_singleView div.digilib').digilib(opts);
+							$('.eg3_singleView div.digilib .keep.buttons').draggable();
 			            });
 			        </script>
 				</h:panelGroup>
 			
 			
 				<!-- RECTO VERSO VIEW -->
-				<h:panelGroup layout="block" styleClass="mpdl_dualView mpdl_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
-					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer" rendered="#{viewPages.selectedPage!=null}">
+				<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
+					<h:panelGroup layout="block" styleClass="eg3_pageView_imgContainer" rendered="#{viewPages.selectedPage!=null}">
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="mpdl_pageView_imgContainer #{empty viewPages.selectedPage ? 'mpdl_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+					<h:panelGroup layout="block" styleClass="eg3_pageView_imgContainer #{empty viewPages.selectedPage ? 'eg3_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 					</h:panelGroup>
 					
 					
-					<h:panelGroup layout="block" styleClass="mpdl_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+					<h:panelGroup layout="block" styleClass="eg3_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
 						<span class="quad_area1 splitBlockHeader">
 							<span class="quad_area0_p4 lineToolSection">
 								<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
@@ -231,7 +231,7 @@
 					</h:panelGroup>
 					
 					
-					<h:panelGroup layout="block" styleClass="mpdl_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 						<span class="quad_area1 splitBlockHeader"></span>
 						
 						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">

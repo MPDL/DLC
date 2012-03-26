@@ -83,47 +83,47 @@ option {
  * because of richfaces/java syntax it's difficult to define a unique id for all solutions
  * so: the best way to define unique elements is to create pseudo-IDs with the prefix "id_" to the CSS class
  */
-.mpdl_id_wrapper {
+.eg3_id_wrapper {
 	position:relative;
 	min-height:100%;
 	width:100%;
 	z-index:0;
 }
-.mpdl_id_wrapper div {
+.eg3_id_wrapper div {
 	overflow:hidden;
 }
 /*
  * standardization classes for floating
  */
-.mpdl_floatNone {
+.eg3_floatNone {
 	float:none !important;
 }
-.mpdl_floatRight {
+.eg3_floatRight {
 	float:right !important;
 }
-.mpdl_floatLeft {
+.eg3_floatLeft {
 	float:left !important;
 }
-.mpdl_clearLeft {
+.eg3_clearLeft {
 	clear:left;
 }
-.mpdl_clearRight {
+.eg3_clearRight {
 	clear:right;
 }
-.mpdl_clearBoth {
+.eg3_clearBoth {
 	clear:both;
 }
-.mpdl_clearAll {
+.eg3_clearAll {
 	float:none;
 	clear:both;
 }
-.mpdl_hidden {
+.eg3_hidden {
 	display:none !important;
 }
-.mpdl_showBlock {
+.eg3_showBlock {
 	display:block !important;
 }
-.mpdl_containerCenter {
+.eg3_containerCenter {
 	float:none;
 	margin:0 auto;
 }
@@ -131,113 +131,113 @@ option {
 /*
  * global grid-size definitions
  */
-.mpdl_container_1_20 {
+.eg3_container_1_20 {
 	width:5%;
 }
 
-.mpdl_container_1_16 { /* = 1/16 == 2/32 */
+.eg3_container_1_16 { /* = 1/16 == 2/32 */
 	width:6.25%;
 }
 
-.mpdl_container_1_12 { /* = 1/12 */
+.eg3_container_1_12 { /* = 1/12 */
 	width:8.3333%;
 }
 
-.mpdl_container_1_10 { /* = 1/10 */
+.eg3_container_1_10 { /* = 1/10 */
 	width:10%;
 }
 
-.mpdl_container_1_9 { /* = 1/9 */
+.eg3_container_1_9 { /* = 1/9 */
 	width:11.1111%;
 }
 
-.mpdl_container_1_8 {	/* = 1/8 == 4/32 */
+.eg3_container_1_8 {	/* = 1/8 == 4/32 */
 	width:12.5%;
 }
 
-.mpdl_container_1_7 {	/* = 1/7 */
+.eg3_container_1_7 {	/* = 1/7 */
 	width:14.2857%;
 }
 
-.mpdl_container_3_20 {
+.eg3_container_3_20 {
 	width:15%;
 }
 
-.mpdl_container_5_32 { /* = 5/32 */
+.eg3_container_5_32 { /* = 5/32 */
 	width:15.625%;
 }
 
-.mpdl_container_1_6 { /* = 1/6 */
+.eg3_container_1_6 { /* = 1/6 */
 	width:16.6666%;
 }
 
-.mpdl_container_3_16 { /* = 3/16 == 6/32 */
+.eg3_container_3_16 { /* = 3/16 == 6/32 */
 	width:18.75%;
 }
 
-.mpdl_container_1_5 { /* = 1/5 */
+.eg3_container_1_5 { /* = 1/5 */
 	width:19.9%;
 }
 
-.mpdl_container_1_4 { /* = 1/4 */
+.eg3_container_1_4 { /* = 1/4 */
 	width:25%;
 }
 
-.mpdl_container_9_32 { /* = 9/32 */
+.eg3_container_9_32 { /* = 9/32 */
 	width:28.125%;
 }
 
-.mpdl_container_3_10 { /* = 3/10 */
+.eg3_container_3_10 { /* = 3/10 */
 	width:30%;
 }
 
-.mpdl_container_1_3 { /* = 1/3 */
+.eg3_container_1_3 { /* = 1/3 */
 	width:33.3333%;
 }
 
-.mpdl_container_6_16 { /* = 6/16 == 12/32 */
+.eg3_container_6_16 { /* = 6/16 == 12/32 */
 	width:37.5%;
 }
 
-.mpdl_container_2_5 { /* = 4/10 */
+.eg3_container_2_5 { /* = 4/10 */
 	width:39.85%;
 }
 
-.mpdl_container_1_2 { /* = 1/2 */
+.eg3_container_1_2 { /* = 1/2 */
 	width:49.85%;
 }
 
-.mpdl_container_2_3 { /* = 2/3 */
+.eg3_container_2_3 { /* = 2/3 */
 	width:66.6666%;
 }
 
-.mpdl_container_3_4 { /* = 3/4 */
+.eg3_container_3_4 { /* = 3/4 */
 	width:74.82%;
 }
 
-.mpdl_container_4_5 { /* = 4/5 */
+.eg3_container_4_5 { /* = 4/5 */
 	width:79.8%;
 }
 
-.mpdl_container_9_10 { /* = 9/10 */
+.eg3_container_9_10 { /* = 9/10 */
 	width:89.7%;
 }
 
-.mpdl_container_1 { /* = 1 */
+.eg3_container_1 { /* = 1 */
 	width:100%;
 }
 
 
 /* CSS3 ENHANCEMENTS */
 
-.mpdl_borderradius_5 { /* used by simpleSerch input-tag and submit-button */
+.eg3_borderradius_5 { /* used by simpleSerch input-tag and submit-button */
 	border-radius:0.4166667em;
 	-webkit-border-radius:0.4166667em;
 	-moz-border-radius:0.4166667em;
 	-ms-border-radius:0.4166667em;
 	-o-border-radius:0.4166667em;
 }
-.mpdl_borderradius_5_bottom { /* in use for tab menu overlay */
+.eg3_borderradius_5_bottom { /* in use for tab menu overlay */
 	border-bottom-left-radius: 0.4166667em;
 	border-bottom-right-radius: 0.4166667em;
 	-webkit-border-bottom-left-radius: 0.4166667em;
@@ -249,7 +249,7 @@ option {
 	-ms-border-bottom-left-radius: 0.4166667em;
 	-ms-border-bottom-right-radius: 0.4166667em;
 }
-.mpdl_borderradius_5_top { /* in use for tab menu */
+.eg3_borderradius_5_top { /* in use for tab menu */
 	border-top-left-radius: 0.4166667em;
 	border-top-right-radius: 0.4166667em;
 	-webkit-border-top-left-radius: 0.4166667em;
@@ -263,7 +263,7 @@ option {
 }
 /* not in use a.t.m.
 
-.mpdl_borderradius_5_right {
+.eg3_borderradius_5_right {
 	border-bottom-right-radius: 0.4166667em;
 	border-top-right-radius: 0.4166667em;
 	-webkit-border-bottom-right-radius: 0.4166667em;
@@ -275,7 +275,7 @@ option {
 	-ms-border-bottom-right-radius: 0.4166667em;
 	-ms-border-top-right-radius: 0.4166667em;
 }
-.mpdl_borderradius_5_left {
+.eg3_borderradius_5_left {
 	border-bottom-left-radius: 0.4166667em;
 	border-top-left-radius: 0.4166667em;
 	-webkit-border-bottom-left-radius: 0.4166667em;

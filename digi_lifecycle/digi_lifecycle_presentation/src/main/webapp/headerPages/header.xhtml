@@ -10,16 +10,16 @@
 
 
 
-<h:panelGroup layout="block" styleClass="mpdl_standardHeader">
+<h:panelGroup layout="block" styleClass="eg3_standardHeader">
 
-	<h:panelGroup layout="block" styleClass="mpdl_id_headerMetaMenu">
-		<menu class="mpdl_metaMenu">
+	<h:panelGroup layout="block" styleClass="eg3_id_headerMetaMenu">
+		<menu class="eg3_metaMenu">
 			<nav>
 				<pretty:link mappingId="user" rendered="#{loginBean.login}">
 					<h:outputLabel id="txtAccountUserName" styleClass="EMPTYCLASS" value="#{loginBean.user.loginName}"></h:outputLabel>
 				</pretty:link>			
 				
-				<h:panelGroup styleClass="mpdl_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
+				<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
 				
 				
 				<h:form>
@@ -32,21 +32,21 @@
 					</h:commandLink> 
 				</h:form>
 				
-				<h:panelGroup styleClass="mpdl_separator">&#160;</h:panelGroup>
+				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 	
 				<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
 					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
 					<h:outputText value="#{lbl.header_lnk_imprint}" />
 				</h:outputLink>
 				
-				<h:panelGroup styleClass="mpdl_separator">&#160;</h:panelGroup>
+				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 				
 				<h:outputLink id="lnkCopyright" title="#{tlt.Copyright}"
 					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
 					<h:outputText value="#{lbl.header_lnk_copyright}" />
 				</h:outputLink> 
 				
-				<h:panelGroup styleClass="mpdl_separator">&#160;</h:panelGroup>
+				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 	
 				<h:outputLink id="lnkHelp" title="#{tlt.Help}"
 					value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
@@ -54,9 +54,9 @@
 				</h:outputLink> 
 				
 				<h:form>
-					<h:panelGroup layout="block" styleClass="mpdl_dynamicSelectBox_js" title="???placeholder???">
-						<h:panelGroup layout="block" styleClass="mpdl_selectionContent">
-							<span class="mpdl_selectionText"></span>
+					<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" title="???placeholder???">
+						<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+							<span class="eg3_selectionText"></span>
 						</h:panelGroup>
 						<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
 							valueChangeListener="#{applicationBean.changeLanguage}">
@@ -70,25 +70,25 @@
 	</h:panelGroup>
 	
 	
-	<div class="mpdl_solutionLogo" title="Go to homepage">
+	<div class="eg3_solutionLogo" title="Go to homepage">
 		<h:outputLink value="/#{applicationBean.contextPath}/" title="Solution Homepage">
 			<h:graphicImage id="dlcLogo" value="/resources/images/dlc_u160_original.gif" alt="logo image"/>
 		</h:outputLink>
 	</div>
 	
-	<h:panelGroup layout="block" styleClass="mpdl_headerNav">
+	<h:panelGroup layout="block" styleClass="eg3_headerNav">
 		<nav>
-			<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="mpdl_navEntry">
+			<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="eg3_navEntry">
 				<h:outputText value="#{lbl.header_advancedSearch}"/>
 			</pretty:link>
 		</nav>
 	</h:panelGroup>
 	
-	<h:panelGroup layout="block" styleClass="mpdl_id_siteSearchMenu">
-		<h:panelGroup layout="block" styleClass="mpdl_simpleSearch">
+	<h:panelGroup layout="block" styleClass="eg3_id_siteSearchMenu">
+		<h:panelGroup layout="block" styleClass="eg3_simpleSearch">
 			<h:form>
-				<h:inputText type="text" id="quickSearchString" styleClass="mpdl_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
-				<h:commandButton type="submit" styleClass="mpdl_borderradius_5" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
+				<h:inputText type="text" id="quickSearchString" styleClass="eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+				<h:commandButton type="submit" styleClass="eg3_borderradius_5" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
 			</h:form>
 			<br />
 			
