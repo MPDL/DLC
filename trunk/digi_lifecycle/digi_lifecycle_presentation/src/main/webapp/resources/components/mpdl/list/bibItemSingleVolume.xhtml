@@ -25,16 +25,16 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 
-		<h:panelGroup layout="block" styleClass="mpdl_listItemSingleVolume" rendered="#{cc.attrs.rendered}">
-			<h:panelGroup layout="block" styleClass="mpdl_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
-			<h:panelGroup layout="block" styleClass="mpdl_itemContent">
-				<div class="mpdl_itemStatusArea">
-					<div class="mpdl_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-					<span class="mpdl_itemStatusTitle">Released</span>
+		<h:panelGroup layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered}">
+			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_itemContent">
+				<div class="eg3_itemStatusArea">
+					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<span class="eg3_itemStatusTitle">Released</span>
 				</div>
 				
-				<div class="mpdl_itemHeadline">
-					<div class="mpdl_itemTitle">
+				<div class="eg3_itemHeadline">
+					<div class="eg3_itemTitle">
 						<pretty:link mappingId="viewPages">
 							<f:param value="#{cc.attrs.volume.item.objid}" />
 							<f:param value="1" />
@@ -48,16 +48,16 @@
 					</div>
 				</div>
 				
-				<div class="mpdl_shortView_js">
+				<div class="eg3_shortView_js">
 					<ui:remove>
-						<div class="mpdl_itemMetaLabel">Creator(s)</div>
-						<div class="mpdl_itemMetaValue">Name, Prename, Address</div>
+						<div class="eg3_itemMetaLabel">Creator(s)</div>
+						<div class="eg3_itemMetaValue">Name, Prename, Address</div>
 					</ui:remove>
-					<h:panelGroup layout="block" class="mpdl_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+					<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 					</h:panelGroup>
 				
-					<h:panelGroup layout="block" class="mpdl_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+					<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 							<h:panelGroup styleClass="EMPTYCLASS" rendered="#{highlight.type=='FULLTEXT'}">
 								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
@@ -81,29 +81,29 @@
 					</h:panelGroup>
 					
 				</div>
-				<div class="mpdl_mediumView_js">
-					<div class="mpdl_itemMetaLabel">Journal Title</div>
-					<div class="mpdl_itemMetaValue">Astrophysical Journal Letters</div>
-					<div class="mpdl_itemMetaLabel">Degree</div>
-					<div class="mpdl_itemMetaValue">Degree Type</div>
-					<div class="mpdl_itemMetaLabel">Publishing Info</div>
-					<div class="mpdl_itemMetaValue">Edition, Place: Publisher</div>
-					<div class="mpdl_itemMetaLabel">Title</div>
-					<div class="mpdl_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
-					<div class="mpdl_itemMetaLabel">Visibility</div>
-					<div class="mpdl_itemMetaValue">Public</div>
-					<div class="mpdl_itemMetaLabel">Fulltext Hits</div>
-					<div class="mpdl_itemMetaValue">this is a irgendwie gearteter Text this is a irgendwie gearteter Text</div>
+				<div class="eg3_mediumView_js">
+					<div class="eg3_itemMetaLabel">Journal Title</div>
+					<div class="eg3_itemMetaValue">Astrophysical Journal Letters</div>
+					<div class="eg3_itemMetaLabel">Degree</div>
+					<div class="eg3_itemMetaValue">Degree Type</div>
+					<div class="eg3_itemMetaLabel">Publishing Info</div>
+					<div class="eg3_itemMetaValue">Edition, Place: Publisher</div>
+					<div class="eg3_itemMetaLabel">Title</div>
+					<div class="eg3_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
+					<div class="eg3_itemMetaLabel">Visibility</div>
+					<div class="eg3_itemMetaValue">Public</div>
+					<div class="eg3_itemMetaLabel">Fulltext Hits</div>
+					<div class="eg3_itemMetaValue">this is a irgendwie gearteter Text this is a irgendwie gearteter Text</div>
 				</div>
 			</h:panelGroup>
 			
-			<h:panelGroup layout="block" styleClass="mpdl_itemMediabar">
-				<div class="mpdl_itemMediabarThumb">
+			<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+				<div class="eg3_itemMediabarThumb">
 					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 				</div>
 				
 				<br/>
-				<h:panelGroup layout="block" class="mpdl_itemMediabarCategory">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{cc.attrs.volume.item.objid}" />
 						<h:outputText value="Thumbnails"/>
@@ -111,11 +111,11 @@
 				</h:panelGroup>
 				<ui:remove>
 					<br/>
-					<div class="mpdl_itemMediabarCategory">Kodikologische Daten</div>
+					<div class="eg3_itemMediabarCategory">Kodikologische Daten</div>
 					<br/>
-					<div class="mpdl_itemMediabarCategory">Volltext</div>
+					<div class="eg3_itemMediabarCategory">Volltext</div>
 					<br/>
-					<div class="mpdl_itemMediabarCategory">Sammlung</div>
+					<div class="eg3_itemMediabarCategory">Sammlung</div>
 				</ui:remove>
 			</h:panelGroup>
 		</h:panelGroup>

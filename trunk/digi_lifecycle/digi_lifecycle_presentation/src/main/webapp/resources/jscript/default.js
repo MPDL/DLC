@@ -25,19 +25,19 @@ function updateCustomSelectBox(obj) {
 	if (!obj) {
 		$("select").each(function(i){
 			var parent = null;
-			if (parent = searchParentTag(this, "mpdl_dynamicSelectBox_js")) {
+			if (parent = searchParentTag(this, "eg3_dynamicSelectBox_js")) {
 				var val = $(this).val();
 				$(this).find("option").each(function(i){
 					if ($(this).val() == val) {
 						val = $(this).text();
 					}
 				});
-				$(parent).find(".mpdl_selectionText").html(val);
+				$(parent).find(".eg3_selectionText").html(val);
 //				console.log(val);
 			}
 		});
 	} else {
-		$(obj).prev().find('.mpdl_selectionText').text(obj.options[obj.selectedIndex].text);
+		$(obj).prev().find('.eg3_selectionText').text(obj.options[obj.selectedIndex].text);
 	}
 }
 
@@ -46,9 +46,9 @@ function updateCustomSelectBox(obj) {
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
  */
 function resizeSelectBox() {
-	$(".mpdl_dynamicSelectBox_js").each(function(ind){
+	$(".eg3_dynamicSelectBox_js").each(function(ind){
 		var selCont = null;
-		if (typeof(selCont = $(this).find(".mpdl_selectionContent")) != "undefined") {
+		if (typeof(selCont = $(this).find(".eg3_selectionContent")) != "undefined") {
 			var selectTag = $(this).find('select');
 			var padL = Number(selCont.css("padding-left").replace("px", ""));
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
@@ -71,33 +71,33 @@ function resizeSelectBox() {
 
 function addShowHideAction() {
 	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
-	$('.mpdl_showHideAll_js').click(function(e){
-		$(this).toggleClass("mpdl_icon_collapse_16_16 mpdl_icon_expand_16_16");
+	$('.eg3_showHideAll_js').click(function(e){
+		$(this).toggleClass("eg3_icon_collapse_16_16 eg3_icon_expand_16_16");
 		stopDefaultAction(e);
 		var listBody = null;
 		
 		for (var i=0; i < $(this).parents().length; i++) {
 			//read the parents array to listHeader and stop, take the listHeader as parent and starting point for selection
-			if ($($(this).parents()[i]).hasClass('mpdl_listHeader')) {
+			if ($($(this).parents()[i]).hasClass('eg3_listHeader')) {
 				listHead = $($(this).parents()[i]);
 				listBody = $($(this).parents()[i]).siblings();
 				break;
 			}
 		}
 		if (listBody) {
-			var allItemDetailActions = $(listBody.find(".mpdl_itemDetailAction_js"));
-			if ( !$(this).attr("mpdl_detailStatus") || $(this).attr("mpdl_detailStatus") == 'undefined' || $(this).attr("mpdl_detailStatus") == undefined ) {
-				$(this).attr("mpdl_detailStatus", "open");
+			var allItemDetailActions = $(listBody.find(".eg3_itemDetailAction_js"));
+			if ( !$(this).attr("eg3_detailStatus") || $(this).attr("eg3_detailStatus") == 'undefined' || $(this).attr("eg3_detailStatus") == undefined ) {
+				$(this).attr("eg3_detailStatus", "open");
 				$(this).html($.trim($(this).html()).replace("Open ", "Close "));
-				listBody.find('.mpdl_mediumView_js').show();
-				allItemDetailActions.find("div").removeClass("mpdl_icon_collapse_16_16").addClass("mpdl_icon_expand_16_16");
-				allItemDetailActions.find(".mpdl_itemActionLabel").text("Less");
+				listBody.find('.eg3_mediumView_js').show();
+				allItemDetailActions.find("div").removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16");
+				allItemDetailActions.find(".eg3_itemActionLabel").text("Less");
 			} else {
-				$(this).attr("mpdl_detailStatus", "");
+				$(this).attr("eg3_detailStatus", "");
 				$(this).html($.trim($(this).html()).replace("Close ", "Open "));
-				listBody.find('.mpdl_mediumView_js').hide();
-				allItemDetailActions.find("div").removeClass("mpdl_icon_expand_16_16").addClass("mpdl_icon_collapse_16_16");
-				allItemDetailActions.find(".mpdl_itemActionLabel").text("More");
+				listBody.find('.eg3_mediumView_js').hide();
+				allItemDetailActions.find("div").removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16");
+				allItemDetailActions.find(".eg3_itemActionLabel").text("More");
 			}
 		}
 	});
@@ -108,18 +108,18 @@ function addShowHideAction() {
 
 function addDisplayControl(target) {
 	switch (target) {
-		case ".mpdl_listItemMediaAcc":
-		case ".mpdl_listItem":
-			$(target+" .mpdl_itemDetailAction_js").click(function(e){
+		case ".eg3_listItemMediaAcc":
+		case ".eg3_listItem":
+			$(target+" .eg3_itemDetailAction_js").click(function(e){
 				stopDefaultAction(e);
 				
-				$(this).find("div").toggleClass("mpdl_icon_expand_16_16, mpdl_icon_collapse_16_16");
+				$(this).find("div").toggleClass("eg3_icon_expand_16_16, eg3_icon_collapse_16_16");
 					
-				$(this).find("div").toggleClass("mpdl_icon_collapse_16_16, mpdl_icon_expand_16_16");
+				$(this).find("div").toggleClass("eg3_icon_collapse_16_16, eg3_icon_expand_16_16");
 				
 				var allDetails = null;
 				//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
-				if (allDetails = searchParentTag(this, 'mpdl_itemContent').find('.mpdl_mediumView_js')) {
+				if (allDetails = searchParentTag(this, 'eg3_itemContent').find('.eg3_mediumView_js')) {
 					allDetails.toggle();
 				};
 				/*
@@ -141,12 +141,12 @@ function addDisplayControl(target) {
 				*/
 			});
 			break;
-		case '.mpdl_listItemMultiVolume':
-			$(target + " .mpdl_itemDetailAction_js").click(function(e) {
-				var volume = searchParentTag(this, "mpdl_listItemMultiVolume").next();
+		case '.eg3_listItemMultiVolume':
+			$(target + " .eg3_itemDetailAction_js").click(function(e) {
+				var volume = searchParentTag(this, "eg3_listItemMultiVolume").next();
 				
-				if (volume.hasClass("mpdl_listItemVolume")) {
-					while (volume.hasClass("mpdl_listItemVolume")) {
+				if (volume.hasClass("eg3_listItemVolume")) {
+					while (volume.hasClass("eg3_listItemVolume")) {
 						volume.toggle();
 						volume = volume.next();
 					}
@@ -187,61 +187,61 @@ function addShowHideAll(element, child_elements, component) {
  * e.g. sidebar in pageView
  */
 /**
- * function mpdl_openOverlay
+ * function eg3_openOverlay
  * open the current content to see the content in a maximum container
  * listButton: object whose be clicked
  */
-function mpdl_openOverlay(listButton) {
+function eg3_openOverlay(listButton) {
 	//define the current list
 	var curList = $(listButton).parent().parent().parent();
 	//console.log(curList);
 	
 	//check if the parent of the list is a richfaces tabpanel
 	if (curList.parent().parent().hasClass("rf-tbp")) {
-		curList.parent().parent().addClass("mpdl_widthAuto"); //set the width attribute to auto
+		curList.parent().parent().addClass("eg3_widthAuto"); //set the width attribute to auto
 	}
 	// add classes to the current list to make it larger
-	curList.parent().addClass("mpdl_overflow");
-	curList.addClass("mpdl_noWrapTrn");
-	curList.addClass("mpdl_expand");
+	curList.parent().addClass("eg3_overflow");
+	curList.addClass("eg3_noWrapTrn");
+	curList.addClass("eg3_expand");
 	//check the width of the tree
 	var objWidth = $(".rf-tr").width();
 	var docWidth = $(document).width();
 	//compare the width of tree and document
 	if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
 		if (docWidth >= 500) { //and the document width is larger than 500px 
-			curList.addClass("mpdl_expandMax80"); //reduce the current content container to a width of 80 percent
+			curList.addClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
 		}
 	}
 	//disable the expand button
-	curList.find('.mpdl_expandOverlay').attr('disabled', 'disabled');
+	curList.find('.eg3_expandOverlay').attr('disabled', 'disabled');
 	//enable the collapse button
-	var collapseBtn = curList.find('.mpdl_collapseOverlay');
+	var collapseBtn = curList.find('.eg3_collapseOverlay');
 	collapseBtn.removeAttr('disabled');
 }
 /**
- * function mpdl_openOverlay
+ * function eg3_openOverlay
  * close the current content to see the content in a minimized container
  * listButton: object whose be clicked
  */
-function mpdl_closeOverlay(listButton) {
+function eg3_closeOverlay(listButton) {
 	//define the current list
 	var curList = $(listButton).parent().parent().parent();
 	//remove the overflow class from the current list parent
-	curList.parent().removeClass("mpdl_overflow");
+	curList.parent().removeClass("eg3_overflow");
 	
 	//check if the parent of the list is a richfaces tabpanel
 	if (curList.parent().parent().hasClass("rf-tbp")) {
-		curList.parent().parent().removeClass("mpdl_widthAuto"); //remove the auto width class
+		curList.parent().parent().removeClass("eg3_widthAuto"); //remove the auto width class
 	}
 	//remove all additional extension classes to the default behaviour
-	curList.removeClass("mpdl_noWrapTrn");
-	curList.removeClass("mpdl_expand");
-	curList.removeClass("mpdl_expandMax80");
+	curList.removeClass("eg3_noWrapTrn");
+	curList.removeClass("eg3_expand");
+	curList.removeClass("eg3_expandMax80");
 	//disable the collapse button
-	curList.find('.mpdl_collapseOverlay').attr('disabled', 'disabled');
+	curList.find('.eg3_collapseOverlay').attr('disabled', 'disabled');
 	//enable the expand button
-	curList.find('.mpdl_expandOverlay').removeAttr('disabled');
+	curList.find('.eg3_expandOverlay').removeAttr('disabled');
 }
 
 /**
@@ -250,7 +250,7 @@ function mpdl_closeOverlay(listButton) {
  * @param show_element:String - used in case of jQuery selection
  * @param escListener:Boolean - if set, the escape listener will change the input formats back
  */
-function mpdl_switchInputType(hide_element, show_element, escListener) {
+function eg3_switchInputType(hide_element, show_element, escListener) {
 	$(hide_element).hide();
 	$(show_element).show();
 	if (escListener && escListener === true) {
@@ -259,7 +259,7 @@ function mpdl_switchInputType(hide_element, show_element, escListener) {
 			switch (e.which) {
 				case 0: //esc button in firefox
 				case 27: //esc button in chrome and IE >= 8
-					mpdl_switchInputType(show_element, hide_element);
+					eg3_switchInputType(show_element, hide_element);
 					$(document).unbind("keypress");
 					break;
 			}
@@ -274,14 +274,14 @@ $(document).ready(function(e) {
 	 * use the setTimeout method only if you load the content via ajax 
 	 * alternative: create an ajax handler to refer the function after successed loading with dynamic time
 	 */
-	addDisplayControl('.mpdl_listItem');
-	addDisplayControl('.mpdl_listItemMediaAcc');
-	addDisplayControl('.mpdl_listItemMultiVolume');
+	addDisplayControl('.eg3_listItem');
+	addDisplayControl('.eg3_listItemMediaAcc');
+	addDisplayControl('.eg3_listItemMultiVolume');
 	
 	resizeSelectBox();
 	
-	setTimeout("addShowHideAll('.mpdl_showHideAll_js', '.mpdl_listItem .mpdl_mediumView_js', '.mpdl_bibList')", 290);
-	setTimeout("addShowHideAll('.mpdl_showHideAll_js', '.mpdl_listItemMediaAcc .mpdl_mediumView_js', '.mpdl_bibList')", 290);
-	setTimeout("addShowHideAll('.mpdl_toggleListItemVolume_js', '.mpdl_listItemVolume', '.mpdl_bibList')", 290);
+	setTimeout("addShowHideAll('.eg3_showHideAll_js', '.eg3_listItem .eg3_mediumView_js', '.eg3_bibList')", 290);
+	setTimeout("addShowHideAll('.eg3_showHideAll_js', '.eg3_listItemMediaAcc .eg3_mediumView_js', '.eg3_bibList')", 290);
+	setTimeout("addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList')", 290);
 	
 });
