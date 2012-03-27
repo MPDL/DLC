@@ -65,6 +65,10 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	//Pagination values
 	private String selectedPaginationEndPbId;
 	
+	private String selectedPageDisplayTypeEndPbId;
+	
+	private String selectedPageTypeEndPbId;
+	
 	private PaginationType selectedPaginationType;
 	
 	private String selectedPaginationStartValue;
@@ -514,6 +518,60 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		
 	}
 	
+	public void applyPageDisplayType()
+	{
+		int startIndex = pbList.indexOf(selectedPb);
+		
+		String value = selectedPb.getTeiElement().getType();
+		
+		
+		for(int i=startIndex; i<pbList.size(); i++)
+		{
+			TeiElementWrapper pbWrapper = pbList.get(i);
+			
+			pbWrapper.getTeiElement().setType(value);
+			
+			if(value.equals("left"))
+			{
+				value="right";
+			}
+			else if (value.equals("right"))
+			{
+				value="left";
+			}
+			
+			if(pbWrapper.getTeiElement().getId().equals(selectedPageDisplayTypeEndPbId))
+			{
+				return;
+			}
+		}
+		
+	}
+	
+	public void applyPageType()
+	{
+		int startIndex = pbList.indexOf(selectedPb);
+		
+		String value = ((Pagebreak)selectedPb.getTeiElement()).getSubtype();
+		
+		
+		for(int i=startIndex; i<pbList.size(); i++)
+		{
+			TeiElementWrapper pbWrapper = pbList.get(i);
+			Pagebreak pb = (Pagebreak)pbWrapper.getTeiElement();
+			
+			pb.setSubtype(value);
+			
+			
+			
+			if(pbWrapper.getTeiElement().getId().equals(selectedPageTypeEndPbId))
+			{
+				return;
+			}
+		}
+		
+	}
+	
 	public List<SelectItem> getPaginationEndPbSelectItems()
 	{
 		List<SelectItem> returnList = new ArrayList<SelectItem>();
@@ -930,7 +988,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public List<SelectItem> getEndPagesSelectItemsForElement(TeiElementWrapper startTeiElementWrapper)
 	{
-		System.out.println("End pages for element " + startTeiElementWrapper.getTeiElement());
+		
 		List<SelectItem> list = new ArrayList<SelectItem>();
 		
 		int currentEndIndex = flatTeiElementList.indexOf(startTeiElementWrapper.getPartnerElement());
@@ -1062,7 +1120,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	
 	public void moveEndPageTo(TeiElementWrapper startElementWrapper, String pageBreakToMoveToId)
 	{
-		System.out.println("Move " + startElementWrapper.getTeiElement().getType() + " to "  + pageBreakToMoveToId);
+		logger.debug("Move structural element end page" + startElementWrapper.getTeiElement().getType() + " to page "  + pageBreakToMoveToId);
 		
 		TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
 		TeiElementWrapper pageBreakToMoveTo = getPbWrapperforId(pageBreakToMoveToId);
@@ -1083,14 +1141,13 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
 			if(currentTeiElementWrapper.equals(startElementWrapper))
 			{
-				System.out.println("Found start element");
+				
 				started=true;
 				balanceCounter--;
 			}
 			
 			if(currentTeiElementWrapper.equals(pageBreakToMoveTo))
 			{
-				System.out.println("Found pagebreak to move to: " + currentTeiElementWrapper.getTeiElement().getId());
 				set=true;
 			}
 			else if (started && PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
@@ -1274,6 +1331,25 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	public void setSelectedPaginationPattern(String selectedPaginationPattern) {
 		this.selectedPaginationPattern = selectedPaginationPattern;
 	}
+
+	public String getSelectedPageDisplayTypeEndPbId() {
+		return selectedPageDisplayTypeEndPbId;
+	}
+
+	public void setSelectedPageDisplayTypeEndPbId(
+			String selectedPageDisplayTypeEndPbId) {
+		this.selectedPageDisplayTypeEndPbId = selectedPageDisplayTypeEndPbId;
+	}
+
+	public String getSelectedPageTypeEndPbId() {
+		return selectedPageTypeEndPbId;
+	}
+
+	public void setSelectedPageTypeEndPbId(String selectedPageTypeEndPbId) {
+		this.selectedPageTypeEndPbId = selectedPageTypeEndPbId;
+	}
+
+
 	
 	
 
