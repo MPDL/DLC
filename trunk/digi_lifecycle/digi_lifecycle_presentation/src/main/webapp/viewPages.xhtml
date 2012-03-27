@@ -14,6 +14,8 @@
 		
 		<ui:define name="mainContent">
 			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
+			
+			
 			<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="z-index:150;">
 				
 				<h:form styleClass="eg3_overflow" style="z-index:50;">	
@@ -49,7 +51,6 @@
 												
 												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
 													<h:outputText value="[#{divItem.elementType}]"/>
-												
 												</h:panelGroup>
 												
 												<f:ajax render="@all"/>
@@ -97,7 +98,7 @@
 				</h:form>
 				
 			</h:panelGroup>
-		
+			
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_pageView">
 				<h:panelGroup layout="block" styleClass="eg3_menuTabHorzOverlay eg3_twoRows">
 					<h:panelGroup layout="block" styleClass="eg3_menuHeader eg3_container_1">
@@ -133,11 +134,11 @@
 								<h:panelGroup layout="block" styleClass="eg3_pageBrowserMin">
 									<nav>
 										<h:form>
-											<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
+											<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???" rendered="#{viewPages.selectedPageNumber>1}">
 												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 												<f:ajax render="@all"/>
 											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
+											<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???" rendered="#{viewPages.selectedPageNumber>1}">
 												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 												<f:ajax render="@all"/>
 											</h:commandLink>
@@ -186,6 +187,13 @@
 					<h:panelGroup layout="block" styleClass="digilib eg3_pageView_imgContainer">
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
 					</h:panelGroup>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1">
+						<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top">
+							<h:outputText value="http://rectoverso-singlepage-link" /> 
+						</h:panelGroup>
+					</h:panelGroup>
+					
 					<script type="text/javascript">
 			            $(document).ready(function(){
 			                var opts = {
@@ -237,7 +245,24 @@
 						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
 							<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
 						</div>
-		
+					</h:panelGroup>
+					
+					
+					<!-- RECTO VERSO INFORMATION -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1">
+						<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
+							<h:outputText styleClass="eg3_permalinkBoxText" value="http://rectoverso-singlepage-link-or-other-stuff-content-with-no-relevance" /> 
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+							<h:outputText styleClass="eg3_permalinkBoxText" value="http://rectoverso-singlepage-link-or-other-stuff-content-with-no-relevance" /> 
+						</h:panelGroup>
+						<br />
+						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_container_1_2 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
+							<h:outputText styleClass="eg3_ownershipBoxText" value="Marco Schlender is a sample owner text. He works on MPDL"/>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+							<h:outputText styleClass="eg3_ownershipBoxText" value="Marco Schlender is a sample owner text. He works on MPDL"/>
+						</h:panelGroup>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
