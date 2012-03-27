@@ -42,6 +42,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_container1_2" style="width:150px">
 							<h:outputText value="#{element.page.order + 1} / " />
 							<h:outputText value="#{element.teiElement.numeration}" />
+							<h:outputText value="[#{element.teiElement.type}]" />
 							<h:outputText value="[#{element.teiElement.subtype}]" />
 							<br/>
 							<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
@@ -87,15 +88,15 @@
 			<rich:panel>
 			<h:form>
 			
-				<h:outputText value="#{lbl.edit_order}" />
+				<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
 				<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
 				<br/>
 			
 			
-				<h:outputText value="#{lbl.edit_paginationCurentValue}" />
+				<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: " />
 				<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
 				<br/>
-			
+				<br/>
 			
 				<h:outputText value="#{lbl.edit_paginationType}" />
 				<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
@@ -113,25 +114,48 @@
 				<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
 				<br/>
 				
-				<h:outputText value="#{lbl.edit_pagetype}" />
+				<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+					<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+					
+				</h:selectOneMenu>
+				<br/>
+				
+				<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
+				<br/>
+				<br/>
+				<h:outputText value="#{lbl.edit_pageDisplayType}" />
 				 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
 	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
-	                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.single}"/>
-	                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.left}"/>
-	                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.right}"/>
+	                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
+	                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
+	                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
 	            </h:selectOneMenu>
+	            
+	            <br/>
+	            
+	            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
+					<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+					
+				</h:selectOneMenu>
+				<br/>
+				
+				<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
+				<br/>
+	            
 				
 				<br/>
-				<h:outputText value="#{lbl.edit_pagesubtype}" />
+				<h:outputText value="#{lbl.edit_pageType}" />
 				<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
 	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
-	                  	 <f:selectItem itemValue="blank page" itemLabel="#{lbl.blank_page}"/>
-	                  	 <f:selectItem itemValue="cover" itemLabel="#{lbl.cover}"/>
-	                  	 <f:selectItem itemValue="colorchart" itemLabel="#{lbl.colorchart}"/>
-	                  	 <f:selectItem itemValue="edge" itemLabel="#{lbl.edge}"/>
-	                  	 <f:selectItem itemValue="boardpaper" itemLabel="#{lbl.boardpaper}"/>
-	                  	 <f:selectItem itemValue="endsheet" itemLabel="#{lbl.endsheet}"/>
-	                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.spine}"/>
+	                  	 <f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
+	                  	 <f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
+	                  	 <f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
+	                  	 <f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
+	                  	 <f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
+	                  	 <f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
+	                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>
 						<!-- 	                  	 
 						Einband / Buchdeckel cover
 						Farbkarte colorchart
@@ -145,17 +169,21 @@
 	                  	 
 	               </h:selectOneMenu>
 				<br/>
-				
-				
-				
 				<h:outputText value="#{lbl.edit_paginationEndPoint}" />
-				<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+				<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
 					<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
 					
 				</h:selectOneMenu>
 				<br/>
 				
-				<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPagination}" />
+				<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
+				<br/>
+				
+				
+				
+				
+				
+				
 
 			</h:form>
 			
@@ -242,9 +270,9 @@
 				<h:outputText value="#{lbl.edit_structuralElementType}"/>
 				<h:selectOneMenu value="#{structuralEditorBean.selectedStructuralType}">
 	                  	
-	                  	 <f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_div}"/>
-	                  	 <f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_titlePage}"/>
-	                  	 <f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_figure}"/>
+	                  	 <f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_elementTypeDiv}"/>
+	                  	 <f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_elementTypeTitlePage}"/>
+	                  	 <f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_elementTypeFigure}"/>
 	                  	 <f:ajax render="@form" listener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"/>
 	                
 	             </h:selectOneMenu>
@@ -252,7 +280,7 @@
 	        	<br/>
 				<h:panelGroup rendered="#{structuralEditorBean.selectedStructuralType == 'DIV'}">
 
-					<h:outputText value="#{lbl.edit_divtype}"/> 
+					<h:outputText value="#{lbl.edit_structuralType}"/> 
 					<h:selectOneMenu value="#{structuralEditorBean.currentEditElement.teiElement.type}">
 	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
 	                  	 <f:selectItem itemValue="acknowledgement" itemLabel="#{lbl.structuretype_acknowledgement}"/>
@@ -280,16 +308,15 @@
 	                     <f:selectItem itemValue="provenance" itemLabel="#{lbl.structuretype_provenance}"/>
 	                     <f:selectItem itemValue="review" itemLabel="#{lbl.structuretype_review}"/>
 	                     <f:selectItem itemValue="section" itemLabel="#{lbl.structuretype_section}"/>
-
 	           		</h:selectOneMenu>
 	             <br/>
-		             <h:outputText value="#{lbl.edit_divHeader}"/>
+		             <h:outputText value="#{lbl.edit_structuralHead}"/>
 		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.head[0]}"/>
 						   
 	            </h:panelGroup>
 	         
 	              <br/>
-	              
+	              <br/>
 	              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
 	              <br/>
              </h:form>
