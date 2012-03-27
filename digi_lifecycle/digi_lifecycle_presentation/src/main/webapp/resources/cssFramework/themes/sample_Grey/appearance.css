@@ -203,6 +203,8 @@ body .eg3_id_siteTitle {
 }
 
 
+
+
 .eg3_fiveRows {  /* 1row = 0,166666667em */
 	height:6em;
 }
@@ -220,6 +222,8 @@ body .eg3_id_siteTitle {
 /*****************************************************************************************************************
  * 							declarations for components
  */
+
+
 
 
 /*****************************************************************************************************************
@@ -700,6 +704,41 @@ body .eg3_id_siteTitle {
 .eg3_pageBrowserMin .eg3_icon_forward_16_16 {
 	margin-left:1em;
 }
+
+
+/*****************************************************************************************************
+ ******************************				bibliographic list			******************************
+ ******************************				list with different 		****************************** 
+ *****************************************************************************************************/
+.eg3_startpageTitle {
+	display:block;
+	padding-left:5em;
+	color:#163D4B;
+}
+.eg3_logoImage {
+	margin-top:3em;
+}
+.eg3_logoImage .eg3_imageContainer {
+/*	float:right; */
+	margin-left:5em;
+	margin-right:1em;
+}
+.eg3_logoImage img {
+	width:100%;
+}
+.eg3_logoImageInfotext {
+	margin-top:3em;
+}
+.eg3_logoImageInfotext p {
+	max-width:50em;
+}
+
+
+
+
+
+
+
 
 /*****************************************************************************************************
  ******************************				bibliographic list			******************************
@@ -1488,6 +1527,34 @@ body .eg3_id_siteTitle {
 .eg3_pageView .eg3_dualView .eg3_pageView_imgContainer img {
 	width:100%;
 }
+
+.eg3_pageView .eg3_ownershipBox {
+	border:solid 0.09em #CCCCCC;
+	width:49.68%;
+	overflow-x:auto !important;
+}
+.eg3_pageView .eg3_ownershipBoxText {
+	padding:0 0.33333em;
+	line-height:175%;
+	width:100%;
+	color:#FFFFFF;
+	white-space:nowrap;
+}
+
+
+
+.eg3_pageView .eg3_permalinkBox {
+	border:solid 0.09em #CCCCCC;
+	overflow-x:auto !important;
+}
+.eg3_pageView .eg3_permalinkBoxText {
+	padding:0 0.33333em;
+	line-height:175%;
+	width:100%;
+	color:#FFFFFF;
+	white-space:nowrap;
+}
+
 
 /*************************************************************************************************************
  ******************************				overlay menu with tabs				******************************

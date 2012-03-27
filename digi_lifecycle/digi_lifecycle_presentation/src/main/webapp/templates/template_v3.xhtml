@@ -71,11 +71,6 @@ All rights reserved. Use is subject to license terms.
 					<ui:include src="../headerPages/header.xhtml" />
 				</div>
 				
-				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
-				<div class="eg3_id_mainMenu" rel="section">
-					<ui:include src="../menu/mainMenu.xhtml" />
-				</div>
-				
 				<h:panelGroup layout="block" styleClass="eg3_id_contentDescription">
 					<h:panelGroup layout="block" styleClass="eg3_messageArea">
 						<h:messages errorClass="eg3_messageError"  
@@ -105,6 +100,11 @@ All rights reserved. Use is subject to license terms.
 				<div class="eg3_id_content eg3_container_1" rel="section">		
 					<!-- Main Content -->
 					<ui:insert name="mainContent">&#160;</ui:insert>
+				</div>
+				
+				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<div class="eg3_id_mainMenu" rel="section">
+					<ui:include src="../menu/mainMenu.xhtml" />
 				</div>
 				
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>

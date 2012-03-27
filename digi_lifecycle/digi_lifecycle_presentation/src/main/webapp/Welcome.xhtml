@@ -41,7 +41,58 @@
 
 		 
 			</style>
-						
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1">
+				<h:panelGroup styleClass="eg3_startpageTitle">
+					<h1>Digitization Lifecycle</h1>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1_6 eg3_logoImage">
+				<h:panelGroup layout="block" styleClass="eg3_imageContainer">
+					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" />
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_logoImageInfotext">
+				
+				<p>Projektbeschreibung ...<br />
+					Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+					Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+					ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+					aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+				</p>
+				
+				<br />
+				<h2>The newest entries</h2>
+				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+				<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+				<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+				<style type="text/css">
+					.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
+					#zeige { font-weight:bold; color:red; }
+				</style>
+				<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
+					<h:panelGroup layout="block" class="wrapper">
+						<ul>
+							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+								<li>
+									<pretty:link mappingId="viewPages">
+									<f:param value="#{volume.item.objid}" />
+									<f:param value="1" />
+									<f:param value="RECTO_VERSO" />
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+									</pretty:link>
+								</li>
+							</ui:repeat>
+						</ul>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			
+			
+			
+			<ui:remove>
 			<div id="dlcInfo" style="margin:40px 20px">
 
 					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" style="float:left;" />
@@ -51,7 +102,7 @@
 					ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
 					aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
 			</div>
-			
+			</ui:remove>
 
 
 			<div id="acco" style="margin:40px 70px;">
