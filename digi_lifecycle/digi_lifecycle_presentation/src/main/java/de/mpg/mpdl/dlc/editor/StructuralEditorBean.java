@@ -1,11 +1,13 @@
 package de.mpg.mpdl.dlc.editor;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -13,19 +15,25 @@ import javax.faces.model.SelectItem;
 import javax.persistence.criteria.Selection;
 
 import org.apache.log4j.Logger;
+import org.jibx.runtime.BindingDirectory;
+import org.jibx.runtime.IBindingFactory;
+import org.jibx.runtime.IMarshallingContext;
+import org.jibx.runtime.JiBXException;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
 import de.mpg.mpdl.dlc.editor.TeiNode.Type;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.RomanNumberConverter;
-import de.mpg.mpdl.dlc.viewer.VolumeLoaderBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.DocTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Figure;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
@@ -36,11 +44,15 @@ import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "structuralEditor", pattern = "/edit/#{structuralEditorBean.volumeId}", viewId = "/structuralEditor.xhtml")
-public class StructuralEditorBean extends VolumeLoaderBean {
+public class StructuralEditorBean {
 
 	private static Logger logger = Logger.getLogger(StructuralEditorBean.class);
 
+	protected VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
+	private String volumeId;
+	
+	private Volume volume;
 	
 	//Flat list of Treee
 	private List<TeiElementWrapper> flatTeiElementList;
@@ -55,7 +67,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	private TeiElementWrapper selectedPb;
 	
 	
-	private TeiElementWrapper selectedStructuralElement;
+	//private TeiElementWrapper selectedStructuralElement;
 		
 	private TeiElementWrapper currentEditElement;
 
@@ -74,6 +86,9 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	private String selectedPaginationStartValue;
 	
 	private String selectedPaginationPattern;
+	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
 	
 	
 	public enum PaginationType
@@ -97,10 +112,19 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		super.loadVolume();
+		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
+		{   
+			try {
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
+				
+			} catch (Exception e) {
+				MessageHelper.errorMessage("Problem while loading volume");
+			}
+		}
+		volumeLoaded();
 	}
 	
-	@Override
+
 	protected void volumeLoaded() {
 		
 		if(volume.getTeiSd() == null)
@@ -389,6 +413,26 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	}
 	
 	
+	public void save()
+	{
+		try {
+			TeiSd teiToSave = new TeiSd();
+			flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
+			IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
+			IMarshallingContext mc = bfactTei.createMarshallingContext();
+			mc.setIndent(3);
+			StringWriter sw = new StringWriter();
+			mc.marshalDocument(teiToSave, "utf-8", null, sw);
+			
+			System.out.println(sw.toString());
+			
+		} catch (JiBXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public void selectedStructuralElementTypeChanged()
 	{
 		switch (selectedStructuralType)
@@ -416,6 +460,8 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			{
 				currentEditElement = new TeiElementWrapper();
 				TitlePage titlePage = new TitlePage();
+				titlePage.setDocTitles(new ArrayList<DocTitle>());
+				titlePage.getDocTitles().add(new DocTitle());
 				currentEditElement.setTeiElement(titlePage);
 				break;
 			}
@@ -595,7 +641,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	public void createStructuralElement()
 	{
 		createStructuralElementAtEndOfPage(currentEditElement, selectedPb);
-		setSelectedStructuralElement(currentEditElement);
+		//setSelectedStructuralElement(currentEditElement);
 		selectedStructuralElementTypeChanged();
 	}
 	
@@ -1198,7 +1244,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 			nextPbIndex = flatTeiElementList.indexOf(pb.getNextPagebreak());
 		}
 				
-		
+		/*
 		for (int i=nextPbIndex; i>=0; i--)
 		{
 			TeiElementWrapper currentElementWrapper = flatTeiElementList.get(i); 
@@ -1208,12 +1254,14 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 				break;
 			}
 		}
+		*/
 		System.out.println("Selected Pb: " + selectedPb.getTeiElement().getId());
-		System.out.println("Selected Structural: " + selectedStructuralElement.getTeiElement().getElementType());
+		//System.out.println("Selected Structural: " + selectedStructuralElement.getTeiElement().getElementType());
 		
 		
 	}
 	
+	/*
 	public void selectStructuralElement(TeiElementWrapper elementWrapper)
 	{
 		setSelectedStructuralElement(elementWrapper);
@@ -1223,7 +1271,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		}
 
 	}
-	
+	*/
 	public List<TeiElementWrapper> getFlatTeiElementList() {
 		return flatTeiElementList;
 	}
@@ -1264,6 +1312,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 		this.treeWrapperNodes = treeWrapperNodes;
 	}
 
+	/*
 	public TeiElementWrapper getSelectedStructuralElement() {
 		return selectedStructuralElement;
 	}
@@ -1271,6 +1320,7 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 	public void setSelectedStructuralElement(TeiElementWrapper selectedStructuralElement) {
 		this.selectedStructuralElement = selectedStructuralElement;
 	}
+	*/
 	
 	public static boolean isFrontBodyBack(TeiElementWrapper wrapper)
 	{
@@ -1347,6 +1397,22 @@ public class StructuralEditorBean extends VolumeLoaderBean {
 
 	public void setSelectedPageTypeEndPbId(String selectedPageTypeEndPbId) {
 		this.selectedPageTypeEndPbId = selectedPageTypeEndPbId;
+	}
+
+	public String getVolumeId() {
+		return volumeId;
+	}
+
+	public void setVolumeId(String volumeId) {
+		this.volumeId = volumeId;
+	}
+
+	public Volume getVolume() {
+		return volume;
+	}
+
+	public void setVolume(Volume volume) {
+		this.volume = volume;
 	}
 
 

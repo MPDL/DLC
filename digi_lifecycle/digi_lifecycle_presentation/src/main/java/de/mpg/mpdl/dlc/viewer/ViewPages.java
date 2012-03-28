@@ -13,7 +13,9 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
@@ -21,7 +23,7 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 @ManagedBean
 @ViewScoped
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}/#{viewPages.viewType}", viewId = "/viewPages.xhtml")
-public class ViewPages extends VolumeLoaderBean{
+public class ViewPages{
 	
 	@URLQueryParameter("fm")
 	private String fulltextMatches;
@@ -29,6 +31,12 @@ public class ViewPages extends VolumeLoaderBean{
 	enum ViewType{
 		SINGLE, RECTO_VERSO, FULLTEXT
 	}
+	
+	private String volumeId;
+	
+	private Volume volume;
+	
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 
@@ -51,10 +59,19 @@ public class ViewPages extends VolumeLoaderBean{
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		super.loadVolume();
+		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
+		{   
+			try {
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
+				
+			} catch (Exception e) {
+				MessageHelper.errorMessage("Problem while loading volume");
+			}
+		}
+		volumeLoaded();
 	}
 	
-	@Override
+	
 	protected void volumeLoaded() {
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
 		this.setSelectedPage(pageforNumber);
@@ -332,6 +349,26 @@ public class ViewPages extends VolumeLoaderBean{
 
 	public void setShowTree(boolean showTree) {
 		this.showTree = showTree;
+	}
+
+
+	public Volume getVolume() {
+		return volume;
+	}
+
+
+	public void setVolume(Volume volume) {
+		this.volume = volume;
+	}
+
+
+	public String getVolumeId() {
+		return volumeId;
+	}
+
+
+	public void setVolumeId(String volumeId) {
+		this.volumeId = volumeId;
 	}	
 
 }

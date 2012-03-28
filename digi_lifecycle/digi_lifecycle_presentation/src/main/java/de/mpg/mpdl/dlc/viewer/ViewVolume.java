@@ -38,7 +38,7 @@ public class ViewVolume {
 		try { 
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{
-				this.volume = volServiceBean.retrieveVolume(volumeId, null);
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
 				logger.info("Load new book" + volumeId);
 			}
 			
