@@ -155,18 +155,7 @@
 	                  	 <f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
 	                  	 <f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
 	                  	 <f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
-	                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>
-						<!-- 	                  	 
-						Einband / Buchdeckel cover
-						Farbkarte colorchart
-						Leere Seite blank Page
-						Schnitt edge (??)
-						Spiegel boardpaper
-						Vorsatz endsheet
-						RÃ¼cken spine
-						
-						-->
-	                  	 
+	                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
 	               </h:selectOneMenu>
 				<br/>
 				<h:outputText value="#{lbl.edit_paginationEndPoint}" />
@@ -193,13 +182,6 @@
 			
 			<rich:panel>
 			<h:form>
-			
-			
-			
-			
-			
-			
-			
 							
 			<rich:tree toggleType="ajax" var="divItem" >
 				<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.getSubTree(structuralEditorBean.selectedPb)}" nodes="#{divItem.children}">
@@ -212,7 +194,7 @@
 						&#160;
 						<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
 					
-						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'} #{divItem.teiElementWrapper == structuralEditorBean.selectedStructuralElement ? 'font-weight:bolder;' : ''}">
+						<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'}">
 							<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
 								<h:outputText value="[#{divItem.teiElementWrapper.teiElement.type}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
 								<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
@@ -256,7 +238,7 @@
 						
 						<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
 					
-						<h:commandButton action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" value="Select" />
+						<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="Delete" rendered="#{divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 					</rich:treeNode>
 					
 				</rich:treeModelRecursiveAdaptor>
@@ -314,6 +296,16 @@
 		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.head[0]}"/>
 						   
 	            </h:panelGroup>
+	            
+	            <h:panelGroup rendered="#{structuralEditorBean.selectedStructuralType == 'TITLE_PAGE'}">
+	            	 <h:outputText value="#{lbl.edit_structuralHead}"/>
+		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.docTitles[0].title}"/>
+	            </h:panelGroup>
+	            
+	             <h:panelGroup rendered="#{structuralEditorBean.selectedStructuralType == 'FIGURE'}">
+	            	 <h:outputText value="#{lbl.edit_figureDescription}"/>
+		             <h:inputText value="#{structuralEditorBean.currentEditElement.teiElement.figDesc}"/>
+	            </h:panelGroup>
 	         
 	              <br/>
 	              <br/>
@@ -362,6 +354,13 @@
 		
 		
 		
+		</h:panelGroup>
+		
+		
+		<h:panelGroup layout="block" styleClass="eg3_container1">
+			<h:form>
+				<h:commandButton value="Save" action="#{structuralEditorBean.save}"/>
+			</h:form>
 		</h:panelGroup>
 		
 		
