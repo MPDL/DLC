@@ -1714,6 +1714,60 @@ public class VolumeServiceBean {
 	
 	}
 	
+	public Volume loadCompleteVolume(String volumeId, String userHandle) throws Exception
+	{
+		try { 
+
+			
+			if(volumeId!=null)
+			{   
+				logger.info("Load new book " + volumeId);
+				Volume volume = retrieveVolume(volumeId, userHandle);
+				if(volume.getItem().getProperties().getContentModel().getObjid().equals(monographContentModelId))
+				{
+					loadTeiSd(volume, null);
+					loadTei(volume, null);
+					loadPagedTei(volume, null);					
+				}
+				else if(volume.getItem().getProperties().getContentModel().getObjid().equals(multivolumeContentModelId))
+				{
+					volume.setRelatedChildVolumes(new ArrayList<Volume>());
+					for(Relation rel : volume.getItem().getRelations())
+					{
+						Volume child = null;
+						try {
+							child= retrieveVolume(rel.getObjid(), userHandle);
+						} catch (Exception e) {
+							logger.error("cannot retrieve child Volume" + e.getMessage());
+						}
+						volume.getRelatedChildVolumes().add(child);
+					}
+				}
+				else
+				{
+					try {
+						Volume parent = null;
+						Relation rel = volume.getItem().getRelations().get(0);
+						parent = retrieveVolume(rel.getObjid(), null);
+						volume.setRelatedParentVolume(parent);
+					} catch (Exception e) {
+						logger.error("cannot retrieve parent Volume" + e.getMessage());
+					}
+					loadTeiSd(volume, null);
+					loadTei(volume, null);
+					loadPagedTei(volume, null);
+				}
+				return volume;
+			}
+			return null;
+			
+		} catch (Exception e) {
+			logger.error("Problem while loading Volume", e);
+			throw e;
+		}
+		
+	}
+	
 	
 
 	

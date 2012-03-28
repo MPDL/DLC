@@ -64,8 +64,15 @@ public class Volume {
 	private List<String> relatedVolumes;
 	
 	@XmlTransient
+	private List<Volume> relatedChildVolumes;
+	
+	@XmlTransient
+	private Volume relatedParentVolume;
+	
+	@XmlTransient
 	private Highlight searchResultHighlight;
 
+	
 	public Volume ()
 	{
 	}
@@ -210,6 +217,22 @@ public class Volume {
 	
 	public List<Page> getPages() {
 		return getMets().getPages();
+	}
+
+	public List<Volume> getRelatedChildVolumes() {
+		return relatedChildVolumes;
+	}
+
+	public void setRelatedChildVolumes(List<Volume> relatedChildVolumes) {
+		this.relatedChildVolumes = relatedChildVolumes;
+	}
+
+	public Volume getRelatedParentVolume() {
+		return relatedParentVolume;
+	}
+
+	public void setRelatedParentVolume(Volume relatedParentVolume) {
+		this.relatedParentVolume = relatedParentVolume;
 	}
 	
 
