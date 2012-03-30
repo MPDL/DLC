@@ -40,6 +40,7 @@
 
 		
 		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
+			<h:outputText value="the newest entries in this Institute" style="font-size:200%"/>
 			<h:panelGroup layout="block" class="wrapper">
 				<ul>
 					<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">

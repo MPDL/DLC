@@ -153,10 +153,10 @@ public class ApplicationBean
 		this.ous = ous;
 	}
 	
-	public List<Context> getContext(OrganizationalUnit ou)
+	public List<Context> getContext(String ouId)
 	{
 		try {
-			return contextServiceBean.retrieveOUContexts(ou);
+			return contextServiceBean.retrieveOUContexts(ouId);
 		} catch (Exception e) {
 			return null;
 		}

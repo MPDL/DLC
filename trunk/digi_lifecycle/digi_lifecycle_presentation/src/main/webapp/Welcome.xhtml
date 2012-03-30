@@ -116,7 +116,7 @@
 							    </pretty:link>
 							    <br />
 	
-								<a4j:repeat value="#{applicationBean.getContext(ou)}" var="context">
+								<a4j:repeat value="#{applicationBean.getContext(ou.objid)}" var="context">
 									<pretty:link mappingId="collection">
 										<f:param value="#{context.objid}" />
 										<h:outputText value="#{context.properties.name}"/><br/>

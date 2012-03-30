@@ -43,6 +43,8 @@ public class ViewCollection {
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private Collection col;
+	
+	//volumes which schown in carousel
 	private List<Volume> volumes = new ArrayList<Volume>();	
 
 
