@@ -4,46 +4,50 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
         <h:form>
         <h:panelGrid columns="2">	
-		<h:outputText value="Logo(URL):" />
-		<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}"/>
-		<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
-
-
-		<h:outputText value="Title:" />		
-		<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
-		<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
-
-		
-		<h:outputText value="Description:" />
-		<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
-		<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
-
-		
-		<h:outputText value="Country:" />
-		<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
-		<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
+			<h:outputText value="Logo(URL):" />
+			<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}"/>
+			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
 	
-		
-		<h:outputText value="City:" />
-		<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
-		<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
 	
+			<h:outputText value="Title:" />		
+			<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
+			<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
+	
+			
+			<h:outputText value="Description:" />
+			<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
+			<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
+	
+			
+			<h:outputText value="Country:" />
+			<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
+			<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
 		
-		<h:outputText value="Homepage(URL):" />
-		<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
-		<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
-
+			
+			<h:outputText value="City:" />
+			<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
+			<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
 		
-		<h:outputText value="Email:" />
-		<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
-		<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
+			
+			<h:outputText value="Homepage(URL):" />
+			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
+			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
+	
+			
+			<h:outputText value="Email:" />
+			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
+			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
 	
 		</h:panelGrid>
 		
@@ -57,7 +61,39 @@
     
         <mpdl:ouEditor target="popup" title="Edit" organization="#{viewOU.orga}" command="#{viewOU.save}"/>
 </ui:remove>
+		<h:panelGroup layout="block">
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+			<a4j:repeat value="#{applicationBean.getContext(viewOU.orga.id)}" var="context">
+				<pretty:link mappingId="collection">
+					<f:param value="#{context.objid}" />
+					<h:outputText value="#{context.properties.name}"/><br/>
+				</pretty:link>
+				<h:outputText value="#{context.properties.description}" />
+			</a4j:repeat>
 
+			
+		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewOU.vols_Carousel}">
+			<h:panelGroup layout="block" class="wrapper">
+				<h:outputText value="the newest entries in this Institute" style="font-size:200%"/>
+				<ul>
+					<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
+						<li>
+							<pretty:link mappingId="viewPages">
+							<f:param value="#{volume.item.objid}" />
+							<f:param value="1" />
+							<f:param value="RECTO_VERSO" />
+								<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+							</pretty:link>
+						</li>
+					</ui:repeat>
+				</ul>
+			</h:panelGroup>
+		</h:panelGroup>
+			
+			
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+		</h:panelGroup>
     
 
     

@@ -123,7 +123,7 @@ public class AdminBean{
 				{  
 					this.ouSelectItems.add(new SelectItem(loginBean.getUser().getOu().getObjid(),loginBean.getUser().getOu().getProperties().getName()));
 			  		
-					for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu()))
+					for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu().getObjid()))
 						this.contextSelectItems.add(new SelectItem(context.getObjid()+"|"+context.getProperties().getName(), context.getProperties().getName()));
 				}
 			}catch(Exception e)
