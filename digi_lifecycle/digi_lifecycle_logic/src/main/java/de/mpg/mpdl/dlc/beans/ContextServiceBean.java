@@ -63,9 +63,9 @@ public class ContextServiceBean {
 		return context;
 	}
 	
-	public List<Context> retrieveOUContexts(OrganizationalUnit ou) 
+	public List<Context> retrieveOUContexts(String id) 
 	{
-		logger.info("Retrieving OU contexts " + ou.getObjid());
+		logger.info("Retrieving OU contexts " + id);
         List<Context> contextList = new ArrayList<Context>();
         try
         {
@@ -73,14 +73,14 @@ public class ContextServiceBean {
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
-			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+ou.getObjid());
+			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+id);
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
 				Context context = (Context)rec.getRecordData().getContent();
 				contextList.add(context);
 			}
-			logger.info("OU contexts retrieved " + ou.getObjid());
+			logger.info("OU contexts retrieved " + id);
         }catch(Exception e)
         {
         	logger.error("Error while retrieving OU contexts", e);

@@ -880,18 +880,19 @@ public class VolumeServiceBean {
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
 		client.setHandle(auth.getHandle()); 
-//		Item item = client.retrieve("escidoc:8034");
-//		
-//		
-//		TaskParam taskParam=new TaskParam(); 
+
+		Item item = client.retrieve("escidoc:8003");
+		
+		
+		TaskParam taskParam=new TaskParam(); 
 //	    taskParam.setComment("Submit Volume");
 //		taskParam.setLastModificationDate(item.getLastModificationDate());
-//		
+		
 //		Result res = client.submit(item.getObjid(), taskParam);
-//		taskParam=new TaskParam(); 
-//	    taskParam.setComment("Release Volume");
-//		taskParam.setLastModificationDate(res.getLastModificationDate());
-//		client.release("escidoc:8034", taskParam);
+		taskParam=new TaskParam(); 
+	    taskParam.setComment("Release Volume");
+		taskParam.setLastModificationDate(item.getLastModificationDate());
+		client.release("escidoc:8003", taskParam);
 
 		/*
 		
@@ -956,15 +957,15 @@ public class VolumeServiceBean {
 		
 		
 		
-		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
-		cmh.setHandle(auth.getHandle());
-		
-		ContentModel cm = new ContentModel();
-		cm.getProperties().setName("Content_Model_DLC_ITEM_NEW");
-		cm.getProperties().setDescription("Content Model for Digitization Lifecycle Items");
-		
-		cm = cmh.create(cm);
-		System.out.println(cm.getObjid());
+//		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
+//		cmh.setHandle(auth.getHandle());
+//		
+//		ContentModel cm = new ContentModel();
+//		cm.getProperties().setName("Content_Model_DLC_ITEM_NEW");
+//		cm.getProperties().setDescription("Content Model for Digitization Lifecycle Items");
+//		
+//		cm = cmh.create(cm);
+//		System.out.println(cm.getObjid());
 		 
 		
 		
