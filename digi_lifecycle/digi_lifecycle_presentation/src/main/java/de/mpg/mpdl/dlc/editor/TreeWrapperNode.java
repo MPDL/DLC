@@ -58,7 +58,7 @@ public class TreeWrapperNode {
 		//return parent.getChildren().indexOf(this) == 0 &&
 		if(parent!=null)
 		{
-			return !ElementType.BODY.equals(parent.getTeiElementWrapper().getTeiElement().getElementType()) &&
+			return  !ElementType.BODY.equals(parent.getTeiElementWrapper().getTeiElement().getElementType()) &&
 				   !ElementType.FRONT.equals(parent.getTeiElementWrapper().getTeiElement().getElementType()) &&
 				   !ElementType.BACK.equals(parent.getTeiElementWrapper().getTeiElement().getElementType());
 		}
@@ -121,6 +121,22 @@ public class TreeWrapperNode {
 		
 	}
 	
+	public boolean getInvalid()
+	{
+		ElementType elType = this.getTeiElementWrapper().getTeiElement().getElementType();
+		ElementType parentElType = null;
+		if(this.getParent()!=null)
+		{
+			parentElType = this.getParent().getTeiElementWrapper().getTeiElement().getElementType();
+		}
+		
+		return (
+				
+				(ElementType.TITLE_PAGE.equals(elType) && (ElementType.FIGURE.equals(parentElType) || ElementType.DIV.equals(parentElType)) || 
+				
+				(ElementType.DIV.equals(elType) && (ElementType.FIGURE.equals(parentElType) || ElementType.TITLE_PAGE.equals(parentElType)))));
+	}
+	
 	public static boolean hasChildrenWithDifferentStartpage(TreeWrapperNode nodeToCompare, TreeWrapperNode root)
 	{
 		if(!nodeToCompare.getTeiElementWrapper().getPagebreakWrapper().equals(root.getTeiElementWrapper().getPagebreakWrapper()))
@@ -143,6 +159,8 @@ public class TreeWrapperNode {
 		
 		return true;
 	}
+	
+	
 
 	
 	

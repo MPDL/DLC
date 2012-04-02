@@ -69,6 +69,14 @@ public class StructuralEditorBean {
 	
 	//private TeiElementWrapper selectedStructuralElement;
 		
+	/**
+	 * Element that will be added next
+	 */
+	private TeiElementWrapper currentNewElement;
+	
+	/**
+	 * Element that is currently edited
+	 */
 	private TeiElementWrapper currentEditElement;
 
 	private ElementType selectedStructuralType;
@@ -87,9 +95,10 @@ public class StructuralEditorBean {
 	
 	private String selectedPaginationPattern;
 	
+	/*
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
-	
+	*/
 	
 	public enum PaginationType
 	{
@@ -102,11 +111,11 @@ public class StructuralEditorBean {
 
 		selectedStructuralType = ElementType.DIV;
 		
-		currentEditElement = new TeiElementWrapper();
+		currentNewElement = new TeiElementWrapper();
 		Div div = new Div();
 		div.setType("chapter");
 		div.getHead().add("");
-		currentEditElement.setTeiElement(div);
+		currentNewElement.setTeiElement(div);
 	}
 	
 	@URLAction(onPostback=false)
@@ -115,7 +124,7 @@ public class StructuralEditorBean {
 		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 		{   
 			try {
-				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage("Problem while loading volume");
@@ -439,7 +448,45 @@ public class StructuralEditorBean {
 		{
 			case DIV : 
 			{
-				currentEditElement = new TeiElementWrapper();
+				currentNewElement = new TeiElementWrapper();
+				Div div = new Div();
+				div.setType("chapter");
+				div.getHead().add("");
+				
+				currentNewElement.setTeiElement(div);
+				break;
+			}
+			
+			case FIGURE : 
+			{
+				currentNewElement = new TeiElementWrapper();
+				Figure figure = new Figure();
+				currentNewElement.setTeiElement(figure);
+				break;
+			}
+			
+			case TITLE_PAGE : 
+			{
+				currentNewElement = new TeiElementWrapper();
+				TitlePage titlePage = new TitlePage();
+				titlePage.setDocTitles(new ArrayList<DocTitle>());
+				titlePage.getDocTitles().add(new DocTitle());
+				currentNewElement.setTeiElement(titlePage);
+				break;
+			}
+		
+		}
+		
+	
+	}
+	
+	public void selectedStructuralEditElementTypeChanged()
+	{
+		switch (selectedStructuralType)
+		{
+			case DIV : 
+			{
+				
 				Div div = new Div();
 				div.setType("chapter");
 				div.getHead().add("");
@@ -450,7 +497,7 @@ public class StructuralEditorBean {
 			
 			case FIGURE : 
 			{
-				currentEditElement = new TeiElementWrapper();
+				
 				Figure figure = new Figure();
 				currentEditElement.setTeiElement(figure);
 				break;
@@ -458,7 +505,7 @@ public class StructuralEditorBean {
 			
 			case TITLE_PAGE : 
 			{
-				currentEditElement = new TeiElementWrapper();
+				
 				TitlePage titlePage = new TitlePage();
 				titlePage.setDocTitles(new ArrayList<DocTitle>());
 				titlePage.getDocTitles().add(new DocTitle());
@@ -636,12 +683,32 @@ public class StructuralEditorBean {
 		updateTree();
 	}
 	
+	public void editStructuralElement(TeiElementWrapper elementToEdit)
+	{
+		this.selectedStructuralType = elementToEdit.getTeiElement().getElementType();
+		currentEditElement = elementToEdit;
+	}
+	
+	public void updateEditedStructuralElement()
+	{
+		System.out.println("Update struct ewlement");
+	}
+	
 	
 	
 	public void createStructuralElement()
 	{
-		createStructuralElementAtEndOfPage(currentEditElement, selectedPb);
+		createStructuralElementAtEndOfPage(currentNewElement, selectedPb);
 		//setSelectedStructuralElement(currentEditElement);
+		
+		//add as sibling if element is of type titlePage or figure
+		/*
+		if(ElementType.FIGURE.equals(currentEditElement.getTeiElement().getElementType()) || 
+				ElementType.TITLE_PAGE.equals(currentEditElement.getTeiElement().getElementType()))
+		{
+			moveElementToLeft(currentEditElement);
+		}
+		*/
 		selectedStructuralElementTypeChanged();
 	}
 	
@@ -676,17 +743,31 @@ public class StructuralEditorBean {
 		flatTeiElementList.add(nextPbIndex, elementToAdd);
 		
 		
-		//Add end before next start or end
-		for(int i = nextPbIndex + 1; i<flatTeiElementList.size(); i++)
+		
+		/*
+		if(ElementType.FIGURE.equals(currentEditElement.getTeiElement().getElementType()) || 
+				ElementType.TITLE_PAGE.equals(currentEditElement.getTeiElement().getElementType()))
 		{
-			TeiElementWrapper wrapper = flatTeiElementList.get(i);
-			if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
-			{
-				flatTeiElementList.add(i, endEditElement);
-				endEditElement.setPagebreakWrapper(wrapper.getPagebreakWrapper());
-				break;
-			}
+			//Add end of figures and title pages to the same page
+			endEditElement.setPagebreakWrapper(pb);
+			flatTeiElementList.add(nextPbIndex+1, endEditElement);
 		}
+		
+		else
+		{
+		*/
+			//Add end before next start or end
+			for(int i = nextPbIndex + 1; i<flatTeiElementList.size(); i++)
+			{
+				TeiElementWrapper wrapper = flatTeiElementList.get(i);
+				if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+				{
+					flatTeiElementList.add(i, endEditElement);
+					endEditElement.setPagebreakWrapper(wrapper.getPagebreakWrapper());
+					break;
+				}
+			}
+		//}
 		
 		//Add end element directly before end of parent
 		//int lastParentIndex = flatTeiElementList.indexOf(parent.getPartnerElement());
@@ -1296,13 +1377,6 @@ public class StructuralEditorBean {
 		this.selectedStructuralType = selectedStructuralType;
 	}
 
-	public TeiElementWrapper getCurrentEditElement() {
-		return currentEditElement;
-	}
-
-	public void setCurrentEditElement(TeiElementWrapper currentEditElement) {
-		this.currentEditElement = currentEditElement;
-	}
 
 	public List<TreeWrapperNode> getTreeWrapperNodes() {
 		return treeWrapperNodes;
@@ -1413,6 +1487,22 @@ public class StructuralEditorBean {
 
 	public void setVolume(Volume volume) {
 		this.volume = volume;
+	}
+
+	public TeiElementWrapper getCurrentNewElement() {
+		return currentNewElement;
+	}
+
+	public void setCurrentNewElement(TeiElementWrapper currentNewElement) {
+		this.currentNewElement = currentNewElement;
+	}
+
+	public TeiElementWrapper getCurrentEditElement() {
+		return currentEditElement;
+	}
+
+	public void setCurrentEditElement(TeiElementWrapper currentEditElement) {
+		this.currentEditElement = currentEditElement;
 	}
 
 
