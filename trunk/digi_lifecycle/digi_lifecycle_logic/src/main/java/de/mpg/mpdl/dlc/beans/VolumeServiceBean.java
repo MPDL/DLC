@@ -734,7 +734,9 @@ public class VolumeServiceBean {
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
 
-				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+				//Add Ids to teiSd
+				File teiSdWithIds = addIdsToTei(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIds));
 				
 				if(teiSdComponent==null)
 				{
@@ -989,23 +991,35 @@ public class VolumeServiceBean {
 		
 		
 		String url = "http://dlc.mpdl.mpg.de:8080";
-		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
+		Authentication auth = new Authentication(new URL(url), "dlc_mpdl", "dlc_mpdl");
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
-		client.setHandle(auth.getHandle()); 
+		client.setHandle(null); 
 
-		Item item = client.retrieve("escidoc:8003");
+		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
+
 		
+		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+		StringBuilder stringBuilder = new StringBuilder();
+		String line = null;
+
+		while ((line = bufferedReader.readLine()) != null) {
+		stringBuilder.append(line + "\n");
+		}
+
+		bufferedReader.close();
 		
-		TaskParam taskParam=new TaskParam(); 
+		System.out.println(stringBuilder.toString());
+		
+		//TaskParam taskParam=new TaskParam(); 
 //	    taskParam.setComment("Submit Volume");
 //		taskParam.setLastModificationDate(item.getLastModificationDate());
 		
 //		Result res = client.submit(item.getObjid(), taskParam);
-		taskParam=new TaskParam(); 
-	    taskParam.setComment("Release Volume");
-		taskParam.setLastModificationDate(item.getLastModificationDate());
-		client.release("escidoc:8003", taskParam);
+		//taskParam=new TaskParam(); 
+	    //taskParam.setComment("Release Volume");
+		//taskParam.setLastModificationDate(item.getLastModificationDate());
+		//client.release("escidoc:8003", taskParam);
 
 		/*
 		
@@ -1370,6 +1384,8 @@ public class VolumeServiceBean {
 
 				long start = System.currentTimeMillis();
 
+				
+				
 				IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
 				teiSd = (TeiSd) uctx.unmarshalDocument(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
 
@@ -1377,7 +1393,7 @@ public class VolumeServiceBean {
 
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
 	/*
 				Unmarshaller unmarshaller = jaxbTeiContext.createUnmarshaller();
 				
@@ -1839,9 +1855,9 @@ public class VolumeServiceBean {
 				Volume volume = retrieveVolume(volumeId, userHandle);
 				if(volume.getItem().getProperties().getContentModel().getObjid().equals(monographContentModelId))
 				{
-					loadTeiSd(volume, null);
-					loadTei(volume, null);
-					loadPagedTei(volume, null);					
+					loadTeiSd(volume, userHandle);
+					loadTei(volume, userHandle);
+					loadPagedTei(volume, userHandle);					
 				}
 				else if(volume.getItem().getProperties().getContentModel().getObjid().equals(multivolumeContentModelId))
 				{
@@ -1862,14 +1878,14 @@ public class VolumeServiceBean {
 					try {
 						Volume parent = null;
 						Relation rel = volume.getItem().getRelations().get(0);
-						parent = retrieveVolume(rel.getObjid(), null);
+						parent = retrieveVolume(rel.getObjid(), userHandle);
 						volume.setRelatedParentVolume(parent);
 					} catch (Exception e) {
 						logger.error("cannot retrieve parent Volume" + e.getMessage());
 					}
-					loadTeiSd(volume, null);
-					loadTei(volume, null);
-					loadPagedTei(volume, null);
+					loadTeiSd(volume, userHandle);
+					loadTei(volume, userHandle);
+					loadPagedTei(volume, userHandle);
 				}
 				return volume;
 			}
