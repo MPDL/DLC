@@ -10,6 +10,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.persistence.criteria.Selection;
@@ -77,8 +78,12 @@ public class StructuralEditorBean {
 	/**
 	 * Element that is currently edited
 	 */
-	private TeiElementWrapper currentEditElement;
+	private TeiElementWrapper currentEditElementWrapper;
+	
+	private PbOrDiv currentEditTeiElement;
 
+	
+	
 	private ElementType selectedStructuralType;
 	
 	
@@ -95,10 +100,10 @@ public class StructuralEditorBean {
 	
 	private String selectedPaginationPattern;
 	
-	/*
+	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
-	*/
+	
 	
 	public enum PaginationType
 	{
@@ -121,16 +126,25 @@ public class StructuralEditorBean {
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
-		{   
-			try {
-				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
-				
-			} catch (Exception e) {
-				MessageHelper.errorMessage("Problem while loading volume");
+		if(loginBean.isLogin())
+		{
+			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
+			{   
+				try {
+					this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
+					volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+					
+				} catch (Exception e) {
+					MessageHelper.errorMessage("Problem while loading volume");
+				}
 			}
+			volumeLoaded();
 		}
-		volumeLoaded();
+		else
+		{
+			logger.warn("Trying to edit structure of volume " + volumeId + ", but not logged in!");
+		}
+
 	}
 	
 
@@ -424,6 +438,55 @@ public class StructuralEditorBean {
 	
 	public void save()
 	{
+		
+		
+		try {
+			flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+			this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+			volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+			
+			MessageHelper.infoMessage("Structure saved successfully!");
+		} catch (Exception e) {
+			MessageHelper.errorMessage("Error while saving Structure");
+			logger.error("Error while saving created TEI-SD.", e);
+			
+		}
+		
+		try {
+			TeiSd teiToSave = new TeiSd();
+			flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
+			IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
+			IMarshallingContext mc = bfactTei.createMarshallingContext();
+			mc.setIndent(3);
+			StringWriter sw = new StringWriter();
+			mc.marshalDocument(teiToSave, "utf-8", null, sw);
+			
+			System.out.println(sw.toString());
+			
+		} catch (JiBXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public void saveAndRelease()
+	{
+		
+		
+		try {
+			flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+			this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+			this.volume = volServiceBean.releaseVolume(volume, getLoginBean().getUserHandle());
+			volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+			
+			MessageHelper.infoMessage("Structure saved and released successfully!");
+		} catch (Exception e) {
+			MessageHelper.errorMessage("Error while saving and releasing Structure");
+			logger.error("Error while saving and releasing structure.", e);
+			
+		}
+		
 		try {
 			TeiSd teiToSave = new TeiSd();
 			flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
@@ -491,7 +554,8 @@ public class StructuralEditorBean {
 				div.setType("chapter");
 				div.getHead().add("");
 				
-				currentEditElement.setTeiElement(div);
+				currentEditElementWrapper.setTeiElement(div);
+				currentEditElementWrapper.getPartnerElement().setTeiElement(div);
 				break;
 			}
 			
@@ -499,7 +563,8 @@ public class StructuralEditorBean {
 			{
 				
 				Figure figure = new Figure();
-				currentEditElement.setTeiElement(figure);
+				currentEditElementWrapper.setTeiElement(figure);
+				currentEditElementWrapper.getPartnerElement().setTeiElement(figure);
 				break;
 			}
 			
@@ -509,7 +574,8 @@ public class StructuralEditorBean {
 				TitlePage titlePage = new TitlePage();
 				titlePage.setDocTitles(new ArrayList<DocTitle>());
 				titlePage.getDocTitles().add(new DocTitle());
-				currentEditElement.setTeiElement(titlePage);
+				currentEditElementWrapper.setTeiElement(titlePage);
+				currentEditElementWrapper.getPartnerElement().setTeiElement(titlePage);
 				break;
 			}
 		
@@ -686,12 +752,17 @@ public class StructuralEditorBean {
 	public void editStructuralElement(TeiElementWrapper elementToEdit)
 	{
 		this.selectedStructuralType = elementToEdit.getTeiElement().getElementType();
-		currentEditElement = elementToEdit;
+		currentEditElementWrapper = elementToEdit;
+		
+		
+		
+		
 	}
+	
 	
 	public void updateEditedStructuralElement()
 	{
-		System.out.println("Update struct ewlement");
+		System.out.println("Update struct element");
 	}
 	
 	
@@ -1497,12 +1568,30 @@ public class StructuralEditorBean {
 		this.currentNewElement = currentNewElement;
 	}
 
-	public TeiElementWrapper getCurrentEditElement() {
-		return currentEditElement;
+	
+
+	public PbOrDiv getCurrentEditTeiElement() {
+		return currentEditTeiElement;
 	}
 
-	public void setCurrentEditElement(TeiElementWrapper currentEditElement) {
-		this.currentEditElement = currentEditElement;
+	public void setCurrentEditTeiElement(PbOrDiv currentEditTeiElement) {
+		this.currentEditTeiElement = currentEditTeiElement;
+	}
+
+	public TeiElementWrapper getCurrentEditElementWrapper() {
+		return currentEditElementWrapper;
+	}
+
+	public void setCurrentEditElementWrapper(TeiElementWrapper currentEditElementWrapper) {
+		this.currentEditElementWrapper = currentEditElementWrapper;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
 	}
 
 

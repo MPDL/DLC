@@ -268,7 +268,7 @@
 				<h:form>
 	        	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
 	        	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-	        	 teiWrapper="#{structuralEditorBean.currentEditElement}"/>
+	        	 teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
 	              <br/>
 	              <br/>
 	              
@@ -283,6 +283,7 @@
 		<h:panelGroup layout="block" styleClass="eg3_container1">
 			<h:form>
 				<h:commandButton value="Save" action="#{structuralEditorBean.save}"/>
+				<h:commandButton value="Save &amp; Release" action="#{structuralEditorBean.saveAndRelease}"/>
 			</h:form>
 		</h:panelGroup>
 		
