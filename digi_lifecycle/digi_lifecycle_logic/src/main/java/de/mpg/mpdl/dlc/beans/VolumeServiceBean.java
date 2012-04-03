@@ -91,6 +91,7 @@ import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
+import de.escidoc.schemas.metadatarecords.MdRecordDocument.MdRecord;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
@@ -291,7 +292,7 @@ public class VolumeServiceBean {
 		vol.setProperties(item.getProperties());
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
-		vol = updateVolume(vol, null,null,userHandle, false);
+		vol = updateVolume(vol, userHandle, null, false);
 		vol = releaseVolume(vol, userHandle);
 		}
 		catch(Exception e)
@@ -303,9 +304,12 @@ public class VolumeServiceBean {
 		return vol;
 	}
 	
-	
+	/*
 	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
 	{
+		
+		logger.info("Creating new volume/monograph");
+		
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
 		Volume parent = null;
 		
@@ -314,44 +318,34 @@ public class VolumeServiceBean {
 			parent = retrieveVolume(multiVolumeId, userHandle);
 			parent = updateMultiVolume(parent, item.getObjid(), userHandle);
 			parent = releaseVolume(parent, userHandle);
+			
+			//Also add the md record of the multivolume to each volume for indexing etc.
+			MetadataRecord mdRecMv = new MetadataRecord("multivolume");
+			mdRecMv.setContent(parent.getItem().getMetadataRecords().get("escidoc").getContent());
+			item.getMetadataRecords().add(mdRecMv);
+			
+			//Add the relation to the multivolume
+			Relations relations = new Relations();
+			Reference ref = new ItemRef("/ir/item/"+parent.getItem().getObjid(),"Item "+ parent.getItem().getObjid());
+			
+			Relation relation = new Relation(ref);
+			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
+			relations.add(relation);
+			item.setRelations(relations);
 		}
 		
+
 		Volume vol = new Volume();
 		File teiFileWithPbConvention = null;
 		try 
 		{
-			JAXBContext ctx = JAXBContext.newInstance(new Class[] { Mets.class });			
 			Mets metsData = new Mets();
 			
 			File teiFileWithIds = null;
-			
-			
-			
 
-			
 			List<String> pbIds = new ArrayList<String>();
 			
-			if(teiFile!=null)	
-			{    
-				logger.info("TEI file found");
-				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
-				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
-				pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
-				
-				/*
-				String mets = transformTeiToMets(new FileInputStream(teiFileWithIds));
-				Unmarshaller unmarshaller = ctx.createUnmarshaller();
-				metsData = (Mets)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
-				
-				
-				for(FileItem fileItem : images)
-				{
-	
-					int pos = images.indexOf(fileItem);
-					metsData.getFiles().get(pos).setHref(dirs.get(pos));
-					}
-					*/
-			}
+			
 			
 			
 			
@@ -360,10 +354,6 @@ public class VolumeServiceBean {
 			for(DiskFileItem imageItem : images)
 			{
 				String filename = getJPEGFilename(imageItem.getName());
-				
-				
-				
-				
 				String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
 				
 				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
@@ -390,9 +380,7 @@ public class VolumeServiceBean {
 				{
 					p.setId("page_" + pos);
 				}
-				
-				
-				
+
 				p.setOrder(pos);
 				p.setOrderLabel("");
 				p.setType("page");
@@ -403,75 +391,93 @@ public class VolumeServiceBean {
 				
 			}
 			long time = System.currentTimeMillis()-start;
-			System.out.println("Time to Upload images: " + time);
-			
-			
-			/*
-			for(FileItem fileItem : images)
-			{
+			logger.info("Time to upload images: " + time);
 
-				String thumbnailDir = "thumbnails/" + dirs.get(pos);
-				MetsFile thumbFile = new MetsFile();
-				thumbFile.setId("img_thumb_" + pos);
-				thumbFile.setMimeType(fileItem.getContentType());
-				thumbFile.setLocatorType("OTHER");
-				thumbFile.setHref(thumbnailDir);
-				metsData.getThumbnailResFiles().add(thumbFile);
-				
-				String defaultDir = "web/" + dirs.get(pos);
-				MetsFile defaultFile = new MetsFile();
-				defaultFile.setId("img_default_" + pos);
-				defaultFile.setMimeType(fileItem.getContentType());
-				defaultFile.setLocatorType("OTHER");
-				defaultFile.setHref(defaultDir);
-				metsData.getDefaultResFiles().add(defaultFile);
-				
-				String maxDir = "original/" + dirs.get(pos);
-				MetsFile maxFile = new MetsFile();
-				maxFile.setId("img_max_" + pos);
-				maxFile.setMimeType(fileItem.getContentType());
-				maxFile.setLocatorType("OTHER");
-				maxFile.setHref(maxDir);
-				metsData.getMaxResFiles().add(maxFile);
-				
-				String digilibDir = dirs.get(pos);
-				MetsFile digilibFile = new MetsFile();
-				digilibFile.setId("img_digilib_" + pos);
-				digilibFile.setMimeType(fileItem.getContentType());
-				digilibFile.setLocatorType("OTHER");
-				digilibFile.setHref(digilibDir);
-				metsData.getDigilibFiles().add(digilibFile);
-	
-				Page p = new Page();
-				
-				if(teiFile!=null)
-				{
-					p.setId(pbIds.get(pos));
-				}
-				else
-				{
-					p.setId("page_" + pos);
-				}
+
+			
+			StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			sthc.setHandle(userHandle);
+			
+			if(teiFile!=null)	
+			{
+				logger.info("TEI file found");
+				teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
+				teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
+				pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
 				
 				
+				//Transform TEI to Tei-SD and add to volume
+				String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
+				IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
+				TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
+				vol.setTeiSd(teiSd);
 				
-				p.setOrder(pos);
-				p.setOrderLabel("");
-				p.setType("page");
-				p.setThumbnailFile(thumbFile);
-				p.setDefaultFile(defaultFile);
-				p.setMaxFile(maxFile);
-				p.setDigilibFile(digilibFile);
+
+				//Add paged TEI as component
+				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFileWithIds));
+				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
+				Component pagedTeiComponent = new Component();
+				ComponentProperties pagedTeiCompProps = new ComponentProperties();
+				pagedTeiComponent.setProperties(pagedTeiCompProps);
 				
+				pagedTeiComponent.getProperties().setMimeType("text/xml");
+				pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+				pagedTeiComponent.getProperties().setVisibility("public");
+				ComponentContent pagedTeiContent = new ComponentContent();
+				pagedTeiComponent.setContent(pagedTeiContent);
+				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+				item.getComponents().add(pagedTeiComponent);
+				
+				
+				//Add original TEI as component
+				URL uploadedTei = sthc.upload(new FileInputStream(teiFileWithIds));
+				Component teiComponent = new Component();
+				ComponentProperties teiCompProps = new ComponentProperties();
+				teiComponent.setProperties(teiCompProps);
+				
+				teiComponent.getProperties().setMimeType("text/xml");
+				teiComponent.getProperties().setContentCategory("tei");
+				teiComponent.getProperties().setVisibility("public");
+				ComponentContent teiContent = new ComponentContent();
+				teiComponent.setContent(teiContent);
+				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
+				item.getComponents().add(teiComponent);
 				
 			}
-			*/
+			
+			
+			
+			//if vol has a tei Sd
+			if(vol.getTeiSd()!=null)
+			{
+				IMarshallingContext marshContext = bfactTei.createMarshallingContext();
+				StringWriter sw = new StringWriter();
+				marshContext.marshalDocument(vol.getTeiSd(), "utf-8", null, sw);
+
+				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+				Component teiSdComponent = new Component();
+				ComponentProperties teiSdCompProps = new ComponentProperties();
+				teiSdComponent.setProperties(teiSdCompProps);
+				
+				teiSdComponent.getProperties().setMimeType("text/xml");
+				teiSdComponent.getProperties().setContentCategory("tei-sd");
+				teiSdComponent.getProperties().setVisibility("public");
+				ComponentContent teiSdContent = new ComponentContent();
+				teiSdComponent.setContent(teiSdContent);
+				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
+				item.getComponents().add(teiSdComponent);
+			}
+
 			vol.setMets(metsData);
 			vol.setProperties(item.getProperties());
 			vol.setModsMetadata(modsMetadata);
 			vol.setItem(item);
+			
 
-			vol = updateVolume(vol, parent, teiFileWithIds, userHandle, true);
+			vol = updateVolume(vol, userHandle, true);
 			vol = releaseVolume(vol, userHandle);
 		} 
 		catch (Exception e) 
@@ -482,6 +488,294 @@ public class VolumeServiceBean {
 			}
 		return vol;
 	}
+	
+	
+	*/
+	
+	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
+	{
+		
+		logger.info("Creating new volume/monograph");
+		
+		Volume volume = new Volume();
+		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+		MetadataRecords mdRecs = item.getMetadataRecords();
+		
+		if(mdRecs==null)
+		{
+			mdRecs = new MetadataRecords();
+			item.setMetadataRecords(mdRecs);
+		}
+		
+		volume.setItem(item);
+		volume.setProperties(volume.getItem().getProperties());
+		volume.setModsMetadata(modsMetadata);
+		
+		Mets metsData = new Mets();
+		volume.setMets(metsData);
+		
+		try{
+
+			Volume parent = null;
+
+			if(multiVolumeId != null)
+			{
+				parent = retrieveVolume(multiVolumeId, userHandle);
+				parent = updateMultiVolume(parent, item.getObjid(), userHandle);
+				parent = releaseVolume(parent, userHandle);
+				
+				//Also add the md record of the multivolume to each volume for indexing etc.
+				MetadataRecord mdRecMv = new MetadataRecord("multivolume");
+				mdRecMv.setContent(parent.getItem().getMetadataRecords().get("escidoc").getContent());
+				item.getMetadataRecords().add(mdRecMv);
+				
+				//Add the relation to the multivolume
+				Relations relations = new Relations();
+				Reference ref = new ItemRef("/ir/item/"+parent.getItem().getObjid(),"Item "+ parent.getItem().getObjid());
+				
+				Relation relation = new Relation(ref);
+				relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
+				relations.add(relation);
+				item.setRelations(relations);
+				
+			}
+				
+				File teiFileWithIds = null;
+				
+	
+				//Convert and upload images 
+				long start = System.currentTimeMillis();			
+				for(DiskFileItem imageItem : images)
+				{
+					String filename = getJPEGFilename(imageItem.getName());
+					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
+					
+					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+					File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
+					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+									
+					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+					File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
+					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+					
+					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+					File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
+					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+					
+					
+					int pos = images.indexOf(imageItem);
+					Page p = new Page();
+					
+					
+					p.setId("page_" + pos);
+					
+	
+					p.setOrder(pos);
+					p.setOrderLabel("");
+					p.setType("page");
+					p.setContentIds(itemIdWithoutColon + "/"+ filename);
+					p.setLabel(imageItem.getName());
+					metsData.getPages().add(p);
+					
+					
+				}
+				long time = System.currentTimeMillis()-start;
+				logger.info("Time to upload images: " + time);
+			
+			
+				volume = updateVolume(volume, userHandle, teiFile, true);
+			
+				volume = releaseVolume(volume, userHandle);
+			}
+		
+			catch (Exception e) 
+			{
+				logger.error("Error while creating Volume. Trying to rollback", e);
+				rollbackCreation(volume, userHandle);
+				throw new Exception(e);
+			}
+			
+			return volume;
+	}
+	
+	
+	public Volume updateVolume(Volume volume, String userHandle, FileItem teiFile, boolean updateTeiSd) throws Exception
+	{
+
+		Component pagedTeiComponent = null ;
+		Component teiComponent = null;
+		Component teiSdComponent = null;
+
+		try 
+		{
+		
+			for(Component c : volume.getItem().getComponents())
+			{
+				if(c.getProperties().getContentCategory().equals("tei"))
+				{
+					teiComponent = c;
+				}
+				else if (c.getProperties().getContentCategory().equals("tei-paged"))
+				{
+					pagedTeiComponent = c;
+				}
+				else if (c.getProperties().getContentCategory().equals("tei-sd"))
+				{
+					teiSdComponent = c;
+				}
+			
+			
+			}
+
+		
+		//Clear all mdRecords
+		volume.getItem().getMetadataRecords().clear();
+		
+		
+		//Set escidoc md-record with mods metadata
+		MetadataRecord eSciDocMdRec = new MetadataRecord("escidoc");
+		volume.getItem().getMetadataRecords().add(eSciDocMdRec);
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document modsDoc = builder.newDocument();
+		Marshaller m = jaxbModsContext.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(volume.getModsMetadata(), modsDoc);
+		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
+		
+		
+		//Set METS in md-record
+		if(volume.getMets() != null)
+		{
+			MetadataRecord metsMdRec = new MetadataRecord("mets");
+			volume.getItem().getMetadataRecords().add(metsMdRec);
+			IMarshallingContext mCont = bfactMets.createMarshallingContext();
+			StringWriter sw = new StringWriter();
+			mCont.marshalDocument(volume.getMets(), "UTF-8", null, sw);
+			sw.close();
+			Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
+			metsMdRec.setContent(metsDoc.getDocumentElement());
+		}
+		
+
+			StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			sthc.setHandle(userHandle);
+			
+			if(teiFile!=null)	
+			{
+				logger.info("TEI file found");
+				File teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
+				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
+				List<String> pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
+				
+				//Set ids in mets
+				for(int i=0; i< volume.getMets().getPages().size(); i++)
+				{
+					volume.getMets().getPages().get(i).setId(pbIds.get(i));
+					
+				}
+				
+				
+				//Transform TEI to Tei-SD and add to volume
+				String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
+				IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
+				TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
+				volume.setTeiSd(teiSd);
+				
+
+				//Add paged TEI as component
+				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFileWithIds));
+				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
+				if(pagedTeiComponent==null)
+				{
+					pagedTeiComponent = new Component();
+					ComponentProperties pagedTeiCompProps = new ComponentProperties();
+					pagedTeiComponent.setProperties(pagedTeiCompProps);
+					
+					pagedTeiComponent.getProperties().setMimeType("text/xml");
+					pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+					pagedTeiComponent.getProperties().setVisibility("public");
+					ComponentContent pagedTeiContent = new ComponentContent();
+					pagedTeiComponent.setContent(pagedTeiContent);
+					
+					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+					volume.getItem().getComponents().add(pagedTeiComponent);
+				}
+				
+				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				
+				
+				//Add original TEI as component
+				URL uploadedTei = sthc.upload(new FileInputStream(teiFileWithIds));
+				if(teiComponent==null)
+				{
+					teiComponent = new Component();
+					ComponentProperties teiCompProps = new ComponentProperties();
+					teiComponent.setProperties(teiCompProps);
+					
+					teiComponent.getProperties().setMimeType("text/xml");
+					teiComponent.getProperties().setContentCategory("tei");
+					teiComponent.getProperties().setVisibility("public");
+					ComponentContent teiContent = new ComponentContent();
+					teiComponent.setContent(teiContent);
+					
+					teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
+					volume.getItem().getComponents().add(teiComponent);
+				}
+				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+
+			}
+			
+			
+			
+			//if vol has a teiSd and it should be updated
+			if(volume.getTeiSd()!=null && updateTeiSd)
+			{
+				IMarshallingContext marshContext = bfactTei.createMarshallingContext();
+				StringWriter sw = new StringWriter();
+				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
+
+				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+				
+				if(teiSdComponent==null)
+				{
+					teiSdComponent = new Component();
+					ComponentProperties teiSdCompProps = new ComponentProperties();
+					teiSdComponent.setProperties(teiSdCompProps);
+					
+					teiSdComponent.getProperties().setMimeType("text/xml");
+					teiSdComponent.getProperties().setContentCategory("tei-sd");
+					teiSdComponent.getProperties().setVisibility("public");
+					ComponentContent teiSdContent = new ComponentContent();
+					teiSdComponent.setContent(teiSdContent);
+					teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					
+					volume.getItem().getComponents().add(teiSdComponent);
+				}
+				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
+				
+			}
+			
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			Item updatedItem = client.update(volume.getItem());
+			logger.info("Item updated: " + updatedItem.getObjid());
+			return createVolumeFromItem(updatedItem, userHandle);
+
+			
+		} 
+		catch (Exception e) 
+		{
+			logger.error("Error while updating volume " + volume.getItem().getObjid(), e);
+			throw new Exception(e);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	private static String getJPEGFilename(String filename)
 	{
@@ -598,11 +892,11 @@ public class VolumeServiceBean {
 		return retrieveVolume(item.getObjid(), userHandle);
 	}
 	
-	
-	public Volume updateVolume(Volume vol, Volume parent, File teiFile, String userHandle, boolean initial) throws Exception
+	/*
+	public Volume updateVolume(Volume vol, String userHandle, boolean initial) throws Exception
 	{
 		    
-		logger.info("Trying to update item " +vol.getProperties().getVersion().getObjid());
+		logger.info("Trying to update volume " +vol.getProperties().getVersion().getObjid());
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
@@ -630,107 +924,27 @@ public class VolumeServiceBean {
 			mdRecs.add(metsMdRec);
 		}
 		
-		
-		if(parent != null)
-		{
-			//Also add the md record of the multivolume to each volume for indexing etc.
-			MetadataRecord mdRecMv = new MetadataRecord("multivolume");
-			mdRecMv.setContent(parent.getItem().getMetadataRecords().get("escidoc").getContent());
-			item.getMetadataRecords().add(mdRecMv);
-			
-			//Add the relation to the multivolume
-			Relations relations = new Relations();
-			Reference ref = new ItemRef("/ir/item/"+parent.getItem().getObjid(),"Item "+ parent.getItem().getObjid());
-			
-			Relation relation = new Relation(ref);
-			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
-			relations.add(relation);
-			item.setRelations(relations);
-		}
-		/*
-		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
-		Mets mets = metsDoc.addNewMets();
-		
-		MdSecType dmdSec = mets.addNewDmdSec();
-		dmdSec.setID("dmd_0");
-		MdWrap mdWrap = dmdSec.addNewMdWrap();
-		mdWrap.setMIMETYPE("text/xml");
-		mdWrap.setMDTYPE(MDTYPE.MODS);
-		XmlData xmlData = mdWrap.addNewXmlData();
-		xmlData.set(vol.getModsMetadata());
-		
-		
-		
-		//Add METS xml to mdRecord of Item
 
-		FileSec fileSec = mets.addNewFileSec();
-		FileGrp imageFileGrp = fileSec.addNewFileGrp();
-		imageFileGrp.setUSE("scans");
-		
-		StructMapType physicalStructMap = mets.addNewStructMap();
-		physicalStructMap.setTYPE("physical");
-		DivType physicalMainDiv = physicalStructMap.addNewDiv();
-		physicalMainDiv.setTYPE("physical_structure");
-		List<String> dmdIds = new ArrayList<String>();
-		dmdIds.add("dmd_0");
-		physicalMainDiv.setDMDID(dmdIds);
-		
-		
-		int i = 0;
-		
-		for(Page page : vol.getPages())
-		{
-			
-			
-			FileType f = imageFileGrp.addNewFile();
-			f.setMIMETYPE("image/jpg");
-			String fileId = "img_" + i;
-			f.setID(fileId);
-			
-			FLocat loc = f.addNewFLocat();
-			loc.setLOCTYPE(FLocat.LOCTYPE.OTHER);
-			loc.setHref(page.getPath());
-			
-			DivType pageDiv = physicalMainDiv.addNewDiv();
-			pageDiv.setTYPE("page");
-			pageDiv.setORDER(BigInteger.valueOf(i));
-			pageDiv.setID("page_"+ i);
-			if(page.getPagination()!=null)
-			{
-				pageDiv.setORDERLABEL(page.getPagination());
-			}
-			Fptr fileptr = pageDiv.addNewFptr();
-			fileptr.setFILEID(fileId);
-			i++;
-		}
-*/
-		
-		//Workaround for eSciDoc: Change prefix "xlin" to "xlink", otherwise bug with eSciDoc
-		/*
-		HashMap suggestedPrefixes = new HashMap();
-		suggestedPrefixes.put("http://www.w3.org/1999/xlink", "xlink");
-		XmlOptions opts = new XmlOptions();
-		opts.setSaveSuggestedPrefixes(suggestedPrefixes);
-		opts.setSavePrettyPrint();
-		String xml = metsDoc.xmlText(opts);
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		Document d = builder.parse( new InputSource(new StringReader(xml)) );
-		*/
-		//---
-		
 		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document modsDoc = builder.newDocument();
-        
-        
-		
-        
 		Marshaller m = jaxbModsContext.createMarshaller();
 		
 		//Set MODS in md-record
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		mdRec.setContent(modsDoc.getDocumentElement());
+		
+		
+		//Set METS in md-record
+		if(vol.getMets() != null)
+		{
+			IMarshallingContext mCont = bfactMets.createMarshallingContext();
+			StringWriter sw = new StringWriter();
+			mCont.marshalDocument(vol.getMets(), "UTF-8", null, sw);
+			sw.close();
+			Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
+			metsMdRec.setContent(metsDoc.getDocumentElement());
+		}
 		
 		
 		if(vol.getMets() != null)
@@ -745,10 +959,6 @@ public class VolumeServiceBean {
 
 		
 		
-		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		sthc.setHandle(userHandle);
-		
-		//upload METS
 		
 		URL uploadedMets = new URL(PropertyReader.getProperty("escidoc.common.framework.url"));
 		
@@ -764,103 +974,6 @@ public class VolumeServiceBean {
 		
 		
 		//Check if component already exists
-		if (initial)
-		{
-			if(vol.getMets()!=null)
-			{
-				Component metsComponent = new Component();
-				ComponentProperties props = new ComponentProperties();
-				metsComponent.setProperties(props);
-				
-				metsComponent.getProperties().setMimeType("text/xml");
-				metsComponent.getProperties().setContentCategory("mets");
-				metsComponent.getProperties().setVisibility("public");
-				ComponentContent content = new ComponentContent();
-				metsComponent.setContent(content);
-				metsComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-				metsComponent.getContent().setXLinkHref(uploadedMets.toExternalForm());
-				item.getComponents().add(metsComponent);
-				
-			}
-			
-			
-			if(teiFile!=null)
-			{
-				//Transform TEI to Tei-SD and add to component
-				
-				String teiSd = transformTeiToTeiSd(new FileInputStream(teiFile));
-				URL uploadedTeiSd = sthc.upload(new ByteArrayInputStream(teiSd.getBytes("UTF-8")));
-				Component teiSdComponent = new Component();
-				ComponentProperties teiSdCompProps = new ComponentProperties();
-				teiSdComponent.setProperties(teiSdCompProps);
-				
-				teiSdComponent.getProperties().setMimeType("text/xml");
-				teiSdComponent.getProperties().setContentCategory("tei-sd");
-				teiSdComponent.getProperties().setVisibility("public");
-				ComponentContent teiSdContent = new ComponentContent();
-				teiSdComponent.setContent(teiSdContent);
-				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
-				item.getComponents().add(teiSdComponent);
-				
-				
-				//Add paged TEI as component
-				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFile));
-				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
-				Component pagedTeiComponent = new Component();
-				ComponentProperties pagedTeiCompProps = new ComponentProperties();
-				pagedTeiComponent.setProperties(pagedTeiCompProps);
-				
-				pagedTeiComponent.getProperties().setMimeType("text/xml");
-				pagedTeiComponent.getProperties().setContentCategory("tei-paged");
-				pagedTeiComponent.getProperties().setVisibility("public");
-				ComponentContent pagedTeiContent = new ComponentContent();
-				pagedTeiComponent.setContent(pagedTeiContent);
-				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
-				item.getComponents().add(pagedTeiComponent);
-				
-				
-				//Add original TEI as component
-				URL uploadedTei = sthc.upload(new FileInputStream(teiFile));
-				Component teiComponent = new Component();
-				ComponentProperties teiCompProps = new ComponentProperties();
-				teiComponent.setProperties(teiCompProps);
-				
-				teiComponent.getProperties().setMimeType("text/xml");
-				teiComponent.getProperties().setContentCategory("tei");
-				teiComponent.getProperties().setVisibility("public");
-				ComponentContent teiContent = new ComponentContent();
-				teiComponent.setContent(teiContent);
-				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
-				item.getComponents().add(teiComponent);
-				
-				
-				
-			}
-			
-			
-			
-			
-		}
-		
-		else
-		{
-			for(Component comp : item.getComponents())
-			{
-				if(comp.getProperties().getContentCategory().equals("mets"))
-				{
-					comp.getContent().setXLinkHref(uploadedMets.toExternalForm());
-					
-				}
-			}
-		}
-		
-		
-		
-		
-		
 		
 
 		item = client.update(item);
@@ -869,7 +982,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	
+	*/
 	
 	public static void main(String[] args) throws Exception
 	{
