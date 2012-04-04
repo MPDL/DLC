@@ -57,8 +57,8 @@
 									</ui:remove>
 									
 									<h:outputText  value="#{internationalizationHelper.getLabelForEnum('structuretype_', wrapper.teiElement.type)}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>	
-									<h:outputText  value="#{lbl.edit_elementTypeTitlePage}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-									<h:outputText  value="#{lbl.edit_elementTypeFigure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
+									<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+									<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
 									
 									<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
 									
@@ -242,7 +242,7 @@
 							
 						<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
 							
-							<h:outputText value="[#{lbl.edit_elementTypeTitlePage}] "/>
+							<h:outputText value="[#{lbl.edit_elementType_title_page}] "/>
 							<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}"/>
 						</h:panelGroup>
 						
@@ -307,6 +307,19 @@
 			</h:form>
 		</h:panelGroup>
 		
+		
+		<rich:panel header="Validation Errors">
+				
+				<ul style="color:red;">
+				<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
+					<li>
+					<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}" />
+					<h:outputText value=" cannot be placed under " />
+					<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}" />
+					</li>
+				</a4j:repeat>
+				</ul>
+        </rich:panel>
 		
 		<script>
 		

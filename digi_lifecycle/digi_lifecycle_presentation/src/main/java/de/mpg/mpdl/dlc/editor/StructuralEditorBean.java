@@ -103,6 +103,7 @@ public class StructuralEditorBean {
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
+	private List<ValidationWrapper> validationList = new ArrayList<ValidationWrapper>();
 	
 	public enum PaginationType
 	{
@@ -178,7 +179,8 @@ public class StructuralEditorBean {
 			this.pbList = flatLists[1];
 			
 			//Transform flat TEI to TreeWrapper
-			this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
+			validationList = new ArrayList<ValidationWrapper>();
+			this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList, validationList);
 			
 			
 			for(TeiElementWrapper teiElWrapper : flatTeiElementList)
@@ -248,7 +250,7 @@ public class StructuralEditorBean {
 	
 	
 	
-	private static List<TreeWrapperNode> flatTeiElementListToTreeWrapper(List<TeiElementWrapper> flatTeiElementList)
+	private static List<TreeWrapperNode> flatTeiElementListToTreeWrapper(List<TeiElementWrapper> flatTeiElementList, List<ValidationWrapper> validationList)
 	{
 		
 		List<TreeWrapperNode> wrapperNodeList = new ArrayList<TreeWrapperNode>();
@@ -294,6 +296,11 @@ public class StructuralEditorBean {
 				{
 					parentTeiElement = teiElementWrapper.getTeiElement();
 					parent = treeWrapperNode;
+				}
+				
+				if(treeWrapperNode.getInvalid())
+				{
+					validationList.add(new ValidationWrapper(treeWrapperNode));
 				}
 				
 			}
@@ -439,68 +446,82 @@ public class StructuralEditorBean {
 	{
 		
 		
-		try {
-			flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-			this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
-			volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+		if(validationList.size()>0)
+		{
+			MessageHelper.infoMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+		}
+		else
+		{
+			try {
+				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+				
+				MessageHelper.infoMessage(MessageHelper.getMessage("edit_savedSuccessfully"));
+			} catch (Exception e) {
+				MessageHelper.errorMessage("Error while saving Structure");
+				logger.error("Error while saving created TEI-SD.", e);
+				
+			}
 			
-			MessageHelper.infoMessage("Structure saved successfully!");
-		} catch (Exception e) {
-			MessageHelper.errorMessage("Error while saving Structure");
-			logger.error("Error while saving created TEI-SD.", e);
-			
+			try {
+				TeiSd teiToSave = new TeiSd();
+				flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
+				IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
+				IMarshallingContext mc = bfactTei.createMarshallingContext();
+				mc.setIndent(3);
+				StringWriter sw = new StringWriter();
+				mc.marshalDocument(teiToSave, "utf-8", null, sw);
+				
+				System.out.println(sw.toString());
+				
+			} catch (JiBXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		try {
-			TeiSd teiToSave = new TeiSd();
-			flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
-			IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
-			IMarshallingContext mc = bfactTei.createMarshallingContext();
-			mc.setIndent(3);
-			StringWriter sw = new StringWriter();
-			mc.marshalDocument(teiToSave, "utf-8", null, sw);
-			
-			System.out.println(sw.toString());
-			
-		} catch (JiBXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 	}
 	
 	public void saveAndRelease()
 	{
-		
-		
-		try {
-			flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-			this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
-			this.volume = volServiceBean.releaseVolume(volume, getLoginBean().getUserHandle());
-			volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+		if(validationList.size()>0)
+		{
+			MessageHelper.infoMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+		}
+		else
+		{
+			try {
+				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+				this.volume = volServiceBean.releaseVolume(volume, getLoginBean().getUserHandle());
+				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+				MessageHelper.infoMessage(MessageHelper.getMessage("edit_savedAndReleasedSuccessfully"));
+			} catch (Exception e) {
+				MessageHelper.errorMessage("Error while saving and releasing Structure");
+				logger.error("Error while saving and releasing structure.", e);
+				
+			}
 			
-			MessageHelper.infoMessage("Structure saved and released successfully!");
-		} catch (Exception e) {
-			MessageHelper.errorMessage("Error while saving and releasing Structure");
-			logger.error("Error while saving and releasing structure.", e);
-			
+			try {
+				TeiSd teiToSave = new TeiSd();
+				flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
+				IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
+				IMarshallingContext mc = bfactTei.createMarshallingContext();
+				mc.setIndent(3);
+				StringWriter sw = new StringWriter();
+				mc.marshalDocument(teiToSave, "utf-8", null, sw);
+				
+				System.out.println(sw.toString());
+				
+			} catch (JiBXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
-		try {
-			TeiSd teiToSave = new TeiSd();
-			flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
-			IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
-			IMarshallingContext mc = bfactTei.createMarshallingContext();
-			mc.setIndent(3);
-			StringWriter sw = new StringWriter();
-			mc.marshalDocument(teiToSave, "utf-8", null, sw);
-			
-			System.out.println(sw.toString());
-			
-		} catch (JiBXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 	}
 	
@@ -1379,7 +1400,8 @@ public class StructuralEditorBean {
 	
 	private void updateTree()
 	{
-		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList);
+		validationList = new ArrayList<ValidationWrapper>();
+		this.treeWrapperNodes = flatTeiElementListToTreeWrapper(flatTeiElementList, validationList);
 	}
 	
 	
@@ -1591,6 +1613,14 @@ public class StructuralEditorBean {
 
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
+	}
+
+	public List<ValidationWrapper> getValidationList() {
+		return validationList;
+	}
+
+	public void setValidationList(List<ValidationWrapper> validationList) {
+		this.validationList = validationList;
 	}
 
 
