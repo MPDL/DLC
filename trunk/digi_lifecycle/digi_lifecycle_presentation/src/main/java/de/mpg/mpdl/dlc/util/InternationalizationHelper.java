@@ -183,6 +183,17 @@ public class InternationalizationHelper
     {
         return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(placeholder);
     }
+    
+    public String getLabelForEnum(String prefix, String enumString)
+    {
+    	try {
+			enumString = enumString.replaceAll("\\s", "_");
+			return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(prefix + enumString);
+		} catch (Exception e) {
+			return "???" + prefix + enumString + "???";
+		}
+    }
+    
 
 	public void setUserLocaleString(String userLocaleString) {
 		this.userLocaleString = userLocaleString;

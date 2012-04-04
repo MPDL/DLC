@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,7 @@ public class VolumeUtilBean {
 
 	private static Logger logger = Logger.getLogger(VolumeUtilBean.class);
  
+	
 	
 	public static String getDigilibScalerUrlForPage(Page p, int width, int height)
 	{
@@ -662,6 +664,8 @@ public class VolumeUtilBean {
 		
 	}
 	
+	
+
 	
 	
 	

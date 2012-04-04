@@ -1412,17 +1412,17 @@ public class StructuralEditorBean {
 		
 	}
 	
-	/*
+	
 	public void selectStructuralElement(TeiElementWrapper elementWrapper)
 	{
-		setSelectedStructuralElement(elementWrapper);
-		if(selectedStructuralElement.getPagebreakWrapper()!= selectedPb)
-		{
-			setSelectedPb(selectedStructuralElement.getPagebreakWrapper());
-		}
+		//setSelectedStructuralElement(elementWrapper);
+		//if(selectedStructuralElement.getPagebreakWrapper()!= selectedPb)
+		//{
+			setSelectedPb(elementWrapper.getPagebreakWrapper());
+		//}
 
 	}
-	*/
+	
 	public List<TeiElementWrapper> getFlatTeiElementList() {
 		return flatTeiElementList;
 	}
