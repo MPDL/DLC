@@ -27,7 +27,6 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
-import de.mpg.mpdl.dlc.editor.TeiNode.Type;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.RomanNumberConverter;
 import de.mpg.mpdl.dlc.vo.Volume;
