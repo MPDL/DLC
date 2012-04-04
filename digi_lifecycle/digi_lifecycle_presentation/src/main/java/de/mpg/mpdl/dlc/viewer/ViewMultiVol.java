@@ -38,11 +38,12 @@ public class ViewMultiVol{
 		{   
 			try {
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
-				volumeLoaded();
+				
 			} catch (Exception e) {
 				MessageHelper.errorMessage("Problem while loading volume");
 			}
 		}
+		volumeLoaded();
 	}
 	
 	protected void volumeLoaded()
