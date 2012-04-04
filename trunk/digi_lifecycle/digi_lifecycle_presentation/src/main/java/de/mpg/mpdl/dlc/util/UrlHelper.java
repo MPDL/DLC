@@ -35,7 +35,7 @@ public class UrlHelper
         }
         catch (Exception e)
         {
-            BeanHelper.error("'" + uri + "' is not a valid URL");
+            MessageHelper.errorMessage("'" + uri + "' is not a valid URL");
         }
         return false;
     }

@@ -187,7 +187,7 @@ public class InternationalizationHelper
     public String getLabelForEnum(String prefix, String enumString)
     {
     	try {
-			enumString = enumString.replaceAll("\\s", "_");
+			enumString = enumString.toLowerCase().replaceAll("\\s", "_");
 			return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(prefix + enumString);
 		} catch (Exception e) {
 			return "???" + prefix + enumString + "???";
