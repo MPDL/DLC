@@ -448,7 +448,7 @@ public class StructuralEditorBean {
 		
 		if(validationList.size()>0)
 		{
-			MessageHelper.infoMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
 		}
 		else
 		{
@@ -488,7 +488,7 @@ public class StructuralEditorBean {
 	{
 		if(validationList.size()>0)
 		{
-			MessageHelper.infoMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
 		}
 		else
 		{
