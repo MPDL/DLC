@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="selectedStructuralType" required="true" />
+	<cc:attribute name="structuralTypeChangeListener" method-signature="void method()" required="true"/>
+	<cc:attribute name="teiWrapper" required="true"/>
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+
+
+<h:outputText value="#{lbl.edit_structuralElementType}"/>
+				<h:selectOneMenu value="#{cc.attrs.selectedStructuralType}">
+	                  	
+	                  	 <f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_elementType_div}"/>
+	                  	 <f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_elementType_title_page}"/>
+	                  	 <f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_elementType_figure}"/>
+	                  	 <f:ajax render="@form" listener="#{cc.attrs.structuralTypeChangeListener}"/>
+	                
+	             </h:selectOneMenu>
+	             
+	        	<br/>
+				<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'DIV'}">
+
+					<h:outputText value="#{lbl.edit_structuralType}"/> 
+					<h:selectOneMenu value="#{cc.attrs.teiWrapper.teiElement.type}">
+	                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+	                  	 <f:selectItem itemValue="acknowledgement" itemLabel="#{lbl.structuretype_acknowledgement}"/>
+	                  	 <f:selectItem itemValue="additional" itemLabel="#{lbl.structuretype_additional}"/>
+	                  	 <f:selectItem itemValue="advertisement" itemLabel="#{lbl.structuretype_advertisement}"/>
+	                  	 <f:selectItem itemValue="appendix" itemLabel="#{lbl.structuretype_appendix}"/>
+	                  	 <f:selectItem itemValue="article" itemLabel="#{lbl.structuretype_article}"/>
+	                  	 <f:selectItem itemValue="bibliography" itemLabel="#{lbl.structuretype_bibliography}"/>
+	                  	 <f:selectItem itemValue="book" itemLabel="#{lbl.structuretype_book}"/>
+	                  	 <f:selectItem itemValue="chapter" itemLabel="#{lbl.structuretype_chapter}"/>
+	                  	 <f:selectItem itemValue="content" itemLabel="#{lbl.structuretype_content}"/>
+	                  	 <f:selectItem itemValue="corrigenda" itemLabel="#{lbl.structuretype_corrigenda}"/>
+	                     <f:selectItem itemValue="curriculum vitae" itemLabel="#{lbl.structuretype_curriculum_vitae}"/>
+	                     <f:selectItem itemValue="dedication" itemLabel="#{lbl.structuretype_dedication}"/>
+	                     <f:selectItem itemValue="imprimatur" itemLabel="#{lbl.structuretype_imprimatur}"/>
+	                     <f:selectItem itemValue="imprint" itemLabel="#{lbl.structuretype_imprint}"/>
+	                     <f:selectItem itemValue="index" itemLabel="#{lbl.structuretype_index}"/>
+	                     <f:selectItem itemValue="letter" itemLabel="#{lbl.structuretype_letter}"/>
+	                     <f:selectItem itemValue="miscellaneous" itemLabel="#{lbl.structuretype_miscellaneous}"/>
+	                     <f:selectItem itemValue="miscellany" itemLabel="#{lbl.structuretype_miscellany}"/>
+	                     <f:selectItem itemValue="musical notation" itemLabel="#{lbl.structuretype_musical_notation}"/>
+	                     <f:selectItem itemValue="part" itemLabel="#{lbl.structuretype_part}"/>
+	                     <f:selectItem itemValue="preface" itemLabel="#{lbl.structuretype_preface}"/>
+	                     <f:selectItem itemValue="privileges" itemLabel="#{lbl.structuretype_privileges}"/>
+	                     <f:selectItem itemValue="provenance" itemLabel="#{lbl.structuretype_provenance}"/>
+	                     <f:selectItem itemValue="review" itemLabel="#{lbl.structuretype_review}"/>
+	                     <f:selectItem itemValue="section" itemLabel="#{lbl.structuretype_section}"/>
+	           		</h:selectOneMenu>
+	             <br/>
+		             <h:outputText value="#{lbl.edit_structuralHead}"/>
+		             <h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}"/>
+						   
+	            </h:panelGroup>
+	            
+	            <h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'TITLE_PAGE'}">
+	            	 <h:outputText value="#{lbl.edit_structuralHead}"/>
+		             <h:inputText value="#{cc.attrs.teiWrapper.teiElement.docTitles[0].title}"/>
+	            </h:panelGroup>
+	            
+	             <h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'FIGURE'}">
+	            	 <h:outputText value="#{lbl.edit_figureDescription}"/>
+		             <h:inputText value="#{cc.attrs.teiWrapper.teiElement.figDesc}"/>
+	            </h:panelGroup>
+	            
+	 </cc:implementation>
+	 </html>
+	 
