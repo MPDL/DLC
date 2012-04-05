@@ -240,9 +240,10 @@
 					
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+						<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
 						<span class="quad_area1 splitBlockHeader"></span>
 						
-						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave">
+						<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave" style="background-color: white">
 							<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.tei!=null}"/>
 						</div>
 					</h:panelGroup>
