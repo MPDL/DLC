@@ -28,6 +28,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
@@ -1505,13 +1506,12 @@ public class VolumeServiceBean {
 		ByteArrayInputStream bis = new ByteArrayInputStream(pagedTeiResult.getBytes("UTF-8"));
 		Source teiXmlSource = new StreamSource(bis);
 		
-		StringWriter wr = new StringWriter();
-		StreamResult res = new StreamResult(wr);
+
+		
+		DOMResult res = new DOMResult();
 		Transformer transformer = transfFact.newTransformer(xsltSource);
 		
 		System.out.println(transformer.getClass().getClassLoader());
-		
-		
 		transformer.setParameter("autoToc", "false");
 		transformer.setParameter("autoHead", "false");
 		transformer.setParameter("institution", "");
@@ -1522,8 +1522,27 @@ public class VolumeServiceBean {
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setParameter("pbid", p.getId());
 		transformer.transform(teiXmlSource, res);
+		
 
-		return wr.toString();
+		
+		//Get only the body part of the xhtml
+		Processor proc = new Processor(false);
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("html", "http://www.w3.org/1999/xhtml");
+
+        XPathExecutable xx = xpath.compile("/html:html/html:body/*");
+        XPathSelector selector = xx.load();
+        XdmNode xdmDoc = db.wrap(res.getNode());
+        selector.setContextItem(xdmDoc);
+       
+        StringBuilder sb = new StringBuilder();
+       
+    	for(XdmItem item : selector) {
+    		sb.append(item.toString());
+    	}
+            
+		return sb.toString();
 	}
 	
 	public static File addIdsToTei(InputStream teiXml)throws Exception
