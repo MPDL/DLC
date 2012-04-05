@@ -289,11 +289,17 @@ public class ViewPages{
 	}
 	
 	
-	public String getXhtmlForPage() throws Exception
+	public String getXhtmlForPage()
 	{
-		String teiHtml = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getPagedTei());
-		//logger.info(tei);
-		return teiHtml;
+		try {
+			String teiHtml = volServiceBean.getXhtmlForPage(getSelectedPage(), volume.getPagedTei());
+			//logger.info(tei);
+			return teiHtml;
+		} catch (Exception e) {
+			logger.error("Coulod not display fulltext for " + volumeId + " / Page " + selectedPageNumber, e);
+			MessageHelper.errorMessage("Can not display fulltext for this page");
+			return "";
+		}
 	}
 	
 	public String[] getFulltextMatchesAsArray()
