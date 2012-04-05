@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -42,7 +44,6 @@ import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
 import net.sf.saxon.dom.DocumentWrapper;
-import net.sf.saxon.om.NamespaceConstant;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathExecutable;
@@ -98,6 +99,7 @@ import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.util.StandardURIResolver;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
@@ -1499,9 +1501,16 @@ public class VolumeServiceBean {
 		String pagedTeiResult = getTeiForPage(p, pagedTei);
 		//logger.info(pagedTeiResult);
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei/xhtml2/tei.xsl");
+
 		
-		SAXSource xsltSource = new SAXSource(new InputSource(url.toExternalForm()));
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		
+		Source xsltSource = new StreamSource(url.toExternalForm());
+		//logger.info("Using xslt: " + url.toExternalForm());
+		
+		//File f = new File("C:/Projects/digi_lifecycle/digi_lifecycle_logic/src/main/resources/xslt/officialTei2/xhtml2/tei.xsl");
+		//Source xsltSource = new StreamSource(new FileInputStream(f), "file:/C:/Projects/digi_lifecycle/digi_lifecycle_logic/src/main/resources/xslt/officialTei2/xhtml2/tei.xsl");
+
 		
 		ByteArrayInputStream bis = new ByteArrayInputStream(pagedTeiResult.getBytes("UTF-8"));
 		Source teiXmlSource = new StreamSource(bis);
@@ -1509,9 +1518,11 @@ public class VolumeServiceBean {
 
 		
 		DOMResult res = new DOMResult();
-		Transformer transformer = transfFact.newTransformer(xsltSource);
+		logger.debug("Using URI RResolver" + transfFact.getURIResolver());
+	
+		//transfFact.setURIResolver(new StandardURIResolver());
 		
-		System.out.println(transformer.getClass().getClassLoader());
+		Transformer transformer = transfFact.newTransformer(xsltSource);
 		transformer.setParameter("autoToc", "false");
 		transformer.setParameter("autoHead", "false");
 		transformer.setParameter("institution", "");
