@@ -669,6 +669,7 @@ public class VolumeServiceBean {
 				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
 				if(pagedTeiComponent==null)
 				{
+					
 					pagedTeiComponent = new Component();
 					ComponentProperties pagedTeiCompProps = new ComponentProperties();
 					pagedTeiComponent.setProperties(pagedTeiCompProps);
@@ -736,6 +737,38 @@ public class VolumeServiceBean {
 					volume.getItem().getComponents().add(teiSdComponent);
 				}
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
+				
+				
+				//If there's no fulltext TEI, use TEI-SD as paged component for search and fulltext display
+				if(teiComponent == null)
+				{
+					//Add paged TEI as component
+					String pagedTei = transformTeiToPagedTei(new FileInputStream(teiSdWithIds));
+					URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
+					if(pagedTeiComponent==null)
+					{
+						
+						pagedTeiComponent = new Component();
+						ComponentProperties pagedTeiCompProps = new ComponentProperties();
+						pagedTeiComponent.setProperties(pagedTeiCompProps);
+						
+						pagedTeiComponent.getProperties().setMimeType("text/xml");
+						pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+						pagedTeiComponent.getProperties().setVisibility("public");
+						ComponentContent pagedTeiContent = new ComponentContent();
+						pagedTeiComponent.setContent(pagedTeiContent);
+						
+						pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+						volume.getItem().getComponents().add(pagedTeiComponent);
+					}
+					
+					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				}
+				
+				
+				
+				
+				
 				
 			}
 			
@@ -1811,6 +1844,7 @@ public class VolumeServiceBean {
 	
 	public Div getDivForPage(Volume v, Page p) throws Exception
 	{
+		logger.info("Finding structural element for pagebreak " + p.getId());
 		long start = System.currentTimeMillis();
 		String divId = "";
 		Processor proc = new Processor(false);
@@ -1846,11 +1880,9 @@ public class VolumeServiceBean {
         
         Div div = (Div)v.getTeiSd().getDivMap().get(divId);
         long time = System.currentTimeMillis() - start;
-        System.out.println("Time for finding div: " + time);
+       
         
         return div;
-
-	
 	}
 	
 	public Volume loadCompleteVolume(String volumeId, String userHandle) throws Exception
