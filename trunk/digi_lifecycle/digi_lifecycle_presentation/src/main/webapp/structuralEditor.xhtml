@@ -250,12 +250,12 @@
 						
 						<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
 						
-						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb}"/>
+						<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb || divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType!='BODY' or divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 						
 						
 						
 						
-						<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb}">
+						<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
 							<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
 							<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
 						</h:selectOneMenu>
@@ -267,10 +267,10 @@
 						
 						<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
 					
-						<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="Delete" rendered="#{divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+						<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="Delete" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 						
 						
-						<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="Edit" rendered="#{divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
+						<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="Edit" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
 						
 					</rich:treeNode>
 					
