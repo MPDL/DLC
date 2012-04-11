@@ -48,6 +48,16 @@ public abstract class PbOrDiv {
 		this.elementType = type;
 	}
 	
+	public PbOrDiv(PbOrDiv original)
+	{
+		this.setElementType(original.getElementType());
+		this.setId(original.getId());
+		this.setNumeration(original.getNumeration());
+		this.setParent(original.getParent());
+		this.setPbOrDiv(original.getPbOrDiv());
+		this.setType(original.getType());
+	}
+	
 	public PbOrDiv()
 	{
 	}
@@ -106,6 +116,8 @@ public abstract class PbOrDiv {
 	public void setElementType(ElementType elementType) {
 		this.elementType = elementType;
 	}
+	
+	
 	
 	
 

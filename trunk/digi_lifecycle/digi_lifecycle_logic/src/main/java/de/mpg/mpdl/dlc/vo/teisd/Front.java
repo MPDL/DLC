@@ -9,4 +9,7 @@ public class Front extends Div{
 		super(ElementType.FRONT);
 	}
 
+	public Front(Front original) {
+		super(original);
+	}
 }

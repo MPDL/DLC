@@ -29,6 +29,14 @@ public class Pagebreak extends PbOrDiv{
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Pagebreak(Pagebreak original) {
+		super(original);
+		this.setFacs(original.getFacs());
+		this.setNext(original.getNext());
+		this.setPrev(original.getPrev());
+		this.setSubtype(original.getSubtype());
+	}
+	
 	public String getFacs() {
 		return facs;
 	}
@@ -43,6 +51,22 @@ public class Pagebreak extends PbOrDiv{
 
 	public void setSubtype(String subtype) {
 		this.subtype = subtype;
+	}
+
+	public String getNext() {
+		return next;
+	}
+
+	public void setNext(String next) {
+		this.next = next;
+	}
+
+	public String getPrev() {
+		return prev;
+	}
+
+	public void setPrev(String prev) {
+		this.prev = prev;
 	}
 	
 	
