@@ -10,7 +10,16 @@ public class DocTitle
 	
 	private String title;
 	
+	public DocTitle()
+	{
+		
+	}
 	
+	public DocTitle(DocTitle original)
+	{
+		this.setTitle(original.getTitle());
+		this.setType(original.getType());
+	}
 	
 	public String getType() {
 		return type;

@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.vo.teisd;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -50,6 +51,23 @@ public class Div extends PbOrDiv {
 	public Div(ElementType elType) {
 		super(elType);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public Div(Div original)
+	{
+		super(original);
+		
+		this.setAuthor1(original.getAuthor1());
+		this.setAuthor2(original.getAuthor2());
+		this.setAuthor3(original.getAuthor3());
+		
+		this.setAuthor1inv(original.getAuthor1inv());
+		this.setAuthor2inv(original.getAuthor2inv());
+		this.setAuthor3inv(original.getAuthor3inv());
+
+		List<String> head = new ArrayList<String>();
+		head.addAll(original.getHead());
+		this.setHead(head);
 	}
 
 	
@@ -113,6 +131,9 @@ public class Div extends PbOrDiv {
 	{
 		return new ArrayList<String>();
 	}
+	
+	
+	
 
 
 

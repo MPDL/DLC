@@ -26,6 +26,29 @@ public class TitlePage extends Div {
 		super(ElementType.TITLE_PAGE);
 	}
 	
+	public TitlePage(TitlePage original)
+	{
+		super(original);
+		
+		List<DocTitle> clonedDocTitles = new ArrayList<DocTitle>();
+		List<DocTitle> clonedTitleParts = new ArrayList<DocTitle>();
+		
+		for(DocTitle originalDt : original.getDocTitles())
+		{
+			DocTitle clonedDt = new DocTitle(originalDt);
+			clonedDocTitles.add(clonedDt);
+		}
+		
+		for(DocTitle originalDt : original.getTitleParts())
+		{
+			DocTitle clonedDt = new DocTitle(originalDt);
+			clonedTitleParts.add(clonedDt);
+		}
+		
+		this.setDocTitles(clonedDocTitles);
+		this.setTitleParts(clonedTitleParts);
+	}
+	
 	public List<DocTitle> getDocTitles() {
 		return docTitles;
 	}

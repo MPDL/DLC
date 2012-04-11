@@ -9,5 +9,8 @@ public class Body extends Div{
 		super(ElementType.BODY);
 	}
 
+	public Body(Body original) {
+		super(original);
+	}
 
 }
