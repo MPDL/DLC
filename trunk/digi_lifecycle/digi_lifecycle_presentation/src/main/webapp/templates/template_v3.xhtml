@@ -59,6 +59,8 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
+			
+			
 		</h:head>
 
 		<h:body lang="#{applicationBean.userLocaleString}">
@@ -115,6 +117,29 @@ All rights reserved. Use is subject to license terms.
 			</h:panelGroup>
 			<h:outputScript library="jscript" name="jquery-ui-1.8.16.custom.min.js"/>
 			<h:outputScript library="jscript" name="default.js"/>
+			<script>
+			//<![CDATA[
+			// Workaround: Make rerendered forms work. See http://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
+				$(document).ready(function () {
+				  jsf.ajax.addOnEvent(function (e) {
+				    if (e.status === 'success') {
+				      $("partial-response:first changes:first update[id='javax.faces.ViewState']", e.responseXML).each(function (i, u) {
+				        // update all forms
+				        $(document.forms).each(function (i, f) {
+				          var field = $("input[name='javax.faces.ViewState']", f);
+				          if (field.length == 0) {
+				            field = $("<input type=\"hidden\" name=\"javax.faces.ViewState\" />").appendTo(f);
+				          }
+				          field.val(u.firstChild.data);
+				        });
+				      });
+				    }
+				  });
+				});
+					
+			//]]>
+			</script>
+			
 		</h:body>
 	</html>
 </f:view>
