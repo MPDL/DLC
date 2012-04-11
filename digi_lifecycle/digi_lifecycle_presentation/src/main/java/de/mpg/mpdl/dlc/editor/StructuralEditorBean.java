@@ -380,17 +380,33 @@ public class StructuralEditorBean {
 				dummy.setId(currentTeiElement.getId());
 				Page realPage = volume.getPages().get(volume.getPages().indexOf(dummy));
 				currentTeiStartElementWrapper.setPage(realPage);
-				System.out.print("Added Pagebreak: " +  realPage.getOrder());
 				if(!pbList.isEmpty())
 				{
 					TeiElementWrapper lastPb = pbList.get(pbList.size()-1);
-					System.out.println("--- last Pb: " + lastPb.getPage().getOrder());
+					//System.out.println("--- last Pb: " + lastPb.getPage().getOrder());
 					
 					lastPb.setNextPagebreak(currentTeiStartElementWrapper);
 					
 					currentTeiStartElementWrapper.setLastPagebreak(lastPb);
 				}
 				pbList.add(currentTeiStartElementWrapper);
+				
+				//If the last element was one of Front, Body or Back, then set this pagebreak as this element's page.
+				if(flatTeiElementList.size()>=2)
+				{
+					TeiElementWrapper lastElement = flatTeiElementList.get(flatTeiElementList.size()-2);
+					
+					if((ElementType.FRONT.equals(lastElement.getTeiElement().getElementType()) ||
+							ElementType.BODY.equals(lastElement.getTeiElement().getElementType()) ||
+							ElementType.BACK.equals(lastElement.getTeiElement().getElementType())) &&
+							PositionType.START.equals(lastElement.getPositionType()))
+					{
+						lastElement.setPagebreakWrapper(currentTeiStartElementWrapper);
+				
+					}
+				}
+				
+				
 				
 			}
 			
