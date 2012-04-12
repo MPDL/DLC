@@ -56,7 +56,7 @@ public class Div extends PbOrDiv {
 	public Div(Div original)
 	{
 		super(original);
-		
+		this.setElementType(ElementType.DIV);
 		this.setAuthor1(original.getAuthor1());
 		this.setAuthor2(original.getAuthor2());
 		this.setAuthor3(original.getAuthor3());

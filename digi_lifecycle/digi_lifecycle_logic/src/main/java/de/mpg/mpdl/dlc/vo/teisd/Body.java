@@ -11,6 +11,7 @@ public class Body extends Div{
 
 	public Body(Body original) {
 		super(original);
+		this.setElementType(ElementType.BODY);
 	}
 
 }

@@ -10,6 +10,7 @@ public class Back extends Div{
 	
 	public Back(Back original) {
 		super(original);
+		this.setElementType(ElementType.BACK);
 	}
 
 }

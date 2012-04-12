@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
+
 @XmlRootElement(name = "pb", namespace = "http://www.tei-c.org/ns/1.0")
 public class Pagebreak extends PbOrDiv{
 	
@@ -31,6 +33,7 @@ public class Pagebreak extends PbOrDiv{
 	
 	public Pagebreak(Pagebreak original) {
 		super(original);
+		this.setElementType(ElementType.PB);
 		this.setFacs(original.getFacs());
 		this.setNext(original.getNext());
 		this.setPrev(original.getPrev());

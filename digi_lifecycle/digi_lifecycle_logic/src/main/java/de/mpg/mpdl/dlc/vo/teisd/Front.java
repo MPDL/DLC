@@ -11,5 +11,6 @@ public class Front extends Div{
 
 	public Front(Front original) {
 		super(original);
+		this.setElementType(ElementType.FRONT);
 	}
 }
