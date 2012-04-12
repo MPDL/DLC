@@ -91,6 +91,8 @@ public class StructuralEditorBean {
 	
 	private ElementType selectedStructuralType;
 	
+	private ElementType selectedStructuralEditType;
+	
 	
 	//Pagination values
 	private String selectedPaginationEndPbId;
@@ -587,7 +589,7 @@ public class StructuralEditorBean {
 	
 	public void selectedStructuralEditElementTypeChanged()
 	{
-		switch (selectedStructuralType)
+		switch (selectedStructuralEditType)
 		{
 			case DIV : 
 			{
@@ -597,7 +599,7 @@ public class StructuralEditorBean {
 				div.getHead().add("");
 				
 				currentEditElementWrapper.setTeiElement(div);
-				currentEditElementWrapper.getPartnerElement().setTeiElement(div);
+				//currentEditElementWrapper.getPartnerElement().setTeiElement(div);
 				break;
 			}
 			
@@ -606,7 +608,7 @@ public class StructuralEditorBean {
 				
 				Figure figure = new Figure();
 				currentEditElementWrapper.setTeiElement(figure);
-				currentEditElementWrapper.getPartnerElement().setTeiElement(figure);
+				//currentEditElementWrapper.getPartnerElement().setTeiElement(figure);
 				break;
 			}
 			
@@ -617,7 +619,7 @@ public class StructuralEditorBean {
 				titlePage.setDocTitles(new ArrayList<DocTitle>());
 				titlePage.getDocTitles().add(new DocTitle());
 				currentEditElementWrapper.setTeiElement(titlePage);
-				currentEditElementWrapper.getPartnerElement().setTeiElement(titlePage);
+				//currentEditElementWrapper.getPartnerElement().setTeiElement(titlePage);
 				break;
 			}
 		
@@ -793,7 +795,7 @@ public class StructuralEditorBean {
 	
 	public void editStructuralElement(TeiElementWrapper elementToEdit)
 	{
-		this.selectedStructuralType = elementToEdit.getTeiElement().getElementType();
+		this.selectedStructuralEditType = elementToEdit.getTeiElement().getElementType();
 		
 		currentEditElementWrapperRestore = elementToEdit;
 		currentEditElementWrapper = new TeiElementWrapper();
@@ -833,7 +835,9 @@ public class StructuralEditorBean {
 	public void updateEditedStructuralElement()
 	{
 		currentEditElementWrapperRestore.setTeiElement(currentEditElementWrapper.getTeiElement());
+		currentEditElementWrapperRestore.getPartnerElement().setTeiElement(currentEditElementWrapper.getTeiElement());
 		System.out.println("Update struct element");
+		
 	}
 	
 	
@@ -1672,6 +1676,14 @@ public class StructuralEditorBean {
 
 	public void setValidationList(List<ValidationWrapper> validationList) {
 		this.validationList = validationList;
+	}
+
+	public ElementType getSelectedStructuralEditType() {
+		return selectedStructuralEditType;
+	}
+
+	public void setSelectedStructuralEditType(ElementType selectedStructuralEditType) {
+		this.selectedStructuralEditType = selectedStructuralEditType;
 	}
 
 
