@@ -16,8 +16,6 @@ public class TeiElementWrapper {
 		START, END, EMPTY;
 	}
 	
-	@ManagedProperty("#{structuralEditorBean}")
-	private StructuralEditorBean structuralEditorBean;
 	
 	private TeiElementWrapper partnerElement;
 	
