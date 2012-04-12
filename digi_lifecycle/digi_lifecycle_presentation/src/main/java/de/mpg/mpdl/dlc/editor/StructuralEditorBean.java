@@ -836,7 +836,7 @@ public class StructuralEditorBean {
 	{
 		currentEditElementWrapperRestore.setTeiElement(currentEditElementWrapper.getTeiElement());
 		currentEditElementWrapperRestore.getPartnerElement().setTeiElement(currentEditElementWrapper.getTeiElement());
-		System.out.println("Update struct element");
+		
 		
 	}
 	

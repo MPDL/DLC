@@ -267,10 +267,10 @@
 						
 						<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
 					
-						<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="Delete" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+						<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 						
 						
-						<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="Edit" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
+						<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
 						
 					</rich:treeNode>
 					
@@ -299,20 +299,20 @@
 	              <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
 	              
 	              <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
-	              	<h:outputText value="Cancel" />
+	              	<h:outputText value="#{lbl.edit_cancelBtn}" />
 	              </h:outputLink>
 	              </h:form>
 			</rich:popupPanel>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container1">
 			<h:form>
-				<h:commandButton value="Save" action="#{structuralEditorBean.save}"/><br/>
-				<h:commandButton value="Save &amp; Release" action="#{structuralEditorBean.saveAndRelease}"/>
+				<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
+				<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
 			</h:form>
 		</h:panelGroup>
 		
 		
-		<rich:panel header="Validation Errors">
+		<rich:panel header="#{lbl.edit_validationErrors}">
 				
 				<ul style="color:red;">
 				<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
