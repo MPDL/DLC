@@ -43,7 +43,27 @@ public class TeiElementWrapper {
 	private TeiElementWrapper lastPagebreak;
 	
 
-
+	public TeiElementWrapper()
+	{
+		
+	}
+	
+	public TeiElementWrapper(TeiElementWrapper original)
+	{
+		this.setLastPagebreak(original.getLastPagebreak());
+		this.setNextPagebreak(original.getNextPagebreak());
+		this.setPage(original.getPage());
+		this.setPagebreakIdToMoveTo(original.getPagebreakIdToMoveTo());
+		this.setPagebreakWrapper(original.getPagebreakWrapper());
+		this.setPartnerElement(original.getPartnerElement());
+		this.setPositionType(original.getPositionType());
+		this.setTeiElement(original.getTeiElement());
+		this.setTreeWrapperNode(original.getTreeWrapperNode());
+		
+	}
+	
+	
+	
 	public PositionType getPositionType() {
 		return positionType;
 	}

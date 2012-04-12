@@ -14,3 +14,6 @@ if (!window["busystatus"]) {
 		};
 		 
 		jsf.ajax.addOnEvent(busystatus.onStatusChange);
+		
+		
+		
