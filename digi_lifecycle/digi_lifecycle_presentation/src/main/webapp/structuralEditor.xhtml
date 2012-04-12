@@ -283,7 +283,7 @@
 		</h:panelGroup>
 		
 		
-		<rich:popupPanel id="editPopup" modal="true" resizeable="false">
+		<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
 				<f:facet name="header">
 					<h:outputText value="Edit" />
 				</f:facet>
@@ -296,7 +296,7 @@
 	              <br/>
 	              <br/>
 	              
-	              <a4j:commandButton render="@all" type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
+	              <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
 	              
 	              <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
 	              	<h:outputText value="Cancel" />

@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.editor;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -78,6 +79,11 @@ public class StructuralEditorBean {
 	 * Element that is currently edited
 	 */
 	private TeiElementWrapper currentEditElementWrapper;
+	
+	/**
+	 * Element that is currently edited 
+	 */
+	private TeiElementWrapper currentEditElementWrapperRestore;
 	
 	private PbOrDiv currentEditTeiElement;
 
@@ -788,16 +794,45 @@ public class StructuralEditorBean {
 	public void editStructuralElement(TeiElementWrapper elementToEdit)
 	{
 		this.selectedStructuralType = elementToEdit.getTeiElement().getElementType();
-		currentEditElementWrapper = elementToEdit;
+		
+		currentEditElementWrapperRestore = elementToEdit;
+		currentEditElementWrapper = new TeiElementWrapper();
+		
+		PbOrDiv cloned = null;
+		switch(elementToEdit.getTeiElement().getElementType())
+		{
+			case DIV :
+			{
+				cloned = new Div((Div)elementToEdit.getTeiElement());
+				break;
+			}
+			case FIGURE :
+			{
+				cloned = new Figure((Figure)elementToEdit.getTeiElement());
+				break;
+			}
+			case TITLE_PAGE :
+			{
+				cloned = new TitlePage((TitlePage)elementToEdit.getTeiElement());
+				break;
+			}
 		
 		
 		
+		}
+		
+		
+		currentEditElementWrapper.setTeiElement(cloned);
 		
 	}
 	
 	
+
+	
+	
 	public void updateEditedStructuralElement()
 	{
+		currentEditElementWrapperRestore.setTeiElement(currentEditElementWrapper.getTeiElement());
 		System.out.println("Update struct element");
 	}
 	
