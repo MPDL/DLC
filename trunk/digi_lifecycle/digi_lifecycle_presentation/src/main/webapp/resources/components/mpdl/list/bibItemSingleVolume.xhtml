@@ -30,7 +30,9 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
 					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-					<span class="eg3_itemStatusTitle">Released</span>
+					<h:panelGroup class="eg3_itemStatusTitle">
+						<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
+					</h:panelGroup>
 				</div>
 				
 				<div class="eg3_itemHeadline">
@@ -109,6 +111,20 @@
 						<h:outputText value="Thumbnails"/>
 					</pretty:link>
 				</h:panelGroup>
+				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
+					<pretty:link mappingId="upload">
+						<h:outputText value="Reingest/edit" />
+					</pretty:link>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my' and utilBean.editable(cc.attrs.volume)}">
+					<pretty:link mappingId="structuralEditor">
+						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<h:outputText value="edit Strukture" />
+					</pretty:link>
+				</h:panelGroup>
+				
 				<ui:remove>
 					<br/>
 					<div class="eg3_itemMediabarCategory">Kodikologische Daten</div>

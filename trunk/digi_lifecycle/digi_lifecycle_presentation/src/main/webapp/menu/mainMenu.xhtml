@@ -21,10 +21,19 @@
 				</h:outputLink>
 			</section>
 		</li>
+
+		<li>
+			<section class="level1">
+				<h:outputLink id="lnkMyItems" title="#{tlt.MyItems}" value="/#{applicationBean.contextPath}/volumes/my" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
+					<h:outputText value="#{lbl.navigation_lnk_My_Items}" />
+				</h:outputLink>
+			</section>
+		</li>
+
 		
 		<li>
 			<section class="level1">
-				<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/ingest.xhtml" rendered="#{loginBean.login}">
+				<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/upload" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
 					<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 				</h:outputLink>
 			</section>
@@ -32,7 +41,7 @@
 		
 		<li>
 			<section class="level1">
-				<h:outputLink id="lnkUser" title="#{tlt.Admin}" value="/#{applicationBean.contextPath}/admin.xhtml" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' )}">
+				<h:outputLink id="lnkUser" title="#{tlt.Admin}" value="/#{applicationBean.contextPath}/admin" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' )}">
 					<h:outputText value="#{lbl.navigation_lnk_Admin}" />
 				</h:outputLink>
 			</section>

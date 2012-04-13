@@ -86,16 +86,23 @@
 			
 				<div class="eg3_itemMediabar">
 					<div class="eg3_itemMediabarThumb">
-						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(cc.attrs.volume.pages[0],50,100)}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 					</div>
-					<ui:remove>
-					<br/>
-					<div class="eg3_itemMediabarCategory">Kodikologische Daten</div>
-					<br/>
-					<div class="eg3_itemMediabarCategory">Volltext</div>
-					<br/>
-					<div class="eg3_itemMediabarCategory">Sammlung</div>
-					</ui:remove>
+					
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and utilBean.ifOwner(volume.item, loginBean.user)}">
+					<pretty:link mappingId="upload">
+						<h:outputText value="Reingest/edit" />
+					</pretty:link>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my'and utilBean.editable(volume)}">
+					<pretty:link mappingId="structuralEditor">
+						<f:param value="#{volume.item.objid}" />
+						<h:outputText value="edit Strukture" />
+					</pretty:link>
+				</h:panelGroup>
+
+					
 				</div>
 			</div>
 		</div>

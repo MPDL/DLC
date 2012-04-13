@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.util;
 
+import java.awt.peer.SystemTrayPeer;
 import java.net.URL;
 import java.util.List;
 
@@ -10,6 +11,10 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ocpsoft.pretty.PrettyContext;
+
+import de.escidoc.core.resources.om.item.Item;
+import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.user.User;
 
 @ManagedBean
 @RequestScoped
@@ -71,5 +76,28 @@ public class UtilBean {
 		
 		return "null";
 		
+	}
+	
+	
+	public static boolean ifOwner(Item item, User user)
+	{
+
+		String itemContextId = item.getProperties().getContext().getObjid(); 
+		if(user != null && user.getModeratorContextIds().contains(itemContextId))
+			return true;
+		else if(user != null && item.getProperties().getCreatedBy().getObjid().equals(user.getId()))
+				return true;
+		else
+			return false;
+	}
+	
+	
+	public static boolean editable(Volume volume)
+	{
+
+		if(volume.getItem().getComponents() == null || volume.getItem().getComponents().size() < 3)
+			return true;
+		else
+			return false;
 	}
 }

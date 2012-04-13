@@ -176,7 +176,7 @@ public class LoginBean
 //				String requestURL = request.getRequestURL().toString();
 	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
 	    		String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
-	    		if(requestURL.equals(dlc_URL +"/upload") || requestURL.equals(dlc_URL +"/admin") || requestURL.equals(dlc_URL + "/user"))
+	    		if(requestURL.equals(dlc_URL +"/upload") || requestURL.equals(dlc_URL +"/admin") || requestURL.equals(dlc_URL + "/user")|| requestURL.equals(dlc_URL + "/volumes/my"))
 	    			requestURL = "http://localhost:8080/dlc/";
 	    		FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
 

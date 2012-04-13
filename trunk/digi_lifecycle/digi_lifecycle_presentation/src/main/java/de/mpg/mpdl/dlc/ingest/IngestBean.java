@@ -21,6 +21,8 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DropEvent;
 
+import com.ocpsoft.pretty.faces.annotation.URLMapping;
+
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
@@ -29,6 +31,7 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
+import de.mpg.mpdl.dlc.search.SearchCriterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -53,13 +56,11 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  * @author Ilya Shaikovsky
  *
  */
-@ResourceDependencies({
-    @ResourceDependency(name = "jquery.js"),
-    @ResourceDependency(name = "jquery-ui-core.js"),
-    @ResourceDependency(name = "richfaces-dnd.js")
-})
+
 @ManagedBean
 @SessionScoped
+@URLMapping(id="upload", pattern = "/upload", viewId = "/ingest.xhtml", onPostback=true)
+
 public class IngestBean implements Serializable {
  
 	private static Logger logger = Logger.getLogger(IngestBean.class);
@@ -682,13 +683,36 @@ public class IngestBean implements Serializable {
 
 	public void setSelectedMultiVolumeId(String selectedMultiVolId) {
 		this.selectedMultiVolumeId = selectedMultiVolId;
-	}
+	} 
 
 	public List<SelectItem> getMultiVolItems() throws Exception{
 		multiVolItems.clear();
 		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-		scList.add(new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId()));
-		
+		SearchCriterion sc = null ;
+		if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
+		{
+			for(Collection c : loginBean.getUser().getModeratorCollections())
+			{
+				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
+				{
+					sc = new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId());
+					scList.add(sc);
+				}
+			}
+
+		}
+		else if(scList.size()!=0 && loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
+		{
+			for(Collection c : loginBean.getUser().getDepositorCollections())
+			{
+				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
+				{
+					sc = new SearchCriterion( SearchType.CREATEDBY,loginBean.getUser().getName());
+					scList.add(sc);
+				}
+				
+			}
+		}
 		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, SortCriterion.getStandardSortCriteria(), 1000, 0);
 		for(Volume vol : vsr.getVolumes())
 		{
