@@ -157,21 +157,20 @@ public class UserAccountServiceBean {
 					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle, userId));
 					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,userId));
 	        	}
-				
-				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
-	        	{
-					user.getGrants().add(grant);
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getDepositorCollections().add(c);
-	        	}			
-				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
 	        	{
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getModeratorCollections().add(c);
-	        	}
-
+					user.getModeratorContextIds().add(c.getId());
+	        	}				
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
+	        	{
+					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					user.getGrants().add(grant);
+					user.getDepositorCollections().add(c);
+					user.getDepositorContextIds().add(c.getId());
+	        	}			
 			}			
 
 		}catch(Exception e)
@@ -308,7 +307,11 @@ public class UserAccountServiceBean {
 				}				
 				for(String contextInfo : user.getModeratorContextIds())
 				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.modifier"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
 				}
 				ua = client.retrieve(ua.getObjid());
@@ -366,7 +369,11 @@ public class UserAccountServiceBean {
 			{
 				for(String contextInfo : user.getModeratorContextIds())
 				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					client.createGrant(ua.getObjid(), grant);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.modifier"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
