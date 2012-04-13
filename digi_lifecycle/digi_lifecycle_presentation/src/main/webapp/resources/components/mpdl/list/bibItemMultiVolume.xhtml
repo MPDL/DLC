@@ -87,6 +87,13 @@
 								<label class="eg3_iconActionLabel">More / Less</label>
 							</div>
 						</div>
+						
+						<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
+							<pretty:link mappingId="upload">
+								<h:outputText value="Reingest/edit" />
+							</pretty:link>
+						</h:panelGroup>
+						
 					</div>
 				</div>
 			</div>
