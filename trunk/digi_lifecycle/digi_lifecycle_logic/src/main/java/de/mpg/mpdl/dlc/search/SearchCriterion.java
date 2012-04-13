@@ -30,7 +30,11 @@ public class SearchCriterion {
 		
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}),
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}),
-		OBJECTTYPE(new String[]{"escidoc.objecttype"});
+		OBJECTTYPE(new String[]{"escidoc.objecttype"}),
+	
+		CREATEDBY(new String[]{"escidoc.created-by.name"});
+		
+		
 		
 		private String[] indexNames;
 		
