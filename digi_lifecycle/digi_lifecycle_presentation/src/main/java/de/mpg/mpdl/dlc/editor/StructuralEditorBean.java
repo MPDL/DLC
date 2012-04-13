@@ -143,7 +143,9 @@ public class StructuralEditorBean {
 					volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 					
 				} catch (Exception e) {
+					logger.error("Could not load volume " + volumeId, e );
 					MessageHelper.errorMessage("Problem while loading volume");
+					volume = null;
 				}
 			}
 			volumeLoaded();
@@ -1684,6 +1686,37 @@ public class StructuralEditorBean {
 
 	public void setSelectedStructuralEditType(ElementType selectedStructuralEditType) {
 		this.selectedStructuralEditType = selectedStructuralEditType;
+	}
+	
+	public void goToNextPage()
+	{
+		int selected = pbList.indexOf(selectedPb);
+		if(selected<pbList.size()-1)
+		{
+			selectPb(pbList.get(selected+1));
+		}
+		
+	}
+	
+	public void goToPreviousPage()
+	{
+		int selected = pbList.indexOf(selectedPb);
+		if(selected>0)
+		{
+			selectPb(pbList.get(selected-1));
+		}
+		
+        
+	} 
+	
+	public void goToLastPage()
+	{
+		selectPb(pbList.get(pbList.size()-1));
+	}
+	
+	public void goToFirstPage()
+	{
+		selectPb(pbList.get(0));
 	}
 
 

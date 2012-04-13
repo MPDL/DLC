@@ -17,9 +17,9 @@
 		<h:outputScript library="jscript" name="jquery_1.6.3_min.js" target="head"/>
 		<h:outputScript library="components/lazyload_new" name="jquery.lazyload.js" target="head"/>
 
+
+		<!-- BEGIN THUMBNAIL LIST -->
 		<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_container1_3" style="height:800px; overflow:auto">
-			
-			
 			<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
 				
 				<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container1 eg3_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
@@ -82,7 +82,6 @@
 					<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
 				</h:panelGroup>
 			</a4j:repeat>
-		
 		</h:panelGroup>
 		
 		
@@ -91,18 +90,90 @@
 							container: $("#thumbsContainer"),
 							});
 		</script>
-	
+		<!-- END THUMBNAIL LIST -->
 		
+		
+		<!-- START PAGE IMAGE -->
 		<h:panelGroup layout="block" id="view" styleClass="container1_3">
+				<h:panelGroup layout = "block">
+					<h:form>
+					
+						<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="???placeholder???">
+							<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+							<h:outputText value="first" />
+							<f:ajax render="@all"/>
+						</h:commandLink>
+						<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="???placeholder???">
+							<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+							<h:outputText value="prev" />
+							<f:ajax render="@all"/>
+						</h:commandLink>
+						<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="???placeholder???">
+							<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+							<h:outputText value="next" />
+							<f:ajax render="@all"/>
+						</h:commandLink>
+						<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="???placeholder???">
+							<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+							<h:outputText value="last" />
+							<f:ajax render="@all"/>
+						</h:commandLink>
+					</h:form>
+				</h:panelGroup>
+				<br/>
+				
 				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}" />
 		</h:panelGroup>
-		
+		<!-- END PAGE IMAGE -->
 		
 		
 		
 		<h:panelGroup layout="block" id="pbForm" styleClass="container1_3">
+			 
+			<!-- START SAVE BUTTONS -->
+			<h:panelGroup layout="block" styleClass="eg3_container1">
+				<h:form>
+					<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
+					<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+				</h:form>
+			</h:panelGroup>
+			<!-- END SAVE BUTTONS -->
+				
+				
+			<br/>
+				
+			<!-- START VALIDATION ERRORS -->
+			<rich:panel header="#{lbl.edit_validationErrors}">
+					
+					<ul style="color:red;">
+					<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
+						<li>
+						<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}" />
+						<h:outputText value=" cannot be placed under " />
+						<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}" />
+						</li>
+					</a4j:repeat>
+					</ul>
+	        </rich:panel>
+	        <!-- END VALIDATION ERRORS -->
 			
-			<rich:panel>
+			<br/>
+			
+			<!-- START STRUCTURE EDITING -->
+			<rich:panel header="Strukturelemente erstellen">
+				<h:form>
+		        	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
+		        	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+		        	 teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+		              <br/>
+		              <br/>
+		              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+	             </h:form>
+             </rich:panel>
+             <!-- END STRUCTURE EDITING -->
+			<br/>
+			<!-- START PAGE EDITING -->
+			<rich:panel header="Paginierungs- und Seiteneinstellungen">
 			<h:form>
 			
 				<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
@@ -187,24 +258,12 @@
 			</h:form>
 			
 			</rich:panel>
-			
-			
-			
-			<rich:panel>
-				<h:form>
-		        	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
-		        	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
-		        	 teiWrapper="#{structuralEditorBean.currentNewElement}"/>
-		              <br/>
-		              <br/>
-		              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
-	             </h:form>
-             </rich:panel>
+			<!-- END PAGE EDITING -->
 
 		</h:panelGroup>
 		
-		
-		<h:panelGroup style="height:800px">
+		<!-- START TREE -->
+		<h:panelGroup style="height:400px; overflow:auto;">
 			<h:form id="structuralEditorForm">
 			<rich:tree toggleType="ajax" var="divItem" >
 				<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
@@ -281,52 +340,38 @@
 		</h:form>
 
 		</h:panelGroup>
+		<!-- END TREE -->
 		
-		
+		<!-- START EDIT STRUCTURE POPUP -->
 		<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
-				<f:facet name="header">
-					<h:outputText value="Edit" />
-				</f:facet>
-				<f:facet name="controls">
-				</f:facet>
-				<h:form>
-	        	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-	        	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-	        	 teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-	              <br/>
-	              <br/>
-	              
-	              <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
-	              
-	              <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
-	              	<h:outputText value="#{lbl.edit_cancelBtn}" />
-	              </h:outputLink>
-	              </h:form>
-			</rich:popupPanel>
-		
-		<h:panelGroup layout="block" styleClass="eg3_container1">
+			<f:facet name="header">
+				<h:outputText value="Edit" />
+			</f:facet>
+			<f:facet name="controls">
+			</f:facet>
 			<h:form>
-				<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
-				<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
-			</h:form>
-		</h:panelGroup>
+	       	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+	       	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+	       	 teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+	             <br/>
+	             <br/>
+	             
+	             <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
+	             
+	             <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
+	             	<h:outputText value="#{lbl.edit_cancelBtn}" />
+	             </h:outputLink>
+	             </h:form>
+		</rich:popupPanel>
+		<!-- END EDIT STRUCTURE POPUP -->
+		
+        
+       
 		
 		
-		<rich:panel header="#{lbl.edit_validationErrors}">
-				
-				<ul style="color:red;">
-				<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
-					<li>
-					<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}" />
-					<h:outputText value=" cannot be placed under " />
-					<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}" />
-					</li>
-				</a4j:repeat>
-				</ul>
-        </rich:panel>
+		
 		
 		<script>
-		
 			$(document).ready(function(e)
 					{
 						scrollDivs();
@@ -339,15 +384,9 @@
 				var pos = $('.' + selectedPb).position();
 				var thumbsContainerPos = $('#thumbsContainer').position();
 				var currentScroll = $('#thumbsContainer').scrollTop();
-				$('#thumbsContainer').scrollTop(pos.top + currentScroll - thumbsContainerPos.top);
+				$('#thumbsContainer').scrollTop(pos.top - thumbsContainerPos.top + currentScroll);
 
 			}
-		
-		
-			
-		
-		
-		
 		</script>
 			
 		
