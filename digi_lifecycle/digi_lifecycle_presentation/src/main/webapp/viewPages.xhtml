@@ -34,7 +34,7 @@
 										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
 										
 										
-											<h:commandLink action="#{viewPages.goTo(divItem)}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+											<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
 													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
 													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
@@ -267,6 +267,42 @@
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
+			
+			<script type="text/javascript">
+				//<![CDATA[
+				
+				$(document).ready(function(e)
+						{
+							scrollDivs();
+						});
+				jsf.ajax.addOnEvent(function(e)
+					{
+						if(e.status=="success")
+						{
+							scrollDivs();
+						}
+					});
+				
+				function scrollDivs()
+				{
+					var selectedDivId= '#{viewPages.selectedDiv.id}';
+					var treeContainerId = "#{rich:clientId('toc')}" + ":content";
+					//add an backslahs before all colons
+					treeContainerId = treeContainerId.replace(/:/g, "\\:");
+					var treeContainerDiv = $('#' + treeContainerId);
+					
+					//var selectedPb = 'page_300';
+					var pos = $('.struct_' + selectedDivId).offset();
+					var treeContainerPos = $(treeContainerDiv).offset();
+					var currentScroll = $(treeContainerDiv).scrollTop();
+					var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;
+					$(treeContainerDiv).scrollTop(newScrollPos);
+					//$(treeContainerDiv).animate({scrollTop : newScrollPos}, 'slow');
+	
+				}
+				//]]>
+			</script>
+			
 		</ui:define>
 	</ui:composition>
 </html>
