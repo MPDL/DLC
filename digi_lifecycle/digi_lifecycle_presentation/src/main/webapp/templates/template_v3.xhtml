@@ -120,7 +120,7 @@ All rights reserved. Use is subject to license terms.
 			<script>
 			//<![CDATA[
 			// Workaround: Make rerendered forms work. See http://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790
-				$(document).ready(function () {
+				
 				  jsf.ajax.addOnEvent(function (e) {
 				    if (e.status === 'success') {
 				      $("partial-response:first changes:first update[id='javax.faces.ViewState']", e.responseXML).each(function (i, u) {
@@ -135,7 +135,7 @@ All rights reserved. Use is subject to license terms.
 				      });
 				    }
 				  });
-				});
+
 					
 			//]]>
 			</script>
