@@ -17,22 +17,12 @@
 			<nav>
 				<pretty:link mappingId="user" rendered="#{loginBean.login}">
 					<h:outputLabel id="txtAccountUserName" styleClass="EMPTYCLASS" value="#{loginBean.user.loginName}"></h:outputLabel>
-				</pretty:link>			
+				</pretty:link>
 				
 				<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
 				
 				
-				<h:form>
-					<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
-						value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
-					</h:commandLink>
-			
-					<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
-						value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
-					</h:commandLink> 
-				</h:form>
 				
-				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 	
 				<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
 					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
@@ -53,6 +43,20 @@
 					<h:outputText value="#{lbl.header_lnk_help}" />
 				</h:outputLink> 
 				
+				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+				
+				<h:form>
+					<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
+						value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+					</h:commandLink>
+			
+					<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
+						value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+					</h:commandLink> 
+				</h:form>
+				
+				
+				
 				<h:form>
 					<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" title="???placeholder???">
 						<h:panelGroup layout="block" styleClass="eg3_selectionContent">
@@ -65,6 +69,8 @@
 						</h:selectOneMenu> 
 					</h:panelGroup>
 				</h:form>
+				
+				
 			</nav>
 		</menu>
 	</h:panelGroup>
