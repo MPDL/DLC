@@ -18,9 +18,9 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<div class="eg3_listItemVolume eg3_multiVolumeBG_3">
+		<h:panelGroup layout="block" class="eg3_listItemVolume eg3_multiVolumeBG_3" rendered="#{(allVolumesBean.contextId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
 			
-			<div class="eg3_itemContent">
+			<h:panelGroup layout="block" class="eg3_itemContent" >
 				<div class="eg3_itemContentData">
 					<div class="eg3_itemStatusArea">
 						<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
@@ -89,7 +89,7 @@
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{volume.pages[0] != null}"/>
 					</div>
 					
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and utilBean.ifOwner(volume.item, loginBean.user)}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
 					<pretty:link mappingId="upload">
 						<f:param value="#{volume.item.objid}" />
 						<h:outputText value="Reingest/edit" />
@@ -105,8 +105,8 @@
 
 					
 				</div>
-			</div>
-		</div>
+			</h:panelGroup>
+		</h:panelGroup>
 	</a4j:repeat>
 </cc:implementation>
 </html>
