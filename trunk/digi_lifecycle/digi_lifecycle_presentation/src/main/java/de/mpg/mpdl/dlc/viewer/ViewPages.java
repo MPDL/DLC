@@ -13,6 +13,8 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
+import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -38,6 +40,10 @@ public class ViewPages{
 	
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	
+	private Context context;
+	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 
 	private int selectedPageNumber;
@@ -62,7 +68,9 @@ public class ViewPages{
 		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 		{   
 			try {
+				
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
+				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage("Problem while loading volume");
@@ -375,6 +383,16 @@ public class ViewPages{
 
 	public void setVolumeId(String volumeId) {
 		this.volumeId = volumeId;
+	}
+
+
+	public Context getContext() {
+		return context;
+	}
+
+
+	public void setContext(Context context) {
+		this.context = context;
 	}	
 
 }

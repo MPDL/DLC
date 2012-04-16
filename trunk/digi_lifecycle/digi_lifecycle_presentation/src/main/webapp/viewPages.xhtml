@@ -20,11 +20,11 @@
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
 				<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-					<h3 class="eg3_multiVolumeTitle">Titel der Sammlung - falls nur eine Sammlung - auf eine Zeile trunkiert ...</h3>
+					<h3 class="eg3_multiVolumeTitle"><h:outputText value="#{viewPages.context.properties.name}"/></h3>
 					<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
 					<h:panelGroup styleClass="eg3_floatLeft">
-						<h3 class="eg3_volumeTitle">Juhu Title</h3>
-						<h4 class="eg3_volumeDetails">Verlag, Autor, Jahr</h4>
+						<h3 class="eg3_volumeTitle"><h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/></h3>
+						<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
