@@ -23,7 +23,7 @@
 			</ui:fragment>
 			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
 				<li class="eg3_borderradius_5_top">
-					<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/upload" >
+					<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/upload/new" >
 						<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 					</h:outputLink>
 				</li>
