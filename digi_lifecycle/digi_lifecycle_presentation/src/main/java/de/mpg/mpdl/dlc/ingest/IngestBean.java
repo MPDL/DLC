@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.richfaces.event.DropEvent;
 
+import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
@@ -59,9 +60,8 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
 @ManagedBean
 @SessionScoped
-@URLMapping(id="upload", pattern = "/upload", viewId = "/ingest.xhtml", onPostback=true)
-
-public class IngestBean implements Serializable {
+@URLMapping(id="upload", viewId = "/ingest.xhtml", pattern = "/upload/#{ingestBean.volumeId}")
+public class IngestBean{
  
 	private static Logger logger = Logger.getLogger(IngestBean.class);
    
@@ -91,8 +91,34 @@ public class IngestBean implements Serializable {
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 
-	
 	private SearchBean searchBean = new SearchBean();
+	
+	private String volumeId;
+	
+	private Volume volume;
+	
+	
+	@URLAction(onPostback=false)
+	public void loadContext()
+	{ 
+		if(volumeId != null  && !volumeId.equalsIgnoreCase("new"))
+		{ 
+			try {
+				this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
+				this.modsMetadata = volume.getModsMetadata();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+		else
+		{
+			volume = null;
+
+			addModsMetadata();
+		}
+	}
+	
 	
 	public IngestBean() throws Exception
 	{
@@ -107,7 +133,7 @@ public class IngestBean implements Serializable {
 	  
 	@PostConstruct
 	public void init()
-	{ 
+	{  
 		this.contextSelectItems.clear();
 		SelectItem item;
 		List<String> ids = new ArrayList();
@@ -154,6 +180,7 @@ public class IngestBean implements Serializable {
 	
 	public void addModsMetadata()
 	{
+
 		this.modsMetadata.getTitles().add(new ModsTitle());
 		this.modsMetadata.getNames().add(new ModsName());
 		this.modsMetadata.getNotes().add(new ModsNote());
@@ -731,6 +758,26 @@ public class IngestBean implements Serializable {
 
 	public void setHasMab(boolean hasMab) {
 		this.hasMab = hasMab;
+	}
+
+
+	public String getVolumeId() {
+		return volumeId;
+	}
+
+
+	public void setVolumeId(String volumeId) {
+		this.volumeId = volumeId;
+	}
+
+
+	public Volume getVolume() {
+		return volume;
+	}
+
+
+	public void setVolume(Volume volume) {
+		this.volume = volume;
 	}
 
 
