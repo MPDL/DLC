@@ -105,16 +105,16 @@
 
 			<rich:panel id="modsInfo" header="Metadata Information">
 				<h:outputText value="#{ingestBean.mabFile.name}" />
-				<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
+				<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile or not empty ingestBean.volume}">				
 					<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
 				</h:panelGroup>
-				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Multivolume'}">
+				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Multivolume'}">
 					<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
-				<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Monograph'}">
+				<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Monograph'}">
 					<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
 				</h:panelGroup>
-				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and ingestBean.selectedContentModel=='Volume'}">
+				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Volume'}">
 					<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
 				</h:panelGroup>
 				
