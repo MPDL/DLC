@@ -86,11 +86,12 @@
 			
 				<div class="eg3_itemMediabar">
 					<div class="eg3_itemMediabarThumb">
-						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{volume.pages[0] != null}"/>
 					</div>
 					
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and utilBean.ifOwner(volume.item, loginBean.user)}">
 					<pretty:link mappingId="upload">
+						<f:param value="#{volume.item.objid}" />
 						<h:outputText value="Reingest/edit" />
 					</pretty:link>
 				</h:panelGroup>
