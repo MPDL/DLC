@@ -8,16 +8,9 @@
 		<pattern>/</pattern>
 		<view-id>/Welcome.xhtml</view-id>
 	</url-mapping>
+
 	
-	<url-mapping id="upload">
-		<pattern>/upload</pattern>
-		<view-id>/ingest.xhtml</view-id>
-	</url-mapping>
-	
-	<url-mapping id="collections">
-		<pattern>/collections</pattern>
-		<view-id>/collections.xhtml</view-id>
-	</url-mapping>
+
 	
 	
 	
