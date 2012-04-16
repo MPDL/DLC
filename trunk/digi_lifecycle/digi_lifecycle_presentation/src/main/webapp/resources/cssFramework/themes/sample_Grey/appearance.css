@@ -381,111 +381,23 @@ body .eg3_id_siteTitle {
 
 /*************************************************************************************************************
  ******************************				.eg3_id_mainMenu						******************************
- ******************************		includes mainMenu with 3 level		 		****************************** 
+ ******************************		includes a simple menu with 1 level		 		****************************** 
  *************************************************************************************************************/
-.eg3_mainMenu {
-	width:100%;
-	margin-bottom: 2em;
-	padding-left:1.6%;
+.eg3_simpleMenu {
+	margin-left:0.75em;
+	min-width:100%;
+	margin-bottom:0.75em;
 }
-.eg3_menuBox * {
-	cursor:pointer;
-}
-.eg3_menuBox *[disabled] {
-	cursor:default;
-}
-.eg3_menuBox .eg3_menuLevel1 {
+.eg3_simpleMenu ul li {
 	float:left;
-	position: relative;
-	text-align: center;
-	padding:0 0.5em;
-	color:#CCCCCC;
-	background-color:#555555;
 }
-.eg3_menuLevel1Label {
-	color:#00FFFF;
-	font-size: 150%;
-	color:#00FFFF;
+.eg3_simpleMenu {
+	text-transform:uppercase;
 }
-.eg3_menuLevel1Label * {
-	color:#00FFFF;
-}
-.eg3_menuLevel1Menu {
-	background-image: url("image/_default_16_16.png");
-	background-position: right;
-	padding-right:1.5em;
-	font-size: 150%;
-}
-.eg3_menuBox .eg3_menuLevel2 {
-	display:none;
-	float:left;
-	overflow: visible;
-	text-align: left;
-}
-.eg3_menuBox .eg3_menuLevel1:hover .eg3_menuLevel2 {
-	display:block;
-	position: absolute;
-	background-color: #777777;
-}
-.eg3_menuLevel2 li {
-	background-color: #777777;
-}
-
-.eg3_menuLevel2Label {
-	padding-left:0.5em;
-	color:#222222;
-}
-.eg3_menuBox .eg3_menuLevel2Entry {
-	height:2em; 
-	line-height:2em;
-	width:100%;
-	padding-right:1.5em;
-}
-.eg3_menuBox .eg3_menuLevel2EntryMenu {
-	height:2em; 
-	line-height:2em;
-	width:100%;
-	background-image: url("image/_default_16_16.png");
-	background-position: right;
-	padding-right:1.5em;
-}
-.eg3_menuBox .eg3_menuLevel2Entry:hover {
-	background-color: #999999;
-}
-.eg3_menuBox .eg3_menuLevel2EntryMenu:hover {
-	background-color: #999999;
-}
-.eg3_menuBox .eg3_menuLevel2Entry:hover .eg3_menuLevel3 {
-	display: block;
-	position: absolute;
-	top:0;
-	left:99.8%;
-	height:2em; line-height:2em;
-}
-.eg3_menuBox .eg3_menuLevel2EntryMenu:hover .eg3_menuLevel3 {
-	display: block;
-	position: absolute;
-	top:0;
-	left:99.8%;
-	height:2em; line-height:2em;
-}
-
-.eg3_menuBox .eg3_menuLevel3 {
-	float:left;
-	display: none;
-	color:#000000;
-}
-.eg3_menuBox .eg3_menuLevel3 li {
-	background-color: #CCCCCC;
-	padding-left:0.5em;
-	padding-right:0.5em;
-	white-space:nowrap;
-}
-.eg3_menuBox .eg3_menuLevel3 li:hover {
-	background-color: #00FFFF;
-}
-
-
+.eg3_simpleMenu .eg3_borderradius_5_top {
+	padding:0.416666667em 0.583333333em 0.166666667em 0.583333333em;
+	background-color:#CCCCCC;
+} 
 
 /*************************************************************************************************************************
  ******************************				eg3_id_optionBox									******************************
@@ -1493,10 +1405,35 @@ body .eg3_id_siteTitle {
 	width:100%;
 }
 
+
 /*************************************************************************************************************
- ******************************				image view single / recto verso		******************************
- ******************************				view with paginator					****************************** 
+ ******************************				item detail view		******************************
+ ******************************				header					****************************** 
  *************************************************************************************************************/
+
+
+.eg3_detailItemHeader {
+	width:100%;
+}
+.eg3_detailItemHeader .eg3_multiVolumeTitle {
+	margin-left:3.2%;
+}
+.eg3_detailItemHeader .eg3_icon_multiVolume_32_32 {
+	float:left;
+	display:block;
+	background-image:url("./image/icon_sample_multivolume.gif");
+	width:2.583333333em;
+	height:2.583333333em;
+	margin-right:0.833333333em;
+	margin-left:3.2%;
+}
+
+
+
+/*************************************************************************************************************************
+ ******************************		item detail view / image view single / recto verso		******************************
+ ******************************					view with paginator							****************************** 
+ *************************************************************************************************************************/
 .eg3_pageView {
 	
 }
@@ -1530,7 +1467,8 @@ body .eg3_id_siteTitle {
 
 .eg3_pageView .eg3_ownershipBox {
 	border:solid 0.09em #CCCCCC;
-	width:49.68%;
+	width:auto;
+	max-width:49.68%;
 	overflow-x:auto !important;
 }
 .eg3_pageView .eg3_ownershipBoxText {

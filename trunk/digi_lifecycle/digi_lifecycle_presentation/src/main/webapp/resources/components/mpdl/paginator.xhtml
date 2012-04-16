@@ -67,10 +67,10 @@
 				 	
 				 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
 				 				<h:panelGroup styleClass="eg3_pageNumber #{
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'eg3_next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'eg3_neighbour' : ''}">
 				 					<h:outputText value="#{paginatorPage.number}"  />
 				 				</h:panelGroup>
 				 				<f:ajax render=":#{cc.clientId}"/>

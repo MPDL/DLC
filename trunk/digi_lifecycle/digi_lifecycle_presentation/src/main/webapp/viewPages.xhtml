@@ -16,6 +16,22 @@
 			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 			
 			
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
+					<h3 class="eg3_multiVolumeTitle">Titel der Sammlung - falls nur eine Sammlung - auf eine Zeile trunkiert ...</h3>
+					<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
+					<h:panelGroup styleClass="eg3_floatLeft">
+						<h3 class="eg3_volumeTitle">Juhu Title</h3>
+						<h4 class="eg3_volumeDetails">Verlag, Autor, Jahr</h4>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			
+			
+			
 			<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="z-index:150;">
 				
 				<h:form styleClass="eg3_overflow" style="z-index:50;">	
@@ -32,7 +48,7 @@
 									<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 										
 										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
-										
+											
 										
 											<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
 												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
@@ -103,8 +119,9 @@
 				<h:panelGroup layout="block" styleClass="eg3_menuTabHorzOverlay eg3_twoRows">
 					<h:panelGroup layout="block" styleClass="eg3_menuHeader eg3_container_1">
 						<ul>
+						<ui:remove>
 							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">
-								<h:panelGroup layout="block" styleClass="eg3_menuEntry" rendered="#{viewPages.selectedPageNumber > 1}">
+								<h:panelGroup layout="block" styleClass="eg3_menuButton" rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -116,7 +133,7 @@
 								<h:panelGroup styleClass="eg3_menuEntry">Page</h:panelGroup>
 							</li>
 							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">&#160;
-								<h:panelGroup layout="block" styleClass="eg3_menuEntry eg3_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
+								<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -124,6 +141,37 @@
 									</h:form>
 								</h:panelGroup>
 							</li>
+						</ui:remove>
+						<style type="text/css">
+							.eg3_container_5_8 {
+								width:62.5%;
+							}
+						</style>
+							<li class="eg3_container_1_16 eg3_horizontalTab">&#160;</li>
+							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">
+								<h:panelGroup layout="block" styleClass="eg3_menuButton" rendered="#{viewPages.selectedPageNumber > 1}">
+									<h:form>
+										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+										<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									</h:form>
+								</h:panelGroup>&#160;
+							</li>
+							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top eg3_active" onclick="$('.eg3_menuBody .eg3_menuTabContent').toggle(); $(this).toggleClass('eg3_active');">
+								<h:panelGroup styleClass="eg3_menuEntry">Page</h:panelGroup>
+							</li>
+							<li class="eg3_container_1_2 eg3_horizontalTab">&#160;
+							</li>
+							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">&#160;
+								<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
+									<h:form>
+										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+										<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									</h:form>
+								</h:panelGroup>
+							</li>
+							<li class="eg3_container_1_16 eg3_horizontalTab">&#160;</li>
 						</ul>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_menuBody">
@@ -258,11 +306,11 @@
 							<h:outputText styleClass="eg3_permalinkBoxText" value="http://rectoverso-singlepage-link-or-other-stuff-content-with-no-relevance" /> 
 						</h:panelGroup>
 						<br />
-						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_container_1_2 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
-							<h:outputText styleClass="eg3_ownershipBoxText" value="Marco Schlender is a sample owner text. He works on MPDL"/>
+						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
+							<h:outputText styleClass="eg3_ownershipBoxText" value="SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
-							<h:outputText styleClass="eg3_ownershipBoxText" value="Marco Schlender is a sample owner text. He works on MPDL"/>
+						<h:panelGroup layout="block" styleClass="eg3_ownershipBox eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+							<h:outputText styleClass="eg3_ownershipBoxText" value="SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR SAMPLE AUTHOR"/>
 						</h:panelGroup>
 					</h:panelGroup>
 				</h:panelGroup>
