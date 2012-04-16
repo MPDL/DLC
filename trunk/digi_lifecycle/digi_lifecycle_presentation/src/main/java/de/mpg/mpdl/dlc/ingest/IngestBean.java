@@ -114,15 +114,12 @@ public class IngestBean{
 		else
 		{
 			volume = null;
-
-			addModsMetadata();
 		}
 	}
 	
 	
 	public IngestBean() throws Exception
 	{
-		MabXmlTransformation test = new MabXmlTransformation();
 		addModsMetadata();
 		//init contentModel
 		this.contentModelItems.add(new SelectItem("Monograph", "Monograph"));
