@@ -137,9 +137,10 @@ public class StructuralEditorBean {
 		if(loginBean.isLogin())
 		{
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
-			{   
+			{   logger.info("Load new volume for structural editing " + volumeId);
 				try {
 					this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
+					this.flatTeiElementList = null;
 					volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 					
 				} catch (Exception e) {
@@ -181,6 +182,7 @@ public class StructuralEditorBean {
 		{
 			flatTeiElementList = new ArrayList<TeiElementWrapper>();
 			treeWrapperNodes = new ArrayList<TreeWrapperNode>();
+			pbList = new ArrayList<TeiElementWrapper>();
 			
 			
 			//Transform TEI-SD to flat element list
@@ -204,8 +206,6 @@ public class StructuralEditorBean {
 			}
 		}
 		
-		
-		System.out.println("volumeLoaded");
 
 	}
 	
@@ -887,6 +887,12 @@ public class StructuralEditorBean {
 		
 		int nextPbIndex = flatTeiElementList.indexOf(pb.getNextPagebreak());
 		
+		//if it is the last page, use the last element
+		if(nextPbIndex == -1)
+		{
+			nextPbIndex = flatTeiElementList.size() - 1;
+		}
+		
 		//Add start directly before pagebreak
 		flatTeiElementList.add(nextPbIndex, elementToAdd);
 		
@@ -1485,7 +1491,7 @@ public class StructuralEditorBean {
 			}
 		}
 		*/
-		System.out.println("Selected Pb: " + selectedPb.getTeiElement().getId());
+		
 		//System.out.println("Selected Structural: " + selectedStructuralElement.getTeiElement().getElementType());
 		
 		
