@@ -121,7 +121,7 @@
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my' and volumeUtilBean.editable(cc.attrs.volume)}">
 					<pretty:link mappingId="structuralEditor">
-						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<f:param value="#{cc.attrs.volume.item.originObjid}" />
 						<h:outputText value="edit structure" />
 					</pretty:link>
 				</h:panelGroup>
