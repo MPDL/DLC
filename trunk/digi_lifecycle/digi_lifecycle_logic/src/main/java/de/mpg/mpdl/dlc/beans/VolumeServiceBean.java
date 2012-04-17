@@ -139,7 +139,6 @@ public class VolumeServiceBean {
 			bfactTei = BindingDirectory.getFactory(TeiSd.class);
 			//bfactMods = BindingDirectory.getFactory(ModsMetadata.class);
 		} catch (JiBXException e) {
-			// TODO Auto-generated catch block
 			logger.error("Error while creating JibX binding factory", e);
 		}
 		
@@ -757,12 +756,12 @@ public class VolumeServiceBean {
 						pagedTeiComponent.getProperties().setVisibility("public");
 						ComponentContent pagedTeiContent = new ComponentContent();
 						pagedTeiComponent.setContent(pagedTeiContent);
+						pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 						
-						pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 						volume.getItem().getComponents().add(pagedTeiComponent);
 					}
 					
-					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}
 				
 				
@@ -1844,7 +1843,7 @@ public class VolumeServiceBean {
 	
 	public Div getDivForPage(Volume v, Page p) throws Exception
 	{
-		logger.info("Finding structural element for pagebreak " + p.getId());
+		logger.debug("Finding structural element for pagebreak " + p.getId());
 		long start = System.currentTimeMillis();
 		String divId = "";
 		Processor proc = new Processor(false);
