@@ -678,12 +678,11 @@ public class VolumeServiceBean {
 					pagedTeiComponent.getProperties().setVisibility("public");
 					ComponentContent pagedTeiContent = new ComponentContent();
 					pagedTeiComponent.setContent(pagedTeiContent);
-					
-					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(pagedTeiComponent);
 				}
 				
-				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				
 				
 				//Add original TEI as component
@@ -699,12 +698,11 @@ public class VolumeServiceBean {
 					teiComponent.getProperties().setVisibility("public");
 					ComponentContent teiContent = new ComponentContent();
 					teiComponent.setContent(teiContent);
-					
-					teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
+					teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(teiComponent);
 				}
-				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-
+				
+				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
 			}
 			
 			
