@@ -262,8 +262,9 @@
 
 		</h:panelGroup>
 		
+	
 		<!-- START TREE -->
-		<h:panelGroup style="height:400px; overflow:auto;">
+		<h:panelGroup layout="block" style="height:400px; overflow:auto;">
 			<h:form id="structuralEditorForm">
 			<rich:tree toggleType="ajax" var="divItem" >
 				<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
@@ -341,7 +342,7 @@
 
 		</h:panelGroup>
 		<!-- END TREE -->
-		
+
 		<!-- START EDIT STRUCTURE POPUP -->
 		<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
 			<f:facet name="header">

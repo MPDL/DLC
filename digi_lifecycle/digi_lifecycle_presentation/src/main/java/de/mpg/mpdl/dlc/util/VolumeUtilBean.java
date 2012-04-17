@@ -14,6 +14,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.log4j.Logger;
 
+import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.sb.search.HitWord;
 import de.escidoc.core.resources.sb.search.TextFragment;
 
@@ -664,6 +665,26 @@ public class VolumeUtilBean {
 		
 	}
 	
+	
+	public static boolean editable(Volume volume)
+	{
+
+		for(Component c : volume.getItem().getComponents())
+		{
+			if("tei".equals(c.getProperties().getContentCategory()))
+			{
+				return false;
+			}
+		}
+		return true;
+		
+		/*
+		if(volume.getItem().getComponents() == null || volume.getItem().getComponents().size() < 3)
+			return true;
+		else
+			return false;
+			*/
+	}
 	
 
 	
