@@ -96,10 +96,10 @@
 					</pretty:link>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my'and utilBean.editable(volume)}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my'and volumeUtilBean.editable(volume)}">
 					<pretty:link mappingId="structuralEditor">
 						<f:param value="#{volume.item.objid}" />
-						<h:outputText value="edit Strukture" />
+						<h:outputText value="edit structure" />
 					</pretty:link>
 				</h:panelGroup>
 

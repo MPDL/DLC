@@ -92,12 +92,5 @@ public class UtilBean {
 	}
 	
 	
-	public static boolean editable(Volume volume)
-	{
-
-		if(volume.getItem().getComponents() == null || volume.getItem().getComponents().size() < 3)
-			return true;
-		else
-			return false;
-	}
+	
 }
