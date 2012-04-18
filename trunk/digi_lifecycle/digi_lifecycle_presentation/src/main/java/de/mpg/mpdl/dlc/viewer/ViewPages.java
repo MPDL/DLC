@@ -347,6 +347,13 @@ public class ViewPages{
 		this.viewType =ViewType.valueOf(viewType);
 		loadVolume();	
 	}
+	
+	public void switchViewType(String viewType, Page pageToGoTo)
+	{
+		this.viewType =ViewType.valueOf(viewType);
+		this.selectedPageNumber = pageToGoTo.getOrder() + 1;
+		loadVolume();	
+	}
 
 	public String getFulltextMatches() {
 		return fulltextMatches;
