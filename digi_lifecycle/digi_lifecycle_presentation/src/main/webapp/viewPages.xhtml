@@ -133,7 +133,7 @@
 								<h:panelGroup styleClass="eg3_menuEntry">Page</h:panelGroup>
 							</li>
 							<li class="eg3_container_1_8 eg3_horizontalTab eg3_borderradius_5_top">&#160;
-								<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.viewType != 'SINGLE' and viewPages.selectedRightPage!=null}">
+								<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
 									<h:form>
 										<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
 										<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO')}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
@@ -191,8 +191,8 @@
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											
-											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPageNumber-1} / " rendered="#{viewPages.selectedPageNumber>1}"/>
-											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPageNumber}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPage.order+1} / #{viewPages.selectedPage.orderLabel}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value=" ---- #{viewPages.selectedRightPage.order + 1} / #{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
 										<ui:remove>
 											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="eg3_pageNumber eg3_active">40</h:panelGroup></a>
 										</ui:remove>
