@@ -191,8 +191,8 @@
 												<f:ajax render="@all"/>
 											</h:commandLink>
 											
-											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="#{viewPages.selectedPage.order+1} / #{viewPages.selectedPage.orderLabel}"/>
-											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value=" ---- #{viewPages.selectedRightPage.order + 1} / #{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value="Scan #{viewPages.selectedPage.order+1} / #{viewPages.selectedPage.orderLabel}"/>
+											<h:outputLabel styleClass="eg3_pageNumber eg3_active" value=" ---- Scan #{viewPages.selectedRightPage.order + 1} / #{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
 										<ui:remove>
 											<a href="javascript:void(0);" title="???placeholder???"><h:panelGroup styleClass="eg3_pageNumber eg3_active">40</h:panelGroup></a>
 										</ui:remove>
