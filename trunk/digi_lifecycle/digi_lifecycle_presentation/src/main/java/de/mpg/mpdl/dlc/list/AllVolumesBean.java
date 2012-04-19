@@ -3,7 +3,6 @@ package de.mpg.mpdl.dlc.list;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -13,24 +12,25 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
-import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.om.context.Context;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.search.Criterion.Operator;
+import de.mpg.mpdl.dlc.search.FilterBean;
+import de.mpg.mpdl.dlc.search.FilterCriterion;
+import de.mpg.mpdl.dlc.search.SortCriterion;
+import de.mpg.mpdl.dlc.search.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
-import de.mpg.mpdl.dlc.search.SearchCriterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
-import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
-import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
@@ -40,6 +40,8 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 
 	private SearchBean searchBean = new SearchBean();
+	
+	private FilterBean filterBean = new FilterBean();
 	
 
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
@@ -94,15 +96,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
 		VolumeSearchResult res = null;
-		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-		if(context != null)
+
+		if(contextId.equalsIgnoreCase("my") )
 		{
-			SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, contextId);
-			scList.add(sc);
-		}
-		else if(contextId.equalsIgnoreCase("my") )
-		{
-			SearchCriterion sc ;
+			List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
+			FilterCriterion fc;
 //			for(Grant grant: loginBean.getUser().getGrants())
 //			{
 //				
@@ -128,10 +126,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				{
 					Collection c = loginBean.getUser().getModeratorCollections().get(i);
 					if(i == 0)
-						sc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
+						fc = new FilterCriterion(FilterParam.CONTEXT_ID, c.getId());
 					else
-						sc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
-					scList.add(sc);
+						fc = new FilterCriterion(Operator.OR,FilterParam.CONTEXT_ID, c.getId());
+					fcList.add(fc);
 				}
 			}
 			if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
@@ -139,24 +137,31 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				for(int i=0; i<loginBean.getUser().getDepositorCollections().size(); i++)
 				{
 					Collection c = loginBean.getUser().getDepositorCollections().get(i);
-					if(scList.size()==0)
+					if(fcList.size()==0)
 					{
-						sc = new SearchCriterion(SearchType.CREATEDBY,loginBean.getUser().getName());
-						scList.add(sc);
+						fc = new FilterCriterion(FilterParam.CREATED_BY,loginBean.getUser().getId());
+						fcList.add(fc);
 					}
 					else
 					{
-						sc = new SearchCriterion(Operator.OR, SearchType.CREATEDBY,loginBean.getUser().getName());
-						scList.add(sc);
+						fc = new FilterCriterion(Operator.OR, FilterParam.CREATED_BY,loginBean.getUser().getId());
+						fcList.add(fc);
 					}
 				}
 			}
 			
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardSortCriteria(), limit, offset, loginBean.getUserHandle());
 		}
-		res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
+		else{
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			if(context != null)
+			{
+				SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, contextId);
+				scList.add(sc);
+			}
+			res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
+		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
-
-  
 
 
 		return res.getVolumes();
