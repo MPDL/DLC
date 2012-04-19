@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 import org.richfaces.component.UITree;
@@ -65,6 +66,7 @@ public class ViewPages{
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
+		
 		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 		{   
 			try {
@@ -83,8 +85,7 @@ public class ViewPages{
 	protected void volumeLoaded() {
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
 		this.setSelectedPage(pageforNumber);
-		this.setSelectedRightPage(null); 
-		
+		this.setSelectedRightPage(null);
 		if(ViewType.RECTO_VERSO.equals(viewType))
 		{
 			if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
@@ -339,7 +340,7 @@ public class ViewPages{
  
 	public void setViewType(ViewType viewType) {
 		this.viewType = viewType;
-		loadVolume();
+		
 
 	}
 	
