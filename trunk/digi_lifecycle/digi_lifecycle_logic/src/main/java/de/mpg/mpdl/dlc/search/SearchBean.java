@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.search;
 
 import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,7 @@ import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
-import de.mpg.mpdl.dlc.search.SearchCriterion.Operator;
+import de.mpg.mpdl.dlc.search.Criterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -126,7 +127,7 @@ public class SearchBean {
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
 		for(SearchCriterion sc : scList)
 		{
-			if(sc.getText()!=null && !sc.getText().isEmpty() && sc.getSearchType()!=null)
+			if(sc.getValue()!=null && !sc.getValue().isEmpty() && sc.getSearchType()!=null)
 			{
 				listWithoutEmptyEntries.add(sc);
 			}
@@ -212,5 +213,7 @@ public class SearchBean {
 		
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
+	
+
 
 }

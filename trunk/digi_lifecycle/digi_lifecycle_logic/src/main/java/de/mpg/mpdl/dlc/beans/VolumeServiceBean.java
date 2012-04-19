@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.beans;
 
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -76,12 +78,16 @@ import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
+import de.escidoc.core.resources.sb.search.SearchResultRecord;
+import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
@@ -167,6 +173,30 @@ public class VolumeServiceBean {
 			return contentModelId;
 		}
 
+	}
+	
+	public enum VolumeStatus{
+		pending("pending"),
+		submittet("submittet"),
+		released("released");
+		
+		private String status;
+		
+		private VolumeStatus(String status)
+		{
+			this.status = status;
+		}
+
+		public String getStatus() {
+			return status;
+		}
+
+		public void setStatus(String status) {
+			this.status = status;
+		}
+		
+		
+		
 	}
 	
 	
@@ -274,7 +304,7 @@ public class VolumeServiceBean {
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
 		vol = updateVolume(vol, userHandle, null, false);
-		vol = releaseVolume(vol, userHandle);
+//		vol = releaseVolume(vol, userHandle);
 		}
 		catch(Exception e)
 		{
@@ -566,7 +596,7 @@ public class VolumeServiceBean {
 			
 				volume = updateVolume(volume, userHandle, teiFile, true);
 			
-				volume = releaseVolume(volume, userHandle);
+//				volume = releaseVolume(volume, userHandle);
 			}
 		
 			catch (Exception e) 
@@ -905,6 +935,32 @@ public class VolumeServiceBean {
 		
 		return retrieveVolume(item.getObjid(), userHandle);
 	}
+	
+	public VolumeSearchResult filterSearch(String query, List<SortCriterion> sortList, int limit, int offset, String index, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		
+		SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+		request.setQuery(query);
+		
+		SearchRetrieveResponse response = null;
+		response = client.retrieveItems(request);
+		
+		List<Volume> volumeResult = new ArrayList<Volume>();
+		
+		for(SearchResultRecord rec : response.getRecords())
+		{
+			Item item = (Item) rec.getRecordData().getContent();
+			
+			Volume vol = createVolumeFromItem(item, null);
+			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
+			volumeResult.add(vol);
+		}
+		return new VolumeSearchResult(volumeResult, response.getNumberOfRecords());
+		
+	}
+	
 	
 	/*
 	public Volume updateVolume(Volume vol, String userHandle, boolean initial) throws Exception

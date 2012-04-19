@@ -2,20 +2,19 @@ package de.mpg.mpdl.dlc.search;
 
 import java.util.List;
 
+
 import org.z3950.zing.cql.CQLAndNode;
 import org.z3950.zing.cql.CQLNode;
 import org.z3950.zing.cql.CQLRelation;
 import org.z3950.zing.cql.CQLTermNode;
 import org.z3950.zing.cql.ModifierSet;
 
+import de.mpg.mpdl.dlc.search.Criterion.Operator;
 
-public class SearchCriterion {
 
-	public enum Operator
-	{
-		AND, OR
-	}
-	
+
+public class SearchCriterion extends Criterion{
+
 	public enum SearchType
 	{
 		FREE(new String[]{"escidoc.metadata"}), 
@@ -34,8 +33,6 @@ public class SearchCriterion {
 	
 		CREATEDBY(new String[]{"escidoc.created-by.name"});
 		
-		
-		
 		private String[] indexNames;
 		
 		SearchType(String[] indexNames)
@@ -49,44 +46,37 @@ public class SearchCriterion {
 
 		public void setIndexes(String[] indexNames) {
 			this.indexNames = indexNames;
-		}
+		};
 
 	}
 	
 	private SearchType searchType;
-	
-	private String text;
-	
-	private Operator operator = Operator.AND;
-	
-	private int openBracket = 0;
-	
-	private int closeBracket = 0;
+
 
 	
-	public SearchCriterion(Operator op, SearchType searchType, String text)
+	public SearchCriterion(Operator op, SearchType searchType, String value) 
 	{
 		this.operator = op;
 		this.searchType = searchType;
-		this.text = text;
+		this.value = value;
 	}
 	
-	public SearchCriterion(Operator op, SearchType searchType, String text, int openBracket, int closeBracket)
+	public SearchCriterion(Operator op, SearchType searchType, String value, int openBracket, int closeBracket)
 	{
 		this.operator = op;
 		this.searchType = searchType;
-		this.text = text;
+		this.value = value;
 		this.openBracket = openBracket;
 		this.setCloseBracket(closeBracket);
 	}
 	
-	public SearchCriterion(SearchType searchType, String text)
+	public SearchCriterion(SearchType searchType, String value)
 	{
 		this.operator = Operator.AND;
 		this.searchType = searchType;
-		this.text = text;
+		this.value = value;
 	}
-	
+
 	public SearchType getSearchType() {
 		return searchType;
 	}
@@ -94,95 +84,62 @@ public class SearchCriterion {
 	public void setSearchType(SearchType searchType) {
 		this.searchType = searchType;
 	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public Operator getOperator() {
-		return operator;
-	}
-
-	public void setOperator(Operator operator) {
-		this.operator = operator;
-	}
-	
-	public static String toCql(List<SearchCriterion> scList)
-	{
-		  
-		String cql = "";  
-		for(int i=0; i<scList.size(); i++)
+	public static String toCql(List<SearchCriterion> cList) {
 		{
-			SearchCriterion sc = scList.get(i);
-			if(sc.getText()!= null && !sc.getText().trim().isEmpty())
+			  
+			String cql = "";  
+			for(int i=0; i<cList.size(); i++)
 			{
-				
-				
-				if(i!=0)
+				SearchCriterion sc = cList.get(i);
+				if(sc.getValue()!= null && !sc.getValue().trim().isEmpty())
 				{
-					cql += " " + sc.getOperator().name() + " ";
-				}
-				
-				
-				for(int j=0; j<sc.getOpenBracket();j++)
-				{
-					cql+="(";
-				}
-				
-				if(sc.getSearchType().getIndexNames().length > 1)
-				{
-					cql += "(";
-				}
-				
-				for(int j=0; j<sc.getSearchType().getIndexNames().length; j++)
-				{
-					String indexName = sc.getSearchType().getIndexNames()[j];
-					if(j!=0)
+					
+					
+					if(i!=0)
 					{
-						cql += " OR ";
+						cql += " " + sc.getOperator().name() + " ";
 					}
-					cql += indexName + "=\"" + sc.getText() + "\"";
-				}
-				
-				if(sc.getSearchType().getIndexNames().length > 1)
-				{
-					cql += ")";
-				}
-				
+					
+					
+					for(int j=0; j<sc.getOpenBracket();j++)
+					{
+						cql+="(";
+					}
+					
+					if(sc.getSearchType().getIndexNames().length > 1)
+					{
+						cql += "(";
+					}
+					
+					for(int j=0; j<sc.getSearchType().getIndexNames().length; j++)
+					{
+						String indexName = sc.getSearchType().getIndexNames()[j];
+						if(j!=0)
+						{
+							cql += " OR ";
+						}
+						cql += indexName + "=\"" + sc.getValue() + "\"";
+					}
+					
+					if(sc.getSearchType().getIndexNames().length > 1)
+					{
+						cql += ")";
+					}
+					
 
-				for(int j=0; j<sc.getCloseBracket();j++)
-				{
-					cql+=")";
+					for(int j=0; j<sc.getCloseBracket();j++)
+					{
+						cql+=")";
+					}
 				}
+				
 			}
 			
+			
+		
+			return cql;
 		}
-		
-		
-	
-		return cql;
 	}
-
-	public int getOpenBracket() {
-		return openBracket;
-	}
-
-	public void setOpenBracket(int openBracket) {
-		this.openBracket = openBracket;
-	}
-
-	public int getCloseBracket() {
-		return closeBracket;
-	}
-
-	public void setCloseBracket(int closeBracket) {
-		this.closeBracket = closeBracket;
-	}
-	
 	public static void main(String[] args)
 
 	{
@@ -203,6 +160,14 @@ public class SearchCriterion {
 //		System.out.println(root.toPQF(config));
 		// ... where `config' specifies CQL-qualfier => Z-attr mapping
 	}
+
+
+
+
+
+
+
+
 	
 	
 	
