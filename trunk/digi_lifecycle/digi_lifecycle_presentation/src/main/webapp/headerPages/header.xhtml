@@ -21,9 +21,6 @@
 				
 				<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
 				
-				
-				
-	
 				<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
 					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
 					<h:outputText value="#{lbl.header_lnk_imprint}" />
@@ -43,23 +40,21 @@
 					<h:outputText value="#{lbl.header_lnk_help}" />
 				</h:outputLink> 
 				
-				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+				
 				
 				<h:form>
-					<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
-						value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
-					</h:commandLink>
-			
-					<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
-						value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
-					</h:commandLink> 
+					<h:inputText type="text" id="quickSearchString" styleClass="eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+					<h:commandButton type="submit" style="display:none;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
 				</h:form>
 				
 				
+				<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="eg3_navEntry">
+					<h:outputText value="#{lbl.header_advancedSearch}"/>
+				</pretty:link>
 				
 				<h:form>
 					<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" title="???placeholder???">
-						<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+						<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 							<span class="eg3_selectionText"></span>
 						</h:panelGroup>
 						<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
@@ -71,44 +66,32 @@
 				</h:form>
 				
 				
+				<h:form>
+					<h:commandLink id="lnkLogin" title="#{tlt.Login}" 
+						value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+					</h:commandLink>
+			
+					<h:commandLink id="lnkLogout" title="#{tlt.Logout}" 
+						value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+					</h:commandLink> 
+				</h:form>
+				
 			</nav>
 		</menu>
 	</h:panelGroup>
 	
 	
-	<div class="eg3_solutionLogo" title="Go to homepage">
-		<h:outputLink value="/#{applicationBean.contextPath}/" title="Solution Homepage">
+	<h:panelGroup layout="block" styleClass="eg3_solutionLogo">
+		<h:outputLink value="/#{applicationBean.contextPath}/" title="#{tlt.Home}">
 			<h:graphicImage id="dlcLogo" value="/resources/images/dlc_u160_original.gif" alt="logo image"/>
 		</h:outputLink>
+	</h:panelGroup>
+	
+	<div class="eg3_id_mainMenu" rel="section">
+		<ui:include src="../menu/mainMenu.xhtml" />
 	</div>
 	
-	<h:panelGroup layout="block" styleClass="eg3_headerNav">
-		<nav>
-			<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" styleClass="eg3_navEntry">
-				<h:outputText value="#{lbl.header_advancedSearch}"/>
-			</pretty:link>
-		</nav>
-	</h:panelGroup>
-	
-	<h:panelGroup layout="block" styleClass="eg3_id_siteSearchMenu">
-		<h:panelGroup layout="block" styleClass="eg3_simpleSearch">
-			<h:form>
-				<h:inputText type="text" id="quickSearchString" styleClass="eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
-				<h:commandButton type="submit" styleClass="eg3_borderradius_5" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
-			</h:form>
-			<br />
-			
-			<ui:remove> 	
-			<input type="radio" id="simpleSearchType1" name="simpleSearchType" title="title for label 1 or value 1" value="0" checked="checked"/>
-			<label for="simpleSearchType1" title="title for label 1">label 1</label>
-			<input type="radio" id="simpleSearchType2" name="simpleSearchType" title="title for label 2 or value 2" value="1" />
-			<label for="simpleSearchType2" title="title for label 2">label 2</label>
-			</ui:remove>
-			
-		</h:panelGroup>
-		
-		<br />
-	</h:panelGroup>
+	<ui:insert name="viewPageHeader">&#160;</ui:insert>
 </h:panelGroup>
 
 </ui:composition>
