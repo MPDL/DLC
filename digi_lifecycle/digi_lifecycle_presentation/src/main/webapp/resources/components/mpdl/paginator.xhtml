@@ -50,7 +50,7 @@
 					<h:form>
 						<h:commandLink id="btList_lkFirstTop" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}" title="#{tlt.Pag_First}">
 				 			<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16" >
-				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_First}" />
+				 				&#160;
 				 			</h:panelGroup>
 				 			<f:ajax render=":#{cc.clientId}"/>
 				 		</h:commandLink>
@@ -86,7 +86,7 @@
 				 		</h:commandLink>
 				 		<h:commandLink id="btLinkForLastPageTop" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
 				 			<h:panelGroup styleClass="eg3_icon_skipTolast_16_16" >
-				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_Last}"/>
+				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="&#160;" title="#{tlt.Pag_Last}"/>
 				 			</h:panelGroup>
 				 			<f:ajax render=":#{cc.clientId}"/>
 				 		</h:commandLink>
@@ -141,7 +141,10 @@
 					<h:form>
 						<h:commandLink id="btList_lkFirstBottom" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}">
 				 			<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16" >
-				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_First}" title="#{tlt.Pag_First}"/>
+				 				<ui:remove>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_First}" title="#{tlt.Pag_First}"/>
+				 				</ui:remove>
+				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="&#160;" title="#{tlt.Pag_First}"/>
 				 			</h:panelGroup>
 				 			<f:ajax render=":#{cc.clientId}"/>
 				 		</h:commandLink>
@@ -158,10 +161,10 @@
 				 	
 				 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}">
 				 				<h:panelGroup styleClass="eg3_pageNumber #{
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'active' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'prev' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'next' : 
-						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'neighbour' : ''}">
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'eg3_next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'eg3_neighbour' : ''}">
 				 					<h:outputText value="#{paginatorPage.number}"  />
 				 				</h:panelGroup>
 				 				<f:ajax render=":#{cc.clientId}"/>
@@ -177,7 +180,10 @@
 				 		</h:commandLink>
 				 		<h:commandLink id="btLinkForLastPageBottom" title="#{tlt.Pag_Last}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}">
 				 			<h:panelGroup styleClass="eg3_icon_skipTolast_16_16" >
-				 				<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
+				 				<ui:remove>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
+				 				</ui:remove>
+				 				&#160;
 				 			</h:panelGroup>
 				 			<f:ajax render=":#{cc.clientId}"/>
 				 		</h:commandLink>

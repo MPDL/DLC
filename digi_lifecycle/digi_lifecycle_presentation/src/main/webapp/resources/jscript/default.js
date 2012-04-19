@@ -192,32 +192,37 @@ function addShowHideAll(element, child_elements, component) {
  * listButton: object whose be clicked
  */
 function eg3_openOverlay(listButton) {
-	//define the current list
-	var curList = $(listButton).parent().parent().parent();
-	//console.log(curList);
 	
-	//check if the parent of the list is a richfaces tabpanel
-	if (curList.parent().parent().hasClass("rf-tbp")) {
-		curList.parent().parent().addClass("eg3_widthAuto"); //set the width attribute to auto
-	}
-	// add classes to the current list to make it larger
-	curList.parent().addClass("eg3_overflow");
-	curList.addClass("eg3_noWrapTrn");
-	curList.addClass("eg3_expand");
-	//check the width of the tree
-	var objWidth = $(".rf-tr").width();
-	var docWidth = $(document).width();
-	//compare the width of tree and document
-	if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
-		if (docWidth >= 500) { //and the document width is larger than 500px 
-			curList.addClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
+	var curIconPanel = $(listButton).parent();
+	var curContentPanel = curIconPanel;
+	
+	for (var ctbp = 0; ctbp < 15; ctbp++) {
+		if (curContentPanel.hasClass("rf-tbp")) {
+			curIconPanel.addClass("eg3_expand");
+			
+			curContentPanel.addClass("eg3_noWrapTrn");
+			curContentPanel.addClass("eg3_widthAuto");
+			curContentPanel.addClass("eg3_overflow");
+			curContentPanel.find(".rf-tab-cnt").addClass("eg3_expand");
+			/*
+			//check the width of the tree
+			var objWidth = curContentPanel.find(".rf-tr").width();
+			var docWidth = $(document).width();
+			//compare the width of tree and document
+			if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
+				if (docWidth >= 500) { //and the document width is larger than 500px 
+					curContentPanel.addClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
+				}
+			}
+			*/
+			$(listButton).attr('disabled', 'disabled');
+			curIconPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
+			
+			break;
+		} else {
+			curContentPanel = curContentPanel.parent();
 		}
 	}
-	//disable the expand button
-	curList.find('.eg3_expandOverlay').attr('disabled', 'disabled');
-	//enable the collapse button
-	var collapseBtn = curList.find('.eg3_collapseOverlay');
-	collapseBtn.removeAttr('disabled');
 }
 /**
  * function eg3_openOverlay
@@ -225,23 +230,36 @@ function eg3_openOverlay(listButton) {
  * listButton: object whose be clicked
  */
 function eg3_closeOverlay(listButton) {
-	//define the current list
-	var curList = $(listButton).parent().parent().parent();
-	//remove the overflow class from the current list parent
-	curList.parent().removeClass("eg3_overflow");
+	var curIconPanel = $(listButton).parent();
+	var curContentPanel = curIconPanel;
 	
-	//check if the parent of the list is a richfaces tabpanel
-	if (curList.parent().parent().hasClass("rf-tbp")) {
-		curList.parent().parent().removeClass("eg3_widthAuto"); //remove the auto width class
+	for (var ctbp = 0; ctbp < 15; ctbp++) {
+		if (curContentPanel.hasClass("rf-tbp")) {
+			curIconPanel.removeClass("eg3_expand");
+			
+			curContentPanel.removeClass("eg3_noWrapTrn");
+			curContentPanel.removeClass("eg3_widthAuto");
+			curContentPanel.removeClass("eg3_overflow");
+			curContentPanel.find(".rf-tab-cnt").removeClass("eg3_expand");
+			/*
+			//check the width of the tree
+			var objWidth = curContentPanel.find(".rf-tr").width();
+			var docWidth = $(document).width();
+			//compare the width of tree and document
+			if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
+				if (docWidth >= 500) { //and the document width is larger than 500px 
+					curContentPanel.removeClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
+				}
+			}
+			*/
+			$(listButton).attr('disabled', 'disabled');
+			curIconPanel.find('.eg3_expandOverlay').removeAttr('disabled');
+			
+			break;
+		} else {
+			curContentPanel = curContentPanel.parent();
+		}
 	}
-	//remove all additional extension classes to the default behaviour
-	curList.removeClass("eg3_noWrapTrn");
-	curList.removeClass("eg3_expand");
-	curList.removeClass("eg3_expandMax80");
-	//disable the collapse button
-	curList.find('.eg3_collapseOverlay').attr('disabled', 'disabled');
-	//enable the expand button
-	curList.find('.eg3_expandOverlay').removeAttr('disabled');
 }
 
 /**
