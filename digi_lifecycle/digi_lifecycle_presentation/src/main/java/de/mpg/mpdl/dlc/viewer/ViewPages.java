@@ -67,7 +67,7 @@ public class ViewPages{
 	public void loadVolume()
 	{
 		
-		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
+		if(volume==null || !volumeId.equals(volume.getItem().getOriginObjid()))
 		{   
 			try {
 				
@@ -344,17 +344,19 @@ public class ViewPages{
 
 	}
 	
-	public void switchViewType(String viewType)
+	public String switchViewType(String viewType)
 	{
 		this.viewType =ViewType.valueOf(viewType);
-		loadVolume();	
+		loadVolume();
+		return null;
 	}
 	
-	public void switchViewType(String viewType, Page pageToGoTo)
+	public String switchViewType(String viewType, Page pageToGoTo)
 	{
 		this.viewType =ViewType.valueOf(viewType);
 		this.selectedPageNumber = pageToGoTo.getOrder() + 1;
-		loadVolume();	
+		loadVolume();
+		return null;
 	}
 
 	public String getFulltextMatches() {
