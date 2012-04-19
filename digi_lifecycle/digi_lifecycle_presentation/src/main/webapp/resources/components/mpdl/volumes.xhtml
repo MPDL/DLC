@@ -24,7 +24,9 @@
 				<div class="eg3_itemContentData">
 					<div class="eg3_itemStatusArea">
 						<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="eg3_itemStatusTitle">Released</span>
+						<h:panelGroup class="eg3_itemStatusTitle">
+							<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
+						</h:panelGroup>
 					</div>
 					<div class="eg3_itemHeadline">
 						<div class="eg3_itemTitle">
