@@ -1491,23 +1491,17 @@ body .eg3_id_siteTitle {
 	padding:0.33333333em 0.5%;
 	margin-bottom:0.083333333em;
 	background-color:#323232;
+	color:#EFEFEF;
 }
 .eg3_viewPage .eg3_viewPageMenu *:hover {
 	text-decoration:none;
 }
-.eg3_viewPage .eg3_viewPageMenu .eg3_pageNumber {
-	color:#EFEFEF;
-}
-.eg3_viewPage .eg3_viewPageMenu .eg3_pageNumber:hover {
-	color:#AE7125;
-}
-
-.eg3_viewPage .eg3_viewPageMenu .eg3_pageBrowser {
-	color:#EFEFEF;
-}
 .eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox {
 	display:none;
 	color:#EFEFEF;
+}
+.eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox input {
+	text-align:center;
 }
 
 
