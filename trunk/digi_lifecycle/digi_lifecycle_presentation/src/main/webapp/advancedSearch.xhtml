@@ -34,7 +34,7 @@
 							<f:selectItem itemLabel="#{lbl.advancedSearch_fulltext}" itemValue="FULLTEXT"/>
 						</h:selectOneMenu>
 						
-						<h:inputText value="#{sc.text}"/>
+						<h:inputText value="#{sc.value}"/>
 						
 						<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
 							<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
