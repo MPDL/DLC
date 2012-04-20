@@ -26,8 +26,8 @@
 				<span class="eg3_itemIconBorder">
 					<pretty:link mappingId="viewPages">
 						<f:param value="#{thumbnailsBean.volumeId}" />
+						<f:param value="recto-verso" />
 						<f:param value="#{cc.attrs.page.order}" />
-						<f:param value="RECTO_VERSO" />
 						<h:graphicImage alt="#{cc.attrs.page.type}" id="picThumbResolutionBrowse" value="#{volumeUtilBean.getImageServerUrl(cc.attrs.page.contentIds, 'THUMBNAIL')}"/>
 					</pretty:link>
 				</span>

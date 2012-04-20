@@ -25,7 +25,7 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
 @ViewScoped
-@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.selectedPageNumber}/#{viewPages.viewType}", viewId = "/viewPages.xhtml")
+@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml", onPostback=false)
 public class ViewPages{
 	
 	@URLQueryParameter("fm")
@@ -58,9 +58,13 @@ public class ViewPages{
 	private List<Page> pageList = new ArrayList<Page>();
 	
 	private ViewType viewType = ViewType.RECTO_VERSO;
+	
+	private String viewTypeText = viewTypeToText(viewType);
+	
 	private boolean hasSelected = false;
 	
 	private boolean showTree = false;
+	
 	
 	
 	@URLAction(onPostback=false)
@@ -340,8 +344,27 @@ public class ViewPages{
  
 	public void setViewType(ViewType viewType) {
 		this.viewType = viewType;
-		
+		this.viewTypeText = viewTypeToText(viewType);
 
+	}
+	
+	public String getViewTypeText() {
+		return viewTypeText;
+	}
+
+	public void setViewTypeText(String viewTypeText) {
+		this.viewTypeText = viewTypeText;
+		this.viewType = viewTypeTextToViewType(viewTypeText);
+	}	
+	
+	private static String viewTypeToText(ViewType vt)
+	{
+		return vt.name().toLowerCase().replaceAll("_", "-");
+	}
+	
+	private static ViewType viewTypeTextToViewType(String vt)
+	{
+		return ViewType.valueOf(vt.replaceAll("-", "_").toUpperCase());
 	}
 	
 	public String switchViewType(String viewType)
@@ -404,6 +427,8 @@ public class ViewPages{
 
 	public void setContext(Context context) {
 		this.context = context;
-	}	
+	}
+
+	
 
 }
