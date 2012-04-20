@@ -60,7 +60,7 @@ function resizeSelectBox() {
 			$(this).css("width", newContainerWidth);
 			selectTag.css("width", newContainerWidth);
 			/* add behaviour for change and focus */
-			selectTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
+			//selectTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
 			selectTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
 		}
 	});
@@ -286,6 +286,32 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 }
 
 
+/* Workaround: Make rerendered forms work. See http://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790 */
+function rerenderJSFForms() {
+	jsf.ajax.addOnEvent(function (e) {
+		if (e.status === 'success') 
+		{
+			$("partial-response:first changes:first update[id='javax.faces.ViewState']", e.responseXML).each(function (i, u) 
+			{
+				// update all forms
+		        $(document.forms).each(function (i, f)
+		        {
+		        	var field = $("input[name='javax.faces.ViewState']", f);
+		        	if (field.length == 0)
+		        	{
+		        		field = $("<input type=\"hidden\" name=\"javax.faces.ViewState\" />").appendTo(f);
+		        	}
+		        	field.val(u.firstChild.data);
+		        });
+			});
+		}
+	});
+}
+
+
+
+
+
 
 $(document).ready(function(e) {
 	/*
@@ -298,8 +324,9 @@ $(document).ready(function(e) {
 	
 	resizeSelectBox();
 	
-	setTimeout("addShowHideAll('.eg3_showHideAll_js', '.eg3_listItem .eg3_mediumView_js', '.eg3_bibList')", 290);
-	setTimeout("addShowHideAll('.eg3_showHideAll_js', '.eg3_listItemMediaAcc .eg3_mediumView_js', '.eg3_bibList')", 290);
-	setTimeout("addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList')", 290);
+	addShowHideAll('.eg3_showHideAll_js', '.eg3_listItem .eg3_mediumView_js', '.eg3_bibList');
+	addShowHideAll('.eg3_showHideAll_js', '.eg3_listItemMediaAcc .eg3_mediumView_js', '.eg3_bibList');
+	addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
+	rerenderJSFForms();
 });
