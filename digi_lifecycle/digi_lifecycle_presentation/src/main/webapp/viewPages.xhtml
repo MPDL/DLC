@@ -36,7 +36,7 @@
 			<ui:param name="headline" value="#{allVolumesBean.context.properties.name}" />
 			
 			
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
+			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
 			
 				
 				
@@ -44,7 +44,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="z-index:150;">
 					
 					<h:form styleClass="eg3_overflow" style="z-index:50;">	
-						<rich:tabPanel id="tabPanel" switchType="server" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
+						<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 							
 							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor">
 								<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_iconBar">
@@ -90,6 +90,46 @@
 											</rich:treeNode>
 										</rich:treeModelRecursiveAdaptor>
 									</rich:tree>
+									<script type="text/javascript">
+										/*<![CDATA[*/
+										
+										$(document).ready(function(e)
+												{
+													scrollDivs();
+												});
+												
+										jsf.ajax.addOnEvent(function(e)
+											{
+												if(e.status=="success")
+												{
+													scrollDivs();
+												}
+											});
+										
+										function scrollDivs()
+										{
+											var selectedDivId= '#{viewPages.selectedDiv.id}';
+											var treeContainerId = "#{rich:clientId('toc')}";
+											//add an backslahs before all colons					
+											treeContainerId = treeContainerId.replace(/:/g, "\\:");
+											var treeContainerDiv = $('#' + treeContainerId);
+					
+											
+											//var selectedPb = 'page_300';
+											var pos = $('.struct_' + selectedDivId).offset();
+											if(pos!=null)
+											{
+												var treeContainerPos = $(treeContainerDiv).offset();				
+												var currentScroll = $(treeContainerDiv).scrollTop();				
+												var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;				
+												treeContainerDiv.scrollTop(newScrollPos);
+												//$(treeContainerDiv).animate({scrollTop : newScrollPos}, 'slow');
+											}
+											
+							
+										}
+										/*]]>*/
+								</script>
 									
 							</rich:tab>
 							<rich:tab header="Thumbs" id="thumbs">
@@ -296,47 +336,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<script type="text/javascript">
-					/*<![CDATA[*/
-					
-					$(document).ready(function(e)
-							{
-								scrollDivs();
-							});
-					jsf.ajax.addOnEvent(function(e)
-						{
-							if(e.status=="success")
-							{
-								scrollDivs();
-							}
-						});
-					
-					function scrollDivs()
-					{
-						var selectedDivId= '#{viewPages.selectedDiv.id}';
-						var treeContainerId = "#{rich:clientId('toc')}" + ":content";
-						//add an backslahs before all colons
-					//	console.log(selectedDivId+' / 1. '+treeContainerId);
-						treeContainerId = treeContainerId.replace(/:/g, "\\:");
-					//	console.log(selectedDivId+' / 2. '+treeContainerId);
-						var treeContainerDiv = $('#' + treeContainerId);
-					//	console.log(selectedDivId+' / '+treeContainerDiv.html());
-						
-						//var selectedPb = 'page_300';
-						var pos = $('.struct_' + selectedDivId).offset();
-					//	console.log(pos);
-						var treeContainerPos = $(treeContainerDiv).offset();
-					//	console.log(treeContainerPos);
-						var currentScroll = $(treeContainerDiv).scrollTop();
-					//	console.log(currentScroll);
-						var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;
-					//	console.log(newScrollPos);
-						treeContainerDiv.scrollTop(newScrollPos);
-						//$(treeContainerDiv).animate({scrollTop : newScrollPos}, 'slow');
-		
-					}
-					/*]]>*/
-				</script>
+				
 			</h:panelGroup> <ui:remove>end eg3_viewPageContainer</ui:remove>
 		</ui:define>
 	</ui:composition>
