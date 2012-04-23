@@ -190,7 +190,7 @@ public class InternationalizationHelper
 			enumString = enumString.toLowerCase().replaceAll("\\s", "_");
 			return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(prefix + enumString);
 		} catch (Exception e) {
-			return "???" + prefix + enumString + "???";
+			return enumString;
 		}
     }
     
