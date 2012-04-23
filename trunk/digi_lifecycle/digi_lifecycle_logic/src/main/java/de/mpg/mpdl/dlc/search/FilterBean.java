@@ -38,12 +38,20 @@ public class FilterBean {
 		SearchRetrieveResponse response = null;
 		response = client.retrieveItems(request);
 		
+
+		
 		List<Volume> volumeResult = new ArrayList<Volume>();
 		
-		for(SearchResultRecord rec : response.getRecords())
+		int total = response.getRecords().size();
+		int end;
+		if(offset-1+limit < total)
+			end = limit -1;
+		else
+			end = total - 1;
+		for(int i=offset-1; i <= end; i++)
 		{
+			SearchResultRecord rec = response.getRecords().get(i);
 			Item item = (Item) rec.getRecordData().getContent();
-			
 			Volume vol = VolumeServiceBean.createVolumeFromItem(item, null);
 			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
 			volumeResult.add(vol);
