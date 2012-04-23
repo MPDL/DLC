@@ -369,17 +369,17 @@ public class ViewPages{
 	
 	public String switchViewType(String viewType)
 	{
-		this.viewType =ViewType.valueOf(viewType);
+		setViewType(ViewType.valueOf(viewType));
 		loadVolume();
-		return null;
+		return "pretty:viewPages";
 	}
 	
 	public String switchViewType(String viewType, Page pageToGoTo)
 	{
-		this.viewType =ViewType.valueOf(viewType);
+		setViewType(ViewType.valueOf(viewType));
 		this.selectedPageNumber = pageToGoTo.getOrder() + 1;
 		loadVolume();
-		return null;
+		return "pretty:viewPages";
 	}
 
 	public String getFulltextMatches() {
