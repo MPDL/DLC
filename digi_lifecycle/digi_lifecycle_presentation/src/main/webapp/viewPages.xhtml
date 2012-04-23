@@ -81,7 +81,7 @@
 														<h:outputText value="[#{divItem.elementType}]"/>
 													</h:panelGroup>
 													
-													<f:ajax render="@all"/>
+													<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 												</h:commandLink>
 												
 												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
@@ -166,7 +166,7 @@
 					</h:form>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_viewPage">
+				<h:panelGroup id="viewPage" layout="block" styleClass="eg3_container_4_5 eg3_viewPage">
 					
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
@@ -188,11 +188,11 @@
 								<ui:fragment rendered="#{viewPages.selectedPage != null}">
 									<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-										<f:ajax render="@all"/>
+										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-										<f:ajax render="@all"/>
+										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 									</h:commandLink>
 								</ui:fragment>
 								
@@ -216,11 +216,11 @@
 								<ui:fragment rendered="#{viewPages.selectedRightPage != null and viewPages.volume.pages.size() > 1}">
 									<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
-										<f:ajax render="@all"/>
+										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
-										<f:ajax render="@all"/>
+										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 									</h:commandLink>
 								</ui:fragment>
 							</h:form>
