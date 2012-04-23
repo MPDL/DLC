@@ -183,9 +183,9 @@
 							<h:outputText value="#{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
 							<h:outputText value="&#160;" rendered="#{viewPages.selectedPage == null}"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
+						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
-								<ui:fragment rendered="#{viewPages.selectedPage != null}">
+								<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
@@ -213,8 +213,8 @@
 									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageBrowser', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
 								</ui:fragment>
 								
-								<ui:fragment rendered="#{viewPages.selectedRightPage != null and viewPages.volume.pages.size() > 1}">
-									<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???">
+								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
+									<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???" >
 										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
 									</h:commandLink>
