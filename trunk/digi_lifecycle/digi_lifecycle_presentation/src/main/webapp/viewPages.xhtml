@@ -12,7 +12,7 @@
 
 	<ui:composition template="templates/template_v3.xhtml">
 		
-		<ui:define name="viewPageHeader">
+		<ui:define name="separateContentHeader">
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageHeader">
 				<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_4_5">
@@ -81,7 +81,7 @@
 														<h:outputText value="[#{divItem.elementType}]"/>
 													</h:panelGroup>
 													
-													<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
+													<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 												</h:commandLink>
 												
 												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
@@ -91,20 +91,29 @@
 										</rich:treeModelRecursiveAdaptor>
 									</rich:tree>
 									<script type="text/javascript">
-										/*<![CDATA[*/
-										
 										$(document).ready(function(e)
-												{
-													scrollDivs();
-												});
-												
+										{
+											scrollDivs();
+										});
+										
+										
+										
 										jsf.ajax.addOnEvent(function(e)
+										{	
+											//notice the container height for setting a min-height while ajax reloading
+											//without a height value the page jump to top because of to slowly image loading
+											if (e.status == "begin") {
+												console.log($('.eg3_viewPageContainer').height());
+												$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
+											}
+											//if the ajax request is success
+											//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
+											if(e.status=="success")
 											{
-												if(e.status=="success")
-												{
-													scrollDivs();
-												}
-											});
+												scrollDivs();
+												resetViewPageContainer();
+											}
+										});
 										
 										function scrollDivs()
 										{
@@ -113,7 +122,7 @@
 											//add an backslahs before all colons					
 											treeContainerId = treeContainerId.replace(/:/g, "\\:");
 											var treeContainerDiv = $('#' + treeContainerId);
-					
+											
 											
 											//var selectedPb = 'page_300';
 											var pos = $('.struct_' + selectedDivId).offset();
@@ -123,13 +132,23 @@
 												var currentScroll = $(treeContainerDiv).scrollTop();				
 												var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;				
 												treeContainerDiv.scrollTop(newScrollPos);
-												//$(treeContainerDiv).animate({scrollTop : newScrollPos}, 'slow');
 											}
-											
-							
 										}
-										/*]]>*/
-								</script>
+										
+										function resetViewPageContainer() 
+										{
+											var reloadDone = false;
+											
+											$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
+											{
+												if ($(this).height() > 0) 
+												{
+													reloadDone = true;
+												}
+											});
+											(reloadDone) ? $('.eg3_viewPageContainer').removeAttr("style") : setTimeout("resetViewPageContainer()", 25);
+										}
+									</script>
 									
 							</rich:tab>
 							<rich:tab header="Thumbs" id="thumbs">
@@ -178,21 +197,22 @@
 									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
 								</h:form>
 							</h:panelGroup>&#160;
+							<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:outputText value="#{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
-							<h:outputText value="&#160;" rendered="#{viewPages.selectedPage == null}"/>
+							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
 						</h:panelGroup>
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
 								<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
+											<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}" />
 									</h:commandLink>
 								</ui:fragment>
 								
@@ -216,11 +236,11 @@
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 									<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???" >
 										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
-										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
 										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
-										<f:ajax render=":viewPage :#{rich:clientId('toc')}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
 								</ui:fragment>
 							</h:form>
@@ -235,7 +255,7 @@
 						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:outputText value="#{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.selectedRightPage != null}"/>
-							<h:outputText value="&#160;" rendered="#{viewPages.selectedRightPage == null}"/>
+							<h:outputText value="&#160;" rendered="#{!viewPages.selectedRightPage.orderLabel}"/>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
