@@ -173,9 +173,9 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:panelGroup layout="block" styleClass="eg3_menuButton" rendered="#{viewPages.selectedPage != null}">
 								<h:form>
-									<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
-									<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
-									<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
 								</h:form>
 							</h:panelGroup>&#160;
 						</h:panelGroup>
@@ -241,9 +241,9 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.selectedRightPage != null}">
 								<h:form>
-									<h:commandButton value="Im" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
-									<h:commandButton value="I/I" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
-									<h:commandButton value="I/T" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
+									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
+									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
 								</h:form>
 							</h:panelGroup>
 						</h:panelGroup>
