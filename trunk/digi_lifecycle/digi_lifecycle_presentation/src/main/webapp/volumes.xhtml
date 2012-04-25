@@ -21,13 +21,14 @@
 			<script type="text/javascript">
 				$(document).ready(function(){addDisplayControl('.listItemMultiVolume');});
 			</script>	
+			<h:form id="volumes" >
 				<list:bibList_default>
 					<a4j:repeat var="volume" value="#{allVolumesBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
 					</a4j:repeat>
 				</list:bibList_default>
-
+			</h:form>
 		</mpdl:paginator>
 	</ui:define>
 </ui:composition>

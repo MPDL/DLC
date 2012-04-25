@@ -59,7 +59,10 @@
 		
 		<h:form id="form2" >	
 			<rich:panel id="submit">
-				<a4j:commandButton action="#{ingestBean.save}" value="#{lbl.btn_create}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+				<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+				</a4j:commandButton>
+				<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 				</a4j:commandButton>
 				<h:commandButton action="#{ingestBean.clearAllData}" value="Clear All Data">

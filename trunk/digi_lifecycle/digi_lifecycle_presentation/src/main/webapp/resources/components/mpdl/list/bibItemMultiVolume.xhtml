@@ -97,13 +97,17 @@
 							</pretty:link>
 						</h:panelGroup>
 						
+						<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and cc.attrs.volume.item.properties.version.status=='pending'}">
+							<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.release}" />
+						</h:panelGroup>
+						
 					</div>
 				</div>
 			</div>
 		</h:panelGroup>
 
 		<h:panelGroup layout="block" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
-	 	   <mpdl:volumes volumes="#{allVolumesBean.getRelatedVolumes(cc.attrs.volume)}" >
+	 	   <mpdl:volumes volumes="#{cc.attrs.volume.relatedChildVolumes}" >
 	 	   </mpdl:volumes>
 	    </h:panelGroup>
 	
