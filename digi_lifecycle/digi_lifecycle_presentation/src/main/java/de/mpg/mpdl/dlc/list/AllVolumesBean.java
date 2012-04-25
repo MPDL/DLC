@@ -1,7 +1,9 @@
 package de.mpg.mpdl.dlc.list;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -14,6 +16,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
@@ -67,6 +70,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
+		update();
 		if(contextId != null  && !contextId.equalsIgnoreCase("all") && !contextId.equalsIgnoreCase("my"))
 		{
 			try {
@@ -149,8 +153,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 					}
 				}
 			}
-			
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardSortCriteria(), limit, offset, loginBean.getUserHandle());
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardFilterSortCriteria(), limit, offset, loginBean.getUserHandle());
 		}
 		else{
 			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
@@ -163,7 +166,20 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 
-
+		
+		
+		if(contextId.equals("my"))
+		{
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle());
+		}
+		else
+		{
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), null);
+		}
+		
+		
+		
+		
 		return res.getVolumes();
 	}
 
@@ -206,6 +222,17 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				vols.add(relatedVolume);
 		}
 			return vols;
+	}
+	
+	public void release(Volume vol)
+	{
+		String userHandle = loginBean.getUserHandle();
+		try {
+			vol = volServiceBean.releaseVolume(vol, userHandle);;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	

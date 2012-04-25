@@ -561,8 +561,9 @@ public class IngestBean{
 		return md;
 	}
 	
+
 	
-	public String save() 
+	public String save(String operation) 
 	{         
 		logger.info("SAVE!!");
 		try {
@@ -581,7 +582,7 @@ public class IngestBean{
 	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
 	    			return "";
 	    		}
-	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
@@ -590,7 +591,7 @@ public class IngestBean{
 			{
 
 			
-	    		Volume volume = volumeService.createNewMultiVolume(PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
+	    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 	    		MessageHelper.infoMessage("Neues MultiVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
@@ -607,7 +608,7 @@ public class IngestBean{
 	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
 	    			return "";
 	    		}
-	    		Volume volume = volumeService.createNewVolume(PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+	    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 	    		MessageHelper.infoMessage("Neues Volume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
