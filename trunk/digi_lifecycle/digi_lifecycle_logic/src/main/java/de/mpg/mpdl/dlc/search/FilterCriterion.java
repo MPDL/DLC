@@ -113,9 +113,6 @@ public class FilterCriterion extends Criterion{
 				
 			}
 			
-			
-			System.out.println(cql);
-		
 			return cql;
 		}
 	}

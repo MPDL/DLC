@@ -15,7 +15,9 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -46,6 +48,7 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
+import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
@@ -294,7 +297,7 @@ public class VolumeServiceBean {
 		return item;
 	}  
 	
-	public Volume createNewMultiVolume(String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
+	public Volume createNewMultiVolume(String operation, String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
 	{  
 		Item item = createNewEmptyItem(contentModel, contextId, userHandle, modsMetadata);
 		Volume vol= new Volume();
@@ -304,7 +307,8 @@ public class VolumeServiceBean {
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
 		vol = updateVolume(vol, userHandle, null, false);
-//		vol = releaseVolume(vol, userHandle);
+		if(operation.equalsIgnoreCase("release"))
+			vol = releaseVolume(vol, userHandle);
 		}
 		catch(Exception e)
 		{
@@ -503,7 +507,7 @@ public class VolumeServiceBean {
 	
 	*/
 	
-	public Volume createNewVolume(String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
 	{
 		
 		logger.info("Creating new volume/monograph");
@@ -596,7 +600,8 @@ public class VolumeServiceBean {
 			
 				volume = updateVolume(volume, userHandle, teiFile, true);
 			
-//				volume = releaseVolume(volume, userHandle);
+				if(operation.equalsIgnoreCase("release"))
+					volume = releaseVolume(volume, userHandle);
 			}
 		
 			catch (Exception e) 
@@ -856,7 +861,7 @@ public class VolumeServiceBean {
 
 
 	public Volume releaseVolume(Volume vol, String userHandle) throws Exception
-	{
+	{ 
 		String id = vol.getItem().getObjid();
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -1955,6 +1960,11 @@ public class VolumeServiceBean {
 				}
 				else if(volume.getItem().getProperties().getContentModel().getObjid().equals(multivolumeContentModelId))
 				{
+					List<Volume> volList = new ArrayList<Volume>();
+					volList.add(volume);
+					loadVolumesForMultivolume(volList, null);
+					
+					/*
 					volume.setRelatedChildVolumes(new ArrayList<Volume>());
 					for(Relation rel : volume.getItem().getRelations())
 					{
@@ -1966,6 +1976,7 @@ public class VolumeServiceBean {
 						}
 						volume.getRelatedChildVolumes().add(child);
 					}
+					*/
 				}
 				else
 				{
@@ -1993,7 +2004,86 @@ public class VolumeServiceBean {
 	}
 	
 	
-
+	public void loadVolumesForMultivolume(List<Volume> multivolumes, String userHandle) throws Exception
+	{
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		if(userHandle!=null)
+		{
+			client.setHandle(userHandle);
+		}
+		
+		
+		
+		List<String> volumeIds= new ArrayList<String>();
+		Map<String, Volume> mvMap = new HashMap<String, Volume>();
+		StringBuffer volumeQuery = new StringBuffer();
+		for(Volume v : multivolumes)
+		{
+			if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
+			{
+				if(v.getRelatedVolumes()!=null)
+				{
+					volumeIds.addAll(v.getRelatedVolumes());
+					mvMap.put(v.getItem().getOriginObjid(), v);
+				}
+				
+			}
+			
+		}
+		for(int i=0; i<volumeIds.size(); i++)
+		{
+			if(i<volumeIds.size() -1)
+			{
+				volumeQuery.append("\"/id\"=" + volumeIds.get(i) + " or ");
+			}
+			else
+			{
+				volumeQuery.append(volumeIds.get(i));
+			}
+			
+		}
+		SearchRetrieveRequestType sr= new SearchRetrieveRequestType();
+		sr.setQuery(volumeQuery.toString());
+		sr.setMaximumRecords(new NonNegativeInteger(String.valueOf(1000)));
+		
+		SearchRetrieveResponse filterResult = client.retrieveItems(sr);
+		VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(filterResult);
+		for(Volume v : volumeResult.getVolumes())
+		{
+			String mvId = v.getRelatedVolumes().get(0);
+			Volume mv = mvMap.get(mvId);
+			if(mv.getRelatedChildVolumes()==null)
+			{
+				mv.setRelatedChildVolumes(new ArrayList<Volume>());
+			}
+			mv.getRelatedChildVolumes().add(v);
+		}
+		
+		
+		
+	}
 	
+	
+	public static VolumeSearchResult srwResponseToVolumeSearchResult(SearchRetrieveResponse srwResp) throws Exception
+	{
+		List<Volume> volumeResult = new ArrayList<Volume>();		
+
+		for(SearchResultRecord rec : srwResp.getRecords())
+		{
+			
+			Item item = (Item)rec.getRecordData().getContent();
+
+			Volume vol = VolumeServiceBean.createVolumeFromItem(item, null);
+			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());	
+			volumeResult.add(vol);
+		} 
+		
+		
+		
+		return new VolumeSearchResult(volumeResult, srwResp.getNumberOfRecords());
+	}
+	
+
 
 }
