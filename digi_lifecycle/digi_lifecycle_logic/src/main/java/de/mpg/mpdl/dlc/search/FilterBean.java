@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis.types.NonNegativeInteger;
+import org.apache.axis.types.PositiveInteger;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.ItemHandlerClient;
@@ -33,24 +35,28 @@ public class FilterBean {
 		client.setHandle(userHandle);
 		
 		SearchRetrieveRequestType request = new SearchRetrieveRequestType();
-		request.setQuery(getCompleteFilterQueries(volTypes, volStatus, fcList));
+		String query = getCompleteFilterQueries(volTypes, volStatus, fcList);
 		
-		SearchRetrieveResponse response = null;
-		response = client.retrieveItems(request);
+		if(sortList !=null && sortList.size()>0)
+		{
+			query += " sortby";
+			for(SortCriterion sc : sortList)
+			{
+				query += " \"" + sc.getSortIndex().getIndexName() + "\"" + sc.getSortOrder().getOrderName(); 
+			}
+		}
+		System.out.println("Filter query:" + query);
+		request.setQuery(query);
+		request.setMaximumRecords(new NonNegativeInteger(String.valueOf(limit)));
+		request.setStartRecord(new PositiveInteger(String.valueOf(offset)));
 		
-
+		
+		SearchRetrieveResponse response  = client.retrieveItems(request);
 		
 		List<Volume> volumeResult = new ArrayList<Volume>();
 		
-		int total = response.getRecords().size();
-		int end;
-		if(offset-1+limit < total)
-			end = limit -1;
-		else
-			end = total - 1;
-		for(int i=offset-1; i <= end; i++)
+		for(SearchResultRecord rec : response.getRecords())
 		{
-			SearchResultRecord rec = response.getRecords().get(i);
 			Item item = (Item) rec.getRecordData().getContent();
 			Volume vol = VolumeServiceBean.createVolumeFromItem(item, null);
 			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());
