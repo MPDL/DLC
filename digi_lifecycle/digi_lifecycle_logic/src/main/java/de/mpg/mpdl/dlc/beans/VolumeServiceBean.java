@@ -63,6 +63,7 @@ import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
+import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
 import de.escidoc.core.resources.HttpInputStream;
@@ -87,6 +88,7 @@ import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -1962,7 +1964,7 @@ public class VolumeServiceBean {
 				{
 					List<Volume> volList = new ArrayList<Volume>();
 					volList.add(volume);
-					loadVolumesForMultivolume(volList, null);
+					loadVolumesForMultivolume(volList, userHandle, false);
 					
 					/*
 					volume.setRelatedChildVolumes(new ArrayList<Volume>());
@@ -2004,13 +2006,19 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public void loadVolumesForMultivolume(List<Volume> multivolumes, String userHandle) throws Exception
+	public void loadVolumesForMultivolume(List<Volume> multivolumes, String userHandle, boolean filter) throws Exception
 	{
 		
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		ItemHandlerClient ihc = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		if(userHandle!=null)
 		{
-			client.setHandle(userHandle);
+			ihc.setHandle(userHandle);
+		}
+		
+		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		if(userHandle!=null)
+		{
+			shc.setHandle(userHandle);
 		}
 		
 		
@@ -2030,41 +2038,66 @@ public class VolumeServiceBean {
 				
 			}
 			
-		} 
-		if(volumeIds.size() > 0)
-		{
-			
+		}
+		
 		
 		for(int i=0; i<volumeIds.size(); i++)
 		{
-			if(i<volumeIds.size() -1)
+			
+				if(filter)
+				{
+					volumeQuery.append("\"/id\"=" + volumeIds.get(i));
+				}
+				else
+				{
+					volumeQuery.append("escidoc.objid=" + volumeIds.get(i));
+				}
+				
+				if(i<volumeIds.size() -1)
+				{
+					volumeQuery.append(" or ");
+				}
+				
+			
+			
+		}
+		
+		if(!volumeIds.isEmpty())
+		{
+			SearchRetrieveRequestType sr= new SearchRetrieveRequestType();
+			sr.setQuery(volumeQuery.toString());
+			sr.setMaximumRecords(new NonNegativeInteger(String.valueOf(1000)));
+			
+			SearchRetrieveResponse result = ihc.retrieveItems(sr);
+			if(filter)
 			{
-				volumeQuery.append("\"/id\"=" + volumeIds.get(i) + " or ");
+				result = ihc.retrieveItems(sr);
 			}
 			else
 			{
-				volumeQuery.append(volumeIds.get(i));
+				result = shc.search(sr, SearchBean.dlcIndexName);
 			}
-			
-		}
-		SearchRetrieveRequestType sr= new SearchRetrieveRequestType();
-		sr.setQuery(volumeQuery.toString());
-		sr.setMaximumRecords(new NonNegativeInteger(String.valueOf(1000)));
-		
-		
-		SearchRetrieveResponse filterResult = client.retrieveItems(sr);
-		VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(filterResult);
-		for(Volume v : volumeResult.getVolumes())
-		{
-			String mvId = v.getRelatedVolumes().get(0);
-			Volume mv = mvMap.get(mvId);
-			if(mv.getRelatedChildVolumes()==null)
+				
+			VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(result);
+			for(Volume v : volumeResult.getVolumes())
 			{
-				mv.setRelatedChildVolumes(new ArrayList<Volume>());
+				if(v.getRelatedVolumes()!=null && v.getRelatedVolumes().size()>0)
+					{
+					if(v.getRelatedVolumes()!=null && v.getRelatedVolumes().size()>0)
+					{
+						String mvId = v.getRelatedVolumes().get(0);
+						Volume mv = mvMap.get(mvId);
+						if(mv.getRelatedChildVolumes()==null)
+						{
+							mv.setRelatedChildVolumes(new ArrayList<Volume>());
+						}
+						mv.getRelatedChildVolumes().add(v);
+					}
+				}
 			}
-			mv.getRelatedChildVolumes().add(v);
 		}
-		}
+		
+		
 		
 		
 	}
