@@ -2006,7 +2006,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public void loadVolumesForMultivolume(List<Volume> multivolumes, String userHandle, boolean filter) throws Exception
+	public void loadVolumesForMultivolume(List<Volume> volumeList, String userHandle, boolean filter) throws Exception
 	{
 		
 		ItemHandlerClient ihc = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -2026,9 +2026,10 @@ public class VolumeServiceBean {
 		List<String> volumeIds= new ArrayList<String>();
 		Map<String, Volume> mvMap = new HashMap<String, Volume>();
 		StringBuffer volumeQuery = new StringBuffer();
-		for(Volume v : multivolumes)
+		for(Volume v : volumeList)
 		{
-			if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
+			if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId) ||
+				v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId)	)
 			{
 				if(v.getRelatedVolumes()!=null)
 				{
@@ -2037,6 +2038,7 @@ public class VolumeServiceBean {
 				}
 				
 			}
+			
 			
 		}
 		
@@ -2081,19 +2083,37 @@ public class VolumeServiceBean {
 			VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(result);
 			for(Volume v : volumeResult.getVolumes())
 			{
+				
 				if(v.getRelatedVolumes()!=null && v.getRelatedVolumes().size()>0)
+				{
+					if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
 					{
-					if(v.getRelatedVolumes()!=null && v.getRelatedVolumes().size()>0)
-					{
-						String mvId = v.getRelatedVolumes().get(0);
-						Volume mv = mvMap.get(mvId);
+						String volId = v.getRelatedVolumes().get(0);
+						Volume mv = mvMap.get(volId);
 						if(mv.getRelatedChildVolumes()==null)
 						{
 							mv.setRelatedChildVolumes(new ArrayList<Volume>());
 						}
 						mv.getRelatedChildVolumes().add(v);
 					}
+					else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
+					{
+						for(String subVolId: v.getRelatedVolumes())
+						{
+							Volume subVol = mvMap.get(subVolId);
+							if(subVol!=null)
+							{
+								subVol.setRelatedParentVolume(v);
+							}
+							
+							
+						}
+
+					}
+						
+					
 				}
+				
 			}
 		}
 		
