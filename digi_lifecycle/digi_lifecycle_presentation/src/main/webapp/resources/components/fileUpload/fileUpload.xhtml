@@ -7,156 +7,139 @@
 	xmlns:cc="http://java.sun.com/jsf/composite"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j">
-
-<!-- INTERFACE -->
-<cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
-	<cc:attribute name="fileUploadListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)" required="true"/>
-	<cc:attribute name="rerender" type="java.lang.String"/>
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
 	
-<ui:remove>
-	<h:form id="form" prependId="false">
-		<h3>Choose file(s)</h3>
-		<p><input id="files-upload" type="file"/></p>
-		<p id="drop-area"><span class="drop-instructions">or drag
-		and drop files here</span> <span class="drop-over">Drop files here!</span></p>
-
-		<ul id="file-list">
-			<li class="no-items">(no files uploaded yet)</li>
-		</ul>
-
-	</h:form>
-
-
-	<!-- 
-	<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
-	-->
-</ui:remove>
-	<h:outputStylesheet library="components/fileUpload/plupload/img" />
-
-	<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
-	<!-- Load source versions of the plupload script files -->
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.gears.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.silverlight.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.flash.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
-	<h:outputScript library="components/fileUpload/plupload" name="plupload.html4.js"/>
-	<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js"/>
-    <h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
-    
-    <script type="text/javascript">
-			$(function(){
-				initUploader('#{cc.clientId}', '#{cc.attrs.rerender}', getViewState(), '#{session.id}', '#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}', '#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf')
-			})
-			
-			function getViewState()
-			{
+	<!-- INTERFACE -->
+	<cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
+		<cc:attribute name="fileUploadListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)" required="true"/>
+		<cc:attribute name="rerender" type="java.lang.String"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+	<ui:remove>
+		<h:form id="form" prependId="false">
+			<h3>Choose file(s)</h3>
+			<p><input id="files-upload" type="file"/></p>
+			<p id="drop-area"><span class="drop-instructions">or drag
+			and drop files here</span> <span class="drop-over">Drop files here!</span></p>
+	
+			<ul id="file-list">
+				<li class="no-items">(no files uploaded yet)</li>
+			</ul>
+	
+		</h:form>
+		<!-- 
+		<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
+		-->
+	</ui:remove>
+		<h:outputStylesheet library="components/fileUpload/plupload/img" />
+	
+		<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+		<!-- Load source versions of the plupload script files -->
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.gears.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.silverlight.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.flash.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.html4.js"/>
+		<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js"/>
+	    <h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
+	    
+	    <script type="text/javascript">
+				$(function(){
+					initUploader('#{cc.clientId}', '#{cc.attrs.rerender}', getViewState(), '#{session.id}', '#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}', '#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf')
+				})
 				
-				if(document.getElementsByName('javax.faces.ViewState')[0])
+				function getViewState()
 				{
-					
-					var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
-					var regExp = new RegExp('\\+','g');
-					var encodedViewState = viewStateValue.replace(regExp, '\%2B');
-					return encodedViewState;
+					if(document.getElementsByName('javax.faces.ViewState')[0])
+					{
+						var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+						var regExp = new RegExp('\\+','g');
+						var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+						return encodedViewState;
+					}
+					else
+					{
+						return '';
+					}
 				}
-				else
-				{
-					return '';
-				}
-				
+			//	$("link[href$='standard.css']").remove();
+	    </script>
+		<style type="text/css">
+			#upload {
+				float:none;
+				width:100%;
 			}
-		//	$("link[href$='standard.css']").remove();
-    </script>
-	<style type="text/css">
-		#upload {
-			float:none;
-			width:100%;
-		}
-		
-		#upload .plupload_filelist {
-			height:23em;
-			max-height:23em;
-			width:100%;
-			background-color:#E4E4E4;
-			overflow:auto;
-		}
-		#upload div {
-			float:none;
-		}
-		#upload .plupload_file_name {
-			float:left;
-			width:50%;
-		}
-		#upload .plupload_file_size {
-			float:left;
-			width:20%;
-			text-align:right;
-		}
-		#upload .plupload_file_status {
-			float:left;
-			width:10%;
-			text-align:right;
-		}
-		#upload .plupload_file_action {
-			float:left;
-			width:20%;
-		}
-		#upload .plupload_filelist_header {
-			margin-top:0.5em;
-		}
-		#upload .plupload_filelist_footer  .plupload_file_name {
-			float:left;
-			width:70%;
-		}
-		#upload .plupload_filelist_footer .plupload_start {
-			margin-left:1em;
-		}
-		#upload .plupload_filelist_footer .plupload_upload_status {
-			display:block;
-			width:100%;
-			text-align:center;
-		}
-	</style>
-<h:form>
-
-		<div id="#{cc.clientId}" style="width:560px;">
+			
+			#upload .plupload_filelist {
+				height:38em;
+				max-height:38em;
+				width:100%;
+				background-color:#E4E4E4;
+				overflow:auto;
+			}
+			#upload div {
+				float:none;
+			}
+			#upload .plupload_file_name {
+				float:left;
+				width:50%;
+			}
+			#upload .plupload_file_size {
+				float:left;
+				width:20%;
+				text-align:right;
+			}
+			#upload .plupload_file_status {
+				float:left;
+				width:10%;
+				text-align:right;
+			}
+			#upload .plupload_file_action {
+				float:left;
+				width:20%;
+			}
+			#upload .plupload_filelist_header {
+				margin-top:0.5em;
+			}
+			#upload .plupload_filelist_footer  .plupload_file_name {
+				float:left;
+				width:70%;
+			}
+			#upload .plupload_filelist_footer .plupload_start {
+				margin-left:1em;
+			}
+			#upload .plupload_filelist_footer .plupload_upload_status {
+				display:block;
+				width:100%;
+				text-align:center;
+			}
+		</style>
+	
+		<h:form>
+			<div id="#{cc.clientId}" style="width:100%;">
+		 
+			 	<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
+				
+		<ui:remove>		
+				<!-- 
+					<div id="filelist">No runtime found.</div>
+					<br />
+					<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
+					<a id="pickfiles" href="#">[Select files]</a> 
+					<a id="uploadfiles" href="#">
+						<h:outputText value="[Upload files]"/>
+					</a>
+	-->
 	 
-		 	<div id="pluploader" style="width: 530px; height: 330px;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
-			
-<ui:remove>		
-			<!-- 
-			
-				<div id="filelist">No runtime found.</div>
-				<br />
-				<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
-				<a id="pickfiles" href="#">[Select files]</a> 
-				<a id="uploadfiles" href="#">
-					<h:outputText value="[Upload files]"/>
-					
-				</a>
-	
--->
- 
-			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" value="hidden">
-				<a4j:ajax event="click" render="#{cc.attrs.rerender}"/>
-			</h:commandButton>
-
-		
-	</ui:remove>		 	
-	    </div>
-</h:form>
-	
-	
-	
-	
-
-
-
-</cc:implementation>
+				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" value="hidden">
+					<a4j:ajax event="click" render="#{cc.attrs.rerender}"/>
+				</h:commandButton>
+		</ui:remove>		 	
+		    </div>
+		</h:form>
+	</cc:implementation>
 </html>
