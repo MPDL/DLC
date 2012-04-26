@@ -47,6 +47,16 @@
 
 						</pretty:link>
 					</div>
+					<!-- Multivolume title -->
+					<br />
+					<br/>
+					<h:outputText value="In Multivolume: "/>
+					<pretty:link mappingId="viewMultiVol">
+						<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
+							
+						<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
+						<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.relatedParentVolume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
+					</pretty:link>
 				</div>
 				
 				<div class="eg3_shortView_js">

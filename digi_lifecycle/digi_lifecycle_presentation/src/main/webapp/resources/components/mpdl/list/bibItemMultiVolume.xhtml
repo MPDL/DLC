@@ -38,7 +38,7 @@
 					<div class="eg3_itemHeadline">
 						<div class="eg3_itemTitle">
 							<pretty:link mappingId="viewMultiVol">
-								<f:param value="#{cc.attrs.volume.item.objid}" />
+								<f:param value="#{cc.attrs.volume.objidAndVersion}" />
 								<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 							
 								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
@@ -52,7 +52,7 @@
 					
 					<div class="eg3_shortView_js">
 						<div class="eg3_itemMetaLabel"><h:outputText value="Number of Volumes"/></div>
-						<div class="eg3_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes)}"/></div>
+						<div class="eg3_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedChildVolumes)}"/></div>
 						
 						<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
