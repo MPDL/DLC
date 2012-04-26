@@ -25,7 +25,7 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 
-		<h:panelGroup id="volume" layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered}">
+		<h:panelGroup id="volume" layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered and not empty cc.attrs.volume.mets}">
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
@@ -38,7 +38,7 @@
 				<div class="eg3_itemHeadline">
 					<div class="eg3_itemTitle">
 						<pretty:link mappingId="viewPages">
-							<f:param value="#{cc.attrs.volume.item.objid}" />
+							<f:param value="#{cc.attrs.volume.objidAndVersion}" />
 							<f:param value="recto-verso" />
 							<f:param value="1" />
 							
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				
-				<div class="eg3_shortView_js">
+				<h:panelGroup layout="block" class="eg3_shortView_js">
 					<ui:remove>
 						<div class="eg3_itemMetaLabel">Creator(s)</div>
 						<div class="eg3_itemMetaValue">Name, Prename, Address</div>
@@ -66,7 +66,7 @@
 								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
 								
 								<pretty:link mappingId="viewPages">
-									<f:param value="#{cc.attrs.volume.item.objid}"/>
+									<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 									<f:param value="fulltext" />
 									<f:param value="#{pageNumber}"/>
 									
@@ -84,7 +84,7 @@
 						</a4j:repeat>
 					</h:panelGroup>
 					
-				</div>
+				</h:panelGroup>
 				<div class="eg3_mediumView_js">
 					<div class="eg3_itemMetaLabel">Journal Title</div>
 					<div class="eg3_itemMetaValue">Astrophysical Journal Letters</div>
@@ -107,16 +107,28 @@
 				</div>
 				
 				<br/>
+				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty cc.attrs.volume.item.properties.latestRelease and (cc.attrs.volume.item.properties.latestRelease.objid != cc.attrs.volume.objidAndVersion) and allVolumesBean.contextId == 'my'}">
+					<pretty:link mappingId="viewPages">
+							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}" />
+							<f:param value="recto-verso" />
+							<f:param value="1" />
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
+							<h:outputText value="Show Latest Release" />
+						</pretty:link>
+				</h:panelGroup>
+				
+				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
-						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<f:param value="#{cc.attrs.volume.objidAndVersion}" />
 						<h:outputText value="Thumbnails"/>
 					</pretty:link>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
 					<pretty:link mappingId="upload">
-						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<f:param value="#{cc.attrs.volume.item.originObjid}" />
 						<h:outputText value="Reingest/edit" />
 					</pretty:link>
 				</h:panelGroup>
@@ -133,6 +145,14 @@
 					</pretty:link>
 				</h:panelGroup>
 				
+				
+				
+				
+				
+			
+				
+				
+				
 				<ui:remove>
 					<br/>
 					<div class="eg3_itemMediabarCategory">Kodikologische Daten</div>
@@ -143,7 +163,30 @@
 				</ui:remove>
 			</h:panelGroup>
 		</h:panelGroup>
+		
+		
+		<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets}">
+			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_itemContent">
+				<div class="eg3_itemStatusArea">
+					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<h:panelGroup class="eg3_itemStatusTitle">
+						<h:outputText value="Upload in Progress..." />
+					</h:panelGroup>
+				</div>
+				
+				<div class="eg3_itemHeadline">
+					<div class="eg3_itemTitle">
+						
 
+							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+
+						
+					</div>
+				</div>
+		</h:panelGroup>
+		</h:panelGroup>
 
 </cc:implementation>
 </html>

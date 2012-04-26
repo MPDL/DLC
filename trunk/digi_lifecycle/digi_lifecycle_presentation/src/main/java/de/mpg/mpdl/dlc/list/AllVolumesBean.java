@@ -170,11 +170,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 		if(contextId.equals("my"))
 		{
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle());
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 		}
 		else
 		{
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), null);
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), null, false);
 		}
 		
 		
