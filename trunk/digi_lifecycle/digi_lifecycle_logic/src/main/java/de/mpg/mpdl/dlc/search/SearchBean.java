@@ -28,7 +28,7 @@ public class SearchBean {
 	
 	private static Logger logger = Logger.getLogger(SearchBean.class);
 	
-	private static String dlcIndexName = "dlc_index";
+	public static String dlcIndexName = "dlc_index";
 	
 	
 	

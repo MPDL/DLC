@@ -235,6 +235,12 @@ public class Volume {
 		this.relatedParentVolume = relatedParentVolume;
 	}
 	
+	
+	public String getObjidAndVersion()
+	{
+		return this.getItem().getOriginObjid() + ":" + this.getItem().getProperties().getVersion().getNumber();
+	}
+	
 
 	
 	
