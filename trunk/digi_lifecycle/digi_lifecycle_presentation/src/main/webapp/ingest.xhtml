@@ -13,19 +13,19 @@
 <ui:composition template="templates/template_v3.xhtml">
 
 	<ui:define name="mainContent">
-	<style>
+	<style type="text/css">
 	.rf-p 
 	{
-	/*border-style: none;*/
-	float:none;
-	max-width:45.666667em;
+		float:none;
+		max-width:95%;
+		margin:0 2%;
 	}
 	.rf-p-hdr
 	{
-	float:none;
+		float:none;
 	}
 	</style>	
-	<script>
+	<script type="text/javascript">
 	function ajaxExecuting(data)
 	{
         
@@ -48,159 +48,145 @@
 
 	</script>
 
-		<h:panelGroup layout="block">
-		
+		<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 			<rich:panel id="upload" header="Upload your files...">
-				<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}">
-				</fu:fileUpload>
+				<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}"></fu:fileUpload>
 			</rich:panel>
-			
-
-		
-		<h:form id="form2" >	
-			<rich:panel id="submit">
-				<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
-					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
-				</a4j:commandButton>
-				<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
-					<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
-				</a4j:commandButton>
-				<h:commandButton action="#{ingestBean.clearAllData}" value="Clear All Data">
-					<f:ajax render="modsInfo teiInfo imageInfo" />
-				</h:commandButton>
-					
-				<rich:popupPanel id="popup" modal="true" resizeable="false">
-					<f:facet name="header">
-						<h:outputText value="Upload in progress" />
-					</f:facet>
-					<f:facet name="controls">
-					</f:facet>
-					<p>Images are uploaded and processed</p>
-					<p>Please be patient, this process may take several minutes</p>
-				</rich:popupPanel>
-			</rich:panel>
-
-		
-			<rich:panel id="select">
-				<br/>
-				<h:panelGroup >
-					<h:outputText value="Type:" />
-					<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
-						<f:selectItems value="#{ingestBean.contentModelItems}" />
-						<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
-					</h:selectOneMenu>
-				</h:panelGroup>
-				<h:panelGroup>
-					<h:outputText value="Select Context:" />
-					<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
-						<f:selectItems value="#{ingestBean.contextSelectItems}" />
-						<f:ajax event="change" render="select" />
-					</h:selectOneMenu>
-				</h:panelGroup>
-				<br />
-				<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}" >
-					<h:outputText value="Select Multivolume:"/>
-					<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
-						<f:selectItems value="#{ingestBean.multiVolItems}" />
-					</h:selectOneMenu>	
-				</h:panelGroup>
-			</rich:panel>
-
-			<rich:panel id="modsInfo" header="Metadata Information">
-				<h:outputText value="#{ingestBean.mabFile.name}" />
-				<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile or not empty ingestBean.volume}">				
-					<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
-				</h:panelGroup>
-				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Multivolume'}">
-					<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
-				</h:panelGroup>
-				<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Monograph'}">
-					<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
-				</h:panelGroup>
-				<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Volume'}">
-					<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
-				</h:panelGroup>
-				
-				<br/>
-				<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="Clear Uploaded MAB" rendered="#{not empty ingestBean.mabFile}">
-					<f:ajax render=":#{component.parent.clientId}" />
-				</h:commandButton>
-			</rich:panel>
-
-			
-			<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
-				<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
-				
-				<br/>
-				<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="Clear Uploaded tei" rendered="#{ingestBean.numberOfTeiPbs > 0}">
-					<f:ajax render=":#{component.parent.clientId}" />
-				</h:commandButton>
-			</rich:panel>
-
-
-			<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
-       			 Drag the item to proper area..
-  		  	</rich:dragIndicator>
-  		  	
-			<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
-				<f:facet name="header">
-					<h:outputText value="Uploaded Images" />
-				</f:facet>
-				<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
-
-
-	            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
-	                 <f:facet name="header">
-						<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
-							<f:ajax render=":#{component.parent.parent.clientId}" />
-						</h:commandButton>
-                    </f:facet>
-                    <a4j:outputPanel layout="block" >
-                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
-                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
-                        <h:outputText value="#{file.name}"></h:outputText>
-						<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
-							<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
-						</h:commandButton>
-                    </a4j:outputPanel>
-                </rich:dataGrid>
-
-    
-<ui:remove>		
-				<rich:dataGrid columns="1" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
-					<rich:panel bodyClass="rich-laguna-panel-no-header">
-						<h:panelGrid columns="2">
-	
-							<ui:remove>
-							<a4j:mediaOutput element="img" mimeType="image/jpeg"
-								createContent="#{ingestBean.paint}" value="#{row}"
-								style="width:50px; height:50px;" cacheable="false">
-							
-							</a4j:mediaOutput>
-							</ui:remove>
-
-							<h:panelGrid columns="2">
-								<h:outputText value="File Name:" />
-								<h:outputText value="#{file.name}" />
-								<h:outputText value="File Length(bytes):" />
-								<h:outputText value="#{file.size}" />
-							</h:panelGrid>
-						</h:panelGrid>
-					</rich:panel>
-				</rich:dataGrid>
-</ui:remove>				
-
-			</rich:panel>
-			
-		</h:form>
-		
-		
-		<h:messages />
 		</h:panelGroup>
-
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+			<h:form id="form2" >	
+				<rich:panel id="submit">
+					<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+						<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+					</a4j:commandButton>
+					<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+						<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+					</a4j:commandButton>
+					<h:commandButton action="#{ingestBean.clearAllData}" value="Clear All Data">
+						<f:ajax render="modsInfo teiInfo imageInfo" />
+					</h:commandButton>
+						
+					<rich:popupPanel id="popup" modal="true" resizeable="false">
+						<f:facet name="header">
+							<h:outputText value="Upload in progress" />
+						</f:facet>
+						<f:facet name="controls">
+						</f:facet>
+						<p>Images are uploaded and processed</p>
+						<p>Please be patient, this process may take several minutes</p>
+					</rich:popupPanel>
+				</rich:panel>
+				
+				<rich:panel id="select">
+					<br/>
+					<h:panelGroup >
+						<h:outputText value="Type:" />
+						<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
+							<f:selectItems value="#{ingestBean.contentModelItems}" />
+							<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup>
+						<h:outputText value="Select Context:" />
+						<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
+							<f:selectItems value="#{ingestBean.contextSelectItems}" />
+							<f:ajax event="change" render="select" />
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<br />
+					<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}" >
+						<h:outputText value="Select Multivolume:"/>
+						<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
+							<f:selectItems value="#{ingestBean.multiVolItems}" />
+						</h:selectOneMenu>	
+					</h:panelGroup>
+				</rich:panel>
+				
+				<rich:panel id="modsInfo" header="Metadata Information">
+					<h:outputText value="#{ingestBean.mabFile.name}" />
+					<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile or not empty ingestBean.volume}">				
+						<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Multivolume'}">
+						<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
+					</h:panelGroup>
+					<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Monograph'}">
+						<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Volume'}">
+						<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
+					</h:panelGroup>
+					
+					<br/>
+					<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="Clear Uploaded MAB" rendered="#{not empty ingestBean.mabFile}">
+						<f:ajax render=":#{component.parent.clientId}" />
+					</h:commandButton>
+				</rich:panel>
+				
+				<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
+					<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
+					<br/>
+					<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="Clear Uploaded tei" rendered="#{ingestBean.numberOfTeiPbs > 0}">
+						<f:ajax render=":#{component.parent.clientId}" />
+					</h:commandButton>
+				</rich:panel>
+				
+				<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
+	       			 Drag the item to proper area..
+	  		  	</rich:dragIndicator>
+	  		  	
+				<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
+					<f:facet name="header">
+						<h:outputText value="Uploaded Images" />
+					</f:facet>
+					<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
+					
+		            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
+		                 <f:facet name="header">
+							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
+								<f:ajax render=":#{component.parent.parent.clientId}" />
+							</h:commandButton>
+	                    </f:facet>
+	                    <a4j:outputPanel layout="block" >
+	                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
+	                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
+	                        <h:outputText value="#{file.name}"></h:outputText>
+							<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
+								<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
+							</h:commandButton>
+	                    </a4j:outputPanel>
+	                </rich:dataGrid>
+	    			
+	<ui:remove>		
+					<rich:dataGrid columns="1" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
+						<rich:panel bodyClass="rich-laguna-panel-no-header">
+							<h:panelGrid columns="2">
+		
+								<ui:remove>
+								<a4j:mediaOutput element="img" mimeType="image/jpeg"
+									createContent="#{ingestBean.paint}" value="#{row}"
+									style="width:50px; height:50px;" cacheable="false">
+								
+								</a4j:mediaOutput>
+								</ui:remove>
+	
+								<h:panelGrid columns="2">
+									<h:outputText value="File Name:" />
+									<h:outputText value="#{file.name}" />
+									<h:outputText value="File Length(bytes):" />
+									<h:outputText value="#{file.size}" />
+								</h:panelGrid>
+							</h:panelGrid>
+						</rich:panel>
+					</rich:dataGrid>
+	</ui:remove>				
+				</rich:panel>
+			</h:form>
+			
+			<h:messages />
+		</h:panelGroup>
 	</ui:define>
 
-
 </ui:composition>
-
 </html>
