@@ -1964,7 +1964,7 @@ public class VolumeServiceBean {
 				{
 					List<Volume> volList = new ArrayList<Volume>();
 					volList.add(volume);
-					loadVolumesForMultivolume(volList, userHandle, false);
+					loadVolumesForMultivolume(volList, userHandle, true);
 					
 					/*
 					volume.setRelatedChildVolumes(new ArrayList<Volume>());

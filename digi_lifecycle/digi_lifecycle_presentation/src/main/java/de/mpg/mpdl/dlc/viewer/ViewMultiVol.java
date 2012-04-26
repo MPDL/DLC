@@ -1,11 +1,13 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -23,6 +25,9 @@ public class ViewMultiVol{
 
 	private Volume volume;
 	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
+	
 	enum ViewType
 	{
 		LIST, ISBD
@@ -34,10 +39,10 @@ public class ViewMultiVol{
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
+		if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 		{   
 			try {
-				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage("Problem while loading volume");
@@ -72,6 +77,14 @@ public class ViewMultiVol{
 
 	public void setVolume(Volume volume) {
 		this.volume = volume;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
 	}
 	
 	

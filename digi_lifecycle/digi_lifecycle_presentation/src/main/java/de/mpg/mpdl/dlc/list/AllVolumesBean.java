@@ -70,7 +70,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
-		update();
+		//update();
 		if(contextId != null  && !contextId.equalsIgnoreCase("all") && !contextId.equalsIgnoreCase("my"))
 		{
 			try {
@@ -154,6 +154,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				}
 			}
 			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardFilterSortCriteria(), limit, offset, loginBean.getUserHandle());
+			
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
+			
+			
 		}
 		else{
 			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
@@ -168,14 +172,6 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 		
 		
-		if(contextId.equals("my"))
-		{
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
-		}
-		else
-		{
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), null, false);
-		}
 		
 		
 		
