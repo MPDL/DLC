@@ -2030,7 +2030,11 @@ public class VolumeServiceBean {
 				
 			}
 			
-		}
+		} 
+		if(volumeIds.size() > 0)
+		{
+			
+		
 		for(int i=0; i<volumeIds.size(); i++)
 		{
 			if(i<volumeIds.size() -1)
@@ -2047,6 +2051,7 @@ public class VolumeServiceBean {
 		sr.setQuery(volumeQuery.toString());
 		sr.setMaximumRecords(new NonNegativeInteger(String.valueOf(1000)));
 		
+		
 		SearchRetrieveResponse filterResult = client.retrieveItems(sr);
 		VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(filterResult);
 		for(Volume v : volumeResult.getVolumes())
@@ -2059,7 +2064,7 @@ public class VolumeServiceBean {
 			}
 			mv.getRelatedChildVolumes().add(v);
 		}
-		
+		}
 		
 		
 	}
