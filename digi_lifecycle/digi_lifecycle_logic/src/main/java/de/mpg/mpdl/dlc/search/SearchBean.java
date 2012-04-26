@@ -30,6 +30,7 @@ public class SearchBean {
 	
 	public static String dlcIndexName = "dlc_index";
 	
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	
 	private static List<SearchCriterion> getStandardFilterCriterions(VolumeTypes[] volTypes)
@@ -208,8 +209,15 @@ public class SearchBean {
 			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());	
 			volumeResult.add(vol);
 		} 
+		
+		//Add volumes to multivolume
+		volServiceBean.loadVolumesForMultivolume(volumeResult, null, false);
+		
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Time search: " + time );
+		
+		
+		
 		
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
