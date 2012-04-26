@@ -38,7 +38,7 @@
 				<div class="eg3_itemHeadline">
 					<div class="eg3_itemTitle">
 						<pretty:link mappingId="viewPages">
-							<f:param value="#{cc.attrs.volume.item.objid}" />
+							<f:param value="#{cc.attrs.volume.objidAndVersion}" />
 							<f:param value="recto-verso" />
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
@@ -102,9 +102,21 @@
 					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 				</div>
 				<br/>
+				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty cc.attrs.volume.item.properties.latestRelease and (cc.attrs.volume.item.properties.latestRelease.objid != cc.attrs.volume.objidAndVersion) and allVolumesBean.contextId == 'my'}">
+					<pretty:link mappingId="viewPages">
+							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}" />
+							<f:param value="recto-verso" />
+							<f:param value="1" />
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
+							<h:outputText value="Show Latest Release" />
+						</pretty:link>
+				</h:panelGroup>
+				
+				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
-						<f:param value="#{cc.attrs.volume.item.objid}" />
+						<f:param value="#{cc.attrs.volume.objidAndVersion}" />
 						<h:outputText value="Thumbnails"/>
 					</pretty:link>
 				</h:panelGroup>

@@ -64,6 +64,7 @@ All rights reserved. Use is subject to license terms.
 		</h:head>
 
 		<h:body lang="#{applicationBean.userLocaleString}">
+		
 			<h:panelGroup rendered="#{loginBean.loginState}"/>
 				
 			<h:panelGroup layout="block" styleClass="eg3_id_wrapper">
@@ -82,10 +83,10 @@ All rights reserved. Use is subject to license terms.
 				
 				<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
 					<h:panelGroup layout="block" styleClass="eg3_messageArea">
-						<h:messages errorClass="eg3_messageError" 
+						<rich:messages errorClass="eg3_messageError" 
 							warnClass="eg3_messageWarning" fatalClass="eg3_messageFatal"
-							infoClass="eg3_messageSuccess" layout="list" globalOnly="true"
-							showDetail="false" showSummary="true"/>
+							infoClass="eg3_messageSuccess" layout="list" 
+							showDetail="true" showSummary="true"/>
 					</h:panelGroup>
 					
 					<h:panelGroup layout="block" styleClass="eg3_breadTitle">

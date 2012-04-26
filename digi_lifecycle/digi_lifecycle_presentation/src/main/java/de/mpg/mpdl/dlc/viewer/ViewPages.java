@@ -1,9 +1,12 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -16,6 +19,7 @@ import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
+import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -65,19 +69,22 @@ public class ViewPages{
 	
 	private boolean showTree = false;
 	
+	private Map<String, String> clientIdMap = new HashMap<String, String>();
 	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
 		
-		if(volume==null || !volumeId.equals(volume.getItem().getOriginObjid()))
+		if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 		{   
 			try {
 				
-				this.volume = volServiceBean.loadCompleteVolume(volumeId, null);
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, getLoginBean().getUserHandle());
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
-				
+				//volume.getItem().getProperties().getLatestRelease().g
 			} catch (Exception e) {
 				MessageHelper.errorMessage("Problem while loading volume");
 			}
@@ -137,6 +144,7 @@ public class ViewPages{
 		{
 			if(getVolume().getPagedTei() != null && hasSelected == false)
 			{
+				PbOrDiv oldSelectedDiv = selectedDiv;
 				if(getSelectedPage()!=null)
 				{
 					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
@@ -145,7 +153,22 @@ public class ViewPages{
 				{
 					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedRightPage());
 				}
+				/*
+				FacesContext fc = FacesContext.getCurrentInstance();
+				if(fc.getPartialViewContext().isAjaxRequest())
+				{
+					if(selectedDiv!=null)
+					{
+						fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(selectedDiv.getId()));
+					}
+					if(oldSelectedDiv!=null)
+					{
+						fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(oldSelectedDiv.getId()));
+					}
+				}
 				
+				System.out.println(fc.getPartialViewContext().getRenderIds());
+				*/
 			}
 			else
 			{
@@ -429,6 +452,21 @@ public class ViewPages{
 		this.context = context;
 	}
 
-	
+	public String addToClientIdMap(String divId, String clientId)
+	{
+		clientIdMap.put(divId, clientId);
+		System.out.println("Added to client id map: " + divId + " " + clientId);
+		return "";
+	}
+
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
 
 }
