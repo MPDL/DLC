@@ -352,6 +352,16 @@
 							<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
 							<span class="quad_area1 splitBlockHeader"></span>
 							
+							<style type="text/css">
+			                    ins{
+			                        text-align:right;
+			                        font-style:italic;
+			                        display:inline-block;
+			                        float:right;
+			                        text-decoration:none;
+			                    }
+		                    </style>
+							
 							<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave" style="background-color: white">
 								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.teiSd!=null}"/>
 							</div>
