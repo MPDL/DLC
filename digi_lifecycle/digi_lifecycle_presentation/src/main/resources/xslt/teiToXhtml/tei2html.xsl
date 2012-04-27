@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:te="http://www.tei-c.org/ns/1.0"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:te="http://www.tei-c.org/ns/1.0" 
     xmlns:xi="http://www.w3.org/2001/XInclude" version="1.0" exclude-result-prefixes="te xi">
     <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
         <desc>
@@ -15,8 +15,8 @@
     <xsl:variable name="lang" select="te:TEI/@xml:lang" />
     <!-- building the basic html -->
     <xsl:template match="te:TEI">
-        <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE html></xsl:text>
-        <html lang="{$lang}">
+       
+        <html xmlns="http://www.w3.org/1999/xhtml">
             <head>
                 <meta charset="utf-8" />
                 <title>
