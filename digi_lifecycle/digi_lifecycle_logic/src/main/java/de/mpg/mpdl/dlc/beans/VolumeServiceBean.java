@@ -661,18 +661,7 @@ public class VolumeServiceBean {
 		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
 		
 		
-		//Set METS in md-record
-		if(volume.getMets() != null)
-		{
-			MetadataRecord metsMdRec = new MetadataRecord("mets");
-			volume.getItem().getMetadataRecords().add(metsMdRec);
-			IMarshallingContext mCont = bfactMets.createMarshallingContext();
-			StringWriter sw = new StringWriter();
-			mCont.marshalDocument(volume.getMets(), "UTF-8", null, sw);
-			sw.close();
-			Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
-			metsMdRec.setContent(metsDoc.getDocumentElement());
-		}
+		
 		
 
 			StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -804,6 +793,20 @@ public class VolumeServiceBean {
 				
 				
 				
+			}
+			
+			
+			//Set METS in md-record
+			if(volume.getMets() != null)
+			{
+				MetadataRecord metsMdRec = new MetadataRecord("mets");
+				volume.getItem().getMetadataRecords().add(metsMdRec);
+				IMarshallingContext mCont = bfactMets.createMarshallingContext();
+				StringWriter sw = new StringWriter();
+				mCont.marshalDocument(volume.getMets(), "UTF-8", null, sw);
+				sw.close();
+				Document metsDoc = builder.parse(new InputSource(new StringReader(sw.toString())));
+				metsMdRec.setContent(metsDoc.getDocumentElement());
 			}
 			
 			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1575,7 +1578,8 @@ public class VolumeServiceBean {
 		
 
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		//URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei2html.xsl");
 		
 		Source xsltSource = new StreamSource(url.toExternalForm());
 		//logger.info("Using xslt: " + url.toExternalForm());
