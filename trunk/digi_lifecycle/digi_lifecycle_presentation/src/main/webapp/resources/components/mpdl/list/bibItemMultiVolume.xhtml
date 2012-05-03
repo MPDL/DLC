@@ -8,7 +8,6 @@
 	xmlns:cc="http://java.sun.com/jsf/composite"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
@@ -107,8 +106,7 @@
 		</h:panelGroup>
 
 		<h:panelGroup layout="block" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
-	 	   <mpdl:volumes volumes="#{cc.attrs.volume.relatedChildVolumes}" >
-	 	   </mpdl:volumes>
+	 	   <list:bibItemVolume volumes="#{cc.attrs.volume.relatedChildVolumes}" />
 	    </h:panelGroup>
 	
 	</cc:implementation>
