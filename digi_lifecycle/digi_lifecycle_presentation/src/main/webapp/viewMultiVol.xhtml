@@ -6,6 +6,7 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
 	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
@@ -71,7 +72,7 @@
 				</h:panelGroup>
 				<h:panelGroup styleClass="seperator" />
 				<h:panelGroup styleClass="free_area0 itemBlockContent endline" >			
-					<mpdl:volumes volumes="#{viewMultiVol.volume.relatedChildVolumes}" />
+					<list:bibItemVolume volumes="#{viewMultiVol.volume.relatedChildVolumes}" />
 				</h:panelGroup>
 			</h:panelGroup>
 

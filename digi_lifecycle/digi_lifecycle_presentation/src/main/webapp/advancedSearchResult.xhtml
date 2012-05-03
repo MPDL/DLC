@@ -36,7 +36,7 @@
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono }"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
-				 		<list:bibItemVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+				 		<list:bibItemVolumeForSearch volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
 
 					</a4j:repeat>
 				</list:bibList_default>
