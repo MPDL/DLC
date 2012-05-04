@@ -196,7 +196,7 @@ body .eg3_id_siteTitle {
 	background-color:#EEF2F0;
 }
 .eg3_id_sidebarLeft {
-	background-color:#F0F0F0;
+	background-color:#FF3389;
 }
 
 .eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
@@ -1535,6 +1535,13 @@ body .eg3_id_siteTitle {
 	width:100%;
 }
 
+.eg3_viewPage .eg3_singleEdit {
+	width:100%;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_viewPage_imgContainer {
+	width:33%;
+}
+
 .eg3_viewPage .eg3_ownershipBox {
 	border:solid 0.09em #CCCCCC;
 	width:auto;
@@ -1696,13 +1703,11 @@ body .eg3_id_siteTitle {
 	float:none;
 }
 .rf-tbp .rf-tab {
-	min-height:12em;
-	height:100%;
-	max-height:30em;
 	width:100%;
-/*	border:0.0833333em solid transparent; */
 	border:0;
-	overflow:auto;
+}
+.rf-tbp .rf-tab #container { /* used by thumbnail viewPage */
+	height:100%;
 }
 .rf-tbp .rf-tab.eg3_overflow {
 	width:100%;
@@ -1717,8 +1722,13 @@ body .eg3_id_siteTitle {
 	background-color:transparent;
 	min-height:100%;
 	max-height:100%;
+	overflow:auto;
 }
 
+
+.eg3_id_sidebarLeft .rf-tab, .eg3_id_sidebarLeft .rf-tab div {
+	float:none;
+}
 
 .rf-tbp .rf-tab-cnt.eg3_expand {
 	width:auto;

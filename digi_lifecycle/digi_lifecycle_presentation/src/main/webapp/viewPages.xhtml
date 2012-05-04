@@ -38,11 +38,8 @@
 			
 			
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
-			
-				
-				
-				
-				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="z-index:150;">
+				<!-- SIDEBAR LEFT -->
+				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5">
 					
 					<h:form styleClass="eg3_overflow" style="z-index:50;">	
 						<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
@@ -54,118 +51,114 @@
 									<input type="button" value="print"/>
 								</h:panelGroup>
 							</h:panelGroup>
-							
-			     			<rich:tab header="Toc" id="toc">
-									
-									<rich:tree toggleType="ajax" var="divItem" >
-										<rich:treeModelRecursiveAdaptor  roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
-											
-											<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
-												
-											
-												<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-													<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
-														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.type)}] " rendered="#{not empty divItem.type}"/>
-														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-														<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-														<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-														<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-														<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-													</h:panelGroup>
-													
-													<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
-														<h:outputText value="#{divItem.elementType}"/>
-													</h:panelGroup>
-													
-													<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
-														<h:outputText value="[#{divItem.elementType}]"/>
-													</h:panelGroup>
-													
-													<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
-												
-												
-												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
-												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
-												</h:commandLink>
-											</rich:treeNode>
-										</rich:treeModelRecursiveAdaptor>
-									</rich:tree>
-									<script type="text/javascript">
-										$(document).ready(function(e)
+							<script type="text/javascript">
+									jsf.ajax.addOnEvent(function(e)
+									{	
+										//notice the container height for setting a min-height while ajax reloading
+										//without a height value the page jump to top because of to slowly image loading
+										if (e.status == "begin") {
+											$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
+										}
+										//if the ajax request is success
+										//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
+										if(e.status=="success")
 										{
 											scrollDivs();
-										});
-										
-										
-										
-										jsf.ajax.addOnEvent(function(e)
-										{	
-											//notice the container height for setting a min-height while ajax reloading
-											//without a height value the page jump to top because of to slowly image loading
-											if (e.status == "begin") {
-												$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-											}
-											//if the ajax request is success
-											//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-											if(e.status=="success")
-											{
-												scrollDivs();
-												//resetViewPageContainer();
-											}
-										});
-										
-										function scrollDivs()
-										{
-											var selectedDivId= '#{viewPages.selectedDiv.id}';
-											var treeContainerId = "#{rich:clientId('toc')}";
-											//add an backslahs before all colons					
-											treeContainerId = treeContainerId.replace(/:/g, "\\:");
-											var treeContainerDiv = $('#' + treeContainerId);
-											
-											
-											//var selectedPb = 'page_300';
-											var pos = $('.struct_' + selectedDivId).offset();
-											if(pos!=null)
-											{
-												var treeContainerPos = $(treeContainerDiv).offset();				
-												var currentScroll = $(treeContainerDiv).scrollTop();				
-												var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;				
-												treeContainerDiv.scrollTop(newScrollPos);
-											}
+											//resetViewPageContainer();
 										}
-										
-										function resetViewPageContainer() 
-										{
-											var reloadDone = false;
-											
-											$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
-											{
-												if ($(this).height() > 0) 
-												{
-													reloadDone = true;
-												}
-											});
-											(reloadDone) ? $('.eg3_viewPageContainer').removeAttr("style") : setTimeout("resetViewPageContainer()", 25);
-										}
-									</script>
+									});
 									
+									function scrollDivs()
+									{
+										var selectedDivId= '#{viewPages.selectedDiv.id}';
+										var treeContainerId = "#{rich:clientId('toc')}";
+										//add an backslahs before all colons					
+										treeContainerId = treeContainerId.replace(/:/g, "\\:");
+										var treeContainerDiv = $('#' + treeContainerId);
+										
+										
+										//var selectedPb = 'page_300';
+										var pos = $('.struct_' + selectedDivId).offset();
+										if(pos!=null)
+										{
+											var treeContainerPos = $(treeContainerDiv).offset();				
+											var currentScroll = $(treeContainerDiv).scrollTop();				
+											var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;				
+											treeContainerDiv.scrollTop(newScrollPos);
+											resetViewPageContainer();
+										}
+									}
+									
+									function resetViewPageContainer() 
+									{
+										var reloadDone = false;
+										
+										$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
+										{
+											if ($(this).height() > 0) 
+											{
+												reloadDone = true;
+											}
+										});
+										(reloadDone) ? $('.eg3_viewPageContainer').removeAttr("style") : setTimeout("resetViewPageContainer()", 25);
+									}
+									
+									$(document).ready(function(e)
+									{
+										scrollDivs();
+										
+										$(window).resize(function(e)
+										{
+											resizeSidebar('.eg3_viewPage');
+										});
+										
+										checkSidebarHeight('.eg3_viewPage');
+									});
+								</script>
+			     			<rich:tab header="Toc" id="toc">
+								<rich:tree toggleType="ajax" var="divItem" >
+									<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
+										
+										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
+											<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
+												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
+													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+													<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+													<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+													<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+													<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+													<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
+													<h:outputText value="#{divItem.elementType}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
+													<h:outputText value="[#{divItem.elementType}]"/>
+												</h:panelGroup>
+												
+												<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
+											</h:commandLink>
+											
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
+										</rich:treeNode>
+									</rich:treeModelRecursiveAdaptor>
+								</rich:tree>
+								
 							</rich:tab>
+							
 							<rich:tab header="Thumbs" id="thumbs">
-								<ui:remove>
-								<a4j:repeat value="#{viewPages.pageList}" var="page">
-									<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;" />
-								</a4j:repeat>
-								</ui:remove>
 								<load:lazyLoad pageList="#{viewPages.pageList}">
 									<h:commandLink action="#{viewPages.goToPage(var)}">
 										<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:60px;" />
 										<f:ajax render="@all"/>
 									</h:commandLink>
 								</load:lazyLoad>
-								
-								
 							</rich:tab>
+							
 							<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 								<h:commandButton value="ISBD">
 									<rich:componentControl target="isbdPopup" operation="show" />
@@ -174,7 +167,6 @@
 									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" />
 									<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}" />
 								</h:panelGroup>
-							    
 							    
 							    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
 							        <f:facet name="controls">
@@ -193,7 +185,6 @@
 				</h:panelGroup>
 				
 				<h:panelGroup id="viewPage" layout="block" styleClass="eg3_container_4_5 eg3_viewPage">
-					
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
@@ -277,11 +268,6 @@
 					</h:panelGroup>
 					
 					
-					
-					
-					
-					
-					
 					<!--  SINGLE VIEW  -->
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 	
@@ -304,6 +290,7 @@
 						</h:panelGroup>
 						
 						<script type="text/javascript">
+							
 				            $(document).ready(function(){
 				                var opts = {
 				                	interactionMode : 'embedded',

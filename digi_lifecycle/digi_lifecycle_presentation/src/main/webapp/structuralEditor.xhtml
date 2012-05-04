@@ -16,28 +16,24 @@
 	
 	
 	<ui:define name="separateContentHeader">
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageHeader">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<h3 class="eg3_multiVolumeTitle"><h:outputText value="Context Name..."/> <input type="button" value="citationlink" onclick="$('.eg3_citationLink').toggle();"/></h3>
-						<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-							<h:panelGroup styleClass="eg3_citationLink">http://www.frag-doch-den-hans.de/irgendeineSeitewirderschonoffenhaben.html</h:panelGroup>
-						</h:panelGroup>
-						<br />
-						<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
-						<h:panelGroup styleClass="eg3_floatLeft">
-							<h3 class="eg3_volumeTitle"><h:outputText value="#{volumeUtilBean.getTitle(structuralEditorBean.volume.modsMetadata).title}"/></h3>
-							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(structuralEditorBean.volume.modsMetadata).name}"/></h4>
-						</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageHeader">
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
+					<h3 class="eg3_multiVolumeTitle"><h:outputText value="Context Name..."/> <input type="button" value="citationlink" onclick="$('.eg3_citationLink').toggle();"/></h3>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+						<h:panelGroup styleClass="eg3_citationLink">http://www.frag-doch-den-hans.de/irgendeineSeitewirderschonoffenhaben.html</h:panelGroup>
+					</h:panelGroup>
+					<br />
+					<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
+					<h:panelGroup styleClass="eg3_floatLeft">
+						<h3 class="eg3_volumeTitle"><h:outputText value="#{volumeUtilBean.getTitle(structuralEditorBean.volume.modsMetadata).title}"/></h3>
+						<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(structuralEditorBean.volume.modsMetadata).name}"/></h4>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
-		</ui:define>
-	
-	
-	
-	
+		</h:panelGroup>
+	</ui:define>
 	
 	
 	
@@ -50,414 +46,597 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
 
 
-		<!-- BEGIN THUMBNAIL LIST -->
-		<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="height:800px; z-index:150; overflow:auto !important;">
-			<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
-				
-				<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container1 eg3_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
-					<h:form>
-						<h:panelGroup layout="block" styleClass="eg3_container1_2">
-							<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
-								
-								<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
-								<ui:remove>
-								<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
-								</ui:remove>
-							</h:commandLink>
-						</h:panelGroup>
-						
-						<h:panelGroup layout="block" styleClass="eg3_container1_2" style="width:200px">
-							<h:outputText value="#{element.page.order + 1}" />
-							<h:outputText value=" / #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
-							
-							<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
-							<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
-							<br/><br/>
-							
-							<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
-								<h:panelGroup rendered="#{wrapper.positionType == 'START'}">
-									<ui:remove>
-										<h:outputText  value="#{lbl.edit_start} " rendered="#{wrapper.positionType == 'START'}" />
-										<h:outputText  value="#{lbl.edit_end} " rendered="#{wrapper.positionType == 'END'}" />
-									</ui:remove>
-									
-									<h:outputText  value="#{internationalizationHelper.getLabelForEnum('structuretype_', wrapper.teiElement.type)}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>	
-									<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-									<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
-									
-									<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
-									
-									<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-								<br/><br/>
-								</h:panelGroup>
-							</a4j:repeat>
-						</h:panelGroup>	
-					</h:form>
+			<!-- BEGIN THUMBNAIL LIST -->
+			<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="height:800px; z-index:150; overflow:auto !important;">
+				<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
 					
-				</h:panelGroup>
-				
-				<h:panelGroup layout="block" styleClass="eg3_container1 eg3_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
-					<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
-				</h:panelGroup>
-			</a4j:repeat>
-		</h:panelGroup>
-		
-		
-		<script>
-		$("img.lazy").lazyload({
-							container: $("#thumbsContainer"),
-							});
-		</script>
-		<!-- END THUMBNAIL LIST -->
-		
-		
-		<!-- START PAGE IMAGE -->
-		<h:panelGroup id="view" layout="block" styleClass="eg3_container_4_5 eg3_viewPage">
-				
-
-				<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
-						
-						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
-							<h:outputText value="#{structuralEditorBean.selectedPb.page.orderLabel}"/>
-						</h:panelGroup>
-						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
-							<h:form styleClass="eg3_pageBrowser">
-								<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
-									<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="???placeholder???">
-										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-
-									</h:commandLink>
-									<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="???placeholder???">
-										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-									</h:commandLink>
-								</ui:fragment>
-								
-								<h:outputText value="Scan #{structuralEditorBean.selectedPb.page.order+1}"/>
-								<h:outputText value=" / "/>
-								<h:outputText value="#{structuralEditorBean.volume.pages.size()}"/>
-								
-								
-								
-								
-								<ui:fragment rendered="#{structuralEditorBean.volume.pages.size() > 1}">
-									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageBrowser', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
-								</ui:fragment>
-								
-								<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
-									<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="???placeholder???" >
-										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
-										
-									</h:commandLink>
-									<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="???placeholder???">
-										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
-									</h:commandLink>
-								</ui:fragment>
-							</h:form>
-						
-							<h:form styleClass="eg3_gotoBox" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
-								<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="99999" maxlength="5" type="number"/>
-								<label class="eg3_inputLabel">
-									<h:outputText value="von #{structuralEditorBean.volume.pages.size()}" />
-								</label>
-							</h:form>
-						</h:panelGroup>
-						
-						
-					</h:panelGroup>
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1">
-					<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer">
-						<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}" />
-					</h:panelGroup>
-				<!-- END PAGE IMAGE -->
-				
-				
-				<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer" style="background-color:white;">
-					
-					<!-- START SAVE BUTTONS -->
-					<h:panelGroup layout="block" styleClass="eg3_container1">
+					<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container1 eg3_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
 						<h:form>
-							<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
-							<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container1_2">
+								<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
+									
+									<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
+									<ui:remove>
+									<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
+									</ui:remove>
+								</h:commandLink>
+							</h:panelGroup>
+							
+							<h:panelGroup layout="block" styleClass="eg3_container1_2" style="width:200px">
+								<h:outputText value="#{element.page.order + 1}" />
+								<h:outputText value=" / #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
+								
+								<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
+								<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
+								<br/><br/>
+								
+								<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
+									<h:panelGroup rendered="#{wrapper.positionType == 'START'}">
+										<ui:remove>
+											<h:outputText  value="#{lbl.edit_start} " rendered="#{wrapper.positionType == 'START'}" />
+											<h:outputText  value="#{lbl.edit_end} " rendered="#{wrapper.positionType == 'END'}" />
+										</ui:remove>
+										
+										<h:outputText  value="#{internationalizationHelper.getLabelForEnum('structuretype_', wrapper.teiElement.type)}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>	
+										<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+										<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
+										
+										<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
+										
+										<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+									<br/><br/>
+									</h:panelGroup>
+								</a4j:repeat>
+							</h:panelGroup>	
+						</h:form>
+						
+					</h:panelGroup>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container1 eg3_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
+						<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
+					</h:panelGroup>
+				</a4j:repeat>
+			</h:panelGroup>
+			
+			
+			<script>
+			$("img.lazy").lazyload({
+								container: $("#thumbsContainer"),
+								});
+			</script>
+			<!-- END THUMBNAIL LIST -->
+			
+			
+			<!-- START PAGE IMAGE -->
+			<h:panelGroup id="view" layout="block" styleClass="eg3_container_4_5 eg3_viewPage">
+				
+				
+				<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+						<h:outputText value="#{structuralEditorBean.selectedPb.page.orderLabel}"/>
+					</h:panelGroup>
+					<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
+						<h:form styleClass="eg3_pageBrowser">
+							<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
+								<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="???placeholder???">
+									<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+
+								</h:commandLink>
+								<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="???placeholder???">
+									<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+								</h:commandLink>
+							</ui:fragment>
+							
+							<h:outputText value="Scan #{structuralEditorBean.selectedPb.page.order+1}"/>
+							<h:outputText value=" / "/>
+							<h:outputText value="#{structuralEditorBean.volume.pages.size()}"/>
+							
+							
+							<ui:fragment rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+								<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageBrowser', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
+								<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="???placeholder???" >
+									<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+									
+								</h:commandLink>
+								<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="???placeholder???">
+									<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+								</h:commandLink>
+							</ui:fragment>
+						</h:form>
+					
+						<h:form styleClass="eg3_gotoBox" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+							<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="99999" maxlength="5" type="number"/>
+							<label class="eg3_inputLabel">
+								<h:outputText value="von #{structuralEditorBean.volume.pages.size()}" />
+							</label>
 						</h:form>
 					</h:panelGroup>
-					<!-- END SAVE BUTTONS -->
-					<br/>
-				<h:panelGroup layout="block" id="pbForm" styleClass="container1_3" >
-					 
+				</h:panelGroup> <!-- END VIEWPAGEMENU -->
 					
+					<style type="text/css">
+						.rf-tbp.eg3_container_1 .rf-tab-cnt {
+							width:95.5%;
+							padding:2%;
+						}
+					</style>
+					
+					<h:panelGroup layout="block" styleClass="eg3_singleEdit eg3_image_bgColor_1">
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_viewPage_imgContainer">
+							<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}" />
+						</h:panelGroup>
+						<!-- END PAGE IMAGE -->
 						
 						
-					
-						
-					<!-- START VALIDATION ERRORS -->
-					<h:panelGroup layout="block" style="border: 1px solid red;">
-							<h3><h:outputText value="#{lbl.edit_validationErrors}"/></h3>
-							<ul style="color:red;">
-							<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
-								<li>
-								<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}" />
-								<h:outputText value=" cannot be placed under " />
-								<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}" />
-								</li>
-							</a4j:repeat>
-							</ul>
-			        </h:panelGroup>
-			        <!-- END VALIDATION ERRORS -->
-					
-					<br/>
-					
-					<!-- START STRUCTURE EDITING -->
-					<h:panelGroup layout="block" style="border: 1px solid red;">
-						<h3>Strukturelemente erstellen</h3>
-						<h:form>
-				        	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
-				        	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
-				        	 teiWrapper="#{structuralEditorBean.currentNewElement}"/>
-				              <br/>
-				              <br/>
-				              <h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
-			             </h:form>
-		             </h:panelGroup>
-		             <!-- END STRUCTURE EDITING -->
-					<br/>
-					<!-- START PAGE EDITING -->
-					<h:panelGroup layout="block" style="border: 1px solid red;">
-						<h3>Paginierungs- und Seiteneinstellungen </h3>
-						<h:form>
-					
-						<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
-						<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
-						<br/>
-					
-					
-						<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: " />
-						<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
-						<br/>
-						<br/>
-					
-						<h:outputText value="#{lbl.edit_paginationType}" />
-						<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
-							<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
-							<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
-							<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
-						</h:selectOneMenu>
-						<br/>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_editContent">
+							<!-- START TAB-PANEL -->
+							<h:form styleClass="eg3_container_1">
 							
-						<h:outputText value="#{lbl.edit_paginationStartValue}" />
-						<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
-						<br/>
-						
-						<h:outputText value="#{lbl.edit_paginationPattern}" />
-						<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
-						<br/>
-						
-						<h:outputText value="#{lbl.edit_paginationEndPoint}" />
-						<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
-							<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+								<rich:tabPanel styleClass="eg3_container_1">
+									<!-- START SAVE BUTTONS -->
+									<h:panelGroup layout="block" styleClass="eg3_floatRight">
+										<h:form>
+											<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/>
+											<h:outputText value="&#160;"/>
+											<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+											<h:outputText value="&#160;"/>
+											<h:commandButton value="REVERT" />
+										</h:form>
+									</h:panelGroup>
+									<!-- END SAVE BUTTONS -->
+									
+									<rich:tab header="structure" label="structure" id="structure">
+										<!-- START STRUCTURE EDITING -->
+										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
+											<h3>Strukturelemente erstellen</h3>
+											<h:form>
+												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
+													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+													teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+												<br/>
+												<br/>
+												<h:commandButton styleClass="eg3_floatRight" value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+											</h:form>
+										</h:panelGroup>
+										<!-- END STRUCTURE EDITING -->
+									</rich:tab>
+									<rich:tab header="pagination" label="pagination" id="pagination">
+										<!-- START PAGE EDITING -->
+										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
+											<h3>Paginierungs- und Seiteneinstellungen </h3>
+											<h:form>
+												
+												<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
+												<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
+												<br/>
+												
+												<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: " />
+												<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
+												<br/>
+												<br/>
+												
+												<h:outputText value="#{lbl.edit_paginationType}" />
+												<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
+													<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
+													<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
+													<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
+												</h:selectOneMenu>
+												<br/>
+												
+												<h:outputText value="#{lbl.edit_paginationStartValue}" />
+												<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
+												<br/>
+												
+												<h:outputText value="#{lbl.edit_paginationPattern}" />
+												<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
+												<br/>
+												
+												<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+												<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+													
+												</h:selectOneMenu>
+												<br/>
+												
+												<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
+												<br/>
+												<br/>
+												<h:outputText value="#{lbl.edit_pageDisplayType}" />
+												 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+									                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+									                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
+									                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
+									                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
+									            </h:selectOneMenu>
+									            
+									            <br/>
+									            
+									            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
+												<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
+													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+												</h:selectOneMenu>
+												<br/>
+												
+												<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
+												<br/>
+							            		
+												
+												<br/>
+												<h:outputText value="#{lbl.edit_pageType}" />
+												<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+													<f:selectItem itemValue="#{null}" itemLabel="-"/>
+													<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
+													<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
+													<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
+													<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
+													<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
+													<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
+													<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
+												</h:selectOneMenu>
+												<br/>
+												<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+												<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
+													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+												</h:selectOneMenu>
+												<br/>
+												
+												<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
+												<br/>
+											</h:form>
+									
+										</h:panelGroup>
+										<!-- END PAGE EDITING -->
+									</rich:tab>
+								</rich:tabPanel>
+							</h:form>
+							<!-- END TAB-PANEL -->
 							
-						</h:selectOneMenu>
-						<br/>
-						
-						<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
-						<br/>
-						<br/>
-						<h:outputText value="#{lbl.edit_pageDisplayType}" />
-						 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
-			                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
-			                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
-			                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
-			                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
-			            </h:selectOneMenu>
-			            
-			            <br/>
-			            
-			            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
-						<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
-							<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
 							
-						</h:selectOneMenu>
-						<br/>
-						
-						<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
-						<br/>
-			            
-						
-						<br/>
-						<h:outputText value="#{lbl.edit_pageType}" />
-						<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
-			                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
-			                  	 <f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
-			                  	 <f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
-			                  	 <f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
-			                  	 <f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
-			                  	 <f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
-			                  	 <f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
-			                  	 <f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
-			               </h:selectOneMenu>
-						<br/>
-						<h:outputText value="#{lbl.edit_paginationEndPoint}" />
-						<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
-							<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
 							
-						</h:selectOneMenu>
+							<!-- START TREE -->
+							<h:panelGroup layout="block" style="height:400px; overflow:auto;" styleClass="eg3_container_1">
+								<h:form id="structuralEditorForm">
+									<rich:tree toggleType="ajax" var="divItem" >
+										<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
+											
+											<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
+												
+												
+												<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
+												<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
+												&#160;
+												<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
+											
+												
+												<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'}">
+													<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
+													<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV'}">
+														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
+														<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
+														<h:outputText value="#{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
+														<h:outputText value="#{divItem.teiElementWrapper.teiElement.author1inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author1inv}"/>
+														<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author2inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author2inv}"/>
+														<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author3inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author3inv}"/>
+														<h:outputText value=" : " rendered="#{(not empty divItem.teiElementWrapper.teiElement.author1inv or not empty divItem.teiElementWrapper.teiElement.author2inv or not empty divItem.teiElementWrapper.teiElement.author3inv) and not empty divItem.teiElementWrapper.teiElement.head}"/>
+														<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
+													</h:panelGroup>
+													
+													<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+														<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
+													</h:panelGroup>
+													
+													<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
+														<h:outputText value="[#{divItem.teiElementWrapper.teiElement.elementType}]"/>
+													
+													</h:panelGroup>
+													
+													
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
+													
+													<h:outputText value="[#{lbl.edit_elementType_title_page}] "/>
+													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}"/>
+												</h:panelGroup>
+												</h:commandLink>
+												
+												<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
+												
+												<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}"/>
+												
+												
+												
+												
+												<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+													<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+													<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
+												</h:selectOneMenu>
+												
+												<h:outputText value=")"/>
+												
+												</h:panelGroup>
+												
+												
+												<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
+											
+												<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+												
+												
+												<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
+												
+											</rich:treeNode>
+											
+										</rich:treeModelRecursiveAdaptor>
+									</rich:tree>
+								</h:form>
+							</h:panelGroup>
+							<!-- END TREE -->
+							
+							
+							
+							
+						</h:panelGroup>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<ui:remove>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="background-color:white;">
+						
+						<!-- START SAVE BUTTONS -->
+						<h:panelGroup layout="block" styleClass="eg3_container1">
+							<h:form>
+								<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
+								<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+							</h:form>
+						</h:panelGroup>
+						<!-- END SAVE BUTTONS -->
+						<br/>
+						<h:panelGroup layout="block" id="pbForm" styleClass="container1_3" >
+							<!-- START VALIDATION ERRORS -->
+							<h:panelGroup layout="block" style="border: 1px solid red;">
+								<h3><h:outputText value="#{lbl.edit_validationErrors}"/></h3>
+								<ul style="color:red;">
+								<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
+									<li>
+									<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}" />
+									<h:outputText value=" cannot be placed under " />
+									<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}" />
+									</li>
+								</a4j:repeat>
+								</ul>
+					        </h:panelGroup>
+					        <!-- END VALIDATION ERRORS -->
+							
+							<br/>
+						
+							<!-- START STRUCTURE EDITING -->
+							<h:panelGroup layout="block" style="border: 1px solid red;">
+								<h3>Strukturelemente erstellen</h3>
+								<h:form>
+									<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
+										structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+										teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+									<br/>
+									<br/>
+									<h:commandButton value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+								</h:form>
+							</h:panelGroup>
+							<!-- END STRUCTURE EDITING -->
+							<br/>
+							
+							<!-- START PAGE EDITING -->
+							<h:panelGroup layout="block" style="border: 1px solid red;">
+								<h3>Paginierungs- und Seiteneinstellungen </h3>
+								<h:form>
+									
+									<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
+									<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
+									<br/>
+									
+									
+									<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: " />
+									<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
+									<br/>
+									<br/>
+									
+									<h:outputText value="#{lbl.edit_paginationType}" />
+									<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
+										<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
+										<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
+										<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
+									</h:selectOneMenu>
+									<br/>
+									
+									<h:outputText value="#{lbl.edit_paginationStartValue}" />
+									<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
+									<br/>
+									
+									<h:outputText value="#{lbl.edit_paginationPattern}" />
+									<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
+									<br/>
+									
+									<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+									<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+										<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+										
+									</h:selectOneMenu>
+									<br/>
+									
+									<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
+									<br/>
+									<br/>
+									<h:outputText value="#{lbl.edit_pageDisplayType}" />
+									 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+						                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+						                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
+						                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
+						                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
+						            </h:selectOneMenu>
+						            
+						            <br/>
+						            
+						            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
+									<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
+										<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+									</h:selectOneMenu>
+									<br/>
+									
+									<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
+									<br/>
+				            		
+									
+									<br/>
+									<h:outputText value="#{lbl.edit_pageType}" />
+									<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+										<f:selectItem itemValue="#{null}" itemLabel="-"/>
+										<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
+										<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
+										<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
+										<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
+										<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
+										<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
+										<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
+									</h:selectOneMenu>
+									<br/>
+									<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+									<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
+										<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+									</h:selectOneMenu>
+									<br/>
+									
+									<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
+									<br/>
+								</h:form>
+						
+							</h:panelGroup>
+							<!-- END PAGE EDITING -->
+			
+						</h:panelGroup>
 						<br/>
 						
-						<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
-						<br/>
-					</h:form>
+						<!-- START TREE -->
+						<h:panelGroup layout="block" style="height:400px; overflow:auto;">
+							<h:form id="structuralEditorForm">
+								<rich:tree toggleType="ajax" var="divItem" >
+									<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
+										
+										<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
+											
+											
+											<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
+											<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
+											&#160;
+											<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
+										
+											
+											<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'}">
+												<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV'}">
+													<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
+													<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
+													<h:outputText value="#{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
+													<h:outputText value="#{divItem.teiElementWrapper.teiElement.author1inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author1inv}"/>
+													<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author2inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author2inv}"/>
+													<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author3inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author3inv}"/>
+													<h:outputText value=" : " rendered="#{(not empty divItem.teiElementWrapper.teiElement.author1inv or not empty divItem.teiElementWrapper.teiElement.author2inv or not empty divItem.teiElementWrapper.teiElement.author3inv) and not empty divItem.teiElementWrapper.teiElement.head}"/>
+													<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+													<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
+													<h:outputText value="[#{divItem.teiElementWrapper.teiElement.elementType}]"/>
+												
+												</h:panelGroup>
+												
+												
+											<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
+												
+												<h:outputText value="[#{lbl.edit_elementType_title_page}] "/>
+												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}"/>
+											</h:panelGroup>
+											</h:commandLink>
+											
+											<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
+											
+											<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}"/>
+											
+											
+											
+											
+											<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+												<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+												<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
+											</h:selectOneMenu>
+											
+											<h:outputText value=")"/>
+											
+											</h:panelGroup>
+											
+											
+											<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
+										
+											<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+											
+											
+											<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
+											
+										</rich:treeNode>
+										
+									</rich:treeModelRecursiveAdaptor>
+								</rich:tree>
+							</h:form>
+						</h:panelGroup>
+						<!-- END TREE -->
+			
+						<!-- START EDIT STRUCTURE POPUP -->
+						<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
+							<f:facet name="header">
+								<h:outputText value="Edit" />
+							</f:facet>
+							<f:facet name="controls">
+							</f:facet>
+							<h:form>
+								<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+									structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+									teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+					             <br/>
+					             <br/>
+					             
+					             <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
+					             
+					             <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
+					             	<h:outputText value="#{lbl.edit_cancelBtn}" />
+					             </h:outputLink>
+							</h:form>
+						</rich:popupPanel>
+						<!-- END EDIT STRUCTURE POPUP -->
 					
 					</h:panelGroup>
-					<!-- END PAGE EDITING -->
-		
-				</h:panelGroup>
-				<br/>
-			
-				<!-- START TREE -->
-				<h:panelGroup layout="block" style="height:400px; overflow:auto;">
-					<h:form id="structuralEditorForm">
-					<rich:tree toggleType="ajax" var="divItem" >
-						<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
-							
-							<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
-								
-								
-								<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
-								<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
-								&#160;
-								<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
-							
-								
-								<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'}">
-									<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
-									<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV'}">
-										<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
-										<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
-										<h:outputText value="#{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
-										<h:outputText value="#{divItem.teiElementWrapper.teiElement.author1inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author1inv}"/>
-										<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author2inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author2inv}"/>
-										<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author3inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author3inv}"/>
-										<h:outputText value=" : " rendered="#{(not empty divItem.teiElementWrapper.teiElement.author1inv or not empty divItem.teiElementWrapper.teiElement.author2inv or not empty divItem.teiElementWrapper.teiElement.author3inv) and not empty divItem.teiElementWrapper.teiElement.head}"/>
-										<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
-									</h:panelGroup>
-									
-									<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
-										<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
-									</h:panelGroup>
-									
-									<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
-										<h:outputText value="[#{divItem.teiElementWrapper.teiElement.elementType}]"/>
-									
-									</h:panelGroup>
-									
-									
-								<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
-									
-									<h:outputText value="[#{lbl.edit_elementType_title_page}] "/>
-									<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}"/>
-								</h:panelGroup>
-								</h:commandLink>
-								
-								<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
-								
-								<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}"/>
-								
-								
-								
-								
-								<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
-									<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
-									<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render="@all"/>
-								</h:selectOneMenu>
-								
-								<h:outputText value=")"/>
-								
-								</h:panelGroup>
-								
-								
-								<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}"/>
-							
-								<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
-								
-								
-								<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
-								
-							</rich:treeNode>
-							
-						</rich:treeModelRecursiveAdaptor>
-					</rich:tree>
-					
-					
-				</h:form>
-		
-				</h:panelGroup>
-				<!-- END TREE -->
-		
-				<!-- START EDIT STRUCTURE POPUP -->
-				<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
-					<f:facet name="header">
-						<h:outputText value="Edit" />
-					</f:facet>
-					<f:facet name="controls">
-					</f:facet>
-					<h:form>
-			       	 <structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-			       	 structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-			       	 teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-			             <br/>
-			             <br/>
-			             
-			             <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
-			             
-			             <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
-			             	<h:outputText value="#{lbl.edit_cancelBtn}" />
-			             </h:outputLink>
-			             </h:form>
-				</rich:popupPanel>
-				<!-- END EDIT STRUCTURE POPUP -->
-					
-					
-					
-				
-				
-				</h:panelGroup>
-				
-				
-				
-				
-				
-				
-				
-				
-			
-				
-			</h:panelGroup>	
-		</h:panelGroup>
-		
-		
-		
-		
-		
-		
-        
-       
+					</ui:remove>
+				</h:panelGroup>	
+			</h:panelGroup>
 		
 		</h:panelGroup>
 		
-		
-		<script>
+		<script type="text/javascript">
 			$(document).ready(function(e)
-					{
-						scrollDivs();
-					});
+			{
+				scrollDivs();
+			});
 			
 			function scrollDivs()
 			{
@@ -470,12 +649,6 @@
 
 			}
 		</script>
-			
-		
-		
-		</ui:define>
-		
-		
+	</ui:define>
 	</ui:composition>
-
 </html>

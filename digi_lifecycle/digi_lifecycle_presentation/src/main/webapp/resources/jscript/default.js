@@ -199,22 +199,13 @@ function eg3_openOverlay(listButton) {
 	for (var ctbp = 0; ctbp < 15; ctbp++) {
 		if (curContentPanel.hasClass("rf-tbp")) {
 			curIconPanel.addClass("eg3_expand");
+			$('.eg3_id_sidebarLeft').addClass("eg3_overflow");
 			
 			curContentPanel.addClass("eg3_noWrapTrn");
 			curContentPanel.addClass("eg3_widthAuto");
 			curContentPanel.addClass("eg3_overflow");
 			curContentPanel.find(".rf-tab-cnt").addClass("eg3_expand");
-			/*
-			//check the width of the tree
-			var objWidth = curContentPanel.find(".rf-tr").width();
-			var docWidth = $(document).width();
-			//compare the width of tree and document
-			if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
-				if (docWidth >= 500) { //and the document width is larger than 500px 
-					curContentPanel.addClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
-				}
-			}
-			*/
+			
 			$(listButton).attr('disabled', 'disabled');
 			curIconPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
 			
@@ -236,22 +227,13 @@ function eg3_closeOverlay(listButton) {
 	for (var ctbp = 0; ctbp < 15; ctbp++) {
 		if (curContentPanel.hasClass("rf-tbp")) {
 			curIconPanel.removeClass("eg3_expand");
+			$('.eg3_id_sidebarLeft').removeClass("eg3_overflow");
 			
 			curContentPanel.removeClass("eg3_noWrapTrn");
 			curContentPanel.removeClass("eg3_widthAuto");
 			curContentPanel.removeClass("eg3_overflow");
 			curContentPanel.find(".rf-tab-cnt").removeClass("eg3_expand");
-			/*
-			//check the width of the tree
-			var objWidth = curContentPanel.find(".rf-tr").width();
-			var docWidth = $(document).width();
-			//compare the width of tree and document
-			if (objWidth > (docWidth/2)) { //if the tree width larger than the half of document width
-				if (docWidth >= 500) { //and the document width is larger than 500px 
-					curContentPanel.removeClass("eg3_expandMax80"); //reduce the current content container to a width of 80 percent
-				}
-			}
-			*/
+			
 			$(listButton).attr('disabled', 'disabled');
 			curIconPanel.find('.eg3_expandOverlay').removeAttr('disabled');
 			
@@ -272,7 +254,7 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 	$(hide_element).hide();
 	$(show_element).show();
 	if (escListener && escListener === true) {
-		console.log('escListener found');
+	//	console.log('escListener found');
 		$(document).keyup(function(e) {
 			switch (e.which) {
 				case 0: //esc button in firefox
@@ -309,7 +291,50 @@ function rerenderJSFForms() {
 }
 
 
+/**
+ * sidebar functions
+ * @used by viewPages.xhtml & co.
+ */
 
+function resizeSidebar(reference) {
+	var sdbHeight = $(reference).height();
+	switch (reference) {
+		case '.eg3_viewPage':
+			$('.eg3_id_sidebarLeft').css('height', sdbHeight);
+			
+			//eg3_iconBar
+			//rf-tab-hdr-tabline-top
+			var icoBar = $('.eg3_container_1 .eg3_iconBar');
+			var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
+			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
+			
+			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight));
+			$('.rf-tab').is(':hidden').css('height', (sdbHeight - ibHeight - tabHdrHeight));
+			
+			break;
+	}
+	
+}
+
+
+function checkSidebarHeight(reference) {
+	
+	switch (reference) {
+		case '.eg3_viewPage':
+			//if minimum one image ready get the height of viewPage container and define the height of sidebar
+			//otherwise setTimeout for checkSidebarHeight
+			var reloadDone = false;
+			$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
+			{
+				if ($(this).height() > 0) 
+				{
+					reloadDone = true;
+				}
+			});
+			(reloadDone) ? resizeSidebar(reference) : setTimeout("checkSidebarHeight('"+reference+"')", 25);
+			break;
+	}
+}
 
 
 
