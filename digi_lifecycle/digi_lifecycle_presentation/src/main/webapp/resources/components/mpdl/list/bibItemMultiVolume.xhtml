@@ -84,9 +84,9 @@
 				<div class="eg3_itemMediabar">
 					<div class="eg3_itemContentOptions">
 						<div class="eg3_itemDetailAction_js" title="???placeholder???">
-							<div class="eg3_icon_collapse_16_16">
-								<label class="eg3_iconActionLabel">More / Less</label>
-							</div>
+							<h:panelGroup class="eg3_icon_collapse_16_16" rendered="#{volumeUtilBean.getSize(cc.attrs.volume.relatedChildVolumes) > 0}">
+								<label class="eg3_iconActionLabel" >More / Less</label>
+							</h:panelGroup>
 						</div>
 						
 						<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
