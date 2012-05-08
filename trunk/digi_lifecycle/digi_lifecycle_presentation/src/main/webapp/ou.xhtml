@@ -15,51 +15,51 @@
 		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
         <h:form>
         <h:panelGrid columns="2">	
-			<h:outputText value="Logo(URL):" />
+			<h:outputText value="#{lbl.admin_ou_logoUrl}:" />
 			<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}"/>
 			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
 	
 	
-			<h:outputText value="Title:" />		
+			<h:outputText value="#{lbl.admin_ou_name}:" />		
 			<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
 			<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
 	
 			
-			<h:outputText value="Description:" />
+			<h:outputText value="#{lbl.admin_ou_description}:" />
 			<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
 			<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
 	
 			
-			<h:outputText value="Country:" />
+			<h:outputText value="#{lbl.admin_ou_country}:" />
 			<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
 			<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
 		
 			
-			<h:outputText value="City:" />
+			<h:outputText value="#{lbl.admin_ou_city}:" />
 			<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
 			<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
 		
 			
-			<h:outputText value="Homepage(URL):" />
+			<h:outputText value="#{lbl.admin_ou_homepageUrl}:" />
 			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
 			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
 	
 			
-			<h:outputText value="Email:" />
+			<h:outputText value="#{lbl.admin_ou_email}:" />
 			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
 			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
 	
 		</h:panelGrid>
 		
-		<h:commandButton value="Edit" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
-		<h:commandButton value="Save Changes" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
+		<h:commandButton value="#{lbl.button_command_edit}" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
+		<h:commandButton value="#{lbl.button_command_save}" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
 		</h:form>
 <ui:remove>
  	<h:commandButton value="edit" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id )}">
         <rich:componentControl target="popup" operation="show" />
     </h:commandButton>
     
-        <mpdl:ouEditor target="popup" title="Edit" organization="#{viewOU.orga}" command="#{viewOU.save}"/>
+        <mpdl:ouEditor target="popup" title="#{lbl.button_command_edit}" organization="#{viewOU.orga}" command="#{viewOU.save}"/>
 </ui:remove>
 		<h:panelGroup layout="block">
 			<h:outputText value="&lt;br/&gt;" escape="false" />
@@ -74,7 +74,7 @@
 			
 		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewOU.vols_Carousel}">
 			<h:panelGroup layout="block" class="wrapper">
-				<h:outputText value="the newest entries in this Institute" style="font-size:200%"/>
+				<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:200%"/>
 				<ul>
 					<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
 						<li>

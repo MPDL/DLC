@@ -30,7 +30,7 @@
 			<div class="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
 					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-					<span class="eg3_itemStatusTitle">Released</span>
+					<span class="eg3_itemStatusTitle"><h:outputText value="#{lbl.status_released}" /></span>
 				</div>
 				
 				<div class="eg3_itemHeadline">
@@ -78,7 +78,7 @@
 									<f:param value="#{cc.attrs.volume.item.objid}"/>
 									<f:param value="#{pageNumber}"/>
 									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
-									<h:outputText value="Scan #{pageNumber}"/>
+									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 								</pretty:link>
 								
 								<br/>
@@ -119,7 +119,7 @@
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{cc.attrs.volume.item.objid}" />
-						<h:outputText value="Thumbnails"/>
+						<h:outputText value="#{lbl.list_Thumbnails}"/>
 					</pretty:link>
 				</h:panelGroup>
 				<ui:remove>
@@ -139,7 +139,7 @@
 				<div class="eg3_itemContentData">
 					<div class="eg3_itemStatusArea">
 						<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
-						<span class="eg3_itemStatusTitle">Released</span>
+						<span class="eg3_itemStatusTitle"><h:outputText value="#{lbl.status_released}" /></span>
 					</div>
 					<div class="eg3_itemHeadline">
 						<div class="eg3_itemTitle">
@@ -186,7 +186,7 @@
 										<f:param value="#{cc.attrs.volume.item.objid}"/>
 										<f:param value="#{pageNumber}"/>
 										<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
-										<h:outputText value="Scan #{pageNumber}"/>
+										<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 									</pretty:link>
 									
 									<br/>
@@ -205,7 +205,7 @@
 					<div class="eg3_itemContentOptions">
 						<div class="eg3_itemDetailAction_js" title="???placeholder???">
 							<div class="eg3_icon_collapse_16_16">
-								<label class="eg3_iconActionLabel">More / Less</label>
+								<label class="eg3_iconActionLabel"><h:outputText value="#{lbl.list_NavElem_More} #{lbl.list_NavElem_Less}"/></label>
 							</div>
 						</div>
 					</div>

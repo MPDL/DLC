@@ -22,13 +22,13 @@
 	<ui:define name="mainContent">
 	    <h:form>
         <h:panelGrid columns="2">	    
-		    <h:outputText value="loginname"/>
+		    <h:outputText value="#{lbl.admin_user_loginname}"/>
 			<h:outputLabel value="#{userBean.user.loginName}"></h:outputLabel>
 			
-			<h:outputText value="new password"/>
+			<h:outputText value="#{lbl.admin_user_pwd_new}"/>
 	        <h:inputSecret redisplay="false" id="userpwd" value="#{userBean.user.password}" />
 	        
-	        <a4j:commandButton value="save" action="#{userBean.editUser}" execute="@form"/>
+	        <a4j:commandButton value="#{lbl.button_command_save}" action="#{userBean.editUser}" execute="@form"/>
         </h:panelGrid>
         </h:form>
 
