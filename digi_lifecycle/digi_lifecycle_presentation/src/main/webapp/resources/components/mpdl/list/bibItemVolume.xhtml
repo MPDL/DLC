@@ -25,7 +25,8 @@
 					<div class="eg3_itemStatusArea">
 						<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
 						<h:panelGroup class="eg3_itemStatusTitle">
-							<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
+							<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
+							<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
 						</h:panelGroup>
 					</div>
 					<div class="eg3_itemHeadline">
@@ -56,7 +57,7 @@
 										<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 										<f:param value="#{pageNumber}"/>
 										<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
-										<h:outputText value="Scan #{pageNumber}"/>
+										<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 									</pretty:link>
 									
 									<br/>
@@ -96,32 +97,32 @@
 							<f:param value="#{volume.item.properties.latestRelease.objid}" />
 							<f:param value="recto-verso" />
 							<f:param value="1" />
-							<h:outputText value="Show Latest Release" />
+							<h:outputText value="#{lbl.list_LatestRelease}" />
 						</pretty:link>
 				</h:panelGroup>
 					
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{volume.objidAndVersion}" />
-						<h:outputText value="Thumbnails"/>
+						<h:outputText value="#{lbl.list_Thumbnails}"/>
 					</pretty:link>
 				</h:panelGroup>
 					
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
 					<pretty:link mappingId="upload">
 						<f:param value="#{volume.objidAndVersion}" />
-						<h:outputText value="Reingest/edit" />
+						<h:outputText value="#{lbl.list_NavElem_Reingest}" />
 					</pretty:link>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and volume.item.properties.version.status=='pending'}">
-					<h:outputText value="#{lbl.release}" />
+					<h:outputText value="#{lbl.button_command_release}" />
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my'and volumeUtilBean.editable(volume)}">
 					<pretty:link mappingId="structuralEditor">
 						<f:param value="#{volume.item.objid}" />
-						<h:outputText value="edit structure" />
+						<h:outputText value="#{lbl.list_EditStruct}" />
 					</pretty:link>
 				</h:panelGroup>
 

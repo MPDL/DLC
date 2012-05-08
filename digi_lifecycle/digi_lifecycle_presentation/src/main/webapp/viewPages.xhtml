@@ -17,7 +17,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_4_5">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<h3 class="eg3_multiVolumeTitle"><h:outputText value="#{viewPages.context.properties.name}"/> <input type="button" value="Zitierlink" onclick="$('.eg3_citationLink').toggle();"/></h3>
+						<h3 class="eg3_multiVolumeTitle"><h:outputText value="#{viewPages.context.properties.name}"/> <input type="button" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();"/></h3>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3">
 							<h:panelGroup styleClass="eg3_citationLink">
 								<h:outputText value="#{utilBean.absoluteUrl}" /> <br/>
@@ -117,7 +117,7 @@
 										checkSidebarHeight('.eg3_viewPage');
 									});
 								</script>
-			     			<rich:tab header="Toc" id="toc">
+			     			<rich:tab header="#{lbl.view_tab_structure}" id="toc">
 								<rich:tree toggleType="ajax" var="divItem" >
 									<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 										
@@ -152,7 +152,7 @@
 								
 							</rich:tab>
 							
-							<rich:tab header="Thumbs" id="thumbs">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs">
 								<load:lazyLoad pageList="#{viewPages.pageList}">
 									<h:commandLink action="#{viewPages.goToPage(var)}">
 										<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:60px;" />
@@ -161,8 +161,8 @@
 								</load:lazyLoad>
 							</rich:tab>
 							
-							<rich:tab header="Bibl. Metadata" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
-								<h:commandButton value="ISBD">
+							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+								<h:commandButton value="#{lbl.button_command_isbd}">
 									<rich:componentControl target="isbdPopup" operation="show" />
 								</h:commandButton>
 								<h:panelGroup>
@@ -216,7 +216,7 @@
 									</h:commandLink>
 								</ui:fragment>
 								
-								<h:outputText value="Scan #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
+								<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
 								
 								
 								<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
@@ -227,7 +227,7 @@
 									<h:outputText value="#{viewPages.volume.pages.size()}"/>
 								</ui:fragment>
 								
-								<h:outputText value="Scan #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
+								<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
 								
 								<ui:fragment rendered="#{viewPages.volume.pages.size() > 1}">
 									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageBrowser', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
@@ -331,7 +331,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
 							<span class="quad_area1 splitBlockHeader">
 								<span class="quad_area0_p4 lineToolSection">
-									<h:outputLabel styleClass="free_label sectionTool" value="Seite #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
+									<h:outputLabel styleClass="free_label sectionTool" value="#{lbl.view_dtls_page_txt} #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
 								</span>
 							</span>
 						</h:panelGroup>

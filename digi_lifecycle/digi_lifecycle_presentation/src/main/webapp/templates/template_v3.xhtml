@@ -115,7 +115,7 @@ All rights reserved. Use is subject to license terms.
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
 				<div class="eg3_id_footer eg3_container_1" rel="section"> 
 					<!-- <ui:include src="../footerPages/footer.xhtml" />-->
-					footer: <span onclick="void(0);">Impress</span> <span onclick="void(0);">Contact</span>					
+					footer: <span onclick="void(0);"><h:outputText value="#{lbl.footer_impress}" /></span> <span onclick="void(0);"><h:outputText value="#{lbl.footer_contact}" /></span>					
 				</div>
 			</h:panelGroup>
 			<h:outputScript library="jscript" name="jquery-ui-1.8.16.custom.min.js"/>

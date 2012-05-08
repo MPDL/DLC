@@ -20,10 +20,12 @@
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5">&#160;</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
 				<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-					<h3 class="eg3_multiVolumeTitle"><h:outputText value="Context Name..."/> <input type="button" value="citationlink" onclick="$('.eg3_citationLink').toggle();"/></h3>
-					<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-						<h:panelGroup styleClass="eg3_citationLink">http://www.frag-doch-den-hans.de/irgendeineSeitewirderschonoffenhaben.html</h:panelGroup>
-					</h:panelGroup>
+					<h3 class="eg3_multiVolumeTitle"><h:outputText value="#{viewPages.context.properties.name}"/> <input type="button" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();"/></h3>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+							<h:panelGroup styleClass="eg3_citationLink">
+								<h:outputText value="#{utilBean.absoluteUrl}" /> <br/>
+							</h:panelGroup>
+						</h:panelGroup>
 					<br />
 					<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
 					<h:panelGroup styleClass="eg3_floatLeft">
@@ -127,7 +129,7 @@
 								</h:commandLink>
 							</ui:fragment>
 							
-							<h:outputText value="Scan #{structuralEditorBean.selectedPb.page.order+1}"/>
+							<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
 							<h:outputText value=" / "/>
 							<h:outputText value="#{structuralEditorBean.volume.pages.size()}"/>
 							
@@ -179,19 +181,19 @@
 									<!-- START SAVE BUTTONS -->
 									<h:panelGroup layout="block" styleClass="eg3_floatRight">
 										<h:form>
-											<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/>
+											<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}"/>
 											<h:outputText value="&#160;"/>
-											<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+											<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}"/>
 											<h:outputText value="&#160;"/>
-											<h:commandButton value="REVERT" />
+											<h:commandButton value="#{lbl.button_command_revert}" />
 										</h:form>
 									</h:panelGroup>
 									<!-- END SAVE BUTTONS -->
 									
-									<rich:tab header="structure" label="structure" id="structure">
+									<rich:tab header="#{lbl.edit_tab_structure}" label="structure" id="structure">
 										<!-- START STRUCTURE EDITING -->
 										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
-											<h3>Strukturelemente erstellen</h3>
+											<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
 											<h:form>
 												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
 													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
@@ -203,10 +205,10 @@
 										</h:panelGroup>
 										<!-- END STRUCTURE EDITING -->
 									</rich:tab>
-									<rich:tab header="pagination" label="pagination" id="pagination">
+									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
 										<!-- START PAGE EDITING -->
 										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
-											<h3>Paginierungs- und Seiteneinstellungen </h3>
+											<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
 											<h:form>
 												
 												<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
@@ -396,8 +398,8 @@
 						<!-- START SAVE BUTTONS -->
 						<h:panelGroup layout="block" styleClass="eg3_container1">
 							<h:form>
-								<h:commandButton value="#{lbl.edit_saveBtn}" action="#{structuralEditorBean.save}"/><br/>
-								<h:commandButton value="#{lbl.edit_saveAndReleaseBtn}" action="#{structuralEditorBean.saveAndRelease}"/>
+								<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}"/><br/>
+								<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}"/>
 							</h:form>
 						</h:panelGroup>
 						<!-- END SAVE BUTTONS -->
@@ -422,7 +424,7 @@
 						
 							<!-- START STRUCTURE EDITING -->
 							<h:panelGroup layout="block" style="border: 1px solid red;">
-								<h3>Strukturelemente erstellen</h3>
+								<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
 								<h:form>
 									<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
 										structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
@@ -437,7 +439,7 @@
 							
 							<!-- START PAGE EDITING -->
 							<h:panelGroup layout="block" style="border: 1px solid red;">
-								<h3>Paginierungs- und Seiteneinstellungen </h3>
+								<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
 								<h:form>
 									
 									<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
@@ -534,8 +536,8 @@
 										<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
 											
 											
-											<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
-											<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
+											<h:commandButton value="#{lbl.button_command_up}" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
+											<h:commandButton value="#{lbl.button_command_down}" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}"/>
 											&#160;
 											<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
 										
@@ -605,7 +607,7 @@
 						<!-- START EDIT STRUCTURE POPUP -->
 						<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
 							<f:facet name="header">
-								<h:outputText value="Edit" />
+								<h:outputText value="#{lbl.edit_structure_header}" />
 							</f:facet>
 							<f:facet name="controls">
 							</f:facet>
@@ -617,8 +619,7 @@
 					             <br/>
 					             
 					             <h:commandButton type="submit" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
-					             
-					             <h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide()">
+					             <h:outputLink>
 					             	<h:outputText value="#{lbl.edit_cancelBtn}" />
 					             </h:outputLink>
 							</h:form>

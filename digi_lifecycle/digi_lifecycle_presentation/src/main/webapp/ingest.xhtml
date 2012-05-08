@@ -57,13 +57,13 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 			<h:form id="form2" >	
 				<rich:panel id="submit">
-					<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+					<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 						<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 					</a4j:commandButton>
-					<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+					<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 						<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 					</a4j:commandButton>
-					<h:commandButton action="#{ingestBean.clearAllData}" value="Clear All Data">
+					<h:commandButton action="#{ingestBean.clearAllData}" value="#{lbl.button_command_clear}">
 						<f:ajax render="modsInfo teiInfo imageInfo" />
 					</h:commandButton>
 						
@@ -81,14 +81,14 @@
 				<rich:panel id="select">
 					<br/>
 					<h:panelGroup >
-						<h:outputText value="Type:" />
+						<h:outputText value="#{lbl.admin_upload_type} :" />
 						<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 							<f:selectItems value="#{ingestBean.contentModelItems}" />
 							<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
 						</h:selectOneMenu>
 					</h:panelGroup>
 					<h:panelGroup>
-						<h:outputText value="Select Context:" />
+						<h:outputText value="#{lbl.admin_upload_collection} :" />
 						<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
 							<f:selectItems value="#{ingestBean.contextSelectItems}" />
 							<f:ajax event="change" render="select" />
@@ -96,14 +96,14 @@
 					</h:panelGroup>
 					<br />
 					<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}" >
-						<h:outputText value="Select Multivolume:"/>
+						<h:outputText value="#{lbl.admin_upload_multiv} :"/>
 						<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
 							<f:selectItems value="#{ingestBean.multiVolItems}" />
 						</h:selectOneMenu>	
 					</h:panelGroup>
 				</rich:panel>
 				
-				<rich:panel id="modsInfo" header="Metadata Information">
+				<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}">
 					<h:outputText value="#{ingestBean.mabFile.name}" />
 					<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile or not empty ingestBean.volume}">				
 						<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
@@ -119,15 +119,15 @@
 					</h:panelGroup>
 					
 					<br/>
-					<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="Clear Uploaded MAB" rendered="#{not empty ingestBean.mabFile}">
+					<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile}">
 						<f:ajax render=":#{component.parent.clientId}" />
 					</h:commandButton>
 				</rich:panel>
 				
-				<rich:panel id="teiInfo" header="TEI Information" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
-					<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references" />
+				<rich:panel id="teiInfo" header="#{lbl.admin_upload_teiInfo}" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
+					<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references (message)" />
 					<br/>
-					<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="Clear Uploaded tei" rendered="#{ingestBean.numberOfTeiPbs > 0}">
+					<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.numberOfTeiPbs > 0}">
 						<f:ajax render=":#{component.parent.clientId}" />
 					</h:commandButton>
 				</rich:panel>
@@ -138,13 +138,13 @@
 	  		  	
 				<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 					<f:facet name="header">
-						<h:outputText value="Uploaded Images" />
+						<h:outputText value="#{lbl.admin_upload_images}" />
 					</f:facet>
-					<h:outputText value="No files currently uploaded" rendered="#{ingestBean.size==0}" />
+					<h:outputText value="No files currently uploaded (message)" rendered="#{ingestBean.size==0}" />
 					
 		            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 		                 <f:facet name="header">
-							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="Clear Uploaded Images" rendered="#{ingestBean.size>0}">
+							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.size>0}">
 								<f:ajax render=":#{component.parent.parent.clientId}" />
 							</h:commandButton>
 	                    </f:facet>

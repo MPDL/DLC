@@ -33,11 +33,11 @@
 
         <h:panelGrid columns="2" id="editCollection">
 
-            <h:outputText value="Name*"/>
+            <h:outputText value="#{lbl.admin_context_name} *"/>
             <h:inputText id="contextName" value="#{cc.attrs.collection.name}">
             </h:inputText>
 			
-            <h:outputText value="Desciption*"/>
+            <h:outputText value="#{lbl.admin_context_description} *"/>
             <h:inputText id="contextDes" value="#{cc.attrs.collection.description}">
              </h:inputText>
  
@@ -60,7 +60,7 @@
 				</h:selectOneMenu>
 			</h:panelGroup> 
 			
-			<a4j:commandButton value="save" action="#{adminBean.editContext}" execute="@form"/>
+			<a4j:commandButton value="#{lbl.button_command_save}" action="#{adminBean.editContext}" execute="@form"/>
 
 
         </h:panelGrid>

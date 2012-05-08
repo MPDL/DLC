@@ -25,22 +25,22 @@
 
 		<pretty:link mappingId="volumes" >
 			<f:param value="#{viewCollection.col.id}" />
-			<h:outputText value="Zeige Sammlung" style="font-size:300%; color:red"/><br/>
+			<h:outputText value="#{lbl.view_collection_show}" style="font-size:300%; color:red"/><br/>
 		</pretty:link>
 		<br/>
 
 	    <h:panelGrid columns="2">	
-			<h:outputText value="Title:" />		
+			<h:outputText value="#{lbl.view_collection_title} :" />		
 			<h:outputText value="#{viewCollection.col.name}" />
 
-			<h:outputText value="Description:" />
+			<h:outputText value="#{lbl.view_collection_description} :" />
 			<h:outputText value="#{viewCollection.col.description}"  />
 		</h:panelGrid>
 			
 
 		
 		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
-			<h:outputText value="the newest entries in this Institute" style="font-size:200%"/>
+			<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:200%"/>
 			<h:panelGroup layout="block" class="wrapper">
 				<ul>
 					<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">

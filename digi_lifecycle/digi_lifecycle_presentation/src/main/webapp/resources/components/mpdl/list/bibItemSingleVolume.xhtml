@@ -31,7 +31,8 @@
 				<div class="eg3_itemStatusArea">
 					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
 					<h:panelGroup class="eg3_itemStatusTitle">
-						<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
+							<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
+							<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
 					</h:panelGroup>
 				</div>
 				
@@ -71,7 +72,7 @@
 									<f:param value="#{pageNumber}"/>
 									
 									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
-									<h:outputText value="Scan #{pageNumber}"/>
+									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 								</pretty:link>
 								
 								<br/>
@@ -114,7 +115,7 @@
 							<f:param value="recto-verso" />
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
-							<h:outputText value="Show Latest Release" />
+							<h:outputText value="#{lbl.list_LatestRelease}" />
 						</pretty:link>
 				</h:panelGroup>
 				
@@ -122,36 +123,28 @@
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{cc.attrs.volume.objidAndVersion}" />
-						<h:outputText value="Thumbnails"/>
+						<h:outputText value="#{lbl.list_Thumbnails}"/>
 					</pretty:link>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
 					<pretty:link mappingId="upload">
 						<f:param value="#{cc.attrs.volume.item.originObjid}" />
-						<h:outputText value="Reingest/edit" />
+						<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}" />
 					</pretty:link>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and cc.attrs.volume.item.properties.version.status=='pending'}">
-					<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.release}" >
+					<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" >
 					</h:commandButton>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my' and volumeUtilBean.editable(cc.attrs.volume)}">
 					<pretty:link mappingId="structuralEditor">
 						<f:param value="#{cc.attrs.volume.item.originObjid}" />
-						<h:outputText value="edit structure" />
+						<h:outputText value="#{lbl.list_EditStruct}" />
 					</pretty:link>
 				</h:panelGroup>
-				
-				
-				
-				
-				
-			
-				
-				
 				
 				<ui:remove>
 					<br/>
@@ -177,12 +170,8 @@
 				
 				<div class="eg3_itemHeadline">
 					<div class="eg3_itemTitle">
-						
-
 							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
-							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
-
-						
+							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />					
 					</div>
 				</div>
 		</h:panelGroup>

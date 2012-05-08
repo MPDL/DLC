@@ -27,15 +27,15 @@
 							<span class="eg3_selectionText"></span>
 						</h:panelGroup>
 						<select name="bibListSelect" title="???placeholder???">
-							<option>-- choose --</option>
+							<option><h:outputText value="#{lbl.checkbox_choose}"/></option>
 							<optgroup label="check">
-								<option>Check all on page</option>
-								<option>Check all on result</option>
+								<option><h:outputText value="#{lbl.checkbox_checkAll_Page}"/></option>
+								<option><h:outputText value="#{lbl.checkbox_checkAll_Result}"/></option>
 							</optgroup>
 							<optgroup label="-----------"></optgroup>
 							<optgroup label="uncheck">
-								<option>Uncheck all on page</option>
-								<option>Uncheck all on result</option>
+								<option><h:outputText value="#{lbl.checkbox_uncheckAll_Page}"/></option>
+								<option><h:outputText value="#{lbl.checkbox_uncheckAll_Result}"/></option>
 							</optgroup>
 						</select>
 					</h:panelGroup>
@@ -43,13 +43,13 @@
 				
 				<h:panelGroup layout="block" styleClass="eg3_content">
 					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16" title="???placeholder???">
-						<a class="eg3_iconActionLabel" title="???placeholder???" target="_self">Open all</a>
+						<a class="eg3_iconActionLabel" title="???placeholder???" target="_self"><h:outputText value="#{lbl.list_NavElemOpenAll}"/></a>
 					</h:panelGroup>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_mediabarActionArea">
 					<h:panelGroup layout="block" styleClass="eg3_toggleListItemVolume_js eg3_icon_collapse_16_16" title="???placeholder???">
-						<a class="eg3_iconActionLabel" title="???placeholder???">Open / Close MediabarItems</a>
+						<a class="eg3_iconActionLabel" title="???placeholder???"><h:outputText value="#{lbl.list_NavElemOpen} #{lbl.list_NavElemClose}"/></a>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>

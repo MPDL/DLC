@@ -32,24 +32,24 @@
         
 
         <h:panelGrid columns="2" id="editOrga">
-            <h:outputText value="Name*" />
+            <h:outputText value="#{lbl.admin_ou_name} *" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
             
-            <h:outputText value="Desciption" />
+            <h:outputText value="#{lbl.admin_ou_description}" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.description}"/>
             
-            <h:outputText value="Logo(URL)" />
+            <h:outputText value="#{lbl.admin_ou_logoUrl}" />
             <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imgURL}"/>
-            <h:outputText value="Homepage(URL)" />
+            <h:outputText value="#{lbl.admin_ou_homepageUrl}" />
             <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.homePageURL}"/>
-            <h:outputText value="Email" />
+            <h:outputText value="#{lbl.admin_ou_email}" />
             <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.email}"/>
-            <h:outputText value="Country" />
+            <h:outputText value="#{lbl.admin_ou_country}" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.country}" />
-            <h:outputText value="City" />
+            <h:outputText value="#{lbl.admin_ou_city}" />
             <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
         </h:panelGrid>
-    	<a4j:commandButton value="save" action="#{cc.attrs.command}" execute="@form"/>
+    	<a4j:commandButton value="#{lbl.button_command_save}" action="#{cc.attrs.command}" execute="@form"/>
 
     </rich:popupPanel>
 

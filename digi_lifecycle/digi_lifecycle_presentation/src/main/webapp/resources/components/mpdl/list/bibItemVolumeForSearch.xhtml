@@ -78,7 +78,7 @@
 									<f:param value="fulltext" />
 									<f:param value="#{pageNumber}"/>
 									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
-									<h:outputText value="Scan #{pageNumber}"/>
+									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 								</pretty:link>
 								
 								<br/>
@@ -119,7 +119,7 @@
 							<f:param value="recto-verso" />
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
-							<h:outputText value="Show Latest Release" />
+							<h:outputText value="#{lbl.list_LatestRelease}" />
 						</pretty:link>
 				</h:panelGroup>
 				
@@ -127,7 +127,7 @@
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{cc.attrs.volume.objidAndVersion}" />
-						<h:outputText value="Thumbnails"/>
+						<h:outputText value="#{lbl.list_Thumbnails}"/>
 					</pretty:link>
 				</h:panelGroup>
 				
@@ -136,7 +136,7 @@
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="viewMultiVol">
 						<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
-						<h:outputText value="To Multivolume."/>
+						<h:outputText value="#{lbl.list_NavElemParent}"/>
 					</pretty:link>
 				</h:panelGroup>				
 			</h:panelGroup>

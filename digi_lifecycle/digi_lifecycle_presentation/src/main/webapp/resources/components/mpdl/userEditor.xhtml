@@ -35,18 +35,18 @@
 
         <h:panelGrid columns="2" id="editUser">
 
-            <h:outputText value="name*"/>
+            <h:outputText value="#{lbl.admin_user_name} *"/>
             <h:inputText id="name" value="#{cc.attrs.user.name}" />
 
-            <h:outputText value="loginname*"/>
+            <h:outputText value="#{lbl.admin_user_loginname} *"/>
             <h:inputText id="loginName" value="#{cc.attrs.user.loginName}" />
 			
-            <h:outputText value="Password*"/>
+            <h:outputText value="#{lbl.admin_user_pwd} *"/>
             <h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}" />
 
             
             <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
-				<h:outputText value="Admin of*: "/>
+				<h:outputText value="#{lbl.admin_user_grants} *: "/>
 			</h:panelGroup>
            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
 				<h:selectOneMenu value="#{cc.attrs.user.ouId}">
@@ -55,7 +55,7 @@
 			</h:panelGroup>
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:outputText value="Depositor of: "/>
+				<h:outputText value="#{lbl.admin_user_dep}: "/>
 			</h:panelGroup>
             <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:selectManyListbox  value="#{cc.attrs.user.depositorContextIds}">
@@ -64,7 +64,7 @@
 			</h:panelGroup>	
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:outputText value="Moderator of: "/>
+				<h:outputText value="#{lbl.admin_user_mod} : "/>
 			</h:panelGroup>
             <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:selectManyListbox value="#{cc.attrs.user.moderatorContextIds}">
@@ -74,7 +74,7 @@
 
 
 
-			<a4j:commandButton value="save" action="#{adminBean.editUser}" execute="@form"/>
+			<a4j:commandButton value="#{lbl.button_command_save}" action="#{adminBean.editUser}" execute="@form"/>
 
 
         </h:panelGrid>
