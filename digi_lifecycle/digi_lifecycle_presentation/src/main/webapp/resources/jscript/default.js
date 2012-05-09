@@ -20,6 +20,38 @@ function searchParentTag(source_obj, searchTagString) {
 	return false;
 }
 
+/*
+ * these function delete the searched value in an attribute
+ */
+function removeAttributeValue(reference, attribute, value) {
+	var refObj = (typeof(reference) == "object") ? reference : $(reference);
+	var attr = $.trim(refObj.attr(attribute));
+	
+	if (attr) {
+		var posFound = false;
+		var output = '';
+		attr = attr.split(';');
+		for (var ai = 0; ai < attr.length; ai++) {
+			if ($.trim(attr[ai])) {
+				var attrVal = attr[ai].split(':');
+				if ($.trim(attrVal[0]) == value) {
+					posFound = true;
+				} else {
+					output += attr[ai]+'; ';
+				}
+			}
+		}
+		if (posFound) {
+			output = $.trim(output);
+			if (!output || output == '') {
+				refObj.removeAttr(attribute);
+			} else {
+				refObj.attr(attribute, $.trim(output));
+			}
+		}
+	}
+}
+
 /* this function updates the selectText container with the selected item of selectbox */
 function updateCustomSelectBox(obj) {
 	if (!obj) {
@@ -33,7 +65,6 @@ function updateCustomSelectBox(obj) {
 					}
 				});
 				$(parent).find(".eg3_selectionText").html(val);
-//				console.log(val);
 			}
 		});
 	} else {
@@ -122,23 +153,6 @@ function addDisplayControl(target) {
 				if (allDetails = searchParentTag(this, 'eg3_itemContent').find('.eg3_mediumView_js')) {
 					allDetails.toggle();
 				};
-				/*
-				 * following code is deprecated and should be rebuild with new function
-				//from here: comfort function to handle the showHideAll_js button
-				var list = searchParentTag(this, 'bibList');
-				var showHideAll_jsBtn = list.find('.showHideAll_js');
-				if (showHideAll_jsBtn) {
-					if ($(list).find('.mediumView_js:hidden').length == 0) { //if no child element invisible, all details are open
-						showHideAll_jsBtn.attr("detailStatus", "open");	//switch the status of showHideAll_js to open
-						$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Open ", "Close "));
-						list.find(".showHideAll_js").removeClass("icon_collapse_16_16").addClass("icon_expand_16_16");
-					} else if ($(showHideAll_jsBtn).html().match(/Close all/)) {
-						showHideAll_jsBtn.attr("detailStatus", "");
-						$(showHideAll_jsBtn).html($.trim($(showHideAll_jsBtn).html()).replace("Close ", "Open "));
-						list.find(".showHideAll_js").removeClass("icon_expand_16_16").addClass("icon_collapse_16_16");
-					}
-				}
-				*/
 			});
 			break;
 		case '.eg3_listItemMultiVolume':
@@ -199,16 +213,16 @@ function eg3_openOverlay(listButton) {
 	for (var ctbp = 0; ctbp < 15; ctbp++) {
 		if (curContentPanel.hasClass("rf-tbp")) {
 			curIconPanel.addClass("eg3_expand");
-			$('.eg3_id_sidebarLeft').addClass("eg3_overflow");
+			$('.eg3_id_sidebarLeft').addClass("eg3_expand");
 			
 			curContentPanel.addClass("eg3_noWrapTrn");
 			curContentPanel.addClass("eg3_widthAuto");
-			curContentPanel.addClass("eg3_overflow");
 			curContentPanel.find(".rf-tab-cnt").addClass("eg3_expand");
 			
 			$(listButton).attr('disabled', 'disabled');
 			curIconPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
 			
+			checkSidebarWidth();
 			break;
 		} else {
 			curContentPanel = curContentPanel.parent();
@@ -227,11 +241,10 @@ function eg3_closeOverlay(listButton) {
 	for (var ctbp = 0; ctbp < 15; ctbp++) {
 		if (curContentPanel.hasClass("rf-tbp")) {
 			curIconPanel.removeClass("eg3_expand");
-			$('.eg3_id_sidebarLeft').removeClass("eg3_overflow");
+			$('.eg3_id_sidebarLeft').removeClass("eg3_expand");
 			
 			curContentPanel.removeClass("eg3_noWrapTrn");
 			curContentPanel.removeClass("eg3_widthAuto");
-			curContentPanel.removeClass("eg3_overflow");
 			curContentPanel.find(".rf-tab-cnt").removeClass("eg3_expand");
 			
 			$(listButton).attr('disabled', 'disabled');
@@ -254,7 +267,6 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 	$(hide_element).hide();
 	$(show_element).show();
 	if (escListener && escListener === true) {
-	//	console.log('escListener found');
 		$(document).keyup(function(e) {
 			switch (e.which) {
 				case 0: //esc button in firefox
@@ -309,32 +321,79 @@ function resizeSidebar(reference) {
 			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
 			
 			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight));
-			$('.rf-tab').is(':hidden').css('height', (sdbHeight - ibHeight - tabHdrHeight));
 			
 			break;
 	}
-	
 }
 
-
+/*
+ * function to check if the reference has a defined height
+ */
 function checkSidebarHeight(reference) {
 	
 	switch (reference) {
-		case '.eg3_viewPage':
+		case '.eg3_viewPage': //the defined height is given by one of the contained images
 			//if minimum one image ready get the height of viewPage container and define the height of sidebar
 			//otherwise setTimeout for checkSidebarHeight
 			var reloadDone = false;
-			$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
+			var imgContainer = $('.eg3_viewPageContainer .eg3_viewPage_imgContainer');
+			
+			imgContainer.each(function(i) 
 			{
-				if ($(this).height() > 0) 
+				if ($(this).height() > 0) //if the first image has finish loading, set reloadDone on true
 				{
 					reloadDone = true;
 				}
 			});
-			(reloadDone) ? resizeSidebar(reference) : setTimeout("checkSidebarHeight('"+reference+"')", 25);
+			(reloadDone) ? resizeSidebar(reference) : setTimeout("checkSidebarHeight('"+reference+"')", 25); 
 			break;
 	}
 }
+/*
+ * this function is used by viewPages.xhtml
+ * checks the width of sidebar left
+ * if it's expanded it must be less than 80% of the screen width
+ */
+function checkSidebarWidth(reference) {
+	var sidebar = ($('.eg3_id_sidebarLeft').length > 0) ? $('.eg3_id_sidebarLeft') : null;
+	
+	if (sidebar) {
+		var documentWidth = $(document).width();
+		var curWidthObj = (sidebar.hasClass('eg3_widthAuto')) ? sidebar : $(sidebar.find('.eg3_widthAuto').get(0));
+		var sdbWidth = curWidthObj.width();
+		
+		if (sidebar.hasClass("eg3_expand")) {
+			removeAttributeValue(curWidthObj, 'style', 'width');
+			removeAttributeValue(curWidthObj, 'style', 'max-width');
+			switch (reference) {
+				default:
+					if (sdbWidth > documentWidth * 0.9) //check if the sidebar width is larger than 90 percent of the document width
+					{
+						curWidthObj.css("width", (documentWidth * 0.8)); //resize the sidebar to 80% of document width
+						curWidthObj.css("max-width", (documentWidth * 0.8));
+					} else 
+					{ //check if the sidebar is smaller as the layout container
+						var classes = sidebar.attr("class"); //read all classes from the sidebar to get the layout container
+						classes = classes.split(" "); //separate the classes
+						for (var ci = 0; ci < classes.length; ci++) 
+						{ 
+							if (classes[ci].substr(4, 9) == "container") //search for the layout container class 
+							{ 
+								var classParts = classes[ci].split("_");
+								var minWidth = documentWidth / Number(classParts[classParts.length - 1]); //the last value of class name is the factor for the layout width
+								if (sdbWidth < minWidth) //check if the sidebar width is smaller than the minimum layout width 
+								{
+									eg3_closeOverlay('.eg3_collapseOverlay');
+								}
+							}
+						}
+					}
+					break;
+			}
+		}
+	}
+}
+
 
 
 

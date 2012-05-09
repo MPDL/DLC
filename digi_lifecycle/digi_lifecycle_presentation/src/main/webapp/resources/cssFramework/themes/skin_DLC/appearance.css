@@ -196,7 +196,10 @@ body .eg3_id_siteTitle {
 	background-color:#EEF2F0;
 }
 .eg3_id_sidebarLeft {
-	background-color:#FF3389;
+/*	background-color:#FF3389; */
+}
+.eg3_id_sidebarLeft.eg3_expand {
+	overflow:visible;
 }
 
 .eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
@@ -1538,9 +1541,35 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit {
 	width:100%;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_viewPage_imgContainer {
-	width:33%;
+.eg3_viewPage .eg3_singleEdit .eg3_editActionButtonbar {
+	margin-top:0.333333em;
 }
+.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree {
+	height:33.33333333em;
+	overflow:auto;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
+	color:#F2F2F2;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
+	color:#EA7125;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_editInputArea {
+	margin-right:0.5em;
+	margin-top:0.5em;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPageNumbers {
+	margin-top:1em;
+	margin-left:2em;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+	margin-right:3em;
+	margin-bottom:1em;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+	margin-bottom:1em;
+}
+
 
 .eg3_viewPage .eg3_ownershipBox {
 	border:solid 0.09em #CCCCCC;
@@ -1731,15 +1760,10 @@ body .eg3_id_siteTitle {
 }
 
 .rf-tbp .rf-tab-cnt.eg3_expand {
-	width:auto;
-	max-width:420%;
 /*	border:0.0833333em inset transparent; */
 	border:0;
 	background-color:#EFEFEF;
-	padding-right:0.75em;
-}
-.rf-tbp .rf-tab-cnt.eg3_expand.eg3_expandMax60 {
-	width:80%;
+	padding-right:1%;
 }
 
 .eg3_id_sidebarLeft .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top { /* scan view */
