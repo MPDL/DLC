@@ -24,7 +24,9 @@
 		value="#{volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}:"
 		rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}" />
 	<h:outputText
-		value="[#{volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}] #{volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title} : #{volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).subTitle} = #{volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title} / #{volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}. #{cc.attrs.modsMetadata.subseries_361}. #{volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}." />
+		value="[#{volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}]" rendered="volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title != ''"/>
+	<h:outputText
+		value="#{volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title} : #{volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).subTitle} = #{volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title} / #{volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}. #{cc.attrs.modsMetadata.subseries_361}. #{volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}." />
 	<h:outputText value=" - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).edition}. - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).place} : #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).publisher}, #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).dateIssued_425.date}" />
 	<h:outputText value=". - #{cc.attrs.modsMetadata.extents[0]}. - #{volumeUtilBean.getSeries451(cc.attrs.modsMetadata).seriesTitle}&lt;br /&gt;" escape="false" />
 	<h:outputText value=" #{volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).seriesTitle}&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).seriesTitle}"/>
