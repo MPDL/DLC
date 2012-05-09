@@ -167,32 +167,32 @@
 					
 					<h:panelGroup layout="block" styleClass="eg3_singleEdit eg3_image_bgColor_1">
 						
-						<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_viewPage_imgContainer">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_editPage_imgContainer">
 							<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}" />
 						</h:panelGroup>
 						<!-- END PAGE IMAGE -->
 						
 						
-						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_editContent">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_editContent">
 							<!-- START TAB-PANEL -->
 							<h:form styleClass="eg3_container_1">
 							
 								<rich:tabPanel styleClass="eg3_container_1">
 									<!-- START SAVE BUTTONS -->
-									<h:panelGroup layout="block" styleClass="eg3_floatRight">
+									<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
 										<h:form>
-											<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}"/>
+											<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
 											<h:outputText value="&#160;"/>
-											<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}"/>
+											<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5"/>
 											<h:outputText value="&#160;"/>
-											<h:commandButton value="#{lbl.button_command_revert}" />
+											<h:commandButton value="#{lbl.button_command_revert}" styleClass="eg3_borderradius_5"/>
 										</h:form>
 									</h:panelGroup>
 									<!-- END SAVE BUTTONS -->
 									
 									<rich:tab header="#{lbl.edit_tab_structure}" label="structure" id="structure">
 										<!-- START STRUCTURE EDITING -->
-										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
 											<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
 											<h:form>
 												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
@@ -207,86 +207,109 @@
 									</rich:tab>
 									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
 										<!-- START PAGE EDITING -->
-										<h:panelGroup layout="block" style="border: 1px solid red;" styleClass="eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
 											<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
 											<h:form>
 												
-												<h:outputText value="#{lbl.edit_physicalPageNumber}: " />
-												<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}" />
-												<br/>
-												
-												<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: " />
-												<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}" />
-												<br/>
-												<br/>
-												
-												<h:outputText value="#{lbl.edit_paginationType}" />
-												<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
-													<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
-													<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
-													<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
-												</h:selectOneMenu>
-												<br/>
-												
-												<h:outputText value="#{lbl.edit_paginationStartValue}" />
-												<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
-												<br/>
-												
-												<h:outputText value="#{lbl.edit_paginationPattern}" />
-												<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
-												<br/>
-												
-												<h:outputText value="#{lbl.edit_paginationEndPoint}" />
-												<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
-													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+												<div class="eg3_currentPageNumbers">
+													<h:outputText value="#{lbl.edit_physicalPageNumber}: "/>
+													<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}"/>
 													
-												</h:selectOneMenu>
+													<br/>
+													
+													<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: "/>
+													<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}"/>
+												</div>
+												<br/>
 												<br/>
 												
-												<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
+												<div class="eg3_paginationInputArea">
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_paginationType}" />
+														<br/>
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
+															<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
+															<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
+															<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
+														</h:selectOneMenu>
+													</div>
+													
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_paginationStartValue}" />
+														<br/>
+														<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}"/>
+													</div>
+													
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_paginationPattern}" />
+														<br />
+														<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}"/>
+													</div>
+													
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+														<br />
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+															<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+														</h:selectOneMenu>
+													</div>
+													<br/>
+													<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" />
+												</div>
+												
 												<br/>
-												<br/>
-												<h:outputText value="#{lbl.edit_pageDisplayType}" />
-												 <h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
-									                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
-									                  	 <f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
-									                  	 <f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
-									                  	 <f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
-									            </h:selectOneMenu>
-									            
-									            <br/>
-									            
-									            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
-												<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
-													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
-												</h:selectOneMenu>
 												<br/>
 												
-												<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
-												<br/>
-							            		
+												<div class="eg3_pageDisplayTypeInputArea">
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_pageDisplayType}" />
+														<br/>
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+															<f:selectItem itemValue="#{null}" itemLabel="-"/>
+															<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
+															<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
+															<f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
+														</h:selectOneMenu>
+										            </div>
+										            
+										            <div class="eg3_editInputArea">
+											            <h:outputText value="#{lbl.edit_paginationEndPoint}" />
+														<br/>
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
+															<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+														</h:selectOneMenu>
+													</div>
+													<br/>
+													<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" />
+												</div>
 												
-												<br/>
-												<h:outputText value="#{lbl.edit_pageType}" />
-												<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
-													<f:selectItem itemValue="#{null}" itemLabel="-"/>
-													<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
-													<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
-													<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
-													<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
-													<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
-													<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
-													<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
-												</h:selectOneMenu>
-												<br/>
-												<h:outputText value="#{lbl.edit_paginationEndPoint}" />
-												<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
-													<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
-												</h:selectOneMenu>
-												<br/>
 												
-												<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
-												<br/>
+												
+												<div class="eg3_pageDisplayTypeInputArea">
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_pageType}" />
+														<br/>
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+															<f:selectItem itemValue="#{null}" itemLabel="-"/>
+															<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
+															<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
+															<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
+															<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
+															<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
+															<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
+															<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
+														</h:selectOneMenu>
+													</div>
+													<div class="eg3_editInputArea">
+														<h:outputText value="#{lbl.edit_paginationEndPoint}" />
+														<br/>
+														<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
+															<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+														</h:selectOneMenu>
+													</div>
+													<br/>
+													<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
+												</div>
 											</h:form>
 									
 										</h:panelGroup>
@@ -299,7 +322,7 @@
 							
 							
 							<!-- START TREE -->
-							<h:panelGroup layout="block" style="height:400px; overflow:auto;" styleClass="eg3_container_1">
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_editorStructureTree">
 								<h:form id="structuralEditorForm">
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
