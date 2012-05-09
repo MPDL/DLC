@@ -49,7 +49,7 @@
 	</script>
 
 		<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-			<rich:panel id="upload" header="Upload your files...">
+			<rich:panel id="upload" header="#{lbl.admin_upload_header}">
 				<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}"></fu:fileUpload>
 			</rich:panel>
 		</h:panelGroup>
@@ -69,12 +69,12 @@
 						
 					<rich:popupPanel id="popup" modal="true" resizeable="false">
 						<f:facet name="header">
-							<h:outputText value="Upload in progress" />
+							<h:outputText value="Upload in progress (message)" />
 						</f:facet>
 						<f:facet name="controls">
 						</f:facet>
 						<p>Images are uploaded and processed</p>
-						<p>Please be patient, this process may take several minutes</p>
+						<p>Please be patient, this process may take several minutes (todo: message)</p>
 					</rich:popupPanel>
 				</rich:panel>
 				
@@ -133,7 +133,7 @@
 				</rich:panel>
 				
 				<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
-	       			 Drag the item to proper area..
+	       			 Drag the item to proper area.. (message)
 	  		  	</rich:dragIndicator>
 	  		  	
 				<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
