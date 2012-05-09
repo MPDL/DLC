@@ -154,8 +154,8 @@ button:disabled {
  */
 body .eg3_id_wrapper {
 	min-width:75em; /* 900px */
-	width:96%;		/* the result of width + padding = sum of width = 100% */
-	margin:0 2%;
+	width:98%;		/* the result of width + padding = sum of width = 100% */
+	margin:0 1%;
 	background-color:#EFEFEF;
 	overflow:hidden;
 }
@@ -163,9 +163,9 @@ body .eg3_id_header {
 	/*	background-color:#C6AD84; */
 	padding-bottom:1em;
 	width:100%;
-	background-image:url("image/header_background_original.jpg");
+	background-image:url("image/image_headerBackground_1280_109.png");
 	background-position:top;
-	background-repeat:repeat-x;
+	background-repeat:repeat;
 }
 body .eg3_id_headerMetaMenu {
 	width:100%;
@@ -196,7 +196,7 @@ body .eg3_id_siteTitle {
 	background-color:#EEF2F0;
 }
 .eg3_id_sidebarLeft {
-/*	background-color:#FF3389; */
+	
 }
 .eg3_id_sidebarLeft.eg3_expand {
 	overflow:visible;
@@ -205,6 +205,24 @@ body .eg3_id_siteTitle {
 .eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
 	padding-right:0.25em;
 }
+
+.eg3_id_sidebarLeft .eg3_sidebarThumbnail img {
+	width:100%;
+}
+
+.eg3_id_sidebarLeft .eg3_editSidebarContent {
+	overflow:auto;
+}
+
+.eg3_id_sidebarLeft .eg3_editSidebarContentItem {
+	margin-bottom:0.25em;
+}
+.eg3_id_sidebarLeft .eg3_sidebarEmptyContentHeader {
+	background-color:#323232;
+	height:2.166666667em;
+	border-bottom:0.08333333em solid #EFEFEF;
+}
+
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
@@ -308,6 +326,7 @@ body .eg3_id_siteTitle {
  *********************************************************************************************************/
 .eg3_id_headerMetaMenu .eg3_metaMenu {
 	float:right;
+	margin-top:0.25em;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu * {
 	float:left;
@@ -324,9 +343,7 @@ body .eg3_id_siteTitle {
 .eg3_id_headerMetaMenu .eg3_metaMenu option {
 	float:none;
 }
-.eg3_metaMenu a:hover {
-	color:#00AA11;
-}
+
 .eg3_metaMenu .eg3_separator {
 	padding:0;
 }
@@ -1541,6 +1558,9 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit {
 	width:100%;
 }
+.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer img {
+	width:100%;
+}
 .eg3_viewPage .eg3_singleEdit .eg3_editActionButtonbar {
 	margin-top:0.333333em;
 }
@@ -1551,6 +1571,13 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
 	color:#F2F2F2;
 }
+.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel {
+	color:#000000;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel *[onclick] {
+	color:#000000;
+}
+
 .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
 	color:#EA7125;
 }

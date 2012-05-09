@@ -46,65 +46,70 @@
 
 
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
-
-
+			
 			<!-- BEGIN THUMBNAIL LIST -->
-			<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5 eg3_overflow" style="height:800px; z-index:150; overflow:auto !important;">
-				<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
-					
-					<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container1 eg3_clearLeft" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
-						<h:form>
-							<h:panelGroup layout="block" styleClass="eg3_container1_2">
-								<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
-									
-									<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
-									<ui:remove>
-									<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
-									</ui:remove>
-								</h:commandLink>
-							</h:panelGroup>
-							
-							<h:panelGroup layout="block" styleClass="eg3_container1_2" style="width:200px">
-								<h:outputText value="#{element.page.order + 1}" />
-								<h:outputText value=" / #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
-								
-								<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
-								<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
-								<br/><br/>
-								
-								<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
-									<h:panelGroup rendered="#{wrapper.positionType == 'START'}">
-										<ui:remove>
-											<h:outputText  value="#{lbl.edit_start} " rendered="#{wrapper.positionType == 'START'}" />
-											<h:outputText  value="#{lbl.edit_end} " rendered="#{wrapper.positionType == 'END'}" />
-										</ui:remove>
-										
-										<h:outputText  value="#{internationalizationHelper.getLabelForEnum('structuretype_', wrapper.teiElement.type)}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>	
-										<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-										<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
-										
-										<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
-										
-										<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-									<br/><br/>
-									</h:panelGroup>
-								</a4j:repeat>
-							</h:panelGroup>	
-						</h:form>
+			<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5">
+			
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sidebarEmptyContentHeader">
+					<h:outputText value="&#160;"/>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_editSidebarContent" style="overflow:auto; height:800px;">
+					<a4j:repeat var="element" value="#{structuralEditorBean.flatTeiElementList}">
 						
-					</h:panelGroup>
-					
-					<h:panelGroup layout="block" styleClass="eg3_container1 eg3_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
-						<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
-					</h:panelGroup>
-				</a4j:repeat>
+						<h:panelGroup  layout="block" styleClass="#{element.teiElement.id} eg3_container_1 eg3_editSidebarContentItem" style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
+							<h:form>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_sidebarThumbnail">
+									<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
+										<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy"/>
+										<ui:remove>
+										<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
+										</ui:remove>
+									</h:commandLink>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+									<h:outputText value="#{element.page.order + 1}" />
+									<h:outputText value=" / #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
+									
+									<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
+									<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
+									<br/><br/>
+									
+									<a4j:repeat var="wrapper" value="#{structuralEditorBean.getElementsToNextPb(element)}">
+										<h:panelGroup rendered="#{wrapper.positionType == 'START'}">
+											<ui:remove>
+												<h:outputText  value="#{lbl.edit_start} " rendered="#{wrapper.positionType == 'START'}" />
+												<h:outputText  value="#{lbl.edit_end} " rendered="#{wrapper.positionType == 'END'}" />
+											</ui:remove>
+											
+											<h:outputText  value="#{internationalizationHelper.getLabelForEnum('structuretype_', wrapper.teiElement.type)}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>	
+											<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+											<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
+											
+											<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
+											
+											<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+										<br/><br/>
+										</h:panelGroup>
+									</a4j:repeat>
+								</h:panelGroup>	
+							</h:form>
+							
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_clearLeft" rendered="#{element.teiElement.elementType=='FRONT' or element.teiElement.elementType=='BODY' or element.teiElement.elementType=='BACK'}">
+							<h:outputText  value="#{element.teiElement.elementType}--#{element.positionType}" />	
+						</h:panelGroup>
+					</a4j:repeat>
+				</h:panelGroup>
 			</h:panelGroup>
 			
 			
-			<script>
-			$("img.lazy").lazyload({
-								container: $("#thumbsContainer"),
-								});
+			<script type="text/javascript">
+				$("img.lazy").lazyload({
+					container: $("#thumbsContainer"),
+				});
 			</script>
 			<!-- END THUMBNAIL LIST -->
 			
@@ -114,8 +119,9 @@
 				
 				
 				<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 						<h:outputText value="#{structuralEditorBean.selectedPb.page.orderLabel}"/>
+						<h:outputText value="&#160;" rendered="#{empty structuralEditorBean.selectedPb.page.orderLabel}"/>
 					</h:panelGroup>
 					<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 						<h:form styleClass="eg3_pageBrowser">
@@ -325,9 +331,9 @@
 							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_editorStructureTree">
 								<h:form id="structuralEditorForm">
 									<rich:tree toggleType="ajax" var="divItem" >
-										<rich:treeModelRecursiveAdaptor  roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
+										<rich:treeModelRecursiveAdaptor roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
 											
-											<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
+											<rich:treeNode expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}" >
 												
 												
 												<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}"/>
@@ -336,7 +342,7 @@
 												<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}"/>
 											
 												
-												<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'color:black; font-size:150%;' : 'color:grey;'}">
+												<h:panelGroup styleClass="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'rf-trn-sel' : ''}">
 													<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
 													<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV'}">
 														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
@@ -419,7 +425,7 @@
 					<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="background-color:white;">
 						
 						<!-- START SAVE BUTTONS -->
-						<h:panelGroup layout="block" styleClass="eg3_container1">
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
 							<h:form>
 								<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}"/><br/>
 								<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}"/>
@@ -427,7 +433,7 @@
 						</h:panelGroup>
 						<!-- END SAVE BUTTONS -->
 						<br/>
-						<h:panelGroup layout="block" id="pbForm" styleClass="container1_3" >
+						<h:panelGroup layout="block" id="pbForm" styleClass="container_1_3" >
 							<!-- START VALIDATION ERRORS -->
 							<h:panelGroup layout="block" style="border: 1px solid red;">
 								<h3><h:outputText value="#{lbl.edit_validationErrors}"/></h3>
