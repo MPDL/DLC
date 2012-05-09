@@ -1,12 +1,10 @@
 package de.mpg.mpdl.dlc.beans;
 
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -20,12 +18,7 @@ import org.richfaces.event.ItemChangeEvent;
 
 import com.ocpsoft.pretty.PrettyContext;
 
-import de.escidoc.core.client.ContextHandlerClient;
-import de.escidoc.core.client.UserAccountHandlerClient;
-import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.escidoc.core.resources.aa.useraccount.Grants;
-import de.escidoc.core.resources.aa.useraccount.UserAccount;
-import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.user.User;
@@ -96,8 +89,11 @@ public class LoginBean
                 	this.userHandle = newUserHandle;
                     this.login = true;
                     this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
-
-                    MessageHelper.infoMessage("You have logged in successfully!");
+                    
+                    ResourceBundle bundleMessage = ResourceBundle.getBundle(
+                            "Messages",FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
+                    
+                    MessageHelper.infoMessage(bundleMessage.getString("login_successful"));
                 }
                 catch (Exception e)
                 {
