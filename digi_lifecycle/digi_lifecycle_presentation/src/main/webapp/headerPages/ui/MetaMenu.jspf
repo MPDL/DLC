@@ -44,7 +44,7 @@
 	
 	<!-- Help --> 
 	<h:outputLink id="lnkHelp"
-		styleClass="small_area0_p8 endline" title="#{tlt.Help}"
+		styleClass="small_area0_p8 endline" title="#{tlt.meta_help}"
 		value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}"
 		target="_blank">
 		<h:outputText value="#{lbl.header_lnk_help}" />
@@ -54,13 +54,13 @@
 	<!-- Copyright -->
 	<h:outputLink id="lnkCopyright"
 		value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts"
-		title="#{tlt.Copyright}" styleClass="medium_area0_p8 endline"
+		title="#{tlt.meta_copyright}" styleClass="medium_area0_p8 endline"
 		target="_blank">
 		<h:outputText value="#{lbl.header_lnk_copyright}" />
 	</h:outputLink> 
 	<h:panelGroup styleClass="seperator"></h:panelGroup> 
 	
-	<!-- Disclaimer -->
+	<!-- Disclaimer 
 	<h:outputLink id="lnkLegal"
 		value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer"
 		title="#{tlt.Imprint}" styleClass="medium_area0_p8 endline"
@@ -68,6 +68,7 @@
 		<h:outputText value="#{lbl.header_lnk_imprint}" />
 	</h:outputLink>
 	<h:panelGroup styleClass="seperator"></h:panelGroup> 
+	-->
 	
 	<!-- LogIn, LogOut -->
 	<h:commandLink id="lnkLogin" styleClass="small_area0_p8 endline"

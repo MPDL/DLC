@@ -206,11 +206,11 @@
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
 								<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
-									<h:commandLink action="#{viewPages.goToFirstPage}" title="???placeholder???">
+									<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
-									<h:commandLink action="#{viewPages.goToPreviousPage}" title="???placeholder???">
+									<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 											<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}" />
 									</h:commandLink>
@@ -234,11 +234,11 @@
 								</ui:fragment>
 								
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-									<h:commandLink action="#{viewPages.goToNextPage}" title="???placeholder???" >
+									<h:commandLink action="#{viewPages.goToNextPage}" title="tlt.paginator_goToNextPage" >
 										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
-									<h:commandLink action="#{viewPages.goToLastPage}" title="???placeholder???">
+									<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
@@ -246,7 +246,7 @@
 							</h:form>
 						
 							<h:form styleClass="eg3_gotoBox" rendered="#{viewPages.volume.pages.size() > 1}">
-								<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="???placeholder???" placeholder="40" min="1" max="99999" maxlength="5" type="number"/>
+								<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="#{tlt.paginator_goToPage}" placeholder="40" min="1" max="99999" maxlength="5" type="number"/>
 								<label class="eg3_inputLabel">
 									<h:outputText value="von #{viewPages.volume.pages.size()}" />
 								</label>
