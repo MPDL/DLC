@@ -9,28 +9,28 @@
 		<nav>
 			<ul>
 				<li class="eg3_menuEntry">
-					<h:outputLink id="lnkBrowse" title="#{tlt.Collection}" value="/#{applicationBean.contextPath}/volumes/all" rendered="true">
+					<h:outputLink id="lnkBrowse" title="#{tlt.main_browse}" value="/#{applicationBean.contextPath}/volumes/all" rendered="true">
 						<h:outputText value="#{lbl.navigation_lnk_viewtree}" />
 					</h:outputLink>
 				</li>
 			
 			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
 				<li class="eg3_menuEntry">
-					<h:outputLink id="lnkMyItems" title="#{tlt.MyItems}" value="/#{applicationBean.contextPath}/volumes/my">
+					<h:outputLink id="lnkMyItems" title="#{tlt.main_my}" value="/#{applicationBean.contextPath}/volumes/my">
 						<h:outputText value="#{lbl.navigation_lnk_My_Items}" />
 					</h:outputLink>
 				</li>
 			</ui:fragment>
 			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
 				<li class="eg3_menuEntry">
-					<h:outputLink id="lnkUpload" title="#{tlt.Upload}" value="/#{applicationBean.contextPath}/upload/new" >
+					<h:outputLink id="lnkUpload" title="#{tlt.main_upload}" value="/#{applicationBean.contextPath}/upload/new" >
 						<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 					</h:outputLink>
 				</li>
 			</ui:fragment>
 			<ui:fragment rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' )}">
 				<li class="eg3_menuEntry">
-					<h:outputLink id="lnkUser" title="#{tlt.Admin}" value="/#{applicationBean.contextPath}/admin">
+					<h:outputLink id="lnkUser" title="#{tlt.main_admin}" value="/#{applicationBean.contextPath}/admin">
 						<h:outputText value="#{lbl.navigation_lnk_Admin}" />
 					</h:outputLink>
 				</li>

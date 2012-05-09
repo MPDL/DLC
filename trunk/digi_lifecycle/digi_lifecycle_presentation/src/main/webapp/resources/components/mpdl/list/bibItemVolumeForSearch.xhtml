@@ -29,7 +29,7 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
-					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<div class="eg3_icon_withdrawn_32_32">&nbsp;</div>
 					<h:panelGroup class="eg3_itemStatusTitle">
 						<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
 					</h:panelGroup>
@@ -109,7 +109,7 @@
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
 				<div class="eg3_itemMediabarThumb">
-					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" rendered="#{cc.attrs.volume.pages[0] != null}"/>
 				</div>
 				<br/>
 				

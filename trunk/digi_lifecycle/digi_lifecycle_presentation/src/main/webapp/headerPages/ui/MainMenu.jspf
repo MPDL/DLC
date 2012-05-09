@@ -37,13 +37,13 @@
 	<div id="mainMenuSkipLinkAnchor" class="full_area0 mainMenu">
 		<!-- main Menu starts here -->
 		<!-- start -->
-		<h:outputLink id="lnkHome" title="#{tlt.Home}" styleClass="free_area0" value="/#{applicationBean.contextPath}/" rendered="true">
+		<h:outputLink id="lnkHome" title="#{tlt.main_home}" styleClass="free_area0" value="/#{applicationBean.contextPath}/" rendered="true">
 			<h:outputText value="#{lbl.navigation_lnk_start}" />
 		</h:outputLink>
 		<h:outputText id="txtHomeInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_start}" rendered="false" />
 		
 		<!-- browse collection -->
-		<h:outputLink id="lnkBrowse" title="#{tlt.Collection}"
+		<h:outputLink id="lnkBrowse" title="#{tlt.main_browse}"
 			styleClass="free_area0" value="/#{applicationBean.contextPath}/volumes/all"
 			rendered="true">
 			<h:outputText value="#{lbl.navigation_lnk_viewtree}" />
@@ -51,7 +51,7 @@
 		<h:outputText id="txtBrowseInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_viewtree}" rendered="false" />
 		
 		<!-- upload -->
-		<h:outputLink id="lnkUpload" title="#{tlt.Upload}"
+		<h:outputLink id="lnkUpload" title="#{tlt.main_upload}"
 			styleClass="free_area0" value="/#{applicationBean.contextPath}/ingest.xhtml"
 			rendered="#{loginBean.login}">
 			<h:outputText value="#{lbl.navigation_lnk_Upload}" />
@@ -59,7 +59,7 @@
 		<h:outputText id="txtUploadInactive" styleClass="free_area0" value="#{lbl.navigation_lnk_Upload}" rendered="false" />
 		
 		<!-- Admin -->
-		<h:outputLink id="lnkUser" title="#{tlt.Admin}"
+		<h:outputLink id="lnkUser" title="#{tlt.main_admin}"
 			styleClass="free_area0" value="/#{applicationBean.contextPath}/admin.xhtml"
 			rendered="#{loginBean.login}">
 			<h:outputText value="#{lbl.navigation_lnk_Admin}" />
