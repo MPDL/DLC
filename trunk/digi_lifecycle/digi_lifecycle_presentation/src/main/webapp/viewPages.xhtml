@@ -60,13 +60,13 @@
 										//without a height value the page jump to top because of to slowly image loading
 										if (e.status == "begin") {
 											$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
+											eg3_closeOverlay('.eg3_collapseOverlay');
 										}
 										//if the ajax request is success
 										//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
 										if(e.status=="success")
 										{
 											scrollDivs();
-											//resetViewPageContainer();
 										}
 									});
 									
@@ -88,6 +88,7 @@
 											var newScrollPos = pos.top - treeContainerPos.top + currentScroll - 50;				
 											treeContainerDiv.scrollTop(newScrollPos);
 											resetViewPageContainer();
+											checkSidebarHeight('.eg3_viewPage');
 										}
 									}
 									
@@ -102,7 +103,7 @@
 												reloadDone = true;
 											}
 										});
-										(reloadDone) ? $('.eg3_viewPageContainer').removeAttr("style") : setTimeout("resetViewPageContainer()", 25);
+										(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
 									}
 									
 									$(document).ready(function(e)
@@ -114,7 +115,7 @@
 											resizeSidebar('.eg3_viewPage');
 										});
 										
-										checkSidebarHeight('.eg3_viewPage');
+									//	checkSidebarHeight('.eg3_viewPage');
 									});
 								</script>
 			     			<rich:tab header="#{lbl.view_tab_structure}" id="toc">
