@@ -150,7 +150,7 @@
 						</h:form>
 					
 						<h:form styleClass="eg3_gotoBox" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
-							<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="#{tlt.paginator_goToPage}" placeholder="40" min="1" max="99999" maxlength="5" type="number"/>
+							<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="#{tlt.paginator_goToPage}" placeholder="#{structuralEditorBean.selectedPb.page.order+1}" min="1" max="99999" maxlength="5" type="number"/>
 							<label class="eg3_inputLabel">
 								<h:outputText value="von #{structuralEditorBean.volume.pages.size()}" />
 							</label>

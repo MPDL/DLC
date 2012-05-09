@@ -29,7 +29,7 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg">&#160;</h:panelGroup>
 			<div class="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
-					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<div class="eg3_icon_withdrawn_32_32">&nbsp;</div>
 					<span class="eg3_itemStatusTitle"><h:outputText value="#{lbl.status_released}" /></span>
 				</div>
 				
@@ -138,7 +138,7 @@
 			<div class="eg3_itemContent">
 				<div class="eg3_itemContentData">
 					<div class="eg3_itemStatusArea">
-						<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+						<div class="eg3_icon_withdrawn_32_32">&nbsp;</div>
 						<span class="eg3_itemStatusTitle"><h:outputText value="#{lbl.status_released}" /></span>
 					</div>
 					<div class="eg3_itemHeadline">
@@ -171,11 +171,11 @@
 				
 					
 					<div class="eg3_shortView_js">
-						<div class="eg3_itemMetaLabel"><h:outputText value="Number of Volumes"/></div>
+						<div class="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_NumberOfVolumes}"/></div>
 						<div class="eg3_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedVolumes)}"/></div>
 						
 						<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
-							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
+							<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 						</h:panelGroup>
 						<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
