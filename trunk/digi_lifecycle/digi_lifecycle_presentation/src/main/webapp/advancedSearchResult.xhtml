@@ -12,20 +12,22 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
-			
+			<h:outputText value="#{lbl.list_sortCriterion}: "/>
 			<h:form>
-			<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">
-				<h:outputText value="#{lbl.sortCriterion}"/>
-			
-				<h:selectOneMenu value="#{sortCriterion.sortIndex}">
-					<f:selectItems value="#{advancedSearchResultBean.sortIndicesMenu}"/>
-					<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/>
-				</h:selectOneMenu>
-					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{sortCriterion.sortOrder}">
-						<f:ajax render="@all"/>
+				
+				<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">					
+					<h:selectOneMenu value="#{sortCriterion.sortIndex}">
+						<f:selectItems value="#{advancedSearchResultBean.sortIndicesMenu}"/>
+						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/>
+					</h:selectOneMenu>
+					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{lbl.sort_asc}" rendered="#{sortCriterion.sortOrder == 'ASCENDING'}">
+						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
 					</h:commandButton>
-			<br/>
-			</a4j:repeat>
+					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{lbl.sort_desc}" rendered="#{sortCriterion.sortOrder == 'DESCENDING'}">
+						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
+					</h:commandButton>
+					<br/>
+				</a4j:repeat>
 			</h:form>
 			
 		

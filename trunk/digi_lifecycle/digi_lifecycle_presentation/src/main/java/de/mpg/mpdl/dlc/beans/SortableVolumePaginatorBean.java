@@ -2,7 +2,9 @@ package de.mpg.mpdl.dlc.beans;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
@@ -32,7 +34,7 @@ public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volu
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
 		for(SortIndices si : SortIndices.values())
 		{
-			scMenuList.add(new SelectItem(si.name(), si.name()));
+			scMenuList.add(new SelectItem(si.name(), getSortCriterionString(si.name())));
 			
 		}
 		return scMenuList;
@@ -60,7 +62,31 @@ public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volu
 	}
 	
 	
-	
+	public String getSortCriterionString(String crit)
+	{
+		String criterion = "";
+        ResourceBundle bundleLabel = ResourceBundle.getBundle(
+                "Label",FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
+		
+		if (crit.equals("AUTHOR")) 
+		{
+			criterion = bundleLabel.getString("sort_criterion_author");
+		}
+		if (crit.equals("YEAR")) 
+		{
+			criterion = bundleLabel.getString("sort_criterion_year");
+		}
+		if (crit.equals("TITLE")) 
+		{
+			criterion = bundleLabel.getString("sort_criterion_title");
+		}
+		if (crit.equals("NEWEST")) 
+		{
+			criterion = bundleLabel.getString("sort_criterion_newest");
+		}
+		
+		return criterion;
+	}
 	
 
 	

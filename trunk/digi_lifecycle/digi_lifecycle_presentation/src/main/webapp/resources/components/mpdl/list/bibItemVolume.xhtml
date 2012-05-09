@@ -35,7 +35,7 @@
 								<f:param value="#{volume.objidAndVersion}" />
 								<f:param value="recto-verso" />
 								<f:param value="1" />
-								<h:outputText value="Band. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
+								<h:outputText value="#{lbl.list_volume}. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
 	
 							</pretty:link> 
 						</div> 
@@ -46,7 +46,7 @@
 						<div class="eg3_itemMetaValue">Name, Prename, Address</div>
 						
 						<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
-							<h:outputText value="#{lbl.ViewItemFull_lblFulltextSearchResults}" />
+							<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 						</h:panelGroup>
 						<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >

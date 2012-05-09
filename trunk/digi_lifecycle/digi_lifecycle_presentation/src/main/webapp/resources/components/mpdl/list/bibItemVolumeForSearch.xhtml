@@ -31,7 +31,8 @@
 				<div class="eg3_itemStatusArea">
 					<div class="eg3_icon_withdrawn_32_32">&nbsp;</div>
 					<h:panelGroup class="eg3_itemStatusTitle">
-						<h:outputText value="#{cc.attrs.volume.item.properties.version.status}" />
+													<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
+							<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
 					</h:panelGroup>
 				</div>
 				
@@ -43,14 +44,14 @@
 							<f:param value="1" />
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 
-							<h:outputText value="Band. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
+							<h:outputText value="#{lbl.list_volume}. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
 
 						</pretty:link>
 					</div>
 					<!-- Multivolume title -->
 					<br />
 					<br/>
-					<h:outputText value="In Multivolume: "/>
+					<h:outputText value="#{lbl.list_parent}: "/>
 					<pretty:link mappingId="viewMultiVol">
 						<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
 							
