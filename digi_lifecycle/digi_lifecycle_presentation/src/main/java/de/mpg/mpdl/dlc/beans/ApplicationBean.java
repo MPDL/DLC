@@ -36,8 +36,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 
+import javax.faces.application.Application;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -50,6 +52,7 @@ import org.apache.log4j.Logger;
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @ManagedBean
@@ -62,7 +65,7 @@ public class ApplicationBean
     private String appTitle;
     private String contextPath;
     private String userLocaleString;
-    private Locale userLocale;
+    private static Locale userLocale;
     private String selectedHelpPage;
     private String cmMultiVol;
     private String cmVolume;
@@ -302,6 +305,14 @@ public class ApplicationBean
             helpAnchor = "#" + helpAnchor.replaceAll(".jsp", "");
         }
         return helpAnchor;
+    }
+    
+    public static String getResource (String bundle, String name)
+    {
+    	Application application = FacesContext.getCurrentInstance().getApplication();
+	    InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), "internationalizationHelper");
+	    ResourceBundle rBundle = ResourceBundle.getBundle(bundle, i18nHelper.getUserLocale());
+        return rBundle.getString(name);
     }
     
 //    /**

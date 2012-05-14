@@ -45,7 +45,7 @@
             </a4j:commandButton> 
 
     		<rich:popupPanel id="confirmOrgaPane" autosized="true"> 
-    			 Are you sure you want to close this organization? (message)
+    			<h:outputText value="#{msg.admin_confirmCloseOu}"/>
         		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" />
         		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeOrganization}"/>
     		</rich:popupPanel>

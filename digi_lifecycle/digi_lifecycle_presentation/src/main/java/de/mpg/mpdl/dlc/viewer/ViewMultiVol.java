@@ -7,6 +7,7 @@ import javax.faces.bean.ViewScoped;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -45,7 +46,7 @@ public class ViewMultiVol{
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
 				
 			} catch (Exception e) {
-				MessageHelper.errorMessage("Problem while loading volume");
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 			}
 		}
 		volumeLoaded();

@@ -25,6 +25,7 @@ import org.jibx.runtime.JiBXException;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
@@ -145,7 +146,7 @@ public class StructuralEditorBean {
 					
 				} catch (Exception e) {
 					logger.error("Could not load volume " + volumeId, e );
-					MessageHelper.errorMessage("Problem while loading volume");
+					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 					volume = null;
 				}
 			}
@@ -474,7 +475,7 @@ public class StructuralEditorBean {
 		
 		if(validationList.size()>0)
 		{
-			MessageHelper.errorMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages","edit_notSavedValidationErrors"));
 		}
 		else
 		{
@@ -483,9 +484,9 @@ public class StructuralEditorBean {
 				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				
-				MessageHelper.infoMessage(MessageHelper.getMessage("edit_savedSuccessfully"));
+				MessageHelper.infoMessage(ApplicationBean.getResource("Messages","edit_savedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage("Error while saving Structure");
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveStruct"));
 				logger.error("Error while saving created TEI-SD.", e);
 				
 			}
@@ -514,7 +515,7 @@ public class StructuralEditorBean {
 	{
 		if(validationList.size()>0)
 		{
-			MessageHelper.errorMessage(MessageHelper.getMessage("edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages","edit_notSavedValidationErrors"));
 		}
 		else
 		{
@@ -523,9 +524,9 @@ public class StructuralEditorBean {
 				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
 				this.volume = volServiceBean.releaseVolume(volume, getLoginBean().getUserHandle());
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
-				MessageHelper.infoMessage(MessageHelper.getMessage("edit_savedAndReleasedSuccessfully"));
+				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "edit_savedAndReleasedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage("Error while saving and releasing Structure");
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveAndReleaseStruct"));
 				logger.error("Error while saving and releasing structure.", e);
 				
 			}
@@ -651,7 +652,7 @@ public class StructuralEditorBean {
 					currentValue = Integer.parseInt(selectedPaginationStartValue);
 					
 				} catch (NumberFormatException e) {
-					MessageHelper.errorMessage("The given start value is invalid. Please provide an arabic number");
+					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartArabic"));
 					return;
 				} 
 			}
@@ -663,14 +664,14 @@ public class StructuralEditorBean {
 					currentValue = RomanNumberConverter.convert(selectedPaginationStartValue);
 					
 				} catch (NumberFormatException e) {
-					MessageHelper.errorMessage("The given start value is invalid. Please provide a roman number");
+					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRoman"));
 					return;
 				}
 			}
 			
 			if(!selectedPaginationPattern.isEmpty() && !selectedPaginationPattern.contains("?"))
 			{
-				MessageHelper.errorMessage("The given pattern is invalid. Please provide a pattern containing a '?' as placeholder");
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongPaginationPattern"));
 				return;
 			}
 			
@@ -717,7 +718,7 @@ public class StructuralEditorBean {
 			}
 		else
 		{
-			MessageHelper.errorMessage("Please provide a start pagination value!");
+			MessageHelper.errorMessage(ApplicationBean.getResource("message", "error_wrongStart"));
 		}
 		
 		

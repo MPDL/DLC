@@ -69,12 +69,11 @@
 						
 					<rich:popupPanel id="popup" modal="true" resizeable="false">
 						<f:facet name="header">
-							<h:outputText value="Upload in progress (message)" />
+							<h:outputText value="#{msg.upload_progress}" />
 						</f:facet>
 						<f:facet name="controls">
 						</f:facet>
-						<p>Images are uploaded and processed</p>
-						<p>Please be patient, this process may take several minutes (todo: message)</p>
+						<p><h:outputText value="#{msg.upload_progressMsg}" /></p>						
 					</rich:popupPanel>
 				</rich:panel>
 				
@@ -133,14 +132,14 @@
 				</rich:panel>
 				
 				<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
-	       			 Drag the item to proper area.. (message)
+					<h:outputText value="#{msg.upload_DragDrop}" />
 	  		  	</rich:dragIndicator>
 	  		  	
 				<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
 					<f:facet name="header">
 						<h:outputText value="#{lbl.admin_upload_images}" />
 					</f:facet>
-					<h:outputText value="No files currently uploaded (message)" rendered="#{ingestBean.size==0}" />
+					<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}" />
 					
 		            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 		                 <f:facet name="header">
