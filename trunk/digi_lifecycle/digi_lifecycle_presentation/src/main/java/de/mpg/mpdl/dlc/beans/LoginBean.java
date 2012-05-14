@@ -166,18 +166,11 @@ public class LoginBean
 				FacesContext fc = FacesContext.getCurrentInstance();
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		        session.invalidate();
-				PrettyContext pc = PrettyContext.getCurrentInstance();
-//				HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
-//				String requestURL = request.getRequestURL().toString();
-	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
-	    		String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
-	    		
-	    		 Pattern p = Pattern.compile(dlc_URL +"/upload/escidoc:.*");
-	    		 Matcher m = p.matcher(requestURL);
 
-	    		if(m.matches() ||requestURL.matches(dlc_URL +"/upload/new") || requestURL.equals(dlc_URL +"/admin") || requestURL.equals(dlc_URL + "/user")|| requestURL.equals(dlc_URL + "/volumes/my"))
-	    			requestURL = "http://localhost:8080/dlc/";
-	    		FacesContext.getCurrentInstance().getExternalContext().redirect(getLogoutUrl().replace("$1", requestURL));
+	    		String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
+
+	    		//Direct to hompage when log out, because of changing rights.
+	    		FacesContext.getCurrentInstance().getExternalContext().redirect(dlc_URL);
 
 			}
 			catch(Exception e)
@@ -193,12 +186,5 @@ public class LoginBean
     {
     	return PropertyReader.getProperty("escidoc.common.login.url")+LOGIN_URL;
     }
-    
-    public static String getLogoutUrl() throws Exception
-    {
-    	return PropertyReader.getProperty("escidoc.common.login.url")+LOGOUT_URL;
-    }
-
-
 
 }
