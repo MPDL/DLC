@@ -90,10 +90,7 @@ public class LoginBean
                     this.login = true;
                     this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
                     
-                    ResourceBundle bundleMessage = ResourceBundle.getBundle(
-                            "Messages",FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
-                    
-                    MessageHelper.infoMessage(bundleMessage.getString("login_successful"));
+                    MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "login_successful"));
                 }
                 catch (Exception e)
                 {

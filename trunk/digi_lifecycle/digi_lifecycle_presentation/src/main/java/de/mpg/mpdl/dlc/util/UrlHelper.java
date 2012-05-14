@@ -7,6 +7,8 @@ import javax.faces.context.FacesContext;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
+
 public class UrlHelper
 {
     public static String getParameterValue(String parameterName)
@@ -35,7 +37,7 @@ public class UrlHelper
         }
         catch (Exception e)
         {
-            MessageHelper.errorMessage("'" + uri + "' is not a valid URL");
+            MessageHelper.errorMessage("'" + uri + "'" + ApplicationBean.getResource("Messages", "error_invalidUri"));
         }
         return false;
     }

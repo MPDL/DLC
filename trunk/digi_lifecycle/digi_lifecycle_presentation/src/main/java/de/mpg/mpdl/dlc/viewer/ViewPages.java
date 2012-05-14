@@ -18,6 +18,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -86,7 +87,7 @@ public class ViewPages{
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 				//volume.getItem().getProperties().getLatestRelease().g
 			} catch (Exception e) {
-				MessageHelper.errorMessage("Problem while loading volume");
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 			}
 		}
 		volumeLoaded();
@@ -179,7 +180,7 @@ public class ViewPages{
 		catch (Exception e) 
 		{
 			logger.error("Structural element cannot be selected for this page.", e);
-			MessageHelper.errorMessage("Structural element cannot be selected for this page.");
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStructElem"));
 		}
 		
 	}
@@ -334,7 +335,7 @@ public class ViewPages{
 			return teiHtml;
 		} catch (Exception e) {
 			logger.error("Coulod not display fulltext for " + volumeId + " / Page " + selectedPageNumber, e);
-			MessageHelper.errorMessage("Can not display fulltext for this page");
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_ftDisplay"));
 			return "";
 		}
 	}

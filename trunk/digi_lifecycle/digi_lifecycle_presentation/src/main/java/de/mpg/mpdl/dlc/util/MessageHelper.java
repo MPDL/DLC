@@ -164,20 +164,6 @@ public class MessageHelper {
 	        }
 	    }
 	    
-	    
-	    public static String getMessage(String placeholder)
-	    {
-	    	Application application = FacesContext.getCurrentInstance().getApplication();
-		    InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), "internationalizationHelper");
-	    	return ResourceBundle.getBundle(i18nHelper.getSelectedMessagesBundle()).getString(placeholder);
-	    }
-	    
-	
-
-
-	
-	
-	
 	
 	/*
 	public static void infoMessage(String msg)

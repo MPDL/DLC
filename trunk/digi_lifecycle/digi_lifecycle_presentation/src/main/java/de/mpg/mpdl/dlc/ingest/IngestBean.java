@@ -26,6 +26,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -574,18 +575,18 @@ public class IngestBean{
 			{
 	     		if(getImageFiles().size()==0)
 	    		{
-	    			MessageHelper.errorMessage("You have to upload at least Image");
+	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
 	    			return "";
 	    		}
 	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
 	    		{
-	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 	    			return "";
 	    		}
 	    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage("Neues MonoVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
 			}
 			else if(getSelectedContentModel().equals("Multivolume"))
 			{
@@ -594,27 +595,27 @@ public class IngestBean{
 	    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage("Neues MultiVolume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
 			}
 			else
 			{
 	     		if(getImageFiles().size()==0)
 	    		{
-	    			MessageHelper.errorMessage("You have to upload at least Image");
+	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
 	    			return "";
 	    		}
 	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
 	    		{
-	    			MessageHelper.errorMessage("You have to upload " + getNumberOfTeiPbs() + " Images, which are referenced in the TEI");
+	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 	    			return "";
 	    		}
 	    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
 	    		clearAllData();
 	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage("Neues Volume erstellt! title= " + title + " id= " + volume.getItem().getObjid());
+	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 			}
 		} catch (Exception e) {
-			MessageHelper.errorMessage("An error occured during creation. " + e.toString() + " " + e.getMessage());
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_internal")+ ":" + e.getMessage());
 		}
 //		ModsMetadata md = new ModsMetadata();
 //		ModsTitle title = new ModsTitle();

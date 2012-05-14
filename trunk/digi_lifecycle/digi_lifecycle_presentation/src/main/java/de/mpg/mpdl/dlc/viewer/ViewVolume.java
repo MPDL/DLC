@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.list.ThumbnailsBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -44,7 +45,7 @@ public class ViewVolume {
 			
 		} catch (Exception e) {
 			logger.error("Problem while loading Volume", e);
-			MessageHelper.errorMessage("Problem while loading volume");
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 		}
 	}
 	
