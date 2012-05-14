@@ -21,7 +21,9 @@
 	
 		<h:panelGroup layout="block" styleClass="eg3_bibList">
 			<h:panelGroup layout="block" styleClass="eg3_listHeader">
+				 
 				<h:panelGroup layout="block" styleClass="eg3_selectArea">
+					<!-- 
 					<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
 						<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 							<span class="eg3_selectionText"></span>
@@ -32,24 +34,26 @@
 								<option><h:outputText value="#{lbl.checkbox_checkAll_Page}"/></option>
 								<option><h:outputText value="#{lbl.checkbox_checkAll_Result}"/></option>
 							</optgroup>
-							<optgroup label="-----------"></optgroup>
+							<optgroup label=""></optgroup>
 							<optgroup label="uncheck">
 								<option><h:outputText value="#{lbl.checkbox_uncheckAll_Page}"/></option>
 								<option><h:outputText value="#{lbl.checkbox_uncheckAll_Result}"/></option>
 							</optgroup>
 						</select>
 					</h:panelGroup>
+					-->
 				</h:panelGroup>
 				
+				
 				<h:panelGroup layout="block" styleClass="eg3_content">
-					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16" title="#{tlt.list_openAll}">
-						<a class="eg3_iconActionLabel" title="#{tlt.list_openAll}" target="_self"><h:outputText value="#{lbl.list_NavElemOpenAll}"/></a>
+					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16">
+						<a class="eg3_iconActionLabel" target="_self">Open all</a>
 					</h:panelGroup>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_mediabarActionArea">
-					<h:panelGroup layout="block" styleClass="eg3_toggleListItemVolume_js eg3_icon_collapse_16_16" title="#{tlt.list_closeAll}">
-						<a class="eg3_iconActionLabel" title="#{tlt.list_closeAll}"><h:outputText value="#{lbl.list_NavElemOpen} #{lbl.list_NavElemClose}"/></a>
+					<h:panelGroup layout="block" styleClass="eg3_toggleListItemVolume_js eg3_icon_collapse_16_16">
+						<a class="eg3_iconActionLabel">Open / Close MediabarItems</a>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
