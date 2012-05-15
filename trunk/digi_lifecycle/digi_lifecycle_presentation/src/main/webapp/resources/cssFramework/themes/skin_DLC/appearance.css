@@ -1823,3 +1823,10 @@ body .eg3_id_siteTitle {
 .digilib img {
 	cursor:pointer;
 }
+
+/*SEARCH MENU*/
+.quickSearchIcon {
+    background-image: url('images/All_Search_LensStart_15_Static.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
