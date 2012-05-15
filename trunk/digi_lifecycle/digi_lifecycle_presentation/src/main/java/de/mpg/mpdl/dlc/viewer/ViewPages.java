@@ -8,10 +8,8 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.UITree;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -21,11 +19,13 @@ import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
@@ -47,6 +47,8 @@ public class ViewPages{
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	
+	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
 	
 	private Context context;
 	
@@ -85,7 +87,12 @@ public class ViewPages{
 				
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, getLoginBean().getUserHandle());
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
-				//volume.getItem().getProperties().getLatestRelease().g
+
+				//Set the logo of application to collection logo
+				Organization volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
+				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
+					{ApplicationBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());}
+				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 			}
