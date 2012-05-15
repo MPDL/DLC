@@ -70,6 +70,7 @@ public class ApplicationBean
     private String cmMultiVol;
     private String cmVolume;
     private String cmMono;
+    private static String logoUrl;
     
     //TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
@@ -99,6 +100,7 @@ public class ApplicationBean
     public void init()
     {
     	try {
+
 			InitialContext context = new InitialContext();
 			this.contextServiceBean = new ContextServiceBean();
 			this.ouServiceBean =  new OrganizationalUnitServiceBean();
@@ -147,7 +149,6 @@ public class ApplicationBean
     }
         
 	public List<OrganizationalUnit> getOus() throws Exception {
-		//sdgwed
 		return ous;
 	}
 
@@ -197,7 +198,7 @@ public class ApplicationBean
      * @return the application context
      */
     public String getContextPath()
-    {
+    {   
         return contextPath;
     }
 
@@ -313,6 +314,26 @@ public class ApplicationBean
 	    InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), "internationalizationHelper");
 	    ResourceBundle rBundle = ResourceBundle.getBundle(bundle, i18nHelper.getUserLocale());
         return rBundle.getString(name);
+    }
+    
+    public String getLogoUrl()
+    {    	
+    	//Reset url on common pages to default dlc logo
+    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+    	if (viewId.equals("/Welcome.xhtml")
+    			|| viewId.equals("/volumes.xhtml")
+    			|| viewId.equals("ingest.xhtml")
+    			|| viewId.equals("advancedSearch.xhtml")
+    			||viewId.equals("admin.xhtml"))
+    		{logoUrl = "";} 
+    	if (logoUrl == null || logoUrl.equals("")) 
+    		{return "/resources/images/dlc_u160_original.gif";}
+    	else return logoUrl;
+    }
+    
+    public static void setLogoUrl(String url)
+    {
+    	logoUrl = url;
     }
     
 //    /**

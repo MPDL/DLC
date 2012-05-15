@@ -16,7 +16,8 @@
         <h:form>
         <h:panelGrid columns="2">	
 			<h:outputText value="#{lbl.admin_ou_logoUrl}:" />
-			<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}"/>
+			<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}" 
+						    onclick="window.open('#{viewOU.orga.dlcMd.foafOrganization.homePageURL}');"/>
 			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
 	
 	

@@ -34,6 +34,7 @@ import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @SessionScoped
@@ -61,7 +62,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 
 	public AllVolumesBean()
-	{
+	{		
 		super();
 		//TODO
 	}
@@ -73,7 +74,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		//update();
 		if(contextId != null  && !contextId.equalsIgnoreCase("all") && !contextId.equalsIgnoreCase("my"))
 		{
-			try {
+			try {				
 				this.context = contextServiceBean.retrieveContext(contextId, null);
 			} catch (Exception e) {
 				e.printStackTrace();
