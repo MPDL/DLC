@@ -334,6 +334,9 @@ body .eg3_id_siteTitle {
 .eg3_id_headerMetaMenu .eg3_metaMenu a {
 	padding:0.08333em 2em 0.3333em 2em;
 }
+.eg3_id_headerMetaMenu .eg3_metaMenu .eg3_separator+form {
+	padding-left:2em;
+}
 .eg3_id_headerMetaMenu .eg3_metaMenu nav {
 	padding:0;
 }
@@ -342,6 +345,13 @@ body .eg3_id_siteTitle {
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu option {
 	float:none;
+}
+.eg3_id_headerMetaMenu .eg3_icon_quickSearch_16_16 {
+/*	background-image: url("image/_default_16_16.png"); */
+	background-image: url("images/All_Search_LensStart_15_Static.png");
+	width:1.3333333em;
+	height:1.3333333em;
+	margin-right:0.16666666em;
 }
 
 .eg3_metaMenu .eg3_separator {
@@ -362,6 +372,7 @@ body .eg3_id_siteTitle {
 .eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
 	padding:0.0833333em 0.6666em 0 0.6666em;
 }
+
 /*************************************************************************************************************
  ******************************				.eg3_standardHeader .eg3_solutionLogo		******************************
  *************************************************************************************************************/
@@ -1822,11 +1833,4 @@ body .eg3_id_siteTitle {
 }
 .digilib img {
 	cursor:pointer;
-}
-
-/*SEARCH MENU*/
-.quickSearchIcon {
-    background-image: url('images/All_Search_LensStart_15_Static.png');
-    background-repeat: no-repeat;
-    background-position: center center;
 }
