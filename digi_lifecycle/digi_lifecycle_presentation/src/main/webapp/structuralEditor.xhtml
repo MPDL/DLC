@@ -186,13 +186,11 @@
 								<rich:tabPanel styleClass="eg3_container_1">
 									<!-- START SAVE BUTTONS -->
 									<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
-										<h:form>
 											<h:commandButton value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
 											<h:outputText value="&#160;"/>
 											<h:commandButton value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5"/>
 											<h:outputText value="&#160;"/>
 											<h:commandButton value="#{lbl.button_command_revert}" styleClass="eg3_borderradius_5"/>
-										</h:form>
 									</h:panelGroup>
 									<!-- END SAVE BUTTONS -->
 									
@@ -200,14 +198,12 @@
 										<!-- START STRUCTURE EDITING -->
 										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
 											<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
-											<h:form>
 												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
 													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
 													teiWrapper="#{structuralEditorBean.currentNewElement}"/>
 												<br/>
 												<br/>
 												<h:commandButton styleClass="eg3_floatRight" value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
-											</h:form>
 										</h:panelGroup>
 										<!-- END STRUCTURE EDITING -->
 									</rich:tab>
@@ -215,7 +211,6 @@
 										<!-- START PAGE EDITING -->
 										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
 											<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
-											<h:form>
 												
 												<div class="eg3_currentPageNumbers">
 													<h:outputText value="#{lbl.edit_physicalPageNumber}: "/>
@@ -316,7 +311,6 @@
 													<br/>
 													<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" />
 												</div>
-											</h:form>
 									
 										</h:panelGroup>
 										<!-- END PAGE EDITING -->
