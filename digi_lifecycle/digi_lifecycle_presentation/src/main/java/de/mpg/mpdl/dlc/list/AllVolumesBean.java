@@ -38,7 +38,7 @@ import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @SessionScoped
-@URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes/#{allVolumesBean.contextId}")
+@URLMapping(id = "volumes", viewId = "/volumes.xhtml", pattern = "/volumes/#{allVolumesBean.colId}")
 public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private static Logger logger = Logger.getLogger(AllVolumesBean.class);
 	
@@ -57,8 +57,8 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private LoginBean loginBean;
 	
 	private int totalNumberOfRecords;
-	private Context context;
-	private String contextId;
+	private Collection collection;
+	private String colId;
 	
 
 	public AllVolumesBean()
@@ -72,10 +72,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	public void loadContext()
 	{ 
 		//update();
-		if(contextId != null  && !contextId.equalsIgnoreCase("all") && !contextId.equalsIgnoreCase("my"))
+		if(colId != null  && !colId.equalsIgnoreCase("all") && !colId.equalsIgnoreCase("my"))
 		{
 			try {				
-				this.context = contextServiceBean.retrieveContext(contextId, null);
+				this.collection = contextServiceBean.retrieveCollection(colId, null);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -83,26 +83,19 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		}
 		else
 		{
-			context = null;
+			collection = null;
 		}
 	}
 	
 	
   
-	public String getContextId() {
-		return contextId;
-	}
-
-	public void setContextId(String contextId) {
-		this.contextId = contextId;
-	}
 
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
 		VolumeSearchResult res = null;
 
-		if(contextId.equalsIgnoreCase("my") )
+		if(colId.equalsIgnoreCase("my") )
 		{
 			List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
 			FilterCriterion fc;
@@ -162,31 +155,20 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		}
 		else{
 			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-			if(context != null)
+			if(collection != null)
 			{
-				SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, contextId);
+				SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
 				scList.add(sc);
 			}
 			res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
-
-		
-		
-		
-		
 		
 		
 		return res.getVolumes();
 	}
 
-	public Context getContext() {
-		return context;
-	}
 
-	public void setContext(Context context) {
-		this.context = context;
-	}
 
 	public int getTotalNumberOfRecords() 
 	{
@@ -205,6 +187,28 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		this.loginBean = loginBean;
 	}
 	
+	
+	
+	public Collection getCollection() {
+		return collection;
+	}
+
+
+	public void setCollection(Collection collection) {
+		this.collection = collection;
+	}
+
+
+	public String getColId() {
+		return colId;
+	}
+
+
+	public void setColId(String colId) {
+		this.colId = colId;
+	}
+
+
 	public List<Volume> getRelatedVolumes(Volume vol)
 	{
 		List<Volume> vols = new ArrayList<Volume>();

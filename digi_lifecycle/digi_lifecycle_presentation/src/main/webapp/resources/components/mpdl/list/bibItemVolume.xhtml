@@ -18,7 +18,7 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<h:panelGroup layout="block" class="eg3_listItemVolume eg3_multiVolumeBG_3" rendered="#{(allVolumesBean.contextId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
+		<h:panelGroup layout="block" class="eg3_listItemVolume eg3_multiVolumeBG_3" rendered="#{(allVolumesBean.colId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
 			
 			<h:panelGroup layout="block" class="eg3_itemContent" >
 				<div class="eg3_itemContentData">
@@ -92,7 +92,7 @@
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{volume.pages[0] != null}"/>
 					</div>
 					
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty volume.item.properties.latestRelease and (volume.item.properties.latestRelease.objid != volume.objidAndVersion) and allVolumesBean.contextId == 'my'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty volume.item.properties.latestRelease and (volume.item.properties.latestRelease.objid != volume.objidAndVersion) and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="viewPages">
 							<f:param value="#{volume.item.properties.latestRelease.objid}" />
 							<f:param value="recto-verso" />
@@ -108,18 +108,18 @@
 					</pretty:link>
 				</h:panelGroup>
 					
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="upload">
 						<f:param value="#{volume.objidAndVersion}" />
 						<h:outputText value="#{lbl.list_NavElem_Reingest}" />
 					</pretty:link>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.contextId == 'my' and volume.item.properties.version.status=='pending'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending'}">
 					<h:outputText value="#{lbl.button_command_release}" />
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.contextId == 'my'and volumeUtilBean.editable(volume)}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.colId == 'my'and volumeUtilBean.editable(volume)}">
 					<pretty:link mappingId="structuralEditor">
 						<f:param value="#{volume.item.objid}" />
 						<h:outputText value="#{lbl.list_EditStruct}" />

@@ -2,16 +2,13 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.File;
-
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.ResourceDependencies;
-import javax.faces.application.ResourceDependency;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -26,8 +23,8 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
-import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
@@ -36,9 +33,6 @@ import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.search.FilterBean;
 import de.mpg.mpdl.dlc.search.FilterCriterion;
 import de.mpg.mpdl.dlc.search.FilterCriterion.FilterParam;
-import de.mpg.mpdl.dlc.search.SearchBean;
-import de.mpg.mpdl.dlc.search.SearchCriterion;
-import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -46,6 +40,7 @@ import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsDate;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
@@ -73,6 +68,7 @@ public class IngestBean{
 	private ArrayList<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
 	private FileItem mabFile;
 	private ModsMetadata modsMetadata  = new ModsMetadata();
+	
 	private FileItem teiFile;
 	private int numberOfTeiPbs;
 
@@ -94,7 +90,6 @@ public class IngestBean{
 
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
 	
-	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 
 //	private SearchBean searchBeans = new SearchBean();
 	
@@ -104,6 +99,8 @@ public class IngestBean{
 	
 	private Volume volume;
 	
+	private List<String> pagesOfVolume = new ArrayList<String>();
+	
 	
 	@URLAction(onPostback=false)
 	public void loadContext()
@@ -112,7 +109,17 @@ public class IngestBean{
 		{ 
 			try {
 				this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
-				this.modsMetadata = volume.getModsMetadata();
+				if(mabFile == null)
+					this.modsMetadata = volume.getModsMetadata();
+				if(pagesOfVolume.size() == 0)
+				{
+				for(Page p : volume.getMets().getPages())
+				{	
+					int beginIndex = p.getContentIds().indexOf("/");
+					String name = p.getContentIds().substring(beginIndex+1);
+					this.pagesOfVolume.add(name);
+				}
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -210,10 +217,13 @@ public class IngestBean{
         return "";
     }
     public String clearUploadedTEI() 
-    {    
+    {     
     	this.teiFile = null;
+    	this.numberOfTeiPbs = 0;
         return "";
     }
+    
+
     
     public String clearUploadedMAB() 
     {    
@@ -223,6 +233,12 @@ public class IngestBean{
 		return "";
     }
     
+    public String resetMAB() 
+    {    
+		this.mabFile = null;
+		modsMetadata = volume.getModsMetadata();
+		return "";
+    }
     
     public String clearAllData()
     {  
@@ -367,6 +383,8 @@ public class IngestBean{
 		{
 			if (fue.getFileItem().getName().endsWith(".mab"))
 			{
+				if(this.volumeId != null)
+					this.modsMetadata = new ModsMetadata();
 				this.setMabFile(fue.getFileItem());
 				processMabFile(fue.getFileItem());
 			}
@@ -568,51 +586,70 @@ public class IngestBean{
 	{         
 		logger.info("SAVE!!");
 		try {
-			if(mabFile == null)
-				modsMetadata = updateModsMetadata(modsMetadata);
-			
-			if(getSelectedContentModel().equals("Monograph"))
+			if(volumeId.equalsIgnoreCase("new"))
 			{
-	     		if(getImageFiles().size()==0)
-	    		{
-	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
-	    			return "";
-	    		}
-	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-	    		{
-	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-	    			return "";
-	    		}
-	    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
-	    		clearAllData();
-	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
+				if(mabFile == null)
+					modsMetadata = updateModsMetadata(modsMetadata);
+				
+				if(getSelectedContentModel().equals("Monograph"))
+				{
+		     		if(getImageFiles().size()==0)
+		    		{
+		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
+		    			return "";
+		    		}
+		    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+		    		{
+		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+		    			return "";
+		    		}
+		    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+		    		clearAllData();
+		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
+				}
+				else if(getSelectedContentModel().equals("Multivolume"))
+				{
+	
+				
+		    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
+		    		clearAllData();
+		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
+				}
+				else
+				{
+		     		if(getImageFiles().size()==0)
+		    		{
+		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
+		    			return "";
+		    		}
+		    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+		    		{
+		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+		    			return "";
+		    		}
+		    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+		    		clearAllData();
+		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
+		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
+				}
 			}
-			else if(getSelectedContentModel().equals("Multivolume"))
-			{
-
-			
-	    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
-	    		clearAllData();
-	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
-			}
-			else
-			{
-	     		if(getImageFiles().size()==0)
-	    		{
-	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
-	    			return "";
-	    		}
-	    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-	    		{
-	    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-	    			return "";
-	    		}
-	    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
-	    		clearAllData();
-	    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-	    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
+			else{
+				if(imageFiles != null)
+				{
+					for(DiskFileItem file: imageFiles)
+						if(!pagesOfVolume.contains(file.getName()))
+						{
+			    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongImages")); //getNumberOfTeiPbs()
+			    			return "";
+						}
+				}
+				if(mabFile != null)
+					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles);
+				else
+					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, null, imageFiles);
+				
 			}
 		} catch (Exception e) {
 			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_internal")+ ":" + e.getMessage());
@@ -733,7 +770,7 @@ public class IngestBean{
 			}
 
 		}
-		else if(fcList.size()!=0 && loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
+		else if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
 		{
 			for(Collection c : loginBean.getUser().getDepositorCollections())
 			{
@@ -749,13 +786,23 @@ public class IngestBean{
 
 		//		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, SortCriterion.getStandardSortCriteria(), 1000, 0);
 //		VolumeSearchResult vsr = volumeService.filterSearch(query, scList, limit, offset, index, userHandle);
-		VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardSortCriteria(), 1000, 0, loginBean.getUserHandle());
+		VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardFilterSortCriteria(), 1000, 0, loginBean.getUserHandle());
 		for(Volume vol : vsr.getVolumes())
 		{
 			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
 		}
 		return multiVolItems;
 	}
+
+	public List<String> getPagesOfVolume() {
+		return pagesOfVolume;
+	}
+
+
+	public void setPagesOfVolume(List<String> pagesOfVolume) {
+		this.pagesOfVolume = pagesOfVolume;
+	}
+
 
 	public void setMultiVolItems(List<SelectItem> multiVolItems) {
 		this.multiVolItems = multiVolItems;
@@ -788,6 +835,8 @@ public class IngestBean{
 	public void setVolume(Volume volume) {
 		this.volume = volume;
 	}
+	
+	
 
 
 
