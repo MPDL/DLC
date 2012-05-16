@@ -40,7 +40,11 @@
 		<ui:define name="mainContent">
 		
 			
-			
+<h:panelGroup>
+	<mpdl:hierarchicalBreadcrumb ou="#{hierarchicalBreadcrumbHelper.getVolumeCollection(viewPages.volume)}" colId="#{viewPages.volume.item.properties.context.objid}" colName="#{viewPages.volume.item.properties.context.getXLinkTitle()}" volumes="true">
+	</mpdl:hierarchicalBreadcrumb>
+	<br/>
+</h:panelGroup>	
 			
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer">
 				<!-- SIDEBAR LEFT -->

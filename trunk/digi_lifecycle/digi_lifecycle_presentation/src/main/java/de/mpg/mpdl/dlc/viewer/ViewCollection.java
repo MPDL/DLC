@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,22 +12,18 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.search.SortCriterion;
 import de.mpg.mpdl.dlc.search.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.search.SortCriterion.SortOrders;
-import de.mpg.mpdl.dlc.search.SortCriterion;
-import de.mpg.mpdl.dlc.util.PropertyReader;
-import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
-import de.mpg.mpdl.dlc.vo.mets.Page;
 
 @ManagedBean
 @SessionScoped
@@ -36,13 +33,12 @@ public class ViewCollection {
 	private static Logger logger = Logger.getLogger(ViewCollection.class);
 	
 	private String id;
-	
-
 	protected LoginBean loginBean;
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
-	
+		
 	private Collection col;
+	
 	
 	//volumes which schown in carousel
 	private List<Volume> volumes = new ArrayList<Volume>();	
@@ -58,6 +54,7 @@ public class ViewCollection {
 			if(col==null || !col.getId().equals(id))
 			{
 				this.col = contextServiceBean.retrieveCollection(id, null);
+				
 				if(volumes!=null)
 					this.volumes.clear();
 

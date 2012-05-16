@@ -120,9 +120,6 @@
 			<h:outputText value="#{lbl.mods_identifiers}" rendered = "#{cc.attrs.modsMetadata.identifiers.size() > 0}"/>
 			<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}" rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
 				<h:panelGrid columns="2">
-					<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty identifier.displayLabel}"/>
-					<h:outputText value="#{identifier.displayLabel}" rendered="#{not empty identifier.displayLabel}"/>
-					
 					<h:outputText value="#{lbl.mods_identifierType}" rendered="#{not empty identifier.type}"/>
 					<h:outputText value="#{identifier.type}" rendered="#{not empty identifier.type}"/>
 
