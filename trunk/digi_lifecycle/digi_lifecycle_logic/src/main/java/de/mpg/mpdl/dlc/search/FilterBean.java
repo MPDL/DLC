@@ -47,10 +47,12 @@ public class FilterBean {
 		}
 		System.out.println("Filter query:" + query);
 		request.setQuery(query);
+		if(limit >0 && offset >0)
+		{
 		request.setMaximumRecords(new NonNegativeInteger(String.valueOf(limit)));
 		request.setStartRecord(new PositiveInteger(String.valueOf(offset)));
 		
-		
+		}
 		SearchRetrieveResponse response  = client.retrieveItems(request);
 		
 		List<Volume> volumeResult = new ArrayList<Volume>();

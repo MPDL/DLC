@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.multipart.ByteArrayPartSource;
 import org.apache.commons.httpclient.methods.multipart.FilePart;
@@ -65,6 +66,20 @@ public class ImageController {
 
     	return response;
 	}
+	
+	
+	public static String deleteFileOnImageServer(File item, String directory, String filename) throws Exception
+	{
+		HttpClient client = new HttpClient();
+		String weblintURL = PropertyReader.getProperty("image-upload.url.upload");
+		DeleteMethod delete = new DeleteMethod(weblintURL);
+
+
+		String response = delete.getResponseBodyAsString();
+		return response;
+		
+	}
+
 	
 	/*
 	public static List<String> uploadFilesToImageServer(List<File> items, String directory) throws Exception

@@ -9,6 +9,8 @@ public class Collection {
 	
 	private String ouId;
 	
+	private String ouTitle;
+	
 	private String type;
 	
 	private DLCAdminDescriptor dlcAD;
@@ -61,6 +63,14 @@ public class Collection {
 
 	public void setDlcAD(DLCAdminDescriptor dlcAD) {
 		this.dlcAD = dlcAD;
+	}
+
+	public String getOuTitle() {
+		return ouTitle;
+	}
+
+	public void setOuTitle(String ouTitle) {
+		this.ouTitle = ouTitle;
 	}
 	
 	

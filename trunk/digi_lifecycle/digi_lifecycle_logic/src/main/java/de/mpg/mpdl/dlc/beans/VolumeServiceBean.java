@@ -51,6 +51,8 @@ import net.sf.saxon.xqj.SaxonXQDataSource;
 import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -99,6 +101,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
+import de.mpg.mpdl.dlc.vo.user.User;
 
 
 
@@ -509,6 +512,9 @@ public class VolumeServiceBean {
 	
 	*/
 	
+	
+
+	
 	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
 	{
 		
@@ -566,7 +572,7 @@ public class VolumeServiceBean {
 				{
 					String filename = getJPEGFilename(imageItem.getName());
 					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
-					
+					 
 					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
 					File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
 					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
@@ -616,6 +622,29 @@ public class VolumeServiceBean {
 			return volume;
 	}
 	
+	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<DiskFileItem> images) throws Exception
+	{
+		Item item = volume.getItem();
+		
+		for(DiskFileItem imageItem : images)
+		{
+			String filename = getJPEGFilename(imageItem.getName());
+			String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
+			 
+			String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+			File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
+			String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+							
+			String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+			File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
+			String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+			
+			String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+			File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
+			String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+		}
+		return volume;
+	}
 	
 	public Volume updateVolume(Volume volume, String userHandle, FileItem teiFile, boolean updateTeiSd) throws Exception
 	{
@@ -834,13 +863,14 @@ public class VolumeServiceBean {
 	private static String getJPEGFilename(String filename)
 	{
 		
-		if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
+//		if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
+		// if(filename.matches(".+?(\\.jpg|\\.JPEG|\\.jpeg|\\.JPG|\\.Jpeg)"))
+		if(filename.matches("^.*?(jpg|jpeg|JPG|JPEG)$"))
 		{
 			return filename;
 		}
 		else
 		{
-		
 			return filename + ".jpg";
 		}
 	}
@@ -1066,28 +1096,33 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-		
-		
+
 		String url = "http://dlc.mpdl.mpg.de:8080";
 		Authentication auth = new Authentication(new URL(url), "dlc_mpdl", "dlc_mpdl");
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
-		client.setHandle(null); 
+		client.setHandle(auth.getHandle()); 
 
-		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
-
+//		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
+//
+//		
+//		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+//		StringBuilder stringBuilder = new StringBuilder();
+//		String line = null;
+//
+//		while ((line = bufferedReader.readLine()) != null) {
+//		stringBuilder.append(line + "\n");
+//		}
+//
+//		bufferedReader.close();
+//		
+//		System.out.println(stringBuilder.toString());
 		
-		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-		StringBuilder stringBuilder = new StringBuilder();
-		String line = null;
 
-		while ((line = bufferedReader.readLine()) != null) {
-		stringBuilder.append(line + "\n");
-		}
+//		TaskParam taskParam=new TaskParam(); 
+//	    taskParam.setComment("Submit Volume");
+//		taskParam.setLastModificationDate(item.getLastModificationDate());
 
-		bufferedReader.close();
-		
-		System.out.println(stringBuilder.toString());
 		
 		//TaskParam taskParam=new TaskParam(); 
 //	    taskParam.setComment("Submit Volume");
@@ -2083,7 +2118,7 @@ public class VolumeServiceBean {
 			{
 				result = shc.search(sr, SearchBean.dlcIndexName);
 			}
-				
+
 			VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(result);
 			for(Volume v : volumeResult.getVolumes())
 			{
