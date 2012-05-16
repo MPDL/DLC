@@ -1,0 +1,45 @@
+<ui:composition encoding="UTF-8"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<div id="messages" class="subHeader">
+	<!-- Subheadline starts here -->
+	<h:messages styleClass="singleMessage" errorClass="messageError"
+		warnClass="messageWarn" fatalClass="messageFatal"
+		infoClass="messageStatus" layout="list" globalOnly="true"
+		showDetail="false" showSummary="true"
+		rendered="#{messagesBean.numberOfMessages == 1}" />
+
+	<h:panelGroup layout="block"
+		styleClass="half_area2_p6 messageArea errorMessageArea"
+		rendered="#{messagesBean.hasErrorMessages and messagesBean.numberOfMessages != 1}">
+		<h2>
+			<h:outputText value="#{lbl.warning_lblMessageHeader}" />
+		</h2>
+		<h:messages errorClass="messageError" warnClass="messageWarn"
+			fatalClass="messageFatal" infoClass="messageStatus" layout="list"
+			globalOnly="true" showDetail="false" showSummary="true"
+			rendered="#{messagesBean.hasMessages}" />
+	</h:panelGroup>
+
+	<h:panelGroup layout="block"
+		styleClass="half_area2_p6 messageArea infoMessageArea"
+		rendered="#{messagesBean.hasMessages and !messagesBean.hasErrorMessages and messagesBean.numberOfMessages != 1}">
+		<h2>
+			<h:outputText value="#{lbl.info_lblMessageHeader}" />
+		</h2>
+		<h:messages errorClass="messageError" warnClass="messageWarn"
+			fatalClass="messageFatal" infoClass="messageStatus" layout="list"
+			globalOnly="true" showDetail="false" showSummary="true"
+			rendered="#{messagesBean.hasMessages}" />
+	</h:panelGroup>
+
+	<h:outputText value="&#160;"
+		rendered="#{!messagesBean.hasErrorMessages}" />
+	<!-- Subheadline ends here -->
+
+</div>
+
+</ui:composition>
