@@ -42,6 +42,7 @@ public class ContextServiceBean {
 		collection.setName(context.getProperties().getName());
 		collection.setDescription(context.getProperties().getDescription());
 		collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
+		collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
 		collection.setType(context.getProperties().getType());
 		return collection;
 	}
