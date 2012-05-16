@@ -622,27 +622,67 @@ public class VolumeServiceBean {
 			return volume;
 	}
 	
-	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<DiskFileItem> images) throws Exception
+	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<DiskFileItem> images)
 	{
 		Item item = volume.getItem();
-		
-		for(DiskFileItem imageItem : images)
+		ItemHandlerClient client;
+		try
 		{
-			String filename = getJPEGFilename(imageItem.getName());
-			String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
-			 
-			String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-			File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
-			String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
-							
-			String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-			File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
-			String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
 			
-			String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-			File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
-			String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-		}
+			client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);				
+			if(images.size() >0)
+			{
+				for(DiskFileItem imageItem : images)
+				{
+					String filename = getJPEGFilename(imageItem.getName());
+					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
+					 
+					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+					File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
+					ImageController.deleteFileOnImageServer(thumbnailsDir, filename);
+					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+									
+					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+					File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
+					ImageController.deleteFileOnImageServer(webDir, filename);
+					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+					
+					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+					File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
+					ImageController.deleteFileOnImageServer(originalDir, filename);
+					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+				}
+			}
+		
+			if(modsMetadata != null)
+			{
+				volume.setModsMetadata(modsMetadata);
+				MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
+				Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+				JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });		
+				Marshaller marshaller = ctx.createMarshaller();
+				marshaller.marshal(modsMetadata, d);
+				mdRec.setContent(d.getDocumentElement());
+				if(teiFile == null)
+					client.update(item);
+			}
+			
+			if(teiFile != null)
+			{
+				updateVolume(volume, userHandle, teiFile, true);
+			}
+			
+			if(operation.equalsIgnoreCase("release"))
+				volume = releaseVolume(volume, userHandle);
+		
+			
+		}catch (Exception e) {
+			logger.error("Error while updating Item", e);
+
+		} 
+		
+		
 		return volume;
 	}
 	
@@ -1102,6 +1142,21 @@ public class VolumeServiceBean {
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
 		client.setHandle(auth.getHandle()); 
+//		String id = "escidoc:12104";
+//		Item item = client.retrieve(id);
+//		
+//		TaskParam taskParam=new TaskParam(); 
+//	    taskParam.setComment("Submit Volume");
+//		taskParam.setLastModificationDate(item.getLastModificationDate());
+//		
+//		Result res = client.submit(id, taskParam);
+//		
+//		taskParam=new TaskParam(); 
+//	    taskParam.setComment("Release Volume");
+//		taskParam.setLastModificationDate(res.getLastModificationDate());
+//		res = client.release(id, taskParam);
+//		
+//		client.release("escidoc:12104", taskParam);
 
 //		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
 //

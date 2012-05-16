@@ -2,12 +2,15 @@ package de.mpg.mpdl.dlc.images;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.DeleteMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
@@ -20,6 +23,7 @@ import org.apache.commons.httpclient.methods.multipart.StringPart;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 /*
 import org.apache.commons.net.ftp.FTP;
+
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPReply;
 */
@@ -68,13 +72,23 @@ public class ImageController {
 	}
 	
 	
-	public static String deleteFileOnImageServer(File item, String directory, String filename) throws Exception
+	public static String deleteFileOnImageServer(String directory, String filename) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		String weblintURL = PropertyReader.getProperty("image-upload.url.upload");
-		DeleteMethod delete = new DeleteMethod(weblintURL);
+		String weblinkURL = PropertyReader.getProperty("image-upload.url.upload");
+		URL url = new URL(weblinkURL);
+		DeleteMethod delete = new DeleteMethod(weblinkURL+directory+"/"+filename);
+		client.executeMethod(delete);
+//        delete.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler());
+    	
+//    	String username = PropertyReader.getProperty("image-upload.username");
+//    	String password = PropertyReader.getProperty("image-upload.password");
 
 
+
+
+    	
+    	
 		String response = delete.getResponseBodyAsString();
 		return response;
 		
