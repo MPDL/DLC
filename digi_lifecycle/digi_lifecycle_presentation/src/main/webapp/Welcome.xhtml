@@ -22,106 +22,164 @@
 
 	<ui:define name="mainContent">
 
-			<style type="text/css">
-		        .rf-ac{
-		        	width: 600px;
-		        }
-		        .rf-ac div {
-		        	float:none;
-		        }
-		 
-		        .rf-ac-itm-c {
-		            height: 550px;
-		        }
-		        
-		        .rf-ac-itm-lbl-act
-		        {	
-		        	color:red;
-		        }
-
-		 
-			</style>
+		<style type="text/css">
+			.eg3_instituteAccordion .rf-ac {
+				width: 290px;
+				overflow:visible;
+			}
+			.rf-ac div {
+				float:none;
+			}
+			.rf-ac .rf-ac-itm {
+				overflow:visible;
+			}
+			.rf-ac-itm-c {
+				height: 550px;
+			}
+			.rf-ac-itm-lbl-act {
+				color:red;
+			}
+			.rf-ac-itm-cnt {
+/*				position:fixed; */
+			/*	margin-top:-3em; */
+			/*	top:29.75em; */
+				position:absolute;
+				top:0;
+				margin-left:26.333333333em;
+				height:20em;
+/*				width:30%; */
+				width:100%;
+			}
+		</style>
 			
-			<h:panelGroup layout="block" styleClass="eg3_container_1">
-				<h:panelGroup styleClass="eg3_startpageTitle">
-					<h1>Digitization Lifecycle</h1>
-				</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="eg3_container_1">
+			<h:panelGroup styleClass="eg3_startpageTitle">
+				<h1>Digitization Lifecycle</h1>
 			</h:panelGroup>
-			
-			
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_welcomeProjectInfo">
-			
-				<h:panelGroup layout="block" styleClass="eg3_container_1_6 eg3_logoImage">
-					<h:panelGroup layout="block" styleClass="eg3_imageContainer">
-						<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" />
+		</h:panelGroup>
+		
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_welcomeProjectInfo">
+		
+			<h:panelGroup layout="block" styleClass="eg3_container_1_6 eg3_logoImage">
+			<ui:remove>
+				<h:panelGroup layout="block" styleClass="eg3_imageContainer">
+					<h:graphicImage value="/resources/images/DigitizationLifecycle_Logo.png" />
+				</h:panelGroup>
+			</ui:remove>
+			&#160;
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_logoImageInfotext">
+				
+				<p>Projektbeschreibung ...<br />
+					Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+					Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+					ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+					aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+				</p>
+				
+				<br />
+				<h2>The newest entries</h2>
+				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+				<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+				<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+				<style type="text/css">
+					.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
+					#zeige { font-weight:bold; color:red; }
+				</style>
+				<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
+					<h:panelGroup layout="block" class="wrapper">
+						<ul>
+							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+								<li>
+									<pretty:link mappingId="viewPages">
+									<f:param value="#{volume.item.objid}" />
+									<f:param value="1" />
+									<f:param value="recto-verso" />
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+									</pretty:link>
+								</li>
+							</ui:repeat>
+						</ul>
 					</h:panelGroup>
 				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_logoImageInfotext">
-					
-					<p>Projektbeschreibung ...<br />
-						Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-					</p>
-					
-					<br />
-					<h2>The newest entries</h2>
-					<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
-					<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
-					<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
-					<style type="text/css">
-						.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
-						#zeige { font-weight:bold; color:red; }
-					</style>
-					<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
-						<h:panelGroup layout="block" class="wrapper">
-							<ul>
-								<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
-									<li>
-										<pretty:link mappingId="viewPages">
-										<f:param value="#{volume.item.objid}" />
-										<f:param value="1" />
-										<f:param value="recto-verso" />
-											<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
-										</pretty:link>
-									</li>
-								</ui:repeat>
-							</ul>
-						</h:panelGroup>
+			</h:panelGroup>
+		
+		</h:panelGroup>
+		
+		
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+			&#160;
+		</h:panelGroup>
+		<style type="text/css">
+			.eg3_tabMenuVertical .eg3_active {
+				background-color:#339999;
+			}
+		</style>
+		<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_instituteShortcut eg3_borderradius_5" style="max-width:53em; border:0.09em solid #333;">
+				<div id="tabs" class="eg3_container_1_3 eg3_tabMenuVertical eg3_borderradius_5" style="background-color:#999933;">
+					<ul class="eg3_container_1 eg3_floatLeft">
+						<c:forEach items="#{applicationBean.ous}" var="ou">
+							<li class="eg3_instituteMenuTab" style="padding:1% 2%; border-top:0.09em solid #333;">
+								<a href="#eg3_#{ou.objid}" onclick="handleTab(this.href);">
+									<h:outputText value="#{ou.properties.name}"/>
+								</a>
+							</li>
+						</c:forEach>
+					</ul>
+				</div>
+				<div class="eg3_container_2_3" style="min-height:100%;">
+					<h:panelGroup layout="block" styleClass="eg3_instituteContent eg3_container_1">
+						<c:forEach items="#{applicationBean.ous}" var="ou">
+							<div id="#eg3_#{ou.objid}" class="eg3_container_1 eg3_tabItemContent eg3_hidden" style="margin:1% 2%;">
+								<pretty:link mappingId="ou">
+									<f:param value="#{ou.objid}" />
+							    	<h:outputText value="homepage - #{ou.properties.name}" style="float:right; margin-right:3%;"	/>
+							    </pretty:link>
+						    	<br />
+	
+								<a4j:repeat value="#{applicationBean.getContext(ou.objid)}" var="context">
+									<pretty:link mappingId="collection">
+										<f:param value="#{context.objid}" />
+										<h:outputText value="#{context.properties.name}"/><br/>
+									</pretty:link>
+								</a4j:repeat>
+							</div>
+						</c:forEach>
 					</h:panelGroup>
-				</h:panelGroup>
-			
+				</div>
+				<script type="text/javascript">
+					function activateMenuTab(href) {
+						$('#tabs li').removeClass("eg3_active");
+						$('#tabs li a[href|="'+href+'"]').parent().addClass("eg3_active");
+					}
+					
+					function handleTab(href) {
+						var tabs = $('.eg3_instituteShortcut .eg3_tabItemContent');
+						href = "#"+(href.split("#")[1]);
+						if (typeof(href) != "undefined") { //check for hash value in href
+							tabs.removeClass('eg3_hidden').addClass("eg3_hidden");
+							tabs.each(function(item){
+								if ($(this).attr("id") == href) {
+									$(this).removeClass("eg3_hidden");
+									activateMenuTab(href);
+									return false;	//breaks the loop
+								}
+							});
+						}
+					}
+					$(document).ready(function(evt){
+						if (!location.hash) {	//if no location hash value given, activate the first institue item
+							$('.eg3_instituteShortcut ul li a').get(0).click();
+						} else { // activate the current institute icon
+							handleTab(location.href);
+						}
+					});
+				</script>
 			</h:panelGroup>
-			
-			
-			
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				&#160;
-			</h:panelGroup>
-
-			<h:panelGroup layout="block" id="acco" styleClass="eg3_container_3_4 eg3_instituteAccordion">
-				<rich:accordion switchType="client" rendered="#{not empty applicationBean.ous}" >
-					<c:forEach items="#{applicationBean.ous}" var="ou">
-						<rich:accordionItem  header="#{ou.properties.name}" >
-							<pretty:link mappingId="ou">
-								<f:param value="#{ou.objid}" />
-						    	<h:outputText value="homepage - #{ou.properties.name}" style="float:right;"	/>
-						    </pretty:link>
-						    <br />
-
-							<a4j:repeat value="#{applicationBean.getContext(ou.objid)}" var="context">
-								<pretty:link mappingId="collection">
-									<f:param value="#{context.objid}" />
-									<h:outputText value="#{context.properties.name}"/><br/>
-								</pretty:link>
-							</a4j:repeat>
-		            	</rich:accordionItem>
-
-		        	</c:forEach>
-		         </rich:accordion>
-			</h:panelGroup>
-
+		</h:panelGroup>
 	</ui:define>
 
 </ui:composition>

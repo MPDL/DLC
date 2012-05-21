@@ -45,6 +45,9 @@ div {
 a {
 	cursor: pointer;
 }
+*[type="submit"] {
+	cursor:pointer;
+}
 *[onclick] {
 	cursor:pointer;
 }
