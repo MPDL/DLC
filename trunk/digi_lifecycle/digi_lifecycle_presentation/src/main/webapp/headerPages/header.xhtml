@@ -42,12 +42,15 @@
 					<h:outputText value="#{lbl.header_lnk_help}" />
 				</h:outputLink> 
 				
-				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 				
 				<h:form>
-					<h:panelGroup styleClass="eg3_icon_quickSearch_16_16">&#160;</h:panelGroup>
+					
 					<h:inputText type="text" id="quickSearchString" styleClass="eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+					<ui:remove>
 					<h:commandButton type="submit" style="display:none;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="#{lbl.header_quickSearchStartBtn}"/>
+					</ui:remove>
+					<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+					
 				</h:form>
 				
 				
