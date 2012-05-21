@@ -1,19 +1,19 @@
 package de.mpg.mpdl.dlc.util;
 
-import java.awt.peer.SystemTrayPeer;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
-
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ocpsoft.pretty.PrettyContext;
 
 import de.escidoc.core.resources.om.item.Item;
-import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.vo.user.User;
 
 @ManagedBean
@@ -90,7 +90,5 @@ public class UtilBean {
 		else
 			return false;
 	}
-	
-	
 	
 }
