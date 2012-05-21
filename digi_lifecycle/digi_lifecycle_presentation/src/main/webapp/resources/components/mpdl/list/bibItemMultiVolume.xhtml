@@ -28,9 +28,9 @@
 			
 			<div class="eg3_itemContent">
 				<div class="eg3_itemContentData">
-					<div class="eg3_itemStatusArea">
-						<div class="eg3_icon_withdrawn_32_32" title="#{tlt.list_status}">&nbsp;</div>
-						<h:panelGroup class="eg3_itemStatusTitle">
+					<div class="eg3_itemStatusArea" >
+						<h:panelGroup class="eg3_icon_withdrawn_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my'}">&nbsp;</h:panelGroup>
+						<h:panelGroup class="eg3_itemStatusTitle" rendered="#{allVolumesBean.colId == 'my'}">
 							<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
 							<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
 						</h:panelGroup>

@@ -71,6 +71,8 @@ public class ApplicationBean
     private String cmVolume;
     private String cmMono;
     private static String logoUrl;
+    private static String logoLink;
+    private static String logoTlt;
     
     //TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
@@ -318,23 +320,71 @@ public class ApplicationBean
     
     public String getLogoUrl()
     {    	
+    	
     	//Reset url on common pages to default dlc logo
-//    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-//    	if (viewId.equals("/Welcome.xhtml")
-//    			|| viewId.equals("/volumes.xhtml")
-//    			|| viewId.equals("ingest.xhtml")
-//    			|| viewId.equals("advancedSearch.xhtml")
-//    			||viewId.equals("admin.xhtml"))
-//    		{logoUrl = "";} 
-//    	if (logoUrl == null || logoUrl.equals("")) 
-//    		{return "/resources/images/dlc_u160_original.gif";}
-    	return "/resources/images/dlc_u160_original.gif";
+    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+    	if (viewId.equals("/Welcome.xhtml")
+    			|| viewId.equals("/volumes.xhtml")
+    			|| viewId.equals("/ingest.xhtml")
+    			|| viewId.equals("/advancedSearch.xhtml")
+    			||viewId.equals("/admin.xhtml")
+    			||viewId.equals("/ou.xhtml"))
+    		{logoUrl = "";
+    		setLogoTlt("DLC");} 
+    	if (logoUrl == null || logoUrl.equals("")) 
+    		{return "/resources/images/dlc_u160_original.gif";}
+    	else return logoUrl;
     }
+    
     
     public static void setLogoUrl(String url)
     {
     	logoUrl = url;
     }
+    
+    public String getLogoLink()
+    {    	  	
+    	//Reset link on common pages to default dlc logo
+    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+    	if (viewId.equals("/Welcome.xhtml")
+    			|| viewId.equals("/volumes.xhtml")
+    			|| viewId.equals("/ingest.xhtml")
+    			|| viewId.equals("/advancedSearch.xhtml")
+    			||viewId.equals("/admin.xhtml")
+    			||viewId.equals("/ou.xhtml"))
+    		{logoLink = "";} 
+    	if (logoLink == null || logoLink.equals("")) 
+    		{return this.domain+"/dlc";}
+    	return logoLink;
+    }
+    
+    
+    public static void setLogoLink(String link)
+    {	
+    	logoLink = link;
+    }
+    
+    public String getLogoTlt()
+    {
+    	//Reset tlt on common pages to default dlc logo
+    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+    	if (viewId.equals("/Welcome.xhtml")
+    			|| viewId.equals("/volumes.xhtml")
+    			|| viewId.equals("/ingest.xhtml")
+    			|| viewId.equals("/advancedSearch.xhtml")
+    			||viewId.equals("/admin.xhtml")
+    			||viewId.equals("/ou.xhtml"))
+    		{logoTlt = "";} 
+    	if (logoTlt == null || logoTlt.equals("")) 
+    		{logoTlt = getResource("Tooltips", "main_home").replace("$1", "DLC");}
+    	return logoTlt;
+    }
+    
+    public static void setLogoTlt(String tlt)
+    {
+    	logoTlt = tlt;
+    }
+
     
 //    /**
 //     * creates list of VirrBooks used for the tree model.

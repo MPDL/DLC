@@ -2,19 +2,12 @@ package de.mpg.mpdl.dlc.editor;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Stack;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
-import javax.persistence.criteria.Selection;
 
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
@@ -1727,7 +1720,36 @@ public class StructuralEditorBean {
 	}
 
 
-	
+	public List<SelectItem> getStructTypeList()
+	{
+		 List<SelectItem> result = new ArrayList<SelectItem>();
+		 result.add(new SelectItem("acknowledgement", ApplicationBean.getResource("Label", "structuretype_acknowledgement")));
+		 result.add(new SelectItem("additional", ApplicationBean.getResource("Label", "structuretype_additional")));
+		 result.add(new SelectItem("advertisement", ApplicationBean.getResource("Label", "structuretype_advertisement")));
+		 result.add(new SelectItem("appendix", ApplicationBean.getResource("Label", "structuretype_appendix")));
+		 result.add(new SelectItem("article", ApplicationBean.getResource("Label", "structuretype_article")));
+		 result.add(new SelectItem("bibliography", ApplicationBean.getResource("Label", "structuretype_bibliography")));
+		 result.add(new SelectItem("book", ApplicationBean.getResource("Label", "structuretype_book")));
+		 result.add(new SelectItem("chapter", ApplicationBean.getResource("Label", "structuretype_chapter")));
+		 result.add(new SelectItem("content", ApplicationBean.getResource("Label", "structuretype_content")));
+		 result.add(new SelectItem("corrigenda", ApplicationBean.getResource("Label", "structuretype_corrigenda")));
+		 result.add(new SelectItem("curriculum vitae", ApplicationBean.getResource("Label", "structuretype_curriculum_vitae")));
+		 result.add(new SelectItem("dedication", ApplicationBean.getResource("Label", "structuretype_dedication")));
+		 result.add(new SelectItem("imprimatur", ApplicationBean.getResource("Label", "structuretype_imprimatur")));
+		 result.add(new SelectItem("imprint", ApplicationBean.getResource("Label", "structuretype_imprint")));
+		 result.add(new SelectItem("index", ApplicationBean.getResource("Label", "structuretype_index")));
+		 result.add(new SelectItem("letter", ApplicationBean.getResource("Label", "structuretype_letter")));
+		 result.add(new SelectItem("miscellaneous", ApplicationBean.getResource("Label", "structuretype_miscellaneous")));
+		 result.add(new SelectItem("musical notation", ApplicationBean.getResource("Label", "structuretype_musical_notation")));
+		 result.add(new SelectItem("part", ApplicationBean.getResource("Label", "structuretype_part")));
+		 result.add(new SelectItem("preface", ApplicationBean.getResource("Label", "structuretype_preface")));
+		 result.add(new SelectItem("privileges", ApplicationBean.getResource("Label", "structuretype_privileges")));
+		 result.add(new SelectItem("provenance", ApplicationBean.getResource("Label", "structuretype_provenance")));
+		 result.add(new SelectItem("review", ApplicationBean.getResource("Label", "structuretype_review")));
+		 result.add(new SelectItem("section", ApplicationBean.getResource("Label", "structuretype_section")));
+
+		 return result;
+	}
 	
 
 

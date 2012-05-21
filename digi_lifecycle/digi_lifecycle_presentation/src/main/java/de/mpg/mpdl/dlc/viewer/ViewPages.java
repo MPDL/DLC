@@ -91,7 +91,10 @@ public class ViewPages{
 				//Set the logo of application to collection logo
 				Organization volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
-					{ApplicationBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());}
+					{ApplicationBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
+					ApplicationBean.setLogoLink(volumeOu.getDlcMd().getFoafOrganization().getHomePageURL());
+					ApplicationBean.setLogoTlt(ApplicationBean.getResource("Tooltips", "main_home")
+							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));

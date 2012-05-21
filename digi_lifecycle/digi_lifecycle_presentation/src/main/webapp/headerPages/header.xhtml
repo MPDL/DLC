@@ -30,6 +30,13 @@
 				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 				 -->
 				
+				<h:outputLink id="lnkDlc" title="#{tlt.meta_dlc}"
+					value="#{applicationBean.domain}/dlc/">
+					<h:outputText value="#{lbl.header_lnk_dlc}" />
+				</h:outputLink> 
+				
+				<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+				
 				<h:outputLink id="lnkCopyright" title="#{tlt.meta_copyright}"
 					value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
 					<h:outputText value="#{lbl.header_lnk_copyright}" />
@@ -88,11 +95,8 @@
 	
 	
 	<h:panelGroup layout="block" styleClass="eg3_solutionLogo">
-		<h:outputLink value="/#{applicationBean.contextPath}/" title="#{tlt.main_home}">
-		<ui:remove>
-			<h:graphicImage id="dlcLogo" value="#{applicationBean.logoUrl}" alt="logo image"/>
-		</ui:remove>
-			<h:graphicImage id="dlcLogo" value="/resources/images/dlc_u160_original.gif" alt="logo image"/>
+		<h:outputLink value="#{applicationBean.logoLink}" title="#{applicationBean.logoTlt}">		
+			<h:graphicImage id="mainLogo" value="#{applicationBean.logoUrl}" alt="main logo"/>
 		</h:outputLink>
 	</h:panelGroup>
 	
