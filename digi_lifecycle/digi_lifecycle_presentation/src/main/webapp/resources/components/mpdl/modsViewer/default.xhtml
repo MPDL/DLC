@@ -50,7 +50,7 @@
 					<h:outputText value="#{lbl.mods_nameType}" rendered="#{not empty name.type}"/>
 					<h:outputText value="#{name.type}" rendered="#{not empty name.type}"/>	
 					
-					<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty name.displayLabel}"/>
+					<!-- <h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty name.displayLabel}"/>  -->
 					<h:outputText value="#{name.displayLabel}" rendered="#{not empty name.displayLabel}"/>				
 					
 					<h:outputText value="#{lbl.mods_name}" rendered="#{not empty name.name}"/>
@@ -67,7 +67,7 @@
 			<h:outputText value="#{lbl.mods_publisher}" rendered = "#{cc.attrs.modsMetadata.publishers.size() > 0}"/>
 			<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}" rendered = "#{cc.attrs.modsMetadata.publishers.size() > 0}">
 				<h:panelGrid columns="2">
-					<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
+					<!--<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty publisher.displayLabel}"/>  -->
 					<h:outputText value="#{publisher.displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
 
 					<h:outputText value="#{lbl.mods_publisher}" rendered="#{not empty pblisher.publisher}"/>
@@ -109,7 +109,7 @@
 					<h:outputText value="#{lbl.mods_serieType}" rendered="#{not empty serie.type}"/>
 					<h:outputText value="#{serie.type}" rendered="#{not empty serie.type}"/>
 	
-					<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty serie.displayLabel}"/>
+					<!--<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty serie.displayLabel}"/>  -->
 					<h:outputText value="#{serie.displayLabel}" rendered="#{not empty serie.displayLabel}"/>
 
 					<h:outputText value="#{lbl.mods_seriesTitle}" rendered="#{not empty serie.seriesTitle}"/>
