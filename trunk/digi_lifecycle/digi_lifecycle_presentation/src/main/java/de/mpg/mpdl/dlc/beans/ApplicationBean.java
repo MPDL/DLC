@@ -319,16 +319,16 @@ public class ApplicationBean
     public String getLogoUrl()
     {    	
     	//Reset url on common pages to default dlc logo
-    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-    	if (viewId.equals("/Welcome.xhtml")
-    			|| viewId.equals("/volumes.xhtml")
-    			|| viewId.equals("ingest.xhtml")
-    			|| viewId.equals("advancedSearch.xhtml")
-    			||viewId.equals("admin.xhtml"))
-    		{logoUrl = "";} 
-    	if (logoUrl == null || logoUrl.equals("")) 
-    		{return "/resources/images/dlc_u160_original.gif";}
-    	else return logoUrl;
+//    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
+//    	if (viewId.equals("/Welcome.xhtml")
+//    			|| viewId.equals("/volumes.xhtml")
+//    			|| viewId.equals("ingest.xhtml")
+//    			|| viewId.equals("advancedSearch.xhtml")
+//    			||viewId.equals("admin.xhtml"))
+//    		{logoUrl = "";} 
+//    	if (logoUrl == null || logoUrl.equals("")) 
+//    		{return "/resources/images/dlc_u160_original.gif";}
+    	return "/resources/images/dlc_u160_original.gif";
     }
     
     public static void setLogoUrl(String url)
