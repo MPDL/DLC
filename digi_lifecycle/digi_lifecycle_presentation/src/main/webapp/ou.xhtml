@@ -64,16 +64,19 @@
 </ui:remove>
 		<h:panelGroup layout="block">
 			<h:outputText value="&lt;br/&gt;" escape="false" />
+			<h:outputText value="#{lbl.view_ou_collection}:" />  <br/>
 			<a4j:repeat value="#{applicationBean.getContext(viewOU.orga.id)}" var="context">
 				<pretty:link mappingId="collection">
 					<f:param value="#{context.objid}" />
 					<h:outputText value="#{context.properties.name}"/><br/>
 				</pretty:link>
-				<h:outputText value="#{context.properties.description}" />
+				<!--Temporarily commented out, as not sure if needed at this place<h:outputText value="#{context.properties.description}" />  <br/>  -->
 			</a4j:repeat>
 
 			
 		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewOU.vols_Carousel}">
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+			<h:outputText value="#{lbl.view_ou_caroussel}: " />  <br/>
 			<h:panelGroup layout="block" class="wrapper">
 				<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:200%"/>
 				<ul>
