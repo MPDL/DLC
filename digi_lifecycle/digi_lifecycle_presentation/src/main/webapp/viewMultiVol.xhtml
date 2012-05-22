@@ -61,7 +61,7 @@
     </rich:popupPanel>					
 				
 				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
-					<mpdl:biblMD volume="#{viewMultiVol.volume}"/>
+					<mpdl:biblMD volume="#{viewMultiVol.volume}" rendered="#{not empty viewMultiVol.volume.relatedChildVolumes}"/>
 				</h:panelGroup>
 			</div>
 
