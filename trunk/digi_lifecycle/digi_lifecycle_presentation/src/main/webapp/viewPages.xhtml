@@ -200,9 +200,9 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:panelGroup layout="block" styleClass="eg3_menuButton" rendered="#{viewPages.selectedPage != null}">
 								<h:form>
-									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
-									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
-									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}"/>
+									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}"/>
+									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}"/>
 								</h:form>
 							</h:panelGroup>&#160;
 							<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
@@ -242,7 +242,7 @@
 								</ui:fragment>
 								
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-									<h:commandLink action="#{viewPages.goToNextPage}" title="tlt.paginator_goToNextPage" >
+									<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
 										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
@@ -269,9 +269,9 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_8">
 							<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.selectedRightPage != null}">
 								<h:form>
-									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}"/>
-									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}"/>
-									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}"/>
+									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}"/>
+									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" tilte="#{tlt.view_page_rectoVerso}"/>
+									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="EMPTYCLASS" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}"/>
 								</h:form>
 							</h:panelGroup>
 						</h:panelGroup>
