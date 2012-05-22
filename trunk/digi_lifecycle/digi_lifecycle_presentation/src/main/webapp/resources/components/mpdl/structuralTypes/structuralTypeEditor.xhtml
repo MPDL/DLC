@@ -37,8 +37,33 @@
 					<div class="eg3_editInputArea">
 						<h:outputText value="#{lbl.edit_structuralType}"/>
 						<br/> 
-						<h:selectOneMenu value="#{cc.attrs.teiWrapper.teiElement.type}" >
-		                  	 <f:selectItem value=""/>
+						<h:selectOneMenu value="#{cc.attrs.teiWrapper.teiElement.type}">
+		                  	 <f:selectItem itemValue="#{null}" itemLabel="-"/>
+		                  	 <f:selectItem itemValue="acknowledgement" itemLabel="#{lbl.structuretype_acknowledgement}"/>
+		                  	 <f:selectItem itemValue="additional" itemLabel="#{lbl.structuretype_additional}"/>
+		                  	 <f:selectItem itemValue="advertisement" itemLabel="#{lbl.structuretype_advertisement}"/>
+		                  	 <f:selectItem itemValue="appendix" itemLabel="#{lbl.structuretype_appendix}"/>
+		                  	 <f:selectItem itemValue="article" itemLabel="#{lbl.structuretype_article}"/>
+		                  	 <f:selectItem itemValue="bibliography" itemLabel="#{lbl.structuretype_bibliography}"/>
+		                  	 <f:selectItem itemValue="book" itemLabel="#{lbl.structuretype_book}"/>
+		                  	 <f:selectItem itemValue="chapter" itemLabel="#{lbl.structuretype_chapter}"/>
+		                  	 <f:selectItem itemValue="content" itemLabel="#{lbl.structuretype_content}"/>
+		                  	 <f:selectItem itemValue="corrigenda" itemLabel="#{lbl.structuretype_corrigenda}"/>
+		                     <f:selectItem itemValue="curriculum vitae" itemLabel="#{lbl.structuretype_curriculum_vitae}"/>
+		                     <f:selectItem itemValue="dedication" itemLabel="#{lbl.structuretype_dedication}"/>
+		                     <f:selectItem itemValue="imprimatur" itemLabel="#{lbl.structuretype_imprimatur}"/>
+		                     <f:selectItem itemValue="imprint" itemLabel="#{lbl.structuretype_imprint}"/>
+		                     <f:selectItem itemValue="index" itemLabel="#{lbl.structuretype_index}"/>
+		                     <f:selectItem itemValue="letter" itemLabel="#{lbl.structuretype_letter}"/>
+		                     <f:selectItem itemValue="miscellaneous" itemLabel="#{lbl.structuretype_miscellaneous}"/>
+		                     <f:selectItem itemValue="miscellany" itemLabel="#{lbl.structuretype_miscellany}"/>
+		                     <f:selectItem itemValue="musical notation" itemLabel="#{lbl.structuretype_musical_notation}"/>
+		                     <f:selectItem itemValue="part" itemLabel="#{lbl.structuretype_part}"/>
+		                     <f:selectItem itemValue="preface" itemLabel="#{lbl.structuretype_preface}"/>
+		                     <f:selectItem itemValue="privileges" itemLabel="#{lbl.structuretype_privileges}"/>
+		                     <f:selectItem itemValue="provenance" itemLabel="#{lbl.structuretype_provenance}"/>
+		                     <f:selectItem itemValue="review" itemLabel="#{lbl.structuretype_review}"/>
+		                     <f:selectItem itemValue="section" itemLabel="#{lbl.structuretype_section}"/>
 		           		</h:selectOneMenu>
 		           	</div>
 					<div class="eg3_editInputArea">
