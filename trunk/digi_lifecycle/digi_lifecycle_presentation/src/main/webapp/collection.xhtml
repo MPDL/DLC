@@ -11,7 +11,12 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	
-
+	<ui:define name="breadcrumpTitle">			
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">>
+			<mpdl:hierarchicalBreadcrumb ou="#{viewCollection.col}">
+			</mpdl:hierarchicalBreadcrumb>
+		</h:panelGroup>	
+	</ui:define>
 	
 	<ui:define name="mainContent">
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
@@ -23,9 +28,8 @@
 		</style>
 
 
-	<mpdl:hierarchicalBreadcrumb ou="#{viewCollection.col}">
-	</mpdl:hierarchicalBreadcrumb>
-	<br/>
+	
+	
 	
 		<pretty:link mappingId="volumes" >
 			<f:param value="#{viewCollection.col.id}" />

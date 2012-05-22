@@ -134,6 +134,12 @@ option {
 .eg3_textCenter {
 	text-align:center;
 }
+.eg3_textLeft {
+	text-align:left;
+}
+.eg3_textRight {
+	text-align:right;
+}
 
 /*
  * global grid-size definitions
@@ -210,8 +216,16 @@ option {
 	width:39.85%;
 }
 
+.eg3_container_21_50 { /* = 21/50 */
+	width:41.85%;
+}
+
 .eg3_container_1_2 { /* = 1/2 */
 	width:49.85%;
+}
+
+.eg3_container_3_5 { /* = 3/5 */
+	width:59.85%;
 }
 
 .eg3_container_2_3 { /* = 2/3 */

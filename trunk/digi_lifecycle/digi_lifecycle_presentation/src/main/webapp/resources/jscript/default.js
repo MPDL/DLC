@@ -321,7 +321,7 @@ function resizeSidebar(reference) {
 			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
 			
 			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight));
-			
+			$('.eg3_id_sidebarLeft').css("height", $('.eg3_viewPageContainer').height());
 			break;
 	}
 }

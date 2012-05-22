@@ -74,6 +74,7 @@ All rights reserved. Use is subject to license terms.
 					<!-- import header -->
 					<ui:include src="../headerPages/header.xhtml" />
 				</div>
+				<ui:insert name="breadcrumpTitle">&#160;</ui:insert>
 				
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
 				<ui:remove>
@@ -90,21 +91,6 @@ All rights reserved. Use is subject to license terms.
 							showDetail="true" showSummary="false"/>
 					</h:panelGroup>
 					
-					<h:panelGroup layout="block" styleClass="eg3_breadTitle">
-						<ui:remove>
-								<!-- 
-								<nav class="eg3_breadcrump" rel="section">
-									<a href="#" title="Start">Start / </a> 
-									<a href="#" title="Start">Start / </a> 
-								</nav>
-			 					-->
-	 					</ui:remove>
-	 					
-	 					<ui:remove><!--  use span instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
-						<span class="eg3_id_siteTitle" rel="section">
-							<h:outputText value="#{headline}" />
-						</span>
-					</h:panelGroup>
 				</h:panelGroup>
 				
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
