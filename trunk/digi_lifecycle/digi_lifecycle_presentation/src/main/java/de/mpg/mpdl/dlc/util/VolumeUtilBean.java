@@ -340,26 +340,26 @@ public class VolumeUtilBean {
 	
 	public static String[] getPublicationDates(Volume vol) throws Exception
 	{ 
-        int length = vol.getRelatedChildVolumes().size();
-        String start ="";
-        String end ="";
-        if(length > 0 ) 
-        {
-            //Volume reVol = getVolume(vol.getRelatedVolumes().get(0));
-            ModsPublisher pub = getMainPublisher(vol.getRelatedChildVolumes().get(0).getModsMetadata());
-        	if(pub != null && pub.getDateIssued_425() != null)
-        		start = pub.getDateIssued_425().getDate();
-        }
-
-	    if(length > 1)  
-        {
-            //Volume reVol = getVolume(vol.getRelatedVolumes().get(length-1));
-            ModsPublisher pub = getMainPublisher(vol.getRelatedChildVolumes().get(length-1).getModsMetadata());
-        	if(pub != null && pub.getDateIssued_425() != null)
-        		end = pub.getDateIssued_425().getDate();
-        }
-
-        return new String[] { start, end };
+	        int length = vol.getRelatedChildVolumes().size();
+	        String start ="";
+	        String end ="";
+	        if(length > 0 ) 
+	        {
+	            //Volume reVol = getVolume(vol.getRelatedVolumes().get(0));
+	            ModsPublisher pub = getMainPublisher(vol.getRelatedChildVolumes().get(0).getModsMetadata());
+	        	if(pub != null && pub.getDateIssued_425() != null)
+	        		start = pub.getDateIssued_425().getDate();
+	        }
+	
+		    if(length > 1)  
+	        {
+	            //Volume reVol = getVolume(vol.getRelatedVolumes().get(length-1));
+	            ModsPublisher pub = getMainPublisher(vol.getRelatedChildVolumes().get(length-1).getModsMetadata());
+	        	if(pub != null && pub.getDateIssued_425() != null)
+	        		end = pub.getDateIssued_425().getDate();
+	        }
+	
+	        return new String[] { start, end };
 	}
 	
 	public static ModsNote getNoteSOR(ModsMetadata md)

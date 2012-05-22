@@ -14,7 +14,9 @@ import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.list.AllVolumesBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.Volume;
 
 @ManagedBean
 @SessionScoped
@@ -22,7 +24,17 @@ public class SessionBean implements Serializable
 {
     private static Logger logger = Logger.getLogger(SessionBean.class);
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
+    private List<Volume> startpageVolumes = new ArrayList<Volume>();
+    private AllVolumesBean avb = new AllVolumesBean();
     
+	public List<Volume> getStartpageVolumes() {
+		return startpageVolumes;
+	}
+
+	public void setStartpageVolumes(List<Volume> startpageVolumes) {
+		this.startpageVolumes = startpageVolumes;
+	}
+
 	public SessionBean()
     { 
         try {
@@ -30,6 +42,8 @@ public class SessionBean implements Serializable
 			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(null);
 			SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+			
+			this.startpageVolumes = avb.getStartPageVolumes();
 			
 			client.retrieveOrganizationalUnitsAsList(request);
         } catch (Exception e) {

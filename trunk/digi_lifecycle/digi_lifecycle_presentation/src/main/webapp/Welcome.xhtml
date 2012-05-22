@@ -79,7 +79,7 @@
 				</p>
 				
 				<br />
-				<h2>The newest entries</h2>
+				<h2><h:outputText value="#{lbl.HomePage_carusel}"></h:outputText></h2>
 				<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
 				<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
 				<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
@@ -87,16 +87,16 @@
 					.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
 					#zeige { font-weight:bold; color:red; }
 				</style>
-				<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
+				<h:panelGroup layout="block" class="infiniteCarousel">
 					<h:panelGroup layout="block" class="wrapper">
 						<ul>
-							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+							<ui:repeat id="volume" value="#{sessionBean.startpageVolumes}" var="volume" rowKeyVar="row">
 								<li>
 									<pretty:link mappingId="viewPages">
 									<f:param value="#{volume.item.objid}" />
 									<f:param value="recto-verso" />
 									<f:param value="1" />
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" title="#{volumeUtilBean.getTitle(volume.modsMetadata).title}"/>
 									</pretty:link>
 								</li>
 							</ui:repeat>

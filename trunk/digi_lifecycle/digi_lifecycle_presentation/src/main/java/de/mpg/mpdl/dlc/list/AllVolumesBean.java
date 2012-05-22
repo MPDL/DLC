@@ -31,6 +31,8 @@ import de.mpg.mpdl.dlc.search.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.search.SearchBean;
 import de.mpg.mpdl.dlc.search.SearchCriterion;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortIndices;
+import de.mpg.mpdl.dlc.search.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -234,6 +236,36 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			e.printStackTrace();
 		}
 
+	}
+	
+	/**
+	 * Retrieve the 5 last works of all collections
+	 * TODO: check multivolume, what can be displayed here?
+	 * @return
+	 */
+	public  List<Volume> getStartPageVolumes ()
+	{
+		List<Volume> volumes = new ArrayList<Volume>();
+		
+		try
+		{
+			VolumeSearchResult res = searchBean.advancedSearchVolumes(new ArrayList<SearchCriterion>(), getSortCriterionList(), 6, 0);			
+			for(Volume vol : res.getVolumes())
+			{ 		
+					if(vol != null && vol.getPages() != null && vol.getPages().size()>0)
+					{					
+						volumes.add(vol);
+					}
+			}
+		logger.info("volumes for startpage carusel loaded");
+		}
+		catch(Exception e)
+		{
+			logger.error("error loading volumes for startpage carusel", e);
+			return null;
+		}
+		
+		return volumes;
 	}
 	
 	
