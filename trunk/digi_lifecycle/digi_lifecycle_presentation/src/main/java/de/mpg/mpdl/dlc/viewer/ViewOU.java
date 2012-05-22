@@ -59,34 +59,39 @@ public class ViewOU {
 	public void loadOu()
 	{    
 		try{
-			if(orga==null || !id.equals(orga.getId()))
-			{
+			
+//			if(orga==null || !id.equals(orga.getId()))
+//			{
 				this.orga = ouServiceBean.retrieveOrganization(id);
 				if(vols_Carousel !=null)
-					this.vols_Carousel.clear();
+					{this.vols_Carousel.clear();}
 				
 				SearchCriterion sc = null;
 				List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-				for(Context context : contextServiceBean.retrieveOUContexts(id))
+				List <Context> contextL = contextServiceBean.retrieveOUContexts(id);
+				if (contextL != null && contextL.size()>0)
 				{
-					sc = new SearchCriterion(SearchType.CONTEXT_ID, context.getObjid());
-					scList.add(sc);
-				}
-				List<SortCriterion> sortList = new ArrayList<SortCriterion>();
-				sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
-				VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
-				SearchBean searchBean = new SearchBean();
-				VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
-				for(Volume vol : res.getVolumes())
-				{ 
-					
-					if(vol.getPages() != null && vol.getPages().size()>0)
+					for(Context context : contextL)
 					{
-						this.vols_Carousel.add(vol);
-
+						sc = new SearchCriterion(SearchType.CONTEXT_ID, context.getObjid());
+						scList.add(sc);
+					}
+					List<SortCriterion> sortList = new ArrayList<SortCriterion>();
+					sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
+					VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
+					SearchBean searchBean = new SearchBean();
+					VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
+					for(Volume vol : res.getVolumes())
+					{ 
+						
+						if(vol.getPages() != null && vol.getPages().size()>0)
+						{
+							this.vols_Carousel.add(vol);
+	
+						}
 					}
 				}
-			}
+			//}
 			logger.info("load ou " + id);
 		}catch(Exception e){
 			logger.error("Problem with loading ou", e);
