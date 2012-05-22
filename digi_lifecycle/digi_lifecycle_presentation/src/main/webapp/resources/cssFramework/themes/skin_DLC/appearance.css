@@ -106,9 +106,18 @@ a[disabled] {
 }
 *[onclick]:hover {
 	color:#EA7125;
+	text-decoration:underline;
 }
 *[onclick]:eg3_active {
 	color:#EA7125;
+}
+*[type="submit"]:hover {
+	color:#EA7125;
+	text-decoration:underline;
+}
+*[type="submit"]:disabled {
+	color:#EA7125;
+	text-decoration:none;
 }
 
 h1 {
@@ -147,23 +156,23 @@ select {
 	border: solid 0.08333em #B2B2B2;
 }
 button:disabled {
-	color:#AAAAAA;
+	color:#EA7125;
 }
 /***              ***
  * global id-class and class declarations
  */
 body .eg3_id_wrapper {
 	min-width:75em; /* 900px */
-	width:98%;		/* the result of width + padding = sum of width = 100% */
-	margin:0 1%;
+	width:100%;		/* the result of width + padding = sum of width = 100% */
+	margin:0;
 	background-color:#EFEFEF;
 	overflow:hidden;
 }
 body .eg3_id_header {
 	/*	background-color:#C6AD84; */
-	padding-bottom:1em;
+/*	padding-bottom:1em; */
 	width:100%;
-	background-image:url("image/image_headerBackground_1280_109.png");
+	background-image:url("image/image_headerBackground_1280_217.png");
 	background-position:top;
 	background-repeat:repeat;
 }
@@ -171,8 +180,9 @@ body .eg3_id_headerMetaMenu {
 	width:100%;
 }
 body .eg3_id_mainMenu {
-	width:80%;
-	margin-top:2em;
+/*	width:80%; */
+	margin-top:1em;
+	margin-bottom:1em;
 	overflow: visible !important;
 	z-index:12;
 }
@@ -196,12 +206,18 @@ body .eg3_id_siteTitle {
 	background-color:#EEF2F0;
 }
 .eg3_id_sidebarLeft {
-	
+	background-color:#EEF2F0;
 }
 .eg3_id_sidebarLeft.eg3_expand {
 	overflow:visible;
 }
-
+.eg3_id_sidebarLeft .eg3_modusBtn {
+	margin-right:0.5em;
+	padding:0.25em 0.5em;
+}
+.eg3_id_sidebarLeft .eg3_modusBtn:disabled {
+	color:#EA7125;
+}
 .eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
 	padding-right:0.25em;
 }
@@ -382,22 +398,31 @@ body .eg3_id_siteTitle {
 	margin-top: 1em;
 	margin-bottom: 2em;
 }
-
+.eg3_standardHeader .eg3_solutionLogo img {
+	width:98%;
+	max-width:13em;
+}
 
 /*****************************************************************************************************************
  ******************************				.eg3_standardHeader .eg3_id_siteSearchMenu		******************************
  *****************************************************************************************************************/
 .eg3_standardHeader .eg3_id_siteSearchMenu {
 	float: right;
-	margin-top:2%;
+	margin-top:1%;
+	margin-right:2%;
 	text-align:right;
 }
 .eg3_id_siteSearchMenu .eg3_icon_quickSearch_16_16 {
-	background-image: url("image/_default_32_32.png");
-	width:2.66666em;
-	height:2.66666em;
-	margin-right: 0.5em;
+	background-image: url("images/All_Search_LensStart_15_Static.png");
+	width:1.333333em;
+	height:1.333333em;
+	margin-right: 8%;
 }
+
+.eg3_id_siteSearchMenu .eg3_lastSearchBtn {
+	 padding-left:0.5em;
+}
+
 .eg3_simpleSearch label {
 	float: left; 
 	margin:0 1.3333em 0 0.5em; 
@@ -540,9 +565,15 @@ body .eg3_id_siteTitle {
  *************************************************************************************************************/
 .eg3_breadTitle {
     /* (class which includes the eg3_breadcrump and siteTitle) */
-    width:46.7%;
+    /*width:46.7%; */
     padding:0.9% 1.6% 1% 1.6%;
-    text-align:right;
+    /* text-align:right;*/
+}
+.eg3_breadTitle a {
+	color:#EFEFEF;
+}
+.eg3_breadTitle a:hover {
+	color:#EA7125;;
 }
 .eg3_breadcrump {
 	line-height:150%;
@@ -1482,12 +1513,8 @@ body .eg3_id_siteTitle {
  ******************************				item detail view		******************************
  ******************************				header					****************************** 
  *************************************************************************************************************/
-
-
 .eg3_detailItemHeader {
-	width:100%;
-}
-.eg3_detailItemHeader {
+	width:96.7%;
 	padding-left:3.2%;
 }
 .eg3_detailItemHeader .eg3_icon_multiVolume_32_32 {
@@ -1506,10 +1533,15 @@ body .eg3_id_siteTitle {
  ******************************					view with paginator							****************************** 
  *************************************************************************************************************************/
 .eg3_id_wrapper .eg3_viewPageHeader {
-	margin-top:-2em;
+	margin-top:1%;
 }
-.eg3_viewPageHeader .eg3_citationLink {
+
+.eg3_standardHeader .eg3_citationLinkArea {
+	padding-right:2%;
+}
+.eg3_standardHeader .eg3_citationLink {
 	display:none;
+	background-color:transparent;
 }
 
 .eg3_id_wrapper .eg3_viewPageContainer {
@@ -1534,7 +1566,10 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox input {
 	text-align:center;
 }
-
+.eg3_viewPageMenu .eg3_modusBtn {
+	margin-right:2%;
+	padding:0.25em 0.5em;
+}
 
 
 
@@ -1809,6 +1844,7 @@ body .eg3_id_siteTitle {
 	background:none;
 	background-color:#323232;
 	border:none;
+	padding-top:0.5em;
 }
 
 .rf-trn {

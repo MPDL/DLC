@@ -12,15 +12,15 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:param name="headline" value="#{allVolumesBean.collection.name}" />
-
+	
+	<ui:define name="breadcrumpTitle">
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
+			<mpdl:hierarchicalBreadcrumb ou="#{allVolumesBean.collection}" colId="#{allVolumesBean.collection.id}" colName="#{allVolumesBean.collection.name}">
+			</mpdl:hierarchicalBreadcrumb>
+		</h:panelGroup>
+	</ui:define>
+	
 	<ui:define name="mainContent">
-
-<h:panelGroup>
-	<mpdl:hierarchicalBreadcrumb ou="#{allVolumesBean.collection}" colId="#{allVolumesBean.collection.id}" colName="#{allVolumesBean.collection.name}">
-	</mpdl:hierarchicalBreadcrumb>
-	<br/>
-</h:panelGroup>
-
 		<mpdl:paginator paginatorBean="#{allVolumesBean}">
 			<h:outputScript library="jscript" name="jquery_1.6.3_min.js"/>
 

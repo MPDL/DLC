@@ -13,48 +13,55 @@
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
 		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
 		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
-        <h:form>
-        <h:panelGrid columns="2">	
-			<h:outputText value="#{lbl.admin_ou_logoUrl}:" />
-			<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}" 
-						    onclick="window.open('#{viewOU.orga.dlcMd.foafOrganization.homePageURL}');"/>
-			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
-	
-	
-			<h:outputText value="#{lbl.admin_ou_name}:" />		
-			<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
-			<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
-	
-			
-			<h:outputText value="#{lbl.admin_ou_description}:" />
-			<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
-			<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
-	
-			
-			<h:outputText value="#{lbl.admin_ou_country}:" />
-			<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
-			<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
+		<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+			<h:outputText value="&#160;" />
 		
-			
-			<h:outputText value="#{lbl.admin_ou_city}:" />
-			<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
-			<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
 		
-			
-			<h:outputText value="#{lbl.admin_ou_homepageUrl}:" />
-			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
-			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
-	
-			
-			<h:outputText value="#{lbl.admin_ou_email}:" />
-			<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
-			<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
-	
-		</h:panelGrid>
+	        <h:form>
+	        <h:panelGrid columns="2" width="98%">	
+				<h:outputText value="#{lbl.admin_ou_logoUrl}:" />
+				<h:graphicImage value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{not viewOU.orga.editable}" 
+							    onclick="window.open('#{viewOU.orga.dlcMd.foafOrganization.homePageURL}');" width="100%"/>
+				<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imgURL}" rendered="#{viewOU.orga.editable}" />
 		
-		<h:commandButton value="#{lbl.button_command_edit}" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
-		<h:commandButton value="#{lbl.button_command_save}" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
-		</h:form>
+		
+				<h:outputText value="#{lbl.admin_ou_name}:" />		
+				<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
+				<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
+		
+				
+				<h:outputText value="#{lbl.admin_ou_description}:" />
+				<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
+				<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
+		
+				
+				<h:outputText value="#{lbl.admin_ou_country}:" />
+				<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
+				<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
+			
+				
+				<h:outputText value="#{lbl.admin_ou_city}:" />
+				<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
+				<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
+			
+				
+				<h:outputText value="#{lbl.admin_ou_homepageUrl}:" />
+				<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
+				<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
+		
+				
+				<h:outputText value="#{lbl.admin_ou_email}:" />
+				<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
+				<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
+		
+			</h:panelGrid>
+			
+			<h:commandButton value="#{lbl.button_command_edit}" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
+			<h:commandButton value="#{lbl.button_command_save}" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
+			</h:form>
+		</h:panelGroup>
+		
+		
 <ui:remove>
  	<h:commandButton value="edit" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id )}">
         <rich:componentControl target="popup" operation="show" />
@@ -62,7 +69,31 @@
     
         <mpdl:ouEditor target="popup" title="#{lbl.button_command_edit}" organization="#{viewOU.orga}" command="#{viewOU.save}"/>
 </ui:remove>
-		<h:panelGroup layout="block">
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+			
+			<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewOU.vols_Carousel}">
+				<h:outputText value="&lt;br/&gt;" escape="false" />
+				<h:outputText value="#{lbl.view_ou_caroussel}: " />  <br/>
+				<h:panelGroup layout="block" class="wrapper">
+					<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:200%"/>
+					<ul>
+						<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
+							<li>
+								<pretty:link mappingId="viewPages">
+								<f:param value="#{volume.item.objid}" />
+								<f:param value="recto-verso" />
+								<f:param value="1" />
+									<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+								</pretty:link>
+							</li>
+						</ui:repeat>
+					</ul>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<br/><br/>
+			
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 			<h:outputText value="#{lbl.view_ou_collection}:" />  <br/>
 			<a4j:repeat value="#{applicationBean.getContext(viewOU.orga.id)}" var="context">
@@ -72,34 +103,12 @@
 				</pretty:link>
 				<!--Temporarily commented out, as not sure if needed at this place<h:outputText value="#{context.properties.description}" />  <br/>  -->
 			</a4j:repeat>
-
-			
-		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewOU.vols_Carousel}">
-			<h:outputText value="&lt;br/&gt;" escape="false" />
-			<h:outputText value="#{lbl.view_ou_caroussel}: " />  <br/>
-			<h:panelGroup layout="block" class="wrapper">
-				<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:200%"/>
-				<ul>
-					<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
-						<li>
-							<pretty:link mappingId="viewPages">
-							<f:param value="#{volume.item.objid}" />
-							<f:param value="recto-verso" />
-							<f:param value="1" />
-								<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
-							</pretty:link>
-						</li>
-					</ui:repeat>
-				</ul>
-			</h:panelGroup>
-		</h:panelGroup>
 			
 			
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 		</h:panelGroup>
     
-
     
 
 	</ui:define>
