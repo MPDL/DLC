@@ -50,6 +50,8 @@ public class ViewPages{
 	
 	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
 	
+	private ApplicationBean appBean = new ApplicationBean();
+	
 	private Context context;
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
@@ -91,9 +93,9 @@ public class ViewPages{
 				//Set the logo of application to collection logo
 				Organization volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
-					{ApplicationBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
-					ApplicationBean.setLogoLink(volumeOu.getDlcMd().getFoafOrganization().getHomePageURL());
-					ApplicationBean.setLogoTlt(ApplicationBean.getResource("Tooltips", "main_home")
+					{appBean.setLogoLink(volumeOu.getId());
+					appBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
+					appBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 			} catch (Exception e) {

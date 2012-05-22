@@ -337,7 +337,7 @@ public class ApplicationBean
     }
     
     
-    public static void setLogoUrl(String url)
+    public void setLogoUrl(String url)
     {
     	logoUrl = url;
     }
@@ -359,9 +359,10 @@ public class ApplicationBean
     }
     
     
-    public static void setLogoLink(String link)
+    public void setLogoLink(String id)
     {	
-    	logoLink = link;
+    	String url = getDomain() + "/dlc/ou/" + id;
+    	logoLink = url;
     }
     
     public String getLogoTlt()
@@ -380,7 +381,7 @@ public class ApplicationBean
     	return logoTlt;
     }
     
-    public static void setLogoTlt(String tlt)
+    public void setLogoTlt(String tlt)
     {
     	logoTlt = tlt;
     }
