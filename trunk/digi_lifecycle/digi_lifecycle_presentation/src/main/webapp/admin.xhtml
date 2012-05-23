@@ -40,7 +40,7 @@
 			   <br />
 	      	</a4j:repeat>
 
-            <a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+            <a4j:commandButton execute="@this" value="#{lbl.admin_ou_createNew}" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
               	<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}" />
             </a4j:commandButton> 
 
