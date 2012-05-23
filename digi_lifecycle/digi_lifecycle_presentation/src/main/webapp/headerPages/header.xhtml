@@ -104,8 +104,11 @@
 					<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
 				</h:form>
 				<br />
-				<div class="eg3_textLeft eg3_container_4_5 eg3_floatRight" style="margin-top:0.25em;">
-					<a href="#" class="eg3_lastSearchBtn">Last Search</a>
+				<div class="eg3_textLeft eg3_container_4_5 eg3_floatRight" style="margin-top:0.25em;" onmouseover="$(this).find('.eg3_lastSearchBtn').show();" onmouseout="$(this).find('.eg3_lastSearchBtn').hide();">
+					<a href="#" class="eg3_lastSearchBtn" style="display:none;">
+						<h:outputText value="#{lbl.header_lastSearchResult}"/>
+					</a>
+					&#160;
 				</div>
 			</div>
 		</h:panelGroup>
