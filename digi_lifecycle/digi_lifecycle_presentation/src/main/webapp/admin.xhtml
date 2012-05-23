@@ -47,7 +47,7 @@
     		<rich:popupPanel id="confirmOrgaPane" autosized="true"> 
     			<h:outputText value="#{msg.admin_confirmCloseOu}"/>
         		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" />
-        		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeOrganization}"/>
+        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}"/>
     		</rich:popupPanel>
 		    
    			<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
@@ -75,7 +75,7 @@
 
 
     		<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
-    			 Are you sure you want to close this organization?
+    			 <h:outputText value="#{msg.admin_confirmCloseCollection}"/>
         		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
         		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeCollection}"/>
     		</rich:popupPanel>		 	
@@ -106,10 +106,10 @@
 	      	</a4j:repeat>
 
     		<rich:popupPanel id="confirmUserPane" autosized="true"> 
-    			 Are you sure you want to close this organization?
+    			 <h:outputText value="#{msg.admin_confirmCloseUser}"/>
         		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
-        		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-        		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
     		</rich:popupPanel>
 		 
             <a4j:commandButton execute="@this" value="#{lbl.admin_user_createNew}" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
