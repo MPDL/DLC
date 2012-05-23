@@ -126,6 +126,9 @@
 			.eg3_instituteMenuTab a {
 				color:#EFEFEF;
 			}
+			.eg3_instituteMenuTab:hover a {
+				color:#EA7125;
+			}
 			.eg3_instituteMenuTab a:hover {
 				color:#EA7125;
 				text-decoration:underline;
@@ -144,7 +147,7 @@
 				<div id="tabs" class="eg3_container_1_3 eg3_tabMenuVertical eg3_borderradius_5">
 					<ul class="eg3_container_1 eg3_floatLeft">
 						<c:forEach items="#{applicationBean.ous}" var="ou">
-							<li class="eg3_instituteMenuTab eg3_borderradius_5">
+							<li class="eg3_instituteMenuTab eg3_borderradius_5" onclick="handleTab('#eg3_#{ou.objid}');">
 								<a href="#eg3_#{ou.objid}" onclick="handleTab(this.href);">
 									<h:outputText value="#{ou.properties.name}"/>
 								</a>
@@ -203,6 +206,7 @@
 					});
 				</script>
 			</h:panelGroup>
+			<br /><br /><br /><br /><br />
 		</h:panelGroup>
 	</ui:define>
 

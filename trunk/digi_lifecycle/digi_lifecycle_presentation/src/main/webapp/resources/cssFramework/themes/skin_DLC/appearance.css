@@ -420,7 +420,7 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_id_siteSearchMenu .eg3_lastSearchBtn {
-	 padding-left:0.5em;
+	 padding-left:0.333333em;
 }
 
 .eg3_simpleSearch label {
@@ -566,7 +566,7 @@ body .eg3_id_siteTitle {
 .eg3_breadTitle {
     /* (class which includes the eg3_breadcrump and siteTitle) */
     /*width:46.7%; */
-    padding:0.9% 1.6% 1% 1.6%;
+    padding:0.5% 1.6% 0.25% 1.6%;
     /* text-align:right;*/
 }
 .eg3_breadTitle a {
@@ -1542,6 +1542,8 @@ body .eg3_id_siteTitle {
 .eg3_standardHeader .eg3_citationLink {
 	display:none;
 	background-color:transparent;
+	width:96%;
+	padding:0 1.5%;
 }
 
 .eg3_id_wrapper .eg3_viewPageContainer {
