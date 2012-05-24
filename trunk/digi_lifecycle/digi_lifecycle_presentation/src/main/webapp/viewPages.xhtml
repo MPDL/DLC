@@ -198,19 +198,30 @@
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_viewModusContainer" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
+							<ui:fragment rendered="#{viewPages.selectedPage != null}">
 								<h:form>
 									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}"/>
 									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}"/>
 									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}"/>
 								</h:form>
-								
-								<ui:remove>
-									<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
-								</ui:remove>
-								<h:outputText value="#{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
-								<ui:remove>
-									<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
-								</ui:remove>
+							</ui:fragment>
+							<ui:fragment rendered="#{viewPages.selectedPage == null}">
+								<h:form>
+									<h:commandButton value="#{lbl.view_singlePage}" action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}"/>
+									<h:commandButton value="#{lbl.view_rectoVersoPage}" action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" tilte="#{tlt.view_page_rectoVerso}"/>
+									<h:commandButton value="#{lbl.view_fulltextPage}" action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_borderradius_5" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}"/>
+								</h:form>
+							</ui:fragment>
+							
+							<ui:remove>
+								<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
+							</ui:remove>
+							
+							<h:outputText value="#{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
+							
+							<ui:remove>
+								<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
+							</ui:remove>
 						</h:panelGroup>
 						
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
@@ -290,43 +301,43 @@
 						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
 						
-						<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
-							<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
-						</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top" 
-							              rendered="#{viewPages.selectedPage!=null}">
-								<h:outputText styleClass="eg3_permalinkBoxText" 
-											  value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
+						<ui:fragment rendered="#{viewPages.selectedPage != null}">
+							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
+								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top">
+								<h:outputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
 							</h:panelGroup>
 							<br />
-							<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_borderradius_5_top eg3_containerCenter" rendered="#{viewPages.selectedPage!=null}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_borderradius_5_top eg3_containerCenter">
 								<h:graphicImage value="#{applicationBean.logoUrl}"/>
 							</h:panelGroup>
-						
-						<script type="text/javascript">
 							
-				            $(document).ready(function(){
-				                var opts = {
-				                	interactionMode : 'embedded',
-				                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
-				                    showRegionNumbers : true,
-				                    logoUrl: '',
-				                    buttonSettings : {
-				                        embedded : {
-				                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
-				                            'buttonSetWidth' : 18,
-				                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-				                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-				                            'arrowSet' : ["up", "down", "left", "right"],
-				                            'buttonSets' : ['standardSet', 'specialSet']
-				                            }
-				                    }
-				                    //, scalerInset : -10
-								}; //end opts
-								$('.eg3_singleView div.digilib').digilib(opts);
-								$('.eg3_singleView div.digilib .keep.buttons').draggable();
-				            });
-				        </script>
+							<script type="text/javascript">
+					            $(document).ready(function(){
+					                var opts = {
+					                	interactionMode : 'embedded',
+					                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+					                    showRegionNumbers : true,
+					                    logoUrl: '',
+					                    buttonSettings : {
+					                        embedded : {
+					                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+					                            'buttonSetWidth' : 18,
+					                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+					                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+					                            'arrowSet' : ["up", "down", "left", "right"],
+					                            'buttonSets' : ['standardSet', 'specialSet']
+					                            }
+					                    }
+					                    //, scalerInset : -10
+									}; //end opts
+									$('.eg3_singleView div.digilib').digilib(opts);
+									$('.eg3_singleView div.digilib .keep.buttons').draggable();
+					            });
+					        </script>
+				        </ui:fragment>
 					</h:panelGroup>
 				
 				
