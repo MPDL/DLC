@@ -354,7 +354,7 @@ public class ApplicationBean
     			||viewId.equals("/ou.xhtml"))
     		{logoLink = "";} 
     	if (logoLink == null || logoLink.equals("")) 
-    		{return this.domain+"/dlc";}
+    		{return this.domain+"/dlc/";}
     	return logoLink;
     }
     
