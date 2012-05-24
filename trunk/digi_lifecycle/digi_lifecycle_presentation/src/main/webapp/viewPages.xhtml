@@ -35,7 +35,7 @@
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
 				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%;"/>
 				<br />
-				<h:inputText value="#{utilBean.absoluteUrl}" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
+				<h:inputText value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/recto-verso/1" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
 			</h:panelGroup>
 		</ui:define>
 		
