@@ -385,7 +385,7 @@
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top" 
 							              rendered="#{viewPages.selectedPage!=null}">
 								<h:outputText styleClass="eg3_permalinkBoxText" 
-											  value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)}" /> 
+											  value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top eg3_floatRight" 
 							              rendered="#{viewPages.selectedRightPage!=null}">
