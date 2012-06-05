@@ -354,14 +354,14 @@ public class ApplicationBean
     			||viewId.equals("/ou.xhtml"))
     		{logoLink = "";} 
     	if (logoLink == null || logoLink.equals("")) 
-    		{return this.domain+"/dlc/";}
+    		{return this.domain+"/"+this.contextPath+"/";}
     	return logoLink;
     }
     
     
     public void setLogoLink(String id)
     {	
-    	String url = getDomain() + "/dlc/ou/" + id;
+    	String url = getDomain() + "/"+this.contextPath+"/ou/" + id;
     	logoLink = url;
     }
     
