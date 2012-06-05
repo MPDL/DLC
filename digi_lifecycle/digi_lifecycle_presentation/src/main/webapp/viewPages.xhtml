@@ -35,7 +35,7 @@
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
 				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%;"/>
 				<br />
-				<h:inputText value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/recto-verso/1" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
+				<h:inputText value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/recto-verso/1" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
 			</h:panelGroup>
 		</ui:define>
 		
@@ -307,7 +307,7 @@
 							</h:panelGroup>
 							
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top">
-								<h:outputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
+								<h:outputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
 							</h:panelGroup>
 							<br />
 							<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_borderradius_5_top eg3_containerCenter">
@@ -318,7 +318,7 @@
 					            $(document).ready(function(){
 					                var opts = {
 					                	interactionMode : 'embedded',
-					                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler',
+					                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', //TODO: delete hard coded path!
 					                    showRegionNumbers : true,
 					                    logoUrl: '',
 					                    buttonSettings : {
@@ -385,12 +385,12 @@
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top" 
 							              rendered="#{viewPages.selectedPage!=null}">
 								<h:outputText styleClass="eg3_permalinkBoxText" 
-											  value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
+											  value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top eg3_floatRight" 
 							              rendered="#{viewPages.selectedRightPage!=null}">
 								<h:outputText styleClass="eg3_permalinkBoxText" 
-								              value="#{applicationBean.domain}/dlc/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" /> 
+								              value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" /> 
 							</h:panelGroup>
 							<br />
 							<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_borderradius_5_top eg3_containerCenter" rendered="#{viewPages.selectedPage!=null}">
