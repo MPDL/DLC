@@ -112,39 +112,9 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 			&#160;
 		</h:panelGroup>
-		<style type="text/css">
-			.eg3_instituteShortcut {
-				border:0.09em solid #323232;
-				border-left:none;
-			}
-			
-			.eg3_instituteMenuTab {
-				background-color:#323232;
-				padding:2% 4%;
-				border-top:0.09em solid #EFEFEF;
-			}
-			.eg3_instituteMenuTab a {
-				color:#EFEFEF;
-			}
-			.eg3_instituteMenuTab:hover a {
-				color:#EA7125;
-			}
-			.eg3_instituteMenuTab a:hover {
-				color:#EA7125;
-				text-decoration:underline;
-			}
-			.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active {
-				background-color:#EFEFEF;
-				border-left:0.09em solid #323232;
-				border-bottom:0.09em solid #323232;
-			}
-			.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active a {
-				color:#EA7125;
-			}
-		</style>
 		<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_instituteShortcut eg3_borderradius_5" style="max-width:53em; ">
-				<div id="tabs" class="eg3_container_1_3 eg3_tabMenuVertical eg3_borderradius_5">
+				<div id="tabs" class="eg3_container_1_3 eg3_listHeader eg3_tabMenuVertical eg3_borderradius_5">
 					<ul class="eg3_container_1 eg3_floatLeft">
 						<c:forEach items="#{applicationBean.ous}" var="ou">
 							<li class="eg3_instituteMenuTab eg3_borderradius_5" onclick="handleTab('#eg3_#{ou.objid}');">
@@ -155,7 +125,7 @@
 						</c:forEach>
 					</ul>
 				</div>
-				<div class="eg3_container_2_3" style="min-height:100%;">
+				<div class="eg3_container_2_3 eg3_listBody">
 					<h:panelGroup layout="block" styleClass="eg3_instituteContent eg3_container_1">
 						<c:forEach items="#{applicationBean.ous}" var="ou">
 							<div id="#eg3_#{ou.objid}" class="eg3_container_1 eg3_tabItemContent eg3_hidden" style="margin:1% 2%;">

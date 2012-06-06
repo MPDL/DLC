@@ -207,25 +207,29 @@ function addShowHideAll(element, child_elements, component) {
  */
 function eg3_openOverlay(listButton) {
 	
-	var curIconPanel = $(listButton).parent();
-	var curContentPanel = curIconPanel;
+	var curControlPanel = $(listButton).parent();
+	var curTabPanel = (curControlPanel.hasClass("rf-tbp")) ? curControlPanel : curControlPanel.parent();
 	
 	for (var ctbp = 0; ctbp < 15; ctbp++) {
-		if (curContentPanel.hasClass("rf-tbp")) {
-			curIconPanel.addClass("eg3_expand");
+		//check if the current object is the current tab panel
+		if (curTabPanel.hasClass("rf-tbp")) {
+			curControlPanel.addClass("eg3_expand");
+			
+			curTabPanel.addClass("eg3_noWrapTrn");
+			curTabPanel.addClass("eg3_widthAuto");
+			var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
+			curTabPanelContent.addClass("eg3_expand");
+			
+			
 			$('.eg3_id_sidebarLeft').addClass("eg3_expand");
 			
-			curContentPanel.addClass("eg3_noWrapTrn");
-			curContentPanel.addClass("eg3_widthAuto");
-			curContentPanel.find(".rf-tab-cnt").addClass("eg3_expand");
-			
 			$(listButton).attr('disabled', 'disabled');
-			curIconPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
+			curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
 			
-			checkSidebarWidth();
+//			checkSidebarWidth();
 			break;
 		} else {
-			curContentPanel = curContentPanel.parent();
+			curTabPanel = curTabPanel.parent();
 		}
 	}
 }
@@ -356,7 +360,7 @@ function checkSidebarHeight(reference) {
  */
 function checkSidebarWidth(reference) {
 	var sidebar = ($('.eg3_id_sidebarLeft').length > 0) ? $('.eg3_id_sidebarLeft') : null;
-	
+	/*
 	if (sidebar) {
 		var documentWidth = $(document).width();
 		var curWidthObj = (sidebar.hasClass('eg3_widthAuto')) ? sidebar : $(sidebar.find('.eg3_widthAuto').get(0));
@@ -392,6 +396,7 @@ function checkSidebarWidth(reference) {
 			}
 		}
 	}
+	*/
 }
 
 
