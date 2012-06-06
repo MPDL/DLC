@@ -47,7 +47,11 @@
 		</ui:define>
 		
 		<ui:define name="mainContent">
-
+			<h:panelGroup styleClass="eg3_hidden">
+				<ui:repeat value="#{viewPages.pageList}" var="page">
+				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;" />
+				</ui:repeat>
+			</h:panelGroup>
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer" style="background-color:#323232;">
 				<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_5">
@@ -125,6 +129,7 @@
 										checkSidebarHeight('.eg3_viewPage');
 									});
 								</script>
+			     			
 			     			<rich:tab header="#{lbl.view_tab_structure}" id="toc">
 								<rich:tree toggleType="ajax" var="divItem" >
 									<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
@@ -157,7 +162,6 @@
 										</rich:treeNode>
 									</rich:treeModelRecursiveAdaptor>
 								</rich:tree>
-								
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs">

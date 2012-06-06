@@ -244,9 +244,25 @@ body .eg3_id_siteTitle {
 	overflow:visible;
 }
 
-
-
-
+.eg3_id_wrapper .eg3_id_footer {
+	background-color:#000000;
+	color:#f2f2f2;
+}
+.eg3_id_footer a {
+	color:#f2f2f2;
+}
+.eg3_id_footer form {
+	display:inline;
+}
+.eg3_id_footer .eg3_separator {
+	margin:0 1em;
+	max-width:0.08333em;
+}
+.eg3_id_footer .eg3_footer_content {
+	float:right;
+	margin-right:2%;
+	padding:0.75% 0;
+}
 .eg3_overflow {
 	overflow:visible !important;
 	z-index:20;
@@ -343,12 +359,16 @@ body .eg3_id_siteTitle {
 .eg3_id_headerMetaMenu .eg3_metaMenu {
 	float:right;
 	margin-top:0.25em;
+	margin-right:2%;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu * {
 	float:left;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu a {
 	padding:0.08333em 2em 0.3333em 2em;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu form {
+	display:inline;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu .eg3_separator+form {
 	padding-left:2em;
@@ -720,7 +740,37 @@ body .eg3_id_siteTitle {
 	margin-left:1em;
 }
 
+/*************************************************************************************************************************
+ ******************************				vertical tab menu with content right			******************************
+ *************************************************************************************************************************/
+.eg3_instituteShortcut {
+	border:0.09em solid #323232;
+	border-left:none;
+}
 
+.eg3_instituteMenuTab {
+	background-color:#323232;
+	padding:2% 4%;
+	border-top:0.09em solid #EFEFEF;
+}
+.eg3_instituteMenuTab a {
+	color:#EFEFEF;
+}
+.eg3_instituteMenuTab:hover a {
+	color:#EA7125;
+}
+.eg3_instituteMenuTab a:hover {
+	color:#EA7125;
+	text-decoration:underline;
+}
+.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active {
+	background-color:#EFEFEF;
+	border-left:0.09em solid #323232;
+	border-bottom:0.09em solid #323232;
+}
+.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active a {
+	color:#EA7125;
+}
 /*****************************************************************************************************
  ******************************				bibliographic list			******************************
  ******************************				list with different 		****************************** 

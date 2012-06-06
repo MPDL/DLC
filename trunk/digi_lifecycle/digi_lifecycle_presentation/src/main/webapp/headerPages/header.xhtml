@@ -33,12 +33,24 @@
 						<h:outputText value="#{lbl.header_lnk_dlc}" />
 					</h:outputLink> 
 					
+					
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 					
-					<h:outputLink id="lnkCopyright" title="#{tlt.meta_copyright}"
-						value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
-						<h:outputText value="#{lbl.header_lnk_copyright}" />
-					</h:outputLink> 
+					<h:outputLink value="#" styleClass="eg3_lastSearchBtn" title="#{tlt.meta_lastSearchResult}">
+						<h:outputText value="#{lbl.header_lastSearchResult}"/>
+					</h:outputLink>
+					
+					<h:form>
+						<h:inputText type="text" id="quickSearchString" styleClass="eg3_container_3_5 eg3_quickSearchInput eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
+						<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; display:none;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+						<script type="text/javascript">
+							$('.eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+						</script>
+					</h:form>
+					
+					<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" title="#{tlt.meta_advsearch}">
+						<h:outputText value="#{lbl.header_advancedSearch}"/>
+					</pretty:link>
 					
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 					<ui:remove>
@@ -66,15 +78,7 @@
 					</h:form>
 					
 					
-					<h:form>
-						<h:commandLink id="lnkLogin" title="#{tlt.meta_login}" 
-							value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
-						</h:commandLink>
-				
-						<h:commandLink id="lnkLogout" title="#{tlt.meta_logout}" 
-							value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
-						</h:commandLink> 
-					</h:form>
+					
 					
 				</nav>
 			</menu>
@@ -94,29 +98,29 @@
 		</ui:fragment>
 		
 		<ui:insert name="separateContentHeader">&#160;</ui:insert>
-		
-		<h:panelGroup layout="block" styleClass="eg3_id_siteSearchMenu eg3_floatRight">
-			<div class="eg3_floatRight">
-				<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" title="#{tlt.meta_advsearch}">
-					<h:outputText value="#{lbl.header_advancedSearch}"/>
-				</pretty:link>
-			</div>
-			
-			<div class="eg3_floatRight">
-				<h:form styleClass="eg3_container_4_5" style="display:inline;">
-					<h:inputText type="text" id="quickSearchString" styleClass="eg3_container_3_5 eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
-					<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
-				</h:form>
-				<br />
-				<div class="eg3_textLeft eg3_container_4_5 eg3_floatRight" style="margin-top:0.25em;" onmouseover="$(this).find('.eg3_lastSearchBtn').show();" onmouseout="$(this).find('.eg3_lastSearchBtn').hide();">
-					<a href="#" class="eg3_lastSearchBtn" style="display:none;">
-						<h:outputText value="#{lbl.header_lastSearchResult}"/>
-					</a>
-					&#160;
+		<ui:remove>
+			<h:panelGroup layout="block" styleClass="eg3_id_siteSearchMenu eg3_floatRight">
+				<div class="eg3_floatRight">
+					<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" title="#{tlt.meta_advsearch}">
+						<h:outputText value="#{lbl.header_advancedSearch}"/>
+					</pretty:link>
 				</div>
-			</div>
-		</h:panelGroup>
-		
+				
+				<div class="eg3_floatRight">
+					<h:form styleClass="eg3_container_4_5" style="display:inline;">
+						<h:inputText type="text" id="quickSearchString" styleClass="eg3_container_3_5 eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+						<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+					</h:form>
+					<br />
+					<div class="eg3_textLeft eg3_container_4_5 eg3_floatRight" style="margin-top:0.25em;" onmouseover="$(this).find('.eg3_lastSearchBtn').show();" onmouseout="$(this).find('.eg3_lastSearchBtn').hide();">
+						<a href="#" class="eg3_lastSearchBtn" style="display:none;">
+							<h:outputText value="#{lbl.header_lastSearchResult}"/>
+						</a>
+						&#160;
+					</div>
+				</div>
+			</h:panelGroup>
+		</ui:remove>
 		<ui:insert name="citationLinkContent">&#160;</ui:insert>
 		
 	</h:panelGroup>
