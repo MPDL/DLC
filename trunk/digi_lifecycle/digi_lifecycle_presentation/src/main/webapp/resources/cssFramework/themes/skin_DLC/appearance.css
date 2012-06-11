@@ -207,6 +207,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_id_sidebarLeft {
 	background-color:#EEF2F0;
+	padding-bottom:0.466666em;
 }
 .eg3_id_sidebarLeft.eg3_expand {
 	overflow:visible;
@@ -351,6 +352,7 @@ body .eg3_id_siteTitle {
  *********************************************************************************************************************************/
 .eg3_standardHeader {
 	width:100%;
+	padding-bottom:0.33333em;
 }
 
 /*********************************************************************************************************
@@ -365,13 +367,13 @@ body .eg3_id_siteTitle {
 	float:left;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu a {
-	padding:0.08333em 2em 0.3333em 2em;
+	margin:0.08333em 2em 0.3333em 2em;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu form {
 	display:inline;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu .eg3_separator+form {
-	padding-left:2em;
+	padding-left:0em;
 }
 .eg3_id_headerMetaMenu .eg3_metaMenu nav {
 	padding:0;
@@ -392,6 +394,13 @@ body .eg3_id_siteTitle {
 
 .eg3_metaMenu .eg3_separator {
 	padding:0;
+	margin:0 2em;
+}
+.eg3_metaMenu .eg3_separator+a {
+	margin-left:0;
+}
+.eg3_metaMenu a+.eg3_separator {
+	margin-left:0;
 }
 .eg3_metaMenu .eg3_userDetail {
 	font-style:italic;
@@ -655,6 +664,13 @@ body .eg3_id_siteTitle {
 }
 .eg3_paginatorWave .eg3_pageBrowser *:disabled {
 	cursor: default;
+}
+.eg3_pageBrowser .eg3_separator {
+	max-width:0.0833333em;
+	padding:0;
+	margin:0 0.9090em;
+	display:inline-block;
+	background-color:#EFEFEF;
 }
 .eg3_paginatorWave a {
 	color:#EFEFEF;
@@ -1585,9 +1601,14 @@ body .eg3_id_siteTitle {
 .eg3_id_wrapper .eg3_viewPageHeader {
 	margin-top:1%;
 }
+.eg3_viewPageHeader .eg3_volumeTitle {
+	max-width:40em;
+}
 
 .eg3_standardHeader .eg3_citationLinkArea {
 	padding-right:2%;
+	margin-top:3.5em;
+	width:17%;
 }
 .eg3_standardHeader .eg3_citationLink {
 	display:none;
