@@ -177,7 +177,6 @@
 						</h:panelGroup>
 						<!-- END PAGE IMAGE -->
 						
-						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_editContent">
 							<!-- START TAB-PANEL -->
 							<h:form styleClass="eg3_container_1">
@@ -197,15 +196,17 @@
 										<!-- START STRUCTURE EDITING -->
 										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
 											<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
-												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
-													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
-													teiWrapper="#{structuralEditorBean.currentNewElement}"/>
-												<br/>
-												<br/>
-												<h:commandButton styleClass="eg3_floatRight" value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
+											
+											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" 
+												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+												teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+											<br/>
+											<br/>
+											<h:commandButton styleClass="eg3_floatRight" value="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}"/>
 										</h:panelGroup>
 										<!-- END STRUCTURE EDITING -->
 									</rich:tab>
+									
 									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
 										<!-- START PAGE EDITING -->
 										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">

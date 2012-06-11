@@ -13,7 +13,7 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		
 		<ui:define name="separateContentHeader">
-			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_21_50">
+			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_3_5">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
 						<h3 class="eg3_multiVolumeTitle">
@@ -21,7 +21,9 @@
 						</h3>
 						
 						<br />
+						<ui:remove>
 						<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
+						</ui:remove>
 						<h:panelGroup styleClass="eg3_floatLeft">
 							<h3 class="eg3_volumeTitle"><h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/></h3>
 							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
@@ -33,7 +35,7 @@
 		
 		<ui:define name="citationLinkContent">
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
-				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%;"/>
+				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%; background-color:transparent;"/>
 				<br />
 				<h:inputText value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/recto-verso/1" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
 			</h:panelGroup>
@@ -221,11 +223,7 @@
 								<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
 							</ui:remove>
 							
-							<h:outputText value="#{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
-							
-							<ui:remove>
-								<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
-							</ui:remove>
+							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
 						</h:panelGroup>
 						
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
@@ -241,45 +239,52 @@
 									</h:commandLink>
 								</ui:fragment>
 								
-								<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
 								
+								<h:panelGroup styleClass="eg3_pageScanPagination">
+									<!-- left page number -->
+									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
+									<h:outputText value=" / #{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
+									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
+										<h:panelGroup styleClass="eg3_separator" rendered="#{viewPages.selectedRightPage != null and viewPages.selectedPage != null}">&#160;</h:panelGroup>
+									</ui:fragment>
+									
+									<ui:fragment rendered="#{viewPages.viewType != 'RECTO_VERSO'}">
+										<h:outputText value=" / "/>
+										<h:outputText value="#{viewPages.volume.pages.size()}"/>
+									</ui:fragment>
+									
+									<!-- right page number -->
+									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
+									<h:outputText value=" / #{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.selectedRightPage != null}"/>
+									
+									
+									<ui:fragment rendered="#{viewPages.volume.pages.size() > 1}">
+										<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageScanPagination', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
+									</ui:fragment>
+								</h:panelGroup>
 								
-								<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-									<h:outputText value=" / " rendered="#{viewPages.selectedRightPage != null and viewPages.selectedPage != null}"/>
-								</ui:fragment>
-								<ui:fragment rendered="#{viewPages.viewType != 'RECTO_VERSO'}">
-									<h:outputText value=" / "/>
-									<h:outputText value="#{viewPages.volume.pages.size()}"/>
-								</ui:fragment>
-								
-								<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
-								
-								<ui:fragment rendered="#{viewPages.volume.pages.size() > 1}">
-									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageBrowser', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
-								</ui:fragment>
+								<h:panelGroup styleClass="eg3_gotoBox" >
+									<h:selectOneMenu value="#{viewPages.selectedPageNumber}" >
+							   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage :#{rich:clientId('tabPanel')}"/>
+							   			<f:selectItems value="#{viewPages.pageListMenu}" />
+							   		</h:selectOneMenu>
+						   		</h:panelGroup>
 								
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 									<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
-										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+										<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
-										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
 									</h:commandLink>
 								</ui:fragment>
 							</h:form>
 						
-							<h:form styleClass="eg3_gotoBox" rendered="#{viewPages.volume.pages.size() > 1}">
-								<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="#{tlt.paginator_goToPage}" placeholder="#{viewPages.selectedPage.order+1}" min="1" max="99999" maxlength="5" type="number"/>
-								<label class="eg3_inputLabel">
-									<h:outputText value="#{lbl.paginator_of} #{viewPages.volume.pages.size()}" />
-								</label>
-							</h:form>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4">
-							<h:outputText value="#{viewPages.selectedRightPage.orderLabel}" rendered="#{viewPages.selectedRightPage != null}"/>
 							<h:outputText value="&#160;" rendered="#{!viewPages.selectedRightPage.orderLabel}"/>
 							<ui:remove>
 							<h:panelGroup layout="block" styleClass="eg3_menuButton eg3_floatRight" rendered="#{viewPages.selectedRightPage != null}">

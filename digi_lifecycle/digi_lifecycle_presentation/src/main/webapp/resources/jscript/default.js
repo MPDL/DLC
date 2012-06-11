@@ -272,6 +272,7 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 	$(show_element).show();
 	if (escListener && escListener === true) {
 		$(document).keyup(function(e) {
+			console.log(e.which);
 			switch (e.which) {
 				case 0: //esc button in firefox
 				case 27: //esc button in chrome and IE >= 8
@@ -314,9 +315,16 @@ function rerenderJSFForms() {
 
 function resizeSidebar(reference) {
 	var sdbHeight = $(reference).height();
+	
 	switch (reference) {
 		case '.eg3_viewPage':
-			$('.eg3_id_sidebarLeft').css('height', sdbHeight);
+			var sdbLeft = $('.eg3_id_sidebarLeft');
+			var sdbPadBot = sdbLeft.css("padding-bottom");
+			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
+				sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
+			}
+			sdbPadBot = Number(sdbPadBot) + 1;
+			sdbHeight = sdbHeight - sdbPadBot;
 			
 			//eg3_iconBar
 			//rf-tab-hdr-tabline-top
@@ -324,8 +332,10 @@ function resizeSidebar(reference) {
 			var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
 			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
 			
-			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight));
-			$('.eg3_id_sidebarLeft').css("height", $('.eg3_viewPageContainer').height());
+			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
+			$('.rf-tab-cnt').css('padding-bottom', sdbLeft.css('padding-bottom'));
+			
+			sdbLeft.css('height', sdbHeight);
 			break;
 	}
 }
