@@ -8,6 +8,9 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
@@ -76,12 +79,15 @@ public class ViewPages{
 	
 	private Map<String, String> clientIdMap = new HashMap<String, String>();
 	
+	private List<SelectItem> pageListMenu = new ArrayList<SelectItem>();
+	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
+		
 		
 		if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 		{   
@@ -98,6 +104,8 @@ public class ViewPages{
 					appBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
+				initPageListMenu();
+				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 			}
@@ -105,6 +113,20 @@ public class ViewPages{
 		volumeLoaded();
 	}
 	
+	private void initPageListMenu()
+	{
+		this.pageListMenu.clear();
+		for(Page p : volume.getPages())
+		{
+			pageListMenu.add(new SelectItem(p.getOrder()+1, "Seite " + p.getOrderLabel() + " / Bild " + (p.getOrder()+1)));
+		}
+	}
+	
+	public void pageNumberChanged()
+	{
+		System.out.println("Go to page changed!!!!");
+		loadVolume();
+	}
 	
 	protected void volumeLoaded() {
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
@@ -480,6 +502,16 @@ public class ViewPages{
 
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
+	}
+
+
+	public List<SelectItem> getPageListMenu() {
+		return pageListMenu;
+	}
+
+
+	public void setPageListMenu(List<SelectItem> pageListMenu) {
+		this.pageListMenu = pageListMenu;
 	}
 
 }
