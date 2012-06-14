@@ -13,6 +13,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,6 +69,9 @@ import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
+import de.escidoc.core.client.exceptions.EscidocException;
+import de.escidoc.core.client.exceptions.InternalClientException;
+import de.escidoc.core.client.exceptions.TransportException;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
 import de.escidoc.core.resources.HttpInputStream;
 import de.escidoc.core.resources.common.MetadataRecord;
@@ -98,6 +103,7 @@ import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
+import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
@@ -688,7 +694,6 @@ public class VolumeServiceBean {
 	
 	public Volume updateVolume(Volume volume, String userHandle, FileItem teiFile, boolean updateTeiSd) throws Exception
 	{
-
 		Component pagedTeiComponent = null ;
 		Component teiComponent = null;
 		Component teiSdComponent = null;
@@ -710,33 +715,12 @@ public class VolumeServiceBean {
 				{
 					teiSdComponent = c;
 				}
-			
-			
 			}
 
-		
-		//Clear all mdRecords
-		volume.getItem().getMetadataRecords().clear();
-		
-		
-		//Set escidoc md-record with mods metadata
-		MetadataRecord eSciDocMdRec = new MetadataRecord("escidoc");
-		volume.getItem().getMetadataRecords().add(eSciDocMdRec);
-		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document modsDoc = builder.newDocument();
-		Marshaller m = jaxbModsContext.createMarshaller();
-		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-		m.marshal(volume.getModsMetadata(), modsDoc);
-		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
-		
-		
-		
-		
-
-			StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-			sthc.setHandle(userHandle);
+		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		sthc.setHandle(userHandle);
 			
-			if(teiFile!=null)	
+		if(teiFile!=null)	
 			{
 				logger.info("TEI file found");
 				File teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
@@ -755,8 +739,7 @@ public class VolumeServiceBean {
 				String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
 				IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
 				TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
-				volume.setTeiSd(teiSd);
-				
+				volume.setTeiSd(teiSd);				
 
 				//Add paged TEI as component
 				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFileWithIds));
@@ -830,7 +813,6 @@ public class VolumeServiceBean {
 				}
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
 				
-				
 				//If there's no fulltext TEI, use TEI-SD as paged component for search and fulltext display
 				if(teiComponent == null)
 				{
@@ -856,14 +838,20 @@ public class VolumeServiceBean {
 					
 					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}
-				
-				
-				
-				
-				
-				
 			}
 			
+			//Clear all mdRecords
+			volume.getItem().getMetadataRecords().clear();		
+			
+			//Set escidoc md-record with mods metadata
+			MetadataRecord eSciDocMdRec = new MetadataRecord("escidoc");
+			volume.getItem().getMetadataRecords().add(eSciDocMdRec);
+			DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	        Document modsDoc = builder.newDocument();
+			Marshaller m = jaxbModsContext.createMarshaller();
+			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			m.marshal(volume.getModsMetadata(), modsDoc);
+			eSciDocMdRec.setContent(modsDoc.getDocumentElement());
 			
 			//Set METS in md-record
 			if(volume.getMets() != null)
@@ -894,11 +882,41 @@ public class VolumeServiceBean {
 		
 	}
 	
-	
-	
-	
-	
-	
+	public Item updateMd (Volume vol, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		// Add MODS element 'relatedItem'
+		String teiSdUrl = "";
+		for (int i = 0; i< vol.getItem().getComponents().size(); i++)
+			{
+				Component comp = vol.getItem().getComponents().get(i);
+				if (comp.getProperties().getContentCategory().equals("tei-sd"))
+				{
+					teiSdUrl = comp.getXLinkHref();
+				}
+			}
+		
+		if (teiSdUrl != "")
+		{
+			//add component url of tei sd to mods md (related item)
+			vol.getModsMetadata().setRelatedItem(new ModsRelatedItem());
+			vol.getModsMetadata().getRelatedItem().setValue(PropertyReader.getProperty("dlc.instance.url") + teiSdUrl);
+			vol.getModsMetadata().getRelatedItem().setName("tei");
+			vol.getModsMetadata().getRelatedItem().setType("tei-sd");
+		}
+
+		MetadataRecord eSciDocMdRec =vol.getItem().getMetadataRecords().get("escidoc");
+		DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        Document modsDoc = builder.newDocument();
+		Marshaller m = jaxbModsContext.createMarshaller();
+		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		m.marshal(vol.getModsMetadata(), modsDoc);
+		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
+		
+		Item updatedItem = client.update(vol.getItem());
+		return updatedItem;
+	}
 	
 	private static String getJPEGFilename(String filename)
 	{
@@ -1404,16 +1422,16 @@ public class VolumeServiceBean {
 		String pagedTei = null;
 		
 		
-		//Unbmarshall mods from md-record and set in item
+		//Unmarshall mods from md-record and set in item
 		long startMods = System.currentTimeMillis();
 		Unmarshaller modsUnmarshaller = jaxbModsContext.createUnmarshaller();
 
-		
 		//Unmarshaller unmarshaller = JaxBWrapper.getInstance("", schemaLocation)
 		ModsMetadata md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
 		
 		vol = new Volume();
 		vol.setModsMetadata(md);
+		
 		long timeMods = System.currentTimeMillis()-startMods;
 		System.out.println("Time MODS: " + timeMods);
 		
