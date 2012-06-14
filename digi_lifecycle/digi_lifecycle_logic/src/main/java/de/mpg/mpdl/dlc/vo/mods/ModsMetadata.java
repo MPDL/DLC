@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,12 +61,16 @@ public class ModsMetadata {
 
 	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
+	
+	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
+	private ModsRelatedItem relatedItem;
 
 	
 //	@XmlPath("mods:physicalDescription/mods:extent/text()")
 //	private String extent_433;
-	
-//	@XmlPath("mods:physicalDescription/mods:extent/text()")
+
+
+	//	@XmlPath("mods:physicalDescription/mods:extent/text()")
 //	private String format_435;
 	@XmlPath("mods:physicalDescription/mods:extent/text()")
 	private List<String> extents = new ArrayList<String>();
@@ -233,11 +238,6 @@ public class ModsMetadata {
 	}
 
 
-
-
-
-
-
 	public List<ModsPublisher> getPublishers() {
 		return publishers;
 	}
@@ -309,9 +309,18 @@ public class ModsMetadata {
 		return freeText;
 	}
 
-
 	public void setFreeText(String freeText) {
 		this.freeText = freeText;
+	}
+	
+	
+	public ModsRelatedItem getRelatedItem() {
+		return relatedItem;
+	}
+
+
+	public void setRelatedItem(ModsRelatedItem relatedItem) {
+		this.relatedItem = relatedItem;
 	}
 
 
