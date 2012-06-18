@@ -312,10 +312,17 @@ public class ApplicationBean
     
     public static String getResource (String bundle, String name)
     {
+    	try{
     	Application application = FacesContext.getCurrentInstance().getApplication();
 	    InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), "internationalizationHelper");
 	    ResourceBundle rBundle = ResourceBundle.getBundle(bundle, i18nHelper.getUserLocale());
-        return rBundle.getString(name);
+	    return rBundle.getString(name);
+    	}
+    	catch(Exception e)
+    	{
+    		logger.warn("Value: " + name + " not found in resource bundle: " + bundle);
+    		return name;
+    	}
     }
     
     public String getLogoUrl()

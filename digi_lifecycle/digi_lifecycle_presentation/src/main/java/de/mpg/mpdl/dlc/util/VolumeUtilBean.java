@@ -424,12 +424,10 @@ public class VolumeUtilBean {
 		
 	}
 	
-	
-	
-	public void removeListMember (Integer pos, List list)
+	public void removeListMember (Integer row, List<SearchCriterion> scList)
 	{  
-		Object o = list.get(pos);
-		list.remove(o);
+		Object o = scList.get(row);
+		scList.remove(o);
 	} 
 	
 	public void addNewModsKeyword (Integer rowKey, List<String> keywords)
@@ -505,11 +503,13 @@ public class VolumeUtilBean {
 	}
 	
 	public void addNewSearchCriterion(SearchCriterion sc, List<SearchCriterion> scList)
-	{
-		
-			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.FREE, ""));
-		
-		
+	{		
+			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.FREE, ""));		
+	}
+	
+	public void addNewContextList(List<SearchCriterion> contextList)
+	{		
+			contextList.add(new SearchCriterion(SearchType.CONTEXT_ID, ""));		
 	}
 	
 	public String emphasizeWordsinTextFragment(TextFragment tf, String styleClass)

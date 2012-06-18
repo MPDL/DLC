@@ -53,7 +53,7 @@ public class SearchBean {
 					
 				scList.add(scContentModel);
 			}
-			//last with "or" and closing brakcket
+			//last with "or" and closing bracket
 			else if(i==volTypes.length-1)
 			{
 				SearchCriterion scContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 1);
