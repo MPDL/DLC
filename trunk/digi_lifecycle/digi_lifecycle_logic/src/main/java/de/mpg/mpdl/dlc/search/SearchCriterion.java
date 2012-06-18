@@ -29,7 +29,6 @@ public class SearchCriterion extends Criterion{
 		
 		//TODO: structmd title and author
 		
-		OU_ID(new String[]{"escidoc.ou.objid"}), //TOCHECK!
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}),
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}),
 		OBJECTTYPE(new String[]{"escidoc.objecttype"}),
@@ -96,8 +95,6 @@ public class SearchCriterion extends Criterion{
 				SearchCriterion sc = cList.get(i);
 				if(sc.getValue()!= null && !sc.getValue().trim().isEmpty())
 				{
-					
-					
 					if(i!=0)
 					{
 						cql += " " + sc.getOperator().name() + " ";

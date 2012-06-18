@@ -1,18 +1,14 @@
 package de.mpg.mpdl.dlc.search;
 
-import java.util.List;
-
-
 
 public abstract class Criterion {
 	public enum Operator
 	{
-		AND, OR
+		AND, OR, NOT
 	}
 	
 	protected Operator operator = Operator.AND;
-	
-	
+		
 	protected String value;
 	
 	protected int openBracket = 0;
@@ -34,8 +30,6 @@ public abstract class Criterion {
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-
 
 	public int getOpenBracket() {
 		return openBracket;
