@@ -170,6 +170,18 @@ public class AdvancedSearchBean {
 	
 	public String resetSearch()
 	{
+		this.searchCriterionList = new ArrayList<SearchCriterion>();
+		this.searchCriterionList.add(new SearchCriterion(SearchType.FREE, ""));
+		this.searchCriterionList.add(new SearchCriterion(SearchType.AUTHOR, ""));
+		this.searchCriterionList.add(new SearchCriterion(SearchType.TITLE, ""));
+		
+		this.freeSearch = "";
+		this.fulltextSearch = "";
+		
+		this.selectedOuId = "";
+		this.selectedContextId = "";
+		
+		this.refreshLists();
 		return"";
 	}
 
@@ -194,7 +206,6 @@ public class AdvancedSearchBean {
 	}
 
 	public void setSelectedContextId(String selectedContextId) {
-		System.out.println("selected context: " + selectedContextId);
 		this.selectedContextId = selectedContextId;
 	}
 	
