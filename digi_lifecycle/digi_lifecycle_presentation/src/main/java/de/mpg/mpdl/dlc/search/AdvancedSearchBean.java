@@ -177,6 +177,8 @@ public class AdvancedSearchBean {
 		
 		this.freeSearch = "";
 		this.fulltextSearch = "";
+		this.yearFrom = "";
+		this.yearTo ="";
 		
 		this.selectedOuId = "";
 		this.selectedContextId = "";
