@@ -15,6 +15,8 @@ public abstract class Criterion {
 	
 	protected int closeBracket = 0;
 	
+	protected String connector = "=";
+
 	public Operator getOperator() {
 		return operator;
 	}
@@ -47,6 +49,13 @@ public abstract class Criterion {
 		this.closeBracket = closeBracket;
 	}
 	
+	
+	public String getConnector() {
+		return connector;
+	}
 
+	public void setConnector(String connector) {
+		this.connector = connector;
+	}
 
 }

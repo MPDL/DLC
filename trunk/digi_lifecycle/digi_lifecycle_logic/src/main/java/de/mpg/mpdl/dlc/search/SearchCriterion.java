@@ -3,15 +3,6 @@ package de.mpg.mpdl.dlc.search;
 import java.util.List;
 
 
-import org.z3950.zing.cql.CQLAndNode;
-import org.z3950.zing.cql.CQLNode;
-import org.z3950.zing.cql.CQLRelation;
-import org.z3950.zing.cql.CQLTermNode;
-import org.z3950.zing.cql.ModifierSet;
-
-import de.mpg.mpdl.dlc.search.Criterion.Operator;
-
-
 
 public class SearchCriterion extends Criterion{
 
@@ -26,6 +17,8 @@ public class SearchCriterion extends Criterion{
 		KEYWORD(new String[]{"dlc.subject"}), 
 		ID(new String[]{"dlc.identifier"}), 
 		FULLTEXT(new String[]{"escidoc.fulltext"}),
+		CORPORATE(new String[]{"dlc.corporate"}),
+		SHELFMARK(new String[]{"dlc.shelfmark"}), //TODO check
 		
 		//TODO: structmd title and author
 		
@@ -79,6 +72,15 @@ public class SearchCriterion extends Criterion{
 		this.value = value;
 	}
 
+	public SearchCriterion(String con, SearchType searchType, String value, int openBracket, int closeBracket) 
+	{
+		this.connector = con;
+		this.searchType = searchType;
+		this.value = value;
+		this.openBracket = openBracket;
+		this.setCloseBracket(closeBracket);
+	}
+	
 	public SearchType getSearchType() {
 		return searchType;
 	}
@@ -118,7 +120,7 @@ public class SearchCriterion extends Criterion{
 						{
 							cql += " OR ";
 						}
-						cql += indexName + "=\"" + sc.getValue() + "\"";
+						cql += indexName + sc.getConnector() + "\"" + sc.getValue() + "\"";
 					}
 					
 					if(sc.getSearchType().getIndexNames().length > 1)
