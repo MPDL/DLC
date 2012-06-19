@@ -10,15 +10,16 @@
 
 
 <ui:composition template="templates/template_v3.xhtml">
-	
+	<ui:remove>
 	<ui:define name="breadcrumpTitle">			
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">>
 			<mpdl:hierarchicalBreadcrumb ou="#{viewCollection.col}">
 			</mpdl:hierarchicalBreadcrumb>
 		</h:panelGroup>	
 	</ui:define>
-	
+	</ui:remove>
 	<ui:define name="mainContent">
+		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
 		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
 		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
@@ -26,44 +27,56 @@
 			.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
 			#zeige { font-weight:bold; color:red; }
 		</style>
-
-
-	
-	
-	
-		<pretty:link mappingId="volumes" >
-			<f:param value="#{viewCollection.col.id}" />
-			<h:outputText value="#{lbl.view_collection_show}" style="font-size:300%; color:red"/><br/>
-		</pretty:link>
-		<br/>
-
-	    <h:panelGrid columns="2">	
-			<h:outputText value="#{lbl.view_collection_title} :" />		
-			<h:outputText value="#{viewCollection.col.name}" />
-
-			<h:outputText value="#{lbl.view_collection_description} :" />
-			<h:outputText value="#{viewCollection.col.description}"  />
-		</h:panelGrid>
-			
-
 		
-		<h:panelGroup layout="block" class="infiniteCarousel" rendered="#{not empty viewCollection.volumes}">
-			<h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/>
-			<h:panelGroup layout="block" class="wrapper">
-				<ul>
-					<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
-						<li>
-							<pretty:link mappingId="viewPages">
-							<f:param value="#{volume.item.objid}" />
-							<f:param value="recto-verso" />
-							<f:param value="1" />
-							
-								<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
-							</pretty:link>
-						</li>
-					</ui:repeat>
-				</ul>
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_collectionStartpage">
+			<!-- title -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
+				<ui:remove><h:outputText value="#{lbl.view_collection_title} :" /></ui:remove>
+				<pretty:link mappingId="volumes">
+					<f:param value="#{viewCollection.col.id}" />
+					<h1><h:outputText value="#{viewCollection.col.name}" /></h1>
+				</pretty:link>
 			</h:panelGroup>
+			
+			<!-- left content -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+				&#160;
+			</h:panelGroup>
+			
+			<!-- main content -->
+			<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+				<h:panelGroup styleClass="eg3_container_1">
+					<p>
+						<h3><h:outputText value="#{lbl.view_collection_description}:" /></h3>
+						<h:outputText value="#{viewCollection.col.description}"/>
+					</p>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_logoImageInfotext">
+					<pretty:link mappingId="volumes">
+						<f:param value="#{viewCollection.col.id}" />
+						<h:outputText value="#{lbl.view_collection_show}"/><br/>
+					</pretty:link>
+				</h:panelGroup>
+				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-top:2em;">
+					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
+					<h:panelGroup layout="block" class="wrapper">
+						<ul>
+							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+								<li>
+									<pretty:link mappingId="viewPages">
+										<f:param value="#{volume.item.objid}" />
+										<f:param value="recto-verso" />
+										<f:param value="1" />
+										
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+									</pretty:link>
+								</li>
+							</ui:repeat>
+						</ul>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+
 		</h:panelGroup>
 
 <ui:remove>				
@@ -71,11 +84,6 @@
 				<ca:ca_scrollButtons images="#{testCarouselBean.img}"/>
 			</h:panelGroup>
 </ui:remove>
-
-
-
-
-			
 	
 	</ui:define>
 </ui:composition>
