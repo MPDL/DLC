@@ -140,20 +140,24 @@ h6 {
 }
 
 input[type="search"] {
-	border: solid 0.08333em #B2B2B2;
+/*	border: solid 0.08333em #B2B2B2; */
+	border:none;
 	padding:0 0.1666em;
 }
 input[type="text"] {
-	border: solid 0.08333em #B2B2B2;
+/*	border: solid 0.08333em #B2B2B2; */
+	border:none;
 	padding:0 0.1666em;
 }
 input[type="number"] {
-	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+/*	border: solid 0.09em #B2B2B2; */	/* because of webkit engine, the border must be up-rounded for 1px */
+	border:none;
 	padding:0 0.1666em;
 }
 select {
 	padding:0;
-	border: solid 0.08333em #B2B2B2;
+/*	border: solid 0.08333em #B2B2B2; */
+	border:none;
 }
 button:disabled {
 	color:#EA7125;
