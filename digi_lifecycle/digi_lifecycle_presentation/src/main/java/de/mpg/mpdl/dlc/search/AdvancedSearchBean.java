@@ -17,6 +17,7 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.search.Criterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 
 
@@ -100,40 +101,15 @@ public class AdvancedSearchBean {
 	public String startSearch()
 	{		
 		try {
-			//Set context id
-//			for(int i = 0; i < contextList.size(); i ++)
-//			{
-//				SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID,contextList.get(i).getValue());
-//				this.searchCriterionList.add(scCon);
-//			}
-			if (!this.selectedContextId.equals(""))
-			{
-				SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID, this.selectedContextId);
-				this.searchCriterionList.add(scCon);
-			}
-			//All context for a ou
-			else
-				if (this.selectedContextId.equals("") && this.contextSelectItems.size() > 0)
-				{
-					for (int i = 0; i < this.contextSelectItems.size(); i ++)
-					{
-						SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString());
-						this.searchCriterionList.add(scCon);
-					}			
-				}
-			
+
+			this.setCollectionSearch();
+			this.setYearSearch();
 			
 			if (!this.freeSearch.equals(""))
 			{
 				//Set free search
 				SearchCriterion scFree = new SearchCriterion(SearchType.FREE, this.freeSearch);
 				this.searchCriterionList.add(scFree);
-			}
-			
-			//Set year search
-			if (!this.yearFrom.equals("") || (!this.yearTo.equals("")))
-			{
-				this.setYearSearch();
 			}
 			
 			//Set fulltext search
@@ -154,7 +130,53 @@ public class AdvancedSearchBean {
 	}
 	
 	/**
-	 * TODO, spec not sufficient!!!
+	 * Set the collection search criterion
+	 */
+	private void setCollectionSearch()
+	{
+		//Set context id
+//		for(int i = 0; i < contextList.size(); i ++)
+//		{
+//			SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID,contextList.get(i).getValue());
+//			this.searchCriterionList.add(scCon);
+//		}
+		if (!this.selectedContextId.equals(""))
+		{
+			SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID, this.selectedContextId);
+			this.searchCriterionList.add(scCon);
+		}
+		//All context for a ou
+		else
+			if (this.selectedContextId.equals("") && this.contextSelectItems.size() > 0)
+			{
+				//Remove first element because its empty ("All collections")
+				this.contextSelectItems.remove(0);
+				for (int i = 0; i < this.contextSelectItems.size(); i ++)
+				{
+					if (i == 0)
+					{
+						SearchCriterion scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString(),1,0);
+						this.searchCriterionList.add(scCon);
+					}
+					else
+					{
+						if (i == this.contextSelectItems.size()-1)
+						{
+							SearchCriterion scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString(),0,1);
+							this.searchCriterionList.add(scCon);
+						}
+						else
+						{
+							SearchCriterion scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString());
+							this.searchCriterionList.add(scCon);
+						}
+					}
+				}			
+			}
+	}
+
+	/**
+	 * Set the year search criterion
 	 */
 	private void setYearSearch()
 	{
@@ -162,7 +184,23 @@ public class AdvancedSearchBean {
 		{
 			if (this.yearTo.equals(""))
 			{
-				
+				SearchCriterion ySc = new SearchCriterion(SearchType.YEAR, this.yearFrom);
+				this.searchCriterionList.add(ySc);
+			}
+			
+			else
+			{ 
+				SearchCriterion yfSc = new SearchCriterion(">=",SearchType.YEAR, this.yearFrom,1,0);
+				this.searchCriterionList.add(yfSc);
+				SearchCriterion ytSc = new SearchCriterion("<=",SearchType.YEAR, this.yearFrom,0,1);
+				this.searchCriterionList.add(ytSc);
+			}
+		}
+		else
+		{
+			if (!this.yearTo.equals(""))
+			{
+				//TODO: messaging
 			}
 		}
 	}
