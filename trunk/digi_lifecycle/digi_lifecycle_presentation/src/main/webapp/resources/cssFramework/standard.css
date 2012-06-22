@@ -141,6 +141,11 @@ option {
 	text-align:right;
 }
 
+.eg3_overlay {
+	overflow:visible !important;
+	z-index:20;
+}
+
 /*
  * global grid-size definitions
  */
