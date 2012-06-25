@@ -19,26 +19,18 @@
 					
 					<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
 					
-					<!-- Impress is in footer
-					<h:outputLink id="lnkLegal" title="#{tlt.Imprint}" 
-						value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer" target="_blank">
-						<h:outputText value="#{lbl.header_lnk_imprint}" />
-					</h:outputLink>			
-					
-					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
-					 -->
-					
 					<h:outputLink id="lnkDlc" title="#{tlt.meta_dlc}"
 						value="#{applicationBean.domain}/#{applicationBean.contextPath}/">
 						<h:outputText value="#{lbl.header_lnk_dlc}" />
 					</h:outputLink> 
-					
-					
+										
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+
 					
-					<h:outputLink value="#" styleClass="eg3_lastSearchBtn" title="#{tlt.meta_lastSearchResult}">
-						<h:outputText value="#{lbl.header_lastSearchResult}"/>
-					</h:outputLink>
+					<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{applicationBean.latestCql!= null}"
+						value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{applicationBean.latestCql}">
+						<h:outputText value="#{lbl.header_lastSearchResult}" />
+					</h:outputLink> 
 					
 					<h:form>
 						<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
