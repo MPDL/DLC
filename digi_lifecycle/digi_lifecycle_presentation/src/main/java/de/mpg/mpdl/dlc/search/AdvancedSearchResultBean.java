@@ -1,30 +1,24 @@
 package de.mpg.mpdl.dlc.search;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.management.Query;
 
 import org.apache.log4j.Logger;
 import org.z3950.zing.cql.CQLBooleanNode;
 import org.z3950.zing.cql.CQLNode;
-import org.z3950.zing.cql.CQLParseException;
 import org.z3950.zing.cql.CQLParser;
 import org.z3950.zing.cql.CQLTermNode;
 
-import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
-import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
@@ -40,6 +34,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	
 	private SearchBean searchBean = new SearchBean();
+	private ApplicationBean appBean = new ApplicationBean();
 	
 	private List<SearchCriterion> searchCriterionList;	
 	
@@ -67,6 +62,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	}
 
 	public void setCqlQuery(String query) {
+		this.appBean.setLatestCql(query);
 		this.cqlQuery = query;
 	}
 
@@ -130,6 +126,5 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 		return buffer;
 		
 	}
-
 	
 }

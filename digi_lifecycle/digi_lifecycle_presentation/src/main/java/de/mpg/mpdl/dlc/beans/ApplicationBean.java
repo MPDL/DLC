@@ -73,8 +73,9 @@ public class ApplicationBean
     private static String logoUrl;
     private static String logoLink;
     private static String logoTlt;
-    
-    //TODO help_page
+    private static String latestCql = null;
+
+	//TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
     public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
@@ -392,6 +393,16 @@ public class ApplicationBean
     {
     	logoTlt = tlt;
     }
+    
+    
+    public String getLatestCql() {
+    	System.out.println("CQL: " + latestCql);
+		return latestCql;
+	}
+
+	public void setLatestCql(String cql) {
+		latestCql = cql;
+	}
 
     
 //    /**

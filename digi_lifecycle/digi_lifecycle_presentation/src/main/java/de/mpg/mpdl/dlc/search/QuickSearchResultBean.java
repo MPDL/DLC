@@ -10,6 +10,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -27,6 +28,7 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	
 	
 	private SearchBean searchBean = new SearchBean();
+	private ApplicationBean appBean = new ApplicationBean();
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
@@ -51,6 +53,7 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	}
 
 	public void setQuery(String query) {
+		this.appBean.setLatestCql(query);
 		this.query = query;
 	}
 	
