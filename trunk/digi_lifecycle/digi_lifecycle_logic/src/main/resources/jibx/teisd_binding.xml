@@ -85,13 +85,11 @@
 	 		
 	 		
  			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
- 				
  				<structure name="titlePart" usage="optional">
 	 				<value style="attribute" name="type" field="type" usage="optional"/>
 	 				<value style="text" field="title" usage="optional"/>
  				</structure>
  			</collection>
- 			
 
 	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>

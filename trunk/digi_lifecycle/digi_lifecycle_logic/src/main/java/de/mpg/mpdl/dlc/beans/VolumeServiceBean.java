@@ -521,7 +521,7 @@ public class VolumeServiceBean {
 	
 
 	
-	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, DiskFileItem footer, FileItem teiFile) throws Exception
 	{
 		
 		logger.info("Creating new volume/monograph");
@@ -568,27 +568,44 @@ public class VolumeServiceBean {
 				item.setRelations(relations);
 				
 			}
-				
-				File teiFileWithIds = null;
-				
-	
+
 				//Convert and upload images 
-				long start = System.currentTimeMillis();			
+				long start = System.currentTimeMillis();		
 				for(DiskFileItem imageItem : images)
 				{
 					String filename = getJPEGFilename(imageItem.getName());
 					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
-					 
+					File jpegImage;
+					if(imageItem.getName().endsWith("tif"))
+					{
+						jpegImage = ImageHelper.tiffToJpeg(imageItem.getStoreLocation(), getJPEGFilename(imageItem.getName()));
+					}
+					else
+						jpegImage = imageItem.getStoreLocation();
+					if(footer != null)
+					{
+						File jpegFooter;
+						if(footer.getName().endsWith("tif"))
+						{
+							jpegFooter = ImageHelper.tiffToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
+						}	
+						else
+							jpegFooter = footer.getStoreLocation();
+						
+						jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
+							
+					}
+					
 					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-					File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
+					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
 					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
 									
 					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-					File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
+					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
 					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
 					
 					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-					File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
+					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
 					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
 					
 					
@@ -598,7 +615,7 @@ public class VolumeServiceBean {
 					
 					p.setId("page_" + pos);
 					
-	
+
 					p.setOrder(pos);
 					p.setOrderLabel("");
 					p.setType("page");
@@ -606,8 +623,7 @@ public class VolumeServiceBean {
 					p.setLabel(imageItem.getName());
 					metsData.getPages().add(p);
 					
-					
-				}
+				}				
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
 			
@@ -627,6 +643,7 @@ public class VolumeServiceBean {
 			
 			return volume;
 	}
+	
 	
 	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<DiskFileItem> images)
 	{
@@ -1154,25 +1171,33 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
+		VolumeServiceBean vsb =new VolumeServiceBean();
 
+		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
+		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new FileInputStream(new File("C:/Users/yu/Desktop/teisd.xml")), "UTF-8");
+		
+		
+
+		/*
 		String url = "http://dlc.mpdl.mpg.de:8080";
-		Authentication auth = new Authentication(new URL(url), "dlc_mpdl", "dlc_mpdl");
+		Authentication auth = new Authentication(new URL(url), "dlc_mpib", "dlc_mpib");
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
 		client.setHandle(auth.getHandle()); 
-//		String id = "escidoc:12104";
-//		Item item = client.retrieve(id);
-//		
-//		TaskParam taskParam=new TaskParam(); 
-//	    taskParam.setComment("Submit Volume");
-//		taskParam.setLastModificationDate(item.getLastModificationDate());
-//		
-//		Result res = client.submit(id, taskParam);
-//		
-//		taskParam=new TaskParam(); 
-//	    taskParam.setComment("Release Volume");
-//		taskParam.setLastModificationDate(res.getLastModificationDate());
-//		res = client.release(id, taskParam);
+		String id = "escidoc:12138";
+		Item item = client.retrieve(id);
+		
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Submit Volume");
+		taskParam.setLastModificationDate(item.getLastModificationDate());
+		
+		Result res = client.submit(id, taskParam);
+		
+		taskParam=new TaskParam(); 
+	    taskParam.setComment("Release Volume");
+		taskParam.setLastModificationDate(res.getLastModificationDate());
+		res = client.release(id, taskParam);
+		*/
 //		
 //		client.release("escidoc:12104", taskParam);
 
@@ -2254,6 +2279,5 @@ public class VolumeServiceBean {
 		return new VolumeSearchResult(volumeResult, srwResp.getNumberOfRecords());
 	}
 	
-
 
 }
