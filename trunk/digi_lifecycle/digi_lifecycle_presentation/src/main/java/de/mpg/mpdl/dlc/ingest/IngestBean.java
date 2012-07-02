@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -23,7 +22,6 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -66,6 +64,8 @@ public class IngestBean{
 	private static Logger logger = Logger.getLogger(IngestBean.class);
    
 	private ArrayList<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
+	private DiskFileItem footer;
+	
 	private FileItem mabFile;
 	private ModsMetadata modsMetadata  = new ModsMetadata();
 	
@@ -399,12 +399,21 @@ public class IngestBean{
 					MessageHelper.errorMessage("Error while validating TEI"); 
 				}
 			}
+			else if(fue.getFileItem().getName().startsWith("footer"))
+			{
+				this.setFooter((DiskFileItem)fue.getFileItem());
+			}
 			else
 			{
 				imageFiles.add((DiskFileItem)fue.getFileItem());
+
 			}
 		}
 	}
+	
+
+	
+	
 	
 	
     
@@ -603,7 +612,7 @@ public class IngestBean{
 		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 		    			return "";
 		    		}
-		    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+		    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
@@ -629,7 +638,7 @@ public class IngestBean{
 		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 		    			return "";
 		    		}
-		    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, teiFile);
+		    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
@@ -836,6 +845,16 @@ public class IngestBean{
 
 	public void setVolume(Volume volume) {
 		this.volume = volume;
+	}
+
+
+	public DiskFileItem getFooter() {
+		return footer;
+	}
+
+
+	public void setFooter(DiskFileItem footer) {
+		this.footer = footer;
 	}
 	
 	
