@@ -396,7 +396,6 @@ public class ApplicationBean
     
     
     public String getLatestCql() {
-    	System.out.println("CQL: " + latestCql);
 		return latestCql;
 	}
 
