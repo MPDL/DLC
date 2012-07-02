@@ -12,6 +12,8 @@
 			</xsl:copy>
 		</xsl:template>
 		
+		<xsl:template match="tei:figure"/>
+		
 		
 		
 		<!--for head and title tags: copy tag with all attributes, copy the inner text content, replace <lb/> with a blank -->
