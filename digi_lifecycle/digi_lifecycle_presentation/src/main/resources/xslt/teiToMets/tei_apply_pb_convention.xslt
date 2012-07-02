@@ -8,6 +8,27 @@
 		<xsl:choose>
 			<xsl:when
 				test="(parent::tei:div or parent::tei:docTitle or parent::tei:titlePage) and not(preceding-sibling::*)" />
+			
+			<xsl:when test="(parent::tei:titlePage) and (preceding-sibling::tei:titlePart) and (following-sibling::tei:titlePart) " >
+				<xsl:copy-of select="following-sibling::tei:titlePart" />
+				<xsl:copy>
+					<xsl:apply-templates
+						select="@*|*|processing-instruction()|comment()|text()" />
+				</xsl:copy>
+			</xsl:when>
+			
+			<xsl:otherwise>
+				<xsl:copy>
+					<xsl:apply-templates
+						select="@*|*|processing-instruction()|comment()|text()" />
+				</xsl:copy>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template match="tei:titlePart">
+		<xsl:choose>
+			<xsl:when test="(parent::tei:titlePage) and (preceding-sibling::tei:pb) and not (following-sibling::tei:pb)" />
 			<xsl:otherwise>
 				<xsl:copy>
 					<xsl:apply-templates
@@ -51,14 +72,17 @@
 						select="@*|*|processing-instruction()|comment()|text()" />
 				</xsl:copy>
 			</xsl:when>
+
 			<xsl:otherwise>
 				<xsl:copy>
 					<xsl:apply-templates
 						select="@*|*|processing-instruction()|comment()|text()" />
 				</xsl:copy>
 			</xsl:otherwise>
+
 		</xsl:choose>
 	</xsl:template>
+
 
 	<xsl:template match="@*|*|processing-instruction()|comment()|text()">
 		<xsl:copy>
