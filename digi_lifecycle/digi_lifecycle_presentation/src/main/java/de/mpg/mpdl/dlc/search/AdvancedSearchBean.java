@@ -19,6 +19,7 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.search.Criterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 
 
 @ManagedBean
@@ -28,30 +29,28 @@ public class AdvancedSearchBean {
 
 	private static Logger logger = Logger.getLogger(AdvancedSearchBean.class);
 	
-	private List<SearchCriterion> searchCriterionList;
-	
-	private List<SearchCriterion> contextList;
-
-	private String selectedContextId="";
-	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
-	
-	private String selectedOuId ="";
-	private List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
+	private List<SearchCriterion> searchCriterionList;	
 	
 	private String freeSearch ="";
 	
-	private String yearFrom ="";
-	private String yearTo ="";
+	private SearchCriterion yearFrom = null;
+	private SearchCriterion yearTo = null;
 	
 	private String fulltextSearch= "";
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();	
-	private OrganizationalUnitServiceBean ouServiceBean =  new OrganizationalUnitServiceBean();
-	
+	private OrganizationalUnitServiceBean ouServiceBean =  new OrganizationalUnitServiceBean();	
 	private SearchBean searchBean = new SearchBean();
 	
 	@ManagedProperty("#{advancedSearchResultBean}")
 	private AdvancedSearchResultBean advancedSearchResultBean;
+	
+	//Variables for the Library/Context Search
+	private List<SelectItem> allLibItems;
+	private List<SelectItem> allConItems;
+	private ContextSearch contextSearchItem;
+	private List<ContextSearch> contextScElements = new ArrayList<ContextSearch>();
+	
 	
 	public AdvancedSearchBean()
 	{
@@ -59,42 +58,62 @@ public class AdvancedSearchBean {
 		this.searchCriterionList.add(new SearchCriterion(SearchType.FREE, ""));
 		this.searchCriterionList.add(new SearchCriterion(SearchType.AUTHOR, ""));
 		this.searchCriterionList.add(new SearchCriterion(SearchType.TITLE, ""));
-			
-		this.contextList = new ArrayList<SearchCriterion>();
-		this.contextList.add(new SearchCriterion(SearchType.CONTEXT_ID, ""));
+		
+		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
+		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
+		
+		this.contextSearchItem = new ContextSearch();
 		
 		this.init();
 	}
 	
 	public void init()
 	{
-		this.refreshLists();
-	}
-	
-	public void refreshLists()
-	{
-		this.ouSelectItems.clear();
-		this.ouSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allLib")));
+		//Set the libraries list
+		List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
+		ouSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allLib")));
 		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
 		{
-			this.ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+			ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+		}
+		this.setAllLibItems(ouSelectItems);
+		
+		//Set the contexts list
+		List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
+		contextSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allCon")));
+		for(Context c : contextServiceBean.retrieveAllcontexts())
+		{
+			contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
+		}
+		this.setAllConItems(contextSelectItems);
+		
+		this.contextSearchItem.setContextList(this.allConItems);
+		this.contextScElements.add(this.contextSearchItem);
+	}
+	
+	public void refreshLists(String type, String id)
+	
+	{				
+		if (type.equals("OU"))
+		{			
+			//Prepare context list (depends on library selection)
+			List<SelectItem> contextSelectItems= new ArrayList<SelectItem>();
+			contextSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allCon")));			
+			if (id != null && !id.equals(""))
+				{
+					for(Context c : contextServiceBean.retrieveOUContexts(id))
+					{
+						contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
+					}
+				}
+			
+			this.contextSearchItem.setContextList(contextSelectItems);
+			this.contextSearchItem.setOuId(id);
 		}
 		
-		this.contextSelectItems.clear();
-		this.contextSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allCon")));
-		if (!selectedOuId.equals(""))
-		{
-			for(Context c : contextServiceBean.retrieveOUContexts(selectedOuId))
-			{
-				this.contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
-			}
-		}
-		else
-		{
-			for(Context c : contextServiceBean.retrieveAllcontexts())
-			{
-				this.contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
-			}
+		if (type.equals("CON"))
+		{			
+			this.contextSearchItem.setContextId(id);
 		}
 	}
 	
@@ -133,46 +152,64 @@ public class AdvancedSearchBean {
 	 * Set the collection search criterion
 	 */
 	private void setCollectionSearch()
-	{
+	{		
 		//Set context id
-//		for(int i = 0; i < contextList.size(); i ++)
-//		{
-//			SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID,contextList.get(i).getValue());
-//			this.searchCriterionList.add(scCon);
-//		}
-		if (!this.selectedContextId.equals(""))
+		for(int i = 0; i < contextScElements.size(); i ++)
 		{
-			SearchCriterion scCon = new SearchCriterion(SearchType.CONTEXT_ID, this.selectedContextId);
-			this.searchCriterionList.add(scCon);
-		}
-		//All context for a ou
-		else
-			if (this.selectedContextId.equals("") && this.contextSelectItems.size() > 0)
+			SearchCriterion scCon;
+			ContextSearch contextSearch = contextScElements.get(i);
+			boolean start = false;
+			
+			//Means, a specific context was selected
+			if (!contextSearch.getContextId().equals(""))
 			{
-				//Remove first element because its empty ("All collections")
-				this.contextSelectItems.remove(0);
-				for (int i = 0; i < this.contextSelectItems.size(); i ++)
+				if (i==0)
 				{
-					if (i == 0)
+					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,0);
+					this.searchCriterionList.add(scCon);
+					start = true;
+				}
+				if (i == contextScElements.size())
+				{
+					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId(),0,1);
+					this.searchCriterionList.add(scCon);
+				}
+				else
+				{
+					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId());
+					this.searchCriterionList.add(scCon);
+				}
+			}
+
+			//Select all context of a ou
+			else
+				if (contextSearch.getContextId().equals("") && contextSearch.getContextList().size() > 0)
+				{
+					for (int y = 1; y < contextSearch.getContextList().size(); y ++)
 					{
-						SearchCriterion scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString(),1,0);
-						this.searchCriterionList.add(scCon);
-					}
-					else
-					{
-						if (i == this.contextSelectItems.size()-1)
+						String currentContextId = contextSearch.getContextList().get(y).getValue().toString();
+						if (y == 1 && !start)
 						{
-							SearchCriterion scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString(),0,1);
+							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,0);
 							this.searchCriterionList.add(scCon);
 						}
 						else
 						{
-							SearchCriterion scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, this.contextSelectItems.get(i).getValue().toString());
-							this.searchCriterionList.add(scCon);
+							if (y == this.contextScElements.size())
+							{
+								scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, currentContextId,0,1);
+								this.searchCriterionList.add(scCon);
+							}
+							else
+							{
+								scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, currentContextId);
+								this.searchCriterionList.add(scCon);
+							}
 						}
-					}
-				}			
-			}
+					}			
+				}
+		}
+
 	}
 
 	/**
@@ -180,20 +217,23 @@ public class AdvancedSearchBean {
 	 */
 	private void setYearSearch()
 	{
-		if (!this.yearFrom.equals(""))
+		if (this.yearFrom != null)
 		{
-			if (this.yearTo.equals(""))
+			if (this.yearTo == null)
 			{
-				SearchCriterion ySc = new SearchCriterion(SearchType.YEAR, this.yearFrom);
-				this.searchCriterionList.add(ySc);
+				this.searchCriterionList.add(this.yearFrom);
 			}
 			
 			else
 			{ 
-				SearchCriterion yfSc = new SearchCriterion(">=",SearchType.YEAR, this.yearFrom,1,0);
-				this.searchCriterionList.add(yfSc);
-				SearchCriterion ytSc = new SearchCriterion("<=",SearchType.YEAR, this.yearFrom,0,1);
-				this.searchCriterionList.add(ytSc);
+				this.yearFrom.setConnector(">=");
+				this.yearFrom.setOpenBracket(1);
+				this.yearFrom.setCloseBracket(0);
+				this.searchCriterionList.add(this.yearFrom);
+				this.yearTo.setConnector("<=");
+				this.yearTo.setOpenBracket(0);
+				this.yearTo.setCloseBracket(1);
+				this.searchCriterionList.add(yearTo);
 			}
 		}
 		else
@@ -215,13 +255,10 @@ public class AdvancedSearchBean {
 		
 		this.freeSearch = "";
 		this.fulltextSearch = "";
-		this.yearFrom = "";
-		this.yearTo ="";
+		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
+		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
-		this.selectedOuId = "";
-		this.selectedContextId = "";
-		
-		this.refreshLists();
+		this.refreshLists("OU",null);
 		return"";
 	}
 
@@ -241,40 +278,6 @@ public class AdvancedSearchBean {
 		this.searchCriterionList = searchCriterionList;
 	}
 
-	public String getSelectedContextId() {
-		return selectedContextId;
-	}
-
-	public void setSelectedContextId(String selectedContextId) {
-		this.selectedContextId = selectedContextId;
-	}
-	
-	public List<SelectItem> getContextSelectItems() {
-		return contextSelectItems;
-	}
-
-	public void setContextSelectItems(List<SelectItem> contextSelectItems) {
-		this.contextSelectItems = contextSelectItems;
-	}
-	
-
-	public String getSelectedOuId() {
-		return selectedOuId;
-	}
-
-	public void setSelectedOuId(String selectedOuId) {
-		this.selectedOuId = selectedOuId;
-	}
-
-	public List<SelectItem> getOuSelectItems() {
-		return ouSelectItems;
-	}
-
-	public void setOuSelectItems(List<SelectItem> ouSelectItems) {
-		this.ouSelectItems = ouSelectItems;
-	}
-	
-
 	public String getFreeSearch() {
 		return freeSearch;
 	}
@@ -283,22 +286,21 @@ public class AdvancedSearchBean {
 		this.freeSearch = freeSearch;
 	}
 	
-	public String getYearFrom() {
+	public SearchCriterion getYearFrom() {
 		return yearFrom;
 	}
 
-	public void setYearFrom(String yearFrom) {
+	public void setYearFrom(SearchCriterion yearFrom) {
 		this.yearFrom = yearFrom;
 	}
-
-	public String getYearTo() {
+	
+	public SearchCriterion getYearTo() {
 		return yearTo;
 	}
 
-	public void setYearTo(String yearTo) {
+	public void setYearTo(SearchCriterion yearTo) {
 		this.yearTo = yearTo;
 	}
-	
 
 	public String getFulltextSearch() {
 		return fulltextSearch;
@@ -308,13 +310,35 @@ public class AdvancedSearchBean {
 		this.fulltextSearch = fulltextSearch;
 	}
 	
-	
-	public List<SearchCriterion> getContextList() {
-		return contextList;
+	public void newContextScElement()
+	{	
+		this.contextSearchItem = new ContextSearch();		
+		this.contextSearchItem.setContextList(this.allConItems);
+		
+		this.contextScElements.add(this.contextSearchItem);
+	}
+		
+	public List<ContextSearch> getContextScElements() {
+		return contextScElements;
 	}
 
-	public void setContextList(List<SearchCriterion> contextList) {
-		this.contextList = contextList;
+	public void setContextScElements(List<ContextSearch> contextScElements) {
+		this.contextScElements = contextScElements;
+	}
+	public List<SelectItem> getAllLibItems() {
+		return allLibItems;
+	}
+
+	public void setAllLibItems(List<SelectItem> allLibItems) {
+		this.allLibItems = allLibItems;
+	}
+
+	public List<SelectItem> getAllConItems() {
+		return allConItems;
+	}
+
+	public void setAllConItems(List<SelectItem> allConItems) {
+		this.allConItems = allConItems;
 	}
 	
 }

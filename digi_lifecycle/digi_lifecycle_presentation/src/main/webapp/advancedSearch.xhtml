@@ -17,11 +17,10 @@
 				<h1><h:outputText value="#{lbl.sc_advSearch}"></h:outputText></h1>
 			</h:panelGroup>
 		</h:panelGroup>
-			
-				<h:form>
+				<h:form id="scForm">
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">	
 
-							<br/><br/><br/><br/>
+							<br/><br/><br/><br/><br/><br/><br/>
 							<h2><h:outputText value="#{lbl.sc_all}"></h:outputText></h2>
 							
 							<br/><br/><br/>
@@ -39,14 +38,16 @@
 
 					</h:panelGroup>	
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >						
-							<!-- Dropdown Libraries  -->
+							<!-- Dropdown Libraries  -->							
 							<h2><h:outputText value="#{lbl.sc_libraries}"></h:outputText></h2>
 							
-								<h:selectOneMenu value="#{advancedSearchBean.selectedOuId}" id="ouList" >					
-									<f:selectItems value="#{advancedSearchBean.ouSelectItems}" />
-									<f:ajax event="change" render="contextList" listener="#{advancedSearchBean.refreshLists()}"/>
-								</h:selectOneMenu>
-							
+							<a4j:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" rowKeyVar="rowKey">	
+									<h:selectOneMenu value="#{scElem.ouId}" >					
+										<f:selectItems value="#{advancedSearchBean.allLibItems}"/>
+										<f:ajax event="change" listener="#{advancedSearchBean.refreshLists('OU',scElem.ouId)}" render=":scForm:contextList"/>
+									</h:selectOneMenu>
+							<br/><br/>
+							</a4j:repeat>
 
 							<br/><br/><br/>
 							
@@ -84,9 +85,15 @@
 								
 								<br/><br/>							
 							</a4j:repeat>
-							<br/>												
+							<br/>		
+							<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
+								<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+								<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+								<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+							</h:selectOneMenu>	
+							<br/>									
 							<h:outputText value="#{lbl.sc_year}"/>
-							<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom}"/> - <h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo}"/>
+							<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}"/> - <h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}"/>
 							
 							<br/><br/><br/><br/>
 							
@@ -124,17 +131,15 @@
 						
 							<!-- Dropdown Collections  -->				
 							<h2><h:outputText value="#{lbl.sc_collections}"></h:outputText></h2>
-							<!--<a4j:repeat value="#{advancedSearchBean.contextList}" var="sc" rowKeyVar="rowKey">  -->
-								<h:selectOneMenu value="#{advancedSearchBean.selectedContextId}">								
-										<f:selectItems value="#{advancedSearchBean.contextSelectItems}" itemValue="CONTEXT_ID"/>
+							<a4j:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" rowKeyVar="rowKey">
+								<h:selectOneMenu value="#{scElem.contextId}">								
+										<f:selectItems value="#{scElem.contextList}" itemValue="CONTEXT_ID"/>										
 								</h:selectOneMenu>
-								<!-- <h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewContextList(advancedSearchBean.contextList)}" >
-									<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
+								<h:commandButton type="button" value="+" action="#{advancedSearchBean.newContextScElement}" >
+									<f:ajax render=":#{component.parent.parent.parent.clientId}" execute="@form"/>
 								</h:commandButton>
-								 -->
-								
 							<br/><br/>	
-							<!--</a4j:repeat> -->
+							</a4j:repeat>
 
 							<br/><br/><br/>
 							<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" action="#{advancedSearchBean.startSearch}" />
@@ -147,7 +152,6 @@
 						
 					</h:panelGroup>	
 				</h:form>
-			
 	<br /><br /><br /><br /><br />
 		
 	</ui:define>
