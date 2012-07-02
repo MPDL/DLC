@@ -13,7 +13,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 		multipart : true,
 		multiple_queues : true,
 		filters : [
-			{title : "Image files", extensions : "jpg,gif,png,tif"},
+			{title : "Image files", extensions : "jpg,jpeg,tif,JPG,JPEG"},
 			{title : "Xml Files", extensions : "xml"},
 			{title : "Mab Files", extensions : "mab"}
 		],
