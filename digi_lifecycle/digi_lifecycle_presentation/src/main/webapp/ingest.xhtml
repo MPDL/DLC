@@ -5,7 +5,6 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
-	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:modsEditor="http://java.sun.com/jsf/composite/components/mpdl/modsEditor"
 	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
@@ -118,10 +117,10 @@
 					</h:panelGroup>
 					
 					<br/>
-					<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volumeId}">
+					<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
 						<f:ajax render=":#{component.parent.clientId}" />
 					</h:commandButton>
-					<h:commandButton action="#{ingestBean.resetMAB}" value="reset Metadata" rendered="#{not empty ingestBean.mabFile and not empty ingestBean.volumeId}">
+					<h:commandButton action="#{ingestBean.resetMAB}" value="reset Metadata" rendered="#{not empty ingestBean.mabFile and not empty ingestBean.volume}">
 						<f:ajax render=":#{component.parent.clientId}" />
 					</h:commandButton>
 				</rich:panel>
@@ -199,6 +198,17 @@
 	                	<h:outputText value="#{page}"></h:outputText>
 	                </rich:dataGrid>
 				</rich:panel>
+				
+				<rich:panel id="footer" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}" rendered="#{ingestBean.volumeId == 'new'}">
+					<f:facet name="header">
+						<h:outputText value="#{lbl.upload_footer}" />
+					</f:facet>
+					<h:outputText value="#{ingestBean.footer.name} - Found" rendered="#{ingestBean.volumeId == 'new'}"/>
+					
+					
+
+	            </rich:panel>
+				
 			</h:form>
 			
 			<h:messages />
