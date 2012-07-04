@@ -217,9 +217,11 @@
 		<xsl:element name="relatedItem">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
-			<xsl:element name="identifier">
-				<xsl:attribute name="type"><xsl:value-of select="'local'"/></xsl:attribute>
-				<xsl:value-of select="."/>
+			<xsl:element name="recordInfo">
+				<xsl:element name="recordIdentifier">
+					<xsl:attribute name="source"><xsl:value-of select="'local'"/></xsl:attribute>
+					<xsl:value-of select="."/>
+				</xsl:element>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
