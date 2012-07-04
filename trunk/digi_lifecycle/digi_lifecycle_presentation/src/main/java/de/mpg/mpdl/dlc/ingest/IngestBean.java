@@ -47,6 +47,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsSeries;
+
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
@@ -251,6 +252,8 @@ public class IngestBean{
     	if(teiFile != null)
     		this.teiFile = null;
     	numberOfTeiPbs = 0;
+    	if(footer != null)
+    		this.footer = null;
     	return "";
     }
  
@@ -384,7 +387,7 @@ public class IngestBean{
 			if (fue.getFileItem().getName().endsWith(".mab"))
 			{
 				if(this.volumeId != null)
-					this.modsMetadata = new ModsMetadata();
+					this.modsMetadata = new ModsMetadata(); 
 				this.setMabFile(fue.getFileItem());
 				processMabFile(fue.getFileItem());
 			}
