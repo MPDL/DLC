@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -45,8 +46,10 @@ import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
+import de.mpg.mpdl.dlc.vo.mods.ModsPhysicalDescription;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
-import de.mpg.mpdl.dlc.vo.mods.ModsSeries;
+import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
+
 
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
@@ -203,8 +206,8 @@ public class IngestBean{
     	this.modsMetadata.getPublishers().add(publisher);
 		this.modsMetadata.getKeywords().add("");
 		this.modsMetadata.setLanguage_037(new ModsLanguage());
-		this.modsMetadata.getSeries().add(new ModsSeries());
-		this.modsMetadata.getExtents().add("");
+		this.modsMetadata.getRelatedItems().add(new ModsRelatedItem());
+		this.modsMetadata.getPhysicalDescriptions().add(new ModsPhysicalDescription());
 	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
@@ -576,17 +579,17 @@ public class IngestBean{
 		}
 
 
-		if(md.getExtents().get(0) == "" )
-			md.setExtents(null);
+		if(md.getPhysicalDescriptions().get(0).getExtent() == "" )
+			md.setPhysicalDescriptions(null);
 
-		this.modsMetadata.getSeries().add(new ModsSeries());
+		this.modsMetadata.getRelatedItems().add(new ModsRelatedItem());
 		
-		if(md.getSeries().get(0).getSeriesTitle() =="")
-			md.setSeries(null);
+		if(md.getRelatedItems().get(0).getTitle() =="")
+			md.setRelatedItems(null);
 		else
 		{
-			md.getSeries().get(0).setDisplayLabel("series1");
-			md.getSeries().get(0).setType("series");
+			md.getRelatedItems().get(0).setDisplayLabel("series1");
+			md.getRelatedItems().get(0).setType("series");
 		}
 		
 		return md;

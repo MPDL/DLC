@@ -35,7 +35,10 @@
 								<f:param value="#{volume.objidAndVersion}" />
 								<f:param value="recto-verso" />
 								<f:param value="1" />
-								<h:outputText value="#{lbl.list_volume}. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
+								<h:outputText value="#{lbl.list_volume}. " />
+								<h:outputText value="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" rendered="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
+								<br/>
+								<h:outputText value="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}" rendered="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}"/>
 	
 							</pretty:link> 
 						</div> 
@@ -116,7 +119,10 @@
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending'}">
-					<h:outputText value="#{lbl.button_command_release}" />
+				
+					<h:commandButton action="#{allVolumesBean.release(volume)}" value="#{lbl.button_command_release}" >
+					</h:commandButton>
+
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.colId == 'my'and volumeUtilBean.editable(volume)}">

@@ -71,6 +71,9 @@
 		<h:outputText value="#{lbl.mods_signature_544}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
 		
+		<h:outputText value="#{lbl.mods_summaryOfVolumes}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.nodes[0].node}" />
+		
 		<h:outputText value="#{lbl.mods_keywords}" />
 		<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
 			<h:panelGrid columns="3">

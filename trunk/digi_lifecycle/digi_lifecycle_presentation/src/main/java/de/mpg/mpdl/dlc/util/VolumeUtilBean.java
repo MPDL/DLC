@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.util;
 
 import java.net.URLEncoder;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -33,8 +34,9 @@ import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
+import de.mpg.mpdl.dlc.vo.mods.ModsPart;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
-import de.mpg.mpdl.dlc.vo.mods.ModsSeries;
+import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Back;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
@@ -122,6 +124,7 @@ public class VolumeUtilBean {
 	
 	public static ModsName getFirstAuthor(ModsMetadata md)
 	{
+
 		for(ModsName mn : md.getNames())
 		{
 			if(mn.getDisplayLabel().equals("author1"))
@@ -179,6 +182,7 @@ public class VolumeUtilBean {
 	
 	public static ModsName getFirstEditor(ModsMetadata md)
 	{
+
 		for(ModsName mn : md.getNames())
 			if(mn.getDisplayLabel().equals("editor1"))
 				return mn;
@@ -239,44 +243,45 @@ public class VolumeUtilBean {
 
 	
 
-	public static ModsSeries getSeries451(ModsMetadata md)
+	public static ModsRelatedItem getSeries451(ModsMetadata md)
 	{
-		for(ModsSeries ms : md.getSeries())
-			if(ms.getDisplayLabel()=="series1")
+		for(ModsRelatedItem ms : md.getRelatedItems())
+			if(ms.getDisplayLabel()!=null && ms.getDisplayLabel().equals("series1"))
 				return ms;
-		return new ModsSeries();
+		return new ModsRelatedItem();
 	}
 	
 	
-	public static ModsSeries getSeries451a(ModsMetadata md)
+	public static ModsRelatedItem getSeries451a(ModsMetadata md)
 	{
-		for(ModsSeries ms : md.getSeries())
-			if(ms.getDisplayLabel()=="series2")
+		for(ModsRelatedItem ms : md.getRelatedItems())
+			if(ms.getDisplayLabel()!=null && ms.getDisplayLabel().equals("series2"))
 				return ms;
-		return new ModsSeries();
+		return new ModsRelatedItem();
 	}
 	
 	public static ModsNote getNoteThesis(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())
-			if(mn.getType() == "thesis")
+			if(mn.getType()!=null && mn.getType().equals("thesis"))
 				return mn;
 		return new ModsNote();
 	}
 	
 	public static List<ModsNote> getFootNotes(ModsMetadata md)
-	{
+	{ 
 		List<ModsNote> mns = new ArrayList<ModsNote>();
-		for(ModsNote mn : md.getNotes())
-			if(mn.getType()=="" && mn.getNote() != "")
-				mns.add(mn);
+		if(md != null)
+			for(ModsNote mn : md.getNotes())
+				if(mn.getType()!=null && mn.getType()=="" && mn.getNote() != "")
+					mns.add(mn);
 		return mns;
 	}
 	
 	public static ModsIdentifier getISBN(ModsMetadata md)
 	{
 		for(ModsIdentifier mi : md.getIdentifiers())
-			if(mi.getType()=="isbn" && mi.getInvalid()!="yes")
+			if(mi.getType().equals("isbn") && mi.getInvalid()!="yes")
 				return mi;
 		return new ModsIdentifier();
 	}
@@ -284,10 +289,13 @@ public class VolumeUtilBean {
 	public static ModsIdentifier getISSN(ModsMetadata md)
 	{
 		for(ModsIdentifier mi : md.getIdentifiers())
-			if(mi.getType()=="issn" && mi.getInvalid()!="yes")
+			if(mi.getType().equals("issn") && mi.getInvalid()!="yes")
 				return mi;
 		return new ModsIdentifier();
 	}	
+	
+	
+
 //	
 //	public static List<String> getKeywordsISBD(ModsMetadata md)
 //	{
@@ -365,7 +373,7 @@ public class VolumeUtilBean {
 	public static ModsNote getNoteSOR(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())
-			if(mn.getType() == "statement of responsibility")
+			if(mn.getType().equals("statement of responsibility"))
 				return mn;
 		return new ModsNote();
 	}
@@ -373,11 +381,27 @@ public class VolumeUtilBean {
 	public static ModsNote getNoteSubseries(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())
-			if(mn.getType() == "subseries")
+			if(mn.getType()!= null && mn.getType().equals("subseries"))
 				return mn;
 		return new ModsNote();
 	}
 	
+	public static ModsPart getPart_361(ModsMetadata md)
+	{
+		for(ModsPart mp : md.getParts())
+			if(mp.getType().equals("constituent"))
+				return mp;
+		return new ModsPart();
+	}
+	
+	public static String getPart_089(ModsMetadata md)
+	{
+		for(ModsPart mp : md.getParts())
+			if(mp.getVolumeDescriptive_089()!="" || mp.getVolumeDescriptive_089()!=null)
+				return mp.getVolumeDescriptive_089();
+		return null;
+	}
+	 
 	public static ModsNote getMainNote(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())

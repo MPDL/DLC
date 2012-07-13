@@ -75,6 +75,11 @@
 						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
 						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
 				
+						<h:outputText value="#{lbl.admin_ou_opacURL}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.opacURL}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.opacURL}" rendered="#{viewOU.orga.editable}" />
+
+
 					</h:panelGrid>
 					
 					<h:commandButton value="#{lbl.button_command_edit}" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
