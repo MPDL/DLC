@@ -50,6 +50,7 @@
 	<h:commandButton value="#{lbl.button_command_isbd}">
 		<rich:componentControl target="isbdPopup" operation="show" />
 	</h:commandButton>
+	
     <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
         <f:facet name="controls">
             <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>

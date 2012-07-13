@@ -70,10 +70,10 @@
 		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}" />	
 		
 		<h:outputText value="#{lbl.mods_collation}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.extents[0]}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.physicalDescriptions[0].extent}" />
 
 		<h:outputText value="#{lbl.mods_seriesTitle_451}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.series[0].seriesTitle}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.relatedItems[0].title}" />
 
 		<h:outputText value="#{lbl.mods_isbn}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}" />

@@ -25,7 +25,22 @@
 						<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
 						</ui:remove>
 						<h:panelGroup styleClass="eg3_floatLeft">
-							<h3 class="eg3_volumeTitle"><h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/></h3>
+							<h3 class="eg3_volumeTitle">
+								<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
+									<h:outputText value="#{volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}: "  rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}"/>
+								</h:panelGroup>
+								<h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"  rendered="#{not empty volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/>
+								<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
+									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)"  rendered="#{not empty volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/>
+								</h:panelGroup>
+				
+								<h:outputText value=". - #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}"/>
+								<h:outputText value=" : #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}"/>
+								<h:outputText value=", #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}"/>
+								<h:outputText value="."/>
+							
+							
+							</h3>
 							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
 						</h:panelGroup>
 					</h:panelGroup>
@@ -190,7 +205,7 @@
 										<modsViewer:isbd modsMetadata="#{viewPages.volume.modsMetadata}" />
 									</h:panelGroup>
 									<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2003'}">
-										<modsViewer:isbd_vol modsMetadata="#{viewPages.volume.modsMetadata}" />
+										<modsViewer:isbd_vol parentVolume="#{viewPages.volume.relatedParentVolume}" modsMetadata="#{viewPages.volume.modsMetadata}" />
 									</h:panelGroup>
 							    </rich:popupPanel>							
 							</rich:tab>

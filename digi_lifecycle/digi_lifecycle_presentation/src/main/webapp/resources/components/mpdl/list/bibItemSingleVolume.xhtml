@@ -44,9 +44,17 @@
 							<f:param value="1" />
 							
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
-
-							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
-							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}" />
+							<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
+								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: "  rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
+							</h:panelGroup>
+							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"  rendered="#{not empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"/>
+							<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
+								<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)"  rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
+							</h:panelGroup>
+							<br/>
+							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place}"/>
+							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}"/>
+							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" />
 
 						</pretty:link>
 					</div>
