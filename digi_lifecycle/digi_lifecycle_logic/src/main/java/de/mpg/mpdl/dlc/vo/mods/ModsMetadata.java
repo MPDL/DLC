@@ -26,60 +26,56 @@ import de.mpg.mpdl.dlc.vo.Volume;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
-	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='mab001']/text()")
+	@XmlPath("mods:recordInfo/mods:recordIdentifier[@ID='mab001']/text()")
 	private String catalogueId_001;
 	
-	@XmlPath("mods:relatedItem[@type='host']/mods:identifier[@type='local']/text()")
-	private String parentId_010;
-
+	/**
+	 * for 010, 590, 451, 451a,621
+	 */
+	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
+	private List<ModsRelatedItem> relatedItems = new ArrayList<ModsRelatedItem>();
+	
 	@XmlElement(name = "language", namespace="http://www.loc.gov/mods/v3")
 	private ModsLanguage language_037;
 	
-	@XmlPath("mods:part[@type='host']/text()")
-	private String sortField_090;
+	/**
+	 * for 089, 090, 361
+	 */
+	@XmlElement(name = "part", namespace ="http://www.loc.gov/mods/v3")
+	private List<ModsPart> parts = new ArrayList<ModsPart>();
 	
-	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
-	private String volumeDescriptive_089;
-	
-	@XmlElement(name="name", namespace="http://www.loc.gov/mods/v3")
-	private List<ModsName> names = new ArrayList<ModsName>();
-	
+
+//	@XmlPath("mods:part[@type='host']/text()")
+//	private String sortField_090;
+//	
+//	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
+//	private String volumeDescriptive_089;
+//	
+//	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
+//	private String subseries_361;
+		
+
+
 	@XmlElement(name="titleInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsTitle> titles = new ArrayList<ModsTitle>();
 	
-	@XmlPath("mods:physicalDescription/mods:form[@type=material]/text()")
-	private String materialDesignation_334;
+	/**
+	 * for 334, 433, 434, 435
+	 */
+	@XmlElement(name = "physicalDescription", namespace ="http://www.loc.gov/mods/v3")
+	private List<ModsPhysicalDescription> physicalDescriptions = new ArrayList<ModsPhysicalDescription>();
+
 	
-	@XmlPath("mods:titleInfo/mods:subTitle/text()")
-	private String remainderTitle_335;
+	
+	@XmlElement(name="name", namespace="http://www.loc.gov/mods/v3")
+	private List<ModsName> names = new ArrayList<ModsName>();	
 	
 	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
 	
-	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
-	private String subseries_361;
 
 	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
-	
-	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
-	private ModsRelatedItem relatedItem;
-
-	
-//	@XmlPath("mods:physicalDescription/mods:extent/text()")
-//	private String extent_433;
-
-
-	//	@XmlPath("mods:physicalDescription/mods:extent/text()")
-//	private String format_435;
-	@XmlPath("mods:physicalDescription/mods:extent/text()")
-	private List<String> extents = new ArrayList<String>();
-	
-//	@XmlPath("mods:relatedItem[@type='series']/mods:titleInfo/mods:title/text()")
-//	private String seriesTitle_451;
-	
-	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
-	private List<ModsSeries> series = new ArrayList<ModsSeries>();	
 	
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
@@ -87,14 +83,46 @@ public class ModsMetadata {
 	@XmlPath("mods:location/mods:shelfLocator/text()")
 	private String signature_544;
 	
-	@XmlPath("mods:relatedItem[@type='host']/mods:titleInfo/mods:title/text()")
-	private String source_590;	
+	
 	
 	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
 	private List<String> keywords = new ArrayList<String>();
 	
 	@XmlPath("mods:abtract/text()")
 	private String freeText;
+
+
+	public List<ModsRelatedItem> getRelatedItems() {
+		return relatedItems;
+	}
+
+
+	public void setRelatedItems(List<ModsRelatedItem> relatedItems) {
+		this.relatedItems = relatedItems;
+	}
+
+
+	public List<ModsPart> getParts() {
+		return parts;
+	}
+
+	public void setParts(List<ModsPart> parts) {
+		this.parts = parts;
+	}
+
+	public List<ModsPhysicalDescription> getPhysicalDescriptions() {
+		return physicalDescriptions;
+	}
+
+
+
+
+	public void setPhysicalDescriptions(
+			List<ModsPhysicalDescription> physicalDescriptions) {
+		this.physicalDescriptions = physicalDescriptions;
+	}
+
+
 	
 
 	public ModsMetadata()
@@ -110,29 +138,6 @@ public class ModsMetadata {
 	public void setCatalogueId_001(String catalogueId_001) {
 		this.catalogueId_001 = catalogueId_001;
 	}
-
-	public String getParentId_010() {
-		return parentId_010;
-	}
-
-
-
-	public void setParentId_010(String parentId_010) {
-		this.parentId_010 = parentId_010;
-	}
-
-
-	
-	public String getVolumeDescriptive_089() {
-		return volumeDescriptive_089;
-	}
-
-
-
-	public void setVolumeDescriptive_089(String volumeDescriptive_089) {
-		this.volumeDescriptive_089 = volumeDescriptive_089;
-	}
-
 
 
 	public List<ModsName> getNames() {
@@ -169,14 +174,6 @@ public class ModsMetadata {
 
 
 
-	public String getSortField_090() {
-		return sortField_090;
-	}
-
-
-	public void setSortField_090(String sortField_090) {
-		this.sortField_090 = sortField_090;
-	}
 
 
 	public List<ModsTitle> getTitles() {
@@ -191,27 +188,6 @@ public class ModsMetadata {
 
 
 
-	public String getMaterialDesignation_334() {
-		return materialDesignation_334;
-	}
-
-
-
-	public void setMaterialDesignation_334(String materialDesignation_334) {
-		this.materialDesignation_334 = materialDesignation_334;
-	}
-
-
-
-	public String getRemainderTitle_335() {
-		return remainderTitle_335;
-	}
-
-
-
-	public void setRemainderTitle_335(String remainderTitle_335) {
-		this.remainderTitle_335 = remainderTitle_335;
-	}
 
 
 
@@ -227,16 +203,6 @@ public class ModsMetadata {
 
 
 
-	public String getSubseries_361() {
-		return subseries_361;
-	}
-
-
-
-	public void setSubseries_361(String subseries_361) {
-		this.subseries_361 = subseries_361;
-	}
-
 
 	public List<ModsPublisher> getPublishers() {
 		return publishers;
@@ -250,24 +216,6 @@ public class ModsMetadata {
 
 
 
-	public List<String> getExtents() {
-		return extents;
-	}
-
-
-	public void setExtents(List<String> extents) {
-		this.extents = extents;
-	}
-
-
-	public List<ModsSeries> getSeries() {
-		return series;
-	}
-
-
-	public void setSeries(List<ModsSeries> series) {
-		this.series = series;
-	}
 
 
 	public String getSignature_544() {
@@ -280,16 +228,6 @@ public class ModsMetadata {
 		this.signature_544 = signature_544;
 	}
 
-
-
-	public String getSource_590() {
-		return source_590;
-	}
-
-
-	public void setSource_590(String source_590) {
-		this.source_590 = source_590;
-	}
 
 
 
@@ -314,15 +252,6 @@ public class ModsMetadata {
 	}
 	
 	
-	public ModsRelatedItem getRelatedItem() {
-		return relatedItem;
-	}
-
-
-	public void setRelatedItem(ModsRelatedItem relatedItem) {
-		this.relatedItem = relatedItem;
-	}
-
 
 	public static void main(String[] args) throws Exception
 	{

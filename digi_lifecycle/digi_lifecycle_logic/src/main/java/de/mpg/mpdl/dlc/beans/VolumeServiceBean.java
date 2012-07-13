@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -67,11 +68,13 @@ import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
+import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
 import de.escidoc.core.client.exceptions.EscidocException;
 import de.escidoc.core.client.exceptions.InternalClientException;
 import de.escidoc.core.client.exceptions.TransportException;
+import de.escidoc.core.client.exceptions.application.security.AuthenticationException;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
 import de.escidoc.core.resources.HttpInputStream;
 import de.escidoc.core.resources.common.MetadataRecord;
@@ -89,6 +92,7 @@ import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
+import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
@@ -104,6 +108,7 @@ import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
@@ -917,10 +922,11 @@ public class VolumeServiceBean {
 		if (teiSdUrl != "")
 		{
 			//add component url of tei sd to mods md (related item)
-			vol.getModsMetadata().setRelatedItem(new ModsRelatedItem());
-			vol.getModsMetadata().getRelatedItem().setValue(PropertyReader.getProperty("dlc.instance.url") + teiSdUrl);
-			vol.getModsMetadata().getRelatedItem().setName("tei");
-			vol.getModsMetadata().getRelatedItem().setType("tei-sd");
+			ModsRelatedItem mri = new ModsRelatedItem();
+			mri.setType("tei-sd");
+			mri.setName("tei");
+			mri.setValue(PropertyReader.getProperty("dlc.instance.url") + teiSdUrl);
+			vol.getModsMetadata().getRelatedItems().add(mri);
 		}
 
 		MetadataRecord eSciDocMdRec =vol.getItem().getMetadataRecords().get("escidoc");
@@ -1169,22 +1175,98 @@ public class VolumeServiceBean {
 	
 	*/
 	
-	public static void main(String[] args) throws Exception
+	
+	/*
+	public static void mabXMLToMODSTest(File mabXML) throws Exception
 	{
-		VolumeServiceBean vsb =new VolumeServiceBean();
-
-		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
-		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new FileInputStream(new File("C:/Users/yu/Desktop/teisd.xml")), "UTF-8");
+		MabXmlTransformation transform = new MabXmlTransformation();
+		File modsFile = transform.mabToMods(null, mabXML);
+		FileInputStream xml = new FileInputStream(modsFile);
+		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
+		Unmarshaller unmarshaller = ctx.createUnmarshaller();
+		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(xml);
+		for(int i= 0; i<md.getRelatedItems().size();i++)
+		{
+			System.err.println(i+" type = " + md.getRelatedItems().get(i).getType());
+			System.err.println(i+" label = " + md.getRelatedItems().get(i).getDisplayLabel());
+			System.err.println(i+" title = " + md.getRelatedItems().get(i).getTitle());
+			System.err.println(i+" parent = " + md.getRelatedItems().get(i).getParentId_010());
+			System.err.println("___________________");
+		}
+		System.out.println("title= " +md.getTitles().size());
+		for(int j=0; j<md.getParts().size(); j++)
+		{
+			System.out.println(j + " type = " + md.getParts().get(j).getType());
+			System.out.println(j + " order = " + md.getParts().get(j).getOrder());
+			System.out.println("value length = " + md.getParts().get(j).getValue().length());
+			System.out.println(j + " value= " + md.getParts().get(j).getValue());
+			System.out.println(j + " volumeDescriptive_089 = " + md.getParts().get(j).getVolumeDescriptive_089());
+			System.out.println(j + " subseries_361 = " + md.getParts().get(j).getSubseries_361());
+			System.err.println("___________________");
+		}
+	}
+	*/
+	
+	
+	/*
+	 public static void newOU() throws Exception
+	 {
+		 
+			String url = "http://dlc.mpdl.mpg.de:8080";
+			Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
+			OrganizationalUnitHandlerClient ouc = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
+			ouc.setHandle(auth.getHandle());
+			
+			OrganizationalUnit ou = new OrganizationalUnit();
+			ou.getProperties().setName("Test Organization for DLC");
+			ou.getProperties().setDescription("This is a test organizational unit");
+			
+			
+			MetadataRecord mdRecord = new MetadataRecord("escidoc");
+		
+		    String str =
+		        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+		            + "<ou:organization-details "
+		            + "xmlns:ou=\"http://escidoc.mpg.de/metadataprofile/schema/0.1/organization\">\n"
+		            + "<dc:title xmlns:dc=\"http://purl.org/dc/elements/1.1/\">"
+		            + "Test Organization for DLC</dc:title>\n"
+		            + "</ou:organization-details>";
+		    InputStream in = new ByteArrayInputStream(str.getBytes());
+		
+		    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		    DocumentBuilder builder = factory.newDocumentBuilder();
+		    Document doc = builder.parse(in);
+		    mdRecord.setContent(doc.getDocumentElement());
 		
 		
+		    MetadataRecords mdRecords = new MetadataRecords();
+		    mdRecords.add(mdRecord);
+		
+		    ou.setMetadataRecords(mdRecords);
+			
+			
+			ou = ouc.create(ou);
+			TaskParam taskParam = new TaskParam();
+		    taskParam.setComment("Open OU");
+		    taskParam.setLastModificationDate(ou.getLastModificationDate());
+		    ouc.open(ou.getObjid(), taskParam);
+		    System.out.println("OU: " + ou.getObjid());
+			
 
-		/*
+    
+    }
+    
+    */
+	
+
+	public static Item updateItem(String id) throws Exception
+	{
 		String url = "http://dlc.mpdl.mpg.de:8080";
-		Authentication auth = new Authentication(new URL(url), "dlc_mpib", "dlc_mpib");
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
 		
 		ItemHandlerClient client = new ItemHandlerClient(auth.getServiceAddress());
 		client.setHandle(auth.getHandle()); 
-		String id = "escidoc:12138";
+
 		Item item = client.retrieve(id);
 		
 		TaskParam taskParam=new TaskParam(); 
@@ -1197,9 +1279,25 @@ public class VolumeServiceBean {
 	    taskParam.setComment("Release Volume");
 		taskParam.setLastModificationDate(res.getLastModificationDate());
 		res = client.release(id, taskParam);
-		*/
-//		
-//		client.release("escidoc:12104", taskParam);
+		
+		return item;
+	}
+	
+	
+	public static void main(String[] args) throws Exception
+	{
+//		VolumeServiceBean vsb =new VolumeServiceBean();
+
+//		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
+//		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new FileInputStream(new File("C://Users//yu//Desktop//teisd.xml")), "UTF-8");
+		
+
+//		File modsFile = new File("C://Users//yu//Desktop//test.xml");
+//		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
+//		mabXMLToMODSTest(mabXML);
+
+		updateItem("escidoc:12118");
+
 
 //		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
 //
@@ -1306,129 +1404,91 @@ public class VolumeServiceBean {
 //		System.out.println(cm.getObjid());
 		 
 		
-		
 		/*
-		OrganizationalUnitHandlerClient ouc = new OrganizationalUnitHandlerClient(new URL(url));
-		ouc.setHandle(auth.getHandle());
+		 * 			
+			
+			
+			ContextHandlerClient chc = new ContextHandlerClient(new URL(url));
+			chc.setHandle(auth.getHandle());
+			
+			Context context = new Context();
+			ContextProperties properties = new ContextProperties();
 		
-		OrganizationalUnit ou = new OrganizationalUnit();
-		ou.getProperties().setName("Test Organization for DLC");
-		ou.getProperties().setDescription("This is a test organizational unit");
-		
-		
-		MetadataRecord mdRecord = new MetadataRecord("escidoc");
-
-        String str =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-                + "<ou:organization-details "
-                + "xmlns:ou=\"http://escidoc.mpg.de/metadataprofile/schema/0.1/organization\">\n"
-                + "<dc:title xmlns:dc=\"http://purl.org/dc/elements/1.1/\">"
-                + "Test Organization for DLC</dc:title>\n"
-                + "</ou:organization-details>";
-        InputStream in = new ByteArrayInputStream(str.getBytes());
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document doc = builder.parse(in);
-        mdRecord.setContent(doc.getDocumentElement());
-
-
-        MetadataRecords mdRecords = new MetadataRecords();
-        mdRecords.add(mdRecord);
-
-        ou.setMetadataRecords(mdRecords);
+		    properties.setName("DLC_Example_Context");
 		
 		
-		ou = ouc.create(ou);
-		TaskParam taskParam = new TaskParam();
-	    taskParam.setComment("Open OU");
-	    taskParam.setLastModificationDate(ou.getLastModificationDate());
-	    ouc.open(ou.getObjid(), taskParam);
-	    System.out.println("OU: " + ou.getObjid());
+		    properties.setDescription("Example context for Digitization Lifecycle Project");
+		
+		    properties.setType("dlc");
 		
 		
+		    OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
 		
+		    ous.add(new OrganizationalUnitRef(ou.getObjid()));
+		    properties.setOrganizationalUnitRefs(ous);
 		
-		ContextHandlerClient chc = new ContextHandlerClient(new URL(url));
-		chc.setHandle(auth.getHandle());
+		    context.setProperties(properties);
 		
-		Context context = new Context();
-		ContextProperties properties = new ContextProperties();
-
-        properties.setName("DLC_Example_Context");
-
-
-        properties.setDescription("Example context for Digitization Lifecycle Project");
-
-        properties.setType("dlc");
-
-
-        OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
-
-        ous.add(new OrganizationalUnitRef(ou.getObjid()));
-        properties.setOrganizationalUnitRefs(ous);
-
-        context.setProperties(properties);
-
-        context = chc.create(context);
-        System.out.println("Context: " + context.getObjid());
-        taskParam = new TaskParam();
-        taskParam.setComment("Open Context");
-		taskParam.setLastModificationDate(context.getLastModificationDate());
-
-		Result result = chc.open(context.getObjid(), taskParam);
-		System.out.println("Context: " + result.toString());^
+		    context = chc.create(context);
+		    System.out.println("Context: " + context.getObjid());
+		    taskParam = new TaskParam();
+		    taskParam.setComment("Open Context");
+			taskParam.setLastModificationDate(context.getLastModificationDate());
 		
+			Result result = chc.open(context.getObjid(), taskParam);
+			System.out.println("Context: " + result.toString());^
+			
+			
+			
+			UserAccountHandlerClient uac = new UserAccountHandlerClient(new URL(url));
+				UserAccount ua = new UserAccount();
 		
+			
+		    UserAccountProperties properties = new UserAccountProperties();
+		    properties.setLoginName("dlc_user");
+		    properties.setName("DLC Test User");
 		
-		UserAccountHandlerClient uac = new UserAccountHandlerClient(new URL(url));
-			UserAccount ua = new UserAccount();
+		    ua.setProperties(properties);
+		
+		    ua = uac.create(ua);
+		    TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Activate User");
+		    taskParam.setLastModificationDate(ua.getLastModificationDate());
+		    uac.activate(ua.getObjid(), taskParam);
+		  
+		    
+			UserAccount ua = uac.retrieve("dlc_user");
+			
+		    TaskParam taskParam=new TaskParam(); 
+		    taskParam.setPassword("dlc");
+		    taskParam.setLastModificationDate(ua.getLastModificationDate());
+		    uac.updatePassword(ua.getObjid(), taskParam);
+		    
+		    
+		    Grant grant = new Grant();
+		    GrantProperties grantProperties = new GrantProperties();
+		    grantProperties.setGrantRemark("new context grant");
+		    grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
+		    RoleRef roleRef = new RoleRef("escidoc:role-depositor");
+		    grantProperties.setRole(roleRef);
+		    grant.setGrantProperties(grantProperties);
+		    
+		    uac.createGrant(ua.getObjid(), grant);
+		    System.out.println("Granted Depositor");
+		    
+		    grant = new Grant();
+		   grantProperties = new GrantProperties();
+		    grantProperties.setGrantRemark("new context grant");
+		    grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
+		    roleRef = new RoleRef("escidoc:role-moderator");
+		    grantProperties.setRole(roleRef);
+		    grant.setGrantProperties(grantProperties);
+		    
+		    uac.createGrant(ua.getObjid(), grant);
+		    System.out.println("Granted Moderator");
+		 */
+		
 
-		
-        UserAccountProperties properties = new UserAccountProperties();
-        properties.setLoginName("dlc_user");
-        properties.setName("DLC Test User");
-
-        ua.setProperties(properties);
-
-        ua = uac.create(ua);
-        TaskParam taskParam=new TaskParam(); 
-        taskParam.setComment("Activate User");
-	    taskParam.setLastModificationDate(ua.getLastModificationDate());
-        uac.activate(ua.getObjid(), taskParam);
-      
-        
-		UserAccount ua = uac.retrieve("dlc_user");
-		
-        TaskParam taskParam=new TaskParam(); 
-        taskParam.setPassword("dlc");
-        taskParam.setLastModificationDate(ua.getLastModificationDate());
-        uac.updatePassword(ua.getObjid(), taskParam);
-        
-        
-        Grant grant = new Grant();
-        GrantProperties grantProperties = new GrantProperties();
-        grantProperties.setGrantRemark("new context grant");
-        grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
-        RoleRef roleRef = new RoleRef("escidoc:role-depositor");
-        grantProperties.setRole(roleRef);
-        grant.setGrantProperties(grantProperties);
-        
-        uac.createGrant(ua.getObjid(), grant);
-        System.out.println("Granted Depositor");
-        
-        grant = new Grant();
-       grantProperties = new GrantProperties();
-        grantProperties.setGrantRemark("new context grant");
-        grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
-        roleRef = new RoleRef("escidoc:role-moderator");
-        grantProperties.setRole(roleRef);
-        grant.setGrantProperties(grantProperties);
-        
-        uac.createGrant(ua.getObjid(), grant);
-        System.out.println("Granted Moderator");
-        
-        */
         
         
 		
