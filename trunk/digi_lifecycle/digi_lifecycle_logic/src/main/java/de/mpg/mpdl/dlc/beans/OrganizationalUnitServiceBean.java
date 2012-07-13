@@ -305,18 +305,114 @@ public class OrganizationalUnitServiceBean {
 	}
 	
 	
+	
+	
+	
+	
+	
 	public static void main(String[] args) throws Exception
 	{
-		String ouId = "escidoc:1";
+		String ouId = "escidoc:6";
 
 		
 //        System.out.println(removeParents(ouId));
-		addOU_DLCMDRecord(ouId);
+//		addOU_DLCMDRecord(ouId);
 //		createNew();
 //		deleteOU(ouId);
 //		closeOU(ouId);
+		
+		Organization o = retrieveOrganizationWithID(ouId);
+		String opacURL ="";
+		o.getDlcMd().getFoafOrganization().setOpacURL(opacURL);
+		updateOU(o);
+		
+		
 	}
+	
+	public static void updateOU(Organization orga)
+	{
+		logger.info("updating OU "+orga.getId());
+		OrganizationalUnit ou = new OrganizationalUnit();
+		try
+		{
+			String url = "http://dlc.mpdl.mpg.de:8080";
+			Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
+			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
+			client.setHandle(auth.getHandle());
+			ou = client.retrieve(orga.getId());
+			
+			JAXBContext jxbc;
+			Marshaller marschaller;
+			Document d;
+			d= DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			
+			jxbc = JAXBContext.newInstance(new Class[]{ DLCMetadata.class });
+			marschaller = jxbc.createMarshaller();
+			marschaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			DLCMetadata dlc = orga.getDlcMd();
+			marschaller.marshal(dlc, d);
+			MetadataRecord dlcMd = client.retrieveMdRecord(orga.getId(), "dlc");
+			dlcMd.setContent(d.getDocumentElement());
+	
+	 
+			jxbc = JAXBContext.newInstance(new Class[]{ EscidocMetadata.class});
+			marschaller = jxbc.createMarshaller();
+			marschaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			EscidocMetadata esciDoc = orga.getEscidocMd();
+			d= DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+			
+			marschaller.marshal(esciDoc, d);	
+			MetadataRecord escidocMd = client.retrieveMdRecord(orga.getId(), "escidoc");
+			escidocMd.setContent(d.getDocumentElement());
+			MetadataRecords mdRecords = ou.getMetadataRecords();
+			mdRecords.setLastModificationDate(ou.getLastModificationDate());
+			mdRecords.clear();
+			mdRecords.add(dlcMd); 
+			mdRecords.add(escidocMd);
+			ou.setMetadataRecords(mdRecords);
+			ou = client.update(ou);
+		}catch(Exception e)
+		{
+		logger.error("Error while Updating OU", e);
+		}	
+	}
+	
+	
+	public static Organization retrieveOrganizationWithID(String id)
+	{
+ 
+		Organization o = new Organization();
+		try
+		{	
+			o.setId(id);
+			String url = "http://dlc.mpdl.mpg.de:8080";
+			Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
+			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(auth.getServiceAddress());
+			client.setHandle(auth.getHandle());
 	  
+			MetadataRecord escidocMD = client.retrieveMdRecord(id, "escidoc");
+			MetadataRecord dlcMD = client.retrieveMdRecord(id, "dlc");
+			
+			JAXBContext jxbc;
+			Unmarshaller unmarshaller;
+			jxbc = JAXBContext.newInstance(new Class[]{ DLCMetadata.class });
+			unmarshaller = jxbc.createUnmarshaller();
+			DLCMetadata dlcMd = (DLCMetadata) unmarshaller.unmarshal(dlcMD.getContent());
+			o.setDlcMd(dlcMd);
+			
+			jxbc = JAXBContext.newInstance(new Class[]{ EscidocMetadata.class });
+			unmarshaller = jxbc.createUnmarshaller();
+			
+			EscidocMetadata escidocMd = (EscidocMetadata) unmarshaller.unmarshal(escidocMD.getContent());
+			o.setEscidocMd(escidocMd);
+		}catch(Exception e)
+		{
+			logger.error("Error while Retrieving Organization object", e);
+		}		
+		return o;
+	}
+	
+	
 	public static void closeOU(String ouId) throws Exception
 	{
 		String url = "http://latest-coreservice.mpdl.mpg.de";

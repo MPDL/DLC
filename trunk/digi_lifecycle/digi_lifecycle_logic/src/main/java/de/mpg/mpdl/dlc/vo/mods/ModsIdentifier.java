@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsIdentifier {
 
-	@XmlAttribute(name = "displayLabel")
+	@XmlAttribute(name = "ID")
 	private String mabId;
 	
 	@XmlAttribute(name = "type")

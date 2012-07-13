@@ -13,6 +13,9 @@ public class FoafOrganization {
 	@XmlPath("foaf:homepage/@rdf:resource")
 	private String homePageURL;
 	
+	@XmlPath("foaf:opac/@rdf:resource")
+	private String opacURL;
+	
 	@XmlPath("foaf:mbox/@rdf:resource")
 	private String email;
 	
@@ -43,6 +46,14 @@ public class FoafOrganization {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getOpacURL() {
+		return opacURL;
+	}
+
+	public void setOpacURL(String opacURL) {
+		this.opacURL = opacURL;
 	}
 	
 }
