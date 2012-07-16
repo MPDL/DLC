@@ -64,7 +64,7 @@
 							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
 								<li>
 									<pretty:link mappingId="viewPages">
-										<f:param value="#{volume.item.objid}" />
+										<f:param value="#{volume.getObjidAndVersion()}" />
 										<f:param value="recto-verso" />
 										<f:param value="1" />
 										
