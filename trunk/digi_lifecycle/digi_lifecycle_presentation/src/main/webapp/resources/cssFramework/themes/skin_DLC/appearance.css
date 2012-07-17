@@ -200,14 +200,19 @@ body .eg3_id_optionBox { /* options for the current page eg3_content, e.eg3_g. O
 body .eg3_id_optionBox.eg3_vertikal { /* conditions for vertical option menu */
 	padding:0 0 0 0.16666%;
 }
-body .eg3_id_contentDescription {
+body .eg3_id_wrapper .eg3_id_contentDescription {
 	width:100%;
+	overflow:visible;
 }
 body .eg3_id_siteTitle {
 	float:right;
 	padding:0 1.6%;
 	font-size:150%;
 	background-color:#EEF2F0;
+}
+
+.eg3_ribbon {
+	min-height:2.75em;
 }
 
 .eg3_main_color {
@@ -221,7 +226,7 @@ body .eg3_id_siteTitle {
 
 
 .eg3_id_sidebarLeft {
-	background-color:#EEF2F0;
+	background-color:#F0F0F0;
 	padding-bottom:0.466666em;
 }
 .eg3_id_sidebarLeft.eg3_expand {
@@ -261,7 +266,8 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_id_wrapper .eg3_id_footer {
-	background-color:##C7C2B0;
+/*	background-color:#C7C2B0; */
+	background-color:#E9E9E9;
 	color:#000000;
 }
 .eg3_id_footer a {
@@ -272,7 +278,8 @@ body .eg3_id_siteTitle {
 }
 .eg3_id_footer .eg3_separator {
 	margin:0 1em;
-	max-width:0.08333em;
+	width:0.083333333em;
+	display:inline-block;
 }
 .eg3_id_footer .eg3_footer_content {
 	float:right;
@@ -444,7 +451,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_standardHeader .eg3_solutionLogo img {
 	width:98%;
-	max-width:13em;
+	max-width:18em;
 }
 
 /*****************************************************************************************************************
@@ -584,8 +591,21 @@ body .eg3_id_siteTitle {
  ******************************			for: error, warning, success, info		******************************
  *************************************************************************************************************/
 .eg3_messageArea {
-	width:46.7%;
-	padding:1% 1.6%;
+	position:fixed;
+	left:25%;
+	top:8em;
+	width:48.7%;
+	max-width:38em;
+	padding:0.5% 0.8%;
+	z-index:20;
+	background-color:#323232;
+	color:#FFFFFF;
+	cursor:move;
+}
+.eg3_messageArea .eg3_messageText {
+	width:96.4%;
+	padding:0.5 0.8%;
+	background-color:#292929;
 }
 .eg3_messageArea span {
 	display:block;
@@ -681,7 +701,8 @@ body .eg3_id_siteTitle {
 	cursor: default;
 }
 .eg3_pageBrowser .eg3_separator {
-	max-width:0.0833333em;
+	max-width:0.09em;
+	width:0.09em;
 	padding:0;
 	margin:0 0.9090em;
 	display:inline-block;
@@ -1261,6 +1282,9 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listItemVolume:hover .eg3_itemMediabar {
 	background-color:transparent;
 }
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContentBg {
+	background-color:transparent;
+}
 .eg3_bibList .eg3_listItemVolume .eg3_itemContent {
 	width:99%;
 	background-color:#EEF2F0;
@@ -1312,7 +1336,8 @@ body .eg3_id_siteTitle {
 /******************************		.eg3_bibList .eg3_listBody .eg3_listItemVolume .eg3_itemMediabar	******************************/
 .eg3_bibList .eg3_listItemVolume .eg3_itemMediabar {
 	padding-top:1.25em;
-	padding-bottom:0.5em; 
+	padding-bottom:0.5em;
+	width:24.5%;
 }
 .eg3_bibList .eg3_listItemVolume .eg3_itemMediabarThumb {
 	margin-bottom:0.5em;
@@ -1595,8 +1620,7 @@ body .eg3_id_siteTitle {
  ******************************				header					****************************** 
  *************************************************************************************************************/
 .eg3_detailItemHeader {
-	width:96.7%;
-	padding-left:3.2%;
+	width:98%;
 }
 .eg3_detailItemHeader .eg3_icon_multiVolume_32_32 {
 	float:left;
@@ -1667,9 +1691,6 @@ body .eg3_id_siteTitle {
 	padding-right:0.83333em;
 	border-right:0.0909em solid #ffffff;
 }
-.eg3_viewPageMenu .eg3_modusBtn.eg3_firstBtn {
-	border-left:0.0909em solid #ffffff;
-}
 .eg3_viewPageMenu a.eg3_modusBtn {
 	color:#ffffff;
 }
@@ -1712,6 +1733,9 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit {
 	width:100%;
 }
+.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer {
+	min-height:50em;
+}
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer img {
 	width:100%;
 }
@@ -1723,7 +1747,7 @@ body .eg3_id_siteTitle {
 	overflow:auto;
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
-	color:#F2F2F2;
+	/* color:#F2F2F2; */
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel {
 	color:#000000;
@@ -1752,6 +1776,36 @@ body .eg3_id_siteTitle {
 }
 
 
+.eg3_singleEdit .eg3_editContent div.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+	background:none;
+	background-color:#323232;
+	border:none;
+}
+.eg3_singleEdit .eg3_editContent td.rf-tab-hdr {
+	color:#FFFFFF;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td.rf-tab-hdr-top {
+	background:none;
+	background-color:transparent;
+	vertical-align:middle;
+	border:none;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td.rf-tab-hdr-top.rf-tab-hdr-act {
+	color:#EA7125;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td:first-child+td .rf-tab-lbl, 
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td:first-child+td+td .rf-tab-lbl {
+	border:none;
+	padding-left:0;
+}
+.eg3_singleEdit .eg3_editContent span.rf-tab-lbl {
+    border-left: 1px solid #FFFFFF;
+    padding-left: 0.833333333em;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-brd {
+	border:none;
+}
+
 .eg3_viewPage .eg3_ownershipBox {
 	border:solid 0.09em #CCCCCC;
 	width:auto;
@@ -1770,13 +1824,16 @@ body .eg3_id_siteTitle {
 
 .eg3_viewPage .eg3_permalinkBox {
 	border:solid 0.09em #CCCCCC;
-	overflow-x:auto !important;
+}
+.eg3_permalinkBox.eg3_container_1_2 {
+	width:49.73%;
 }
 .eg3_viewPage .eg3_permalinkBoxText {
-	padding:0 0.33333em;
+	margin:0 2%;
 	line-height:175%;
-	width:100%;
+	width:95.5%;
 	color:#FFFFFF;
+	background-color:#000000;
 	white-space:nowrap;
 }
 
@@ -1894,7 +1951,9 @@ body .eg3_id_siteTitle {
 .eg3_content_bgColor {
 	background-color:#EFEFEF;
 }
-
+.eg3_content_bgColor_2 {
+	background-color:#323232;
+}
 
 
 /*********************************************************************************************************
@@ -1924,9 +1983,12 @@ body .eg3_id_siteTitle {
 	background:none;
 	background-color:#transparent;
 	border:none;
-	border-left:0.0909em solid #FFF;
 	color:#FFFFFF;
-	padding-top:0.1633333em;
+	padding:0.1633333em 0 0 0;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl {
+	border-left:0.083333333em solid #ffffff;
+	padding:0 0.50em;
 }
 .eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top:hover {
 	color:#EA7125;
@@ -1935,17 +1997,19 @@ body .eg3_id_siteTitle {
 	background:none;
 	background-color:#transparent;
 	border:none;
-	border-left:0.0909em solid #FFF;
 	color:#EA7125;
+	padding:0.1633333em 0 0 0;
 }
-.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td.rf-tab-hdr-act.rf-tab-hdr-top, 
-.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td+td.rf-tab-hdr-act.rf-tab-hdr-top {
+.eg3_id_sidebarLeft .rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl {
+	border-left:0.083333333em solid #ffffff;
+	padding:0 0.50em;
+}
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td.rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl, 
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td+td.rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl,
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td.rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl, 
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td+td.rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl {
 	border-left:none !important;
 	padding-left:0;
-}
-
-.rf-tbp.eg3_widthAuto {
-	width:auto;
 }
 
 
@@ -1967,24 +2031,38 @@ body .eg3_id_siteTitle {
 	border:none;
 	border-width:0;
 	padding:0;
-	width:98%;
-	margin:0 1%;
+	width:100%;
+	margin:0;
 	background-color:transparent;
 	min-height:100%;
 	max-height:100%;
-	overflow:auto;
 }
 
-
+/*
 .eg3_id_sidebarLeft .rf-tab, .eg3_id_sidebarLeft .rf-tab div {
-	float:none;
+	float:none; 
 }
+*/
+.rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
+	text-align:center;
+}
+
+.rf-tab-cnt .eg3_thumbnail img {
+	height:14.583333em;
+	padding:10%;
+}
+
+.rf-tab-cnt .eg3_thumbnail.eg3_active img, 
+.eg3_id_sidebarLeft .rt-tab .eg3_thumbnail img.eg3_active {
+	background-color:#EA7125;
+}
+
 
 .rf-tbp .rf-tab-cnt.eg3_expand {
 /*	border:0.0833333em inset transparent; */
 	border:0;
 	background-color:#EFEFEF;
-	padding-right:1%;
+/*	padding-right:1%; */
 }
 
 .eg3_id_sidebarLeft .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top { /* scan view */
@@ -2001,6 +2079,30 @@ body .eg3_id_siteTitle {
 .eg3_noWrapTrn .rf-trn {
 	white-space:nowrap;
 }
+
+span.rf-trn-ico-exp, span.rf-trn-ico-colps {
+	background:none;
+	width:0;
+}
+
+
+.eg3_editContent .rf-tab-cnt {
+	background-color:#323232;
+	color:#FFFFFF;
+	border:none;
+}
+
+
+
+
+/*****************************************************************************************************
+ **********************			richfaces messages			******************************************
+ *****************************************************************************************************/
+.rf-msg-inf.eg3_messageSuccess, .rf-msgs-inf.eg3_messageSuccess {
+	color:#00AA11;
+}
+
+
 
 /*****************************************************************************************************
  ******************************						DIGILIB					**************************
