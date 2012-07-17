@@ -8,6 +8,11 @@
 	<xsl:variable name="ABBREVIATED_TITLE" select="'abbreviated'"/>
 	<xsl:variable name="TRANSLATED_TITLE" select="'translated'"/>
 	
+	
+	
+	
+	
+	
 	<xsl:key match="mab:feld" name="fields" use="@nr"/>
 
 	 <xsl:template match="/">
@@ -163,17 +168,47 @@
 				</xsl:for-each>
 				
 				
-				<!--  begin : for 611 - 659 -->	
+				<!--  begin : for 611 - 659 Sekundärausgabe-->	
 				
-		
+				<relatedItem displayLabel="sekundaerausgabe">
+					<xsl:for-each select="key('fields', '611')">
+						<xsl:call-template name="mab611ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '617')[@ind='a']">
+						<xsl:call-template name="mab617ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '634')">
+						<xsl:call-template name="mab634ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '635')">
+						<xsl:call-template name="mab635ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '646')">
+						<xsl:call-template name="mab646ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '647')">
+						<xsl:call-template name="mab647ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '621')">
+						<xsl:call-template name="mab621ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '659')">
+						<xsl:call-template name="mab659ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '653')">
+						<xsl:call-template name="mab653ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '637')">
+						<xsl:call-template name="mab637ToRelatedItem" />
+					</xsl:for-each>
+					<xsl:for-each select="key('fields', '655')">
+						<xsl:call-template name="mab655ToRelatedItem" />
+					</xsl:for-each>
+				</relatedItem>
 
 				<!--  end: 611-659	-->
-								<!-- 
 				
-				<xsl:for-each select="key('fields', '700')">
-					<xsl:call-template name="mab700ToClassification"/>
-				</xsl:for-each>
-				-->
+
 				<xsl:for-each select="key('fields', '902')">
 					<xsl:call-template name="mab902ToSubject"/>
 				</xsl:for-each>
@@ -730,9 +765,143 @@
 	
 	
 	
-	
-
-	
+		
+	<xsl:template name="mab611ToRelatedItem">
+		<xsl:element name="originInfo">
+			<xsl:if test="@ind=' '">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher3'"/></xsl:attribute>
+				<xsl:element name="place">
+					<xsl:element name="placeTerm">
+						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
+						<xsl:value-of select="."/>
+					</xsl:element>
+				</xsl:element>
+				<xsl:variable name="publisher" select="key('fields', '613')[@ind=' ']"/>
+				<xsl:if test="$publisher">
+					<xsl:element name="publisher">
+						<xsl:value-of select="$publisher"/>
+					</xsl:element>
+				</xsl:if>
+			</xsl:if>
+			<xsl:if test="@ind='a'">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'manufacturer'"/></xsl:attribute>
+				<xsl:element name="place">
+					<xsl:element name="placeTerm">
+						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
+						<xsl:value-of select="."/>
+					</xsl:element>
+				</xsl:element>
+				<xsl:variable name="printer" select="key('fields', '613')[@ind='a']"/>
+				<xsl:if test="$printer">
+					<xsl:element name="publisher">
+						<xsl:value-of select="$printer"/>
+					</xsl:element>
+				</xsl:if>
+			</xsl:if>
+			<xsl:if test="key('fields', '619')">
+				<xsl:element name="dateCaptured">
+					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
+					<xsl:value-of select="key('fields', '619')"/>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="key('fields', '640')">
+				<xsl:element name="edition">
+					<xsl:value-of select="key('fields', '640')"/>
+				</xsl:element>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>	
+	<xsl:template name="mab617ToRelatedItem">
+		<xsl:element name="originInfo">
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'Urheber'"/></xsl:attribute>
+			<xsl:element name="place">
+				<xsl:element name="placeTerm">
+					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
+					<xsl:value-of select="."/>
+				</xsl:element>
+			</xsl:element>
+			<xsl:variable name="publisher" select="key('fields', '617')[@ind=' ']"/>
+				<xsl:if test="$publisher">
+					<xsl:element name="publisher">
+						<xsl:value-of select="$publisher"/>
+					</xsl:element>
+				</xsl:if>
+			<xsl:if test="key('fields', '619')">
+				<xsl:element name="dateCaptured">
+					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
+					<xsl:value-of select="key('fields', '619')"/>
+				</xsl:element>
+			</xsl:if>
+			<xsl:if test="key('fields', '640')">
+				<xsl:element name="edition">
+					<xsl:value-of select="key('fields', '640')"/>
+				</xsl:element>
+			</xsl:if>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab634ToRelatedItem">
+		<xsl:element name="identifier">
+			<xsl:attribute name="type"><xsl:value-of select="'isbn'"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab635ToRelatedItem">
+		<xsl:element name="identifier">
+			<xsl:attribute name="type"><xsl:value-of select="'issn'"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab646ToRelatedItem">
+		<xsl:element name="location">
+			<xsl:element name="physicalLocation">
+				<xsl:value-of select="."/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab647ToRelatedItem">
+		<xsl:element name="node">
+			<xsl:attribute name="type"><xsl:value-of select="'digital master'"/></xsl:attribute>
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab621ToRelatedItem">
+		<xsl:element name="relatedItem">
+			<xsl:attribute name="type"><xsl:value-of select="'series'"/></xsl:attribute>
+			<xsl:element name="titleInfo">
+				<xsl:element name="title">
+					<xsl:value-of select="."/>
+				</xsl:element>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab659ToRelatedItem">
+		<xsl:element name="accessCondition">
+			<xsl:value-of select="."/>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab653ToRelatedItem">
+		<xsl:element name="physicalDescription">
+			<xsl:element name="form">
+				<xsl:value-of select="."/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab637ToRelatedItem">
+		<xsl:element name="physicalDescription">
+			<xsl:element name="extent">
+				<xsl:value-of select="."/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
+	<xsl:template name="mab655ToRelatedItem">
+		<xsl:element name="location">
+			<xsl:element name="url">
+				<xsl:attribute name="displayLabel"><xsl:value-of select="'electronic resource'"/></xsl:attribute>
+				<xsl:attribute name="usage"><xsl:value-of select="'primary display'"/></xsl:attribute>
+				<xsl:value-of select="."/>
+			</xsl:element>
+		</xsl:element>
+	</xsl:template>
 	
 	
 	
