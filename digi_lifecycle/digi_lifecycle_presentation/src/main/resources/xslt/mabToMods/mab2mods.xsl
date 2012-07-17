@@ -170,7 +170,7 @@
 				
 				<!--  begin : for 611 - 659 Sekundärausgabe-->	
 				
-				<relatedItem displayLabel="sekundaerausgabe">
+				<relatedItem displayLabel="secondary edition">
 					<xsl:for-each select="key('fields', '611')">
 						<xsl:call-template name="mab611ToRelatedItem" />
 					</xsl:for-each>
@@ -813,7 +813,7 @@
 	</xsl:template>	
 	<xsl:template name="mab617ToRelatedItem">
 		<xsl:element name="originInfo">
-			<xsl:attribute name="displayLabel"><xsl:value-of select="'Urheber'"/></xsl:attribute>
+			<xsl:attribute name="displayLabel"><xsl:value-of select="'creator'"/></xsl:attribute>
 			<xsl:element name="place">
 				<xsl:element name="placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
