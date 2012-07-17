@@ -51,10 +51,10 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	public void loadVolume()
 	{  
 		try { 
-			System.out.println("ID: " + volume.getProperties().getLatestVersion().getObjid());
-			if(volume==null || !volumeId.equals(volume.getProperties().getLatestVersion().getObjid()))
+//			System.out.println("ID: " + volume.getProperties().getLatestVersion().getObjid());
+			if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 			{
-				this.volume = volServiceBean.retrieveVolume(volumeId, null);
+				this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
 				logger.info("Load new book" + volumeId);
 				setElementsPerPage(24);
 				setCurrentPageNumber(1);
@@ -69,7 +69,7 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	
 	public List<Page> retrieveList(int offset, int limit) throws Exception 
 	{
-		pageList = volServiceBean.retrieveVolume(volumeId, null).getPages();
+		pageList = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle()).getPages();
 		totalNumberOfRecords = pageList.size();
 		List<Page> subList = pageList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
 
