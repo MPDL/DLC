@@ -61,11 +61,11 @@ All rights reserved. Use is subject to license terms.
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
 			
 			<link rel='SHORTCUT ICON' href='#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png'/>
-			
 		</h:head>
 
 		<h:body lang="#{applicationBean.userLocaleString}">
-		
+			<h:outputScript library="jscript" name="jquery-ui-1.8.21.min.js" target="head"/>
+			
 			<h:panelGroup rendered="#{loginBean.loginState}"/>
 				
 			<h:panelGroup layout="block" styleClass="eg3_id_wrapper">
@@ -84,15 +84,24 @@ All rights reserved. Use is subject to license terms.
 				</div>
 				</ui:remove>
 				
-				<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
-					<h:panelGroup layout="block" styleClass="eg3_messageArea">
-						<rich:messages errorClass="eg3_messageError" 
-							warnClass="eg3_messageWarning" fatalClass="eg3_messageFatal"
-							infoClass="eg3_messageSuccess" layout="list" 
-							showDetail="true" showSummary="false"/>
-					</h:panelGroup>
+				<ui:fragment rendered="#{not empty facesContext.messageList}">
 					
-				</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription">
+						<h:panelGroup layout="block" styleClass="eg3_messageArea">
+							<input type="button" style="float: right; margin-right: -1%;" value="x" class="eg3_borderradius_5 eg3_messageCloseBtn" onclick="$(this).parent().parent().hide(1000);"/>
+							<h:panelGroup layout="block" styleClass="eg3_messageText">
+								<rich:messages layout="list" showDetail="true" showSummary="false" 
+									errorClass="eg3_messageError" fatalClass="eg3_messageFatal" warnClass="eg3_messageWarning" infoClass="eg3_messageSuccess"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<script type="text/javascript">
+							checkMessageContent();
+						</script>
+					</h:panelGroup>
+				</ui:fragment>
+					
+					
+				
 				
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
 				<div class="eg3_id_content eg3_container_1" rel="section">		
@@ -134,8 +143,12 @@ All rights reserved. Use is subject to license terms.
 					</div>
 				</div>
 			</h:panelGroup>
-			<h:outputScript library="jscript" name="jquery-ui-1.8.16.custom.min.js"/>
-			<h:outputScript library="jscript" name="default.js"/>
+			
+			
+			<h:outputScript library="jscript" name="default.js" target="head"/>
+					
+			
+			
 		</h:body>
 	</html>
 </f:view>
