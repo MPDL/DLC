@@ -13,13 +13,17 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		
 		<ui:define name="separateContentHeader">
-			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_3_5">
+			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<h3 class="eg3_multiVolumeTitle">
-							<h:outputText value="#{viewPages.context.properties.name}"/> 
-						</h3>
-						
+						<ui:fragment rendered="#{not empty viewCollection.col.id}">
+							<h3 class="eg3_multiVolumeTitle">
+								<pretty:link mappingId="volumes">
+									<f:param value="#{viewCollection.col.id}" />
+									<h:outputText value="#{viewPages.context.properties.name}"/>
+								</pretty:link>
+							</h3>
+						</ui:fragment>
 						<br />
 						<ui:remove>
 						<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
@@ -76,11 +80,7 @@
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 							
-							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-								<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this);" value="+"/>
-								<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this);" disabled="disabled" value="-"/>
-								<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
-							</h:panelGroup>
+							
 							<script type="text/javascript">
 									jsf.ajax.addOnEvent(function(e)
 									{	
@@ -148,45 +148,62 @@
 								</script>
 			     			
 			     			<rich:tab header="#{lbl.view_tab_structure}" id="toc">
-								<rich:tree toggleType="ajax" var="divItem" >
-									<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
-										<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
-											<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id}" style="#{divItem == viewPages.selectedDiv ? 'background-color:red;' : ''}">
-												<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
-													<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
-													<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
-													<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
-													<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
-													<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
-													<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
-													<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
-												</h:panelGroup>
+				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
+									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
+									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
+									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;">
+									<rich:tree toggleType="ajax" var="divItem" >
+										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
+											<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
+												<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id} #{divItem == viewPages.selectedDiv ? 'eg3_active' : ''}">
+													<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
+														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
+														<h:outputText value="[Section] " rendered="#{empty divItem.type}"/>
+														<h:outputText value="#{divItem.numeration} " rendered="#{not empty divItem.numeration}"/>
+														<h:outputText value="#{divItem.author1inv}" rendered="#{not empty divItem.author1inv}"/>
+														<h:outputText value="; #{divItem.author2inv}" rendered="#{not empty divItem.author2inv}"/>
+														<h:outputText value="; #{divItem.author3inv}" rendered="#{not empty divItem.author3inv}"/>
+														<h:outputText value=" : " rendered="#{(not empty divItem.author1inv or not empty divItem.author2inv or not empty divItem.author3inv) and not empty divItem.head}"/>
+													</h:panelGroup>
+													
+													<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
+														<h:outputText value="#{divItem.elementType}"/>
+													</h:panelGroup>
+													
+													<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
+														<h:outputText value="[#{divItem.elementType}]"/>
+													</h:panelGroup>
+													
+													<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
+												</h:commandLink>
 												
-												<h:panelGroup rendered="#{divItem.elementType=='FRONT' or divItem.elementType=='BODY' or divItem.elementType=='BACK'}">
-													<h:outputText value="#{divItem.elementType}"/>
-												</h:panelGroup>
-												
-												<h:panelGroup rendered="#{divItem.elementType=='FIGURE'}">
-													<h:outputText value="[#{divItem.elementType}]"/>
-												</h:panelGroup>
-												
-												<f:ajax render=":viewPage :#{rich:clientId('tabPanel')}"/>
-											</h:commandLink>
-											
-											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
-											<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
-										</rich:treeNode>
-									</rich:treeModelRecursiveAdaptor>
-								</rich:tree>
+												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
+												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.docTitles[0].title)}" rendered="#{divItem.elementType == 'TITLE_PAGE'}"/>
+											</rich:treeNode>
+										</rich:treeModelRecursiveAdaptor>
+									</rich:tree>
+								</h:panelGroup>
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs">
-								<load:lazyLoad pageList="#{viewPages.pageList}">
-									<h:commandLink action="#{viewPages.goToPage(var)}">
-										<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" style="width:60px;" />
-										<f:ajax render="@all"/>
-									</h:commandLink>
-								</load:lazyLoad>
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
+									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'thumbs');" value="+"/>
+									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'thumbs');" disabled="disabled" value="-"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;">
+									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
+										<load:lazyLoad pageList="#{viewPages.pageList}">
+											<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_thumbnail">
+												<h:commandLink action="#{viewPages.goToPage(var)}">
+													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
+													<f:ajax render="@all"/>
+												</h:commandLink>
+											</h:panelGroup>
+										</load:lazyLoad>
+									</h:panelGroup>
+								</h:panelGroup>
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
@@ -223,7 +240,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_viewModusContainer" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
 							<ui:fragment rendered="#{viewPages.selectedPage != null}">
 								<h:form>
-									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn eg3_firstBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
+									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
 									</h:commandLink>
 									
@@ -287,9 +304,12 @@
 									<ui:fragment rendered="#{not empty viewPages.selectedPage.orderLabel and viewPages.selectedPage != null}">
 										<h:outputText value=" / #{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
 									</ui:fragment>
-									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-										<h:panelGroup styleClass="eg3_separator" rendered="#{viewPages.selectedRightPage != null and viewPages.selectedPage != null}">&#160;</h:panelGroup>
+									
+									
+									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedPageNumber gt 1 and viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
+										<h:panelGroup styleClass="eg3_separator">&#160;&#160;</h:panelGroup>
 									</ui:fragment>
+									
 									
 									<ui:remove>
 									<!-- page number, if the view isn't Recto Verso -->
@@ -367,8 +387,8 @@
 								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
 							</h:panelGroup>
 							
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top">
-								<h:outputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_containerCenter eg3_borderradius_5_top">
+								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
 							</h:panelGroup>
 							
 							<script type="text/javascript">
@@ -438,15 +458,15 @@
 						
 						<!--provenance and url  -->
 						<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1 eg3_container_1">
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top" 
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top" 
 							              rendered="#{viewPages.selectedPage!=null}">
-								<h:outputText styleClass="eg3_permalinkBoxText" 
-											  value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" /> 
+								<h:inputText styleClass="eg3_permalinkBoxText" 
+											  value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" /> 
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_4 eg3_borderradius_5_top eg3_floatRight" 
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" 
 							              rendered="#{viewPages.selectedRightPage!=null}">
-								<h:outputText styleClass="eg3_permalinkBoxText" 
-								              value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" /> 
+								<h:inputText styleClass="eg3_permalinkBoxText" 
+								              value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" /> 
 							</h:panelGroup>
 						</h:panelGroup>											
 					</h:panelGroup>
