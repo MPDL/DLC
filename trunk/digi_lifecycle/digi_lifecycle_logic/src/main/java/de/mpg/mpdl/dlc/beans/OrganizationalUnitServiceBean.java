@@ -25,6 +25,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.axis.types.NonNegativeInteger;
 import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -59,6 +60,7 @@ public class OrganizationalUnitServiceBean {
 			client.setHandle(null);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			req.setQuery("\"/properties/public-status\"=opened and " + "\"/md-records/md-record/organizational-unit/organization-type\"=DLC");
+			req.setMaximumRecords(new NonNegativeInteger("100"));
 			ous =  client.retrieveOrganizationalUnitsAsList(req);
 		}catch(Exception e)
 		{
@@ -121,7 +123,8 @@ public class OrganizationalUnitServiceBean {
 			o.setId(id);
 		  	
 			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-	
+	   
+			OrganizationalUnit ou = client.retrieve(id);
 			MetadataRecord escidocMD = client.retrieveMdRecord(id, "escidoc");
 			MetadataRecord dlcMD = client.retrieveMdRecord(id, "dlc");
 			
@@ -312,7 +315,7 @@ public class OrganizationalUnitServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-		String ouId = "escidoc:6";
+		String ouId = "escidoc:5";
 
 		
 //        System.out.println(removeParents(ouId));
@@ -323,7 +326,7 @@ public class OrganizationalUnitServiceBean {
 		
 		Organization o = retrieveOrganizationWithID(ouId);
 		String opacURL ="";
-		o.getDlcMd().getFoafOrganization().setOpacURL(opacURL);
+		o.getDlcMd().getFoafOrganization().setCataloguePrefix(opacURL);
 		updateOU(o);
 		
 		
@@ -393,6 +396,7 @@ public class OrganizationalUnitServiceBean {
 			MetadataRecord escidocMD = client.retrieveMdRecord(id, "escidoc");
 			MetadataRecord dlcMD = client.retrieveMdRecord(id, "dlc");
 			
+			
 			JAXBContext jxbc;
 			Unmarshaller unmarshaller;
 			jxbc = JAXBContext.newInstance(new Class[]{ DLCMetadata.class });
@@ -453,7 +457,7 @@ public class OrganizationalUnitServiceBean {
 		JAXBContext jxbc;
 		jxbc = JAXBContext.newInstance(new Class[]{ DLCMetadata.class });
 		FoafOrganization foafOU= new FoafOrganization();
-		foafOU.setEmail("test@test.de");
+		foafOU.setContact("test@test.de");
 		foafOU.setHomePageURL("http://test.de");
 		foafOU.setImgURL("http://google.com");
 		
