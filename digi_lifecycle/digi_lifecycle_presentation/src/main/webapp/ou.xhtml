@@ -71,13 +71,25 @@
 						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
 				
 						
-						<h:outputText value="#{lbl.admin_ou_email}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.email}" rendered="#{viewOU.orga.editable}" />
+						<h:outputText value="#{lbl.admin_ou_contact}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.contact}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.contact}" rendered="#{viewOU.orga.editable}" />
 				
-						<h:outputText value="#{lbl.admin_ou_opacURL}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.opacURL}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.opacURL}" rendered="#{viewOU.orga.editable}" />
+						<h:outputText value="#{lbl.admin_ou_cataloguePrefix}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.cataloguePrefix}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.cataloguePrefix}" rendered="#{viewOU.orga.editable}" />
+
+						<h:outputText value="#{lbl.admin_ou_imprint}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.imprint}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imprint}" rendered="#{viewOU.orga.editable}" />
+						
+						<h:outputText value="#{lbl.admin_ou_support}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.support}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.support}" rendered="#{viewOU.orga.editable}" />
+
+						<h:outputText value="#{lbl.admin_ou_usageRequirement}:" />
+						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.usageRequirement}" rendered="#{not viewOU.orga.editable}"/>	
+						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.usageRequirement}" rendered="#{viewOU.orga.editable}" />
 
 
 					</h:panelGrid>

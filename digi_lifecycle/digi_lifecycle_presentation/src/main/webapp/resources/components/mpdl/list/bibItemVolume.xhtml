@@ -119,7 +119,7 @@
 					</pretty:link>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending' and loginBean.user.releasable(volume.item.properties.context.objid)}">
 				
 					<h:commandButton action="#{allVolumesBean.release(volume)}" value="#{lbl.button_command_release}" >
 					</h:commandButton>

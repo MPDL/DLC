@@ -131,11 +131,9 @@
 							<ui:repeat id="volume" value="#{sessionBean.startpageVolumes}" var="volume" rowKeyVar="row">
 								<li>
 									<pretty:link mappingId="viewPages">
-
 										<f:param value="#{volume.getObjidAndVersion()}" />
 										<f:param value="recto-verso" />
 										<f:param value="1" />
-
 										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" title="#{volumeUtilBean.getTitle(volume.modsMetadata).title}"/>
 									</pretty:link>
 								</li>

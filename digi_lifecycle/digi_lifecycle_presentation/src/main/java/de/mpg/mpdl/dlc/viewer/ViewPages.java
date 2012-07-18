@@ -84,12 +84,15 @@ public class ViewPages{
 	
 	private Map<PbOrDiv, Boolean> treeExpansionStateMap = new HashMap<PbOrDiv, Boolean>();
 	
+	private Organization volumeOu;
+	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
-	{
+	{     
+ 
 
 		if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 		{   
@@ -99,7 +102,7 @@ public class ViewPages{
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 
 				//Set the logo of application to collection logo
-				Organization volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
+				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{appBean.setLogoLink(volumeOu.getId());
 					appBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
@@ -228,7 +231,7 @@ public class ViewPages{
 	
 	private static void fillExpansionMap(Map<PbOrDiv, Boolean> expansionMap, List<PbOrDiv> currentDivs)
 	{
-		System.out.println("Fill exp map");
+//		System.out.println("Fill exp map");
 		for(PbOrDiv pbOrDiv : currentDivs)
 		{
 			expansionMap.put(pbOrDiv, true);
@@ -405,10 +408,6 @@ public class ViewPages{
 	
 
 
-	public Page getSelectedRightPage() {
-		return selectedRightPage;
-	}
-
 	public void setSelectedRightPage(Page selectedRightPage) {
 		this.selectedRightPage = selectedRightPage;
 	}
@@ -423,6 +422,10 @@ public class ViewPages{
 
 	}
 	
+	public Page getSelectedRightPage() {
+		return selectedRightPage;
+	}
+
 	public String getViewTypeText() {
 		return viewTypeText;
 	}
@@ -539,4 +542,13 @@ public class ViewPages{
 		this.treeExpansionStateMap = treeExpansionStateMap;
 	}
 
+	public Organization getVolumeOu() {
+		return volumeOu;
+	}
+
+	public void setVolumeOu(Organization volumeOu) {
+		this.volumeOu = volumeOu;
+	}
+
+	
 }
