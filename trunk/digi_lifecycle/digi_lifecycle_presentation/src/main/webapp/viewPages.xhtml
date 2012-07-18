@@ -214,6 +214,9 @@
 								</h:commandButton>
 								<h:panelGroup>
 									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" />
+									<h:outputLink value="#{viewPages.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{viewPages.volume.modsMetadata.catalogueId_001}" />
+
+
 									<!--<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}" />  -->
 								</h:panelGroup>
 							    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >

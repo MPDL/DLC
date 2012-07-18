@@ -117,7 +117,7 @@ s						</div>
 							</pretty:link>
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and cc.attrs.volume.item.properties.version.status=='pending'}">
+						<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
 							<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" />
 						</h:panelGroup>
 						
