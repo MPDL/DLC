@@ -84,6 +84,7 @@
 							<script type="text/javascript">
 									jsf.ajax.addOnEvent(function(e)
 									{	
+										
 										//notice the container height for setting a min-height while ajax reloading
 										//without a height value the page jump to top because of to slowly image loading
 										if (e.status == "begin") {
@@ -100,6 +101,7 @@
 									
 									function scrollDivs()
 									{
+										console.log('scrollDiv');
 										var selectedDivId= '#{viewPages.selectedDiv.id}';
 										var treeContainerId = "#{rich:clientId('toc')}";
 										//add an backslahs before all colons					
@@ -147,13 +149,13 @@
 									});
 								</script>
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" id="toc">
+			     			<rich:tab header="#{lbl.view_tab_structure}" >
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
 									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;" id="toc">
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
