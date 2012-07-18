@@ -13,6 +13,7 @@ import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
+import org.richfaces.component.UITree;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -81,14 +82,15 @@ public class ViewPages{
 	
 	private List<SelectItem> pageListMenu = new ArrayList<SelectItem>();
 	
+	private Map<PbOrDiv, Boolean> treeExpansionStateMap = new HashMap<PbOrDiv, Boolean>();
+	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
-		
-		
+
 		if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 		{   
 			try {
@@ -105,6 +107,7 @@ public class ViewPages{
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
+				fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
@@ -158,6 +161,11 @@ public class ViewPages{
 				}
 			}
 			
+			
+			
+			
+			
+			
 			/*
 			teiTree.get.
 			componentState = (TreeState) sampleTreeBinding.getComponentState();
@@ -170,10 +178,6 @@ public class ViewPages{
 			
 		}
 
-			
-		
-		
-		
 		
 		try
 		{
@@ -217,6 +221,19 @@ public class ViewPages{
 			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStructElem"));
 		}
 		
+		
+		
+	}
+	
+	
+	private static void fillExpansionMap(Map<PbOrDiv, Boolean> expansionMap, List<PbOrDiv> currentDivs)
+	{
+		System.out.println("Fill exp map");
+		for(PbOrDiv pbOrDiv : currentDivs)
+		{
+			expansionMap.put(pbOrDiv, true);
+			fillExpansionMap(expansionMap, pbOrDiv.getPbOrDiv());
+		}
 	}
 	
 	
@@ -512,6 +529,14 @@ public class ViewPages{
 
 	public void setPageListMenu(List<SelectItem> pageListMenu) {
 		this.pageListMenu = pageListMenu;
+	}
+
+	public Map<PbOrDiv, Boolean> getTreeExpansionStateMap() {
+		return treeExpansionStateMap;
+	}
+
+	public void setTreeExpansionStateMap(Map<PbOrDiv, Boolean> treeExpansionStateMap) {
+		this.treeExpansionStateMap = treeExpansionStateMap;
 	}
 
 }

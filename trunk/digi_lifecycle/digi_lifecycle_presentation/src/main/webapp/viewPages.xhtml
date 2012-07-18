@@ -156,7 +156,7 @@
 								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;">
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
-											<rich:treeNode expanded="#{true}" rendered="#{divItem.elementType != 'PB'}">
+											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
 												<h:commandLink action="#{viewPages.goTo(divItem)}" styleClass="struct_#{divItem.id} #{divItem == viewPages.selectedDiv ? 'eg3_active' : ''}">
 													<h:panelGroup rendered="#{divItem.elementType=='DIV' or divItem.elementType=='TITLE_PAGE'}">
 														<h:outputText value="[#{divItem.type}] " rendered="#{not empty divItem.type}"/>
