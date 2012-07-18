@@ -52,15 +52,15 @@ public class MabXmlTransformation {
 		System.setProperty("javax.xml.transform.TransformerFactory",
 				"net.sf.saxon.TransformerFactoryImpl");
 		
-//		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/mabToMods/mab2mods.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/mabToMods/mab2mods.xsl");
 
 		
 		//File xslt = new File("src/main/resources/xslt/mabToMods/mab2mods.xsl");
 		// ModsDocument modsDocument = null;
 		// XSL = new SAXSource(reader, new InputSource(xslt));
 		try {
-	//	XSL = new StreamSource(url.openStream());
-			XSL = new StreamSource(new File("C:/Projects/virr/digi_lifecycle/digi_lifecycle_presentation/src/main/resources/xslt/mabToMods/mab2mods.xsl"));
+		XSL = new StreamSource(url.openStream());
+//		XSL = new StreamSource(new File("C:/Projects/virr/digi_lifecycle/digi_lifecycle_presentation/src/main/resources/xslt/mabToMods/mab2mods.xsl"));
 		XML = new StreamSource(mabRecord.newInputStream());
 		
 			File transformed = File.createTempFile("transformed", "xml");

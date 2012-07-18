@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -778,7 +779,7 @@ public class VolumeServiceBean {
 					pagedTeiComponent.getProperties().setVisibility("public");
 					ComponentContent pagedTeiContent = new ComponentContent();
 					pagedTeiComponent.setContent(pagedTeiContent);
-					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					pagedTeiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(pagedTeiComponent);
 				}
 				
@@ -798,7 +799,7 @@ public class VolumeServiceBean {
 					teiComponent.getProperties().setVisibility("public");
 					ComponentContent teiContent = new ComponentContent();
 					teiComponent.setContent(teiContent);
-					teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					teiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(teiComponent);
 				}
 				
@@ -829,7 +830,7 @@ public class VolumeServiceBean {
 					teiSdComponent.getProperties().setVisibility("public");
 					ComponentContent teiSdContent = new ComponentContent();
 					teiSdComponent.setContent(teiSdContent);
-					teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					teiSdComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
 					
 					volume.getItem().getComponents().add(teiSdComponent);
 				}
@@ -853,7 +854,7 @@ public class VolumeServiceBean {
 						pagedTeiComponent.getProperties().setVisibility("public");
 						ComponentContent pagedTeiContent = new ComponentContent();
 						pagedTeiComponent.setContent(pagedTeiContent);
-						pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+						pagedTeiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
 						
 						volume.getItem().getComponents().add(pagedTeiComponent);
 					}
@@ -1176,7 +1177,7 @@ public class VolumeServiceBean {
 	*/
 	
 	
-	/*
+	
 	public static void mabXMLToMODSTest(File mabXML) throws Exception
 	{
 		MabXmlTransformation transform = new MabXmlTransformation();
@@ -1205,7 +1206,7 @@ public class VolumeServiceBean {
 			System.err.println("___________________");
 		}
 	}
-	*/
+	
 	
 	
 	/*
@@ -1293,10 +1294,10 @@ public class VolumeServiceBean {
 		
 
 //		File modsFile = new File("C://Users//yu//Desktop//test.xml");
-//		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
-//		mabXMLToMODSTest(mabXML);
+		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
+		mabXMLToMODSTest(mabXML);
 
-		updateItem("escidoc:12118");
+//		updateItem("escidoc:12118");
 
 
 //		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");

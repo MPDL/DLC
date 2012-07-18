@@ -147,6 +147,14 @@ public class User {
 		this.moderatorContextIds = moderatorContextIds;
 	}
 
+	
+	public boolean releasable(String contextId)
+	{
+		if(moderatorContextIds.contains(contextId))
+			return true;
+		else
+			return false;
+	}
 
 	
 	
