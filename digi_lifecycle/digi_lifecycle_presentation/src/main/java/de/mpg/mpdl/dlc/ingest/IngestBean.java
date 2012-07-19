@@ -9,9 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.fileupload.FileItem;
@@ -603,51 +605,50 @@ public class IngestBean{
 		try {
 			if(volumeId.equalsIgnoreCase("new"))
 			{
-				if(mabFile == null)
-					modsMetadata = updateModsMetadata(modsMetadata);
-				
-				if(getSelectedContentModel().equals("Monograph"))
+
+				if(getSelectedContentModel().equals("Multivolume"))
 				{
-		     		if(getImageFiles().size()==0)
-		    		{
-		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
-		    			return "";
-		    		}
-		    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-		    		{
-		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-		    			return "";
-		    		}
-		    		Volume volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
-		    		clearAllData();
-		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
-				}
-				else if(getSelectedContentModel().equals("Multivolume"))
-				{
-	
-				
+					
+	     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
+	     			{
+	     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_nullTitle"));	
+	     				return "";
+	     			}
+					if(mabFile == null)
+						modsMetadata = updateModsMetadata(modsMetadata);
 		    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
 				}
+				
 				else
 				{
-		     		if(getImageFiles().size()==0)
+		     		if(getImageFiles().size()==0 || (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
 		    		{
-		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
-		    			return "";
+		     			
+		     			if(getImageFiles().size()==0 )
+		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
+		     			if(teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+		     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
+		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_nullTitle"));
+		     			return "";
 		    		}
-		    		if (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
-		    		{
-		    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-		    			return "";
-		    		}
-		    		Volume volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
-		    		clearAllData();
+					if(mabFile == null)
+						modsMetadata = updateModsMetadata(modsMetadata);
+					Volume volume = null;
+					if(getSelectedContentModel().equals("Monograph"))
+		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
+					else
+			    		volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
+						
+					clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
+		    		if(getSelectedContentModel().equals("Monograph"))
+		    			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
+		    		else
+			    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 				}
 			}
 			else{
