@@ -222,7 +222,10 @@ body .eg3_id_siteTitle {
 	color:#FFFFFF;
 }
 
-
+.eg3_id_contentDescription .eg3_messageCloseBtn {
+	float: right;
+	margin-right: -0.75%;
+}
 
 
 .eg3_id_sidebarLeft {

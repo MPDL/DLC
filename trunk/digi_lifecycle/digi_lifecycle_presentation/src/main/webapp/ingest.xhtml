@@ -28,6 +28,7 @@
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-hdr {
 				width:96%;
 				padding:1.99999%;
+				margin:0;
 				border:none;
 				font-size:150%;
 				color:#FFFFFF;
@@ -50,7 +51,61 @@
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a:hover {
 				color:#EA7125;
 			}
+		
+			.eg3_ingestPage .rf-p {
+				border:none;
+				color:#FFFFFF;
+				background-color:#323232;
+			}
+			.eg3_ingestPage .rf-p-hdr {
+				font-size:120%;
+				margin:0 1%;
+				padding:1em 1% 0.25em 1%;
+				background-color:#E4E4E4;
+				background-image:none;
+				border:none;
+			}
+			.eg3_ingestPage .rf-p-b {
+				font-size:110%;
+				color:#FFFFFF;
+			}
+			.eg3_ingestPage .rf-p-b input[type=text]{
+				background-color:#EFEFEF;
+				margin-left:0;
+			}
+			.eg3_ingestPage .eg3_submitPanel {
+				background-color:#000000;
+				border:none;
+			}
+			.eg3_ingestPage .eg3_submitPanel .rf-p-b {
+				width:96%;
+				padding:0.75em 1.9999% 0.833333em;
+			}
+			.eg3_ingestPage .eg3_submitPanel input[type=submit] {
+				float:left;
+				margin:0 0.25em 0 0;
+				padding:0.25em 0.75em;
+				color:#FFFFFF;
+				background-color:#323232;
+			}
+			.eg3_ingestPage .eg3_submitPanel input[type=submit]:hover {
+				color:#EA7125;
+				padding:0.25em 0.75em;
+			}
+			.eg3_ingestPage .eg3_uploadTypePanel {
+				background-color:#323232;
+				border:none;
+			}
+			.eg3_ingestPage .eg3_uploadTypePanel .rf-p-b {
+				padding-top:0;
+				color:#FFFFFF;
+			}
+			
+			.eg3_ingestPage .eg3_metadataPanel table table {
+				border-collapse:collapse
+			}
 		</style>
+		
 		<script type="text/javascript">
 			function ajaxExecuting(data)
 			{
@@ -76,75 +131,33 @@
 			}
 		</script>
 		
-		<style type="text/css">
-				.eg3_ingestPage .rf-p {
-					border:none;
-				}
-				.eg3_ingestPage .rf-p-hdr {
-					font-size:120%;
-					padding:0.25em 2%;
-					background-color:#E4E4E4;
-					background-image:none;
-					border:none;
-				}
-				.eg3_ingestPage .rf-p-b {
-					font-size:110%;
-				}
-				.eg3_ingestPage .rf-p-b input[type=text]{
-					background-color:#EFEFEF;
-					margin-left:0;
-				}
-				.eg3_ingestPage .eg3_submitPanel {
-					background-color:#000000;
-					border:none;
-				}
-				.eg3_ingestPage .eg3_submitPanel .rf-p-b {
-					width:96%;
-					padding:0.91666667em 1.9999%;
-				}
-				.eg3_ingestPage .eg3_submitPanel input[type=submit] {
-					float:left;
-					margin:0 0.25em 0 0;
-					padding:0;
-				}
-				.eg3_ingestPage .eg3_uploadTypePanel {
-					background-color:#323232;
-					border:none;
-				}
-				.eg3_ingestPage .eg3_uploadTypePanel .rf-p-b {
-					padding-top:0;
-					color:#FFFFFF;
-				}
-				
-				.eg3_ingestPage .eg3_metadataPanel table table {
-					border-collapse:collapse
-				}
-			</style>
-		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_ingestPage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
 				<h:outputText value="&#160;"/>
 			</h:panelGroup>
 			
-			
+			<!-- left content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 				<rich:panel id="upload" header="#{lbl.admin_upload_header}" styleClass="eg3_uploadContainer">
 					<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}"></fu:fileUpload>
 				</rich:panel>
 			</h:panelGroup>
+			
+			<!-- right content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 				<h:form id="form2" >	
-					<rich:panel id="submit">
-						<a4j:commandButton action="#{ingestBean.save('save')}" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
-							<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
-						</a4j:commandButton>
-						<a4j:commandButton action="#{ingestBean.save('release')}" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">
-							<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
-						</a4j:commandButton>
-						<h:commandButton action="#{ingestBean.clearAllData}" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
-							<f:ajax render="modsInfo teiInfo imageInfo" />
-						</h:commandButton>
-							
+					<rich:panel id="submit" styleClass="eg3_submitPanel">
+						<h:panelGroup styleClass="eg3_floatRight">
+							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+							</a4j:commandButton>
+							<a4j:commandButton action="#{ingestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">
+								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
+							</a4j:commandButton>
+							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
+								<f:ajax render="modsInfo teiInfo imageInfo" />
+							</h:commandButton>
+						</h:panelGroup>
 						<rich:popupPanel id="popup" modal="true" resizeable="false">
 							<f:facet name="header">
 								<h:outputText value="#{msg.upload_progress}" />
@@ -155,13 +168,8 @@
 						</rich:popupPanel>
 	
 					</rich:panel>
-			
-			
-			
-			
 					
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
-						<br/>
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
 							<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 								<h:outputText value="#{lbl.admin_upload_type}: "/>
