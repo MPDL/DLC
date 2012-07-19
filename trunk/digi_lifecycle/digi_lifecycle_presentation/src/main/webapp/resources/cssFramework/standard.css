@@ -140,14 +140,34 @@ option {
 .eg3_textRight {
 	text-align:right;
 }
-
-.eg3_overlay {
+.eg3_overflow {
+	overflow:visible !important;
+}
+.eg3_overflowAuto {
+	overflow:auto !important;
+}
+.eg3_overflow_z20 {
 	overflow:visible !important;
 	z-index:20;
 }
+.eg3_overflow_z50 {
+	overflow:visible !important;
+	z-index:50;
+}
+
 .eg3_widthAuto {
 	width:auto !important;
 }
+
+
+.eg3_noDecoration {
+	text-decoration:none;
+}
+.eg3_noDecoration:hover {
+	text-decoration:none;
+}
+
+
 /*
  * global grid-size definitions
  */

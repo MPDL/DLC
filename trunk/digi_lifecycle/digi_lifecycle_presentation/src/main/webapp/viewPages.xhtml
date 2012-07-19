@@ -73,10 +73,10 @@
 				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;" />
 				</ui:repeat>
 			</h:panelGroup>
-			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer" style="background-color:#323232;">
+			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2">
 				<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
-					<h:form styleClass="eg3_overflow" style="z-index:50;">
+					<h:form styleClass="eg3_overflow_z50">
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
 							
@@ -149,13 +149,14 @@
 									});
 								</script>
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" >
+			     			<rich:tab header="#{lbl.view_tab_structure}">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
 									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;" id="toc">
+								
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;" id="toc">
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
@@ -194,7 +195,7 @@
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'thumbs');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'thumbs');" disabled="disabled" value="-"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1" style="overflow:auto; height:500px;">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;">
 									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										<load:lazyLoad pageList="#{viewPages.pageList}">
 											<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_thumbnail">
@@ -202,6 +203,9 @@
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
 													<f:ajax render="@all"/>
 												</h:commandLink>
+												<h:panelGroup styleClass="eg3_thumbnailLabel">
+													<h:outputText value="Scan: "/>
+												</h:panelGroup>
 											</h:panelGroup>
 										</load:lazyLoad>
 									</h:panelGroup>
@@ -241,7 +245,7 @@
 				
 				<h:panelGroup id="viewPage" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
 					<!-- viewPageMenu -->
-					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter" style="overflow:visible;">
+					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter eg3_overflow">
 						<h:panelGroup layout="block" styleClass="eg3_viewModusContainer" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
 							<ui:fragment rendered="#{viewPages.selectedPage != null}">
 								<h:form>
@@ -354,9 +358,9 @@
 						
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overlay eg3_main_color">
+						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color">
 							<h:form>
-								<h:panelGroup layout="block" styleClass="eg3_overlayBox">
+								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow">
 									<h:panelGroup layout="block" styleClass="eg3_overlayHeader eg3_alternate_color_1">
 										<h:panelGroup styleClass="eg3_selectionText"><h:outputText value="#{lbl.export_headline}"/></h:panelGroup>
 									</h:panelGroup>
@@ -432,7 +436,7 @@
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
 						
-						
+						<ui:remove>
 						<h:panelGroup layout="block" styleClass="eg3_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
 							<span class="quad_area1 splitBlockHeader">
 								<span class="quad_area0_p4 lineToolSection">
@@ -440,12 +444,13 @@
 								</span>
 							</span>
 						</h:panelGroup>
-						
+						</ui:remove>
 						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 							<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
+							<ui:remove>
 							<span class="quad_area1 splitBlockHeader"></span>
-							
+							</ui:remove>
 							<style type="text/css">
 			                    ins{
 			                        text-align:right;

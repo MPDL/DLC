@@ -286,10 +286,7 @@ body .eg3_id_siteTitle {
 	margin-right:2%;
 	padding:0.75% 0;
 }
-.eg3_overflow {
-	overflow:visible !important;
-	z-index:20;
-}
+
 
 .eg3_separator {
 	width:0.08333em;
@@ -830,6 +827,7 @@ body .eg3_id_siteTitle {
 .eg3_startpageTitle {
 	display:block;
 	padding-left:5em;
+	margin-bottom:2em;
 	color:#163D4B;
 }
 .eg3_logoImage {
@@ -1435,10 +1433,11 @@ body .eg3_id_siteTitle {
 
 
 
-/*****************************************************************************************************
+/*********************************************************************************************************
  ******************************				grid list						******************************
  ******************************		list with different dynamic width		****************************** 
- *****************************************************************************************************/
+ *********************************************************************************************************/
+ /* not in use a.t.m. 
 .eg3_gridList {
 	border-spacing:0;
 }
@@ -1452,7 +1451,7 @@ body .eg3_id_siteTitle {
 	padding: 0.1666em 1.6%;
 	background-color:#EBF7EC;
 }
-/* eg3_gridList eg3_listHeader */
+/* eg3_gridList eg3_listHeader *//*
 .eg3_gridList .eg3_creatorHeadline {
 	padding: 0.1666em 1.6%;
 }
@@ -1465,7 +1464,7 @@ body .eg3_id_siteTitle {
 .eg3_gridList .eg3_fileHeadline {
 	padding: 0.1666em 1.6%;
 }
-/* eg3_gridList eg3_listBody */
+/* eg3_gridList eg3_listBody *//*
 .eg3_gridList .eg3_itemCreatorArea {
 	padding: 0.1666em 1.6%;
 }
@@ -1497,7 +1496,7 @@ body .eg3_id_siteTitle {
 	max-width:50em;
 	margin-left:0.5em;
 }
-
+*/
 
 
 
@@ -1506,6 +1505,7 @@ body .eg3_id_siteTitle {
  ******************************				tiled list						******************************
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
+/* used in thumbnails.xthml */
 .eg3_tiledList {
 	width:100%; 
 	padding:0 1.6%;
@@ -1554,12 +1554,11 @@ body .eg3_id_siteTitle {
 
 
 
-
 /*****************************************************************************************************
  ******************************				tiled list thumb						******************************
  ******************************			list with dynamic width				****************************** 
  *****************************************************************************************************/
-
+/* not in use a.t.m. - replaced by richfaces component
 .eg3_tiledListThumbOverlay {
 	width:98%; 
 	padding:0 1.6%;
@@ -1601,7 +1600,7 @@ body .eg3_id_siteTitle {
 	display:block;
 	width:89%;
 /*	padding:0.3333em; */
-	padding:5%; 
+/*	padding:5%; 
 	background-color:#aaaaaa;
 }
 .eg3_tiledListThumbOverlay .eg3_itemContentData {
@@ -1613,7 +1612,7 @@ body .eg3_id_siteTitle {
 .eg3_tiledListThumbOverlay .eg3_itemControlArea {
 	width:100%;
 }
-
+*/
 
 /*************************************************************************************************************
  ******************************				item detail view		******************************
@@ -1916,15 +1915,15 @@ body .eg3_id_siteTitle {
 /*****************************************************************************************************
  ******************************				overlay box - universal			**************************
  *****************************************************************************************************/
-.eg3_id_wrapper .eg3_overlayBox { overflow:visible; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayHeader { padding:7%; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em; display:none; background-color:#323232; color:#ffffff; border:0.0909em solid #ffffff; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody.eg3_left { left:0; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody.eg3_right { right:0; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayHeader:hover+.eg3_overlayBody { display:block; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody:hover { display:block; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody .eg3_selectionText { white-space:nowrap; line-height:2em; color:#ffffff; }
-.eg3_overlay .eg3_overlayBox .eg3_overlayBody .eg3_selectionText:hover { color:#EA7125; }
+.eg3_id_wrapper .eg3_overlayBox { /*overflow:visible;*/ }
+.eg3_overlayBox .eg3_overlayHeader { padding:7%; }
+.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em; display:none; background-color:#323232; color:#ffffff; border:0.0909em solid #ffffff; }
+.eg3_overlayBox .eg3_overlayBody.eg3_left { left:0; }
+.eg3_overlayBox .eg3_overlayBody.eg3_right { right:0; }
+.eg3_overlayBox .eg3_overlayHeader:hover+.eg3_overlayBody { display:block; }
+.eg3_overlayBox .eg3_overlayBody:hover { display:block; }
+.eg3_overlayBox .eg3_overlayBody .eg3_selectionText { white-space:nowrap; line-height:2em; color:#ffffff; }
+.eg3_overlayBox .eg3_overlayBody .eg3_selectionText:hover { color:#EA7125; }
 
 /*****************************************************************************************************
  ******************************				global button elements			**************************
@@ -2049,14 +2048,16 @@ body .eg3_id_siteTitle {
 
 .rf-tab-cnt .eg3_thumbnail img {
 	height:14.583333em;
-	padding:10%;
+	padding:10% 10% 0 10%;
 }
 
 .rf-tab-cnt .eg3_thumbnail.eg3_active img, 
 .eg3_id_sidebarLeft .rt-tab .eg3_thumbnail img.eg3_active {
 	background-color:#EA7125;
 }
-
+.rf-tab-cnt .eg3_thumbnail .eg3_thumbnailLabel {
+	font-size:120%;
+}
 
 .rf-tbp .rf-tab-cnt.eg3_expand {
 /*	border:0.0833333em inset transparent; */
@@ -2119,4 +2120,24 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
 }
 .digilib img {
 	cursor:pointer;
+}
+
+
+
+
+
+
+
+
+
+@MEDIA print {
+	body { background-color:transparent !important; }
+	body * { background-color:transparent !important; }
+	.eg3_id_headerMetaMenu { display:none; }
+	.eg3_citationLinkArea { display:none; }
+	.eg3_id_footer { display:none; }
+	a.eg3_modusBtn { display:none; }
+	.eg3_iconBar { display:none; }
+	.rf-tab-hdr-inact { display:none; }
+	.rf-tab-cnt { overflow:hidden; }
 }

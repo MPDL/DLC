@@ -83,6 +83,7 @@
 })(jQuery);
 $(document).ready(function() {
 	// THIS IS NEW CODE FOR THE AUTOMATIC INFINITE CAROUSEL
+	var displayTime = 8000;
 	var autoscrolling = true;
 	$('.infiniteCarousel').infiniteCarousel().mouseover(function() {
 		autoscrolling = false;
@@ -93,5 +94,5 @@ $(document).ready(function() {
 		if (autoscrolling) {
 			$('.infiniteCarousel').trigger('next');
 		}
-	}, 2000);
+	}, displayTime);
 });

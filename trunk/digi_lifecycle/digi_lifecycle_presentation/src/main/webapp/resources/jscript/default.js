@@ -205,60 +205,97 @@ function addShowHideAll(element, child_elements, component) {
  * open the current content to see the content in a maximum container
  * listButton: object whose be clicked
  */
-function eg3_openOverlay(listButton) {
+function eg3_openOverlay(listButton, cnt) {
 	
-	var curControlPanel = $(listButton).parent();
-	var curTabPanel = (curControlPanel.hasClass("rf-tbp")) ? curControlPanel : curControlPanel.parent();
-	
-	for (var ctbp = 0; ctbp < 15; ctbp++) {
-		//check if the current object is the current tab panel
-		if (curTabPanel.hasClass("rf-tbp")) {
-			curControlPanel.addClass("eg3_expand");
-			
-			curTabPanel.addClass("eg3_noWrapTrn");
-			curTabPanel.addClass("eg3_widthAuto");
-			var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
-			curTabPanelContent.addClass("eg3_expand");
-			
-			
-			$('.eg3_id_sidebarLeft').addClass("eg3_expand");
-			
-			$(listButton).attr('disabled', 'disabled');
-			curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
-			
-//			checkSidebarWidth();
+	var curTabPanel = $(listButton).parents(".rf-tbp");
+	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
+	var curControlPanel = $(listButton).parents('.eg3_iconBar');
+	console.log(cnt);
+	switch (cnt) {
+		case 'toc':
+			if (curTabPanel && curTabPanel.length > 0) {
+				curTabPanel.addClass("eg3_noWrapTrn");
+				curTabPanel.addClass("eg3_widthAuto");
+			}
+			if (curTabPanelContent && curTabPanelContent.length > 0) {
+				curTabPanelContent.addClass("eg3_expand");
+				curTabPanelContent.addClass("eg3_widthAuto");
+			}
+			if (curControlPanel && curControlPanel.length > 0) {
+				curControlPanel.addClass("eg3_expand");
+			}
 			break;
-		} else {
-			curTabPanel = curTabPanel.parent();
-		}
+		case 'thumbs':
+			var thumbs = $('.eg3_thumbnail');
+			if (thumbs && thumbs.length > 0) {
+				thumbs.addClass("eg3_container_1_6");
+				thumbs.removeClass("eg3_container_1_2");
+			}
+			if (curTabPanel && curTabPanel.length > 0) {
+				curTabPanel.addClass("eg3_noWrapTrn");
+				curTabPanel.addClass("eg3_widthAuto");
+			}
+			if (curTabPanelContent && curTabPanelContent.length > 0) {
+				curTabPanelContent.addClass("eg3_expand");
+				curTabPanelContent.css("width", ($(window).width() * 0.8));
+			}
+			if (curControlPanel && curControlPanel.length > 0) {
+				curControlPanel.addClass("eg3_expand");
+			}
+			break;
 	}
+	
+	$('.eg3_id_sidebarLeft').addClass("eg3_expand");
+	$(listButton).attr('disabled', 'disabled');
+	curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
 }
 /**
  * function eg3_openOverlay
  * close the current content to see the content in a minimized container
  * listButton: object whose be clicked
  */
-function eg3_closeOverlay(listButton) {
-	var curIconPanel = $(listButton).parent();
-	var curContentPanel = curIconPanel;
+function eg3_closeOverlay(listButton, cnt) {
+	var curTabPanel = $(listButton).parents(".rf-tbp");
+	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
+	var curControlPanel = $(listButton).parents('.eg3_iconBar');
 	
-	for (var ctbp = 0; ctbp < 15; ctbp++) {
-		if (curContentPanel.hasClass("rf-tbp")) {
-			curIconPanel.removeClass("eg3_expand");
-			$('.eg3_id_sidebarLeft').removeClass("eg3_expand");
-			
-			curContentPanel.removeClass("eg3_noWrapTrn");
-			curContentPanel.removeClass("eg3_widthAuto");
-			curContentPanel.find(".rf-tab-cnt").removeClass("eg3_expand");
-			
-			$(listButton).attr('disabled', 'disabled');
-			curIconPanel.find('.eg3_expandOverlay').removeAttr('disabled');
-			
+	switch (cnt) {
+		case 'toc':
+			if (curTabPanel) {
+				curTabPanel.removeClass("eg3_noWrapTrn");
+				curTabPanel.removeClass("eg3_widthAuto");
+			}
+			if (curTabPanelContent) {
+				curTabPanelContent.removeClass("eg3_expand");
+				curTabPanelContent.removeClass("eg3_widthAuto");
+			}
+			if (curControlPanel) {
+				curControlPanel.removeClass("eg3_expand");
+			}
 			break;
-		} else {
-			curContentPanel = curContentPanel.parent();
-		}
+		case 'thumbs':
+			var thumbs = $('.eg3_thumbnail');
+			if (thumbs && thumbs.length > 0) {
+				thumbs.addClass("eg3_container_1_2");
+				thumbs.removeClass("eg3_container_1_6");
+			}
+			if (curTabPanel) {
+				curTabPanel.removeClass("eg3_noWrapTrn");
+				curTabPanel.removeClass("eg3_widthAuto");
+			}
+			if (curTabPanelContent) {
+				curTabPanelContent.removeClass("eg3_expand");
+				curTabPanelContent.css("width", "100%");
+			}
+			if (curControlPanel) {
+				curControlPanel.removeClass("eg3_expand");
+			}
+			break;
 	}
+	
+	$('.eg3_id_sidebarLeft').removeClass("eg3_expand");
+	$(listButton).attr('disabled', 'disabled');
+	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');
 }
 
 /**
@@ -318,23 +355,29 @@ function resizeSidebar(reference) {
 	
 	switch (reference) {
 		case '.eg3_viewPage':
+			//eg3_iconBar
+			var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+			//sidebar left
 			var sdbLeft = $('.eg3_id_sidebarLeft');
+			//sidebar padding bottom
 			var sdbPadBot = sdbLeft.css("padding-bottom");
 			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
 				sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
 			}
 			sdbPadBot = Number(sdbPadBot) + 1;
-			sdbHeight = sdbHeight - sdbPadBot;
+			sdbHeight = Math.ceil(sdbHeight - sdbPadBot);
 			
-			//eg3_iconBar
-			//rf-tab-hdr-tabline-top
-			var icoBar = $('.eg3_container_1 .eg3_iconBar');
+			//iconBar height
 			var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
+			//tab header height
 			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
 			
-			$('.rf-tab').css('height', (sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
+			//set height for tab content details
+			$('.eg3_contentDetails').css('height', Math.ceil(sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
+			//set padding bottom in tab content
 			$('.rf-tab-cnt').css('padding-bottom', sdbLeft.css('padding-bottom'));
 			
+			//sidebar left gets the height of calculated height
 			sdbLeft.css('height', sdbHeight);
 			break;
 	}
@@ -409,8 +452,25 @@ function checkSidebarWidth(reference) {
 	*/
 }
 
+function eg3_copyToClipboard(infoText, obj) {
+	//infoText: e.g. "Copy to clipboard: Ctrl+C, Enter"
+	//the value of object is the text to copy
+	window.prompt (infoText, $(obj).val());
+}
 
-
+//used by messaging, in template_v3.xhtml
+function checkMessageContent() {
+	var msgCo = $('.eg3_id_contentDescription .eg3_messageArea');
+	if (msgCo && msgCo.length > 0) {
+		msgCo.draggable();
+		var msgSuc = msgCo.find('.eg3_messageSuccess');
+		var msgErr = msgCo.find('.eg3_messageError, .eg3_messageFatal, .eg3_messageWarning');
+		
+		if ((msgSuc && msgSuc.length > 0) && (!msgErr || msgErr.length == 0)) {
+			setTimeout("$('.eg3_id_contentDescription').hide(1000);", 3000);
+		}
+	}
+}
 
 $(document).ready(function(e) {
 	/*

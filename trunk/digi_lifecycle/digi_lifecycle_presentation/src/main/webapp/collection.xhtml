@@ -19,24 +19,58 @@
 	</ui:define>
 	</ui:remove>
 	<ui:define name="mainContent">
-		
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
-		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js" target="head"/>
 		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+		
 		<style type="text/css">
 			.shouItems { text-decoration:none; font-weight:bold; color:#e00000; }
 			#zeige { font-weight:bold; color:red; }
 		</style>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_collectionStartpage">
+			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
+				<h:outputText value="&#160;"/>
+			</h:panelGroup>
+			
 			<!-- title -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
-				<ui:remove><h:outputText value="#{lbl.view_collection_title} :" /></ui:remove>
-				<pretty:link mappingId="volumes">
-					<f:param value="#{viewCollection.col.id}" />
-					<h1><h:outputText value="#{viewCollection.col.name}" /></h1>
-				</pretty:link>
+				<h1>
+					<pretty:link mappingId="volumes">
+						<f:param value="#{viewCollection.col.id}" />
+						<h:outputText value="#{viewCollection.col.name}" />
+					</pretty:link>
+				</h1>
 			</h:panelGroup>
+			
+			<style type="text/css">
+				.eg3_info_panel {
+					max-width:50em;
+					padding-right:10%;
+					margin-bottom:2em;
+					display:block;
+				}
+				.eg3_info_panel h3 {
+					font-weight:bold;
+				}
+				.eg3_info_panel p {
+					margin-top:1%;
+					line-height:145%;
+				}
+				.eg3_inline_searchBox {
+					position: absolute; 
+					right: 0px; 
+					top: 0px;
+				}
+				.eg3_info_panel .eg3_inline_searchBox {
+					margin-right: -13%;
+				}
+				.eg3_inline_searchBox input {
+					text-align:center;
+				}
+				.eg3_inline_searchBox input:focus {
+					text-align:left;
+				}
+			</style>
 			
 			<!-- left content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
@@ -44,20 +78,26 @@
 			</h:panelGroup>
 			
 			<!-- main content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-				<h:panelGroup styleClass="eg3_container_1">
-					<p>
-						<h3><h:outputText value="#{lbl.view_collection_description}:" /></h3>
-						<h:outputText value="#{viewCollection.col.description}"/>
-					</p>
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_overflow">
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup styleClass="eg3_info_panel">
+						<h3><h:outputText value="#{lbl.view_collection_description}" /></h3>
+						<p>
+							<h:outputText value="#{viewCollection.col.description}"/>
+							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+						</p>
+					</h:panelGroup>
+				
+					<h:panelGroup styleClass="eg3_container_1_5 eg3_inline_searchBox">
+						<h4>Ubersicht</h4>
+						<input type="search" class="eg3_container_1"/>
+						<script type="text/javascript">
+							$('.eg3_inline_searchBox input').attr("placeholder", "#{lbl.view_ou_collection}");
+						</script>
+					</h:panelGroup>
 				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_logoImageInfotext">
-					<pretty:link mappingId="volumes">
-						<f:param value="#{viewCollection.col.id}" />
-						<h:outputText value="#{lbl.view_collection_show}"/><br/>
-					</pretty:link>
-				</h:panelGroup>
-				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-top:2em;">
+						
+				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-top:2em; margin-bottom:2em;">
 					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
 					<h:panelGroup layout="block" class="wrapper">
 						<ul>
@@ -75,15 +115,17 @@
 						</ul>
 					</h:panelGroup>
 				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup styleClass="eg3_info_panel">
+						<p>
+							Part 2: <h:outputText value="#{viewCollection.col.description}"/>
+							Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+						</p>
+					</h:panelGroup>
+				</h:panelGroup>
 			</h:panelGroup>
-
 		</h:panelGroup>
-
-<ui:remove>				
-			<h:panelGroup>
-				<ca:ca_scrollButtons images="#{testCarouselBean.img}"/>
-			</h:panelGroup>
-</ui:remove>
 	
 	</ui:define>
 </ui:composition>
