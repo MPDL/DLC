@@ -467,7 +467,7 @@ function checkMessageContent() {
 		var msgErr = msgCo.find('.eg3_messageError, .eg3_messageFatal, .eg3_messageWarning');
 		
 		if ((msgSuc && msgSuc.length > 0) && (!msgErr || msgErr.length == 0)) {
-			setTimeout("$('.eg3_id_contentDescription').hide(1000);", 3000);
+			setTimeout("$('.eg3_id_contentDescription').hide(1000);", 2000);
 		}
 	}
 }
