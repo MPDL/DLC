@@ -1,18 +1,21 @@
 @CHARSET "ISO-8859-1";
 
 .infiniteCarousel {
-	width: 395px;
+	/*width: 395px;*/
 	position: relative;
+	width:100%;
 }
 
 .infiniteCarousel .wrapper {
-	width: 315px;
+	/*width: 315px; */
 	/* .infiniteCarousel width - (.wrapper margin-left + .wrapper margin-right) */
 	overflow: auto;
 	height: 105px;
-	margin: 0 40px;
+	/*margin: 0 40px;*/
 	position: relativ;
 	top: 0;
+	
+	width:88%; margin:0 5%;
 }
 
 .infiniteCarousel ul a img {
@@ -45,11 +48,11 @@
 }
 
 .infiniteCarousel ul:hover li img {
-	border-color: #000;
+	border-color: transparent;
 }
 
 .infiniteCarousel ul:hover li:hover img {
-	border-color: #333;
+	border-color: #EA7125;
 }
 
 .infiniteCarousel ul li a img {

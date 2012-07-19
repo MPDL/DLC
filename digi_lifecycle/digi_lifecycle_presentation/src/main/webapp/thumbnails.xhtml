@@ -11,47 +11,38 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 
-		<ui:define name="separateContentHeader">
-			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_21_50">
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<h3 class="eg3_multiVolumeTitle">
-							<!--<h:outputText value="#{viewPages.context.properties.name}"/>   -->
-						</h3>
-						
-						<br />
-						
-						<h:panelGroup styleClass="eg3_floatLeft">
-							<h3 class="eg3_volumeTitle"><h:outputText value="#{thumbnailsBean.volume.modsMetadata.titles[0].title}"/></h3>
-							<h4 class="eg3_volumeDetails"><h:outputText value="#{thumbnailsBean.volume.modsMetadata.names[0].name}"/></h4>
-						</h:panelGroup>
+	<ui:define name="separateContentHeader">
+		<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_21_50">
+			<h:panelGroup layout="block" styleClass="eg3_container_1">
+				<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
+					<h3 class="eg3_multiVolumeTitle">
+						<!--<h:outputText value="#{viewPages.context.properties.name}"/>   -->
+					</h3>
+					
+					<br />
+					
+					<h:panelGroup styleClass="eg3_floatLeft">
+						<h3 class="eg3_volumeTitle"><h:outputText value="#{thumbnailsBean.volume.modsMetadata.titles[0].title}"/></h3>
+						<h4 class="eg3_volumeDetails"><h:outputText value="#{thumbnailsBean.volume.modsMetadata.names[0].name}"/></h4>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
-		</ui:define>
+		</h:panelGroup>
+	</ui:define>
 		
-		<!-- todo <ui:define name="breadcrumpTitle">			
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
-				<mpdl:hierarchicalBreadcrumb ou="#{hierarchicalBreadcrumbHelper.getVolumeCollection(thumbnailsBean.volume)}" colId="#{thumbnailsBean.volume.item.properties.context.objid}" colName="#{thumbnailsBean.volume.item.properties.context.getXLinkTitle()}" volumes="true">
-				</mpdl:hierarchicalBreadcrumb>
-			</h:panelGroup>	
-		</ui:define>
-		-->
-
 	<ui:define name="mainContent">
 		<mpdl:paginator paginatorBean="#{thumbnailsBean}">	
-		
-			<div class="tiledList">
-				<div class="listHeader">
-				</div>
-				<div class="listBody">
+			
+			<h:panelGroup layout="block" styleClass="eg3_tiledList">
+				<h:panelGroup layout="block" styleClass="eg3_listHeader"/>
+				<h:panelGroup layout="block" styleClass="eg3_listBody">
 					<ul>
 						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
 							<mpdl:thumbnail page="#{var}" />
 						</a4j:repeat>
 					</ul>
-				</div>
-			</div>
+				</h:panelGroup>
+			</h:panelGroup>
 		</mpdl:paginator>
 
 
