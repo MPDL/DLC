@@ -76,19 +76,20 @@ public class ViewOU {
 					{
 						sc = new SearchCriterion(SearchType.CONTEXT_ID, context.getObjid());
 						scList.add(sc);
-					}
-					List<SortCriterion> sortList = new ArrayList<SortCriterion>();
-					sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
-					VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
-					SearchBean searchBean = new SearchBean();
-					VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
-					for(Volume vol : res.getVolumes())
-					{ 
-						
-						if(vol.getPages() != null && vol.getPages().size()>0)
-						{
-							this.vols_Carousel.add(vol);
-	
+					
+						List<SortCriterion> sortList = new ArrayList<SortCriterion>();
+						sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
+						VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
+						SearchBean searchBean = new SearchBean();
+						VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
+						for(Volume vol : res.getVolumes())
+						{ 
+							
+							if(vol.getPages() != null && vol.getPages().size()>0)
+							{
+								this.vols_Carousel.add(vol);
+		
+							}
 						}
 					}
 				}
