@@ -70,18 +70,18 @@
 				</h:panelGroup>
 				
 
-				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-bottom:2em;">
+				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewOU.vols_Carousel}" style="margin-bottom:2em;">
 					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
 					<h:panelGroup layout="block" class="wrapper">
 						<ul>
-							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
+							<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
 								<li>
 									<pretty:link mappingId="viewPages">
-										<f:param value="#{volume.item.objid}"/>
+										<f:param value="#{volume.getObjidAndVersion()}"/>
 										<f:param value="recto-verso" />
 										<f:param value="1" />
 										
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75" />
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" width="75" height="75"  title="#{volumeUtilBean.getTitle(volume.modsMetadata).title}"/>
 									</pretty:link>
 								</li>
 							</ui:repeat>
