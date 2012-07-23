@@ -48,6 +48,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsLanguage;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
+import de.mpg.mpdl.dlc.vo.mods.ModsPart;
 import de.mpg.mpdl.dlc.vo.mods.ModsPhysicalDescription;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
@@ -210,6 +211,7 @@ public class IngestBean{
 		this.modsMetadata.setLanguage_037(new ModsLanguage());
 		this.modsMetadata.getRelatedItems().add(new ModsRelatedItem());
 		this.modsMetadata.getPhysicalDescriptions().add(new ModsPhysicalDescription());
+		this.modsMetadata.getParts().add(new ModsPart());
 	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
@@ -247,7 +249,7 @@ public class IngestBean{
     }
     
     public String clearAllData()
-    {  
+    {   
     	if(imageFiles.size()>0)
     		imageFiles.clear();
     	if(mabFile != null)
@@ -593,6 +595,16 @@ public class IngestBean{
 			md.getRelatedItems().get(0).setDisplayLabel("series1");
 			md.getRelatedItems().get(0).setType("series");
 		}
+		if(md.getParts().get(1).getValue() !="" && md.getParts().get(1).getValue() != null)
+			md.getParts().get(1).setType("host");
+		else
+			md.getParts().remove(1);
+		if(md.getParts().get(0).getVolumeDescriptive_089() !="" && md.getParts().get(0).getVolumeDescriptive_089() != null)
+			md.getParts().get(0).setType("host");
+		else
+			md.getParts().remove(0);
+
+			
 		
 		return md;
 	}
@@ -627,6 +639,8 @@ public class IngestBean{
 		     		if(getImageFiles().size()==0 || (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
 		    		{
 		     			
+		     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The message to display"));
+
 		     			if(getImageFiles().size()==0 )
 		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
 		     			if(teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
