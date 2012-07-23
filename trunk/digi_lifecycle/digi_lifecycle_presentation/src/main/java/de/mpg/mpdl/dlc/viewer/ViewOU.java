@@ -68,12 +68,13 @@ public class ViewOU {
 					{this.vols_Carousel.clear();}
 				
 				SearchCriterion sc = null;
-				List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+
 				List <Context> contextL = contextServiceBean.retrieveOUContexts(id);
 				if (contextL != null && contextL.size()>0)
 				{
 					for(Context context : contextL)
 					{
+						List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 						sc = new SearchCriterion(SearchType.CONTEXT_ID, context.getObjid());
 						scList.add(sc);
 					
