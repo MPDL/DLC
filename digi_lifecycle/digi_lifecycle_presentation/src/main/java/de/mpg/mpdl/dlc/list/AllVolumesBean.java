@@ -244,12 +244,21 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	 * @return
 	 */
 	public  List<Volume> getStartPageVolumes ()
-	{
+	{ 
 		List<Volume> volumes = new ArrayList<Volume>();
 		
 		try
 		{
-			VolumeSearchResult res = searchBean.advancedSearchVolumes(new ArrayList<SearchCriterion>(), getSortCriterionList(), 6, 0);			
+//			VolumeSearchResult res = searchBean.advancedSearchVolumes(new ArrayList<SearchCriterion>(), getSortCriterionList(), 6, 0);	
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			
+
+			List<SortCriterion> sortList = new ArrayList<SortCriterion>();
+			sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
+			VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
+			SearchBean searchBean = new SearchBean();
+			VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);		
+			
 			for(Volume vol : res.getVolumes())
 			{ 		
 					if(vol != null && vol.getPages() != null && vol.getPages().size()>0)
