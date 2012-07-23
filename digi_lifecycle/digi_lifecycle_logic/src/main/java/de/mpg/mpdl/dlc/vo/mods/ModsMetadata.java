@@ -80,7 +80,7 @@ public class ModsMetadata {
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
 	
-	@XmlPath("mods:location/mods:shelfLocator/text()")
+	@XmlPath("mods:location/mods:physicalLocation/text()")
 	private String signature_544;
 	
 	
