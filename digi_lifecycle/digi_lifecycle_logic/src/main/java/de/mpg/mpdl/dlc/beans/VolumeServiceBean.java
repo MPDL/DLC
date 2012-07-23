@@ -779,7 +779,7 @@ public class VolumeServiceBean {
 					pagedTeiComponent.getProperties().setVisibility("public");
 					ComponentContent pagedTeiContent = new ComponentContent();
 					pagedTeiComponent.setContent(pagedTeiContent);
-					pagedTeiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
+					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(pagedTeiComponent);
 				}
 				
@@ -799,7 +799,7 @@ public class VolumeServiceBean {
 					teiComponent.getProperties().setVisibility("public");
 					ComponentContent teiContent = new ComponentContent();
 					teiComponent.setContent(teiContent);
-					teiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
+					teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					volume.getItem().getComponents().add(teiComponent);
 				}
 				
@@ -830,7 +830,7 @@ public class VolumeServiceBean {
 					teiSdComponent.getProperties().setVisibility("public");
 					ComponentContent teiSdContent = new ComponentContent();
 					teiSdComponent.setContent(teiSdContent);
-					teiSdComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
+					teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					
 					volume.getItem().getComponents().add(teiSdComponent);
 				}
@@ -854,7 +854,7 @@ public class VolumeServiceBean {
 						pagedTeiComponent.getProperties().setVisibility("public");
 						ComponentContent pagedTeiContent = new ComponentContent();
 						pagedTeiComponent.setContent(pagedTeiContent);
-						pagedTeiComponent.getContent().setStorageType(StorageType.INTERNAL_MANAGED);
+						pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 						
 						volume.getItem().getComponents().add(pagedTeiComponent);
 					}
