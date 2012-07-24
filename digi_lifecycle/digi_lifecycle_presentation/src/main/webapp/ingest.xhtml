@@ -23,7 +23,9 @@
 			{
 				float:none;
 			}
-			
+			.rf-dg-c {
+				border:none;
+			}
 			
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-hdr {
 				width:96%;
@@ -39,7 +41,6 @@
 				width:96%;
 				padding:1.99999%;
 				color:#FFFFFF;
-				background-color:#323232;
 			}
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist {
 				color:#000000;
@@ -68,10 +69,16 @@
 			.eg3_ingestPage .rf-p-b {
 				font-size:110%;
 				color:#FFFFFF;
+				width:96%;
 			}
-			.eg3_ingestPage .rf-p-b input[type=text]{
-				background-color:#EFEFEF;
+			.eg3_ingestPage input[type="text"] {
+				background-color:#292929;
+				color:#FFFFFF;
 				margin-left:0;
+			}
+			.eg3_ingestPage input[type="text"]:focus {
+				background-color:#EFEFEF;
+				color:#000000;
 			}
 			.eg3_ingestPage .eg3_submitPanel {
 				background-color:#000000;
@@ -79,7 +86,7 @@
 			}
 			.eg3_ingestPage .eg3_submitPanel .rf-p-b {
 				width:96%;
-				padding:0.75em 1.9999% 0.833333em;
+				padding:1% 1.9999% 2.2%;
 			}
 			.eg3_ingestPage .eg3_submitPanel input[type=submit] {
 				float:left;
@@ -103,6 +110,19 @@
 			
 			.eg3_ingestPage .eg3_metadataPanel table table {
 				border-collapse:collapse
+			}
+			.eg3_ingestPage tr td {
+				vertical-align:top;
+				padding-bottom:0.25em;
+			}
+			.eg3_ingestPage .eg3_metadataPanel tr:hover {
+				background-color:#434343;
+			}
+			.eg3_ingestPage .eg3_metadataPanel tr:hover table tr:hover {
+				background-color:#EA7125;
+			}
+			.eg3_ingestPage table input[type="text"] {
+				width:100%;
 			}
 		</style>
 		
