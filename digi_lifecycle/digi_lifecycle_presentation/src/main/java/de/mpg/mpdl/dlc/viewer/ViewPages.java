@@ -8,12 +8,9 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
-import org.richfaces.component.UITree;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -24,8 +21,14 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.export.Export;
+import de.mpg.mpdl.dlc.export.Export.ExportTypes;
+import de.mpg.mpdl.dlc.export.ExportBean;
+import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -55,6 +58,8 @@ public class ViewPages{
 	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
 	
 	private ApplicationBean appBean = new ApplicationBean();
+	
+	private SessionBean sessionBean = new SessionBean();
 	
 	private Context context;
 	
@@ -104,9 +109,9 @@ public class ViewPages{
 				//Set the logo of application to collection logo
 				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
-					{appBean.setLogoLink(volumeOu.getId());
-					appBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
-					appBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
+					{sessionBean.setLogoLink(volumeOu.getId());
+					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
+					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
@@ -491,7 +496,15 @@ public class ViewPages{
 	public String getVolumeId() {
 		return volumeId;
 	}
-
+	
+	public String getVolumeIdWithoutObjId() {
+		String id = this.getVolumeId();
+		if (id.split(":").length >= 2)
+		{
+			id = "escidoc:" + id.split(":")[1];
+		}
+		return id;
+	}
 
 	public void setVolumeId(String volumeId) {
 		this.volumeId = volumeId;
@@ -550,5 +563,27 @@ public class ViewPages{
 		this.volumeOu = volumeOu;
 	}
 
+	public String export(String type)
+	{
+		byte[] pdf = null;
+		try
+		{
+			if (type.equals(Export.ExportTypes.PDF.toString()))
+			{
+				pdf = ExportBean.doExport(this.volume, ExportTypes.PDF);
+				ExportServlet servlet = new ExportServlet();
+				servlet.createPdfResponse(pdf, this.volumeId);	
+			}
+			if (type.equals(Export.ExportTypes.PRINT.toString()))
+			{
+				//TODO
+			}
+		}
+		catch (Exception e)
+		{
+			MessageHelper.errorMessage("The export could not be created due to an internal error.", e.getMessage());
+		}
+		return "";
+	}
 	
 }
