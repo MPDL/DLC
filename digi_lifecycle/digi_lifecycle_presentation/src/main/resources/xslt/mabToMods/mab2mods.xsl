@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mab="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd" xmlns="http://www.loc.gov/mods/v3" exclude-result-prefixes="mab">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mab="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd" xmlns="http://www.loc.gov/mods/v3" exclude-result-prefixes="mab">
 	<xsl:output indent="yes" method="xml" encoding="UTF-8"/>
 	
 	<xsl:variable name="IDPREFIX" select="'mab'"/>
@@ -16,7 +16,7 @@
 	<xsl:key match="mab:feld" name="fields" use="@nr"/>
 
 	 <xsl:template match="/">
-		<xsl:element name="mods">
+		<xsl:element name="mods:mods">
 			<xsl:attribute name="version"><xsl:value-of select="'3.4'"/></xsl:attribute>
 				<xsl:for-each select="key('fields', '001')">
 					<xsl:call-template name="mab001ToRecordIdentifier"/>
@@ -170,7 +170,7 @@
 				
 				<!--  begin : for 611 - 659 Sekundärausgabe-->	
 				
-				<relatedItem displayLabel="secondary edition">
+				<mods:relatedItem displayLabel="secondary edition">
 					<xsl:for-each select="key('fields', '611')">
 						<xsl:call-template name="mab611ToRelatedItem" />
 					</xsl:for-each>
@@ -204,7 +204,7 @@
 					<xsl:for-each select="key('fields', '655')">
 						<xsl:call-template name="mab655ToRelatedItem" />
 					</xsl:for-each>
-				</relatedItem>
+				</mods:relatedItem>
 
 				<!--  end: 611-659	-->
 				
@@ -243,8 +243,8 @@
 	</xsl:template>
 	
 	<xsl:template name="mab001ToRecordIdentifier">
-		<xsl:element name="recordInfo">
-			<xsl:element name="recordIdentifier">
+		<xsl:element name="mods:recordInfo">
+			<xsl:element name="mods:recordIdentifier">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:value-of select="."/>
 			</xsl:element>
@@ -252,11 +252,11 @@
 	</xsl:template>
 	
 	<xsl:template name="mab010ToRelatedItem">
-		<xsl:element name="relatedItem">
+		<xsl:element name="mods:relatedItem">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
-			<xsl:element name="recordInfo">
-				<xsl:element name="recordIdentifier">
+			<xsl:element name="mods:recordInfo">
+				<xsl:element name="mods:recordIdentifier">
 					<xsl:attribute name="source"><xsl:value-of select="'local'"/></xsl:attribute>
 					<xsl:value-of select="."/>
 				</xsl:element>
@@ -266,7 +266,7 @@
 	
 	<xsl:template name="mab025ToIdentifier">
 		<xsl:if test="@ind='z'">
-			<xsl:element name="identifier">
+			<xsl:element name="mods:identifier">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="type"><xsl:value-of select="'zdb-id'"/></xsl:attribute>
 				<xsl:value-of select="."/>
@@ -275,9 +275,9 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab037ToLanguage">
-		<xsl:element name="language">
+		<xsl:element name="mods:language">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:element name="languageTerm">
+			<xsl:element name="mods:languageTerm">
 				<xsl:attribute name="type"><xsl:value-of select="'code'"/></xsl:attribute>
 				<xsl:attribute name="authority"><xsl:value-of select="'rfc4646'"/></xsl:attribute>
 				<xsl:value-of select="."/>
@@ -286,12 +286,12 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab089ToPart">
-		<xsl:element name="part">
+		<xsl:element name="mods:part">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
 			<xsl:attribute name="order"><xsl:value-of select="."/></xsl:attribute>
-			<xsl:element name="detail">
-				<xsl:element name="number">
+			<xsl:element name="mods:detail">
+				<xsl:element name="mods:number">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
@@ -299,7 +299,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab090ToPart">
-		<xsl:element name="part">
+		<xsl:element name="mods:part">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
 			<xsl:attribute name="order"><xsl:value-of select="."/></xsl:attribute>
@@ -308,7 +308,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab100ToName">
-		<xsl:element name="name">
+		<xsl:element name="mods:name">
 			<xsl:if test="@ind=' ' or @ind='a'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:if test="@nr='100'">
@@ -335,11 +335,11 @@
 			</xsl:if>
 			<xsl:attribute name="type"><xsl:value-of select="'personal'"/></xsl:attribute>
 			<xsl:attribute name="authority"><xsl:value-of select="'pnd'"/></xsl:attribute>
-			<xsl:element name="namePart">
+			<xsl:element name="mods:namePart">
 				<xsl:value-of select="."/>
 			</xsl:element>
-			<xsl:element name="role">
-				<xsl:element name="roleTerm">
+			<xsl:element name="mods:role">
+				<xsl:element name="mods:roleTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'code'"/></xsl:attribute>
 					<xsl:attribute name="authority"><xsl:value-of select="'marcrelator'"/></xsl:attribute>
 					<xsl:if test="@ind=' ' or @ind='a'">
@@ -358,7 +358,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab200ToName">
-		<xsl:element name="name">
+		<xsl:element name="mods:name">
 			<xsl:if test="@ind=' ' or @ind='a'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:if test="@nr='200'">
@@ -385,11 +385,11 @@
 			</xsl:if>
 			<xsl:attribute name="type"><xsl:value-of select="'corporate'"/></xsl:attribute>
 			<xsl:attribute name="authority"><xsl:value-of select="'gkd'"/></xsl:attribute>
-			<xsl:element name="namePart">
+			<xsl:element name="mods:namePart">
 				<xsl:value-of select="."/>
 			</xsl:element>
-			<xsl:element name="role">
-				<xsl:element name="roleTerm">
+			<xsl:element name="mods:role">
+				<xsl:element name="mods:roleTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'code'"/></xsl:attribute>
 					<xsl:attribute name="authority"><xsl:value-of select="'marcrelator'"/></xsl:attribute>
 					<xsl:if test="@ind=' ' or @ind='a'">
@@ -404,48 +404,48 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab304ToUniformTitle">
-		<xsl:element name="titleInfo">
+		<xsl:element name="mods:titleInfo">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="$UNIFORM_TITLE"/></xsl:attribute>
-			<xsl:element name="title">
+			<xsl:element name="mods:title">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template name="mab310ToAlternativeTitle">
-		<xsl:element name="titleInfo">
+		<xsl:element name="mods:titleInfo">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="$ALTERNATIVE_TITLE"/></xsl:attribute>
 			<xsl:if test="@nr='341'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'parallelTitle'"/></xsl:attribute>
 			</xsl:if>
-			<xsl:element name="title">
+			<xsl:element name="mods:title">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template name="mab331ToMainTitle">
-		<xsl:element name="titleInfo">
+		<xsl:element name="mods:titleInfo">
 			<xsl:if test="@ind=' '">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'mainTitle'"/></xsl:attribute>
-				<xsl:element name="title">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'NEB follow the title'"/></xsl:attribute>
-				<xsl:element name="title">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="@ind='b'">
 				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'NEB with the title'"/></xsl:attribute>
-				<xsl:element name="title">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:if>
@@ -453,9 +453,9 @@
 	</xsl:template>
 	
 	<xsl:template name="mab334ToPhysicalDescription">
-		<xsl:element name="physicalDescription">
+		<xsl:element name="mods:physicalDescription">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:element name="form">
+			<xsl:element name="mods:form">
 				<xsl:attribute name="type"><xsl:value-of select="'material'"/></xsl:attribute>
 				<xsl:value-of select="."/>
 			</xsl:element>
@@ -463,16 +463,16 @@
 	</xsl:template>
 	
 	<xsl:template name="mab335ToSubTitle">
-		<xsl:element name="titleInfo">
+		<xsl:element name="mods:titleInfo">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:element name="subTitle">
+			<xsl:element name="mods:subTitle">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template name="mab359ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'statement of responsibility'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -480,7 +480,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab360ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'subseries'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -488,11 +488,11 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab361ToPart">
-		<xsl:element name="part">
+		<xsl:element name="mods:part">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'constituent'"/></xsl:attribute>
-			<xsl:element name="detail">
-				<xsl:element name="title">
+			<xsl:element name="mods:detail">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
@@ -500,7 +500,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab365ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'remainder of title for whole item'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -508,7 +508,7 @@
 	</xsl:template>
 	
 	<xsl:template name="mab369ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'reponsibility for whole item'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -520,9 +520,9 @@
 			<xsl:when test="key('fields', '410')">
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="originInfo">
+				<xsl:element name="mods:originInfo">
 					<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
-					<xsl:element name="edition">
+					<xsl:element name="mods:edition">
 						<xsl:value-of select="key('fields', '403')"/>
 					</xsl:element>
 				</xsl:element>
@@ -531,46 +531,46 @@
 	</xsl:template>
 	
 	<xsl:template name="mab410ToOriginInfo">
-		<xsl:element name="originInfo">
+		<xsl:element name="mods:originInfo">
 			<xsl:if test="@ind=' '">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
-				<xsl:element name="place">
-					<xsl:element name="placeTerm">
+				<xsl:element name="mods:place">
+					<xsl:element name="mods:placeTerm">
 						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 						<xsl:value-of select="."/>
 					</xsl:element>
 				</xsl:element>
 				<xsl:variable name="publisher" select="key('fields', '412')[@ind=' ']"/>
 				<xsl:if test="$publisher">
-					<xsl:element name="publisher">
+					<xsl:element name="mods:publisher">
 						<xsl:value-of select="$publisher"/>
 					</xsl:element>
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'printer1'"/></xsl:attribute>
-				<xsl:element name="place">
-					<xsl:element name="placeTerm">
+				<xsl:element name="mods:place">
+					<xsl:element name="mods:placeTerm">
 						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 						<xsl:value-of select="."/>
 					</xsl:element>
 				</xsl:element>
 				<xsl:variable name="printer" select="key('fields', '412')[@ind='a']"/>
 				<xsl:if test="$printer">
-					<xsl:element name="publisher">
+					<xsl:element name="mods:publisher">
 						<xsl:value-of select="$printer"/>
 					</xsl:element>
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="key('fields', '425')">
-				<xsl:element name="dateIssued">
+				<xsl:element name="mods:dateIssued">
 					<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 					<xsl:value-of select="key('fields', '425')"/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="key('fields', '403')">
-				<xsl:element name="edition">
+				<xsl:element name="mods:edition">
 					<xsl:value-of select="key('fields', '403')"/>
 				</xsl:element>
 			</xsl:if>
@@ -578,33 +578,33 @@
 	</xsl:template>
 
 	<xsl:template name="mab415ToOriginInfo">
-		<xsl:element name="originInfo">
+		<xsl:element name="mods:originInfo">
 			<xsl:if test="@ind=' '">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher2'"/></xsl:attribute>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'printer2'"/></xsl:attribute>
 			</xsl:if>
-			<xsl:element name="place">
-				<xsl:element name="placeTerm">
+			<xsl:element name="mods:place">
+				<xsl:element name="mods:placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
 			<xsl:if test="key('fields', '417')">
-				<xsl:element name="publisher">
+				<xsl:element name="mods:publisher">
 					<xsl:value-of select="key('fields', '417')"/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="key('fields', '425')">
-				<xsl:element name="dateIssued">
+				<xsl:element name="mods:dateIssued">
 				<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 				<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 					<xsl:value-of select="key('fields', '425')"/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="key('fields', '403')">
-				<xsl:element name="edition">
+				<xsl:element name="mods:edition">
 					<xsl:value-of select="key('fields', '403')"/>
 				</xsl:element>
 			</xsl:if>
@@ -616,9 +616,9 @@
 			<xsl:when test="key('fields', '410')">
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:element name="originInfo">
+				<xsl:element name="mods:originInfo">
 					<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher1'"/></xsl:attribute>
-					<xsl:element name="dateIssued">
+					<xsl:element name="mods:dateIssued">
 						<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 						<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 						<xsl:value-of select="key('fields', '425')"/>
@@ -629,7 +629,7 @@
 	</xsl:template>
 	
 	<xsl:template name="mab429ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'subject completeness'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -637,7 +637,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab431ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'indexes'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -645,7 +645,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab432ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'summary of volumes'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -653,16 +653,16 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab433ToPhysicalDescription">
-		<xsl:element name="physicalDescription">
+		<xsl:element name="mods:physicalDescription">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:element name="extent">
+			<xsl:element name="mods:extent">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template name="mab451ToRelatedItem">
-		<xsl:element name="relatedItem">
+		<xsl:element name="mods:relatedItem">
 		<xsl:if test="@ind=' '">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="'series1'"/></xsl:attribute>
 		</xsl:if>
@@ -671,8 +671,8 @@
 		</xsl:if>
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'series'"/></xsl:attribute>
-			<xsl:element name="titleInfo">
-				<xsl:element name="title">
+			<xsl:element name="mods:titleInfo">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
@@ -680,14 +680,14 @@
 	</xsl:template>
 	
 	<xsl:template name="mab501ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>	
 	
 	<xsl:template name="mab519ToNote">
-		<xsl:element name="note">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'thesis'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -695,7 +695,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab540ToIdentifier">
-			<xsl:element name="identifier">
+			<xsl:element name="mods:identifier">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="type"><xsl:value-of select="'isbn'"/></xsl:attribute>
 				<xsl:if test="@ind='b'">
@@ -706,7 +706,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab542ToIdentifier">
-			<xsl:element name="identifier">
+			<xsl:element name="mods:identifier">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:attribute name="type"><xsl:value-of select="'issn'"/></xsl:attribute>
 				<xsl:if test="@ind='b'">
@@ -717,20 +717,16 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab544ToLocation">
-		<xsl:element name="location">
+		<xsl:element name="mods:location">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:element name="holdingSimple">
-				<xsl:element name="copyInformation">
-					<xsl:element name="shelfLocator">
-						<xsl:value-of select="."/>
-					</xsl:element>
-				</xsl:element>
+			<xsl:element name="mods:physicalLocation">
+				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	
 	<xsl:template name="mab552ToIdentifier">
-			<xsl:element name="identifier">
+			<xsl:element name="mods:identifier">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:if test="@ind='a'">
 				<xsl:attribute name="type"><xsl:value-of select="'doi'"/></xsl:attribute>
@@ -743,7 +739,7 @@
 	</xsl:template>	
 	
 	<xsl:template name="mab580ToIdentifier">
-		<xsl:element name="identifier">
+		<xsl:element name="mods:identifier">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'local'"/></xsl:attribute>
 			<xsl:value-of select="."/>
@@ -751,11 +747,11 @@
 	</xsl:template>
 	
 	<xsl:template name="mab590ToRelatedItem">
-		<xsl:element name="relatedItem">
+		<xsl:element name="mods:relatedItem">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
-			<xsl:element name="titleInfo">
-				<xsl:element name="title">
+			<xsl:element name="mods:titleInfo">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
@@ -767,135 +763,135 @@
 	
 		
 	<xsl:template name="mab611ToRelatedItem">
-		<xsl:element name="originInfo">
+		<xsl:element name="mods:originInfo">
 			<xsl:if test="@ind=' '">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'publisher3'"/></xsl:attribute>
-				<xsl:element name="place">
-					<xsl:element name="placeTerm">
+				<xsl:element name="mods:place">
+					<xsl:element name="mods:placeTerm">
 						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 						<xsl:value-of select="."/>
 					</xsl:element>
 				</xsl:element>
 				<xsl:variable name="publisher" select="key('fields', '613')[@ind=' ']"/>
 				<xsl:if test="$publisher">
-					<xsl:element name="publisher">
+					<xsl:element name="mods:publisher">
 						<xsl:value-of select="$publisher"/>
 					</xsl:element>
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="@ind='a'">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'manufacturer'"/></xsl:attribute>
-				<xsl:element name="place">
-					<xsl:element name="placeTerm">
+				<xsl:element name="mods:place">
+					<xsl:element name="mods:placeTerm">
 						<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 						<xsl:value-of select="."/>
 					</xsl:element>
 				</xsl:element>
 				<xsl:variable name="printer" select="key('fields', '613')[@ind='a']"/>
 				<xsl:if test="$printer">
-					<xsl:element name="publisher">
+					<xsl:element name="mods:publisher">
 						<xsl:value-of select="$printer"/>
 					</xsl:element>
 				</xsl:if>
 			</xsl:if>
 			<xsl:if test="key('fields', '619')">
-				<xsl:element name="dateCaptured">
+				<xsl:element name="mods:dateCaptured">
 					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 					<xsl:value-of select="key('fields', '619')"/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="key('fields', '640')">
-				<xsl:element name="edition">
+				<xsl:element name="mods:edition">
 					<xsl:value-of select="key('fields', '640')"/>
 				</xsl:element>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>	
 	<xsl:template name="mab617ToRelatedItem">
-		<xsl:element name="originInfo">
+		<xsl:element name="mods:originInfo">
 			<xsl:attribute name="displayLabel"><xsl:value-of select="'creator'"/></xsl:attribute>
-			<xsl:element name="place">
-				<xsl:element name="placeTerm">
+			<xsl:element name="mods:place">
+				<xsl:element name="mods:placeTerm">
 					<xsl:attribute name="type"><xsl:value-of select="'text'"/></xsl:attribute>
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
 			<xsl:variable name="publisher" select="key('fields', '617')[@ind=' ']"/>
 				<xsl:if test="$publisher">
-					<xsl:element name="publisher">
+					<xsl:element name="mods:publisher">
 						<xsl:value-of select="$publisher"/>
 					</xsl:element>
 				</xsl:if>
 			<xsl:if test="key('fields', '619')">
-				<xsl:element name="dateCaptured">
+				<xsl:element name="mods:dateCaptured">
 					<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 					<xsl:value-of select="key('fields', '619')"/>
 				</xsl:element>
 			</xsl:if>
 			<xsl:if test="key('fields', '640')">
-				<xsl:element name="edition">
+				<xsl:element name="mods:edition">
 					<xsl:value-of select="key('fields', '640')"/>
 				</xsl:element>
 			</xsl:if>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab634ToRelatedItem">
-		<xsl:element name="identifier">
+		<xsl:element name="mods:identifier">
 			<xsl:attribute name="type"><xsl:value-of select="'isbn'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab635ToRelatedItem">
-		<xsl:element name="identifier">
+		<xsl:element name="mods:identifier">
 			<xsl:attribute name="type"><xsl:value-of select="'issn'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab646ToRelatedItem">
-		<xsl:element name="location">
-			<xsl:element name="physicalLocation">
+		<xsl:element name="mods:location">
+			<xsl:element name="mods:physicalLocation">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab647ToRelatedItem">
-		<xsl:element name="node">
+		<xsl:element name="mods:node">
 			<xsl:attribute name="type"><xsl:value-of select="'digital master'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab621ToRelatedItem">
-		<xsl:element name="relatedItem">
+		<xsl:element name="mods:relatedItem">
 			<xsl:attribute name="type"><xsl:value-of select="'series'"/></xsl:attribute>
-			<xsl:element name="titleInfo">
-				<xsl:element name="title">
+			<xsl:element name="mods:titleInfo">
+				<xsl:element name="mods:title">
 					<xsl:value-of select="."/>
 				</xsl:element>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab659ToRelatedItem">
-		<xsl:element name="accessCondition">
+		<xsl:element name="mods:accessCondition">
 			<xsl:value-of select="."/>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab653ToRelatedItem">
-		<xsl:element name="physicalDescription">
-			<xsl:element name="form">
+		<xsl:element name="mods:physicalDescription">
+			<xsl:element name="mods:form">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab637ToRelatedItem">
-		<xsl:element name="physicalDescription">
-			<xsl:element name="extent">
+		<xsl:element name="mods:physicalDescription">
+			<xsl:element name="mods:extent">
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab655ToRelatedItem">
-		<xsl:element name="location">
-			<xsl:element name="url">
+		<xsl:element name="mods:location">
+			<xsl:element name="mods:url">
 				<xsl:attribute name="displayLabel"><xsl:value-of select="'electronic resource'"/></xsl:attribute>
 				<xsl:attribute name="usage"><xsl:value-of select="'primary display'"/></xsl:attribute>
 				<xsl:value-of select="."/>
@@ -911,10 +907,10 @@
 	
 	
 	<xsl:template name="mab902ToSubject">
-		<xsl:element name="subject">
+		<xsl:element name="mods:subject">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 			<xsl:attribute name="authority"><xsl:value-of select="'rswk'"/></xsl:attribute>
-			<xsl:element name="topic">
+			<xsl:element name="mods:topic">
 					<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
