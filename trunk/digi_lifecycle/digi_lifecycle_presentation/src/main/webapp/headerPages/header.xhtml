@@ -27,8 +27,8 @@
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 
 					
-					<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{applicationBean.latestCql!= null}"
-						value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{applicationBean.latestCql}">
+					<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{sessionBean.latestCql!= null}"
+						value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{sessionBean.latestCql}">
 						<h:outputText value="#{lbl.header_lastSearchResult}" />
 					</h:outputLink> 
 					
@@ -78,8 +78,8 @@
 		
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_solutionLogo">
-			<h:outputLink value="#{applicationBean.logoLink}" title="#{applicationBean.logoTlt}">		
-				<h:graphicImage id="mainLogo" value="#{applicationBean.logoUrl}" alt="main logo"/>
+			<h:outputLink value="#{sessionBean.logoLink}" title="#{sessionBean.logoTlt}">		
+				<h:graphicImage id="mainLogo" value="#{sessionBean.logoUrl}" alt="main logo"/>
 			</h:outputLink>
 		</h:panelGroup>
 

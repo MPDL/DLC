@@ -2,23 +2,21 @@ package de.mpg.mpdl.dlc.viewer;
 
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ValueChangeEvent;
 
 import org.apache.log4j.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
-import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.list.ThumbnailsBean;
+import de.mpg.mpdl.dlc.export.Export;
+import de.mpg.mpdl.dlc.export.ExportBean;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.vo.mets.Page;
-import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.mets.Page;
 
 
 @ManagedBean
@@ -82,7 +80,5 @@ public class ViewVolume {
 		position = getVolume().getPages().indexOf(p) + 1;
 		return position;
 	}
-
-
 
 }

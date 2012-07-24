@@ -30,7 +30,7 @@ import de.mpg.mpdl.dlc.vo.mets.Page;
 
 
 public class ContextServiceBean {
-	private static Logger logger = Logger.getLogger(ContextServiceBean .class);
+	private static Logger logger = Logger.getLogger(ContextServiceBean.class);
 	
 
 	
