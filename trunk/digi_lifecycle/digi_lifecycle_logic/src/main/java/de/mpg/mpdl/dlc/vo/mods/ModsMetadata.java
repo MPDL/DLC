@@ -22,7 +22,7 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 
-@XmlRootElement(name="mods", namespace="http://www.loc.gov/mods/v3")
+@XmlRootElement(name="mods:mods", namespace="http://www.loc.gov/mods/v3")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
@@ -32,16 +32,16 @@ public class ModsMetadata {
 	/**
 	 * for 010, 590, 451, 451a,621
 	 */
-	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:relatedItem", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsRelatedItem> relatedItems = new ArrayList<ModsRelatedItem>();
 	
-	@XmlElement(name = "language", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:language", namespace="http://www.loc.gov/mods/v3")
 	private ModsLanguage language_037;
 	
 	/**
 	 * for 089, 090, 361
 	 */
-	@XmlElement(name = "part", namespace ="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:part", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPart> parts = new ArrayList<ModsPart>();
 	
 
@@ -56,28 +56,28 @@ public class ModsMetadata {
 		
 
 
-	@XmlElement(name="titleInfo", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name="mods:titleInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsTitle> titles = new ArrayList<ModsTitle>();
 	
 	/**
 	 * for 334, 433, 434, 435
 	 */
-	@XmlElement(name = "physicalDescription", namespace ="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:physicalDescription", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPhysicalDescription> physicalDescriptions = new ArrayList<ModsPhysicalDescription>();
 
 	
 	
-	@XmlElement(name="name", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name="mods:name", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsName> names = new ArrayList<ModsName>();	
 	
-	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
 	
 
-	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
 	
-	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "mods:identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
 	
 	@XmlPath("mods:location/mods:physicalLocation/text()")
