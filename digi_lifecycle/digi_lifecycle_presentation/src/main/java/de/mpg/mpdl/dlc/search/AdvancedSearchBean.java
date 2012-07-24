@@ -154,22 +154,24 @@ public class AdvancedSearchBean {
 	private void setCollectionSearch()
 	{		
 		//Set context id
+		boolean start = false;
+		boolean end = false;
 		for(int i = 0; i < contextScElements.size(); i ++)
 		{
 			SearchCriterion scCon;
 			ContextSearch contextSearch = contextScElements.get(i);
-			boolean start = false;
+			if (i == contextScElements.size()-1) end = true;
 			
 			//Means, a specific context was selected
 			if (!contextSearch.getContextId().equals(""))
 			{
-				if (i==0)
+				if (i==0 && !start)
 				{
 					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,0);
 					this.searchCriterionList.add(scCon);
 					start = true;
 				}
-				if (i == contextScElements.size())
+				if (i == contextScElements.size()-1 && end)
 				{
 					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId(),0,1);
 					this.searchCriterionList.add(scCon);
@@ -185,6 +187,7 @@ public class AdvancedSearchBean {
 			else
 				if (contextSearch.getContextId().equals("") && contextSearch.getContextList().size() > 0)
 				{
+					//First elem is 'All collections'
 					for (int y = 1; y < contextSearch.getContextList().size(); y ++)
 					{
 						String currentContextId = contextSearch.getContextList().get(y).getValue().toString();
@@ -192,10 +195,12 @@ public class AdvancedSearchBean {
 						{
 							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,0);
 							this.searchCriterionList.add(scCon);
+							start = true;
 						}
 						else
 						{
-							if (y == this.contextScElements.size())
+							//last element
+							if (y == contextSearch.getContextList().size()-1 && end)
 							{
 								scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, currentContextId,0,1);
 								this.searchCriterionList.add(scCon);

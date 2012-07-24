@@ -64,7 +64,10 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	}
 
 	public void setCqlQuery(String query) {
-		this.sessionBean.setLatestCql(query);
+		if (this.getCurrentPartList().size() > 0)
+		{
+			this.sessionBean.setLatestCql(query);
+		}
 		this.cqlQuery = query;
 	}
 
