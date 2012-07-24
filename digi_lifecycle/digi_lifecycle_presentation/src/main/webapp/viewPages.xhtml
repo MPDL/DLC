@@ -366,11 +366,19 @@
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_overlayBody eg3_right eg3_borderradius_5">
 										<ul>
-											<li><h:outputLink title="#{tlt.export_page_print}" styleClass="eg3_selectionText" action=""><h:outputText value="#{lbl.export_page_print}"/></h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_as_pdf}" styleClass="eg3_selectionText" action=""><h:outputText value="#{lbl.export_as_pdf}"/></h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" action=""><h:outputText value="#{lbl.export_dfg_viewer}"/></h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_mets_mods}" styleClass="eg3_selectionText" action=""><h:outputText value="#{lbl.export_mets_mods}"/></h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" action=""><h:outputText value="#{lbl.export_as_tei}"/></h:outputLink></li>
+											<li><h:outputLink title="#{tlt.export_page_print}" styleClass="eg3_selectionText" 
+															  value=""><h:outputText value="#{lbl.export_page_print}"/></h:outputLink></li>
+											<li><h:commandLink title="#{tlt.export_as_pdf}" styleClass="eg3_selectionText" 
+															  action="#{viewPages.export('PDF')}"><h:outputText value="#{lbl.export_as_pdf}"/></h:commandLink></li>
+											<li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText"	
+															  value="#{applicationBean.dfgUrl}#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=zvddmets" target="_blank"><h:outputText value="#{lbl.export_dfg_viewer}"/></h:outputLink></li>
+											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" 
+															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=dlc" target="_blank"><h:outputText value="#{lbl.export_mods}"/></h:outputLink></li>															  
+											<!--  <li><h:outputLink title="#{tlt.export_oai_dc}" styleClass="eg3_selectionText" 
+															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeId}&amp;metadataPrefix=oai_dc" target="_blank"><h:outputText value="#{lbl.export_oai_dc}"/></h:outputLink></li>
+											-->				  
+											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" 
+															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=tei" target="_blank"><h:outputText value="#{lbl.export_as_tei}"/></h:outputLink></li>
 										</ul>
 									</h:panelGroup>
 								</h:panelGroup>

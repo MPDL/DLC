@@ -16,6 +16,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
@@ -35,6 +36,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	private SearchBean searchBean = new SearchBean();
 	private ApplicationBean appBean = new ApplicationBean();
+	private SessionBean sessionBean = new SessionBean();
 	
 	private List<SearchCriterion> searchCriterionList;	
 	
@@ -62,7 +64,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	}
 
 	public void setCqlQuery(String query) {
-		this.appBean.setLatestCql(query);
+		this.sessionBean.setLatestCql(query);
 		this.cqlQuery = query;
 	}
 

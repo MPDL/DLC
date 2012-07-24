@@ -30,6 +30,7 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -65,15 +66,14 @@ public class ApplicationBean
     private String appTitle;
     private String contextPath;
     private String userLocaleString;
-    private static Locale userLocale;
+    private String dfgUrl = null;
+
+	private static Locale userLocale;
     private String selectedHelpPage;
     private String cmMultiVol;
     private String cmVolume;
     private String cmMono;
-    private static String logoUrl;
-    private static String logoLink;
-    private static String logoTlt;
-    private static String latestCql = null;
+
 
 	//TODO help_page
     public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
@@ -326,81 +326,16 @@ public class ApplicationBean
     	}
     }
     
-    public String getLogoUrl()
-    {    	
-    	
-    	//Reset url on common pages to default dlc logo
-    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-    	if (viewId.equals("/Welcome.xhtml")
-    			|| viewId.equals("/volumes.xhtml")
-    			|| viewId.equals("/ingest.xhtml")
-    			|| viewId.equals("/advancedSearch.xhtml")
-    			||viewId.equals("/admin.xhtml")
-    			||viewId.equals("/ou.xhtml"))
-    		{logoUrl = "";
-    		setLogoTlt("DLC");} 
-    	if (logoUrl == null || logoUrl.equals("")) 
-    		{return "/resources/images/dlc_u160_original.gif";}
-    	else return logoUrl;
-    }
-    
-    
-    public void setLogoUrl(String url)
-    {
-    	logoUrl = url;
-    }
-    
-    public String getLogoLink()
-    {    	  	
-    	//Reset link on common pages to default dlc logo
-    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-    	if (viewId.equals("/Welcome.xhtml")
-    			|| viewId.equals("/volumes.xhtml")
-    			|| viewId.equals("/ingest.xhtml")
-    			|| viewId.equals("/advancedSearch.xhtml")
-    			||viewId.equals("/admin.xhtml")
-    			||viewId.equals("/ou.xhtml"))
-    		{logoLink = "";} 
-    	if (logoLink == null || logoLink.equals("")) 
-    		{return this.domain+"/"+this.contextPath+"/";}
-    	return logoLink;
-    }
-    
-    
-    public void setLogoLink(String id)
-    {	
-    	String url = getDomain() + "/"+this.contextPath+"/ou/" + id;
-    	logoLink = url;
-    }
-    
-    public String getLogoTlt()
-    {
-    	//Reset tlt on common pages to default dlc logo
-    	String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
-    	if (viewId.equals("/Welcome.xhtml")
-    			|| viewId.equals("/volumes.xhtml")
-    			|| viewId.equals("/ingest.xhtml")
-    			|| viewId.equals("/advancedSearch.xhtml")
-    			||viewId.equals("/admin.xhtml")
-    			||viewId.equals("/ou.xhtml"))
-    		{logoTlt = "";} 
-    	if (logoTlt == null || logoTlt.equals("")) 
-    		{logoTlt = getResource("Tooltips", "main_home").replace("$1", "DLC");}
-    	return logoTlt;
-    }
-    
-    public void setLogoTlt(String tlt)
-    {
-    	logoTlt = tlt;
-    }
-    
-    
-    public String getLatestCql() {
-		return latestCql;
-	}
-
-	public void setLatestCql(String cql) {
-		latestCql = cql;
+    public String getDfgUrl() {
+    	if (dfgUrl == null)
+    	{
+    		try {
+				dfgUrl = PropertyReader.getProperty("dfg.viewer.baseurl");
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+    	}
+		return dfgUrl;
 	}
 
     
