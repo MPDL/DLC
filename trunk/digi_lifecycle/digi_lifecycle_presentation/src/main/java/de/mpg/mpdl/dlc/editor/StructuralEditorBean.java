@@ -109,6 +109,8 @@ public class StructuralEditorBean {
 	
 	private String selectedPaginationPattern;
 	
+	private int selectedPaginationColumns = 1;
+	
 	private boolean paginationInBrackets = false;
 	
 	private boolean paginateEverySecondPage = false;
@@ -849,7 +851,7 @@ public class StructuralEditorBean {
 				{
 
 						pagination = String.valueOf(currentValue);
-						currentValue++;
+						currentValue = currentValue + selectedPaginationColumns;
 					
 				}
 				
@@ -857,7 +859,7 @@ public class StructuralEditorBean {
 				{
 					lowerCase = PaginationType.ROMAN_MINUSCULE.equals(selectedPaginationType);
 					pagination = RomanNumberConverter.convert(currentValue, lowerCase);
-					currentValue++;
+					currentValue = currentValue + selectedPaginationColumns;
 				}
 				
 				else if(PaginationType.RECTO_VERSO.equals(selectedPaginationType))
@@ -2064,6 +2066,14 @@ public class StructuralEditorBean {
 
 	public void setPbList(List<TeiElementWrapper> pbList) {
 		this.pbList = pbList;
+	}
+
+	public int getSelectedPaginationColumns() {
+		return selectedPaginationColumns;
+	}
+
+	public void setSelectedPaginationColumns(int selectedPaginationColumns) {
+		this.selectedPaginationColumns = selectedPaginationColumns;
 	}
 
 	
