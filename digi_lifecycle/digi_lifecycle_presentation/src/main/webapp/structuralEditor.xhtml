@@ -369,6 +369,16 @@
 														</div>
 														</ui:remove>
 														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea" rendered="#{structuralEditorBean.selectedPaginationType=='ARABIC' or structuralEditorBean.selectedPaginationType =='ROMAN' or structuralEditorBean.selectedPaginationType =='ROMAN_MINUSCULE'}">
+															<h:outputText value="#{lbl.edit_paginationColumns}" />
+															<br/>
+															<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationColumns}">
+																<f:selectItem itemValue="1" itemLabel="#{lbl.edit_pagination1Columns}"/>
+																<f:selectItem itemValue="2" itemLabel="#{lbl.edit_pagination2Columns}"/>
+																<f:selectItem itemValue="3" itemLabel="#{lbl.edit_pagination3Columns}"/>
+															</h:selectOneMenu>
+														</h:panelGroup>
+														
 														<div class="eg3_editInputArea">
 															<h:outputText value="#{lbl.edit_paginationInBrackets}" />
 															<br />
