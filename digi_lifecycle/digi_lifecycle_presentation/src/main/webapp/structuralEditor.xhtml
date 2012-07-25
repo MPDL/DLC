@@ -68,10 +68,10 @@
 									</h:panelGroup>
 									</h:form>
 									<h:panelGroup id="thumbsDescription" layout="block" styleClass="eg3_container_1_2" >
-										
+										<b>
 										<h:outputText value="#{lbl.edit_scan} #{element.page.order + 1}" />
 										<h:outputText value=" / #{lbl.edit_page} #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
-										
+										</b>
 										<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
 										<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
 										<br/><br/>
