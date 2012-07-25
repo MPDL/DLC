@@ -88,7 +88,7 @@
 												<h:outputText  value="#{lbl.edit_elementType_title_page}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
 												<h:outputText  value="#{lbl.edit_elementType_figure}" rendered="#{wrapper.teiElement.elementType == 'FIGURE'}"/>
 												
-												<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV'}"/>
+												<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV' or wrapper.teiElement.elementType == 'FIGURE'}"/>
 												
 												<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
 											<br/><br/>
@@ -530,7 +530,7 @@
 															
 															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
 																<h:outputText value="[#{divItem.teiElementWrapper.teiElement.elementType}]"/>
-															
+																<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
 															</h:panelGroup>
 															
 															
@@ -543,10 +543,14 @@
 															<f:ajax render=":messages :edit :paginator" execute="@form"/>
 														</h:commandLink>
 													
-													<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel} - "/>
+													<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
+													<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}"/>
+													<h:outputText value=" - "/>
 													
-													<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1} / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}"/>
-													
+													<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+														<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}" />
+														<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}"/>
+													</h:panelGroup>
 													
 													
 													
