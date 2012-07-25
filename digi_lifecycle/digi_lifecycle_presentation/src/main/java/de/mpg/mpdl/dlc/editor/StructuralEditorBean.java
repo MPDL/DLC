@@ -1812,7 +1812,13 @@ public class StructuralEditorBean {
 	
 	private SelectItem getSelectItemForPb(TeiElementWrapper pb)
 	{
-		return new SelectItem(pb.getTeiElement().getId(), pb.getPage().getOrder() + 1 + " / " + pb.getPage().getOrderLabel());
+		StringBuffer sb = new StringBuffer();
+		sb.append(pb.getPage().getOrder() + 1);
+		if(pb.getPage().getOrderLabel()!=null && !pb.getPage().getOrderLabel().isEmpty())
+		{
+			sb.append(" / " + pb.getPage().getOrderLabel());
+		}
+		return new SelectItem(pb.getTeiElement().getId(), sb.toString());
 	}
 
 	public PaginationType getSelectedPaginationType() {
