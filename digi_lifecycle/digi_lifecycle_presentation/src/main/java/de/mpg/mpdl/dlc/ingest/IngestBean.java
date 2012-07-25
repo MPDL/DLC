@@ -134,6 +134,8 @@ public class IngestBean{
 		}
 		else
 		{
+			if(volume != null)
+				clearAllData();
 			volume = null;
 		}
 	}
