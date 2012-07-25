@@ -1526,7 +1526,7 @@ public class StructuralEditorBean {
 		
 		//Add current page
 		TeiElementWrapper currentPb = startTeiElementWrapper.getPartnerElement().getPagebreakWrapper();
-		list.add(new SelectItem(currentPb.getTeiElement().getId(), currentPb.getPage().getOrder() + 1 + " / " + currentPb.getPage().getOrderLabel()));
+		list.add(getSelectItemForPb(currentPb));
 
 		//Add pages after
 		for(int i = currentEndIndex + 1; i<flatTeiElementList.size(); i++)
