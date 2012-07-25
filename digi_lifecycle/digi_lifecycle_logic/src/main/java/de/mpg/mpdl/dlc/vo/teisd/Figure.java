@@ -11,7 +11,7 @@ public class Figure extends PbOrDiv {
 	
 	private String figDesc;
 	
-	private List<String> head;
+	private List<String> head = new ArrayList<String>();
 
 	public Figure() {
 		super(ElementType.FIGURE);
