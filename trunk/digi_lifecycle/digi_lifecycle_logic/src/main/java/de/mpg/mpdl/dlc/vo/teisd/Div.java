@@ -39,6 +39,15 @@ public class Div extends PbOrDiv {
 	private String author3inv;
 	
 	
+	@XmlAttribute(name="author1pnd")
+	private String author1pnd;
+	
+	@XmlAttribute(name="author2pnd")
+	private String author2pnd;
+	
+	@XmlAttribute(name="author3pnd")
+	private String author3pnd;
+	
 	@XmlPath("tei:head/text()")
 	private List<String> head = new ArrayList<String>();
 	
@@ -64,6 +73,10 @@ public class Div extends PbOrDiv {
 		this.setAuthor1inv(original.getAuthor1inv());
 		this.setAuthor2inv(original.getAuthor2inv());
 		this.setAuthor3inv(original.getAuthor3inv());
+		
+		this.setAuthor1pnd(original.getAuthor1pnd());
+		this.setAuthor2pnd(original.getAuthor2pnd());
+		this.setAuthor3pnd(original.getAuthor3pnd());
 
 		List<String> head = new ArrayList<String>();
 		head.addAll(original.getHead());
@@ -117,6 +130,30 @@ public class Div extends PbOrDiv {
 
 	public void setAuthor3inv(String author3inv) {
 		this.author3inv = author3inv;
+	}
+
+	public String getAuthor1pnd() {
+		return author1pnd;
+	}
+
+	public void setAuthor1pnd(String author1pnd) {
+		this.author1pnd = author1pnd;
+	}
+
+	public String getAuthor2pnd() {
+		return author2pnd;
+	}
+
+	public void setAuthor2pnd(String author2pnd) {
+		this.author2pnd = author2pnd;
+	}
+
+	public String getAuthor3pnd() {
+		return author3pnd;
+	}
+
+	public void setAuthor3pnd(String author3pnd) {
+		this.author3pnd = author3pnd;
 	}
 
 	public List<String> getHead() {
