@@ -35,7 +35,7 @@
 			<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value="+" >
 				 <f:ajax render="@form" execute="@form"/>
 			</h:commandButton>
-			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-" >
+			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-"  rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
 				 <f:ajax render=":#{component.parent.parent.parent.clientId}" execute="@form"/>
 			</h:commandButton>
 		</a4j:repeat>
@@ -72,7 +72,7 @@
 		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
 		
 		<h:outputText value="#{lbl.mods_summaryOfVolumes}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.nodes[0].node}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}" />
 		
 		<h:outputText value="#{lbl.mods_keywords}" />
 		<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
