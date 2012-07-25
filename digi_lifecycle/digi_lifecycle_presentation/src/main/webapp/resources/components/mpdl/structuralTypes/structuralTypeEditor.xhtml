@@ -19,6 +19,7 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 
+	<ui:remove>
 		<div class="eg3_editInputArea">
 			
 			<h:outputText value="#{lbl.edit_structuralElementType}"/>
@@ -32,14 +33,18 @@
 				
 			</h:selectOneMenu>
 		</div>
+	</ui:remove>	
 	      	
-	      	
-		<ui:fragment rendered="#{cc.attrs.selectedStructuralType == 'DIV'}">
+		<ui:fragment>
 			<div class="eg3_editInputArea">
 				<h:outputText value="#{lbl.edit_structuralType}"/>
 				<br/> 
-				<h:selectOneMenu value="#{cc.attrs.teiWrapper.teiElement.type}">
-					<f:selectItem itemValue="#{null}" itemLabel="-"/>
+				<h:selectOneMenu value="#{cc.attrs.selectedStructuralType}">
+				
+					<f:selectItem itemValue="free" itemLabel="#{lbl.edit_elementType_free}"/>
+					<f:selectItem itemValue="TITLE_PAGE" itemLabel="#{lbl.edit_elementType_title_page}"/>
+					<f:selectItem itemValue="FIGURE" itemLabel="#{lbl.edit_elementType_figure}"/>
+				
 					<f:selectItem itemValue="acknowledgement" itemLabel="#{lbl.structuretype_acknowledgement}"/>
 					<f:selectItem itemValue="additional" itemLabel="#{lbl.structuretype_additional}"/>
 					<f:selectItem itemValue="advertisement" itemLabel="#{lbl.structuretype_advertisement}"/>
@@ -65,31 +70,102 @@
 					<f:selectItem itemValue="provenance" itemLabel="#{lbl.structuretype_provenance}"/>
 					<f:selectItem itemValue="review" itemLabel="#{lbl.structuretype_review}"/>
 					<f:selectItem itemValue="section" itemLabel="#{lbl.structuretype_section}"/>
+					<f:ajax render="@form" listener="#{cc.attrs.structuralTypeChangeListener}"/>
+					
+					
 				</h:selectOneMenu>
 			</div>
-			<div class="eg3_editInputArea">
-				<h:outputText value="#{lbl.edit_structuralHead}"/>
-				<br/>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}"/>
-			</div>
+			
+			
+			
 		</ui:fragment>
 	          
 	          
-		<ui:fragment rendered="#{cc.attrs.selectedStructuralType == 'TITLE_PAGE'}">
+	    <h:panelGroup  rendered="#{not (cc.attrs.selectedStructuralType == 'TITLE_PAGE' or cc.attrs.selectedStructuralType == 'FIGURE')}">     
+	         
+	         <h:panelGroup layout="block" styleClass="eg3_editInputArea" rendered="#{cc.attrs.selectedStructuralType == 'free'}">
+				<h:outputText value="#{lbl.edit_type}"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.type}"/>
+			</h:panelGroup>
+	        <h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_numeration}"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.numeration}"/>
+			</h:panelGroup>
+	        <h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_structuralHead}"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}"/>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_author} 1"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author1}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorInv} 1"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author1inv}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorPnd} 1"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author1pnd}"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_author} 2"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author2}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorInv} 2"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author2inv}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorPnd} 2"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author2pnd}"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_author} 3"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author3}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorInv} 3"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author3inv}"/>
+				<br/>
+				<h:outputText value="#{lbl.edit_authorPnd} 3"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author3pnd}"/>
+			</h:panelGroup>
+		</h:panelGroup>
+	          
+		<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'TITLE_PAGE'}">
 			<div class="eg3_editInputArea">
 				<h:outputText value="#{lbl.edit_structuralHead}"/>
 				<br />
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.docTitles[0].title}"/>
 			</div>
-		</ui:fragment>
+		</h:panelGroup>
 	          
-		<ui:fragment rendered="#{cc.attrs.selectedStructuralType == 'FIGURE'}">
-			<div class="eg3_editInputArea">
+		<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'FIGURE'}">
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_structuralHead}"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+				<h:outputText value="#{lbl.edit_numeration}"/>
+				<br/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.numeration}"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea">
 				<h:outputText value="#{lbl.edit_figureDescription}"/>
 				<br />
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.figDesc}"/>
-			</div>
-		</ui:fragment>
+			</h:panelGroup>
+			
+		</h:panelGroup>
 	            
 	</cc:implementation>
 </html>

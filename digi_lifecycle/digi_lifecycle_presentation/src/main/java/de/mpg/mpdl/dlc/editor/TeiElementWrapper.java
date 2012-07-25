@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedProperty;
+import javax.faces.component.html.HtmlPanelGroup;
 
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -39,6 +40,8 @@ public class TeiElementWrapper {
 	
 	private TeiElementWrapper nextPagebreak;
 	private TeiElementWrapper lastPagebreak;
+	
+	
 	
 
 	public TeiElementWrapper()
@@ -164,7 +167,7 @@ public class TeiElementWrapper {
 	public void setLastPagebreak(TeiElementWrapper lastPagebreak) {
 		this.lastPagebreak = lastPagebreak;
 	}
-	
+
 
 	/*
 	public List<TeiElementWrapper> getElementsToNextPb() {
