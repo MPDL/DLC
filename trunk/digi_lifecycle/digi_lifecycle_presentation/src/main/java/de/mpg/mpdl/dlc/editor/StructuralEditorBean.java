@@ -2,11 +2,15 @@ package de.mpg.mpdl.dlc.editor;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -83,9 +87,13 @@ public class StructuralEditorBean {
 
 	
 	
-	private ElementType selectedStructuralType;
+	private ElementType currentTeiElementType;
 	
-	private ElementType selectedStructuralEditType;
+	//private ElementType currentTeiElementEditType;
+	
+	private String selectedStructuralType;
+	
+	private String selectedStructuralEditType;
 	
 	
 	//Pagination values
@@ -101,28 +109,39 @@ public class StructuralEditorBean {
 	
 	private String selectedPaginationPattern;
 	
+	private boolean paginationInBrackets = false;
+	
+	private boolean paginateEverySecondPage = false;
+	
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
 	private List<ValidationWrapper> validationList = new ArrayList<ValidationWrapper>();
 	
+	
+	private Map<String, String> clientIdMap = new HashMap<String, String>();
+	
 	public enum PaginationType
 	{
-		ARABIC, ROMAN, FREE
+		ARABIC, ROMAN, ROMAN_MINUSCULE, RECTO_VERSO, FREE
 	}
 	
 	
 	public StructuralEditorBean()
 	{
 
-		selectedStructuralType = ElementType.DIV;
+		currentTeiElementType=ElementType.DIV;
+		selectedStructuralType="chapter";
 		
 		currentNewElement = new TeiElementWrapper();
 		Div div = new Div();
 		div.setType("chapter");
 		div.getHead().add("");
 		currentNewElement.setTeiElement(div);
+		
+		selectedPaginationType = PaginationType.ARABIC;
+		selectedPaginationStartValue = "1";
 	}
 	
 	@URLAction(onPostback=false)
@@ -201,6 +220,13 @@ public class StructuralEditorBean {
 		}
 		
 
+	}
+	
+	public void revert()
+	{
+		this.volume = null;
+		loadVolume();
+		MessageHelper.infoMessage(ApplicationBean.getResource("Messages","edit_changesReverted"));
 	}
 	
 
@@ -547,6 +573,44 @@ public class StructuralEditorBean {
 	
 	public void selectedStructuralElementTypeChanged()
 	{
+		
+		
+		if("FIGURE".equals(selectedStructuralType))
+		{
+			currentTeiElementType = ElementType.FIGURE;
+			currentNewElement = new TeiElementWrapper();
+			Figure figure = new Figure();
+			figure.getHead().add("");
+			currentNewElement.setTeiElement(figure);
+			
+		}
+		else if ("TITLE_PAGE".equals(selectedStructuralType))
+		{
+			currentTeiElementType = ElementType.TITLE_PAGE;
+			currentNewElement = new TeiElementWrapper();
+			TitlePage titlePage = new TitlePage();
+			titlePage.setDocTitles(new ArrayList<DocTitle>());
+			titlePage.getDocTitles().add(new DocTitle());
+			currentNewElement.setTeiElement(titlePage);
+		}
+		else //DIV type
+		{
+			
+			currentTeiElementType = ElementType.DIV;
+			currentNewElement = new TeiElementWrapper();
+			Div div = new Div();
+			
+			if(!"free".equals(selectedStructuralType)) 
+			{
+				div.setType(selectedStructuralType);
+			}
+			
+			div.getHead().add("");
+			
+			currentNewElement.setTeiElement(div);
+		}
+		
+		/*
 		switch (selectedStructuralType)
 		{
 			case DIV : 
@@ -579,25 +643,53 @@ public class StructuralEditorBean {
 			}
 		
 		}
+		*/
 		
 	
 	}
 	
 	public void selectedStructuralEditElementTypeChanged()
 	{
-		switch (selectedStructuralEditType)
+
+		
+		if("FIGURE".equals(selectedStructuralEditType))
 		{
-			case DIV : 
+			//currentTeiElementEditType = ElementType.FIGURE;
+			Figure figure = new Figure();
+			figure.getHead().add("");
+			currentEditElementWrapper.setTeiElement(figure);
+			
+		}
+		else if ("TITLE_PAGE".equals(selectedStructuralEditType))
+		{
+			
+			//currentTeiElementEditType = ElementType.TITLE_PAGE;
+			
+			TitlePage titlePage = new TitlePage();
+			titlePage.setDocTitles(new ArrayList<DocTitle>());
+			titlePage.getDocTitles().add(new DocTitle());
+			currentEditElementWrapper.setTeiElement(titlePage);
+		}
+		else //DIV type
+		{
+			
+			//currentTeiElementEditType = ElementType.DIV;
+			Div div = new Div();
+			
+			if(!"free".equals(selectedStructuralEditType)) 
 			{
-				
-				Div div = new Div();
-				div.setType("chapter");
-				div.getHead().add("");
-				
-				currentEditElementWrapper.setTeiElement(div);
-				//currentEditElementWrapper.getPartnerElement().setTeiElement(div);
-				break;
+				div.setType(selectedStructuralEditType);
 			}
+			
+			div.getHead().add("");
+			
+			currentEditElementWrapper.setTeiElement(div);
+		}
+		
+		/*
+		switch (currentTeiElementEditType)
+		{
+			
 			
 			case FIGURE : 
 			{
@@ -620,8 +712,49 @@ public class StructuralEditorBean {
 			}
 		
 		}
+		*/
 		
 	
+	}
+	
+	public void selectedPaginationTypeChanged()
+	{
+
+		switch (selectedPaginationType)
+		{
+			case ARABIC : 
+			{
+				selectedPaginationStartValue = "1";
+				break;
+			}
+		
+			case ROMAN : 
+			{
+				selectedPaginationStartValue = "I";
+				break;
+			}
+			
+			case ROMAN_MINUSCULE : 
+			{
+				
+				selectedPaginationStartValue = "i";
+				break;
+			}
+			
+			case RECTO_VERSO : 
+			{
+				
+				selectedPaginationStartValue = "1r";
+				break;
+			}
+			case FREE : 
+			{
+				
+				selectedPaginationStartValue = "";
+				break;
+			}
+		
+		}
 	}
 	
 	
@@ -633,7 +766,11 @@ public class StructuralEditorBean {
 		
 		int currentValue = -1;
 		
+		boolean recto = true;
+		
 		boolean lowerCase = false;
+		
+		List<TeiElementWrapper> paginatedPages = new ArrayList<TeiElementWrapper>();
 		
 		if(selectedPaginationStartValue!=null && !selectedPaginationStartValue.isEmpty())
 		{
@@ -649,11 +786,11 @@ public class StructuralEditorBean {
 					return;
 				} 
 			}
-			else if(PaginationType.ROMAN.equals(selectedPaginationType))
+			else if(PaginationType.ROMAN.equals(selectedPaginationType) || PaginationType.ROMAN_MINUSCULE.equals(selectedPaginationType))
 			{
 				try {
 					
-					lowerCase = Character.isLowerCase(selectedPaginationStartValue.charAt(0)); 
+					//lowerCase = Character.isLowerCase(selectedPaginationStartValue.charAt(0)); 
 					currentValue = RomanNumberConverter.convert(selectedPaginationStartValue);
 					
 				} catch (NumberFormatException e) {
@@ -661,13 +798,47 @@ public class StructuralEditorBean {
 					return;
 				}
 			}
+			else if (PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+			{
+				
+				try {
+					
+					currentValue = Integer.parseInt(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
+
+					String rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+					if("r".equals(rectoVerso))
+					{
+						recto = true;
+					}
+					else if(("v".equals(rectoVerso)))
+					{
+						recto = false;
+					}
+					else
+					{
+						MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRectoVerso"));
+						return;
+					}
+					
+				} catch (NumberFormatException e) {
+					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartArabic"));
+					return;
+				} 
+				catch (Exception e)
+				{
+					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRectoVerso"));
+					return;
+				}
+				
+			}
 			
+			/*
 			if(!selectedPaginationPattern.isEmpty() && !selectedPaginationPattern.contains("?"))
 			{
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongPaginationPattern"));
 				return;
 			}
-			
+			*/
 			
 			for(int i=startIndex; i<pbList.size(); i++)
 			{
@@ -681,29 +852,70 @@ public class StructuralEditorBean {
 						currentValue++;
 					
 				}
-				else if(PaginationType.ROMAN.equals(selectedPaginationType))
+				
+				else if(PaginationType.ROMAN.equals(selectedPaginationType) || PaginationType.ROMAN_MINUSCULE.equals(selectedPaginationType))
 				{
+					lowerCase = PaginationType.ROMAN_MINUSCULE.equals(selectedPaginationType);
 					pagination = RomanNumberConverter.convert(currentValue, lowerCase);
 					currentValue++;
 				}
+				
+				else if(PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+				{
+					if(recto)
+					{
+						pagination = String.valueOf(currentValue) + "r.";
+						recto = false;
+					}
+					else
+					{
+						pagination = String.valueOf(currentValue) + "v.";
+						recto = true;
+						currentValue++;
+					}
+					
+					
+				}
+				
 				else if(PaginationType.FREE.equals(selectedPaginationType))
 				{
 					pagination = selectedPaginationStartValue;
 				}
 				
 				
+				/*
 				if(!selectedPaginationPattern.isEmpty())
 				{
 					pagination = selectedPaginationPattern.replaceAll("\\?", pagination);
 					
 				}
+				*/
 				
+				if(paginationInBrackets)
+				{
+					pagination = "[" + pagination + "]";
+				}
 				pbWrapper.getTeiElement().setNumeration(pagination);
 				pbWrapper.getPage().setOrderLabel(pagination);
+				paginatedPages.add(pbWrapper);
+				
+				if(paginateEverySecondPage)
+				{
+					if(i+2 < pbList.size())
+					{
+						i++;
+					}
+					else
+					{
+						return;
+					}
+					
+				}
 				
 				
 				if(pbWrapper.getTeiElement().getId().equals(selectedPaginationEndPbId))
 				{
+					rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
 					return;
 				}
 			}
@@ -722,7 +934,7 @@ public class StructuralEditorBean {
 		int startIndex = pbList.indexOf(selectedPb);
 		
 		String value = selectedPb.getTeiElement().getType();
-		
+		List<TeiElementWrapper> paginatedPages = new ArrayList<TeiElementWrapper>();
 		
 		for(int i=startIndex; i<pbList.size(); i++)
 		{
@@ -739,8 +951,11 @@ public class StructuralEditorBean {
 				value="left";
 			}
 			
+			paginatedPages.add(pbWrapper);
+			
 			if(pbWrapper.getTeiElement().getId().equals(selectedPageDisplayTypeEndPbId))
 			{
+				rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
 				return;
 			}
 		}
@@ -752,7 +967,7 @@ public class StructuralEditorBean {
 		int startIndex = pbList.indexOf(selectedPb);
 		
 		String value = ((Pagebreak)selectedPb.getTeiElement()).getSubtype();
-		
+		List<TeiElementWrapper> paginatedPages = new ArrayList<TeiElementWrapper>();
 		
 		for(int i=startIndex; i<pbList.size(); i++)
 		{
@@ -760,11 +975,12 @@ public class StructuralEditorBean {
 			Pagebreak pb = (Pagebreak)pbWrapper.getTeiElement();
 			
 			pb.setSubtype(value);
-			
+			paginatedPages.add(pbWrapper);
 			
 			
 			if(pbWrapper.getTeiElement().getId().equals(selectedPageTypeEndPbId))
 			{
+				rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
 				return;
 			}
 		}
@@ -787,11 +1003,13 @@ public class StructuralEditorBean {
 		flatTeiElementList.remove(elementToDelete);
 		flatTeiElementList.remove(elementToDelete.getPartnerElement());
 		updateTree();
+		rerenderThumbnailPage(new TeiElementWrapper[]{elementToDelete.getPagebreakWrapper()});
 	}
 	
 	public void editStructuralElement(TeiElementWrapper elementToEdit)
 	{
-		this.selectedStructuralEditType = elementToEdit.getTeiElement().getElementType();
+		//this.currentTeiElementEditType = elementToEdit.getTeiElement().getElementType();
+		this.selectedStructuralEditType = elementToEdit.getTeiElement().getType();
 		
 		currentEditElementWrapperRestore = elementToEdit;
 		currentEditElementWrapper = new TeiElementWrapper();
@@ -824,6 +1042,14 @@ public class StructuralEditorBean {
 		
 	}
 	
+	public void cancelEditStructuralElement()
+	{
+		this.currentEditElementWrapper = null;
+		this.currentEditElementWrapperRestore = null;
+		this.selectedStructuralEditType = null;
+	
+	}
+	
 	
 
 	
@@ -833,7 +1059,8 @@ public class StructuralEditorBean {
 		currentEditElementWrapperRestore.setTeiElement(currentEditElementWrapper.getTeiElement());
 		currentEditElementWrapperRestore.getPartnerElement().setTeiElement(currentEditElementWrapper.getTeiElement());
 		
-		
+		cancelEditStructuralElement();
+		rerenderThumbnailPage(new TeiElementWrapper[]{currentEditElementWrapper.getPagebreakWrapper()});
 	}
 	
 	
@@ -852,6 +1079,7 @@ public class StructuralEditorBean {
 		}
 		*/
 		selectedStructuralElementTypeChanged();
+		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
 	}
 	
 	
@@ -1021,6 +1249,7 @@ public class StructuralEditorBean {
 		int startIndex = flatTeiElementList.indexOf(startElementWrapper);
 		
 		flatTeiElementList.add(startIndex, parentEndWrapper);
+		TeiElementWrapper oldPagebreakWrapper = parentEndWrapper.getPagebreakWrapper();
 		parentEndWrapper.setPagebreakWrapper(startElementWrapper.getPagebreakWrapper());
 		
 		/*
@@ -1043,6 +1272,7 @@ public class StructuralEditorBean {
 		}
 		*/
 		updateTree();
+		rerenderThumbnailPage(new TeiElementWrapper[]{startElementWrapper.getPagebreakWrapper(), oldPagebreakWrapper});
 	}
 	
 	
@@ -1061,8 +1291,10 @@ public class StructuralEditorBean {
 		int endIndex = flatTeiElementList.indexOf(startElementWrapper.getPartnerElement());
 		
 		flatTeiElementList.add(endIndex+1, siblingBeforeWrapperEnd);
+		TeiElementWrapper oldPagebreakWrapper = siblingBeforeWrapperEnd.getPagebreakWrapper();
 		siblingBeforeWrapperEnd.setPagebreakWrapper(startElementWrapper.getPartnerElement().getPagebreakWrapper());
 		updateTree();
+		rerenderThumbnailPage(new TeiElementWrapper[]{startElementWrapper.getPagebreakWrapper(), oldPagebreakWrapper});
 	}
 	
 	
@@ -1074,7 +1306,7 @@ public class StructuralEditorBean {
 	{
 		
 		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
-		
+		List<TeiElementWrapper> pbThumbnailsToBeUpdated = new ArrayList<TeiElementWrapper>();
 		//if element has a sibling before
 		if(indexInParent > 0)
 		{
@@ -1093,6 +1325,7 @@ public class StructuralEditorBean {
 				if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
 				{
 					//flatTeiElementList.remove(wrapper);
+					pbThumbnailsToBeUpdated.add(wrapper.getPagebreakWrapper());
 					wrapper.setPagebreakWrapper(siblingBeforeWrapper.getPagebreakWrapper());
 					sublist.add(wrapper);
 					
@@ -1152,6 +1385,7 @@ public class StructuralEditorBean {
 			//...and set their endpoint
 			for(TeiElementWrapper wrapper : siblingsEndElements)
 			{
+				pbThumbnailsToBeUpdated.add(wrapper.getPagebreakWrapper());
 				wrapper.setPagebreakWrapper(wrapperToAddEnds.getPagebreakWrapper());
 			}
 			
@@ -1160,7 +1394,7 @@ public class StructuralEditorBean {
 		
 		updateTree();
 		
-		
+		rerenderThumbnailPage(pbThumbnailsToBeUpdated.toArray(new TeiElementWrapper[0]));
 		
 		
 		//Just exchange the tei element of the start and end with the ones of the sibling before
@@ -1465,7 +1699,9 @@ public class StructuralEditorBean {
 	
 	public void selectPb(TeiElementWrapper pb)
 	{
+		TeiElementWrapper oldSelectedPb = selectedPb;
 		this.setSelectedPb(pb);
+		rerenderThumbnailPage(new TeiElementWrapper[]{oldSelectedPb, selectedPb});
 		int pbIndex = flatTeiElementList.indexOf(pb);
 		
 		int nextPbIndex = flatTeiElementList.size(); 
@@ -1497,7 +1733,9 @@ public class StructuralEditorBean {
 		//setSelectedStructuralElement(elementWrapper);
 		//if(selectedStructuralElement.getPagebreakWrapper()!= selectedPb)
 		//{
+			TeiElementWrapper oldSelectedPb = selectedPb;
 			setSelectedPb(elementWrapper.getPagebreakWrapper());
+			rerenderThumbnailPage(new TeiElementWrapper[]{oldSelectedPb, selectedPb});
 		//}
 
 	}
@@ -1509,6 +1747,8 @@ public class StructuralEditorBean {
 	public void setFlatTeiElementList(List<TeiElementWrapper> flatTeiElementList) {
 		this.flatTeiElementList = flatTeiElementList;
 	}
+	
+	
 
 	public TeiElementWrapper getSelectedPb() {
 		return selectedPb;
@@ -1518,14 +1758,7 @@ public class StructuralEditorBean {
 		this.selectedPb = selectedPb;
 	}
 
-	public ElementType getSelectedStructuralType() {
-		return selectedStructuralType;
-	}
-
-	public void setSelectedStructuralType(ElementType selectedStructuralType) {
-		this.selectedStructuralType = selectedStructuralType;
-	}
-
+	
 
 	public List<TreeWrapperNode> getTreeWrapperNodes() {
 		return treeWrapperNodes;
@@ -1680,13 +1913,7 @@ public class StructuralEditorBean {
 		this.validationList = validationList;
 	}
 
-	public ElementType getSelectedStructuralEditType() {
-		return selectedStructuralEditType;
-	}
 
-	public void setSelectedStructuralEditType(ElementType selectedStructuralEditType) {
-		this.selectedStructuralEditType = selectedStructuralEditType;
-	}
 	
 	public void goToNextPage()
 	{
@@ -1750,6 +1977,96 @@ public class StructuralEditorBean {
 
 		 return result;
 	}
+
+	
+	public ElementType getCurrentTeiElementType() {
+		return currentTeiElementType;
+	}
+
+	public void setCurrentTeiElementType(ElementType currentTeiElementType) {
+		this.currentTeiElementType = currentTeiElementType;
+	}
+
+	/*
+	public ElementType getCurrentTeiElementEditType() {
+		return currentTeiElementEditType;
+	}
+
+	public void setCurrentTeiElementEditType(ElementType currentTeiElementEditType) {
+		this.currentTeiElementEditType = currentTeiElementEditType;
+	}
+	*/
+
+	public String getSelectedStructuralType() {
+		return selectedStructuralType;
+	}
+
+	public void setSelectedStructuralType(String selectedStructuralType) {
+		this.selectedStructuralType = selectedStructuralType;
+	}
+
+	public boolean isPaginationInBrackets() {
+		return paginationInBrackets;
+	}
+
+	public void setPaginationInBrackets(boolean paginationInBrackets) {
+		this.paginationInBrackets = paginationInBrackets;
+	}
+
+	public boolean isPaginateEverySecondPage() {
+		return paginateEverySecondPage;
+	}
+
+	public void setPaginateEverySecondPage(boolean paginateEverySecondPage) {
+		this.paginateEverySecondPage = paginateEverySecondPage;
+	}
+
+	public String getSelectedStructuralEditType() {
+		return selectedStructuralEditType;
+	}
+
+	public void setSelectedStructuralEditType(String selectedStructuralEditType) {
+		this.selectedStructuralEditType = selectedStructuralEditType;
+	}
+	
+	
+	public void rerenderThumbnailPage(TeiElementWrapper[] pagesToRerender)
+	{
+		
+		FacesContext fc = FacesContext.getCurrentInstance();
+		if(fc.getPartialViewContext().isAjaxRequest())
+		{
+			for(TeiElementWrapper wrapper : pagesToRerender)
+			{
+				if(wrapper!=null && !fc.getPartialViewContext().getRenderIds().contains(wrapper.getTeiElement().getId()));
+				{
+					fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(wrapper.getTeiElement().getId()));
+				}
+				
+			}
+		}
+		fc.getPartialViewContext().getExecuteIds().add("thumbsRepeater");
+		//System.out.println(fc.getPartialViewContext().getRenderIds());
+		
+		
+	}
+	
+	public String addToClientIdMap(String divId, String clientId)
+	{
+		clientIdMap.put(divId, clientId);
+		//System.out.println("Added to client id map: " + divId + " " + clientId);
+		return "";
+	}
+
+	public List<TeiElementWrapper> getPbList() {
+		return pbList;
+	}
+
+	public void setPbList(List<TeiElementWrapper> pbList) {
+		this.pbList = pbList;
+	}
+
+	
 	
 
 

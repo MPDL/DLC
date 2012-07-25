@@ -84,9 +84,9 @@ All rights reserved. Use is subject to license terms.
 				</div>
 				</ui:remove>
 				
-				<ui:fragment rendered="#{not empty facesContext.messageList}">
-					
-					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription">
+				
+				<h:panelGroup id="messages">
+					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
 						<h:panelGroup layout="block" styleClass="eg3_messageArea">
 							<h:graphicImage onclick="$(this).parent().parent().hide(1000);" url="/resources/images/Delete.png" title="" styleClass="eg3_messageCloseBtn"/>
 							<ui:remove>
@@ -101,7 +101,8 @@ All rights reserved. Use is subject to license terms.
 							checkMessageContent();
 						</script>
 					</h:panelGroup>
-				</ui:fragment>
+				</h:panelGroup>
+				
 					
 					
 				
