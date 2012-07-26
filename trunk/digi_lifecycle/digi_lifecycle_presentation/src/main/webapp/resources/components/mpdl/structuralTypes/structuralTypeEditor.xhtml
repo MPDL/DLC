@@ -81,8 +81,8 @@
 		</ui:fragment>
 	          
 	          
-	    <h:panelGroup  rendered="#{not (cc.attrs.selectedStructuralType == 'TITLE_PAGE' or cc.attrs.selectedStructuralType == 'FIGURE')}">     
-	         
+	    <ui:fragment rendered="#{not (cc.attrs.selectedStructuralType == 'TITLE_PAGE' or cc.attrs.selectedStructuralType == 'FIGURE')}">     
+	    <h:panelGroup layout="block" styleClass="xxxxx">
 	         <h:panelGroup layout="block" styleClass="eg3_editInputArea" rendered="#{cc.attrs.selectedStructuralType == 'free'}">
 				<h:outputText value="#{lbl.edit_type}"/>
 				<br/>
@@ -138,7 +138,8 @@
 				<br/>
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author3pnd}"/>
 			</h:panelGroup>
-		</h:panelGroup>
+			</h:panelGroup>
+		</ui:fragment>
 	          
 		<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'TITLE_PAGE'}">
 			<div class="eg3_editInputArea">
