@@ -193,7 +193,7 @@ public class VolumeUtilBean {
 	{    
 		for(ModsTitle mt : md.getTitles())
 		{
-			if(mt.getDisplayLabel().equals("mainTitle"))
+			if("mainTitle".equals(mt.getDisplayLabel()))
 				return mt;
 		}
 		return new ModsTitle();
