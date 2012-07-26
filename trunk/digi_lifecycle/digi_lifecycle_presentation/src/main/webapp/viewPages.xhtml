@@ -103,7 +103,7 @@
 									{
 										//console.log('scrollDiv');
 										var selectedDivId= '#{viewPages.selectedDiv.id}';
-										var treeContainerId = "#{rich:clientId('toc')}";
+										var treeContainerId = "#{rich:clientId('tocTreeContainer')}";
 										//add an backslahs before all colons					
 										treeContainerId = treeContainerId.replace(/:/g, "\\:");
 										var treeContainerDiv = $('#' + treeContainerId);
@@ -149,14 +149,14 @@
 									});
 								</script>
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}">
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
 									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;" id="toc">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;" id="tocTreeContainer" >
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
@@ -195,16 +195,17 @@
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'thumbs');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'thumbs');" disabled="disabled" value="-"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;">
+								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;">
 									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										<load:lazyLoad pageList="#{viewPages.pageList}">
-											<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_thumbnail">
-												<h:commandLink action="#{viewPages.goToPage(var)}">
+											<h:panelGroup layout="block" styleClass=" #{var.id}eg3_container_1_2 eg3_thumbnail">
+												<h:commandLink  action="#{viewPages.goToPage(var)}">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
 													<f:ajax render="@all"/>
 												</h:commandLink>
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
-													<h:outputText value="Scan: "/>
+													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
+													<h:outputText value="/ #{lbl.list_Page} #{var.orderLabel} " rendered="#{not empty var.orderLabel}"/>
 												</h:panelGroup>
 											</h:panelGroup>
 										</load:lazyLoad>
