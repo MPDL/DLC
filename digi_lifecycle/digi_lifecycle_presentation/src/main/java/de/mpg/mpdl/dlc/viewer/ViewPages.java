@@ -115,7 +115,11 @@ public class ViewPages{
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
-				fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
+				if(volume.getTeiSd()!=null)
+				{
+					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
+				}
+				
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
