@@ -119,6 +119,7 @@ public class ViewPages{
 				
 			} catch (Exception e) {
 				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
+				logger.error("Error while loading volume", e);
 			}
 		}
 		volumeLoaded();
