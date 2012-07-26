@@ -13,6 +13,14 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		
 		<ui:define name="separateContentHeader">
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
+	
+			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" />
+		
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
@@ -83,14 +91,14 @@
 							
 							
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();">
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();" >
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
 									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
 									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:500px;" id="tocTreeContainer" >
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:300px;" id="tocTreeContainer" >
 									<rich:tree toggleType="ajax" var="divItem" >
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
@@ -113,7 +121,7 @@
 														<h:outputText value="[#{divItem.elementType}]"/>
 													</h:panelGroup>
 													
-													<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')}"/>
+													<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 												</h:commandLink>
 												
 												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
@@ -135,7 +143,7 @@
 											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail">
 												<h:commandLink  action="#{viewPages.goToPage(var)}">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
-													<f:ajax render="@all"/>
+													<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 												</h:commandLink>
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
 													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
@@ -279,6 +287,7 @@
 										});
 										
 										checkSidebarHeight('.eg3_viewPage');
+										
 									});
 									 /* ]]> */
 								</script>
@@ -293,18 +302,22 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="true" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 								</h:form>
 							</ui:fragment>
@@ -312,18 +325,22 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_firstBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="true" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
+										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 								</h:form>
 							</ui:fragment>
@@ -434,13 +451,7 @@
 					<!--  SINGLE VIEW  -->
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 	
-						<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
-	
-						<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" rendered="#{viewPages.viewType == 'SINGLE'}"/>
+						
 						
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
 							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
@@ -452,10 +463,10 @@
 							</h:panelGroup>
 							
 							<script type="text/javascript">
-					            $(document).ready(function(){
+					            
 					                var opts = {
 					                	interactionMode : 'embedded',
-					                    scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
+					                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
 					                    showRegionNumbers : true,
 					                    logoUrl: '',
 					                    buttonSettings : {
@@ -472,7 +483,7 @@
 									}; //end opts
 									$('.eg3_singleView div.digilib').digilib(opts);
 									$('.eg3_singleView div.digilib .keep.buttons').draggable();
-					            });
+					            
 					        </script>
 				        </ui:fragment>
 					</h:panelGroup>
