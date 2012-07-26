@@ -35,8 +35,8 @@
 			<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value="+" >
 				 <f:ajax render="@form" execute="@form"/>
 			</h:commandButton>
-			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-"  rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
-				 <f:ajax render=":#{component.parent.parent.parent.clientId}" execute="@form"/>
+			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-" rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
+				 <f:ajax render="@form" execute="@form"/>
 			</h:commandButton>
 		</a4j:repeat>
 		

@@ -16,7 +16,7 @@
 			.rf-p 
 			{
 				float:none;
-				max-width:95%;
+				max-width:97%;
 				margin:0 2%;
 			}
 			.rf-p-hdr
@@ -33,8 +33,8 @@
 				margin:0;
 				border:none;
 				font-size:150%;
-				color:#FFFFFF;
-				background-color:#000000;
+				color:#2F2F2F;
+				background-color:#CACA86;
 				background-image:none;
 			}
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-b {
@@ -56,15 +56,16 @@
 			.eg3_ingestPage .rf-p {
 				border:none;
 				color:#FFFFFF;
-				background-color:#323232;
+				background-color:#2F2F2F;
 			}
 			.eg3_ingestPage .rf-p-hdr {
 				font-size:120%;
 				margin:0 1%;
 				padding:1em 1% 0.25em 1%;
-				background-color:#E4E4E4;
+				background-color:#CACA86;
 				background-image:none;
 				border:none;
+				color:#2F2F2F;
 			}
 			.eg3_ingestPage .rf-p-b {
 				font-size:110%;
@@ -72,16 +73,17 @@
 				width:96%;
 			}
 			.eg3_ingestPage input[type="text"] {
-				background-color:#292929;
-				color:#FFFFFF;
+				background-color:#F0F0F0;
+				color:#2F2F2F;
 				margin-left:0;
 			}
 			.eg3_ingestPage input[type="text"]:focus {
-				background-color:#EFEFEF;
+				background-color:#FFFFFF;
 				color:#000000;
 			}
 			.eg3_ingestPage .eg3_submitPanel {
-				background-color:#000000;
+			/*	background-color:#25556F; */
+				background-color:#CACA86;
 				border:none;
 			}
 			.eg3_ingestPage .eg3_submitPanel .rf-p-b {
@@ -93,14 +95,14 @@
 				margin:0 0.25em 0 0;
 				padding:0.25em 0.75em;
 				color:#FFFFFF;
-				background-color:#323232;
+				background-color:#2F2F2F;
 			}
 			.eg3_ingestPage .eg3_submitPanel input[type=submit]:hover {
 				color:#EA7125;
 				padding:0.25em 0.75em;
 			}
 			.eg3_ingestPage .eg3_uploadTypePanel {
-				background-color:#323232;
+				background-color:#2F2F2F;
 				border:none;
 			}
 			.eg3_ingestPage .eg3_uploadTypePanel .rf-p-b {
@@ -123,6 +125,14 @@
 			}
 			.eg3_ingestPage table input[type="text"] {
 				width:100%;
+			}
+			
+			.rf-p.eg3_completeUploadedImages .rf-p-b {
+				max-height:20em;
+				width:96.5%;
+				padding:0;
+				margin:1.7%;
+				overflow:auto;
 			}
 		</style>
 		
@@ -199,7 +209,7 @@
 								<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
 							</h:selectOneMenu>
 						</h:panelGroup>
-						<h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
 							<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 								<h:outputText value="#{lbl.admin_upload_collection}: "/>
 							</h:panelGroup>

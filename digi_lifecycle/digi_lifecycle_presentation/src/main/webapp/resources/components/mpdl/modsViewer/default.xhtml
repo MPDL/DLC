@@ -23,7 +23,6 @@
 
 
 		<h:panelGrid columns="2" styleClass="eg3_container_1" cellspacing="0" columnClasses="eg3_container_1_3, eg3_container_2_3">
-		
 			<h:outputText value="#{lbl.mods_titles}"/>
 			<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
 				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
@@ -42,129 +41,152 @@
 				</h:panelGrid>
 			</a4j:repeat>
 			
-			<h:outputText value="#{lbl.mods_names}" rendered="#{cc.attrs.modsMetadata.names.size()>0}"/>
-			<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rendered = "#{cc.attrs.modsMetadata.names.size()>0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_mabId}" rendered="#{not empty name.mabId}"/>
-					<h:inputText value="#{name.mabId}" title="#{name.mabId}" rendered="#{not empty name.mabId}"/>
-					
-					<h:outputText value="#{lbl.mods_nameType}" rendered="#{not empty name.type}"/>
-					<h:inputText value="#{name.type}" title="#{name.type}" rendered="#{not empty name.type}"/>	
-					
-					<!-- <h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty name.displayLabel}"/>  -->
-					<h:inputText value="#{name.displayLabel}" title="#{name.displayLabel}" rendered="#{not empty name.displayLabel}"/>				
-					
-					<h:outputText value="#{lbl.mods_name}" rendered="#{not empty name.name}"/>
-					<h:inputText value="#{name.name}" title="#{name.name}" rendered="#{not empty name.name}"/>					
-					
-					<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" rendered="#{not empty name.authority}"/>
-					<h:inputText value="#{name.authority}" title="#{name.authority}" rendered="#{not empty name.authority}"/>
-							
-					<h:outputText value="#{lbl.mods_nameRole}" rendered="#{not empty name.role}"/>
-					<h:inputText value="#{name.role}" title="#{name.role}" rendered="#{not empty name.role}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-
-			<h:outputText value="#{lbl.mods_publisher}" rendered = "#{cc.attrs.modsMetadata.publishers.size() > 0}"/>
-			<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}" rendered = "#{cc.attrs.modsMetadata.publishers.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<!--<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty publisher.displayLabel}"/>  -->
-					<h:outputText value="#{publisher.displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
-
-					<h:outputText value="#{lbl.mods_publisher}" rendered="#{not empty pblisher.publisher}"/>
-					<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}" rendered="#{not empty pblisher.publisher}"/>
-
-					<h:outputText value="#{lbl.mods_publisherPlace}" rendered="#{not empty pblisher.place}"/>
-					<h:inputText value="#{publisher.place}" title="#{publisher.place}" rendered="#{not empty pblisher.place}"/>
-
-					<h:outputText value="#{lbl.mods_publisherEditionStatement}" rendered="#{not empty pblisher.edition}"/>
-					<h:inputText value="#{publisher.edition}" title="#{publisher.edition}" rendered="#{not empty pblisher.edition}"/>
-
-					<h:outputText value="#{lbl.mods_publisherDateIssued}" rendered="#{not empty pblisher.dateIssued_425}"/>
-					<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" rendered="#{not empty pblisher.dateIssued_425}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-
-			<h:outputText value="#{lbl.mods_notes}" rendered = "#{cc.attrs.modsMetadata.notes.size() > 0}"/>
-			<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}" rendered = "#{cc.attrs.modsMetadata.notes.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_noteType}" rendered="#{not empty note.type}"/>
-					<h:inputText value="#{note.type}" title="#{note.type}" rendered="#{not empty note.type}"/>
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.names.size()>0}">
+				<h:outputText value="#{lbl.mods_names}"/>
+				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_mabId}" rendered="#{not empty name.mabId}"/>
+						<h:inputText value="#{name.mabId}" title="#{name.mabId}" rendered="#{not empty name.mabId}"/>
+						
+						<h:outputText value="#{lbl.mods_nameType}" rendered="#{not empty name.type}"/>
+						<h:inputText value="#{name.type}" title="#{name.type}" rendered="#{not empty name.type}"/>	
+						
+						<!-- <h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty name.displayLabel}"/>  -->
+						<h:inputText value="#{name.displayLabel}" title="#{name.displayLabel}" rendered="#{not empty name.displayLabel}"/>				
+						
+						<h:outputText value="#{lbl.mods_name}" rendered="#{not empty name.name}"/>
+						<h:inputText value="#{name.name}" title="#{name.name}" rendered="#{not empty name.name}"/>					
+						
+						<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" rendered="#{not empty name.authority}"/>
+						<h:inputText value="#{name.authority}" title="#{name.authority}" rendered="#{not empty name.authority}"/>
+								
+						<h:outputText value="#{lbl.mods_nameRole}" rendered="#{not empty name.role}"/>
+						<h:inputText value="#{name.role}" title="#{name.role}" rendered="#{not empty name.role}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.publishers.size() > 0}">
+				<h:outputText value="#{lbl.mods_publisher}"/>
+				<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<!--<h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty publisher.displayLabel}"/>  -->
+						<h:outputText value="#{publisher.displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
 	
-					<h:outputText value="#{lbl.mods_note}" rendered="#{not empty note.note}"/>
-					<h:inputText value="#{note.note}" title="#{note.note}" rendered="#{not empty note.note}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-
-			<h:outputText value="#{lbl.mods_keywords}" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}"  />
-			<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.keywords.size() > 0}">
-				<h:panelGrid columns="1" styleClass="eg3_container_1" columnClasses="eg3_container_1">
-					<h:inputText value="#{keyword}" title="#{keyword}" rendered="#{not empty keyword}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-			
-			
-			<h:outputText value="#{lbl.mods_relatedItems}" rendered = "#{cc.attrs.modsMetadata.relatedItems.size() > 0}"/>
-			<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}" rendered = "#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_parentID}" rendered="#{not empty ri.parentId_010}"/>
-					<h:outputText value="#{ri.parentId_010}" rendered="#{not empty ri.parentId_010}"/>
+						<h:outputText value="#{lbl.mods_publisher}" rendered="#{not empty pblisher.publisher}"/>
+						<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}" rendered="#{not empty pblisher.publisher}"/>
 	
-					<h:outputText value="#{lbl.mods_source}" rendered="#{empty ri.displayLabel and not empty ri.title}"/>
-					<h:outputText value="#{ri.title}" rendered="#{not empty ri.displayLabel and not empty ri.title}"/>
-
-					<h:outputText value="#{lbl.mods_seriesTitle}" rendered="#{not empty ri.displayLabel}"/>
-					<h:outputText value="#{ri.title}" rendered="#{not empty ri.displayLabel}"/>
-				</h:panelGrid>
-			</a4j:repeat>
+						<h:outputText value="#{lbl.mods_publisherPlace}" rendered="#{not empty pblisher.place}"/>
+						<h:inputText value="#{publisher.place}" title="#{publisher.place}" rendered="#{not empty pblisher.place}"/>
+	
+						<h:outputText value="#{lbl.mods_publisherEditionStatement}" rendered="#{not empty pblisher.edition}"/>
+						<h:inputText value="#{publisher.edition}" title="#{publisher.edition}" rendered="#{not empty pblisher.edition}"/>
+	
+						<h:outputText value="#{lbl.mods_publisherDateIssued}" rendered="#{not empty pblisher.dateIssued_425}"/>
+						<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" rendered="#{not empty pblisher.dateIssued_425}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
 			
-			<h:outputText value="#{lbl.mods_identifiers}" rendered = "#{cc.attrs.modsMetadata.identifiers.size() > 0}"/>
-			<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}" rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_identifierType}" rendered="#{not empty identifier.type}"/>
-					<h:outputText value="#{identifier.type}" rendered="#{not empty identifier.type}"/>
-
-					<h:outputText value="#{lbl.mods_identifier}" rendered="#{not empty identifier.value}"/>
-					<h:outputText value="#{identifier.value}" rendered="#{not empty identifier.value}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-
-			<h:outputText value="#{lbl.mods_catalogueId_001}" rendered = "#{not empty cc.attrs.modsMetadata.catalogueId_001}"/>
-			<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" rendered = "#{not empty cc.attrs.modsMetadata.catalogueId_001}"/>
-
-			<h:outputText value="#{lbl.mods_language_037}" rendered = "#{not empty cc.attrs.modsMetadata.language_037}"/>
-			<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered = "#{not empty cc.attrs.modsMetadata.language_037}"/>
-
-			<h:outputText value="#{lbl.mods_parts}" rendered = "#{cc.attrs.modsMetadata.parts.size() > 0}"/>
-			<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.parts.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_sortField}" rendered="#{not empty part.value}"/>
-					<h:outputText value="#{part.value}" rendered="#{not empty part.value}"/>
-					
-					<h:outputText value="#{lbl.mods_band}" rendered = "#{not empty part.volumeDescriptive_089}"/>
-					<h:outputText value="#{part.volumeDescriptive_089}" rendered = "#{not empty part.volumeDescriptive_089}"/>
-					
-					<h:outputText value="#{lbl.mods_attachTitle}" rendered = "#{not empty part.subseries_361}"/>
-					<h:outputText value="#{part.subseries_361}" rendered = "#{not empty part.subseries_361}"/>
-				</h:panelGrid>
-			</a4j:repeat>
-
-			<h:outputText value="#{lbl.mods_signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
-			<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" rendered = "#{not empty cc.attrs.modsMetadata.signature_544}"/>
-
-			<h:outputText value="#{lbl.mods_extents}" rendered = "#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}"/>
-			<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey" rendered = "#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-					<h:outputText value="#{lbl.mods_extent}" rendered="#{not empty pd.extent}"/>
-					<h:outputText value="#{pd.extent}" rendered="#{not empty pd.extent}"/>
-					
-					<h:outputText value="#{lbl.mods_materialDesignation_334}" rendered = "#{not empty pb.materialDesignation_334}"/>
-					<h:outputText value="#{pb.materialDesignation_334}" rendered = "#{not empty pb.materialDesignation_334}"/>
-				</h:panelGrid>
-			</a4j:repeat>
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.notes.size() > 0}">
+				<h:outputText value="#{lbl.mods_notes}"/>
+				<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_noteType}" rendered="#{not empty note.type}"/>
+						<h:inputText value="#{note.type}" title="#{note.type}" rendered="#{not empty note.type}"/>
+		
+						<h:outputText value="#{lbl.mods_note}" rendered="#{not empty note.note}"/>
+						<h:inputText value="#{note.note}" title="#{note.note}" rendered="#{not empty note.note}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
 			
-			<h:outputText value="#{lbl.mods_freeText}" rendered = "#{not empty cc.attrs.modsMetadata.freeText}"/>
-			<h:outputText value="#{cc.attrs.modsMetadata.freeText}" rendered = "#{not empty cc.attrs.modsMetadata.freeText}"/>
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
+				<h:outputText value="#{lbl.mods_keywords}"/>
+				<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+					<h:panelGrid columns="1" styleClass="eg3_container_1" columnClasses="eg3_container_1">
+						<h:inputText value="#{keyword}" title="#{keyword}" rendered="#{not empty keyword}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
+				<h:outputText value="#{lbl.mods_relatedItems}"/>
+				<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_parentID}" rendered="#{not empty ri.parentId_010}"/>
+						<h:inputText value="#{ri.parentId_010}" title="#{ri.parentId_010}" rendered="#{not empty ri.parentId_010}"/>
+		
+						<h:outputText value="#{lbl.mods_source}" rendered="#{empty ri.displayLabel and not empty ri.title}"/>
+						<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{not empty ri.displayLabel and not empty ri.title}"/>
+	
+						<h:outputText value="#{lbl.mods_seriesTitle}" rendered="#{not empty ri.displayLabel}"/>
+						<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{not empty ri.displayLabel}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
+				<h:outputText value="#{lbl.mods_identifiers}"/>
+				<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_identifierType}" rendered="#{not empty identifier.type}"/>
+						<h:inputText value="#{identifier.type}" title="#{identifier.type}" rendered="#{not empty identifier.type}"/>
+	
+						<h:outputText value="#{lbl.mods_identifier}" rendered="#{not empty identifier.value}"/>
+						<h:inputText value="#{identifier.value}" title="#{identifier.value}" rendered="#{not empty identifier.value}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.catalogueId_001}">
+				<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" title="#{cc.attrs.modsMetadata.catalogueId_001}"/>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.language_037}">
+				<h:outputText value="#{lbl.mods_language_037}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" title="#{cc.attrs.modsMetadata.language_037.language}"/>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.parts.size() > 0}">
+				<h:outputText value="#{lbl.mods_parts}"/>
+				<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_sortField}" rendered="#{not empty part.value}"/>
+						<h:inputText value="#{part.value}" title="#{part.value}" rendered="#{not empty part.value}"/>
+						
+						<h:outputText value="#{lbl.mods_band}" rendered = "#{not empty part.volumeDescriptive_089}"/>
+						<h:inputText value="#{part.volumeDescriptive_089}" title="#{part.volumeDescriptive_089}" rendered = "#{not empty part.volumeDescriptive_089}"/>
+						
+						<h:outputText value="#{lbl.mods_attachTitle}" rendered = "#{not empty part.subseries_361}"/>
+						<h:inputText value="#{part.subseries_361}"  title="#{part.subseries_361}" rendered = "#{not empty part.subseries_361}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.signature_544}">
+				<h:outputText value="#{lbl.mods_signature_544}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" title="#{cc.attrs.modsMetadata.signature_544}"/>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
+				<h:outputText value="#{lbl.mods_extents}"/>
+				<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
+					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+						<h:outputText value="#{lbl.mods_extent}" rendered="#{not empty pd.extent}"/>
+						<h:inputText value="#{pd.extent}" title="#{pd.extent}" rendered="#{not empty pd.extent}"/>
+						
+						<h:outputText value="#{lbl.mods_materialDesignation_334}" rendered = "#{not empty pb.materialDesignation_334}"/>
+						<h:inputText value="#{pb.materialDesignation_334}" title="#{pb.materialDesignation_334}" rendered="#{not empty pb.materialDesignation_334}"/>
+					</h:panelGrid>
+				</a4j:repeat>
+			</ui:fragment>
+			
+			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.freeText}">
+				<h:outputText value="#{lbl.mods_freeText}"/>
+				<h:inputText value="#{cc.attrs.modsMetadata.freeText}" title="#{cc.attrs.modsMetadata.freeText}"/>
+			</ui:fragment>
 			
 		</h:panelGrid>
 

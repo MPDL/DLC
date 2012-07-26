@@ -11,15 +11,10 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 <ui:composition template="templates/template_v3.xhtml">
-
-
-
-
+	
 	<ui:param name="browserTitle" value="#{lbl.HomePage}" />
 	<ui:param name="headline" value="#{lbl.HomePage}"/>
 	
-
-
 	<ui:define name="mainContent">
 
 		<style type="text/css">
@@ -172,81 +167,6 @@
 				</p>
 			</h:panelGroup>
 		</h:panelGroup>
-		
-		
-		
-		<ui:remove>
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				<h:outputText value="&#160;"/>
-			</h:panelGroup>
-			
-			<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_instituteShortcut eg3_borderradius_5" style="max-width:53em; ">
-					<div id="tabs" class="eg3_container_1_3 eg3_listHeader eg3_tabMenuVertical eg3_borderradius_5">
-						<ul class="eg3_container_1 eg3_floatLeft">
-							<c:forEach items="#{applicationBean.ous}" var="ou">
-								<li class="eg3_instituteMenuTab eg3_borderradius_5" onclick="handleTab('#eg3_#{ou.objid}');">
-									<a href="#eg3_#{ou.objid}" onclick="handleTab(this.href);">
-										<h:outputText value="#{ou.properties.name}"/>
-									</a>
-								</li>
-							</c:forEach>
-						</ul>
-					</div>
-					<div class="eg3_container_2_3 eg3_listBody">
-						<h:panelGroup layout="block" styleClass="eg3_instituteContent eg3_container_1">
-							<c:forEach items="#{applicationBean.ous}" var="ou">
-								<div id="#eg3_#{ou.objid}" class="eg3_container_1 eg3_tabItemContent eg3_hidden" style="margin:1% 2%;">
-									<pretty:link mappingId="ou">
-										<f:param value="#{ou.objid}" />
-								    	<h:outputText value="homepage - #{ou.properties.name}" style="float:right; margin-right:3%;"	/>
-								    </pretty:link>
-							    	<br />
-		
-									<a4j:repeat value="#{applicationBean.getContext(ou.objid)}" var="context">
-										<pretty:link mappingId="collection">
-											<f:param value="#{context.objid}" />
-											<h:outputText value="#{context.properties.name}"/><br/>
-										</pretty:link>
-									</a4j:repeat>
-								</div>
-							</c:forEach>
-						</h:panelGroup>
-					</div>
-					<script type="text/javascript">
-						function activateMenuTab(href) {
-							$('#tabs li').removeClass("eg3_active");
-							$('#tabs li').removeClass("eg3_borderradius_0_right");
-							
-							$('#tabs li a[href|="'+href+'"]').parent().addClass("eg3_active");
-						}
-						
-						function handleTab(href) {
-							var tabs = $('.eg3_instituteShortcut .eg3_tabItemContent');
-							href = "#"+(href.split("#")[1]);
-							if (typeof(href) != "undefined") { //check for hash value in href
-								tabs.removeClass('eg3_hidden').addClass("eg3_hidden");
-								tabs.each(function(item){
-									if ($(this).attr("id") == href) {
-										$(this).removeClass("eg3_hidden");
-										activateMenuTab(href);
-										return false;	//breaks the loop
-									}
-								});
-							}
-						}
-						$(document).ready(function(evt){
-							if (!location.hash) {	//if no location hash value given, activate the first institue item
-								$('.eg3_instituteShortcut ul li a').get(0).click();
-							} else { // activate the current institute icon
-								handleTab(location.href);
-							}
-						});
-					</script>
-				</h:panelGroup>
-				<br /><br /><br /><br /><br />
-			</h:panelGroup>
-		</ui:remove>
 	</ui:define>
 
 </ui:composition>

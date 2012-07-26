@@ -169,7 +169,7 @@ body .eg3_id_wrapper {
 	min-width:83.3333em; /* 1000px */
 	width:100%;		/* the result of width + padding = sum of width = 100% */
 	margin:0;
-	background-color:#EFEFEF;
+	background-color:#F0F0F0;
 	overflow:hidden;
 }
 body .eg3_id_header {
@@ -216,7 +216,7 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_main_color {
-	color:#323232;
+	color:#2F2F2F;
 }
 .eg3_alternate_color_1 {
 	color:#FFFFFF;
@@ -258,9 +258,9 @@ body .eg3_id_siteTitle {
 	margin-bottom:0.25em;
 }
 .eg3_id_sidebarLeft .eg3_sidebarEmptyContentHeader {
-	background-color:#323232;
+	background-color:#2F2F2F;
 	height:2.166666667em;
-	border-bottom:0.08333333em solid #EFEFEF;
+	border-bottom:0.08333333em solid #F0F0F0;
 }
 
 
@@ -598,7 +598,7 @@ body .eg3_id_siteTitle {
 	max-width:38em;
 	padding:0.5% 0.8%;
 	z-index:20;
-	background-color:#323232;
+	background-color:#2F2F2F;
 	color:#FFFFFF;
 	cursor:move;
 }
@@ -634,7 +634,7 @@ body .eg3_id_siteTitle {
     /* text-align:right;*/
 }
 .eg3_breadTitle a {
-	color:#EFEFEF;
+	color:#F0F0F0;
 }
 .eg3_breadTitle a:hover {
 	color:#EA7125;;
@@ -662,8 +662,8 @@ body .eg3_id_siteTitle {
 .eg3_paginatorWave {
 	width: 100%;
 	margin:0 0 0.2% 0;
-	color:#EFEFEF;
-	background-color:#323232;
+	color:#F0F0F0;
+	background-color:#2F2F2F;
 }
 .eg3_paginatorWave * {
 	text-align: center;
@@ -706,10 +706,10 @@ body .eg3_id_siteTitle {
 	padding:0;
 	margin:0 0.9090em;
 	display:inline-block;
-	background-color:#EFEFEF;
+	background-color:#F0F0F0;
 }
 .eg3_paginatorWave a {
-	color:#EFEFEF;
+	color:#F0F0F0;
 }
 .eg3_paginatorWave a:hover {
 	color:#EA7125;
@@ -796,17 +796,17 @@ body .eg3_id_siteTitle {
  ******************************				vertical tab menu with content right			******************************
  *************************************************************************************************************************/
 .eg3_instituteShortcut {
-	border:0.09em solid #323232;
+	border:0.09em solid #2F2F2F;
 	border-left:none;
 }
 
 .eg3_instituteMenuTab {
-	background-color:#323232;
+	background-color:#2F2F2F;
 	padding:2% 4%;
-	border-top:0.09em solid #EFEFEF;
+	border-top:0.09em solid #F0F0F0;
 }
 .eg3_instituteMenuTab a {
-	color:#EFEFEF;
+	color:#F0F0F0;
 }
 .eg3_instituteMenuTab:hover a {
 	color:#EA7125;
@@ -816,9 +816,9 @@ body .eg3_id_siteTitle {
 	text-decoration:underline;
 }
 .eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active {
-	background-color:#EFEFEF;
-	border-left:0.09em solid #323232;
-	border-bottom:0.09em solid #323232;
+	background-color:#F0F0F0;
+	border-left:0.09em solid #2F2F2F;
+	border-bottom:0.09em solid #2F2F2F;
 }
 .eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active a {
 	color:#EA7125;
@@ -1667,8 +1667,8 @@ body .eg3_id_siteTitle {
 	width:99%;
 	padding:0.5em 0.5%;
 	margin-bottom:0.083333333em;
-	background-color:#323232;
-	color:#EFEFEF;
+	background-color:#2F2F2F;
+	color:#F0F0F0;
 	font-size:0.9090em;
 }
 .eg3_viewPage .eg3_viewPageMenu *:hover {
@@ -1676,7 +1676,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox {
 	display:none;
-	color:#EFEFEF;
+	color:#F0F0F0;
 }
 .eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox input {
 	text-align:center;
@@ -1780,7 +1780,7 @@ body .eg3_id_siteTitle {
 
 .eg3_singleEdit .eg3_editContent div.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
 	background:none;
-	background-color:#323232;
+	background-color:#2F2F2F;
 	border:none;
 }
 .eg3_singleEdit .eg3_editContent td.rf-tab-hdr {
@@ -1847,7 +1847,7 @@ body .eg3_id_siteTitle {
 	width:100%;
 	z-index:50;
 	overflow:visible !important;
-	background-color:#323232;
+	background-color:#2F2F2F;
 }
 .eg3_menuTabHorzOverlay .eg3_menuHeader {
 	
@@ -1920,7 +1920,7 @@ body .eg3_id_siteTitle {
  *****************************************************************************************************/
 .eg3_id_wrapper .eg3_overlayBox { /*overflow:visible;*/ }
 .eg3_overlayBox .eg3_overlayHeader { padding:7%; }
-.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em; display:none; background-color:#323232; color:#ffffff; border:0.0909em solid #ffffff; }
+.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em; display:none; background-color:#2F2F2F; color:#ffffff; border:0.0909em solid #ffffff; }
 .eg3_overlayBox .eg3_overlayBody.eg3_left { left:0; }
 .eg3_overlayBox .eg3_overlayBody.eg3_right { right:0; }
 .eg3_overlayBox .eg3_overlayHeader:hover+.eg3_overlayBody { display:block; }
@@ -1951,10 +1951,10 @@ body .eg3_id_siteTitle {
  ******************************				appearance coloring			**************************
  *****************************************************************************************************/
 .eg3_content_bgColor {
-	background-color:#EFEFEF;
+	background-color:#F0F0F0;
 }
 .eg3_content_bgColor_2 {
-	background-color:#323232;
+	background-color:#2F2F2F;
 }
 
 
@@ -2065,14 +2065,14 @@ body .eg3_id_siteTitle {
 .rf-tbp .rf-tab-cnt.eg3_expand {
 /*	border:0.0833333em inset transparent; */
 	border:0;
-	background-color:#EFEFEF;
+	background-color:#F0F0F0;
 /*	padding-right:1%; */
 }
 
 .eg3_id_sidebarLeft .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top { /* scan view */
 	width:100%;
 	background:none;
-	background-color:#323232;
+	background-color:#2F2F2F;
 	border:none;
 	padding-top:0.5em;
 }
@@ -2091,7 +2091,7 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
 
 
 .eg3_editContent .rf-tab-cnt {
-	background-color:#323232;
+	background-color:#2F2F2F;
 	color:#FFFFFF;
 	border:none;
 }
