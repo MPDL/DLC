@@ -118,14 +118,14 @@ public class IngestBean{
 				this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
 				if(mabFile == null)
 					this.modsMetadata = volume.getModsMetadata();
-				if(pagesOfVolume.size() == 0)
+				if(volume.getMets()!=null)
 				{
-				for(Page p : volume.getMets().getPages())
-				{	
-					int beginIndex = p.getContentIds().indexOf("/");
-					String name = p.getContentIds().substring(beginIndex+1);
-					this.pagesOfVolume.add(name);
-				}
+					for(Page p : volume.getMets().getPages())
+					{	
+						int beginIndex = p.getContentIds().indexOf("/");
+						String name = p.getContentIds().substring(beginIndex+1);
+						this.pagesOfVolume.add(name);
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
