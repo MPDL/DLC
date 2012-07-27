@@ -161,7 +161,7 @@
 									<rich:componentControl target="isbdPopup" operation="show" />
 								</h:commandButton>
 								<h:panelGroup>
-									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" />
+									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" editable="false"/>
 									<h:outputLink value="#{viewPages.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{viewPages.volume.modsMetadata.catalogueId_001}" />
 
 
