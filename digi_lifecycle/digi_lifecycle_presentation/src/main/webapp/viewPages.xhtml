@@ -86,7 +86,8 @@
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
 					<h:form styleClass="eg3_overflow_z50">
 						
-						<rich:tabPanel id="tabPanel" switchType="ajax" activeItem="#{loginBean.tab}" itemChangeListener="#{loginBean.changeTab}">
+					
+						<rich:tabPanel id="tabPanel" switchType="ajax" >
 							
 							
 							
@@ -121,7 +122,7 @@
 														<h:outputText value="[#{divItem.elementType}]"/>
 													</h:panelGroup>
 													
-													<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 												</h:commandLink>
 												
 												<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.head)}" rendered="#{not empty divItem.head}"/>
@@ -143,7 +144,7 @@
 											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail">
 												<h:commandLink  action="#{viewPages.goToPage(var)}">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
-													<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 												</h:commandLink>
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
 													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
@@ -183,6 +184,7 @@
 								
 							</rich:tab>
 						</rich:tabPanel>
+				
 					</h:form>
 				</h:panelGroup>
 				
@@ -302,22 +304,22 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 								</h:form>
 							</ui:fragment>
@@ -325,22 +327,22 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_firstBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 								</h:form>
 							</ui:fragment>
@@ -357,11 +359,11 @@
 								<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
 									<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-											<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink" />
+											<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink" />
 									</h:commandLink>
 								</ui:fragment>
 								
@@ -398,7 +400,7 @@
 								
 								<h:panelGroup styleClass="eg3_gotoBox" >
 									<h:selectOneMenu value="#{viewPages.selectedPageNumber}" >
-							   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+							   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 							   			<f:selectItems value="#{viewPages.pageListMenu}" />
 							   		</h:selectOneMenu>
 						   		</h:panelGroup>
@@ -406,11 +408,11 @@
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 									<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
 										<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
+										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 								</ui:fragment>
 							</h:form>
@@ -547,7 +549,6 @@
 				
 				
 			</h:panelGroup> <ui:remove>end eg3_viewPageContainer</ui:remove>
-			
 		</ui:define>
 	</ui:composition>
 </html>
