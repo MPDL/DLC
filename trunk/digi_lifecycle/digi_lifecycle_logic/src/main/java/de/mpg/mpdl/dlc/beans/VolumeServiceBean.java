@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -57,6 +58,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.DeleteMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -1052,7 +1057,6 @@ public class VolumeServiceBean {
 				  "</relation></param>";
 		
 		
-		
 		client.addContentRelations(item, filter);
 		
 		return retrieveVolume(item.getObjid(), userHandle);
@@ -1287,6 +1291,46 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
+		System.gc();
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
+		client.setHandle(null);
+		
+		DefaultHttpClient httpclient = new DefaultHttpClient();
+		
+		for(int i=0; i<100;i++)
+		{
+			
+			client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
+			client.setHandle(null);
+			System.out.println("Try " + i );
+			InputStream his = client.retrieveContent("escidoc:15022", "escidoc:15023");
+			System.out.println("Result: " + his);
+			his.close();
+			
+			/*
+			
+			HttpGet httpget = new HttpGet("http://dlc.mpdl.mpg.de:8080/ir/item/escidoc:15022/components/component/escidoc:15023/content");
+			HttpResponse response = httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			
+			InputStream is = entity.getContent();
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			byte[] buffer = new byte[1024];
+			StringBuffer sb = new StringBuffer();
+			String line =null;
+			while((line = br.readLine())!=null)
+			{
+				sb.append(line);
+			}
+
+			System.out.println("Result: " + sb.toString());
+			*/
+			
+		}
+		
+		
+		
 //		VolumeServiceBean vsb =new VolumeServiceBean();
 
 //		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
@@ -1297,6 +1341,9 @@ public class VolumeServiceBean {
 		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
 		mabXMLToMODSTest(mabXML);
 
+		
+		
+		
 //		updateItem("escidoc:12118");
 
 
@@ -1657,15 +1704,24 @@ public class VolumeServiceBean {
 				long start = System.currentTimeMillis();
 
 				
-				
-				IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
-				teiSd = (TeiSd) uctx.unmarshalDocument(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
+				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+				try {
+					IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
+					teiSd = (TeiSd) uctx.unmarshalDocument(is, null);
+				} finally {
+					is.close();
+				}
 
-
-
+					
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
+				is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+				try {
+					teiSdXml = fac.newDocumentBuilder().parse(is, null);
+				} finally {
+					is.close();
+				}
+				
 	/*
 				Unmarshaller unmarshaller = jaxbTeiContext.createUnmarshaller();
 				
