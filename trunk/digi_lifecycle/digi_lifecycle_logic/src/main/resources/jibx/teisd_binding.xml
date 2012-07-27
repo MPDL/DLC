@@ -15,9 +15,9 @@
 	 
 
 	 <mapping class="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" abstract="true">
-	 	<value style="attribute" name="id" ns="http://www.w3.org/XML/1998/namespace" field="id" usage="optional"/>
-	 	<value style="attribute" name="n" field="numeration" usage="optional"/>
-	 	<value style="attribute" name="type" field="type" usage="optional"/>
+	 	<value style="attribute" name="id" ns="http://www.w3.org/XML/1998/namespace" field="id" usage="optional" default=""/>
+	 	<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
+	 	<value style="attribute" name="type" field="type" usage="optional" default=""/>
 	 	<collection field="pbOrDiv" factory = "de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
 	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 	</collection>
@@ -37,15 +37,18 @@
 	 
 	 
 	 <mapping name="div" class="de.mpg.mpdl.dlc.vo.teisd.Div" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
-	 	<value style="attribute" name="author1" field="author1" usage="optional"/>
-	 	<value style="attribute" name="author2" field="author2" usage="optional"/>
-	 	<value style="attribute" name="author3" field="author3" usage="optional"/>
-	 	<value style="attribute" name="author1inv" field="author1inv" usage="optional"/>
-	 	<value style="attribute" name="author2inv" field="author2inv" usage="optional"/>
-	 	<value style="attribute" name="author3inv" field="author3inv" usage="optional"/>
+	 	<value style="attribute" name="author1" field="author1" usage="optional" whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2" field="author2" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3" field="author3" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author1inv" field="author1inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2inv" field="author2inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3inv" field="author3inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author1pnd" field="author1pnd" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2pnd" field="author2pnd" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3pnd" field="author3pnd" usage="optional"  whitespace="trim" default=""/>
 	 	
 	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
-	 		<value name="head" type="java.lang.String" usage="optional"/>
+	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
 	 	
 	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
@@ -54,18 +57,18 @@
 	  <mapping name="figure" class="de.mpg.mpdl.dlc.vo.teisd.Figure" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
 	 	
 	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
-	 		<value name="head" type="java.lang.String" usage="optional"/>
+	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
-	 	<value style="element" name="figDesc" field="figDesc" usage="optional"/>
+	 	<value style="element" name="figDesc" field="figDesc" usage="optional" default=""/>
 
 	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>
 	 
 	 <mapping name="pb" class="de.mpg.mpdl.dlc.vo.teisd.Pagebreak" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false"> 
-	 		<value style="attribute" name="facs" field="facs" usage="optional"/>
-	 		<value style="attribute" name="next" field="next" usage="optional"/>
-	 		<value style="attribute" name="prev" field="prev" usage="optional"/>
-	 		<value style="attribute" name="subtype" field="subtype" usage="optional"/>
+	 		<value style="attribute" name="facs" field="facs" usage="optional" default=""/>
+	 		<value style="attribute" name="next" field="next" usage="optional" default=""/>
+	 		<value style="attribute" name="prev" field="prev" usage="optional" default=""/>
+	 		<value style="attribute" name="subtype" field="subtype" usage="optional" default=""/>
 	 
 	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 
@@ -76,8 +79,8 @@
 	 			<collection field="docTitles" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
 	 				
 	 				<structure name="titlePart" usage="optional">
-		 				<value style="attribute" name="type" field="type" usage="optional"/>
-		 				<value style="text" field="title" usage="optional"/>
+		 				<value style="attribute" name="type" field="type" usage="optional" default=""/>
+		 				<value style="text" field="title" usage="optional" default=""/>
 	 				</structure>
 	 			</collection>
 	 			
@@ -86,8 +89,8 @@
 	 		
  			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
  				<structure name="titlePart" usage="optional">
-	 				<value style="attribute" name="type" field="type" usage="optional"/>
-	 				<value style="text" field="title" usage="optional"/>
+	 				<value style="attribute" name="type" field="type" usage="optional" default=""/>
+	 				<value style="text" field="title" usage="optional" default=""/>
  				</structure>
  			</collection>
 

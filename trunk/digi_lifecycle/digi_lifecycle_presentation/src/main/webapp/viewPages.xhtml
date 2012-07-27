@@ -310,12 +310,12 @@
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="true" title="">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
@@ -333,12 +333,12 @@
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" title="#{tlt.view_page_transcript}">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="true" title="">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage :#{rich:clientId('tocTreeContainer')} :citationLink"/>
 									</h:commandLink>
