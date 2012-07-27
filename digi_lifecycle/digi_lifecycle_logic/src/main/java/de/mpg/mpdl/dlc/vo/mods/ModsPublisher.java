@@ -26,6 +26,9 @@ public class ModsPublisher {
 	@XmlPath("mods:dateIssued")
 	private ModsDate dateIssued_425;
 	
+	@XmlPath("mods:dateCaptured[@encoding='w3cdtf']/text()")
+	private String dateCaptured;
+	
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
@@ -68,10 +71,14 @@ public class ModsPublisher {
 	public void setDisplayLabel(String displayLabel) {
 		this.displayLabel = displayLabel;
 	}
-	
-	
-	
-	
 
+	public String getDateCaptured() {
+		return dateCaptured;
+	}
+
+	public void setDateCaptured(String dateCaptured) {
+		this.dateCaptured = dateCaptured;
+	}
+	
 
 }

@@ -40,10 +40,10 @@ public class MabXmlTransformation {
 	Source XML = null;
 
 	public File mabToMods(String mabId, File mabFile) {  
-//		File utf8 = mabFileToUtf8(mabFile);
-//		File xml = mabUtf8ToXml(utf8);
-//		DatensatzType mabRecord = getMabRecord(mabId, xml);
-		DatensatzType mabRecord = getMabRecord(mabId, mabFile);
+		File utf8 = mabFileToUtf8(mabFile);
+		File xml = mabUtf8ToXml(utf8);
+		DatensatzType mabRecord = getMabRecord(mabId, xml);
+//		DatensatzType mabRecord = getMabRecord(mabId, mabFile);
 		File mods = getMods(mabRecord);
 		return mods;
 	}

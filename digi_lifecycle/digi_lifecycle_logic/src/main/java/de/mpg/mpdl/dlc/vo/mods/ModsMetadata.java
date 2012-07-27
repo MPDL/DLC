@@ -72,7 +72,6 @@ public class ModsMetadata {
 	
 	@XmlElement(name = "mods:note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
-	
 
 	@XmlElement(name = "mods:originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
