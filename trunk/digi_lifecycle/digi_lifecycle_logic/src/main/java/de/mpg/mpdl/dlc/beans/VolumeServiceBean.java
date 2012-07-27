@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -58,9 +57,6 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.DeleteMethod;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
@@ -1291,7 +1287,7 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-		System.gc();
+			System.gc();
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
 		client.setHandle(null);
@@ -1328,9 +1324,9 @@ public class VolumeServiceBean {
 			*/
 			
 		}
-		
-		
-		
+	
+	
+	
 //		VolumeServiceBean vsb =new VolumeServiceBean();
 
 //		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
@@ -1338,12 +1334,12 @@ public class VolumeServiceBean {
 		
 
 //		File modsFile = new File("C://Users//yu//Desktop//test.xml");
-		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
-		mabXMLToMODSTest(mabXML);
+//		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
+//		mabXMLToMODSTest(mabXML);
+		File mab = new File("C://Doku//dlc//TEST_MPDL//Frankfurt//mab4vol3.mab");
+		mabXMLToMODSTest(mab);
 
-		
-		
-		
+
 //		updateItem("escidoc:12118");
 
 
@@ -1704,24 +1700,15 @@ public class VolumeServiceBean {
 				long start = System.currentTimeMillis();
 
 				
-				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
-				try {
-					IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
-					teiSd = (TeiSd) uctx.unmarshalDocument(is, null);
-				} finally {
-					is.close();
-				}
+				
+				IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
+				teiSd = (TeiSd) uctx.unmarshalDocument(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
 
-					
+
+
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
-				try {
-					teiSdXml = fac.newDocumentBuilder().parse(is, null);
-				} finally {
-					is.close();
-				}
-				
+				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
 	/*
 				Unmarshaller unmarshaller = jaxbTeiContext.createUnmarshaller();
 				
