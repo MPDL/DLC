@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -89,8 +90,8 @@ public class LoginBean
                 	this.userHandle = newUserHandle;
                     this.login = true;
                     this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
-                    
                     MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "login_successful"));
+	     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The message to display"));
                 }
                 catch (Exception e)
                 {
@@ -145,7 +146,8 @@ public class LoginBean
         {
     		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath()+pc.getRequestURL().toString();
 			fc.getExternalContext().redirect(getLoginUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
-	        
+            
+
 		} 
         catch (Exception e) 
         {
@@ -171,6 +173,8 @@ public class LoginBean
 
 	    		//Direct to hompage when log out, because of changing rights.
 	    		FacesContext.getCurrentInstance().getExternalContext().redirect(dlc_URL);
+                MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "logout_successful"));
+
 
 			}
 			catch(Exception e)

@@ -29,6 +29,13 @@
 					</h:outputLink>
 				</li>
 			</ui:fragment>
+			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
+				<li class="eg3_menuEntry">
+					<h:outputLink id="lnkBatchIngest" title="#{tlt.main_upload}" value="/#{applicationBean.contextPath}/ingest/batch" >
+						<h:outputText value="#{lbl.navigation_lnk_Upload_Batch}" />
+					</h:outputLink>
+				</li>
+			</ui:fragment>
 			<ui:fragment rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' )}">
 				<li class="eg3_menuEntry">
 					<h:outputLink id="lnkUser" title="#{tlt.main_admin}" value="/#{applicationBean.contextPath}/admin">
@@ -36,6 +43,7 @@
 					</h:outputLink>
 				</li>
 			</ui:fragment>
+
 			</ul>
 		</nav>
 	</div>

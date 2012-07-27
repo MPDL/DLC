@@ -229,8 +229,11 @@
 					
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
 						<h:outputText value="#{ingestBean.mabFile.name}" />
-						<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile or not empty ingestBean.volume}">				
-							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}"/>
+						<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
+							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="false"/>
+						</h:panelGroup>
+						<h:panelGroup layout="block" rendered="#{not empty ingestBean.volume}">				
+							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="true"/>
 						</h:panelGroup>
 						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Multivolume'}">
 							<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
