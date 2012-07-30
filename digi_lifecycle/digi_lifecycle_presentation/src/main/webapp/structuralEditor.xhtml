@@ -193,7 +193,7 @@
 								function scrollTreeContainer()
 								{
 									
-									var selectedPbId = '#{structuralEditorBean.selectedPb.teiElement.id}';
+									var selectedPbId = '#{structuralEditorBean.treeScrollPositionPagebreak.teiElement.id}';
 									var treeContainerId = "#{rich:clientId('tree')}";
 									scrollDiv(treeContainerId, "struct_" + selectedPbId)
 
@@ -237,6 +237,7 @@
 									{
 										//console.log("success");
 										scrollThumbsContainer();
+										scrollTreeContainer();
 									}
 								});
 								 /* ]]> */
