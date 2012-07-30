@@ -1700,22 +1700,24 @@ public class VolumeServiceBean {
 				long start = System.currentTimeMillis();
 
 				
-				
-				IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
-				teiSd = (TeiSd) uctx.unmarshalDocument(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
+				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+				try {
+					IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
+					teiSd = (TeiSd) uctx.unmarshalDocument(is, null);
+				} finally {
+					is.close();
+				}
 
-
-
+					
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				teiSdXml = fac.newDocumentBuilder().parse(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()), null);
-	/*
-				Unmarshaller unmarshaller = jaxbTeiContext.createUnmarshaller();
-				
-				teiSd = (TeiSd)unmarshaller.unmarshal(teiSdXml);
-	*/
-				
-				
+				is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+				try {
+					teiSdXml = fac.newDocumentBuilder().parse(is, null);
+				} finally {
+					is.close();
+				}
+		
 				long time = System.currentTimeMillis() - start;
 				System.out.println("TIME TEI: " + time);
 
@@ -2154,7 +2156,7 @@ public class VolumeServiceBean {
         xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
         
         //Check if pagebreak is directly followed by an structural element like div, front, body...
-        XPathExecutable xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(following::*|following::text()[normalize-space(.)!=''])[1]/(self::tei:front|self::tei:body|self::tei:back|self::tei:titlePage|self::tei:div)/@xml:id");
+        XPathExecutable xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(following::*|following::text()[normalize-space(.)!=''])[1]/(self::tei:front|self::tei:body|self::tei:back|self::tei:titlePage|self::tei:div|self::tei:figure)/@xml:id");
         XPathSelector selector = xx.load();
         XdmNode xdmDoc = db.wrap(v.getTeiSdXml());
         selector.setContextItem(xdmDoc);
@@ -2169,7 +2171,7 @@ public class VolumeServiceBean {
         else
         {
         	//if not, take the first parent structural element of the pagebreak
-        	xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(ancestor::tei:front|ancestor::tei:body|ancestor::tei:back|ancestor::tei:titlePage|ancestor::tei:div)[last()]/@xml:id");
+        	xx = xpath.compile("//tei:pb[@xml:id='" + p.getId() + "']/(ancestor::tei:front|ancestor::tei:body|ancestor::tei:back|ancestor::tei:titlePage|ancestor::tei:div|ancestor::tei:figure)[last()]/@xml:id");
         	selector = xx.load();
             selector.setContextItem(xdmDoc);
             for(XdmItem item : selector) {
