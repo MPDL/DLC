@@ -26,6 +26,7 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.RomanNumberConverter;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -119,10 +120,16 @@ public class StructuralEditorBean {
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
+	@ManagedProperty("#{internationalizationHelper}")
+	private InternationalizationHelper internationalizationHelper;
+	
 	private List<ValidationWrapper> validationList = new ArrayList<ValidationWrapper>();
 	
 	
 	private Map<String, String> clientIdMap = new HashMap<String, String>();
+	
+	
+	private List<SelectItem> structureTypeSelectItems;
 	
 	public enum PaginationType
 	{
@@ -132,7 +139,7 @@ public class StructuralEditorBean {
 	
 	public StructuralEditorBean()
 	{
-
+		
 		currentTeiElementType=ElementType.DIV;
 		selectedStructuralType="chapter";
 		
@@ -163,6 +170,8 @@ public class StructuralEditorBean {
 					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
 					volume = null;
 				}
+				
+				structureTypeSelectItems = internationalizationHelper.getStructureTypeSelectItems();
 			}
 			volumeLoaded();
 		}
@@ -1577,6 +1586,35 @@ public class StructuralEditorBean {
 		return list;
 	}
 	
+	/**
+	 * Returns the last pagebreak before the currently selectedPage, which has a structural element applied
+	 * @return
+	 */
+	public TeiElementWrapper getTreeScrollPositionPagebreak()
+	{
+		int pos = flatTeiElementList.indexOf(selectedPb);
+		
+		
+		for(int i=pos; i>=0; i--)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+			{
+				if (PositionType.START.equals(wrapper.getPositionType()))
+				{
+					//System.out.println(wrapper.getPagebreakWrapper().getTeiElement().getId());
+					return wrapper.getPagebreakWrapper();
+				}
+			}
+		}
+		//System.out.println("null");
+		return null;
+		
+		
+			
+		
+	}
+	
 	public List<TreeWrapperNode> getSubTree(TeiElementWrapper pbWrapper)
 	{
 		
@@ -2080,6 +2118,24 @@ public class StructuralEditorBean {
 
 	public void setSelectedPaginationColumns(int selectedPaginationColumns) {
 		this.selectedPaginationColumns = selectedPaginationColumns;
+	}
+
+	
+
+	public List<SelectItem> getStructureTypeSelectItems() {
+		return structureTypeSelectItems;
+	}
+
+	public void setStructureTypeSelectItems(List<SelectItem> structureTypeSelectItems) {
+		this.structureTypeSelectItems = structureTypeSelectItems;
+	}
+
+	public InternationalizationHelper getInternationalizationHelper() {
+		return internationalizationHelper;
+	}
+
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+		this.internationalizationHelper = internationalizationHelper;
 	}
 
 	

@@ -30,6 +30,8 @@ package de.mpg.mpdl.dlc.util;
 
 import java.util.ArrayList;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -41,6 +43,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
@@ -202,5 +205,56 @@ public class InternationalizationHelper
 	public String getUserLocaleString() {
 		return userLocaleString;
 	}
+	
+	public List<SelectItem> getStructureTypeSelectItems()
+	{
+		List<SelectItem> itemList = new ArrayList<SelectItem>();
+		
+		
+		itemList.add(new SelectItem("TITLE_PAGE", getLabel("edit_elementType_title_page")));
+		itemList.add(new SelectItem("FIGURE", getLabel("edit_elementType_figure")));
+		itemList.add(new SelectItem("acknowledgement", getLabel("structuretype_acknowledgement")));
+		itemList.add(new SelectItem("additional", getLabel("structuretype_additional")));
+		itemList.add(new SelectItem("advertisement", getLabel("structuretype_advertisement")));
+		itemList.add(new SelectItem("appendix", getLabel("structuretype_appendix")));
+		itemList.add(new SelectItem("article", getLabel("structuretype_article")));
+		itemList.add(new SelectItem("bibliography", getLabel("structuretype_bibliography")));
+		itemList.add(new SelectItem("book", getLabel("structuretype_book")));
+		itemList.add(new SelectItem("chapter", getLabel("structuretype_chapter")));
+		itemList.add(new SelectItem("content", getLabel("structuretype_content")));
+		itemList.add(new SelectItem("corrigenda", getLabel("structuretype_corrigenda")));
+		itemList.add(new SelectItem("curriculum vitae", getLabel("structuretype_curriculum_vitae")));
+		itemList.add(new SelectItem("dedication", getLabel("structuretype_dedication")));
+		itemList.add(new SelectItem("imprimatur", getLabel("structuretype_imprimatur")));
+		itemList.add(new SelectItem("imprint", getLabel("structuretype_imprint")));
+		itemList.add(new SelectItem("index", getLabel("structuretype_index")));
+		itemList.add(new SelectItem("letter", getLabel("structuretype_letter")));
+		itemList.add(new SelectItem("miscellaneous", getLabel("structuretype_miscellaneous")));
+		itemList.add(new SelectItem("miscellany", getLabel("structuretype_miscellany")));
+		itemList.add(new SelectItem("musical notation", getLabel("structuretype_musical_notation")));
+		itemList.add(new SelectItem("part", getLabel("structuretype_part")));
+		itemList.add(new SelectItem("preface", getLabel("structuretype_preface")));
+		itemList.add(new SelectItem("privileges", getLabel("structuretype_privileges")));
+		itemList.add(new SelectItem("provenance", getLabel("structuretype_provenance")));
+		itemList.add(new SelectItem("review", getLabel("structuretype_review")));
+		itemList.add(new SelectItem("section", getLabel("structuretype_section")));
+		
+			
+		Collections.sort(itemList, new Comparator<SelectItem>() {
+
+			@Override
+			public int compare(SelectItem o1, SelectItem o2) {
+				return o1.getLabel().compareTo(o2.getLabel());
+	
+			}
+		});
+		
+		itemList.add(0, new SelectItem("free", getLabel("edit_elementType_free")));
+		
+		return itemList;
+
+	}
+	
+	
 
 }
