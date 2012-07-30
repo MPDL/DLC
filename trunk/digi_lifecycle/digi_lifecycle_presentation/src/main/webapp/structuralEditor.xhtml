@@ -59,11 +59,6 @@
 										<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
 											<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}"/>
 											<f:ajax render=":messages :edit :paginator" execute="@this"/>
-											<ui:remove>
-											<img src="/dlc/resources/components/lazyload_new/grey.gif" data-original="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy"/>
-											<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="lazy" height="200"/>
-											</ui:remove>
-										
 										</h:commandLink>
 									</h:panelGroup>
 									</h:form>
@@ -72,8 +67,13 @@
 										<h:outputText value="#{lbl.edit_scan} #{element.page.order + 1}" />
 										<h:outputText value=" / #{lbl.edit_page} #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}" />
 										</b>
-										<h:outputText value=" (#{element.teiElement.type})" rendered="#{not empty element.teiElement.type}"/>
-										<h:outputText value=" (#{element.teiElement.subtype})" rendered="#{not empty element.teiElement.subtype}"/>
+										<h:outputText value=" (#{internationalizationHelper.getLabelForEnum('pageType_', element.teiElement.subtype)})" rendered="#{not empty element.teiElement.subtype}"/>
+										<h:panelGroup rendered="#{not empty element.teiElement.type}">
+											<h:outputText value=" (#{lbl.displayType_single})" rendered="#{element.teiElement.type=='single'}"/>
+											<h:outputText value=" (#{lbl.displayType_recto})" rendered="#{element.teiElement.type=='left'}"/>
+											<h:outputText value=" (#{lbl.displayType_verso})" rendered="#{element.teiElement.type=='right'}"/>
+										</h:panelGroup>
+										
 										<br/><br/>
 										
 										
