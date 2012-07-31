@@ -211,7 +211,7 @@ public class Export {
 				document.add(new Paragraph("          Authority: " + mn.getRoleTermAuthority()));
 			}
 		}		
-		if (md.getTitles()!= null && md.getTitles().size() > 0 && md.getTitles().get(1) != null && md.getTitles().get(1).getSubTitle() != null)
+		if (md.getTitles()!= null && md.getTitles().size() > 1 && md.getTitles().get(1) != null && md.getTitles().get(1).getSubTitle() != null)
 			document.add(new Paragraph("Subtitle: " + md.getTitles().get(1).getSubTitle()));
 		if (md.getNotes() != null && md.getNotes().size() > 0)
 			document.add(new Paragraph("Statement of responsibility: " + md.getNotes().get(0).getNote()));
