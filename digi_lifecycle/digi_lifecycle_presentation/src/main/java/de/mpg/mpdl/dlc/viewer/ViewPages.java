@@ -43,6 +43,9 @@ public class ViewPages{
 	@URLQueryParameter("fm")
 	private String fulltextMatches;
 	
+	@URLQueryParameter("dl")
+	private String digilibQueryString;
+	
 	enum ViewType{
 		SINGLE, RECTO_VERSO, FULLTEXT
 	}
@@ -589,6 +592,22 @@ public class ViewPages{
 			MessageHelper.errorMessage("The export could not be created due to an internal error.", e.getMessage());
 		}
 		return "";
+	}
+
+	public String getDigilibQueryString() {
+		if(digilibQueryString == null || digilibQueryString.length()<=1)
+		{
+			return "";
+		}
+		else
+		{
+			return digilibQueryString;
+		}
+		
+	}
+
+	public void setDigilibQueryString(String digilibQueryString) {
+		this.digilibQueryString = digilibQueryString;
 	}
 	
 }

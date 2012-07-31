@@ -20,6 +20,7 @@
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head" />
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.dlcplugin.js" target="head" />
 		
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
@@ -457,17 +458,19 @@
 						
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
 							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
-								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}"/>
+								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}#{viewPages.digilibQueryString}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_containerCenter eg3_borderradius_5_top">
-								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
+								<h:inputText id="permaLink" styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
 							</h:panelGroup>
 							
 							<script type="text/javascript">
-					            
+							 /* <![CDATA[ */
 					                var opts = {
+							            citationLinkFields : [$('#citationLink'), $('#permaLink')],    
 					                	interactionMode : 'embedded',
+					                	digilibParamNames : ['pn','ww','wh','wx','wy','ws','mo','rot','cont','brgt','rgbm','rgba','ddpi','mk','clop'],
 					                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
 					                    showRegionNumbers : true,
 					                    logoUrl: '',
@@ -475,17 +478,22 @@
 					                        embedded : {
 					                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
 					                            'buttonSetWidth' : 18,
-					                            'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-					                            'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+					                            'standardSet' : ["zoomin","zoomout","bird","zoomarea","zoomfull","reset","mark","delmark"],
+					                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+					                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+					                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
 					                            'arrowSet' : ["up", "down", "left", "right"],
 					                            'buttonSets' : ['standardSet', 'specialSet']
+				                            
 					                            }
 					                    }
 					                    //, scalerInset : -10
 									}; //end opts
-									$('.eg3_singleView div.digilib').digilib(opts);
+									var digilibObject = $('.eg3_singleView div.digilib').digilib(opts);
 									$('.eg3_singleView div.digilib .keep.buttons').draggable();
-					            
+									//console.log(getParamString(digilibObject.data('digilib').queryParams));
+
+								    /* ]]> */
 					        </script>
 				        </ui:fragment>
 					</h:panelGroup>
