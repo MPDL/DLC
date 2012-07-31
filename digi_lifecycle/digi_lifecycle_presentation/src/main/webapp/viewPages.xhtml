@@ -490,7 +490,7 @@
 					                    //, scalerInset : -10
 									}; //end opts
 									var digilibObject = $('.eg3_singleView div.digilib').digilib(opts);
-									$('.eg3_singleView div.digilib .keep.buttons').draggable();
+									$('.eg3_singleView div.digilib .keep.buttons').draggable({containment : "parent"});
 									//console.log(getParamString(digilibObject.data('digilib').queryParams));
 
 								    /* ]]> */
