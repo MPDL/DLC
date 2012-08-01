@@ -49,7 +49,7 @@ digilib plugin stub
     // plugin installation called by digilib on plugin object.
     var install = function(plugin) {
         digilib = plugin;
-        console.debug('installing dlc plugin. digilib:', digilib);
+        //console.debug('installing dlc plugin. digilib:', digilib);
         // import geometry classes
         geom = digilib.fn.geometry;
         fn = digilib.fn;
@@ -62,7 +62,7 @@ digilib plugin stub
 
     // plugin initialization
     var init = function (data) {
-        console.debug('initialising dlc plugin. data:', data);
+        //console.debug('initialising dlc plugin. data:', data);
         var $data = $(data);
         
         if(data.settings.citationLinkIds!=null)
@@ -90,13 +90,13 @@ digilib plugin stub
 
 
     var handleSetup = function (evt) {
-        console.debug("stub: handleSetup");
+        //console.debug("stub: handleSetup");
         var data = this;
     };
 
     var handleUpdate = function (evt) {
     	
-    	//console.debug("dlcplugin: handleUpdate");
+    	////console.debug("dlcplugin: handleUpdate");
         
     	
     	
@@ -122,10 +122,23 @@ digilib plugin stub
     	
     	
     	//Set digilib query string value
-    	queryParameters['dl'] = fn.getParamString(data.settings, data.settings.digilibParamNames, digilib.defaults);
+    	var digilibParamString = fn.getParamString(data.settings, data.settings.digilibParamNames, digilib.defaults);
+    	var digilibParams = fn.parseQueryString(digilibParamString);
+    	
+    	//Remove fn query part
+    	delete digilibParams['fn'];
+    	
+    	
+    	var newDigilibParamString = $.param(digilibParams);
+    	
+    	
     	
     	//Remove if empty
-    	if(!queryParameters['dl'])
+    	if(newDigilibParamString)
+    	{
+    		queryParameters['dl'] = '&' + newDigilibParamString;
+    	}
+    	else
     	{
     		delete queryParameters['dl'];
     	}
@@ -144,6 +157,8 @@ digilib plugin stub
 		}
 		
 		console.debug("New DLC Url: " + newUrl);
+		
+		//var ck = "digilib-embed:fn:" + fn.escape(data.settings.fn) + ":pn:" + data.settings.pn;
 
     };
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -148,6 +149,10 @@ public class ViewPages{
 	}
 	
 	protected void volumeLoaded() {
+		if(FacesContext.getCurrentInstance().isPostback())
+		{
+			this.digilibQueryString = "";
+		}
 		Page pageforNumber = volume.getPages().get(getSelectedPageNumber()-1);
 		this.setSelectedPage(pageforNumber);
 		this.setSelectedRightPage(null);
@@ -595,14 +600,19 @@ public class ViewPages{
 	}
 
 	public String getDigilibQueryString() {
+		return digilibQueryString;
+		/*
 		if(digilibQueryString == null || digilibQueryString.length()<=1)
 		{
 			return "";
 		}
 		else
 		{
+			System.out.println("DLC query string: " + digilibQueryString);
 			return digilibQueryString;
+			
 		}
+		*/
 		
 	}
 

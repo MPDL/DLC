@@ -333,7 +333,7 @@ if (typeof console === 'undefined') {
                             // retrieve params from cookie
                             var ck = "digilib-embed:fn:" + escape(params.fn) + ":pn:" + (params.pn || '1');
                             var cs = $.cookie(ck);
-                            console.debug("get cookie=", ck, " value=", cs);
+                            //console.debug("get cookie=", ck, " value=", cs);
                             if (cs) {
                                 var cp = parseQueryString(cs);
                                 // ignore fn and pn from cookie TODO: should we keep pn?
@@ -779,7 +779,7 @@ if (typeof console === 'undefined') {
         url += '?' + getParamString(settings, ['fn', 'pn'], defaults);
         // TODO: better error handling
         $.getJSON(url, function (json) {
-            console.debug("got json data=", json);
+            //console.debug("got json data=", json);
             data.imgInfo = json;
             // send event
             $(data).trigger('imageInfo', [json]);
@@ -870,7 +870,8 @@ if (typeof console === 'undefined') {
     };
 
     var storeOptions = function (data) {
-        // save digilib options in cookie
+        /*
+    	// save digilib options in cookie
         var settings = data.settings;
         if (data.dlOpts) {
             // save digilib settings in options
@@ -885,7 +886,7 @@ if (typeof console === 'undefined') {
                 }
             if ($.cookie) {
                 var ck = "digilib:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
-                console.debug("set cookie=", ck, " value=", clop);
+                //console.debug("set cookie=", ck, " value=", clop);
                 $.cookie(ck, clop);
                 }
         }
@@ -893,9 +894,11 @@ if (typeof console === 'undefined') {
             // store normal parameters in cookie for embedded mode
             var qs = getParamString(settings, settings.digilibParamNames, defaults);
             var ck = "digilib-embed:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
-            console.debug("set cookie=", ck, " value=", qs);
+            //console.debug("set cookie=", ck, " value=", qs);
             $.cookie(ck, qs);
         }
+        */
+        
     };
 
     var retrieveOptions = function (data) {
@@ -906,7 +909,7 @@ if (typeof console === 'undefined') {
             // read from cookie
             var ck = "digilib:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
             var cp = $.cookie(ck);
-            console.debug("get cookie=", ck, " value=", cp);
+            //console.debug("get cookie=", ck, " value=", cp);
             // in query string format
             opts = parseQueryString(cp);
             }
@@ -929,7 +932,7 @@ if (typeof console === 'undefined') {
             var url = getDigilibUrl(data);
             var history = window.history;
             if (typeof history.pushState === 'function') {
-                console.debug("faking reload to "+url);
+                //console.debug("faking reload to "+url);
                 // change url without reloading (stateObj, title, url)
                 // TODO: we really need to push the state in stateObj and listen to pop-events
                 history.replaceState({}, '', url);
@@ -973,12 +976,12 @@ if (typeof console === 'undefined') {
         // include standard body margins and check plausibility
         var borderW = $body.outerWidth(true) - $body.width();
         if (borderW === 0 || borderW > 100) {
-            console.debug("fixing border width for getFullscreenImgSize!");
+            //console.debug("fixing border width for getFullscreenImgSize!");
             borderW = data.settings.scalerInset;
         }
         var borderH = $body.outerHeight(true) - $body.height();
         if (borderH === 0 || borderH > 100) {
-            console.debug("fixing border height for getFullscreenImgSize!");
+            //console.debug("fixing border height for getFullscreenImgSize!");
             borderH = 5;
         }
         var buttonsW = 0; 
@@ -990,7 +993,7 @@ if (typeof console === 'undefined') {
         // account for left/right border, body margins and additional requirements
         var imgW = winW - borderW - buttonsW;
         var imgH = winH - borderH;
-        console.debug(winW, winH, 'winW:', $win.width(), 'border:', borderW, 'buttonsW:', buttonsW, 'calc:', imgW);
+        //console.debug(winW, winH, 'winW:', $win.width(), 'border:', borderW, 'buttonsW:', buttonsW, 'calc:', imgW);
         return geom.size(imgW, imgH);
     };
 
@@ -1025,7 +1028,7 @@ if (typeof console === 'undefined') {
                 var title = $img.attr('title');
                 var alt = $img.attr('alt');
                 if (oldUrl === scalerUrl) {
-                    console.debug("img detach:", $img);
+                    //console.debug("img detach:", $img);
                     $img.detach();
                 } else {
                     $img = $('<img/>');
@@ -1079,14 +1082,14 @@ if (typeof console === 'undefined') {
             if ($.isArray(action)) {
                 // the handler function calls digilib with action and parameters
                 return function (evt) {
-                    console.debug('click action=', action, ' evt=', evt);
+                    //console.debug('click action=', action, ' evt=', evt);
                     $elem.digilib.apply($elem, action);
                     return false;
                 };
             } else {
                 // the handler function calls digilib with action
                 return function (evt) {
-                    console.debug('click action=', action, ' evt=', evt);
+                    //console.debug('click action=', action, ' evt=', evt);
                     $elem.digilib(action);
                     return false;
                 };
@@ -1270,7 +1273,7 @@ if (typeof console === 'undefined') {
             if ($set == null) return false;
             // include border in calculation
             //var btnWidth = $set.outerWidth();
-            // console.debug("btnWidth", btnWidth);
+            // //console.debug("btnWidth", btnWidth);
             // move remaining sets left and show new set
             if ($otherSets.length > 0) {
                     $otherSets.animate({right : '+='+btnWidth+'px'}, atime,
@@ -1389,7 +1392,7 @@ if (typeof console === 'undefined') {
             data.imgTrafo = getImgTrafo($img, data.zoomArea,
                     data.settings.rot, data.scalerFlags.hmir, data.scalerFlags.vmir,
                     data.scaleMode, data);
-            // console.debug("imgTrafo=", data.imgTrafo);
+            // //console.debug("imgTrafo=", data.imgTrafo);
         }
     };
 
@@ -1397,7 +1400,7 @@ if (typeof console === 'undefined') {
     var scalerImgLoadedHandler = function (data) {
         return function () {
             var $img = $(this);
-            console.debug("scaler img loaded=",$img);
+            //console.debug("scaler img loaded=",$img);
             var $scaler = data.$scaler;
             var imgRect = geom.rectangle($img);
             // adjust scaler div size
@@ -1419,7 +1422,7 @@ if (typeof console === 'undefined') {
     // place marks on the image
     var renderMarks = function (data) {
         if (data.$img == null || data.imgTrafo == null) return;
-        console.debug("renderMarks: img=",data.$img," imgtrafo=",data.imgTrafo);
+        //console.debug("renderMarks: img=",data.$img," imgtrafo=",data.imgTrafo);
         var $elem = data.$elem;
         var marks = data.marks;
         // clear marks
@@ -1428,7 +1431,7 @@ if (typeof console === 'undefined') {
             var mark = marks[i];
             if (data.zoomArea.containsPosition(mark)) {
                 var mpos = data.imgTrafo.transform(mark);
-                console.debug("renderMarks: pos=",mpos);
+                //console.debug("renderMarks: pos=",mpos);
                 // create mark
                 var html = '<div class="mark overlay">'+(i+1)+'</div>';
                 var $mark = $(html);
@@ -1583,7 +1586,7 @@ if (typeof console === 'undefined') {
 
         // drag the image and load a new detail on mouse up
         var dragStart = function (evt) {
-            console.debug("dragstart at=", evt);
+            //console.debug("dragstart at=", evt);
             // don't start dragging if not zoomed
             if (isFullArea(data.zoomArea)) return false;
             $elem.find(".overlay").hide(); // hide all overlays (marks/regions)
@@ -1765,7 +1768,7 @@ if (typeof console === 'undefined') {
                 };
             };
         console.log = logFunction('_log'); 
-        console.debug = logFunction('_debug'); 
+        //console.debug = logFunction('_debug'); 
         console.error = logFunction('_error');
         }
 

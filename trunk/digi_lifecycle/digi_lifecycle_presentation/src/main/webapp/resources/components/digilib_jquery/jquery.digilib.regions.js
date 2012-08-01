@@ -179,7 +179,7 @@ TODO:
         var regionRect = data.imgTrafo.invtransform(rect);
         regionRect.$div = $regionDiv;
         regions.push(regionRect);
-        console.debug("regions", data.regions, "regionRect", regionRect);
+        //console.debug("regions", data.regions, "regionRect", regionRect);
     };
 
     // clickable header
@@ -310,7 +310,7 @@ TODO:
         var selector = data.settings.regionContentSelector;
         // regions are defined in "a" tags
         var $content = data.$elem.contents(selector).contents('a');
-        console.debug("createRegionsFromHTML. elems: ", $content);
+        //console.debug("createRegionsFromHTML. elems: ", $content);
         $content.each(function(index, a) {
             var $a = $(a); 
             // the "coords" attribute contains the region coords (0..1)
@@ -339,7 +339,7 @@ TODO:
         var region = regions[index];
         var $regionDiv = region.$div;
         if (!$regionDiv) {
-            console.debug("renderRegion: region has no $div", region);
+            //console.debug("renderRegion: region has no $div", region);
             // alert("renderRegion: region has no $div to show");
             return;
         }
@@ -348,7 +348,7 @@ TODO:
         if (show && data.zoomArea.overlapsRect(regionRect)) {
             regionRect.clipTo(data.zoomArea);
             var screenRect = data.imgTrafo.transform(regionRect);
-            console.debug("renderRegion: pos=",geom.position(screenRect));
+            //console.debug("renderRegion: pos=",geom.position(screenRect));
             if (anim) {
                 $regionDiv.fadeIn();
             } else{
@@ -437,7 +437,7 @@ TODO:
     // event handler, reads region parameter and creates region divs
     var handleSetup = function (evt) {
         data = this;
-        console.debug("regions: handleSetup", data.settings.rg);
+        //console.debug("regions: handleSetup", data.settings.rg);
         // regions with content are given in HTML divs
         if (data.settings.hasRegionContent) {
             createRegionsFromHTML(data);
@@ -451,7 +451,7 @@ TODO:
     // event handler, sets buttons and shows regions when scaler img is reloaded
     var handleUpdate = function (evt) {
         data = this;
-        console.debug("regions: handleUpdate");
+        //console.debug("regions: handleUpdate");
         var settings = data.settings;
         fn.highlightButtons(data, 'regions' , settings.isRegionVisible);
         fn.highlightButtons(data, 'regionhtml' , settings.showRegionInfo);
@@ -461,20 +461,20 @@ TODO:
     // event handler, redisplays regions (e.g. in a new position)
     var handleRedisplay = function (evt) {
         data = this;
-        console.debug("regions: handleRedisplay");
+        //console.debug("regions: handleRedisplay");
         // renderRegions(data);
     };
 
     // event handler
     var handleDragZoom = function (evt, zoomArea) {
-        // console.debug("regions: handleDragZoom, zoomArea:", zoomArea);
+        // //console.debug("regions: handleDragZoom, zoomArea:", zoomArea);
         // data = this;
     };
 
     // plugin installation called by digilib on plugin object.
     var install = function(plugin) {
         digilib = plugin;
-        console.debug('installing regions plugin. digilib:', digilib);
+        //console.debug('installing regions plugin. digilib:', digilib);
         fn = digilib.fn;
         // import geometry classes
         geom = fn.geometry;
@@ -487,7 +487,7 @@ TODO:
 
     // plugin initialization
     var init = function (data) {
-        console.debug('initialising regions plugin. data:', data);
+        //console.debug('initialising regions plugin. data:', data);
         var $elem = data.$elem;
         // regions array
         data.regions = [];

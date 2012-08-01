@@ -49,7 +49,7 @@ digilib bird's eye view plugin
     // plugin installation called by digilib on plugin object.
     var install = function(plugin) {
         digilib = plugin;
-        console.debug('installing birdseye plugin. digilib:', digilib);
+        //console.debug('installing birdseye plugin. digilib:', digilib);
         // import geometry classes
         geom = digilib.fn.geometry;
         FULL_AREA = geom.rectangle(0,0,1,1);
@@ -66,7 +66,7 @@ digilib bird's eye view plugin
 
     // plugin initialization
     var init = function (data) {
-        console.debug('initialising birdseye plugin. data:', data);
+        //console.debug('initialising birdseye plugin. data:', data);
         var $data = $(data);
         // install event handler
         $data.bind('setup', handleSetup);
@@ -77,7 +77,7 @@ digilib bird's eye view plugin
 
 
     var handleSetup = function (evt) {
-        console.debug("birdseye: handleSetup");
+        //console.debug("birdseye: handleSetup");
         data = this;
         // bird's eye view creation
         if (data.settings.isBirdDivVisible) {
@@ -87,7 +87,7 @@ digilib bird's eye view plugin
     };
 
     var handleUpdate = function (evt) {
-        console.debug("birdseye: handleUpdate");
+        //console.debug("birdseye: handleUpdate");
         data = this;
         if (data.settings.isBirdDivVisible) {
             renderBirdArea(data);
@@ -96,7 +96,7 @@ digilib bird's eye view plugin
     };
 
     var handleRedisplay = function (evt) {
-        console.debug("birdseye: handleRedisplay");
+        //console.debug("birdseye: handleRedisplay");
         data = this;
         if (data.settings.isBirdDivVisible) {
             updateBirdDiv(data);
@@ -104,7 +104,7 @@ digilib bird's eye view plugin
     };
 
     var handleDragZoom = function (evt, zoomArea) {
-        //console.debug("birdseye: handleDragZoom za="+zoomArea);
+        ////console.debug("birdseye: handleDragZoom za="+zoomArea);
         data = this;
         if (data.settings.isBirdDivVisible) {
             setBirdZoom(data, zoomArea);
@@ -169,7 +169,7 @@ digilib bird's eye view plugin
         return function () {
             var $birdImg = $(this);
             var birdRect = geom.rectangle($birdImg);
-            console.debug("birdImg loaded!", $birdImg, "rect=", birdRect, "data=", data);
+            //console.debug("birdImg loaded!", $birdImg, "rect=", birdRect, "data=", data);
             if (birdRect.width === 0) {
                 // malheureusement IE7 calls load handler when there is no size info yet 
                 setTimeout(function () { $birdImg.triggerHandler('load'); }, 200);
@@ -194,7 +194,7 @@ digilib bird's eye view plugin
         // create Transform from current area and picsize
         data.birdTrafo = digilib.fn.getImgTrafo(data.$birdImg, FULL_AREA);
         var zoomRect = data.birdTrafo.transform(zoomArea);
-        console.debug("renderBirdArea:", zoomRect, "zoomArea:", zoomArea, "$birdTrafo:", data.birdTrafo);
+        //console.debug("renderBirdArea:", zoomRect, "zoomArea:", zoomArea, "$birdTrafo:", data.birdTrafo);
         // acount for border width
         var bw = digilib.fn.getBorderWidth($birdZoom);
         zoomRect.addPosition({x : -bw, y : -bw});

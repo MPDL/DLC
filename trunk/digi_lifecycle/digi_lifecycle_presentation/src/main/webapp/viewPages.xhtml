@@ -467,18 +467,18 @@
 							
 							<script type="text/javascript">
 							 /* <![CDATA[ */
+							 		
 					                var opts = {
-							            citationLinkFields : [$('#citationLink'), $('#permaLink')],    
-					                	interactionMode : 'embedded',
-					                	digilibParamNames : ['pn','ww','wh','wx','wy','ws','mo','rot','cont','brgt','rgbm','rgba','ddpi','mk','clop'],
+							            'citationLinkIds' : ['citationLink','permaLink'],    
+					                	'interactionMode' : 'embedded',
 					                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
-					                    showRegionNumbers : true,
-					                    logoUrl: '',
-					                    buttonSettings : {
-					                        embedded : {
+					                    'showRegionNumbers' : true,
+					                    'logoUrl' : '',
+					                    'buttonSettings' : {
+					                        'embedded' : {
 					                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
 					                            'buttonSetWidth' : 18,
-					                            'standardSet' : ["zoomin","zoomout","bird","zoomarea","zoomfull","reset","mark","delmark"],
+					                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","mark","delmark","rot","brgt","cont","reset"],
 					                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
 					                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
 					                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
@@ -491,8 +491,6 @@
 									}; //end opts
 									var digilibObject = $('.eg3_singleView div.digilib').digilib(opts);
 									$('.eg3_singleView div.digilib .keep.buttons').draggable({containment : "parent"});
-									//console.log(getParamString(digilibObject.data('digilib').queryParams));
-
 								    /* ]]> */
 					        </script>
 				        </ui:fragment>

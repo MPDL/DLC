@@ -36,7 +36,7 @@ digilib plugin stub
     // plugin installation called by digilib on plugin object.
     var install = function(plugin) {
         digilib = plugin;
-        console.debug('installing stub plugin. digilib:', digilib);
+        //console.debug('installing stub plugin. digilib:', digilib);
         // import geometry classes
         geom = digilib.fn.geometry;
         FULL_AREA = geom.rectangle(0,0,1,1);
@@ -48,7 +48,7 @@ digilib plugin stub
 
     // plugin initialization
     var init = function (data) {
-        console.debug('initialising stub plugin. data:', data);
+        //console.debug('initialising stub plugin. data:', data);
         var $data = $(data);
         // install event handler
         $data.bind('setup', handleSetup);
@@ -59,17 +59,17 @@ digilib plugin stub
 
 
     var handleSetup = function (evt) {
-        console.debug("stub: handleSetup");
+        //console.debug("stub: handleSetup");
         var data = this;
     };
 
     var handleUpdate = function (evt) {
-        console.debug("stub: handleUpdate");
+        //console.debug("stub: handleUpdate");
         var data = this;
     };
 
     var handleRedisplay = function (evt) {
-        console.debug("stub: handleRedisplay");
+        //console.debug("stub: handleRedisplay");
         var data = this;
     };
 
