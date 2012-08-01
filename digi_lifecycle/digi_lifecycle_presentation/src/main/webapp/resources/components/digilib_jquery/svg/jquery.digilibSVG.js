@@ -36,7 +36,7 @@ if (typeof(console) === 'undefined') {
 }
 
 (function($) {
-    console.debug('installing jquery.digilibSVG');
+    //console.debug('installing jquery.digilibSVG');
 
     var pluginName = 'digilibSVG';
     var geom;
@@ -109,7 +109,7 @@ if (typeof(console) === 'undefined') {
             var $opt = $('<option value="' + i + '">' + name + '</option>');
             $shape.append($opt);
             }
-        // console.debug($xml);
+        // //console.debug($xml);
         var $xml = $(settings.xml);
         // unit selects
         var $unit1 = $('<select id="svg-convert1"/>');
@@ -165,7 +165,7 @@ if (typeof(console) === 'undefined') {
         };
 
     var drawInitial = function ($svg) {
-        console.debug('SVG is ready');
+        //console.debug('SVG is ready');
         var $svgDiv = $(this);
         var rect = geom.rectangle($svgDiv);
         $svg.line(0, 0, rect.width, rect.height,
@@ -198,7 +198,7 @@ if (typeof(console) === 'undefined') {
                 var $scalerImg = $digilib.find('img.pic');
                 var scalerImgRect = geom.rectangle($scalerImg);
                 scalerImgRect.adjustDiv($svgDiv);
-                console.debug('$svgDiv', scalerImgRect);
+                //console.debug('$svgDiv', scalerImgRect);
                 var $svg = $svgDiv.svg({
                         'onLoad' : drawInitial
                     });

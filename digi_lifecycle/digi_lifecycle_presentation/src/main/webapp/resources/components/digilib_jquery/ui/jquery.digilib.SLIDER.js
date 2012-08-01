@@ -297,7 +297,7 @@ if (typeof(console) === 'undefined') {
                             // retrieve params from cookie
                             var ck = "digilib-embed:fn:" + escape(params.fn) + ":pn:" + (params.pn || '1');
                             var cs = jQuery.cookie(ck);
-                            console.debug("get cookie=", ck, " value=", cs);
+                            //console.debug("get cookie=", ck, " value=", cs);
                             if (cs) {
                                 var cp = parseQueryString(cs);
                                 // ignore fn and pn from cookie TODO: should we keep pn?
@@ -777,7 +777,7 @@ if (typeof(console) === 'undefined') {
                 }
             if (jQuery.cookie) {
                 var ck = "digilib:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
-                console.debug("set cookie=", ck, " value=", clop);
+                //console.debug("set cookie=", ck, " value=", clop);
                 jQuery.cookie(ck, clop);
                 }
         }
@@ -785,7 +785,7 @@ if (typeof(console) === 'undefined') {
             // store normal parameters in cookie for embedded mode
             var qs = getParamString(settings, settings.digilibParamNames, defaults);
             var ck = "digilib-embed:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
-            console.debug("set cookie=", ck, " value=", qs);
+            //console.debug("set cookie=", ck, " value=", qs);
             jQuery.cookie(ck, qs);
         }
     };
@@ -798,7 +798,7 @@ if (typeof(console) === 'undefined') {
             // read from cookie
             var ck = "digilib:fn:" + escape(settings.fn) + ":pn:" + settings.pn;
             var cp = jQuery.cookie(ck);
-            console.debug("get cookie=", ck, " value=", cp);
+            //console.debug("get cookie=", ck, " value=", cp);
             // in query string format
             opts = parseQueryString(cp);
             }
@@ -821,7 +821,7 @@ if (typeof(console) === 'undefined') {
             var url = getDigilibUrl(data);
             var history = window.history;
             if (typeof(history.pushState) === 'function') {
-                console.debug("we could modify history, but we don't...");
+                //console.debug("we could modify history, but we don't...");
                 }
             window.location = url;
         } else {
@@ -870,7 +870,7 @@ if (typeof(console) === 'undefined') {
             if ($img.length > 0) {
                 oldUrl = $img.attr('src');
                 if (oldUrl === scalerUrl) {
-                    console.debug("img detach:", $img);
+                    //console.debug("img detach:", $img);
                     $img.detach();
                 } else {
                     $img = $('<img/>');
@@ -925,14 +925,14 @@ if (typeof(console) === 'undefined') {
                 if ($.isArray(action)) {
                     // the handler function calls digilib with action and parameters
                     return function (evt) {
-                        console.debug('click action=', action, ' evt=', evt);
+                        //console.debug('click action=', action, ' evt=', evt);
                         $elem.digilib.apply($elem, action);
                         return false;
                     };
                 } else {
                     // the handler function calls digilib with action
                     return function (evt) {
-                        console.debug('click action=', action, ' evt=', evt);
+                        //console.debug('click action=', action, ' evt=', evt);
                         $elem.digilib(action);
                         return false;
                     };
@@ -1142,10 +1142,10 @@ if (typeof(console) === 'undefined') {
             // create Transform from current area and picsize
             data.imgTrafo = getImgTrafo($img, data.zoomArea,
                     data.settings.rot, data.scalerFlags.hmir, data.scalerFlags.vmir);
-            console.debug("imgTrafo=", data.imgTrafo);
+            //console.debug("imgTrafo=", data.imgTrafo);
             // adjust scaler div size
             var imgRect = geom.rectangle($img);
-            console.debug("imgrect=", imgRect);
+            //console.debug("imgrect=", imgRect);
             imgRect.adjustDiv($scaler);
             // show image in case it was hidden (for example in zoomDrag)
             $img.css('visibility', 'visible');
@@ -1162,7 +1162,7 @@ if (typeof(console) === 'undefined') {
     var birdImgLoadedHandler = function (data) {
         return function () {
             var $img = $(this);
-            console.debug("birdimg loaded! this=", this, " data=", data);
+            //console.debug("birdimg loaded! this=", this, " data=", data);
             // create Transform from current area and picsize
             data.birdTrafo = getImgTrafo($img, FULL_AREA);
             // display red indicator around zoomarea
@@ -1182,7 +1182,7 @@ if (typeof(console) === 'undefined') {
             var mark = marks[i];
             if (data.zoomArea.containsPosition(mark)) {
                 var mpos = data.imgTrafo.transform(mark);
-                console.debug("renderMarks: mpos=",mpos);
+                //console.debug("renderMarks: mpos=",mpos);
                 // create mark
                 var html = '<div class="mark">'+(i+1)+'</div>';
                 var $mark = $(html);
@@ -1459,7 +1459,7 @@ if (typeof(console) === 'undefined') {
 
         // drag the image and load a new detail on mouse up
         var dragStart = function (evt) {
-            console.debug("dragstart at=",evt);
+            //console.debug("dragstart at=",evt);
             // don't start dragging if not zoomed
             if (isFullArea(data.zoomArea)) return false;
             startPos = geom.position(evt);
@@ -1589,7 +1589,7 @@ if (typeof(console) === 'undefined') {
                 };
             };
         console.log = logFunction('_log'); 
-        console.debug = logFunction('_debug'); 
+        //console.debug = logFunction('_debug'); 
         console.error = logFunction('_error');
         }
 

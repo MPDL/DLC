@@ -2145,7 +2145,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public Div getDivForPage(Volume v, Page p) throws Exception
+	public PbOrDiv getDivForPage(Volume v, Page p) throws Exception
 	{
 		logger.debug("Finding structural element for pagebreak " + p.getId());
 		long start = System.currentTimeMillis();
@@ -2181,7 +2181,7 @@ public class VolumeServiceBean {
             }
         }
         
-        Div div = (Div)v.getTeiSd().getDivMap().get(divId);
+        PbOrDiv div = (PbOrDiv)v.getTeiSd().getDivMap().get(divId);
         long time = System.currentTimeMillis() - start;
        
         
