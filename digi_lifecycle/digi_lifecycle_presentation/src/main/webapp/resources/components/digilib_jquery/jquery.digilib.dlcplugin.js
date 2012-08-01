@@ -5,7 +5,7 @@ digilib plugin stub
 (function($) {
 
 	//input field with url to update
-	var citationLinkFields = [];
+	var citationLinkIds = [];
 	
 	var queryParamKey = 'dl';
 	
@@ -31,7 +31,8 @@ digilib plugin stub
 
     var defaults = {
             // is stub active?
-            'isStubActive' : true
+            'isStubActive' : true,
+            'citationLinkIds' : []
     };
 
     var actions = {
@@ -64,9 +65,9 @@ digilib plugin stub
         console.debug('initialising dlc plugin. data:', data);
         var $data = $(data);
         
-        if(data.settings.citationLinkFields!=null)
+        if(data.settings.citationLinkIds!=null)
         {
-        	citationLinkFields = data.settings.citationLinkFields;
+        	citationLinkIds = data.settings.citationLinkIds;
         	
         }
         else
@@ -95,9 +96,12 @@ digilib plugin stub
 
     var handleUpdate = function (evt) {
     	
-    	console.debug("dlcplugin: handleUpdate");
-        var data = this;
-    	var urlParts = citationLinkFields[0].val().split("?");
+    	//console.debug("dlcplugin: handleUpdate");
+        
+    	
+    	
+    	var data = this;
+    	var urlParts = $('#' + citationLinkIds[0]).val().split("?");
     	var urlWithoutQueryString = urlParts[0];
     	var queryParameters = {};
     	
@@ -134,9 +138,9 @@ digilib plugin stub
 		}
 
 		
-		var len=citationLinkFields.length;
+		var len=citationLinkIds.length;
 		for(var i=0; i<len; i++) {
-			citationLinkFields[i].val(newUrl);
+			$('#' + citationLinkIds[i]).val(newUrl);
 		}
 		
 		console.debug("New DLC Url: " + newUrl);
@@ -144,7 +148,6 @@ digilib plugin stub
     };
 
     var handleRedisplay = function (evt) {
-        console.debug("stub: handleRedisplay");
         var data = this;
     };
 
