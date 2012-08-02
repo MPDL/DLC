@@ -187,6 +187,11 @@ public class InternationalizationHelper
         return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(placeholder);
     }
     
+    public String getMessage(String placeholder)
+    {
+        return ResourceBundle.getBundle(this.getSelectedMessagesBundle()).getString(placeholder);
+    }
+    
     public String getLabelForEnum(String prefix, String enumString)
     {
     	try {

@@ -822,6 +822,8 @@ public class StructuralEditorBean {
 		selectedPagebreak.setSubtype(selectedPbSubtype);
 		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
 		initPageListMenu();
+		MessageHelper.infoMessage(internationalizationHelper.getMessage("edit_actionSuccessful"));
+  
 	}
 	
 	public void applyPagination()
@@ -962,7 +964,8 @@ public class StructuralEditorBean {
 				}
 				pbWrapper.getTeiElement().setNumeration(pagination);
 				pbWrapper.getPage().setOrderLabel(pagination);
-				paginatedPages.add(pbWrapper);
+				//paginatedPages.add(pbWrapper);
+				rerenderThumbnailPage(new TeiElementWrapper[]{pbWrapper});
 				
 				if(paginateEverySecondPage)
 				{
@@ -972,7 +975,7 @@ public class StructuralEditorBean {
 					}
 					else
 					{
-						return;
+						break;
 					}
 					
 				}
@@ -980,11 +983,12 @@ public class StructuralEditorBean {
 				
 				if(pbWrapper.getTeiElement().getId().equals(selectedPaginationEndPbId))
 				{
-					rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
-					return;
+					break;
 				}
 			}
 			initPageListMenu();
+			selectPb(selectedPb);
+			MessageHelper.infoMessage(internationalizationHelper.getMessage("edit_actionSuccessful"));
 			
 			}
 		else
@@ -1021,10 +1025,13 @@ public class StructuralEditorBean {
 			
 			if(pbWrapper.getTeiElement().getId().equals(selectedPageDisplayTypeEndPbId))
 			{
-				rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
-				return;
+				break;
 			}
 		}
+		rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
+		selectPb(selectedPb);
+		MessageHelper.infoMessage(internationalizationHelper.getMessage("edit_actionSuccessful"));
+		
 		
 		
 	}
@@ -1047,11 +1054,13 @@ public class StructuralEditorBean {
 			
 			if(pbWrapper.getTeiElement().getId().equals(selectedPageTypeEndPbId))
 			{
-				rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
-				return;
+				break;
 			}
 		}
 		
+		rerenderThumbnailPage(paginatedPages.toArray(new TeiElementWrapper[0]));
+		selectPb(selectedPb);
+		MessageHelper.infoMessage(internationalizationHelper.getMessage("edit_actionSuccessful"));
 	}
 	
 	public List<SelectItem> getPaginationEndPbSelectItems()
