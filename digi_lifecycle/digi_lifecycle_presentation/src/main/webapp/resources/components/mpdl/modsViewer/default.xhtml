@@ -9,264 +9,482 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 
-<!-- INTERFACE -->
-<cc:interface>
-	<cc:attribute name="modsMetadata" required="true" />
-	<cc:attribute name="editable" type="java.lang.Boolean" required="true" />
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
-
-
-
-
-
-
-		<h:panelGrid columns="2" styleClass="eg3_container_1" cellspacing="0" columnClasses="eg3_container_1_3, eg3_container_2_3">
-			<h:outputText value="#{lbl.mods_titles}"/>
-			<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
-				<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-
-					<ui:fragment rendered="#{not empty title.mabId}">
-						<h:outputText value="#{lbl.mods_mabId}"/>
-						<h:outputText value="#{title.mabId}"  rendered= "#{!cc.attrs.editable}"/>
-						<h:inputText value="#{title.mabId}" title="#{title.mabId}" rendered= "#{cc.attrs.editable}"/>
-					</ui:fragment>
-					
-					<ui:fragment rendered="#{not empty title.type}">
-						<h:outputText value="#{lbl.mods_titleType}" />
-						<h:outputText value="#{title.type}" rendered = "#{!cc.attrs.editable}"/>
-						<h:inputText value="#{title.type}" title="#{title.type}" rendered = "#{cc.attrs.editable}"/>
-					</ui:fragment>
-					<ui:fragment rendered="#{not empty title.title}">	
-						<h:outputText value="#{lbl.mods_title}"/>
-						<h:outputText value="#{title.title}" rendered = "#{!cc.attrs.editable}" />
-						<h:inputText value="#{title.title}" title="#{title.title}" rendered = "#{cc.attrs.editable}" />
-					</ui:fragment>
-					<ui:fragment rendered="#{not empty title.subTitle}">
-						<h:outputText value="#{lbl.mods_subTitle}"/>
-						<h:outputText value="#{title.subTitle}" rendered="#{!cc.attrs.editable}" />
-						<h:inputText value="#{title.subTitle}" title="#{title.subTitle}" rendered="#{cc.attrs.editable}" />
-					</ui:fragment>
-				</h:panelGrid>
-			</a4j:repeat>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="modsMetadata" required="true"/>
+		<cc:attribute name="editable" type="java.lang.Boolean" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_metadataInformation">
+		<!-- titles -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.titles.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_titles}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
+						<ui:fragment rendered="#{not empty title.mabId}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_mabId}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{title.mabId}"  rendered= "#{!cc.attrs.editable}"/>
+								<h:inputText value="#{title.mabId}" title="#{title.mabId}" rendered= "#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{not empty title.type}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_titleType}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{title.type}" rendered = "#{!cc.attrs.editable}"/>
+								<h:inputText value="#{title.type}" title="#{title.type}" rendered = "#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{not empty title.title}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_title}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{title.title}" rendered = "#{!cc.attrs.editable}"/>
+								<h:inputText value="#{title.title}" title="#{title.title}" rendered = "#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{not empty title.subTitle}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_subTitle}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{title.subTitle}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{title.subTitle}" title="#{title.subTitle}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.names.size()>0}">
-				<h:outputText value="#{lbl.mods_names}"/>
-				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+		<!-- names -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.names.size()>0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_names}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
 						<ui:fragment rendered="#{not empty name.mabId}">
-							<h:outputText value="#{lbl.mods_mabId}"/>
-							<h:outputText value="#{name.mabId}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{name.mabId}" title="#{name.mabId}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_mabId}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{name.mabId}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{name.mabId}" title="#{name.mabId}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
 						
 						<ui:fragment rendered="#{not empty name.type}">
-						<h:outputText value="#{lbl.mods_nameType}" />
-						<h:outputText value="#{name.type}" rendered="#{!cc.attrs.editable}"/>	
-						<h:inputText value="#{name.type}" title="#{name.type}" rendered="#{cc.attrs.editable}"/>               
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_nameType}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{name.type}" rendered="#{!cc.attrs.editable}"/>	
+								<h:inputText value="#{name.type}" title="#{name.type}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>               
 						</ui:fragment>
 						
-						<!-- <h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty name.displayLabel}"/>  
-						<h:outputText value="#{name.displayLabel}" rendered="#{not empty name.displayLabel}"/>			
-						<h:inputText value="#{name.displayLabel}" title="#{name.displayLabel}" rendered="#{not empty name.displayLabel}"/>-->	
-						
 						<ui:fragment rendered="#{not empty name.name}">
-							<h:outputText value="#{lbl.mods_name}" />
-							<h:outputText value="#{name.name}" rendered="#{!cc.attrs.editable}"/>					
-							<h:inputText value="#{name.name}" title="#{name.name}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_name}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{name.name}" rendered="#{!cc.attrs.editable}"/>					
+								<h:inputText value="#{name.name}" title="#{name.name}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
 						
 						<ui:fragment rendered="#{not empty name.authority}">
-							<h:outputText value="#{lbl.mods_nameRoleTermAuthority}" />
-							<h:outputText value="#{name.authority}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{name.authority}" title="#{name.authority}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_nameRoleTermAuthority}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{name.authority}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{name.authority}" title="#{name.authority}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
 						
 						<ui:fragment rendered="#{not empty name.role}">
-							<h:outputText value="#{lbl.mods_nameRole}" />
-							<h:outputText value="#{name.role}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{name.role}" title="#{name.role}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_nameRole}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{name.role}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{name.role}" title="#{name.role}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.publishers.size() > 0}">
-				<h:outputText value="#{lbl.mods_publisher}"/>
-				<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-						<!-- <h:outputText value="#{lbl.mods_displayLabel}" rendered="#{not empty publisher.displayLabel}"/> 
-						<h:outputText value="#{publisher.displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
-	 					<h:outputText value="#{publisher.displayLabel}" rendered="#{not empty publisher.displayLabel}"/>
-	 					-->
-	 					<ui:fragment rendered="#{not empty publisher.publisher}">
-						<h:outputText value="#{lbl.mods_publisher}" />
-						<h:outputText value="#{publisher.publisher}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}" rendered="#{cc.attrs.editable}"/>
+		<!-- publishers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.publishers.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_publisher}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
+		 				<ui:fragment rendered="#{not empty publisher.publisher}">
+		 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+		 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_publisher}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{publisher.publisher}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-						
+							
 						<ui:fragment rendered="#{not empty publisher.place}">
-						<h:outputText value="#{lbl.mods_publisherPlace}" />
-						<h:outputText value="#{publisher.place}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{publisher.place}" title="#{publisher.place}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_publisherPlace}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{publisher.place}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{publisher.place}" title="#{publisher.place}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-						
+							
 						<ui:fragment rendered="#{not empty publisher.edition}">
-						<h:outputText value="#{lbl.mods_publisherEditionStatement}" />
-						<h:outputText value="#{publisher.edition}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{publisher.edition}" title="#{publisher.edition}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{publisher.edition}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{publisher.edition}" title="#{publisher.edition}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+							
+						<ui:fragment rendered="#{not empty publisher.dateIssued_425}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{publisher.dateIssued_425.date}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
+						</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- notes -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.notes.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_notes}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
+						<ui:fragment rendered="#{not empty note.type}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_noteType}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{note.type}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{note.type}" title="#{note.type}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
 						
-						<ui:fragment rendered="#{not empty publisher.dateIssued_425}">
-						<h:outputText value="#{lbl.mods_publisherDateIssued}" />
-						<h:outputText value="#{publisher.dateIssued_425.date}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" rendered="#{cc.attrs.editable}"/>
-						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
-			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.notes.size() > 0}">
-				<h:outputText value="#{lbl.mods_notes}"/>
-				<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
-						<ui:fragment rendered="#{not empty note.type}">
-						<h:outputText value="#{lbl.mods_noteType}" />
-						<h:outputText value="#{note.type}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{note.type}" title="#{note.type}" rendered="#{cc.attrs.editable}"/>
-						</ui:fragment>
 						<ui:fragment rendered="#{not empty note.note}">
-						<h:outputText value="#{lbl.mods_note}" />
-						<h:outputText value="#{note.note}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{note.note}" title="#{note.note}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_note}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{note.note}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{note.note}" title="#{note.note}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
-				<h:outputText value="#{lbl.mods_keywords}"/>
-				<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
-					<h:panelGrid columns="1" styleClass="eg3_container_1" columnClasses="eg3_container_1">
-						<h:outputText value="#{keyword}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{keyword}" title="#{keyword}" rendered="#{cc.attrs.editable}"/>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+		<!-- keywords -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_keywords}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemMetaValue">
+							<h:outputText value="#{keyword}" rendered="#{!cc.attrs.editable}"/>
+							<h:inputText value="#{keyword}" title="#{keyword}" rendered="#{cc.attrs.editable}"/>
+						</h:panelGroup>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
-				<h:outputText value="#{lbl.mods_relatedItems}"/>
-				<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+		<!-- relatedItems -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_relatedItems}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">
 						<ui:fragment rendered="#{not empty ri.parentId_010}">
-						<h:outputText value="#{lbl.mods_parentID}" />
-						<h:outputText value="#{ri.parentId_010}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{ri.parentId_010}" title="#{ri.parentId_010}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_parentID}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{ri.parentId_010}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{ri.parentId_010}" title="#{ri.parentId_010}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered="#{empty ri.displayLabel and not empty ri.title}">
-							<h:outputText value="#{lbl.mods_source}" />
-							<h:outputText value="#{ri.title}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_source}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{ri.title}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered="#{not empty ri.displayLabel}">
-							<h:outputText value="#{lbl.mods_seriesTitle}" />
-							<h:outputText value="#{ri.title}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_seriesTitle}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{ri.title}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{ri.title}" title="#{ri.title}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
-				<h:outputText value="#{lbl.mods_identifiers}"/>
-				<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+		<!-- identifiers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifiers}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
 						<ui:fragment rendered="#{not empty identifier.type}">
-							<h:outputText value="#{lbl.mods_identifierType}" />
-							<h:outputText value="#{identifier.type}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{identifier.type}" title="#{identifier.type}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_identifierType}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{identifier.type}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{identifier.type}" title="#{identifier.type}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered="#{not empty identifier.value}">
-							<h:outputText value="#{lbl.mods_identifier}" />
-							<h:outputText value="#{identifier.value}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{identifier.value}" title="#{identifier.value}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_identifier}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{identifier.value}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{identifier.value}" title="#{identifier.value}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.catalogueId_001}">
-				<h:outputText value="#{lbl.mods_catalogueId_001}"/>
-				<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" rendered="#{!cc.attrs.editable}" />
-				<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" title="#{cc.attrs.modsMetadata.catalogueId_001}" rendered="#{cc.attrs.editable}"/>
-			</ui:fragment>
+		<!-- catalogueId_001 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.catalogueId_001}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" rendered="#{!cc.attrs.editable}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" title="#{cc.attrs.modsMetadata.catalogueId_001}" rendered="#{cc.attrs.editable}"/>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.language_037}">
-				<h:outputText value="#{lbl.mods_language_037}"/>
-				<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{!cc.attrs.editable}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" title="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{cc.attrs.editable}"/>
-			</ui:fragment>
+		<!-- language_037 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.language_037}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_language_037}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{!cc.attrs.editable}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" title="#{cc.attrs.modsMetadata.language_037.language}" rendered="#{cc.attrs.editable}"/>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.parts.size() > 0}">
-				<h:outputText value="#{lbl.mods_parts}"/>
-				<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+		<!-- parts -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.parts.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_parts}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
 						<ui:fragment rendered="#{not empty part.value}">
-						<h:outputText value="#{lbl.mods_sortField}" />
-						<h:outputText value="#{part.value}" rendered="#{!cc.attrs.editable}"/>
-						<h:inputText value="#{part.value}" title="#{part.value}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_sortField}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{part.value}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{part.value}" title="#{part.value}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered = "#{not empty part.volumeDescriptive_089}">
-						<h:outputText value="#{lbl.mods_band}" />
-						<h:outputText value="#{part.volumeDescriptive_089}" rendered = "#{!cc.attrs.editable}"/>
-						<h:inputText value="#{part.volumeDescriptive_089}" title="#{part.volumeDescriptive_089}" rendered = "#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_band}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{part.volumeDescriptive_089}" rendered = "#{!cc.attrs.editable}"/>
+								<h:inputText value="#{part.volumeDescriptive_089}" title="#{part.volumeDescriptive_089}" rendered = "#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered = "#{not empty part.subseries_361}">
-						<h:outputText value="#{lbl.mods_attachTitle}" />
-						<h:outputText value="#{part.subseries_361}" rendered = "#{!cc.attrs.editable}"/>
-						<h:inputText value="#{part.subseries_361}"  title="#{part.subseries_361}" rendered = "#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_attachTitle}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{part.subseries_361}" rendered = "#{!cc.attrs.editable}"/>
+								<h:inputText value="#{part.subseries_361}"  title="#{part.subseries_361}" rendered = "#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.signature_544}">
-				<h:outputText value="#{lbl.mods_signature_544}"/>
-				<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" rendered="#{!cc.attrs.editable}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" title="#{cc.attrs.modsMetadata.signature_544}" rendered="#{cc.attrs.editable}"/>
-			</ui:fragment>
+		<!-- signature_544 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.signature_544}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_signature_544}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" rendered="#{!cc.attrs.editable}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" title="#{cc.attrs.modsMetadata.signature_544}" rendered="#{cc.attrs.editable}"/>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
-				<h:outputText value="#{lbl.mods_extents}"/>
-				<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
-					<h:panelGrid columns="2" styleClass="eg3_container_1" columnClasses="eg3_container_1_3, eg3_container_2_3">
+		<!-- physicalDescriptions -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_extents}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
 						<ui:fragment rendered="#{not empty pd.extent}">
-							<h:outputText value="#{lbl.mods_extent}" />
-							<h:outputText value="#{pd.extent}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{pd.extent}" title="#{pd.extent}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_extent}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{pd.extent}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{pd.extent}" title="#{pd.extent}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
+						
 						<ui:fragment rendered = "#{not empty pd.materialDesignation_334}">
-							<h:outputText value="#{lbl.mods_materialDesignation_334}" />
-							<h:outputText value="#{pd.materialDesignation_334}" rendered="#{!cc.attrs.editable}"/>
-							<h:inputText value="#{pd.materialDesignation_334}" title="#{pd.materialDesignation_334}" rendered="#{cc.attrs.editable}"/>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.mods_materialDesignation_334}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+								<h:outputText value="#{pd.materialDesignation_334}" rendered="#{!cc.attrs.editable}"/>
+								<h:inputText value="#{pd.materialDesignation_334}" title="#{pd.materialDesignation_334}" rendered="#{cc.attrs.editable}"/>
+							</h:panelGroup>
 						</ui:fragment>
-					</h:panelGrid>
-				</a4j:repeat>
-			</ui:fragment>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
 			
-			<ui:fragment rendered="#{not empty cc.attrs.modsMetadata.freeText}">
-				<h:outputText value="#{lbl.mods_freeText}"/>
-				<h:outputText value="#{cc.attrs.modsMetadata.freeText}" rendered="#{!cc.attrs.editable}"/>
-				<h:inputText value="#{cc.attrs.modsMetadata.freeText}" title ="#{cc.attrs.modsMetadata.freeText}" rendered="#{cc.attrs.editable}"/>
-			</ui:fragment>
-			
-		</h:panelGrid>
-
-
-
-
-
-</cc:implementation>
+		<!-- freeText -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.freeText}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_freeText}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.freeText}" rendered="#{!cc.attrs.editable}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.freeText}" title ="#{cc.attrs.modsMetadata.freeText}" rendered="#{cc.attrs.editable}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+	<!-- END OF metadata container -->
+		</h:panelGroup>
+		
+	</cc:implementation>
 </html>
