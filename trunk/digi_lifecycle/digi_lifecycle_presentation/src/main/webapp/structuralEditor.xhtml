@@ -29,13 +29,6 @@
 			</h:panelGroup>
 		</ui:define>
 	
-		<ui:define name="citationLinkContent">
-			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
-				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%; background-color:transparent;"/>
-				<br />
-				<h:inputText id="citationLink" value="#{utilBean.absoluteUrl}" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
-			</h:panelGroup>
-		</ui:define>
 	
 		<ui:define name="mainContent">
 	
@@ -567,6 +560,7 @@
 															
 															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
 																<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
+																<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
 																<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
 															</h:panelGroup>
 															
@@ -600,19 +594,19 @@
 													
 													</h:panelGroup>
 													
-													<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
-													<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
 													<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
 													<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
+														<f:ajax render=":messages :edit :paginator" execute="@form"/>
+													</h:commandButton>
+													
+													<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
+														<f:ajax render=":messages :edit :paginator" execute="@form"/>
+													</h:commandButton>
+													
+													<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 												
