@@ -1114,7 +1114,10 @@ public class StructuralEditorBean {
 		
 		createStructuralElementAtEndOfPage(currentNewElement, selectedPb);
 		//create as sibling, if parent is not body
-		if(!ElementType.BODY.equals(currentNewElement.getTreeWrapperNode().getParent().getTeiElementWrapper().getTeiElement().getElementType()))
+		ElementType parentType = currentNewElement.getTreeWrapperNode().getParent().getTeiElementWrapper().getTeiElement().getElementType();
+		if(!ElementType.BODY.equals(parentType) &&
+			!ElementType.FRONT.equals(parentType) &&
+			!ElementType.BACK.equals(parentType))
 		{
 			moveElementToLeft(currentNewElement);
 		}
