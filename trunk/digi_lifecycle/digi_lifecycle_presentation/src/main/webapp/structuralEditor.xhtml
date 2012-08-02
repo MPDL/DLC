@@ -270,7 +270,7 @@
 									<h:form>
 									<rich:tabPanel styleClass="eg3_container_1" switchType="ajax">				
 
-										<rich:tab header="#{lbl.edit_tab_structure}" label="structure" id="structure" rendered="#{structuralEditorBean.currentEditElementWrapper==null}">
+										<rich:tab header="#{lbl.edit_tab_structure_head}" label="structure" id="structure">
 											<!-- START CREATE STRUCTURE ELEMENT -->
 											<a4j:region>
 											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
@@ -300,6 +300,7 @@
 											<!-- END CREATE STRUCTURE ELEMENT -->
 										</rich:tab>
 										
+										<ui:remove>
 										<rich:tab header="#{lbl.edit_tab_editStructure}" label="edit_structure" id="edit_structure" rendered="#{structuralEditorBean.currentEditElementWrapper!=null}">
 											<!-- START EDIT STRUCTURE ELEMENT -->
 											<a4j:region>
@@ -325,6 +326,7 @@
 											
 											<!-- END EDIT STRUCTURE ELEMENT -->
 										</rich:tab>
+										</ui:remove>
 										
 										<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
 											<!-- START PAGE EDITING -->
@@ -544,16 +546,7 @@
 												
 												<rich:treeNode styleClass="struct_#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.id}" expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}" >
 													
-													<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													&#160;
-													<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
+													
 												
 													<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
 														<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
@@ -607,6 +600,17 @@
 													
 													</h:panelGroup>
 													
+													<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
+														<f:ajax render=":messages :edit :paginator" execute="@form"/>
+													</h:commandButton>
+													
+													<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
+														<f:ajax render=":messages :edit :paginator" execute="@form"/>
+													</h:commandButton>
+													
+													<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
+														<f:ajax render=":messages :edit :paginator" execute="@form"/>
+													</h:commandButton>
 													
 													<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
@@ -616,10 +620,12 @@
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
-													
+													<ui:remove>
 													<h:commandButton action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" >
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
+													</ui:remove>
+													<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" />
 													
 												</rich:treeNode>
 												
@@ -654,33 +660,39 @@
 								
 								
 								
-						<ui:remove>
+						
 								<!-- START EDIT STRUCTURE POPUP -->
-							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form">
+							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400" >
 								<f:facet name="header">
-									<h:outputText value="#{lbl.edit_structure_header}" />
+									<h:outputText value="#{lbl.edit_structureHeader}" />
 								</f:facet>
 								<f:facet name="controls">
+									<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">X</h:outputLink>	
 								</f:facet>
 								<h:form>
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
-									<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
-												
+								
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
+									<h3><h:outputText value="#{lbl.edit_structureHeader}" /></h3>
+									
+									
+									
 									<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-													teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+										structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+										teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
 									<br/>
 									<br/>
-									 <h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}"/>
-						             <h:outputLink>
-						             	<h:outputText value="#{lbl.edit_cancelBtn}" />
-						             </h:outputLink>
+									<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+										<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
+									</h:commandButton>
+									<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
+									<h:outputText value="#{lbl.edit_cancelBtn}"/>
+									</h:outputLink>									
 								</h:panelGroup>
 
 								</h:form>
 							</rich:popupPanel>
 							<!-- END EDIT STRUCTURE POPUP -->
-						</ui:remove>
+						
 								
 							</h:panelGroup>
 
