@@ -1045,7 +1045,15 @@ public class StructuralEditorBean {
 	public void editStructuralElement(TeiElementWrapper elementToEdit)
 	{
 		//this.currentTeiElementEditType = elementToEdit.getTeiElement().getElementType();
-		this.selectedStructuralEditType = elementToEdit.getTeiElement().getType();
+		if(ElementType.DIV.equals(elementToEdit.getTeiElement().getElementType()))
+		{
+			this.selectedStructuralEditType = elementToEdit.getTeiElement().getType();
+		}
+		else
+		{
+			this.selectedStructuralEditType = elementToEdit.getTeiElement().getElementType().name();
+		}
+		
 		
 		currentEditElementWrapperRestore = elementToEdit;
 		currentEditElementWrapper = new TeiElementWrapper();
@@ -1094,9 +1102,9 @@ public class StructuralEditorBean {
 	{
 		currentEditElementWrapperRestore.setTeiElement(currentEditElementWrapper.getTeiElement());
 		currentEditElementWrapperRestore.getPartnerElement().setTeiElement(currentEditElementWrapper.getTeiElement());
-		
+		rerenderThumbnailPage(new TeiElementWrapper[]{currentEditElementWrapperRestore.getPagebreakWrapper()});
 		cancelEditStructuralElement();
-		rerenderThumbnailPage(new TeiElementWrapper[]{currentEditElementWrapper.getPagebreakWrapper()});
+		
 	}
 	
 	
@@ -2109,7 +2117,7 @@ public class StructuralEditorBean {
 				
 			}
 		}
-		fc.getPartialViewContext().getExecuteIds().add("thumbsRepeater");
+		//fc.getPartialViewContext().getExecuteIds().add("thumbsRepeater");
 		//System.out.println(fc.getPartialViewContext().getRenderIds());
 		
 		
