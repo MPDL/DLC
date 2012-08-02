@@ -134,6 +134,27 @@
 				margin:1.7%;
 				overflow:auto;
 			}
+			.eg3_metadataInformation .eg3_category {
+				margin-bottom:1em;
+			}
+			.eg3_metadataInformation .eg3_category:hover {
+				background-color:#434343;
+			}
+			.eg3_metadataInformation .eg3_category:hover .eg3_container_2_3 {
+				background-color:#EA7125;
+			}
+			.eg3_metadataInformation .eg3_itemMetaLabel {
+				width:92%;
+				margin:0 3.9999%;
+			}
+			.eg3_metadataInformation .eg3_itemMetaValue input {
+				width:88%;
+				margin:0 5.99999%;
+			}
+			.eg3_metadataInformation .eg3_itemMetaValue input:focus {
+				width:100%;
+				margin:0;
+			}
 		</style>
 		
 		<script type="text/javascript">
@@ -175,7 +196,7 @@
 			
 			<!-- right content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-				<h:form id="form2" >	
+				<h:form id="form2">	
 					<rich:panel id="submit" styleClass="eg3_submitPanel">
 						<h:panelGroup styleClass="eg3_floatRight">
 							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
@@ -219,7 +240,7 @@
 							</h:selectOneMenu>
 						</h:panelGroup>
 						<br />
-						<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}" >
+						<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}">
 							<h:outputText value="#{lbl.admin_upload_multiv} :"/>
 							<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
 								<f:selectItems value="#{ingestBean.multiVolItems}" />
@@ -277,13 +298,13 @@
 						</f:facet>
 						<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}" />
 						
-			            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row" >
+			            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
 			                 <f:facet name="header">
 								<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.size>0}">
 									<f:ajax render=":#{component.parent.parent.clientId}" />
 								</h:commandButton>
 		                    </f:facet>
-		                    <a4j:outputPanel layout="block" >
+		                    <a4j:outputPanel layout="block">
 		                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
 		                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
 		                        <h:outputText value="#{file.name}"></h:outputText>
@@ -328,7 +349,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{lbl.admin_upload_images}" />
 						</f:facet>	
-			            <rich:dataGrid columns="1" id="page" value="#{ingestBean.pagesOfVolume}" var="page" rowKeyVar="row" >
+			            <rich:dataGrid columns="1" id="page" value="#{ingestBean.pagesOfVolume}" var="page" rowKeyVar="row">
 		                	<h:outputText value="#{page}"></h:outputText>
 		                </rich:dataGrid>
 					</rich:panel>

@@ -326,13 +326,17 @@ body .eg3_id_siteTitle {
  ******************************					with no maximum width				******************************
  *****************************************************************************************************************/
 .eg3_dynamicSelectBox_js {
-	height:1.6666em;
+	height:1.333333em;
 	padding:0;
 	font-size:95%;
-	background-image:url('image/_default_16_16.png'); 
+	background-image:url('image/btn_descending_static_16_16.png'); 
 	background-position:right top;
 	text-align: left;
+	background-color:#2F2F2F;
 }
+.eg3_dynamicSelectBox_js:hover {
+	background-image:url('image/btn_descending_hover_16_16.png');
+} 
 .eg3_dynamicSelectBox_js * {
 	cursor: pointer;
 }
@@ -716,32 +720,44 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_id_wrapper .eg3_icon_skipTofirst_16_16 {
-	background-image: url("image/_default_16_16.png");
+	background-image: url("image/btn_first_static_16_16.png");
 	background-position: right;
 	text-align:left;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 	cursor:pointer;
 }
+.eg3_id_wrapper .eg3_icon_skipTofirst_16_16:hover {
+	background-image: url("image/btn_first_hover_16_16.png");
+}
 .eg3_id_wrapper .eg3_icon_backward_16_16 {
-	background-image: url("image/icon_backward_16_16.png");
+	background-image: url("image/btn_previous_static_16_16.png");
 	background-position: right;
 	padding:0.0833em 1.3333em 0.0833em 0;
 	margin-right:0.166667em;
 	cursor:pointer;
 }
+.eg3_id_wrapper .eg3_icon_backward_16_16:hover {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
 .eg3_id_wrapper .eg3_icon_forward_16_16 {
-	background-image: url("image/icon_forward_16_16.png");
+	background-image: url("image/btn_next_static_16_16.png");
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
 	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_forward_16_16:hover {
+	background-image: url("image/btn_next_hover_16_16.png");
 }
 .eg3_id_wrapper .eg3_icon_skipTolast_16_16 {
 	padding:0.0833em 0 0.0833em 1.3333em;
 	margin-left:0.166667em;
-	background-image: url("image/_default_16_16.png");
+	background-image: url("image/btn_last_static_16_16.png");
 	text-align:left;
 	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTolast_16_16:hover {
+	background-image: url("image/btn_last_hover_16_16.png");
 }
 .eg3_icon_skipTolast_16_16:hover .eg3_iconActionLabel {
 /*	color:#EA7125; */
@@ -878,28 +894,28 @@ body .eg3_id_siteTitle {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
-	background-image: url("image/_default_16_16.png");
+	background-image: url("image/ico_triangleclose_success_16_16.png");
 	cursor: pointer;
 }
 .eg3_bibList .eg3_icon_collapse_16_16:hover {
-	background-image: url("image/_default_32_32.png");
+	background-image: url("image/ico_triangleclose_hover_16_16.png");
 }
 .eg3_bibList .eg3_icon_collapse_16_16:hover .eg3_iconActionLabel {
-	color:#00AA11;
+	color:#EA7125;
 }
 
 .eg3_bibList .eg3_icon_expand_16_16 {
 	height:1.3333em;
 	padding-top:0.2%;
 	padding-left:1.3333em;
-	background-image: url("image/_default_16_16.png");
+	background-image: url("image/ico_triangleopen_success_16_16.png");
 	cursor: pointer;
 }
 .eg3_bibList .eg3_icon_expand_16_16:hover {
-	background-image: url("image/_default_32_32.png");
+	background-image: url("image/ico_triangleopen_hover_16_16.png");
 }
 .eg3_bibList .eg3_icon_expand_16_16:hover .eg3_iconActionLabel {
-	color:#00AA11;
+	color:#EA7125;
 }
 
 .eg3_bibList .eg3_icon_withdrawn_32_32 {
@@ -1935,10 +1951,12 @@ body .eg3_id_siteTitle {
 	width:1.3333em;
 	height:1.3333em;
 	margin-left:0.33333em;
-	background-image:url(image/edit.gif);
+	background-image:url(image/ico_edit_static_16_16.png);
 	background-color:transparent;
 }
-
+.eg3_icon_editBtn_16_16:hover {
+	background-image:url(image/ico_edit_hover_16_16.png);
+}
 
 /*****************************************************************************************************
  ******************************				image background color			**************************
@@ -2126,7 +2144,19 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
 }
 
 
+.infiniteCarousel .arrow.forward {
+	background:url("image/ico_next_success_32_32.png") no-repeat;
+}
+.infiniteCarousel .arrow.forward:hover {
+	background:url("image/ico_next_hover_32_32.png") no-repeat;
+}
 
+.infiniteCarousel .arrow.back {
+	background:url("image/ico_previous_success_32_32.png") no-repeat;
+}
+.infiniteCarousel .arrow.back:hover {
+	background:url("image/ico_previous_hover_32_32.png") no-repeat;
+}
 
 
 
