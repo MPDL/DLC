@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="teiElement" required="true"/>
+	<cc:attribute name="linkStyleClass"/>
+	<cc:attribute name="linkStyle"/>
+	<cc:attribute name="linkAction" method-signature="java.lang.String action()" required="true"/>
+	<cc:attribute name="render" />
+	
+</cc:interface>	
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>	
+
+
+
+	<h:commandLink action="#{cc.attrs.linkAction}" styleClass="#{cc.attrs.linkStyleClass}" style="#{cc.attrs.linkStyle}">
+		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='DIV' or cc.attrs.teiElement.elementType=='TITLE_PAGE'}">
+			<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',cc.attrs.teiElement.type)}]" rendered="#{not empty cc.attrs.teiElement.type}"/>
+			<h:outputText value="[-]" rendered="#{empty cc.attrs.teiElement.type}"/>
+			<h:outputText value=" #{cc.attrs.teiElement.numeration} " rendered="#{not empty cc.attrs.teiElement.numeration}"/>
+			<h:outputText value=" #{cc.attrs.teiElement.author1inv}" rendered="#{not empty cc.attrs.teiElement.author1inv}"/>
+			<h:outputText value="; #{cc.attrs.teiElement.author2inv}" rendered="#{not empty cc.attrs.teiElement.author2inv}"/>
+			<h:outputText value="; #{cc.attrs.teiElement.author3inv}" rendered="#{not empty cc.attrs.teiElement.author3inv}"/>
+			<h:outputText value=":" rendered="#{(not empty cc.attrs.teiElement.author1inv or not empty cc.attrs.teiElement.author2inv or not empty cc.attrs.teiElement.author3inv) and not empty cc.attrs.teiElement.head}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='FRONT' or cc.attrs.teiElement.elementType=='BODY' or cc.attrs.teiElement.elementType=='BACK'}">
+			<h:outputText value="#{cc.attrs.teiElement.elementType}"/>
+		</h:panelGroup>
+		
+		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='FIGURE'}">
+			<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
+			<h:outputText value=" #{cc.attrs.teiElement.numeration} " rendered="#{not empty cc.attrs.teiElement.numeration}"/>
+		</h:panelGroup>
+		
+		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.head[0])}" rendered="#{not empty cc.attrs.teiElement.head}"/>
+		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.docTitles[0].title)}" rendered="#{cc.attrs.teiElement.elementType == 'TITLE_PAGE'}"/>
+	
+		<f:ajax render="#{cc.attrs.render}"/>
+	</h:commandLink>
+	
+	
+
+</cc:implementation>
+	
+	
+</html>
