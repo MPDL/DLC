@@ -119,8 +119,8 @@
 				<h:panelGroup id="view" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
 					<h:panelGroup id="paginator" layout="block" styleClass="eg3_viewPageMenu">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4">
-							<h:outputText value="#{structuralEditorBean.selectedPb.page.orderLabel}"/>
-							<h:outputText value="&#160;" rendered="#{empty structuralEditorBean.selectedPb.page.orderLabel}"/>
+							<h:outputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}"/>
+							<h:outputText value="&#160;" rendered="#{empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
 						</h:panelGroup>
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
@@ -158,10 +158,16 @@
 							</h:form>
 						
 							<h:form styleClass="eg3_gotoBox" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+								<h:selectOneMenu value="#{structuralEditorBean.selectedGoToBoxPageId}" >
+							   			<f:ajax event="change" listener="#{structuralEditorBean.pageNumberChanged}" render=":messages :edit :paginator"/>
+							   			<f:selectItems value="#{structuralEditorBean.pageListMenu}" />
+							   		</h:selectOneMenu>
+								<ui:remove>
 								<input class="eg3_gotoInput eg3_borderradius_5_bottom eg3_borderradius_5_top" title="#{tlt.paginator_goToPage}" placeholder="#{structuralEditorBean.selectedPb.page.order+1}" min="1" max="99999" maxlength="5" type="number"/>
 								<label class="eg3_inputLabel">
 									<h:outputText value="von #{structuralEditorBean.volume.pages.size()}" />
 								</label>
+								</ui:remove>
 							</h:form>
 						</h:panelGroup>
 					</h:panelGroup> <!-- END VIEWPAGEMENU -->
@@ -335,12 +341,12 @@
 														<br/>
 														
 														<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: "/>
-														<h:inputText value="#{structuralEditorBean.selectedPb.teiElement.numeration}"/>
+														<h:inputText value="#{structuralEditorBean.selectedPbNumeration}"/>
 														
 														<br/>
 														<div class="eg3_editInputArea">
 															<h:outputText value="#{lbl.edit_pageDisplayType}: " />
-															<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+															<h:selectOneMenu value="#{structuralEditorBean.selectedPbType}">
 																<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
 																<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
@@ -351,7 +357,7 @@
 											            <br/>
 											            <div class="eg3_editInputArea">
 															<h:outputText value="#{lbl.edit_pageType}: " />
-															<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+															<h:selectOneMenu value="#{structuralEditorBean.selectedPbSubtype}">
 																<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
 																<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
@@ -547,12 +553,12 @@
 																render=":messages :edit :paginator"/>							
 	
 														<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
-														<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}"/>
+														<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
 														<h:outputText value=" - "/>
 														
 														<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
 															<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}" />
-															<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}"/>
+															<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
 														</h:panelGroup>
 														
 														
