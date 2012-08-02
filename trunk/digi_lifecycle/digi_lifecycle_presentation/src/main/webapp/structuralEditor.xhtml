@@ -542,55 +542,27 @@
 													
 												
 													<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
-														<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" style="#{divItem.invalid ? 'color:red;' : ''}" >
-															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV'}">
-																<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}] " rendered="#{not empty divItem.teiElementWrapper.teiElement.type}"/>
-																<h:outputText value="[Section] " rendered="#{empty divItem.teiElementWrapper.teiElement.type}"/>
-																<h:outputText value="#{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
-																<h:outputText value="#{divItem.teiElementWrapper.teiElement.author1inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author1inv}"/>
-																<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author2inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author2inv}"/>
-																<h:outputText value="; #{divItem.teiElementWrapper.teiElement.author3inv}" rendered="#{not empty divItem.teiElementWrapper.teiElement.author3inv}"/>
-																<h:outputText value=" : " rendered="#{(not empty divItem.teiElementWrapper.teiElement.author1inv or not empty divItem.teiElementWrapper.teiElement.author2inv or not empty divItem.teiElementWrapper.teiElement.author3inv) and not empty divItem.teiElementWrapper.teiElement.head}"/>
-																<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
-															</h:panelGroup>
-															
-															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
-																<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
-															</h:panelGroup>
-															
-															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
-																<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
-																<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
-																<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}"/>
-															</h:panelGroup>
-															
-															
-															<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
-																
-																<h:outputText value="[#{lbl.edit_elementType_title_page}] "/>
-																<h:outputText value="#{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}"/>
-															</h:panelGroup>
-															
-															<f:ajax render=":messages :edit :paginator" execute="@form"/>
-														</h:commandLink>
-													
-													<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
-													<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}"/>
-													<h:outputText value=" - "/>
-													
-													<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
-														<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}" />
-														<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}"/>
-													</h:panelGroup>
-													
-													
-													
-													<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
-														<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
-														<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
-													</h:selectOneMenu>
-													
-													<h:outputText value=")"/>
+														
+														<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
+																render=":messages :edit :paginator"/>							
+	
+														<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
+														<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.page.orderLabel}"/>
+														<h:outputText value=" - "/>
+														
+														<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+															<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}" />
+															<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.orderLabel}"/>
+														</h:panelGroup>
+														
+														
+														
+														<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+															<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+															<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
+														</h:selectOneMenu>
+														
+														<h:outputText value=")"/>
 													
 													</h:panelGroup>
 													
