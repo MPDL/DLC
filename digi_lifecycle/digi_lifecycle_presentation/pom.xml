@@ -164,6 +164,9 @@
 	        <groupId>org.richfaces.core</groupId>
 	        <artifactId>richfaces-core-impl</artifactId> 
 	    </dependency>
+	    
+	   
+		
 
     <!-- 
 	    <dependency>
@@ -209,7 +212,7 @@
 		<dependency>
 		  <groupId>org.glassfish</groupId>
 		  <artifactId>javax.faces</artifactId>
-		  <version>2.1.7</version>
+		  <version>2.1.11</version>
 		</dependency>
  
  <!-- 
