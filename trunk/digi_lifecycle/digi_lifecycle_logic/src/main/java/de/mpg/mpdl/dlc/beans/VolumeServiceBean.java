@@ -1817,8 +1817,8 @@ public class VolumeServiceBean {
 		
 
 		
-		//URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei2html.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		//URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei2html.xsl");
 		
 		Source xsltSource = new StreamSource(url.toExternalForm());
 		//logger.info("Using xslt: " + url.toExternalForm());
