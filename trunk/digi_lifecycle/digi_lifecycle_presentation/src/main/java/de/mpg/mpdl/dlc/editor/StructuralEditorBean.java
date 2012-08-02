@@ -1111,7 +1111,14 @@ public class StructuralEditorBean {
 	
 	public void createStructuralElement()
 	{
+		
 		createStructuralElementAtEndOfPage(currentNewElement, selectedPb);
+		//create as sibling, if parent is not body
+		if(!ElementType.BODY.equals(currentNewElement.getTreeWrapperNode().getParent().getTeiElementWrapper().getTeiElement().getElementType()))
+		{
+			moveElementToLeft(currentNewElement);
+		}
+		
 		//setSelectedStructuralElement(currentEditElement);
 		
 		//add as sibling if element is of type titlePage or figure
