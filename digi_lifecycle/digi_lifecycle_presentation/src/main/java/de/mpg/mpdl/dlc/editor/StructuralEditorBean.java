@@ -84,7 +84,7 @@ public class StructuralEditorBean {
 	 */
 	private TeiElementWrapper currentEditElementWrapperRestore;
 	
-	private PbOrDiv currentEditTeiElement;
+	//private PbOrDiv currentEditTeiElement;
 
 	
 	
@@ -139,18 +139,40 @@ public class StructuralEditorBean {
 	
 	public StructuralEditorBean()
 	{
+		init();
 		
-		currentTeiElementType=ElementType.DIV;
-		selectedStructuralType="chapter";
+	}
+	
+	
+	public void init()
+	{
+		this.flatTeiElementList = null;
+		this.pbList = null;
+		this.treeWrapperNodes = null;
+		this.currentEditElementWrapper = null;
+		this.currentEditElementWrapperRestore = null;
+		this.selectedStructuralEditType = null;
+		this.selectedPb = null;
 		
-		currentNewElement = new TeiElementWrapper();
+		this.currentTeiElementType=ElementType.DIV;
+		this.selectedStructuralType="chapter";
+		
+		this.currentNewElement = new TeiElementWrapper();
 		Div div = new Div();
 		div.setType("chapter");
 		div.getHead().add("");
-		currentNewElement.setTeiElement(div);
+		this.currentNewElement.setTeiElement(div);
 		
-		selectedPaginationType = PaginationType.ARABIC;
-		selectedPaginationStartValue = "1";
+		this.selectedPaginationType = PaginationType.ARABIC;
+		this.selectedPaginationStartValue = "1";
+		this.selectedPaginationEndPbId = null;
+		this.selectedPageDisplayTypeEndPbId = null;
+		this.selectedPageTypeEndPbId = null;
+		this.selectedPaginationPattern = null;
+		this.selectedPaginationColumns = 1;
+		this.paginationInBrackets = false;
+		this.paginateEverySecondPage = false;
+
 	}
 	
 	@URLAction(onPostback=false)
@@ -162,7 +184,7 @@ public class StructuralEditorBean {
 			{   logger.info("Load new volume for structural editing " + volumeId);
 				try {
 					this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
-					this.flatTeiElementList = null;
+					init();
 					volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 					
 				} catch (Exception e) {
@@ -768,7 +790,10 @@ public class StructuralEditorBean {
 		}
 	}
 	
-	
+	public void applyPageValues()
+	{
+		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
+	}
 	
 	public void applyPagination()
 	{
@@ -1927,14 +1952,7 @@ public class StructuralEditorBean {
 
 	
 
-	public PbOrDiv getCurrentEditTeiElement() {
-		return currentEditTeiElement;
-	}
-
-	public void setCurrentEditTeiElement(PbOrDiv currentEditTeiElement) {
-		this.currentEditTeiElement = currentEditTeiElement;
-	}
-
+	
 	public TeiElementWrapper getCurrentEditElementWrapper() {
 		return currentEditElementWrapper;
 	}
