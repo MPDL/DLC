@@ -123,7 +123,6 @@
 	</ciManagement>
 
 	<modules>
-		<module>digi_lifecycle_ear</module>
 		<module>digi_lifecycle_logic</module>
 		<module>digi_lifecycle_presentation</module>
 	</modules>
@@ -250,6 +249,21 @@
 			              <action>
 			                <ignore />
 			              </action>
+			            </pluginExecution>
+			            <pluginExecution>
+			            	<pluginExecutionFilter>
+			            		<groupId>org.zeroturnaround</groupId>
+			            		<artifactId>
+			            			javarebel-maven-plugin
+			            		</artifactId>
+			            		<versionRange>[1.0.5,)</versionRange>
+			            		<goals>
+			            			<goal>generate</goal>
+			            		</goals>
+			            	</pluginExecutionFilter>
+			            	<action>
+			            		<ignore></ignore>
+			            	</action>
 			            </pluginExecution>
 			          </pluginExecutions>
 			        </lifecycleMappingMetadata>
