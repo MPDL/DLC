@@ -11,6 +11,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -65,6 +66,10 @@ public class StructuralEditorBean {
 	
 	
 	private TeiElementWrapper selectedPb;
+	private String selectedPbType;
+	private String selectedPbNumeration;
+	private String selectedPbSubtype;
+	
 	
 	
 	//private TeiElementWrapper selectedStructuralElement;
@@ -131,6 +136,10 @@ public class StructuralEditorBean {
 	
 	private List<SelectItem> structureTypeSelectItems;
 	
+	private List<SelectItem> pageListMenu;
+	
+	private String selectedGoToBoxPageId;
+	
 	public enum PaginationType
 	{
 		ARABIC, ROMAN, ROMAN_MINUSCULE, RECTO_VERSO, FREE
@@ -172,6 +181,10 @@ public class StructuralEditorBean {
 		this.selectedPaginationColumns = 1;
 		this.paginationInBrackets = false;
 		this.paginateEverySecondPage = false;
+		
+		this.pageListMenu = new ArrayList<SelectItem>();
+		
+		this.selectedGoToBoxPageId = null;
 
 	}
 	
@@ -235,6 +248,7 @@ public class StructuralEditorBean {
 			List<TeiElementWrapper>[] flatLists = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
 			this.flatTeiElementList = flatLists[0];
 			this.pbList = flatLists[1];
+			initPageListMenu();
 			
 			//Transform flat TEI to TreeWrapper
 			validationList = new ArrayList<ValidationWrapper>();
@@ -255,6 +269,16 @@ public class StructuralEditorBean {
 
 	}
 	
+	private void initPageListMenu() {
+		pageListMenu.clear();
+		for(TeiElementWrapper wrapper : pbList)
+		{
+			pageListMenu.add(getSelectItemForPb(wrapper));
+		}
+		
+	}
+
+
 	public void revert()
 	{
 		this.volume = null;
@@ -792,7 +816,12 @@ public class StructuralEditorBean {
 	
 	public void applyPageValues()
 	{
+		Pagebreak selectedPagebreak = (Pagebreak)selectedPb.getTeiElement();
+		selectedPagebreak.setType(selectedPbType);
+		selectedPagebreak.setNumeration(selectedPbNumeration);
+		selectedPagebreak.setSubtype(selectedPbSubtype);
 		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
+		initPageListMenu();
 	}
 	
 	public void applyPagination()
@@ -955,6 +984,7 @@ public class StructuralEditorBean {
 					return;
 				}
 			}
+			initPageListMenu();
 			
 			}
 		else
@@ -995,6 +1025,7 @@ public class StructuralEditorBean {
 				return;
 			}
 		}
+		
 		
 	}
 	
@@ -1784,7 +1815,14 @@ public class StructuralEditorBean {
 	{
 		TeiElementWrapper oldSelectedPb = selectedPb;
 		this.setSelectedPb(pb);
+		this.selectedPbType = pb.getTeiElement().getType();
+		this.selectedPbNumeration = pb.getTeiElement().getNumeration();
+		this.selectedPbSubtype = ((Pagebreak)pb.getTeiElement()).getSubtype();
+		
+		this.selectedGoToBoxPageId = pb.getTeiElement().getId();
 		rerenderThumbnailPage(new TeiElementWrapper[]{oldSelectedPb, selectedPb});
+		
+		/*
 		int pbIndex = flatTeiElementList.indexOf(pb);
 		
 		int nextPbIndex = flatTeiElementList.size(); 
@@ -1792,8 +1830,9 @@ public class StructuralEditorBean {
 		{
 			nextPbIndex = flatTeiElementList.indexOf(pb.getNextPagebreak());
 		}
+		
 				
-		/*
+		
 		for (int i=nextPbIndex; i>=0; i--)
 		{
 			TeiElementWrapper currentElementWrapper = flatTeiElementList.get(i); 
@@ -1895,9 +1934,9 @@ public class StructuralEditorBean {
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append(pb.getPage().getOrder() + 1);
-		if(pb.getPage().getOrderLabel()!=null && !pb.getPage().getOrderLabel().isEmpty())
+		if(pb.getTeiElement().getNumeration()!=null && !pb.getTeiElement().getNumeration().isEmpty())
 		{
-			sb.append(" / " + pb.getPage().getOrderLabel());
+			sb.append(" / " + pb.getTeiElement().getNumeration());
 		}
 		return new SelectItem(pb.getTeiElement().getId(), sb.toString());
 	}
@@ -2026,6 +2065,11 @@ public class StructuralEditorBean {
 	public void goToFirstPage()
 	{
 		selectPb(pbList.get(0));
+	}
+	
+	public void pageNumberChanged(AjaxBehaviorEvent evt)
+	{
+		selectPb(getPbWrapperforId(selectedGoToBoxPageId));
 	}
 
 
@@ -2172,6 +2216,56 @@ public class StructuralEditorBean {
 
 	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
 		this.internationalizationHelper = internationalizationHelper;
+	}
+
+
+	public List<SelectItem> getPageListMenu() {
+		return pageListMenu;
+	}
+
+
+	public void setPageListMenu(List<SelectItem> pageListMenu) {
+		this.pageListMenu = pageListMenu;
+	}
+
+
+	public String getSelectedGoToBoxPageId() {
+		return selectedGoToBoxPageId;
+	}
+
+
+	public void setSelectedGoToBoxPageId(String selectedGoToBoxPageId) {
+		this.selectedGoToBoxPageId = selectedGoToBoxPageId;
+	}
+
+
+	public String getSelectedPbType() {
+		return selectedPbType;
+	}
+
+
+	public void setSelectedPbType(String selectedPbType) {
+		this.selectedPbType = selectedPbType;
+	}
+
+
+	public String getSelectedPbNumeration() {
+		return selectedPbNumeration;
+	}
+
+
+	public void setSelectedPbNumeration(String selectedPbNumeration) {
+		this.selectedPbNumeration = selectedPbNumeration;
+	}
+
+
+	public String getSelectedPbSubtype() {
+		return selectedPbSubtype;
+	}
+
+
+	public void setSelectedPbSubtype(String selectedPbSubtype) {
+		this.selectedPbSubtype = selectedPbSubtype;
 	}
 
 	
