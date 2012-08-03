@@ -436,7 +436,7 @@
 						
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
 							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
-								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400)}#{viewPages.digilibQueryString}"/>
+								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400,viewPages.digilibQueryString)}"/>
 							</h:panelGroup>
 							
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_containerCenter eg3_borderradius_5_top">
