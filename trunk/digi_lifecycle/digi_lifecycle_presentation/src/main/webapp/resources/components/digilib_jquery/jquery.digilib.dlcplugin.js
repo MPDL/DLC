@@ -128,8 +128,8 @@ digilib plugin stub
     	//Remove fn query part
     	delete digilibParams['fn'];
     	
-    	
-    	var newDigilibParamString = $.param(digilibParams);
+    	//use decoded version here, because the whole string is encoded again later
+    	var newDigilibParamString = decodeURIComponent($.param(digilibParams));
     	
     	
     	
