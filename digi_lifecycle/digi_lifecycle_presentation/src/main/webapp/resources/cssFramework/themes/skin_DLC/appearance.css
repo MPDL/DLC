@@ -1958,6 +1958,25 @@ body .eg3_id_siteTitle {
 	background-image:url(image/ico_edit_hover_16_16.png);
 }
 
+.eg3_ico_add_16 {
+	background-image:url(image/ico_window_plus_static_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_add_16:hover {
+	background-image:url(image/ico_window_plus_success_16_16.png);
+}
+.eg3_ico_remove_16 {
+	background-image:url(image/ico_window_minus_static_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_remove_16:hover {
+	background-image:url(image/ico_window_minus_hover_16_16.png);
+}
+
 /*****************************************************************************************************
  ******************************				image background color			**************************
  *****************************************************************************************************/
