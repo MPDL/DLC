@@ -1,6 +1,9 @@
 package de.mpg.mpdl.dlc.search;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 
@@ -9,6 +12,7 @@ public class SearchCriterion extends Criterion{
 	public enum SearchType
 	{
 		FREE(new String[]{"escidoc.metadata"}), 
+		FREE_AND_FULLTEXT(new String[]{"escidoc.metadata","escidoc.fulltext"}), 
 		AUTHOR(new String[]{"dlc.author"}), 
 		TITLE(new String[]{"dlc.title"}), 
 		PLACE(new String[]{"dlc.place"}), 
@@ -97,6 +101,8 @@ public class SearchCriterion extends Criterion{
 				SearchCriterion sc = cList.get(i);
 				if(sc.getValue()!= null && !sc.getValue().trim().isEmpty())
 				{
+					
+					
 					if(i!=0)
 					{
 						cql += " " + sc.getOperator().name() + " ";
@@ -108,6 +114,8 @@ public class SearchCriterion extends Criterion{
 						cql+="(";
 					}
 					
+					
+					/*
 					if(sc.getSearchType().getIndexNames().length > 1)
 					{
 						cql += "(";
@@ -127,7 +135,9 @@ public class SearchCriterion extends Criterion{
 					{
 						cql += ")";
 					}
+					*/
 					
+					cql += baseCqlBuilder(sc.getSearchType().getIndexNames(), sc.getValue());
 
 					for(int j=0; j<sc.getCloseBracket();j++)
 					{
@@ -166,6 +176,137 @@ public class SearchCriterion extends Criterion{
 
 
 
+	/**
+	 * Creates a cql string out of one or several search indexes and an search string. The search string is splitted into single words, except they are in quotes.
+	 * The special characters of the search string parts are escaped.
+	 * 
+	 * Example:
+	 * cqlIndexes={escidoc.title, escidoc.fulltext}
+	 * searchString = book "john grisham"
+	 * 
+	 * Resulting cql string:
+	 * escidoc.title=("book" and "john grisham") or escioc.fulltext=("book" and "john grisham")
+	 * 
+	 * @param cqlIndexes
+	 * @param searchString
+	 * @return the cql string or null, if no search string or indexes are given
+	 */
+	protected static String baseCqlBuilder(String[] cqlIndexes, String searchString)
+	{
+
+		if(searchString!=null && !searchString.trim().isEmpty())
+		{
+
+			//split the search string into single words, except if they are in quotes
+			List<String> splittedSearchStrings = new ArrayList<String>();
+			
+			Pattern pattern = Pattern.compile("(?<=\\s|^)\"(.*?)\"(?=\\s|$)|(\\S+)");
+			Matcher m = pattern.matcher(searchString);
+			
+			while(m.find())
+			{
+				String subSearchString = m.group();
+				
+				if(subSearchString!=null && !subSearchString.trim().isEmpty())
+				{
+					subSearchString = subSearchString.trim();
+					
+					//Remove quotes at beginning and end
+					if(subSearchString.startsWith("\""))
+					{
+						subSearchString = subSearchString.substring(1, subSearchString.length());
+					}
+					
+					if(subSearchString.endsWith("\""))
+					{
+						subSearchString = subSearchString.substring(0, subSearchString.length()-1);
+					}
+				}
+				if(!subSearchString.trim().isEmpty())
+				{
+					splittedSearchStrings.add(subSearchString.trim());
+				}
+				
+				
+			}
+			
+			
+			StringBuilder cqlStringBuilder = new StringBuilder();
+
+			if(cqlIndexes.length > 1)
+			{
+				cqlStringBuilder.append("(");
+			}
+			
+			for(int j=0; j< cqlIndexes.length; j++)
+			{
+				cqlStringBuilder.append(cqlIndexes[j]);
+				cqlStringBuilder.append("=");
+				
+				if(splittedSearchStrings.size()>1)
+				{
+					cqlStringBuilder.append("(");
+				}
+				
+				for(int i =0; i<splittedSearchStrings.size(); i++)
+				{
+					String subSearchString = splittedSearchStrings.get(i);
+					cqlStringBuilder.append("\"");
+					cqlStringBuilder.append(escapeForCql(subSearchString));
+					cqlStringBuilder.append("\"");
+					
+					if(splittedSearchStrings.size() > i+1)
+					{
+						cqlStringBuilder.append(" and ");
+					}
+					
+				}
+				if(splittedSearchStrings.size()>1)
+				{
+					cqlStringBuilder.append(")");
+				}
+
+				
+				
+				if(cqlIndexes.length > j+1)
+				{
+					cqlStringBuilder.append(" or ");
+				}
+			}
+			
+			if(cqlIndexes.length > 1)
+			{
+				cqlStringBuilder.append(")");
+			}
+
+			return cqlStringBuilder.toString();
+		}
+		
+		return null;
+		
+		
+	}
+	
+	protected static String escapeForCql(String escapeMe) {
+	  	String result = escapeMe.replace( "<", "\\<" );
+	  	result = result.replace( ">", "\\>" );
+	  	result = result.replace( "+", "\\+" );
+	  	result = result.replace( "-", "\\-" );
+	  	result = result.replace( "&", "\\&" );
+	  	result = result.replace( "%", "\\%" );
+	  	result = result.replace( "|", "\\|" );
+	  	result = result.replace( "(", "\\(" );
+	  	result = result.replace( ")", "\\)" );
+	  	result = result.replace( "[", "\\[" );
+	  	result = result.replace( "]", "\\]" );
+	  	result = result.replace( "^", "\\^" );
+	  	result = result.replace( "~", "\\~" );
+	  	result = result.replace( "!", "\\!" );
+	  	result = result.replace( "{", "\\{" );
+	  	result = result.replace( "}", "\\}" );
+		result = result.replace( "\"", "\\\"" );
+	  	return result;
+	  }
 
 
 

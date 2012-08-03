@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -37,41 +39,50 @@ public class SearchBean {
 	{
 		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 		
-		
-		for(int i=0; i<volTypes.length; i++)
+		if(volTypes != null)
 		{
-			VolumeTypes volType = volTypes[i];
-			
-			//first with "and" and opening bracket
-			if(i==0)
+			for(int i=0; i<volTypes.length; i++)
 			{
-				SearchCriterion scContentModel;
-				if(volTypes.length >1)
-					scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 2, 0);
+				VolumeTypes volType = volTypes[i];
+				
+				//first with "and" and opening bracket
+				if(i==0)
+				{
+					SearchCriterion scContentModel;
+					if(volTypes.length >1)
+						scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 2, 0);
+					else
+						scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 1, 0);
+						
+					scList.add(scContentModel);
+				}
+				//last with "or" and closing bracket
+				else if(i==volTypes.length-1)
+				{
+					SearchCriterion scContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 1);
+					scList.add(scContentModel);
+				}
+				//others with "or" and without brackets
 				else
-					scContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 1, 0);
-					
-				scList.add(scContentModel);
+				{
+					SearchCriterion scContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
+					scList.add(scContentModel);
+				}
+				
+				
+				
 			}
-			//last with "or" and closing bracket
-			else if(i==volTypes.length-1)
-			{
-				SearchCriterion scContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 1);
-				scList.add(scContentModel);
-			}
-			//others with "or" and without brackets
-			else
-			{
-				SearchCriterion scContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
-				scList.add(scContentModel);
-			}
-			
-			
-			
+			SearchCriterion itemCriterion = new SearchCriterion(Operator.AND, SearchType.OBJECTTYPE, "item", 0, 1);
+			scList.add(itemCriterion);
+		}
+		else
+		{
+			SearchCriterion itemCriterion = new SearchCriterion(Operator.AND, SearchType.OBJECTTYPE, "item", 1, 1);
+			scList.add(itemCriterion);
 		}
 		
-		SearchCriterion itemCriterion = new SearchCriterion(Operator.AND, SearchType.OBJECTTYPE, "item", 0, 1);
-		scList.add(itemCriterion);
+		
+		
 		
 		
 		return scList;
@@ -114,8 +125,8 @@ public class SearchBean {
 	
 	public String getAdvancedSearchCQL(List<SearchCriterion> scList) throws Exception
 	{
-		VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME, VolumeTypes.VOLUME};
-		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(volTypes, scList));
+		//VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME, VolumeTypes.VOLUME};
+		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(null, scList));
 		return cql;
 	}
 	
@@ -221,6 +232,9 @@ public class SearchBean {
 		
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
+	
+	
+	
 	
 
 
