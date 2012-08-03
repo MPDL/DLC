@@ -155,18 +155,24 @@ public class AdvancedSearchBean {
 		{
 			SearchCriterion scCon;
 			ContextSearch contextSearch = contextScElements.get(i);
+			
 			if (i == contextScElements.size()-1) end = true;
 			
 			//Means, a specific context was selected
 			if (!contextSearch.getContextId().equals(""))
 			{
-				if (i==0 && !start)
+				if(contextScElements.size()==1)
+				{
+					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,1);
+					this.searchCriterionList.add(scCon);
+				}
+				else if (i==0 && !start)
 				{
 					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,0);
 					this.searchCriterionList.add(scCon);
 					start = true;
 				}
-				if (i == contextScElements.size()-1 && end)
+				else if (i == contextScElements.size()-1 && end)
 				{
 					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId(),0,1);
 					this.searchCriterionList.add(scCon);
@@ -179,7 +185,7 @@ public class AdvancedSearchBean {
 			}
 
 			//Select all context of a ou
-			else
+			else if(contextSearch.getOuId()!=null && !contextSearch.getOuId().equals(""))
 			{
 				if (contextSearch.getContextId().equals("") && contextSearch.getContextList().size() > 0)
 				{
@@ -187,6 +193,9 @@ public class AdvancedSearchBean {
 					for (int y = 1; y < contextSearch.getContextList().size(); y ++)
 					{
 						String currentContextId = contextSearch.getContextList().get(y).getValue().toString();
+						
+						
+						
 						if (y == 1 && !start)
 						{
 							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,0);
@@ -261,7 +270,9 @@ public class AdvancedSearchBean {
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
 		this.contextScElements.clear();
-		this.contextScElements.add(new ContextSearch());
+		ContextSearch cs = new ContextSearch();
+		refreshContextList(cs);
+		this.contextScElements.add(cs);
 		return"";
 	}
 
