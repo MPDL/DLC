@@ -699,7 +699,7 @@ if (typeof console === 'undefined') {
         for (var i = 0; i < pairs.length; i++) {
             var pair = pairs[i].split("=");
             if (pair.length === 2) {
-                params[pair[0]] = pair[1];
+                params[pair[0]] = decodeURIComponent(pair[1]);
                 //keys.push(pair[0]);
             }
         }

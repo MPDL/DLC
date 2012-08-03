@@ -129,7 +129,7 @@ digilib plugin stub
     	delete digilibParams['fn'];
     	
     	//use decoded version here, because the whole string is encoded again later
-    	var newDigilibParamString = decodeURIComponent($.param(digilibParams));
+    	var newDigilibParamString = $.param(digilibParams);
     	
     	
     	
