@@ -9,93 +9,172 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 
-<!-- INTERFACE -->
-<cc:interface>
-	<cc:attribute name="modsMetadata" required="true" />
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
-
-
-
-
-	<h:panelGrid id="editorMulti" columns="2"  >
-		<h:outputText value="#{lbl.mods_names}" />
-		<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
-			<h:panelGrid columns="2">
-				<h:selectOneMenu value="#{name.displayLabel}">
-					<f:selectItem itemLabel="author" itemValue="author"/>
-					<f:selectItem itemLabel="editor" itemValue="editor"/>
-					<f:selectItem itemLabel="body" itemValue="body" />
-				</h:selectOneMenu>
-				<h:inputText value="#{name.name}" />
-
-			</h:panelGrid>
-			<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value="+" >
-				 <f:ajax render="@form" execute="@form"/>
-			</h:commandButton>
-			<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value="-" rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
-				 <f:ajax render="@form" execute="@form"/>
-			</h:commandButton>
-		</a4j:repeat>
-		
-		<h:outputText value="#{lbl.mods_title}" />
-		<h:panelGrid columns="2">
-			<h:inputText id="title_multi" value="#{cc.attrs.modsMetadata.titles[0].title}" />
-			<h:message for="title_multi" styleClass="messageError"/>
-		</h:panelGrid>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="modsMetadata" required="true"/>
+	</cc:interface>
 	
-	
-		<h:outputText value="#{lbl.mods_publisher}" />
-		<h:panelGrid columns="2">
-			<h:selectOneMenu value="#{cc.attrs.modsMetadata.publishers[0].displayLabel}">
-				<f:selectItem itemLabel="publisher" itemValue="publisher"/>
-				<f:selectItem itemLabel="printer" itemValue="printer"/>
-			</h:selectOneMenu>
-			<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].publisher}" />	
-		</h:panelGrid>
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
 		
-		<h:outputText value="#{lbl.mods_publisher_place}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].place}" />	
+		<h:panelGroup layout="block" id="editorMulti" styleClass="eg3_container_1 eg3_metadataInformation">
+		<!-- authors -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_names}" title="#{lbl.mods_names}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+							<h:selectOneMenu value="#{name.displayLabel}">
+								<f:selectItem itemLabel="author" itemValue="author"/>
+								<f:selectItem itemLabel="editor" itemValue="editor"/>
+								<f:selectItem itemLabel="body" itemValue="body"/>
+							</h:selectOneMenu>
+							<h:inputText value="#{name.name}" title="#{name.name}"/>
+							
+							<h:panelGroup styleClass="eg3_floatRight">
+								<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" styleClass="eg3_ico_add_16" value=" " title="#{tlt.edit_add_item}#{lbl.mods_names}">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_names}" rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+							</h:panelGroup>
+						</h:panelGroup>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- title -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_title}" title="#{lbl.mods_title}"/>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText id="title_multi" value="#{cc.attrs.modsMetadata.titles[0].title}" title="#{cc.attrs.modsMetadata.titles[0].title}"/>
+					<h:message for="title_multi" styleClass="messageError"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- publishers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_publisher}" title="#{lbl.mods_publisher}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:selectOneMenu value="#{cc.attrs.modsMetadata.publishers[0].displayLabel}">
+						<f:selectItem itemLabel="publisher" itemValue="publisher"/>
+						<f:selectItem itemLabel="printer" itemValue="printer"/>
+					</h:selectOneMenu>
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].publisher}" title="#{cc.attrs.modsMetadata.publishers[0].publisher}"/>
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+		<!-- publisher_place -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_publisher_place}" title="#{lbl.mods_publisher_place}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].place}" title="#{cc.attrs.modsMetadata.publishers[0].place}"/>
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+		<!-- publisher_edition -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_publisher_edition}" title="#{lbl.mods_publisher_edition}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}" title="#{cc.attrs.modsMetadata.publishers[0].edition}"/>
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+		<!-- mods_isbn -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_isbn}" title="#{lbl.mods_isbn}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}" title="#{cc.attrs.modsMetadata.identifiers[0].value}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_issn -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_issn}" title="#{lbl.mods_issn}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.identifiers[1].value}" title="#{cc.attrs.modsMetadata.identifiers[1].value}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_signature -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_signature_544}" title="#{lbl.mods_signature_544}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" title="#{cc.attrs.modsMetadata.signature_544}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_summaryOfVolumes -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_summaryOfVolumes}" title="#{lbl.mods_summaryOfVolumes}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}" title="#{cc.attrs.modsMetadata.notes[0].note}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_keywords -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_keywords}" title="#{lbl.mods_keywords}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+						<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" title="#{cc.attrs.modsMetadata.keywords[rowKey]}"/>
+						
+						<h:panelGroup styleClass="eg3_floatRight">
+							<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_add_16" title="#{tlt.edit_add_item}#{lbl.mods_keywords}">
+								 <f:ajax render="@this" execute="@form"/>
+							</h:commandButton>
+							<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_keywords}">
+								 <f:ajax render="@this" execute="@form"/>
+							</h:commandButton>
+						</h:panelGroup>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_language -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_language_037}" title="#{lbl.mods_language_037}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" title="#{cc.attrs.modsMetadata.language_037.language}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- mods_freeText -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_freeText}" title="#{lbl.mods_freeText}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.freeText}" title="#{cc.attrs.modsMetadata.freeText}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+	<!-- END OF editorMulti -->
+		</h:panelGroup>
 		
-		<h:outputText value="#{lbl.mods_publisher_edition}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}" />	
-		
-		<h:outputText value="#{lbl.mods_isbn}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}" />
-
-		<h:outputText value="#{lbl.mods_issn}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.identifiers[1].value}" />
-
-		<h:outputText value="#{lbl.mods_signature_544}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" />
-		
-		<h:outputText value="#{lbl.mods_summaryOfVolumes}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}" />
-		
-		<h:outputText value="#{lbl.mods_keywords}" />
-		<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
-			<h:panelGrid columns="3">
-				<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" />
-				<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value="+" >
-					 <f:ajax render="@this" execute="@form"/>
-				</h:commandButton>
-				<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value="-" >
-					 <f:ajax render="@this" execute="@form"/>
-				</h:commandButton>
-			</h:panelGrid>
-		</a4j:repeat>
-		
-		<h:outputText value="#{lbl.mods_language_037}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" />
-		
-		<h:outputText value="#{lbl.mods_freeText}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.freeText}" />
- 	</h:panelGrid>
-
-
-
-
-</cc:implementation>
+	</cc:implementation>
 </html>
