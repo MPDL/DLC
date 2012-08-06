@@ -54,7 +54,7 @@
 				
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
 					<h:inputText id="title_multi" value="#{cc.attrs.modsMetadata.titles[0].title}" title="#{cc.attrs.modsMetadata.titles[0].title}"/>
-					<h:message for="title_multi" styleClass="messageError"/>
+					<h:message for="title_multi" styleClass="eg3_messageError"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -139,15 +139,17 @@
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
 					<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
-						<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" title="#{cc.attrs.modsMetadata.keywords[rowKey]}"/>
-						
-						<h:panelGroup styleClass="eg3_floatRight">
-							<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_add_16" title="#{tlt.edit_add_item}#{lbl.mods_keywords}">
-								 <f:ajax render="@this" execute="@form"/>
-							</h:commandButton>
-							<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_keywords}">
-								 <f:ajax render="@this" execute="@form"/>
-							</h:commandButton>
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+							<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" title="#{cc.attrs.modsMetadata.keywords[rowKey]}"/>
+							
+							<h:panelGroup styleClass="eg3_floatRight">
+								<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_add_16" title="#{tlt.edit_add_item}#{lbl.mods_keywords}">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_keywords}" rendered="#{cc.attrs.modsMetadata.keywords.size() gt 1}">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+							</h:panelGroup>
 						</h:panelGroup>
 					</a4j:repeat>
 				</h:panelGroup>

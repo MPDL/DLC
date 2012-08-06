@@ -62,9 +62,10 @@ function updateCustomSelectBox(obj) {
 				$(this).find("option").each(function(i){
 					if ($(this).val() == val) {
 						val = $(this).text();
+						$(this).parent().attr("title", val);
 					}
 				});
-				$(parent).find(".eg3_selectionText").html(val);
+				$(parent).find(".eg3_selectionText").html(val).attr("title", val);
 			}
 		});
 	} else {
@@ -72,23 +73,54 @@ function updateCustomSelectBox(obj) {
 	}
 }
 
+function extractNumberFromString(str, delimiter, noPos) {
+	var output = false;
+	output = Number(str.split(delimiter)[noPos]);
+	if (output == "NaN") { output = false; }
+	return output;
+}
+
+function checkForMaxWidth(obj, widthAttr) {
+	if (obj.attr(widthAttr).match(/eg3_maxWidth_/)) {
+		//newInfoWidth = Number(maxWidth) - marR;
+		var tmpAr = obj.attr(widthAttr).split(" ");
+		
+		for (pos in tmpAr) {
+			if (tmpAr[pos].match(/eg3_maxWidth_/)) {
+				var tmpVal = extractNumberFromString(tmpAr[pos], "_", 2);
+				console.log("hallo new Width: "+tmpVal);
+				return tmpVal;
+				break;
+			}
+		}
+	}
+	return false;
+}
 
 /* 
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
  */
 function resizeSelectBox() {
-	$(".eg3_dynamicSelectBox_js").each(function(ind){
+	$(".eg3_dynamicSelectBox_js").each(function(ind, dynBox){
 		var selCont = null;
-		if (typeof(selCont = $(this).find(".eg3_selectionContent")) != "undefined") {
-			var selectTag = $(this).find('select');
+		if (typeof(selCont = $(dynBox).find(".eg3_selectionContent")) != "undefined") {
+			var selectTag = $(dynBox).find('select');
 			var padL = Number(selCont.css("padding-left").replace("px", ""));
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
 			var marL = Number(selCont.css("margin-left").replace("px", ""));
 			var marR = Number(selCont.css("margin-right").replace("px", ""));
 			var newInfoWidth = Math.floor( (selectTag.width() - marR) );
-			var newContainerWidth = Math.floor( (newInfoWidth + marR + marL + padR + padL) )
+			
+			var newContainerWidth = Math.floor( (newInfoWidth + marR + marL + padR + padL) );
+			var maxWidth = checkForMaxWidth($(dynBox), "class");
+			console.log(newContainerWidth + ' maxW: ' + maxWidth);
+			if (maxWidth && newContainerWidth > maxWidth) {
+				newContainerWidth = maxWidth;
+				newInfoWidth = maxWidth - 2*marR;
+			}
+			
 			selCont.css("width", newInfoWidth);
-			$(this).css("width", newContainerWidth);
+			$(dynBox).css("width", newContainerWidth);
 			selectTag.css("width", newContainerWidth);
 			/* add behaviour for change and focus */
 			//selectTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
