@@ -134,26 +134,29 @@
 				margin:1.7%;
 				overflow:auto;
 			}
-			.eg3_metadataInformation .eg3_category {
+			.eg3_ingestPage .eg3_category {
 				margin-bottom:1em;
 			}
-			.eg3_metadataInformation .eg3_category:hover {
+			.eg3_ingestPage .eg3_category:hover {
 				background-color:#434343;
 			}
-			.eg3_metadataInformation .eg3_category:hover .eg3_container_2_3 {
+			.eg3_ingestPage .eg3_category:hover .eg3_container_2_3 {
 				background-color:#EA7125;
 			}
-			.eg3_metadataInformation .eg3_itemMetaLabel {
+			.eg3_ingestPage .eg3_itemMetaLabel {
 				width:92%;
 				margin:0 3.9999%;
 			}
-			.eg3_metadataInformation .eg3_itemMetaValue input {
+			.eg3_ingestPage .eg3_itemMetaValue input {
 				width:88%;
 				margin:0 5.99999%;
 			}
-			.eg3_metadataInformation .eg3_itemMetaValue input:focus {
+			.eg3_ingestPage .eg3_itemMetaValue input:focus {
 				width:100%;
 				margin:0;
+			}
+			.eg3_ingestPage .eg3_dynamicSelectBox_js .eg3_selectionText {
+				color:#2F2F2F;
 			}
 		</style>
 		
@@ -180,6 +183,7 @@
 					}
 				}
 			}
+			
 		</script>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_ingestPage">
@@ -193,7 +197,18 @@
 					<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}"></fu:fileUpload>
 				</rich:panel>
 			</h:panelGroup>
-			
+			<script type="text/javascript">
+				jsf.ajax.addOnEvent(function(e)
+				{	
+					//if the ajax request is success
+					//update all selectboxes on the page
+					if(e.status=="success")
+					{
+						//console.log("success");
+						resizeSelectBox();
+					}
+				});
+			</script>
 			<!-- right content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 				<h:form id="form2">	
@@ -221,30 +236,54 @@
 					</rich:panel>
 					
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
-						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<h:panelGroup layout="block" styleClass="eg3_container_1_4">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 								<h:outputText value="#{lbl.admin_upload_type}: "/>
 							</h:panelGroup>
-							<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
-								<f:selectItems value="#{ingestBean.contentModelItems}" />
-								<f:ajax event="change" render="select modsInfo teiInfo imageInfo" />
-							</h:selectOneMenu>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_maxWidth_300">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<span class="eg3_selectionText"></span>
+									</h:panelGroup>
+									<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
+										<f:selectItems value="#{ingestBean.contentModelItems}"/>
+										<f:ajax event="change" render="select modsInfo teiInfo imageInfo"/>
+									</h:selectOneMenu> 
+								</h:panelGroup>
+							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<h:panelGroup layout="block" styleClass="eg3_container_1_4">
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 								<h:outputText value="#{lbl.admin_upload_collection}: "/>
 							</h:panelGroup>
-							<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
-								<f:selectItems value="#{ingestBean.contextSelectItems}" />
-								<f:ajax event="change" render="select" />
-							</h:selectOneMenu>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_maxWidth_300">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<span class="eg3_selectionText"></span>
+									</h:panelGroup>
+									<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
+										<f:selectItems value="#{ingestBean.contextSelectItems}"/>
+										<f:ajax event="change" render="select" />
+									</h:selectOneMenu>
+								</h:panelGroup>
+							</h:panelGroup>
 						</h:panelGroup>
-						<br />
-						<h:panelGroup rendered="#{ingestBean.selectedContentModel == 'Volume'}">
-							<h:outputText value="#{lbl.admin_upload_multiv} :"/>
-							<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
-								<f:selectItems value="#{ingestBean.multiVolItems}" />
-							</h:selectOneMenu>	
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{ingestBean.selectedContentModel == 'Volume'}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.admin_upload_multiv} :"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_maxWidth_300">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<span class="eg3_selectionText"></span>
+									</h:panelGroup>
+									<h:selectOneMenu value="#{ingestBean.selectedMultiVolumeId}">
+										<f:selectItems value="#{ingestBean.multiVolItems}"/>
+									</h:selectOneMenu>
+								</h:panelGroup>
+							</h:panelGroup>	
 						</h:panelGroup>
 					</rich:panel>
 					
@@ -307,8 +346,8 @@
 		                    <a4j:outputPanel layout="block">
 		                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
 		                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
-		                        <h:outputText value="#{file.name}"></h:outputText>
-								<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value="-">
+		                        <h:outputText value="#{file.name}"/>
+								<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_remove_16">
 									<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
 								</h:commandButton>
 		                    </a4j:outputPanel>
