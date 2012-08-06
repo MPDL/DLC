@@ -46,13 +46,11 @@
 
 
 		<h:outputText value="#{lbl.mods_band}" />
-		<h:panelGrid columns="2">
-			<h:inputText id="band" value="#{cc.attrs.modsMetadata.volumeDescriptive_089}" />
-			<h:message for="band" styleClass="messageError"/>
-		</h:panelGrid>	
+		<h:inputText id="band" value="#{cc.attrs.modsMetadata.parts[0].volumeDescriptive_089}" />
+	
 
 		<h:outputText value="#{lbl.mods_sortField}" />
-		<h:inputText value="#{cc.attrs.modsMetadata.sortField_090}" />
+		<h:inputText value="#{cc.attrs.modsMetadata.parts[1].value}" />
 
 		<h:outputText value="#{lbl.mods_publisher_date}" />
 		<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}" />	
