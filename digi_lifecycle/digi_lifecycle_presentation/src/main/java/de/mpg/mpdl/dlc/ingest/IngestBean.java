@@ -214,6 +214,7 @@ public class IngestBean{
 		this.modsMetadata.getRelatedItems().add(new ModsRelatedItem());
 		this.modsMetadata.getPhysicalDescriptions().add(new ModsPhysicalDescription());
 		this.modsMetadata.getParts().add(new ModsPart());
+		this.modsMetadata.getParts().add(new ModsPart());
 	}
 
     public void paint(OutputStream stream, Object object) throws Exception {
