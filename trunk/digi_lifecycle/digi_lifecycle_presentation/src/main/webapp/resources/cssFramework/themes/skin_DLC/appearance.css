@@ -1993,6 +1993,26 @@ body .eg3_id_siteTitle {
 	background-image:url(image/ico_window_minus_hover_16_16.png);
 }
 
+.eg3_ico_sortASC_16 {
+	background-image:url(image/ico_top_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_sortASC_16:hover {
+	background-image:url(image/ico_top_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_sortDESC_16 {
+	background-image:url(image/ico_bottom_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_sortDESC_16:hover {
+	background-image:url(image/ico_bottom_hover_16_16.png);
+	text-decoration:none;
+}
 /*****************************************************************************************************
  ******************************				image background color			**************************
  *****************************************************************************************************/

@@ -12,38 +12,59 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
-			<h:outputText value="#{lbl.list_sortCriterion}: "/>
-			<h:form>
-				
-				<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">					
-					<h:selectOneMenu value="#{sortCriterion.sortIndex}">
-						<f:selectItems value="#{advancedSearchResultBean.sortIndicesMenu}"/>
-						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/>
-					</h:selectOneMenu>
-					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{lbl.sort_asc}" rendered="#{sortCriterion.sortOrder == 'ASCENDING'}">
-						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
-					</h:commandButton>
-					<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value="#{lbl.sort_desc}" rendered="#{sortCriterion.sortOrder == 'DESCENDING'}">
-						<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
-					</h:commandButton>
-					<br/>
-				</a4j:repeat>
-			</h:form>
-			
-		
-			<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
+		<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
 			<h:outputScript library="jscript" name="jquery_1.6.3_min.js"/>
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5">
+			
+				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+					<h:outputText value="#{lbl.list_sortCriterion}: "/>
+				</h:panelGroup>
 				
-				<list:bibList_default>
+				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+					<h:form>
+						<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
+											<span class="eg3_selectionText"></span>
+										</h:panelGroup>
+										<h:selectOneMenu value="#{sortCriterion.sortIndex}">
+											<f:selectItems value="#{advancedSearchResultBean.sortIndicesMenu}"/>
+											<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortCriteria}" render="@all"/>
+										</h:selectOneMenu>
+									</h:panelGroup>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_10" style="margin-left:0.25em;">
+									<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value=" " styleClass="eg3_ico_sortASC_16" title="#{lbl.sort_asc}" rendered="#{sortCriterion.sortOrder == 'ASCENDING'}">
+										<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
+									</h:commandButton>
+									<h:commandButton action="#{advancedSearchResultBean.changeSortOrder(sortCriterion)}" value=" " styleClass="eg3_ico_sortDESC_16" title="#{lbl.sort_desc}" rendered="#{sortCriterion.sortOrder == 'DESCENDING'}">
+										<f:ajax event="change" listener="#{advancedSearchResultBean.changeSortOrder}" render="@all"/>
+									</h:commandButton>
+								</h:panelGroup>
+							</h:panelGroup>
+						</a4j:repeat>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<list:bibList_default rendered="#{advancedSearchResultBean.currentPartList.size() > 0}">
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
 				 		<list:bibItemSingleVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono }"/>
 				 		<list:bibItemMultiVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}"/>
 				 		<list:bibItemVolumeForSearch volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
-
 					</a4j:repeat>
 				</list:bibList_default>
 				
-			</mpdl:paginator>
+				<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{empty advancedSearchResultBean.currentPartList}">
+					<h:panelGroup styleClass="eg3_startpageTitle">
+						<h3><h:outputText value="#{lbl.sc_not_found}"/></h3>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</mpdl:paginator>
 	</ui:define>
 </ui:composition>
 
