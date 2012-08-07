@@ -215,12 +215,7 @@ body .eg3_id_siteTitle {
 	min-height:2.75em;
 }
 
-.eg3_main_color {
-	color:#2F2F2F;
-}
-.eg3_alternate_color_1 {
-	color:#FFFFFF;
-}
+
 
 .eg3_id_contentDescription .eg3_messageCloseBtn {
 	float: right;
@@ -267,7 +262,9 @@ body .eg3_id_siteTitle {
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
 }
-
+.eg3_id_content form {
+	display:inline;
+}
 .eg3_id_wrapper .eg3_id_footer {
 /*	background-color:#C7C2B0; */
 	background-color:#E9E9E9;
@@ -1965,7 +1962,7 @@ body .eg3_id_siteTitle {
 	height:1.33333em;
 }
 .eg3_ico_add_16:hover {
-	background-image:url(image/ico_window_plus_success_16_16.png);
+	background-image:url(image/ico_window_plus_hover_16_16.png);
 }
 .eg3_ico_remove_16 {
 	background-image:url(image/ico_window_minus_static_16_16.png);
@@ -1974,6 +1971,25 @@ body .eg3_id_siteTitle {
 	height:1.33333em;
 }
 .eg3_ico_remove_16:hover {
+	background-image:url(image/ico_window_minus_hover_16_16.png);
+}
+/* invert colored icons */
+.eg3_ico_addi_16 {
+	background-image:url(image/ico_window_plus_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_addi_16:hover {
+	background-image:url(image/ico_window_plus_hover_16_16.png);
+}
+.eg3_ico_removei_16 {
+	background-image:url(image/ico_window_minus_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_removei_16:hover {
 	background-image:url(image/ico_window_minus_hover_16_16.png);
 }
 
@@ -1987,6 +2003,12 @@ body .eg3_id_siteTitle {
 /*****************************************************************************************************
  ******************************				appearance coloring			**************************
  *****************************************************************************************************/
+.eg3_main_color {
+	color:#2F2F2F;
+}
+.eg3_alternate_color_1 {
+	color:#FFFFFF;
+}
 .eg3_content_bgColor {
 	background-color:#F0F0F0;
 }

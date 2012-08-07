@@ -8,147 +8,273 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:structTypes="http://java.sun.com/jsf/composite/components/mpdl/structuralTypes">
 
-<ui:composition template="templates/template_v3.xhtml">
-
-	
-	<ui:define name="mainContent">
-		<h:panelGroup layout="block" styleClass="eg3_container_1">
-			<h:panelGroup styleClass="eg3_startpageTitle">
-				<h1><h:outputText value="#{lbl.sc_advSearch}"></h:outputText></h1>
-			</h:panelGroup>
-		</h:panelGroup>
+	<ui:composition template="templates/template_v3.xhtml">
+		
+		<ui:define name="mainContent">
+			<style type="text/css">
+				.eg3_searchPage .eg3_category {
+					margin-bottom:1em;
+				}
+				.eg3_searchPage .eg3_submitPanel input[type=submit] {
+					background-color:transparent;
+					margin-left:1em;
+					border-bottom:0.0833333em solid #2F2F2F;
+				}
+				.eg3_searchPage .eg3_submitPanel input[type=submit]:hover {
+					text-decoration:none;
+					border-bottom:0.0833333em solid #EA7125;
+				}
+			</style>
+			<script type="text/javascript">
+				jsf.ajax.addOnEvent(function(e)
+				{	
+					//if the ajax request is success
+					//update all selectboxes on the page
+					if(e.status=="success")
+					{
+						//console.log("success");
+						resizeSelectBox();
+					}
+				});
+			</script>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_searchPage">
+				<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
+					<h:outputText value="&#160;"/>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup styleClass="eg3_startpageTitle">
+						<h1><h:outputText value="#{lbl.sc_advSearch}"/></h1>
+					</h:panelGroup>
+				</h:panelGroup>
+				
 				<h:form id="scForm">
-					<h:panelGroup id="ouAndContext" layout="block" styleClass="eg3_container_1">	
-
-							<!-- Dropdown Libraries  -->							
-							<h2><h:outputText value="#{lbl.sc_libraries}"></h:outputText></h2>
-							
-							<a4j:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" rowKeyVar="rowKey">	
-									<h:selectOneMenu value="#{scElem.ouId}" >					
-										<f:selectItems value="#{advancedSearchBean.allLibItems}"/>
-										<f:ajax event="change" listener="#{advancedSearchBean.refreshContextList(scElem)}" render=":scForm:ouAndContext"/>
-									</h:selectOneMenu>
+				<!-- libraries selection -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+								<h:outputText value="&#160;"/>
+								<ui:remove>							
+									<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_libraries}"></h:outputText></h2>
+								</ui:remove>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup id="ouAndContext" layout="block" styleClass="eg3_container_3_4">
+							<a4j:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" rowKeyVar="rowKey">
+								<h:panelGroup layout="block" styleClass="eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{scElem.ouId}" >					
+												<f:selectItems value="#{advancedSearchBean.allLibItems}"/>
+												<f:ajax event="change" listener="#{advancedSearchBean.refreshContextList(scElem)}" render=":scForm:ouAndContext"/>
+											</h:selectOneMenu> 
+										</h:panelGroup>
+									</h:panelGroup>
 									
-									<h:selectOneMenu value="#{scElem.contextId}">								
-										<f:selectItems value="#{scElem.contextList}"/>										
-									</h:selectOneMenu>
+									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
+										<h:outputText value="&#160;"/>
+									</h:panelGroup>
 									
-									<h:commandButton type="button" value="+" action="#{advancedSearchBean.newContextScElement}" >
-										<f:ajax render=":scForm:ouAndContext" execute="@form"/>
-									</h:commandButton>
-									<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.contextScElements)}" rendered="#{advancedSearchBean.contextScElements.size()>1}">
-										<f:ajax render=":scForm:ouAndContext" execute="@form"/>
-									</h:commandButton>
-									<br/>
+									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{scElem.contextId}" onchange="updateCustomSelectBox(this);">								
+												<f:selectItems value="#{scElem.contextList}"/>										
+											</h:selectOneMenu> 
+										</h:panelGroup>
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+										<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+											<h:commandButton type="button" action="#{advancedSearchBean.newContextScElement}" value=" " styleClass="eg3_ico_addi_16">
+												<f:ajax render=":scForm:ouAndContext" execute="@form"/>
+											</h:commandButton>
+											<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.contextScElements)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{advancedSearchBean.contextScElements.size()>1}">
+												<f:ajax render=":scForm:ouAndContext" execute="@form"/>
+											</h:commandButton>
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:panelGroup>
 							</a4j:repeat>
-					</h:panelGroup>	
-					
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1" >						
-							<h2><h:outputText value="#{lbl.sc_all}"></h:outputText></h2>
-							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}"/>
-							
+						</h:panelGroup>
 					</h:panelGroup>
 					
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1" >		
-						<h2><h:outputText value="#{lbl.sc_title}"></h:outputText></h2>
-						<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
-								
-								<h:selectOneMenu value="#{sc.operator}" rendered="#{rowKey!=0}">						
+				<!-- freeSearch -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_all}"/></h2>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+								<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1"/>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+					
+				
+					
+				<!-- searchCriterionList -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_title}"/></h2>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+											<span class="eg3_selectionText"></span>
+										</h:panelGroup>
+										<h:selectOneMenu value="#{sc.searchType}">						
+											<f:selectItem itemLabel="#{lbl.advancedSearch_freebib}" itemValue="FREE"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_author}" itemValue="AUTHOR"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_title}" itemValue="TITLE"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_corp}" itemValue="CORPORATE"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_place}" itemValue="PLACE"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_publisherPrinter}" itemValue="PUBLISHER"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_keyword}" itemValue="KEYWORD"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_signature}" itemValue="SHELFMARK"/>
+										</h:selectOneMenu>
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+										<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_floatRight" rendered="#{rowKey lt advancedSearchBean.searchCriterionList.size() -1}">
+										<h:selectOneMenu value="#{sc.operator}">						
+											<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+										</h:selectOneMenu>
+									</h:panelGroup>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+										<h:commandButton type="button" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" value=" " styleClass="eg3_ico_addi_16">
+											<f:ajax render=":#{component.parent.parent.parent.parent.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.searchCriterionList)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
+											<f:ajax render=":#{component.parent.parent.parent.parent.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+									</h:panelGroup>
+								</h:panelGroup>
+							</a4j:repeat>
+							
+						<!-- source year -->
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+									<h:outputText value="#{lbl.sc_year}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+									<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
+									<h:outputText value=" - "/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+									<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
+								</h:panelGroup>
+								<script type="text/javascript">
+									$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
+									$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
+								</script>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					
+				<!-- locigal connector -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
+								<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
 									<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
 									<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
 									<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-								</h:selectOneMenu>
-								<br/>
-								
-								<h:selectOneMenu value="#{sc.searchType}">						
-									<f:selectItem itemLabel="#{lbl.advancedSearch_freebib}" itemValue="FREE"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_author}" itemValue="AUTHOR"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_title}" itemValue="TITLE"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_corp}" itemValue="CORPORATE"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_place}" itemValue="PLACE"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_publisherPrinter}" itemValue="PUBLISHER"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_keyword}" itemValue="KEYWORD"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_signature}" itemValue="SHELFMARK"/>
-								</h:selectOneMenu>
-								
-								<h:inputText value="#{sc.value}"/>
-								
-								<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-									<f:ajax render=":#{component.parent.parent.parent.clientId}" execute="@form"/>
-								</h:commandButton>
-								<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-									<f:ajax render=":#{component.parent.parent.parent.clientId}" execute="@form"/>
-								</h:commandButton>
-								
-								<br/><br/>							
-							</a4j:repeat>
-					</h:panelGroup>
-
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1" >			
-							<br/>		
-							<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
-								<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-								<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-								<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-							</h:selectOneMenu>	
-							<br/>									
-							<h:outputText value="#{lbl.sc_year}"/>
-							<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}"/> - <h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}"/>
-							
+								</h:selectOneMenu>	
+							</h:panelGroup>
+						</h:panelGroup>
 					</h:panelGroup>
 					
-					<ui:remove>
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1" >	
-							<h2><h:outputText value="#{lbl.sc_struct}"></h:outputText></h2>
-							<h:outputText value="#{lbl.sc_structTitle}"/>
-							<h:inputText value="TODO"/>
-							<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-								<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-							</h:commandButton>
-							<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-								<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-							</h:commandButton>
-							<br/><br/>
-							<h:outputText value="#{lbl.sc_structAuthor}"/>
-							<h:inputText value="TODO"/>
-							<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-								<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-							</h:commandButton>
-							<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-								<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-							</h:commandButton>
-							<br/><br/>
-							<h:outputText value="#{lbl.sc_structType}"/>
-							<h:selectOneMenu value="TODO">				
-								<f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_elementType_div}"/>
-								<f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_elementType_title_page}"/>
-								<f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_elementType_figure}"/>			
-							</h:selectOneMenu>
-					</h:panelGroup>
-					</ui:remove>
 					
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1" >	
-						<h2><h:outputText value="#{lbl.sc_fulltext}"></h:outputText></h2> 
-							<h:outputText value="#{lbl.sc_fulltextInfo}"></h:outputText>
-						<h:inputText type="text" id="fulltextSearchString" value="#{advancedSearchBean.fulltextSearch}"/>
+				<!-- fullText -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_fulltext}"/></h2>
+							</h:panelGroup> 
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+								<h:inputText type="text" id="fulltextSearchString" value="#{advancedSearchBean.fulltextSearch}" styleClass="eg3_container_1"/>
+								<h:outputText value="#{lbl.sc_fulltextInfo}"/>
+							</h:panelGroup>
+						</h:panelGroup>
 					</h:panelGroup>
 					
-					<br/><br/>
-					<h:panelGroup layout="block" styleClass="eg3_container_1">	
-						<h:commandButton value="#{lbl.advancedSearch_resetSearchBtn}" action="#{advancedSearchBean.resetSearch}"/>
-						<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" action="#{advancedSearchBean.startSearch}" />
-						
-					</h:panelGroup>	
+					
+					
+				<!-- submit area -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+						<h:outputText value="&#160;"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
+							<h:commandButton value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.resetSearch}"/>
+							<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
+					</h:panelGroup>
+				</h:panelGroup>	
+					
+					
+					
+					
+								
 				</h:form>
-		
-	</ui:define>
-
-
-</ui:composition>
-
+			<!-- END OF searchPage -->
+			</h:panelGroup>
+		</ui:define>
+	</ui:composition>
+							<ui:remove>
+								<br/><br/>
+								<h:panelGroup layout="block" styleClass="eg3_container_1" >	
+										<h2><h:outputText value="#{lbl.sc_struct}"></h:outputText></h2>
+										<h:outputText value="#{lbl.sc_structTitle}"/>
+										<h:inputText value="TODO"/>
+										<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
+											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+										<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
+											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+										<br/><br/>
+										<h:outputText value="#{lbl.sc_structAuthor}"/>
+										<h:inputText value="TODO"/>
+										<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
+											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+										<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
+											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
+										</h:commandButton>
+										<br/><br/>
+										<h:outputText value="#{lbl.sc_structType}"/>
+										<h:selectOneMenu value="TODO">				
+											<f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_elementType_div}"/>
+											<f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_elementType_title_page}"/>
+											<f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_elementType_figure}"/>			
+										</h:selectOneMenu>
+								</h:panelGroup>
+							</ui:remove>
 </html>
+
+

@@ -73,62 +73,60 @@ function updateCustomSelectBox(obj) {
 	}
 }
 
-function extractNumberFromString(str, delimiter, noPos) {
-	var output = false;
-	output = Number(str.split(delimiter)[noPos]);
-	if (output == "NaN") { output = false; }
-	return output;
-}
-
-function checkForMaxWidth(obj, widthAttr) {
-	if (obj.attr(widthAttr).match(/eg3_maxWidth_/)) {
-		//newInfoWidth = Number(maxWidth) - marR;
-		var tmpAr = obj.attr(widthAttr).split(" ");
-		
-		for (pos in tmpAr) {
-			if (tmpAr[pos].match(/eg3_maxWidth_/)) {
-				var tmpVal = extractNumberFromString(tmpAr[pos], "_", 2);
-				console.log("hallo new Width: "+tmpVal);
-				return tmpVal;
-				break;
-			}
-		}
-	}
-	return false;
-}
 
 /* 
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
  */
 function resizeSelectBox() {
-	$(".eg3_dynamicSelectBox_js").each(function(ind, dynBox){
-		var selCont = null;
-		if (typeof(selCont = $(dynBox).find(".eg3_selectionContent")) != "undefined") {
-			var selectTag = $(dynBox).find('select');
+	$(".eg3_dynamicSelectBox_js").each(function(ind, dynBox) {
+		var selCont = null; //variable for the selectionContent div
+		var dynSB = $(dynBox); // object of the dynamicSelectBox_js
+		var slctTag = null; //object of the selectOneMenu or select tag
+		var drpDwnIconWidth = 16; //pixel value of the icon with for the drop down arrow
+		
+		if (typeof(selCont = dynSB.find(".eg3_selectionContent")) != "undefined") {
+			//save all margin and padding definitions of the selectionContent class
 			var padL = Number(selCont.css("padding-left").replace("px", ""));
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
 			var marL = Number(selCont.css("margin-left").replace("px", ""));
 			var marR = Number(selCont.css("margin-right").replace("px", ""));
-			var newInfoWidth = Math.floor( (selectTag.width() - marR) );
 			
-			var newContainerWidth = Math.floor( (newInfoWidth + marR + marL + padR + padL) );
-			var maxWidth = checkForMaxWidth($(dynBox), "class");
-			console.log(newContainerWidth + ' maxW: ' + maxWidth);
-			if (maxWidth && newContainerWidth > maxWidth) {
-				newContainerWidth = maxWidth;
-				newInfoWidth = maxWidth - 2*marR;
+			slctTag = dynSB.find('select'); //save the select tag in the object variable
+			
+			//if a ajax reload given or the browser had been resized
+			slctTag.css("width", "auto"); //the select tag width must be reset to auto for the further right width
+			removeAttributeValue(dynSB, "style", "width"); //delete the earlier definition of width
+			removeAttributeValue(selCont, "style", "width"); //delete the earlier definition of width
+			
+			//calculate the new width values
+			var newDynSBWidth = 0;
+			
+			if (dynSB.attr("class").match(/eg3_container_/)) { //at first: check if the dynamicSelectBox_js has a given width
+				newDynSBWidth = Math.floor( (dynSB.width()) ); //calculate the new width for the dynamicSelectBox_js
+			} else if (slctTag.width() > dynSB.parent().width()) { //at second: check if the select tag larger than the parent container - e.g. used by ingest process - volume
+				newDynSBWidth = Math.floor( (dynSB.parent().width()) ); //calculate the new width for the dynamicSelectBox_js with base of the parent container width
+			} else { //otherwise 
+				newDynSBWidth = Math.floor( (slctTag.width()) ); //calculate the new width for the dynamicSelectBox_js
 			}
 			
-			selCont.css("width", newInfoWidth);
-			$(dynBox).css("width", newContainerWidth);
-			selectTag.css("width", newContainerWidth);
+			var newSelContWidth = Math.floor(newDynSBWidth - drpDwnIconWidth - padL - padR) - 1; //calculate the new width for the selectContent container with 1px less for a better optical border
+			
+			//declare the new values to the objects
+			dynSB.css("width", newDynSBWidth);
+			selCont.css("width", newSelContWidth);
+			
+			if (slctTag.width() < newDynSBWidth) { // if the select tag smaller than the given width for the container
+				slctTag.css("width", newDynSBWidth); //resize the select tag
+			}
+			
 			/* add behaviour for change and focus */
-			//selectTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
-			selectTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
+			//slctTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
+			slctTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
 		}
 	});
-	
 	updateCustomSelectBox();
+	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
+	$(window).bind("resize", function() { resizeSelectBox(); } );
 }
 
 
