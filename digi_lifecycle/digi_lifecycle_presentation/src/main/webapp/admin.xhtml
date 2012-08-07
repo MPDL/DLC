@@ -7,124 +7,120 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
-<ui:composition template="templates/template_v3.xhtml">
-
-	<h:outputStylesheet>
-
-        .rf-p  {
-            width: 500px;
-        }
- 
-
-
-    </h:outputStylesheet>
-
-	<ui:define name="mainContent">
-		<h:form>
-		<rich:panel layout="block" id="createdOUs" header="#{lbl.admin_ou_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
-			<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
-				<pretty:link mappingId="ou">
-					<f:param value="#{orga.id}" />
-			    	<h:outputText value="#{orga.escidocMd.title}"/>
-			    	
-			    	<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmOrgaPane')}.show()">
-                    	<!-- <h:graphicImage value="/resources/images/Delete.png" alt="delete" /> -->
-                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
-               		</a4j:commandButton> 
-               		
-               		<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
-                    	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
-                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
-               		</a4j:commandButton> 
-			    </pretty:link>
-			   <br />
-	      	</a4j:repeat>
-
-            <a4j:commandButton execute="@this" value="#{lbl.admin_ou_createNew}" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
-              	<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}" />
-            </a4j:commandButton> 
-
-    		<rich:popupPanel id="confirmOrgaPane" autosized="true"> 
-    			<h:outputText value="#{msg.admin_confirmCloseOu}"/>
-        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" />
-        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}"/>
-    		</rich:popupPanel>
-		    
-   			<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
-
-		</rich:panel>
+	<ui:composition template="templates/template_v3.xhtml">
+	
+		<style type="text/css">
+			.rf-p  {
+				width: 500px;
+			}
+			.rf-p .rf-p-hdr { width:100%; }
+	    </style>
+	
+		<ui:define name="mainContent">
+			<h:form>
+			<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+				
+				<rich:panel layout="block" id="createdOUs" header="#{lbl.admin_ou_header}:" styleClass="eg3_container_1_2" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+					<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
+						<pretty:link mappingId="ou">
+							<f:param value="#{orga.id}" />
+					    	<h:outputText value="#{orga.escidocMd.title}"/>
+					    	
+					    	<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmOrgaPane')}.show()">
+		                    	<!-- <h:graphicImage value="/resources/images/Delete.png" alt="delete" /> -->
+		                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
+		               		</a4j:commandButton> 
+		               		
+		               		<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+		                    	<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}" />
+		                   		<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}" />
+		               		</a4j:commandButton> 
+					    </pretty:link>
+					   <br />
+			      	</a4j:repeat>
 		
-		<rich:panel layout="block" id="createdContexts" header="#{lbl.admin_context_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
-			<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
-				<pretty:link mappingId="volumes">
-					<f:param value="#{collection.id}" />
-			    	<h:outputText value="#{collection.name}"/>
-			    	
-				    <a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
-    	               	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
-        	       	</a4j:commandButton> 
-               		
-            	   	<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
-                	    <a4j:param value="#{collection.id}" assignTo="#{adminBean.editCollectionId}" />
-                   		<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
-               		</a4j:commandButton> 			    	
-			    	
-			    </pretty:link>
-			   <br />
-	      	</a4j:repeat>
-
-
-    		<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
-    			 <h:outputText value="#{msg.admin_confirmCloseCollection}"/>
-        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
-        		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeCollection}"/>
-    		</rich:popupPanel>		 	
-		 	
-            <a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
-              	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{adminBean.newEmptyCollection}" />
-            </a4j:commandButton> 
-
-
-   			<mpdl:contextEditor target="popupContext" title="#{lbl.admin_context_createNew}" collection="#{adminBean.collection}" />
-
-		</rich:panel>
-
-		<rich:panel layout="block" id="createdUAs" header="#{lbl.admin_user_header}:" rendered="#{loginBean.login}">
-			<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
-			    <h:outputText value=" #{lbl.admin_user_loginname}: #{user.loginName} "/>
-			    <h:outputText value=" (#{lbl.admin_user_name}: #{user.name}) "/>
-
-			    <a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
-                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
-               	</a4j:commandButton> 
-               		
-               	<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
-                    <a4j:param value="#{user.id}" assignTo="#{adminBean.editUserId}" />
-                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
-               	</a4j:commandButton> 
-			   <br />
-	      	</a4j:repeat>
-
-    		<rich:popupPanel id="confirmUserPane" autosized="true"> 
-    			 <h:outputText value="#{msg.admin_confirmCloseUser}"/>
-        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
-        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
-    		</rich:popupPanel>
-		 
-            <a4j:commandButton execute="@this" value="#{lbl.admin_user_createNew}" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
-              	<f:setPropertyActionListener target="#{adminBean.user}" value="#{adminBean.newEmptyUser}" />
-            </a4j:commandButton> 
-
-   			<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}" />
-
-		</rich:panel>
-
-	</h:form>
-
-	</ui:define>
-
-
-</ui:composition>
-
+		            <a4j:commandButton execute="@this" value="#{lbl.admin_ou_createNew}" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+		              	<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}" />
+		            </a4j:commandButton> 
+		
+		    		<rich:popupPanel id="confirmOrgaPane" autosized="true"> 
+		    			<h:outputText value="#{msg.admin_confirmCloseOu}"/>
+		        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" />
+		        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}"/>
+		    		</rich:popupPanel>
+				    
+		   			<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
+		
+				</rich:panel>
+				
+				<rich:panel layout="block" id="createdContexts" header="#{lbl.admin_context_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
+					<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
+						<pretty:link mappingId="volumes">
+							<f:param value="#{collection.id}" />
+					    	<h:outputText value="#{collection.name}"/>
+					    	
+						    <a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
+		    	               	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
+		        	       	</a4j:commandButton> 
+		               		
+		            	   	<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+		                	    <a4j:param value="#{collection.id}" assignTo="#{adminBean.editCollectionId}" />
+		                   		<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}" />
+		               		</a4j:commandButton> 			    	
+					    	
+					    </pretty:link>
+					   <br />
+			      	</a4j:repeat>
+		
+		
+		    		<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
+		    			 <h:outputText value="#{msg.admin_confirmCloseCollection}"/>
+		        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
+		        		<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeCollection}"/>
+		    		</rich:popupPanel>		 	
+				 	
+		            <a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+		              	<f:setPropertyActionListener target="#{adminBean.collection}" value="#{adminBean.newEmptyCollection}" />
+		            </a4j:commandButton> 
+		
+		
+		   			<mpdl:contextEditor target="popupContext" title="#{lbl.admin_context_createNew}" collection="#{adminBean.collection}" />
+		
+				</rich:panel>
+		
+				<rich:panel layout="block" id="createdUAs" header="#{lbl.admin_user_header}:" rendered="#{loginBean.login}">
+					<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
+					    <h:outputText value=" #{lbl.admin_user_loginname}: #{user.loginName} "/>
+					    <h:outputText value=" (#{lbl.admin_user_name}: #{user.name}) "/>
+		
+					    <a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
+		                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
+		               	</a4j:commandButton> 
+		               		
+		               	<a4j:commandButton value="#{lbl.button_command_edit}" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+		                    <a4j:param value="#{user.id}" assignTo="#{adminBean.editUserId}" />
+		                   	<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}" />
+		               	</a4j:commandButton> 
+					   <br />
+			      	</a4j:repeat>
+		
+		    		<rich:popupPanel id="confirmUserPane" autosized="true"> 
+		    			 <h:outputText value="#{msg.admin_confirmCloseUser}"/>
+		        		<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;" />
+		        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+		        		<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+		    		</rich:popupPanel>
+				 
+		            <a4j:commandButton execute="@this" value="#{lbl.admin_user_createNew}" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+		              	<f:setPropertyActionListener target="#{adminBean.user}" value="#{adminBean.newEmptyUser}" />
+		            </a4j:commandButton> 
+		
+		   			<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}" />
+		
+				</rich:panel>
+			</h:panelGroup>
+			</h:form>
+		</ui:define>
+	
+	</ui:composition>
 </html>
