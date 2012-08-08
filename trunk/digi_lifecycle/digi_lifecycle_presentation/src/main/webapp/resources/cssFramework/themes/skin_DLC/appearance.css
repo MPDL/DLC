@@ -1953,8 +1953,30 @@ body .eg3_id_siteTitle {
 }
 .eg3_icon_editBtn_16_16:hover {
 	background-image:url(image/ico_edit_hover_16_16.png);
+	text-decoration:none;
 }
-
+.eg3_icon_editBtni_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_edit_deactivated_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_editBtni_16_16:hover {
+	background-image:url(image/ico_edit_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_delete_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_close_error_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_delete_16_16:hover {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+}
 .eg3_ico_add_16 {
 	background-image:url(image/ico_window_plus_static_16_16.png);
 	background-color:transparent;
