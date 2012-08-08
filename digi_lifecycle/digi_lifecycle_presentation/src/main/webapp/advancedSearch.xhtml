@@ -24,6 +24,9 @@
 					text-decoration:none;
 					border-bottom:0.0833333em solid #EA7125;
 				}
+				.eg3_searchCriterion {
+					margin-bottom:0.25em;
+				}
 			</style>
 			<script type="text/javascript">
 				jsf.ajax.addOnEvent(function(e)
@@ -119,6 +122,24 @@
 						</h:panelGroup>
 					</h:panelGroup>
 					
+		<!-- NEW CONNECTOR PLEASE MODIFY the selectOneMenu -->
+				<!-- locigal connector -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<span class="eg3_selectionText"></span>
+									</h:panelGroup>
+									<h:selectOneMenu value="">						
+										<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+										<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+										<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+									</h:selectOneMenu>
+								</h:panelGroup>	
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
 				
 					
 				<!-- searchCriterionList -->
@@ -130,7 +151,7 @@
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
-								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">
 										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 											<span class="eg3_selectionText"></span>
@@ -148,15 +169,22 @@
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_21_50">
-										<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
+										<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+											<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
+										</h:panelGroup>
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_floatRight" rendered="#{rowKey lt advancedSearchBean.searchCriterionList.size() -1}">
-										<h:selectOneMenu value="#{sc.operator}">						
-											<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-											<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-											<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-										</h:selectOneMenu>
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{sc.operator}">						
+												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+											</h:selectOneMenu>
+										</h:panelGroup>
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_1_6">
@@ -176,19 +204,25 @@
 								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
 									<h:outputText value="#{lbl.sc_year}"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
-									<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
+								
+								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+											<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
+										</h:panelGroup>
+										
+										<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
+											<h:outputText value=" - "/>
+										</h:panelGroup>
+										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+											<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
+										</h:panelGroup>
+										<script type="text/javascript">
+											$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
+											$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
+										</script>
+									</h:panelGroup>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
-									<h:outputText value=" - "/>
-								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
-									<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
-								</h:panelGroup>
-								<script type="text/javascript">
-									$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
-									$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
-								</script>
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
@@ -198,11 +232,16 @@
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
-								<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
-									<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-									<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-								</h:selectOneMenu>	
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<span class="eg3_selectionText"></span>
+									</h:panelGroup>
+									<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
+										<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+										<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+										<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+									</h:selectOneMenu>
+								</h:panelGroup>	
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
