@@ -1701,20 +1701,39 @@ body .eg3_id_siteTitle {
 	margin-top:0.5%;
 }
 .eg3_viewPageMenu .eg3_modusBtn {
-	/*margin-right:2%; */
 	padding-left:0.83333em;
 	padding-right:0.83333em;
 	border-right:0.0909em solid #ffffff;
+	background-color:transparent;
 }
+.eg3_viewPageMenu .eg3_modusBtn:hover {
+	color:#EA7125;
+}
+.eg3_viewPageMenu .eg3_modusBtn[disabled],
+.eg3_viewPageMenu span.eg3_modusBtn {
+	color:#999999;
+}
+.eg3_viewPageMenu .eg3_modusBtn[disabled]:hover,
+.eg3_viewPageMenu span.eg3_modusBtn:hover {
+	color:#999999;
+}
+
+.eg3_viewPageMenu .eg3_modusBtn.eg3_active,
+.eg3_viewPageMenu span.eg3_modusBtn.eg3_active {
+	color:#EA7125;
+}
+.eg3_viewPageMenu .eg3_modusBtn.eg3_active:hover,
+.eg3_viewPageMenu span.eg3_modusBtn.eg3_active:hover {
+	color:#EA7125;
+}
+
 .eg3_viewPageMenu a.eg3_modusBtn {
 	color:#ffffff;
 }
 .eg3_viewPageMenu a.eg3_modusBtn:hover {
 	color:#EA7125;
 }
-.eg3_viewPageMenu span.eg3_modusBtn {
-	color:#EA7125;
-}
+
 
 
 .eg3_viewPage .eg3_singleView {
@@ -1948,6 +1967,102 @@ body .eg3_id_siteTitle {
 .eg3_overlayBox .eg3_overlayBody .eg3_selectionText { white-space:nowrap; line-height:2em; color:#ffffff; }
 .eg3_overlayBox .eg3_overlayBody .eg3_selectionText:hover { color:#EA7125; }
 
+
+
+/*****************************************************************************************************
+ *******************************					infoPanel				**************************
+ *****************************************************************************************************/
+.eg3_infoPanel {
+	max-width:50em;
+	padding-right:10%;
+	margin-bottom:2em;
+	display:block;
+}
+.eg3_infoPanel h3 {
+	font-weight:bold;
+}
+.eg3_infoPanel p {
+	margin-top:1%;
+	line-height:145%;
+}
+.eg3_infoPanel .eg3_providerList li {
+	line-height:145%;
+}
+.eg3_inline_searchBox {
+	position: absolute; 
+	right: 0px; 
+	top: 0px;
+}
+.eg3_infoPanel .eg3_inline_searchBox {
+	margin-right: -13%;
+}
+.eg3_inline_searchBox input {
+	text-align:center;
+}
+.eg3_inline_searchBox input:focus {
+	text-align:left;
+}
+
+
+/*****************************************************************************************************
+ *******************************					category				**************************
+ used by searchPage etc. to organize the different types
+ *****************************************************************************************************/
+.eg3_searchPage .eg3_category {
+	margin-bottom:1em;
+}
+.eg3_ingestPage .eg3_category {
+	margin-bottom:1em;
+}
+.eg3_ingestPage .eg3_category:hover {
+	background-color:#434343;
+}
+.eg3_ingestPage .eg3_category:hover .eg3_container_2_3 {
+	background-color:#EA7125;
+}
+
+/*****************************************************************************************************
+ *******************************					criterion				**************************
+ used by searchPage etc. to organize the different types
+ *****************************************************************************************************/
+.eg3_searchCriterion {
+	margin-bottom:0.25em;
+}
+
+/*****************************************************************************************************
+ *******************************					submitPanel				**************************
+ used by editing
+ *****************************************************************************************************/
+.eg3_searchPage .eg3_submitPanel input[type=submit] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=submit]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel {
+	background-color:#CACA86;
+	border:none;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel .rf-p-b {
+	width:96%;
+	padding:1% 1.9999% 2.2%;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel input[type=submit] {
+	float:left;
+	margin:0 0.25em 0 0;
+	padding:0.25em 0.75em;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel input[type=submit]:hover {
+	color:#EA7125;
+	text-decoration:none;
+}
+
+
 /*****************************************************************************************************
  ******************************				global button elements			**************************
  *****************************************************************************************************/
@@ -2005,6 +2120,9 @@ body .eg3_id_siteTitle {
 .eg3_icon_resizeSmall_16_16:hover {
 	background-image:url(image/ico_resize_small_1_hover_16_16.png);
 }
+.eg3_icon_resizeSmall_16_16[disabled]:hover {
+	background-image:url(image/ico_resize_small_1_deactivated_16_16.png);
+}
 .eg3_icon_resizeMedium_16_16 {
 	width:1.3333em;
 	height:1.3333em;
@@ -2014,6 +2132,9 @@ body .eg3_id_siteTitle {
 }
 .eg3_icon_resizeMedium_16_16:hover {
 	background-image:url(image/ico_resize_medium_1_hover_16_16.png);
+}
+.eg3_icon_resizeMedium_16_16[disabled]:hover {
+	background-image:url(image/ico_resize_medium_1_deactivated_16_16.png);
 }
 .eg3_ico_add_16 {
 	background-image:url(image/ico_window_plus_static_16_16.png);

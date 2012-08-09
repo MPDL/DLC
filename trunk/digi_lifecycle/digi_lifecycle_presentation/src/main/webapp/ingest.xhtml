@@ -52,7 +52,7 @@
 			.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a:hover {
 				color:#EA7125;
 			}
-		
+			
 			.eg3_ingestPage .rf-p {
 				border:none;
 				color:#FFFFFF;
@@ -81,26 +81,7 @@
 				background-color:#FFFFFF;
 				color:#000000;
 			}
-			.eg3_ingestPage .eg3_submitPanel {
-			/*	background-color:#25556F; */
-				background-color:#CACA86;
-				border:none;
-			}
-			.eg3_ingestPage .eg3_submitPanel .rf-p-b {
-				width:96%;
-				padding:1% 1.9999% 2.2%;
-			}
-			.eg3_ingestPage .eg3_submitPanel input[type=submit] {
-				float:left;
-				margin:0 0.25em 0 0;
-				padding:0.25em 0.75em;
-				color:#FFFFFF;
-				background-color:#2F2F2F;
-			}
-			.eg3_ingestPage .eg3_submitPanel input[type=submit]:hover {
-				color:#EA7125;
-				text-decoration:none;
-			}
+			
 			.eg3_ingestPage .eg3_uploadTypePanel {
 				background-color:#2F2F2F;
 				border:none;
@@ -134,15 +115,8 @@
 				margin:1.7%;
 				overflow:auto;
 			}
-			.eg3_ingestPage .eg3_category {
-				margin-bottom:1em;
-			}
-			.eg3_ingestPage .eg3_category:hover {
-				background-color:#434343;
-			}
-			.eg3_ingestPage .eg3_category:hover .eg3_container_2_3 {
-				background-color:#EA7125;
-			}
+			
+			
 			.eg3_ingestPage .eg3_itemMetaLabel {
 				width:92%;
 				margin:0 3.9999%;
@@ -154,9 +128,6 @@
 			.eg3_ingestPage .eg3_itemMetaValue input:focus {
 				width:100%;
 				margin:0;
-			}
-			.eg3_ingestPage .eg3_dynamicSelectBox_js .eg3_selectionText {
-				color:#2F2F2F;
 			}
 		</style>
 		
@@ -241,7 +212,7 @@
 								<h:outputText value="#{lbl.admin_upload_type}: "/>
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color">
 									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
@@ -258,7 +229,7 @@
 								<h:outputText value="#{lbl.admin_upload_collection}: "/>
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color">
 									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
@@ -275,7 +246,7 @@
 								<h:outputText value="#{lbl.admin_upload_multiv} :"/>
 							</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color">
 									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
