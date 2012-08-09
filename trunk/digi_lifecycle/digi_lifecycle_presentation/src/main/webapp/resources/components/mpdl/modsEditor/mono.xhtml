@@ -26,13 +26,19 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
 					<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<h:selectOneMenu value="#{name.displayLabel}">
-								<f:selectItem itemLabel="author" itemValue="author"/>
-								<f:selectItem itemLabel="editor" itemValue="editor"/>
-								<f:selectItem itemLabel="body" itemValue="body"/>
-							</h:selectOneMenu>
-							<h:inputText value="#{name.name}"/>
-						
+							<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+									<span class="eg3_selectionText"></span>
+								</h:panelGroup>
+								<h:selectOneMenu value="#{name.displayLabel}">
+									<f:selectItem itemLabel="author" itemValue="author"/>
+									<f:selectItem itemLabel="editor" itemValue="editor"/>
+									<f:selectItem itemLabel="body" itemValue="body"/>
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+								<h:inputText value="#{name.name}" styleClass="eg3_container_9_10"/>
+							</h:panelGroup>
 							<h:panelGroup styleClass="eg3_floatRight">
 								<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value=" " title="#{tlt.edit_add_item}#{lbl.mods_names}" styleClass="eg3_ico_add_16">
 									 <f:ajax render="@form" execute="@form"/>
@@ -52,7 +58,7 @@
 					<h:outputText value="#{lbl.mods_title}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText id="title_Mono" value="#{cc.attrs.modsMetadata.titles[0].title}"/>
+					<h:inputText id="title_Mono" value="#{cc.attrs.modsMetadata.titles[0].title}" styleClass="eg3_container_4_5"/>
 					<h:message for="title_Mono" styleClass="eg3_messageError"/>
 				</h:panelGroup>
 			</h:panelGroup>
@@ -63,7 +69,7 @@
 					<h:outputText value="#{lbl.mods_statementOfResponsibility}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.notes[0].note}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -73,11 +79,18 @@
 					<h:outputText value="#{lbl.mods_publisher}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:selectOneMenu value="#{cc.attrs.modsMetadata.publishers[0].displayLabel}">
-						<f:selectItem itemLabel="publisher" itemValue="publisher"/>
-						<f:selectItem itemLabel="printer" itemValue="printer"/>
-					</h:selectOneMenu>
-					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].publisher}"/>	
+					<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+							<span class="eg3_selectionText"></span>
+						</h:panelGroup>
+						<h:selectOneMenu value="#{cc.attrs.modsMetadata.publishers[0].displayLabel}">
+							<f:selectItem itemLabel="publisher" itemValue="publisher"/>
+							<f:selectItem itemLabel="printer" itemValue="printer"/>
+						</h:selectOneMenu>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+						<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].publisher}" styleClass="eg3_container_9_10"/>
+					</h:panelGroup>	
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -87,7 +100,7 @@
 					<h:outputText value="#{lbl.mods_publisher_place}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].place}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].place}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>	
 			</h:panelGroup>
 			
@@ -97,7 +110,7 @@
 					<h:outputText value="#{lbl.mods_publisher_date}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>		
 			</h:panelGroup>
 			
@@ -107,7 +120,7 @@
 					<h:outputText value="#{lbl.mods_publisher_edition}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].edition}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>	
 			</h:panelGroup>
 			
@@ -117,7 +130,7 @@
 					<h:outputText value="#{lbl.mods_collation}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.physicalDescriptions[0].extent}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.physicalDescriptions[0].extent}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -127,7 +140,7 @@
 					<h:outputText value="#{lbl.mods_seriesTitle_451}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.relatedItems[0].title}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.relatedItems[0].title}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -137,7 +150,7 @@
 					<h:outputText value="#{lbl.mods_isbn}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.identifiers[0].value}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -147,7 +160,7 @@
 					<h:outputText value="#{lbl.mods_signature_544}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.signature_544}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -159,7 +172,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
 					<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}"/>
+							<h:inputText value="#{cc.attrs.modsMetadata.keywords[rowKey]}" styleClass="eg3_container_4_5"/>
 							<h:panelGroup layout="block" styleClass="eg3_floatRight">
 								<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " title="#{tlt.edit_add_item}#{lbl.mods_keywords}" styleClass="eg3_ico_add_16">
 									 <f:ajax render="@form" execute="@form"/>
@@ -179,7 +192,7 @@
 					<h:outputText value="#{lbl.mods_language_037}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -189,7 +202,7 @@
 					<h:outputText value="#{lbl.mods_freeText}"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-					<h:inputText value="#{cc.attrs.modsMetadata.freeText}"/>
+					<h:inputText value="#{cc.attrs.modsMetadata.freeText}" styleClass="eg3_container_4_5"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			

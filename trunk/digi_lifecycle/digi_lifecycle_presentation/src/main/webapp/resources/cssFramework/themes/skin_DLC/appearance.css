@@ -2008,18 +2008,14 @@ body .eg3_id_siteTitle {
  *******************************					category				**************************
  used by searchPage etc. to organize the different types
  *****************************************************************************************************/
-.eg3_searchPage .eg3_category {
+.eg3_id_content .eg3_category {
 	margin-bottom:1em;
 }
-.eg3_ingestPage .eg3_category {
-	margin-bottom:1em;
-}
+
 .eg3_ingestPage .eg3_category:hover {
 	background-color:#434343;
 }
-.eg3_ingestPage .eg3_category:hover .eg3_container_2_3 {
-	background-color:#EA7125;
-}
+
 
 /*****************************************************************************************************
  *******************************					criterion				**************************
@@ -2042,6 +2038,21 @@ body .eg3_id_siteTitle {
 	text-decoration:none;
 	border-bottom:0.0833333em solid #EA7125;
 }
+.eg3_ingestPage .rf-p 
+{
+	float:none;
+	max-width:97%;
+	margin:0 2%;
+}
+.eg3_ingestPage .rf-p-hdr
+{
+	float:none;
+}
+.eg3_ingestPage .rf-dg-c {
+	border:none;
+}
+
+
 .eg3_ingestPage .rf-p.eg3_submitPanel {
 	background-color:#CACA86;
 	border:none;
@@ -2060,6 +2071,111 @@ body .eg3_id_siteTitle {
 .eg3_ingestPage .rf-p.eg3_submitPanel input[type=submit]:hover {
 	color:#EA7125;
 	text-decoration:none;
+}
+
+.eg3_ingestPage .eg3_uploadContainer .rf-p-hdr {
+	width:96%;
+	padding:1.99999%;
+	margin:0;
+	border:none;
+	font-size:150%;
+	color:#2F2F2F;
+	background-color:#CACA86;
+	background-image:none;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b {
+	width:96%;
+	padding:1.99999%;
+	color:#FFFFFF;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist {
+	color:#000000;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a {
+	color:#FFFFFF;
+	font-size:120%;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a:hover {
+	color:#EA7125;
+}
+
+.eg3_ingestPage .rf-p {
+	border:none;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p-hdr {
+	font-size:120%;
+	margin:0 1%;
+	padding:1em 1% 0.25em 1%;
+	background-color:#CACA86;
+	background-image:none;
+	border:none;
+	color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p-b {
+	font-size:110%;
+	color:#FFFFFF;
+	width:96%;
+}
+.eg3_ingestPage input[type="text"] {
+	background-color:#F0F0F0;
+	color:#2F2F2F;
+	margin-left:0;
+}
+.eg3_ingestPage input[type="text"]:focus {
+	background-color:#FFFFFF;
+	color:#000000;
+}
+
+.eg3_ingestPage .eg3_uploadTypePanel {
+	background-color:#2F2F2F;
+	border:none;
+}
+.eg3_ingestPage .eg3_uploadTypePanel .rf-p-b {
+	padding-top:0;
+	color:#FFFFFF;
+}
+
+.eg3_ingestPage .eg3_metadataPanel table table {
+	border-collapse:collapse
+}
+.eg3_ingestPage tr td {
+	vertical-align:top;
+	padding-bottom:0.25em;
+}
+.eg3_ingestPage .eg3_metadataPanel tr:hover {
+	background-color:#434343;
+}
+.eg3_ingestPage .eg3_metadataPanel tr:hover table tr:hover {
+	background-color:#EA7125;
+}
+.eg3_ingestPage table input[type="text"] {
+	width:100%;
+}
+
+.rf-p.eg3_completeUploadedImages .rf-p-b {
+	max-height:20em;
+	width:96.5%;
+	padding:0;
+	margin:1.7%;
+	overflow:auto;
+}
+.eg3_ingestPage .eg3_completeUploadedImages .rf-dg-r {
+	float:left;
+}
+
+.eg3_ingestPage .eg3_itemMetaLabel {
+	width:92%;
+	margin:0 3.9999%;
+}
+.eg3_ingestPage .eg3_itemMetaValue input {
+	width:88%;
+	margin:0 5.99999%;
+}
+.eg3_ingestPage .eg3_itemMetaValue input:focus {
+	width:100%;
+	margin:0;
 }
 
 
