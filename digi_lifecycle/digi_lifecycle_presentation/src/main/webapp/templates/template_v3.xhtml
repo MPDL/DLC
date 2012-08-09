@@ -52,9 +52,6 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:outputStylesheet library="cssFramework" name="standard.css"/>
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/appearance.css" type="text/css" rel="stylesheet" />
-			<ui:remove>
-			<h:outputStylesheet library="cssFramework" name="themes/sample_Grey/appearance.css"/>
-			</ui:remove>
 			<h:outputStylesheet library="cssFramework" name="dlc.css"/>
 			
 			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
@@ -77,7 +74,8 @@ All rights reserved. Use is subject to license terms.
 				<ui:remove>
 				<ui:insert name="breadcrumpTitle">&#160;</ui:insert>
 				</ui:remove>
-				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<ui:remove>
+				<!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
 				<ui:remove>
 				<div class="eg3_id_mainMenu" rel="section">
 					<ui:include src="../menu/mainMenu.xhtml" />
@@ -88,7 +86,7 @@ All rights reserved. Use is subject to license terms.
 				<h:panelGroup id="messages">
 					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
 						<h:panelGroup layout="block" styleClass="eg3_messageArea">
-							<h:graphicImage onclick="$(this).parent().parent().hide(1000);" url="/resources/images/Delete.png" title="" styleClass="eg3_messageCloseBtn"/>
+							<h:commandButton type="button" styleClass="eg3_messageCloseBtn eg3_icon_delete_16_16" onclick="$(this).parent().parent().hide(1000);" title=""/>
 							<ui:remove>
 							<input type="button" style="float: right; margin-right: -1%;" value="x" class="eg3_borderradius_5 eg3_messageCloseBtn" onclick="$(this).parent().parent().hide(1000);"/>
 							</ui:remove>
@@ -102,9 +100,6 @@ All rights reserved. Use is subject to license terms.
 						</script>
 					</h:panelGroup>
 				</h:panelGroup>
-				
-					
-					
 				
 				
 				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
@@ -150,9 +145,6 @@ All rights reserved. Use is subject to license terms.
 			
 			
 			<h:outputScript library="jscript" name="default.js" target="head"/>
-					
-			
-			
 		</h:body>
 	</html>
 </f:view>

@@ -73,7 +73,7 @@ public class SessionBean implements Serializable
 	    		{logoUrl = "";
 	    		setLogoTlt("DLC");} 
 	    	if (logoUrl == null || logoUrl.equals("")) 
-	    		{return "/resources/images/dlc_u160_original.gif";}
+	    		{return "/resources/images/solution_logo_216_75.png";}
 	    	else return logoUrl;
 	    }
 	    

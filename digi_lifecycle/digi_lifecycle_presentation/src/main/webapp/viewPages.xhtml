@@ -13,14 +13,14 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		
 		<ui:define name="separateContentHeader">
-			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet" />
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
 	
-			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head"/>
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head" />
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.dlcplugin.js" target="head" />
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.dlcplugin.js" target="head"/>
 		
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
@@ -28,31 +28,28 @@
 						<ui:fragment rendered="#{not empty viewCollection.col.id}">
 							<h3 class="eg3_multiVolumeTitle">
 								<pretty:link mappingId="volumes">
-									<f:param value="#{viewCollection.col.id}" />
+									<f:param value="#{viewCollection.col.id}"/>
 									<h:outputText value="#{viewPages.context.properties.name}"/>
 								</pretty:link>
 							</h3>
 						</ui:fragment>
-						<br />
-						<ui:remove>
-						<h:panelGroup styleClass="eg3_icon_multiVolume_32_32">&#160;</h:panelGroup>
-						</ui:remove>
+						<br/>
 						<h:panelGroup styleClass="eg3_floatLeft">
 							<h3 class="eg3_volumeTitle">
 								<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
-									<h:outputText value="#{volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}: "  rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}"/>
+									<h:outputText value="#{volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}: " rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}"/>
 								</h:panelGroup>
-								<h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"  rendered="#{not empty volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/>
+								
+								<h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/>
+								
 								<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
-									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)"  rendered="#{not empty volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/>
+									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)" rendered="#{not empty volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/>
 								</h:panelGroup>
 				
 								<h:outputText value=". - #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}"/>
 								<h:outputText value=" : #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}"/>
 								<h:outputText value=", #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}"/>
 								<h:outputText value="."/>
-							
-							
 							</h3>
 							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
 						</h:panelGroup>
@@ -64,40 +61,34 @@
 		<ui:define name="citationLinkContent">
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
 				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%; background-color:transparent;"/>
-				<br />
+				<br/>
 				<h:inputText id="citationLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
 			</h:panelGroup>
 		</ui:define>
-		<ui:remove>
-		<ui:define name="breadcrumpTitle">			
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
-				<mpdl:hierarchicalBreadcrumb ou="#{hierarchicalBreadcrumbHelper.getVolumeCollection(viewPages.volume)}" colId="#{viewPages.volume.item.properties.context.objid}" colName="#{viewPages.volume.item.properties.context.getXLinkTitle()}" volumes="true">
-				</mpdl:hierarchicalBreadcrumb>
-			</h:panelGroup>	
-		</ui:define>
-		</ui:remove>
+		
 		<ui:define name="mainContent">
 			<h:panelGroup styleClass="eg3_hidden">
 				<ui:repeat value="#{viewPages.pageList}" var="page">
-				<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;" />
+					<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;"/>
 				</ui:repeat>
 			</h:panelGroup>
+			
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2">
-				<!-- SIDEBAR LEFT -->
+			
+			<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
 					<h:form styleClass="eg3_overflow_z50">
 						
-					
-						<rich:tabPanel id="tabPanel" switchType="ajax" >
-							
-							
-							
+						<rich:tabPanel id="tabPanel" switchType="ajax">
 			     			
 			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();" >
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
-									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
-									<input type="button" class="eg3_modusBtn eg3_borderradius_5" value="print"/>
+				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" "/>
+				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
+				     				<ui:remove>
+										<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
+										<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
+									</ui:remove>
 								</h:panelGroup>
 								
 								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;" id="tocTreeContainer" >
@@ -122,7 +113,7 @@
 										<a4j:repeat var="var" value="#{viewPages.pageList}">
 											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail">
 												<h:commandLink  action="#{viewPages.goToPage(var)}">
-													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}" />
+													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}"/>
 													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 												</h:commandLink>
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
@@ -135,26 +126,26 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" style="width:40em" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" styleClass="eg3_container_1" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 								<h:commandButton value="#{lbl.button_command_isbd}">
-									<rich:componentControl target="isbdPopup" operation="show" />
+									<rich:componentControl target="isbdPopup" operation="show"/>
 								</h:commandButton>
 								<h:panelGroup>
 									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" editable="false"/>
-									<h:outputLink value="#{viewPages.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{viewPages.volume.modsMetadata.catalogueId_001}" />
+									<h:outputLink value="#{viewPages.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{viewPages.volume.modsMetadata.catalogueId_001}"/>
 
 
-									<!--<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}" />  -->
+									<!--<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}"/>  -->
 								</h:panelGroup>
-							    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
+							    <rich:popupPanel id="isbdPopup" modal="false" autosized="true">
 							        <f:facet name="controls">
-							            <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>
+							        	<h:commandButton onclick="#{rich:component('isbdPopup')}.hide(); return false;" value=" " styleClass="eg3_icon_close_16_16"/>
 							        </f:facet>
 							        <h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2001'}">
-										<modsViewer:isbd modsMetadata="#{viewPages.volume.modsMetadata}" />
+										<modsViewer:isbd modsMetadata="#{viewPages.volume.modsMetadata}"/>
 									</h:panelGroup>
 									<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2003'}">
-										<modsViewer:isbd_vol parentVolume="#{viewPages.volume.relatedParentVolume}" modsMetadata="#{viewPages.volume.modsMetadata}" />
+										<modsViewer:isbd_vol parentVolume="#{viewPages.volume.relatedParentVolume}" modsMetadata="#{viewPages.volume.modsMetadata}"/>
 									</h:panelGroup>
 							    </rich:popupPanel>							
 							</rich:tab>
@@ -169,112 +160,109 @@
 				
 				<h:panelGroup id="viewPage" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
 					<script type="text/javascript">
-							 /* <![CDATA[ */
-							jsf.ajax.addOnEvent(function(e)
-									{	
-										
-										//notice the container height for setting a min-height while ajax reloading
-										//without a height value the page jump to top because of to slowly image loading
-										if (e.status == "begin") {
-											$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-											eg3_closeOverlay('.eg3_collapseOverlay');
-										}
-										//if the ajax request is success
-										//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-										if(e.status=="success")
-										{
-											//scrollTree();
-											//scrollThumbs();
-										}
-									});
-									
-									function scrollTree()
-									{
-										var selectedDivId= '#{viewPages.selectedDiv.id}';
-										var containerId = "#{rich:clientId('tocTreeContainer')}";
-										
-									
-										scrollDiv(containerId, 'struct_' + selectedDivId);
+					/* <![CDATA[ */
+						function resizeFulltext() {
+							var fullText = $('.eg3_viewPage_fulltext .eg3_containerCenter');
+							if (fullText && fullText.length > 0) {
+								fullText.css('height', Math.ceil($('.eg3_viewPage_imgContainer').height() - $('.eg3_permalinkBox').height() - 2));
+								return false;
+							}
+						}
+						 
+						jsf.ajax.addOnEvent(function(e)
+						{	
+							//notice the container height for setting a min-height while ajax reloading
+							//without a height value the page jump to top because of to slowly image loading
+							if (e.status == "begin") {
+								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
+								eg3_closeOverlay('.eg3_collapseOverlay');
+							}
+							//if the ajax request is success
+							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
+							if(e.status=="success")
+							{
+								//scrollTree();
+								//scrollThumbs();
+								checkSidebarHeight('.eg3_viewPage');
+								setTimeout("resizeFulltext()", 200);
+							}
+						});
+						
+						function scrollTree()
+						{
+							var selectedDivId= '#{viewPages.selectedDiv.id}';
+							var containerId = "#{rich:clientId('tocTreeContainer')}";
+							
+							scrollDiv(containerId, 'struct_' + selectedDivId);
+							
+							resetViewPageContainer();
+							checkSidebarHeight('.eg3_viewPage');
+						}
 
-										resetViewPageContainer();
-										checkSidebarHeight('.eg3_viewPage');
-										
-										
-										
-									}
+						function scrollThumbs()
+						{
+							var selectedPageId= "#{viewPages.selectedPage.id}";
+							if(!selectedPageId)
+							{
+								selectedPageId = "#{viewPages.selectedRightPage.id}"
+							}
+							
+							var containerId = "#{rich:clientId('thumbnailContainer')}";
+							scrollDiv(containerId, selectedPageId);
+						}
 
-									function scrollThumbs()
-									{
+						function scrollDiv(containerId, scrollToClassId)
+						{
 
-										
-										var selectedPageId= "#{viewPages.selectedPage.id}";
-										if(!selectedPageId)
-										{
-											selectedPageId = "#{viewPages.selectedRightPage.id}"
-										}
-										
-										var containerId = "#{rich:clientId('thumbnailContainer')}";
-										
-										scrollDiv(containerId, selectedPageId);
-										
-										
+							if(containerId && scrollToClassId)
+							{
+								//add an backslahs before all colons					
+								containerId = containerId.replace(/:/g, "\\:");
+								var containerDiv = $('#' + containerId);
+								var scrollToElement = $('.' + scrollToClassId);
 
-									}
+								var pos = scrollToElement.offset();
+								if(pos!=null)
+								{
+									var containerPos = containerDiv.offset();				
+									var currentScroll = containerDiv.scrollTop();				
+									var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
+									containerDiv.scrollTop(newScrollPos);
+								}		
+							}
 
-									function scrollDiv(containerId, scrollToClassId)
-									{
-
-										if(containerId && scrollToClassId)
-										{
-											//add an backslahs before all colons					
-											containerId = containerId.replace(/:/g, "\\:");
-											var containerDiv = $('#' + containerId);
-											var scrollToElement = $('.' + scrollToClassId);
-
-											var pos = scrollToElement.offset();
-											if(pos!=null)
-											{
-												var containerPos = containerDiv.offset();				
-												var currentScroll = containerDiv.scrollTop();				
-												var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
-												containerDiv.scrollTop(newScrollPos);
-											}		
-										}
-
-									}
-									
-									function resetViewPageContainer() 
-									{
-										var reloadDone = false;
-										
-										$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
-										{
-											if ($(this).height() > 0) 
-											{
-												reloadDone = true;
-											}
-										});
-										(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
-									}
-									
-									$(document).ready(function(e)
-									{
-										scrollTree();
-										scrollThumbs();
-										
-										$(window).resize(function(e)
-										{
-											resizeSidebar('.eg3_viewPage');
-										});
-										
-										checkSidebarHeight('.eg3_viewPage');
-										
-									});
-									 /* ]]> */
-								</script>
-					
-					
-					
+						}
+						
+						function resetViewPageContainer() 
+						{
+							var reloadDone = false;
+							
+							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
+							{
+								if ($(this).height() > 0) 
+								{
+									reloadDone = true;
+								}
+							});
+							(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
+						}
+						
+						$(document).ready(function(e)
+						{
+							scrollTree();
+							scrollThumbs();
+							
+							$(window).resize(function(e)
+							{
+								resizeSidebar('.eg3_viewPage');
+							});
+							
+							checkSidebarHeight('.eg3_viewPage');
+							
+							resizeFulltext();
+						});
+						 /* ]]> */
+					</script>
 					
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter eg3_overflow">
@@ -342,7 +330,7 @@
 									</h:commandLink>
 									<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-											<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink" />
+											<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 								</ui:fragment>
 								
@@ -380,7 +368,7 @@
 								<h:panelGroup styleClass="eg3_gotoBox" >
 									<h:selectOneMenu value="#{viewPages.selectedPageNumber}" >
 							   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
-							   			<f:selectItems value="#{viewPages.pageListMenu}" />
+							   			<f:selectItems value="#{viewPages.pageListMenu}"/>
 							   		</h:selectOneMenu>
 						   		</h:panelGroup>
 								
@@ -432,8 +420,6 @@
 					<!--  SINGLE VIEW  -->
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 	
-						
-						
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
 							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
 								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400,viewPages.digilibQueryString)}"/>
@@ -473,8 +459,8 @@
 					        </script>
 				        </ui:fragment>
 					</h:panelGroup>
-				
-				
+					
+					
 					<!-- RECTO VERSO VIEW -->
 					<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
 						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer" rendered="#{viewPages.selectedPage!=null}">
@@ -484,55 +470,37 @@
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
 						
-						<ui:remove>
-						<h:panelGroup layout="block" styleClass="eg3_container_1_2" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
-							<span class="quad_area1 splitBlockHeader">
-								<span class="quad_area0_p4 lineToolSection">
-									<h:outputLabel styleClass="free_label sectionTool" value="#{lbl.view_dtls_page_txt} #{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1} #{lbl.toc_edit_of} #{utilBean.getListSize(viewPages.volume.pages)}"/>
-								</span>
-							</span>
-						</h:panelGroup>
-						</ui:remove>
-						
-						<h:panelGroup layout="block" styleClass="eg3_container_1_2 fulltext" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPage_fulltext eg3_content_bgColor_3" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 							<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
-							<ui:remove>
-							<span class="quad_area1 splitBlockHeader"></span>
-							</ui:remove>
-							<style type="text/css">
-			                    ins{
-			                        text-align:right;
-			                        font-style:italic;
-			                        display:inline-block;
-			                        float:right;
-			                        text-decoration:none;
-			                    }
-		                    </style>
-							
-							<div id="fulltext" class="quad_area1 splitBlockBody noTopBorder sameHeightSlave" style="background-color: white">
+							<h:panelGroup layout="block" id="fulltext" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.teiSd!=null}"/>
-							</div>
+							</h:panelGroup>
 						</h:panelGroup>	
 						
 						<!--provenance and url  -->
-						<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1 eg3_container_1">
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top" 
-							              rendered="#{viewPages.selectedPage!=null}">
-								<h:inputText styleClass="eg3_permalinkBoxText" 
-											  value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" /> 
+						<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1 eg3_container_1" rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
+								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" 
-							              rendered="#{viewPages.selectedRightPage!=null}">
-								<h:inputText styleClass="eg3_permalinkBoxText" 
-								              value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" /> 
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.selectedRightPage!=null}">
+								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true"/> 
 							</h:panelGroup>
-						</h:panelGroup>											
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1 eg3_container_1" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
+								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
+							</h:panelGroup>
+						</h:panelGroup>
+					
+					<!-- END OF RECTO_VERSO & FULLTEXT -->
 					</h:panelGroup>
 					
+			<!-- END OF viewPage container -->	
 				</h:panelGroup>
 				
-				
-			</h:panelGroup> <ui:remove>end eg3_viewPageContainer</ui:remove>
+		<!-- end eg3_viewPageContainer -->
+			</h:panelGroup>
 		</ui:define>
 	</ui:composition>
 </html>
