@@ -52,8 +52,9 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:outputStylesheet library="cssFramework" name="standard.css"/>
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/appearance.css" type="text/css" rel="stylesheet" />
-			<h:outputStylesheet library="cssFramework" name="dlc.css"/>
-			
+			<ui:remove>
+				<h:outputStylesheet library="cssFramework" name="dlc.css"/>
+			</ui:remove>
 			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
 			

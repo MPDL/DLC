@@ -8,7 +8,8 @@
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:c="http://java.sun.com/jsp/jstl/core"
 	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view">
 
 <ui:composition template="templates/template_v3.xhtml">
 	
@@ -61,51 +62,27 @@
 				<h:outputText value="&#160;"/>
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_logoImageInfotext">
-				<style type="text/css">
-					.eg3_info_panel {
-						max-width:50em;
-						padding-right:10%;
-						margin-bottom:2em;
-						display:block;
-					}
-					.eg3_info_panel h3 {
-						font-weight:bold;
-					}
-					.eg3_info_panel p {
-						margin-top:1%;
-						line-height:145%;
-					}
-				</style>
 				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-					<h:panelGroup styleClass="eg3_info_panel">
-						<h3><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h3>
-						<p>
-							Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-						</p>
-					</h:panelGroup>
+					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_projectdescription}" descriptionData="
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+					"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-					<h:panelGroup styleClass="eg3_info_panel">
-						<h3><h:outputText value="#{lbl.HomePage_title_guideline}"/></h3>
-						<p>
-							Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-						</p>
-					</h:panelGroup>
-					<h:panelGroup styleClass="eg3_info_panel">
-						<h3><h:outputText value="#{lbl.HomePage_title_install}"/></h3>
-						<p>
-							Beschreibung zum Projekt. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-						</p>
-					</h:panelGroup>
+					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_guideline}" descriptionData="
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+					"/>
+					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_install}" descriptionData="
+					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+					"/>
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -146,27 +123,9 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 			<h:outputText value="&#160;"/>
 		</h:panelGroup>
-		<style type="text/css">
-			.eg3_providerList li {
-				line-height:145%;
-			}
-		</style>
+		
 		<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-			<h:panelGroup styleClass="eg3_info_panel">
-				<h3><h:outputText value="#{lbl.HomePage_title_provider}"/></h3>
-				<p>
-					<ul class="eg3_providerList">
-						<c:forEach items="#{applicationBean.ous}" var="ou">
-							<li>
-								<pretty:link mappingId="ou">
-									<f:param value="#{ou.objid}"/>
-							    	<h:outputText value="#{ou.properties.name}"/>
-							    </pretty:link>
-							</li>
-						</c:forEach>
-					</ul>
-				</p>
-			</h:panelGroup>
+			<view:infoPanel descriptionTitle="#{lbl.HomePage_title_provider}" list="#{applicationBean.ous}" isProviderList="true"/>
 		</h:panelGroup>
 	</ui:define>
 

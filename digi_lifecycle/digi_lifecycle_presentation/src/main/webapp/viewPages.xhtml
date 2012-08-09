@@ -83,7 +83,7 @@
 			     			
 			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();" >
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" "/>
+				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" " disabled="true"/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
 				     				<ui:remove>
 										<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
@@ -105,8 +105,12 @@
 							
 							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" onenter="scrollThumbs();">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-									<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'thumbs');" value="+"/>
-									<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'thumbs');" disabled="disabled" value="-"/>
+									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'thumbs');" value=" " disabled="true"/>
+				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'thumbs');" value=" "/>
+				     				<ui:remove>
+										<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'thumbs');" value="+"/>
+										<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'thumbs');" disabled="disabled" value="-"/>
+									</ui:remove>
 								</h:panelGroup>
 								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;">
 									<h:panelGroup  layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
@@ -161,130 +165,33 @@
 				<h:panelGroup id="viewPage" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
 					<script type="text/javascript">
 					/* <![CDATA[ */
-						function resizeFulltext() {
-							var fullText = $('.eg3_viewPage_fulltext .eg3_containerCenter');
-							if (fullText && fullText.length > 0) {
-								fullText.css('height', Math.ceil($('.eg3_viewPage_imgContainer').height() - $('.eg3_permalinkBox').height() - 2));
-								return false;
-							}
-						}
-						 
-						jsf.ajax.addOnEvent(function(e)
-						{	
-							//notice the container height for setting a min-height while ajax reloading
-							//without a height value the page jump to top because of to slowly image loading
-							if (e.status == "begin") {
-								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-								eg3_closeOverlay('.eg3_collapseOverlay');
-							}
-							//if the ajax request is success
-							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-							if(e.status=="success")
-							{
-								//scrollTree();
-								//scrollThumbs();
-								checkSidebarHeight('.eg3_viewPage');
-								setTimeout("resizeFulltext()", 200);
-							}
-						});
 						
-						function scrollTree()
-						{
-							var selectedDivId= '#{viewPages.selectedDiv.id}';
-							var containerId = "#{rich:clientId('tocTreeContainer')}";
-							
-							scrollDiv(containerId, 'struct_' + selectedDivId);
-							
-							resetViewPageContainer();
-							checkSidebarHeight('.eg3_viewPage');
-						}
-
-						function scrollThumbs()
-						{
-							var selectedPageId= "#{viewPages.selectedPage.id}";
-							if(!selectedPageId)
-							{
-								selectedPageId = "#{viewPages.selectedRightPage.id}"
-							}
-							
-							var containerId = "#{rich:clientId('thumbnailContainer')}";
-							scrollDiv(containerId, selectedPageId);
-						}
-
-						function scrollDiv(containerId, scrollToClassId)
-						{
-
-							if(containerId && scrollToClassId)
-							{
-								//add an backslahs before all colons					
-								containerId = containerId.replace(/:/g, "\\:");
-								var containerDiv = $('#' + containerId);
-								var scrollToElement = $('.' + scrollToClassId);
-
-								var pos = scrollToElement.offset();
-								if(pos!=null)
-								{
-									var containerPos = containerDiv.offset();				
-									var currentScroll = containerDiv.scrollTop();				
-									var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
-									containerDiv.scrollTop(newScrollPos);
-								}		
-							}
-
-						}
-						
-						function resetViewPageContainer() 
-						{
-							var reloadDone = false;
-							
-							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
-							{
-								if ($(this).height() > 0) 
-								{
-									reloadDone = true;
-								}
-							});
-							(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
-						}
-						
-						$(document).ready(function(e)
-						{
-							scrollTree();
-							scrollThumbs();
-							
-							$(window).resize(function(e)
-							{
-								resizeSidebar('.eg3_viewPage');
-							});
-							
-							checkSidebarHeight('.eg3_viewPage');
-							
-							resizeFulltext();
-						});
 						 /* ]]> */
 					</script>
+					<h:outputScript library="jscript" name="viewPages.js" target="head"/>
 					
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter eg3_overflow">
 						<h:panelGroup layout="block" styleClass="eg3_viewModusContainer" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
 							<ui:fragment rendered="#{viewPages.selectedPage != null}">
 								<h:form>
-									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
+				     				
+									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
+									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'RECTO_VERSO') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'FULLTEXT') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == '') ? ' eg3_active' : ''}" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
@@ -292,22 +199,22 @@
 							</ui:fragment>
 							<ui:fragment rendered="#{viewPages.selectedPage == null}">
 								<h:form>
-									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn eg3_firstBtn" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
+									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
+									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'RECTO_VERSO') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == 'FULLTEXT') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSd}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
+									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_modusBtn#{(viewPages.viewType == '') ? ' eg3_active' : ''}" disabled="true" rendered="#{not empty viewPages.volume.teiSd}" title="">
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
@@ -334,7 +241,6 @@
 									</h:commandLink>
 								</ui:fragment>
 								
-								
 								<h:panelGroup styleClass="eg3_pageScanPagination">
 									<!-- left page number -->
 									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
@@ -346,7 +252,6 @@
 									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedPageNumber gt 1 and viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 										<h:panelGroup styleClass="eg3_separator">&#160;&#160;</h:panelGroup>
 									</ui:fragment>
-									
 									
 									<ui:remove>
 									<!-- page number, if the view isn't Recto Verso -->
