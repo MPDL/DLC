@@ -37,7 +37,6 @@
 										
 										<h:panelGroup styleClass="eg3_floatRight">
 											<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmOrgaPane')}.show()">
-												<!-- <h:graphicImage value="/resources/images/Delete.png" alt="delete"/> -->
 												<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}"/>
 											</a4j:commandButton>
 											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">

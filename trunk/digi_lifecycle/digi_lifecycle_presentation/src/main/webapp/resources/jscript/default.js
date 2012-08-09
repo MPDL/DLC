@@ -240,7 +240,8 @@ function eg3_openOverlay(listButton, cnt) {
 	var curTabPanel = $(listButton).parents(".rf-tbp");
 	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
 	var curControlPanel = $(listButton).parents('.eg3_iconBar');
-	console.log(cnt);
+	var sidebarLeft = $('.eg3_id_sidebarLeft');
+	
 	switch (cnt) {
 		case 'toc':
 			if (curTabPanel && curTabPanel.length > 0) {
@@ -274,8 +275,11 @@ function eg3_openOverlay(listButton, cnt) {
 			}
 			break;
 	}
-	
-	$('.eg3_id_sidebarLeft').addClass("eg3_expand");
+	if (($(window).width() * 0.8) < curTabPanelContent.width()) {
+		curTabPanelContent.removeClass("eg3_widthAuto");
+		curTabPanelContent.css("width", Math.round($(window).width() * 0.8));
+	}
+	sidebarLeft.addClass("eg3_expand");
 	$(listButton).attr('disabled', 'disabled');
 	curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
 }
@@ -288,7 +292,9 @@ function eg3_closeOverlay(listButton, cnt) {
 	var curTabPanel = $(listButton).parents(".rf-tbp");
 	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
 	var curControlPanel = $(listButton).parents('.eg3_iconBar');
+	var sidebarLeft = $('.eg3_id_sidebarLeft');
 	
+	removeAttributeValue(curTabPanelContent, "style", "width");
 	switch (cnt) {
 		case 'toc':
 			if (curTabPanel) {
@@ -323,7 +329,7 @@ function eg3_closeOverlay(listButton, cnt) {
 			break;
 	}
 	
-	$('.eg3_id_sidebarLeft').removeClass("eg3_expand");
+	sidebarLeft.removeClass("eg3_expand");
 	$(listButton).attr('disabled', 'disabled');
 	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');
 }
@@ -381,8 +387,8 @@ function rerenderJSFForms() {
  */
 
 function resizeSidebar(reference) {
-	var sdbHeight = $(reference).height();
-	
+	var refHeight = $(reference).height();
+	var sdbHeight = 0;
 	switch (reference) {
 		case '.eg3_viewPage':
 			//eg3_iconBar
@@ -391,11 +397,14 @@ function resizeSidebar(reference) {
 			var sdbLeft = $('.eg3_id_sidebarLeft');
 			//sidebar padding bottom
 			var sdbPadBot = sdbLeft.css("padding-bottom");
+			
 			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
 				sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
 			}
-			sdbPadBot = Number(sdbPadBot) + 1;
-			sdbHeight = Math.ceil(sdbHeight - sdbPadBot);
+			
+			sdbPadBot = Math.round(Number(sdbPadBot));
+			sdbHeight = Math.ceil(refHeight - sdbPadBot);
+			
 			
 			//iconBar height
 			var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
