@@ -1,3 +1,7 @@
+/**
+ * function to resize the text-area box on the right side of the image
+ * @returns {Boolean}
+ */
 function resizeFulltext() {
 	var fullText = $('.eg3_viewPage_fulltext .eg3_containerCenter');
 	if (fullText && fullText.length > 0) {
@@ -20,7 +24,7 @@ jsf.ajax.addOnEvent(function(e)
 	{
 		//scrollTree();
 		//scrollThumbs();
-		checkSidebarHeight('.eg3_viewPage');
+		checkSidebarHeight('.eg3_viewPage', "ajax");
 		setTimeout("resizeFulltext()", 200);
 	}
 });
@@ -33,7 +37,6 @@ function scrollTree()
 	scrollDiv(containerId, 'struct_' + selectedDivId);
 	
 	resetViewPageContainer();
-	checkSidebarHeight('.eg3_viewPage');
 }
 
 function scrollThumbs()
@@ -70,6 +73,9 @@ function scrollDiv(containerId, scrollToClassId)
 
 }
 
+/*
+ * function to remove the style value min-height in case of ajax functions, e.g. for pagination
+ */
 function resetViewPageContainer() 
 {
 	var reloadDone = false;
@@ -84,17 +90,14 @@ function resetViewPageContainer()
 	(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
 }
 
+
 $(document).ready(function(e)
 {
 	scrollTree();
 	scrollThumbs();
 	
-	$(window).resize(function(e)
-	{
-		resizeSidebar('.eg3_viewPage');
-	});
-	
-	checkSidebarHeight('.eg3_viewPage');
+	checkSidebarHeight('.eg3_viewPage', "init");
 	
 	resizeFulltext();
 });
+		

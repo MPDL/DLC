@@ -69,7 +69,7 @@
 		<ui:define name="mainContent">
 			<h:panelGroup styleClass="eg3_hidden">
 				<ui:repeat value="#{viewPages.pageList}" var="page">
-					<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:60px;"/>
+					<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(page.contentIds, 'THUMBNAIL')}" style="width:1px;"/>
 				</ui:repeat>
 			</h:panelGroup>
 			
@@ -195,6 +195,10 @@
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
+									
+									<h:commandLink action="#" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+										<h:outputText value="#{lbl.paginator_switchToFullscreen}"/>
+									</h:commandLink>
 								</h:form>
 							</ui:fragment>
 							<ui:fragment rendered="#{viewPages.selectedPage == null}">
@@ -218,13 +222,12 @@
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
+									
+									<h:commandLink action="#" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+										<h:outputText value="#{lbl.paginator_switchToFullscreen}"/>
+									</h:commandLink>
 								</h:form>
 							</ui:fragment>
-							
-							<ui:remove>
-								<h:outputText value="&#160;" rendered="#{empty viewPages.selectedPage}"/>
-							</ui:remove>
-							
 							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
 						</h:panelGroup>
 						
@@ -289,6 +292,11 @@
 								</ui:fragment>
 							</h:form>
 						
+						</h:panelGroup>
+						
+						<h:panelGroup style="margin-left:2%;">
+							<h:commandButton type="button" styleClass="eg3_icon_viewer_16_16#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" title="#{tlt.paginator_goToDLCViewer}"/>
+							<h:commandButton type="button" styleClass="eg3_icon_annotation_16_16" title="#{tlt.paginator_goToAnnotation}"/>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color">

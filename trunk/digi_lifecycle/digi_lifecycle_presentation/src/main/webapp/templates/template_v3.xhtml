@@ -52,13 +52,13 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:outputStylesheet library="cssFramework" name="standard.css"/>
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/appearance.css" type="text/css" rel="stylesheet" />
-			<ui:remove>
-				<h:outputStylesheet library="cssFramework" name="dlc.css"/>
-			</ui:remove>
 			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
 			
-			<link rel='SHORTCUT ICON' href='#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png'/>
+			<link rel="icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png"/>
+			<link rel="icon" type="image/image/vnd.microsoft.icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png"/>
+			<link rel="icon" type="image/ico" href="#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png"/>
+			<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/DigitizationLifecycle_Logo_cut.png"/>
 		</h:head>
 
 		<h:body lang="#{applicationBean.userLocaleString}">

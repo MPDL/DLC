@@ -2182,6 +2182,34 @@ body .eg3_id_siteTitle {
 /*****************************************************************************************************
  ******************************				global button elements			**************************
  *****************************************************************************************************/
+.eg3_icon_annotation_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_annotation_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_annotation_16_16.eg3_active {
+	background-image:url(image/ico_annotation_hover_16_16.png);
+}
+.eg3_icon_annotation_16_16:hover {
+	background-image:url(image/ico_annotation_hover_16_16.png);
+}
+
+.eg3_icon_viewer_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_dlc_viewer_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_viewer_16_16.eg3_active {
+	background-image:url(image/ico_dlc_viewer_hover_16_16.png);
+}
+.eg3_icon_viewer_16_16:hover {
+	background-image:url(image/ico_dlc_viewer_hover_16_16.png);
+}
+
 .eg3_icon_close_16_16 {
 	width:1.3333em;
 	height:1.3333em;
@@ -2230,27 +2258,33 @@ body .eg3_id_siteTitle {
 	width:1.3333em;
 	height:1.3333em;
 	margin-left:0.33333em;
-	background-image:url(image/ico_resize_small_1_deactivated_16_16.png);
+	background-image:url(image/ico_resize_small_2_deactivated_16_16.png);
 	background-color:transparent;
 }
 .eg3_icon_resizeSmall_16_16:hover {
-	background-image:url(image/ico_resize_small_1_hover_16_16.png);
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+}
+.eg3_icon_resizeSmall_16_16[disabled] {
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
 }
 .eg3_icon_resizeSmall_16_16[disabled]:hover {
-	background-image:url(image/ico_resize_small_1_deactivated_16_16.png);
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
 }
 .eg3_icon_resizeMedium_16_16 {
 	width:1.3333em;
 	height:1.3333em;
 	margin-left:0.33333em;
-	background-image:url(image/ico_resize_medium_1_deactivated_16_16.png);
+	background-image:url(image/ico_resize_medium_2_deactivated_16_16.png);
 	background-color:transparent;
 }
 .eg3_icon_resizeMedium_16_16:hover {
-	background-image:url(image/ico_resize_medium_1_hover_16_16.png);
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+}
+.eg3_icon_resizeMedium_16_16[disabled] {
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
 }
 .eg3_icon_resizeMedium_16_16[disabled]:hover {
-	background-image:url(image/ico_resize_medium_1_deactivated_16_16.png);
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
 }
 .eg3_ico_add_16 {
 	background-image:url(image/ico_window_plus_static_16_16.png);
@@ -2437,6 +2471,7 @@ body .eg3_id_siteTitle {
 	background-color:#EA7125;
 }
 .rf-tab-cnt .eg3_thumbnail .eg3_thumbnailLabel {
+	display:block;
 	font-size:120%;
 }
 
