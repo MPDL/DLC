@@ -125,8 +125,7 @@ function resizeSelectBox() {
 		}
 	});
 	updateCustomSelectBox();
-	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
-	$(window).bind("resize", function() { resizeSelectBox(); } );
+	initWindowResizeListener();
 }
 
 
@@ -381,6 +380,22 @@ function rerenderJSFForms() {
 }
 
 
+
+function checkIconbar(icoBar) {
+	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible').attr("id").split(":")[1];
+	console.log(activeTab);
+	switch(activeTab) {
+		case 'toc':
+			if ($('.eg3_contentDetails .rf-tr').width() < $('.eg3_contentDetails').width()) {
+				$('.eg3_collapseOverlay, .eg3_expandOverlay').attr('disabled', 'disabled');
+			}
+			break;
+	}
+	
+	/*
+	*/
+}
+
 /**
  * sidebar functions
  * @used by viewPages.xhtml & co.
@@ -393,6 +408,7 @@ function resizeSidebar(reference) {
 		case '.eg3_viewPage':
 			//eg3_iconBar
 			var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+			checkIconbar(icoBar);
 			//sidebar left
 			var sdbLeft = $('.eg3_id_sidebarLeft');
 			//sidebar padding bottom
@@ -425,7 +441,10 @@ function resizeSidebar(reference) {
 /*
  * function to check if the reference has a defined height
  */
-function checkSidebarHeight(reference) {
+function checkSidebarHeight(reference, call) {
+	if (call) {
+		console.log("call: "+call);
+	}
 	
 	switch (reference) {
 		case '.eg3_viewPage': //the defined height is given by one of the contained images
@@ -511,6 +530,23 @@ function checkMessageContent() {
 	}
 }
 
+
+/**
+ * function to resize all dynamic selectboxes and specific page moduls on the window resize event
+ */
+function initWindowResizeListener() {
+	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
+	$(window).bind("resize", function() 
+		{ 
+			resizeSelectBox();
+			if ($('.eg3_id_sidebarLeft').length > 0) {
+				checkSidebarHeight('.eg3_viewPage', "window");
+			}
+		} 
+	);
+}
+
+
 $(document).ready(function(e) {
 	/*
 	 * use the setTimeout method only if you load the content via ajax 
@@ -527,4 +563,6 @@ $(document).ready(function(e) {
 	addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
 	rerenderJSFForms();
+	
+	initWindowResizeListener();
 });
