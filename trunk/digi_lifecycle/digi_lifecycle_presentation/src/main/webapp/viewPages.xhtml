@@ -195,10 +195,15 @@
 										<h:outputText value="#{lbl.view_xmlPage}"/>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
-									
-									<h:commandLink action="#" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+	
+	
+									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+										<f:param value="#{viewPages.volumeId}" />
+										<f:param value="#{viewPages.viewTypeText}" />
+										<f:param value="#{viewPages.selectedPageNumber}" />
+	
 										<h:outputText value="#{lbl.paginator_switchToFullscreen}"/>
-									</h:commandLink>
+									</pretty:link>
 								</h:form>
 							</ui:fragment>
 							<ui:fragment rendered="#{viewPages.selectedPage == null}">
@@ -223,9 +228,13 @@
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
 									
-									<h:commandLink action="#" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+										<f:param value="#{viewPages.volumeId}" />
+										<f:param value="#{viewPages.viewTypeText}" />
+										<f:param value="#{viewPages.selectedPageNumber}" />
+	
 										<h:outputText value="#{lbl.paginator_switchToFullscreen}"/>
-									</h:commandLink>
+									</pretty:link>
 								</h:form>
 							</ui:fragment>
 							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
