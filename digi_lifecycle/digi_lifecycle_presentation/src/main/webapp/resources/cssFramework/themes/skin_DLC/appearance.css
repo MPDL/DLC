@@ -1879,6 +1879,23 @@ body .eg3_id_siteTitle {
 }
 
 
+
+
+.eg3_fullscreenPage .eg3_viewPageMenu {
+	color:#F0F0F0;
+	background-color:#2F2F2F;
+}
+.eg3_fullscreenPage .eg3_viewPageMenu a:hover {
+	text-decoration:none;
+}
+.eg3_fullscreenPage .eg3_viewPageMenu .eg3_gotoBox {
+	display:none;
+	color:#F0F0F0;
+}
+.eg3_fullscreenPage .eg3_viewPageMenu .eg3_icon_closei_16_16 {
+	cursor:pointer;
+}
+
 /*************************************************************************************************************
  ******************************				overlay menu with tabs				******************************
  *************************************************************************************************************/
@@ -2218,6 +2235,17 @@ body .eg3_id_siteTitle {
 	background-color:transparent;
 }
 .eg3_icon_close_16_16:hover {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_closei_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_close_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_closei_16_16:hover {
 	background-image:url(image/ico_close_hover_16_16.png);
 	text-decoration:none;
 }
