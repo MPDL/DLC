@@ -1806,7 +1806,11 @@ body .eg3_id_siteTitle {
 }
 .eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPageNumbers {
 	margin-top:1em;
-	margin-left:2em;
+	margin-bottom:1em;
+}
+.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPagination {
+	margin-top:1em;
+	margin-bottom:1em;
 }
 .eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
 	margin-right:3em;
@@ -1815,7 +1819,35 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
 	margin-bottom:1em;
 }
-
+.eg3_pageEditingContainer input[type=submit] {
+	background-color:transparent;
+	color:#F0F0F0;
+	border-bottom:solid 0.083333em #F0F0F0;
+	margin:0.5em 0 0 0;
+	padding:0;
+}
+.eg3_pageEditingContainer input[type=submit]:hover {
+	color:#EA7125;
+	border-bottom:solid 0.083333em #EA7125;
+	text-decoration:none;
+	margin:0.5em 0 0 0;
+	padding:0;
+}
+.eg3_pageEditingContainer h3 {
+	color:#2F2F2F;
+	background-color:#CACA86;
+	padding-left:1%;
+	padding-right:1%;
+}
+.eg3_pageEditingContainer hr {
+	background-color:#F0F0F0; 
+	margin:1em 0; 
+	height:0.09em;
+}
+.eg3_pageEditingContainer hr.eg3_containerCenter {
+	margin-left:auto;
+	margin-right:auto;
+}
 
 .eg3_singleEdit .eg3_editContent div.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
 	background:none;
