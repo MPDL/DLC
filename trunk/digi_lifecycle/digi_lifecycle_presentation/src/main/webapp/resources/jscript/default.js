@@ -59,10 +59,10 @@ function updateCustomSelectBox(obj) {
 			var parent = null;
 			if (parent = searchParentTag(this, "eg3_dynamicSelectBox_js")) {
 				var val = $(this).val();
-				$(this).find("option").each(function(i){
-					if ($(this).val() == val) {
-						val = $(this).text();
-						$(this).parent().attr("title", val);
+				$(this).find("option").each(function(i, opt){
+					if ($(opt).val() == val) {
+						val = $(opt).text();
+						$(opt).parent().attr("title", val);
 					}
 				});
 				$(parent).find(".eg3_selectionText").html(val).attr("title", val);
@@ -70,6 +70,7 @@ function updateCustomSelectBox(obj) {
 		});
 	} else {
 		$(obj).prev().find('.eg3_selectionText').text(obj.options[obj.selectedIndex].text);
+		$(obj).attr("title", obj.options[obj.selectedIndex].text);
 	}
 }
 
@@ -90,7 +91,7 @@ function resizeSelectBox() {
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
 			var marL = Number(selCont.css("margin-left").replace("px", ""));
 			var marR = Number(selCont.css("margin-right").replace("px", ""));
-			
+			console.log("undefined");
 			slctTag = dynSB.find('select'); //save the select tag in the object variable
 			
 			//if a ajax reload given or the browser had been resized
