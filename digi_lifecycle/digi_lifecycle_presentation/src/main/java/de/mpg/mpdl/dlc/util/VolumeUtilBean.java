@@ -41,6 +41,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Back;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.Front;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
@@ -531,6 +532,22 @@ public class VolumeUtilBean {
 		else
 		{
 			list.add(new ModsIdentifier());
+		}
+		
+		
+	}
+	
+	
+	public void addNewTeiDocAuthor(Integer pos, List<DocAuthor> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(pos+1, new DocAuthor());
+		}
+		else
+		{
+			list.add(new DocAuthor());
 		}
 		
 		

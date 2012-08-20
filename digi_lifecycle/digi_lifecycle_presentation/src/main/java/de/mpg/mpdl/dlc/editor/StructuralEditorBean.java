@@ -34,6 +34,7 @@ import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.DocTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Figure;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
@@ -166,11 +167,7 @@ public class StructuralEditorBean {
 		this.currentTeiElementType=ElementType.DIV;
 		this.selectedStructuralType="chapter";
 		
-		this.currentNewElement = new TeiElementWrapper();
-		Div div = new Div();
-		div.setType("chapter");
-		div.getHead().add("");
-		this.currentNewElement.setTeiElement(div);
+		selectedStructuralElementTypeChanged();
 		
 		this.selectedPaginationType = PaginationType.ARABIC;
 		this.selectedPaginationStartValue = "1";
@@ -664,6 +661,8 @@ public class StructuralEditorBean {
 			
 			div.getHead().add("");
 			
+			div.getDocAuthors().add(new DocAuthor());
+			
 			currentNewElement.setTeiElement(div);
 		}
 		
@@ -739,6 +738,7 @@ public class StructuralEditorBean {
 			}
 			
 			div.getHead().add("");
+			div.getDocAuthors().add(new DocAuthor());
 			
 			currentEditElementWrapper.setTeiElement(div);
 		}

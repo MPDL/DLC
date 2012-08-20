@@ -28,6 +28,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
+import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
@@ -266,6 +267,25 @@ public class Export {
 					{
 						entry += elem.getNumeration();
 					}
+					
+					if(elem.getDocAuthors()!=null && elem.getDocAuthors().size()>0)
+					{
+						int n=0;
+						for(DocAuthor docAuthor : elem.getDocAuthors())
+						{
+							if(n>0)
+							{
+								entry += "; ";
+							}
+							
+							entry += docAuthor.getAuthor();
+							n++;
+							
+						}
+						entry += " : ";
+					}
+					
+					/*
 					if (elem.getAuthor1inv() != null)
 					{
 						entry += elem.getAuthor1inv();
@@ -283,6 +303,7 @@ public class Export {
 					{
 						entry += " : ";
 					}
+					*/
 					if (elem.getHead().size() > 0)
 					{
 						entry += " [" + elem.getHead().get(0) + "]";
