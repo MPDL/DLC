@@ -8,7 +8,7 @@ import org.apache.xmlbeans.XmlException;
 import de.ddb.professionell.mabxml.mabxml1.DateiDocument;
 import de.ddb.professionell.mabxml.mabxml1.DatensatzType;
 import de.ddb.professionell.mabxml.mabxml1.FeldType;
-import de.mpg.mpdl.dlc.escidoc.XBeanUtils;
+
 
 import gov.loc.mods.v3.ModsDefinition;
 import gov.loc.mods.v3.ModsDocument;
