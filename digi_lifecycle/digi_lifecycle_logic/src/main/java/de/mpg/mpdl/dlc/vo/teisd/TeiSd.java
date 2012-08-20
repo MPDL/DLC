@@ -1,15 +1,7 @@
 package de.mpg.mpdl.dlc.vo.teisd;
 
-import gov.loc.mets.DivType;
-import gov.loc.mets.FileType;
-import gov.loc.mets.MetsDocument;
-import gov.loc.mets.MetsType.FileSec.FileGrp;
-import gov.loc.mets.StructMapType;
-import gov.loc.mods.v3.ModsDocument;
-import gov.loc.mods.v3.ModsType;
 
 import java.io.File;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,18 +18,8 @@ import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.xmlbeans.XmlCursor;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.eclipse.persistence.oxm.annotations.XmlPaths;
-import org.w3c.dom.Node;
-
-
-import de.escidoc.core.resources.common.MetadataRecord;
-import de.escidoc.core.resources.common.Properties;
-import de.escidoc.core.resources.om.item.Item;
-import de.escidoc.core.resources.om.item.ItemProperties;
-import de.mpg.mpdl.dlc.vo.Volume;
-import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 @XmlRootElement(name="TEI", namespace="http://www.tei-c.org/ns/1.0")
 @XmlAccessorType(XmlAccessType.FIELD)

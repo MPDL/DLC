@@ -27,7 +27,6 @@ import de.ddb.conversion.ConverterException;
 import de.ddb.professionell.mabxml.mabxml1.DateiDocument;
 import de.ddb.professionell.mabxml.mabxml1.DatensatzType;
 import de.ddb.professionell.mabxml.mabxml1.FeldType;
-import de.mpg.mpdl.dlc.wf.testing.EscidocTests;
 
 public class MabXmlTransformation {
 

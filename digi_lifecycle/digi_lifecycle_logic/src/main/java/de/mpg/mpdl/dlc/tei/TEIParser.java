@@ -32,8 +32,6 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import de.mpg.mpdl.dlc.wf.testing.XMLParser;
-
 public class TEIParser {
 
 	static XMLInputFactory inputFactory = null;
@@ -460,7 +458,7 @@ public class TEIParser {
 				}
 			}
 
-			InputStream xslt = XMLParser.class.getClassLoader()
+			InputStream xslt = TEIParser.class.getClassLoader()
 					.getResourceAsStream("xslt/teiToXhtml/tei_page2xhtml.xsl");
 
 			URL xsltUrl = TEIParser.class.getClassLoader().getResource(
