@@ -81,7 +81,7 @@
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax">
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();" >
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" " disabled="true"/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
@@ -91,8 +91,8 @@
 									</ui:remove>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;" id="tocTreeContainer" >
-									<rich:tree toggleType="ajax" var="divItem" >
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;" id="tocTreeContainer">
+									<rich:tree toggleType="ajax" var="divItem">
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
 												<mpdl:treeEntry teiElement="#{divItem}" linkAction="#{viewPages.goTo(divItem)}" linkStyleClass="struct_#{divItem.id} #{divItem == viewPages.selectedDiv ? 'eg3_active' : ''}"
@@ -255,42 +255,36 @@
 								
 								<h:panelGroup styleClass="eg3_pageScanPagination">
 									<!-- left page number -->
-									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
 									<ui:fragment rendered="#{not empty viewPages.selectedPage.orderLabel and viewPages.selectedPage != null}">
-										<h:outputText value=" / #{viewPages.selectedPage.orderLabel}" rendered="#{viewPages.selectedPage != null}"/>
+										<h:outputText value="#{lbl.list_Page} #{viewPages.selectedPage.orderLabel} / " rendered="#{viewPages.selectedPage != null}"/>
 									</ui:fragment>
+									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
 									
-									
-									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedPageNumber gt 1 and viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
+									<!-- separator -->
+									<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedPageNumber gt 1 and viewPages.selectedRightPage!=null}">
 										<h:panelGroup styleClass="eg3_separator">&#160;&#160;</h:panelGroup>
 									</ui:fragment>
 									
-									<ui:remove>
-									<!-- page number, if the view isn't Recto Verso -->
-									<ui:fragment rendered="#{viewPages.viewType != 'RECTO_VERSO'}">
-										<h:outputText value=" /  #{viewPages.volume.pages.size()}"/>
-									</ui:fragment>
-									</ui:remove>
-									
 									<!-- right page number -->
-									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
 									<ui:fragment rendered="#{not empty viewPages.selectedRightPage.orderLabel and viewPages.selectedRightPage != null}">
-										<h:outputText value=" / #{viewPages.selectedRightPage.orderLabel}"/>
+										<h:outputText value="#{lbl.list_Page}  #{viewPages.selectedRightPage.orderLabel} / "/>
 									</ui:fragment>
+									<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
+									
 									<ui:fragment rendered="#{viewPages.volume.pages.size() > 1}">
 										<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageScanPagination', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
 									</ui:fragment>
 								</h:panelGroup>
 								
-								<h:panelGroup styleClass="eg3_gotoBox" >
-									<h:selectOneMenu value="#{viewPages.selectedPageNumber}" >
+								<h:panelGroup styleClass="eg3_gotoBox">
+									<h:selectOneMenu value="#{viewPages.selectedPageNumber}">
 							   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 							   			<f:selectItems value="#{viewPages.pageListMenu}"/>
 							   		</h:selectOneMenu>
 						   		</h:panelGroup>
 								
 								<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-									<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+									<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
 										<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 									</h:commandLink>
@@ -388,7 +382,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer" rendered="#{viewPages.selectedPage!=null}">
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer #{empty viewPages.selectedPage ? 'eg3_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}" >
+						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer #{empty viewPages.selectedPage ? 'eg3_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
 						

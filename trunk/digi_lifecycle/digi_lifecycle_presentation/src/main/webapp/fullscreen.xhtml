@@ -31,10 +31,8 @@
 							</ui:fragment>
 							
 							<h:panelGroup styleClass="eg3_pageScanPagination">
+								<h:outputText value="#{lbl.list_Page} #{fullScreen.selectedPage.orderLabel} / " rendered="#{not empty fullScreen.selectedPage.orderLabel and fullScreen.selectedPage != null}"/>
 								<h:outputText value="#{lbl.list_Scan} #{fullScreen.selectedPage.order+1}" rendered="#{fullScreen.selectedPage != null}"/>
-								<ui:fragment rendered="#{not empty fullScreen.selectedPage.orderLabel and fullScreen.selectedPage != null}">
-									<h:outputText value=" / #{fullScreen.selectedPage.orderLabel}" rendered="#{fullScreen.selectedPage != null}"/>
-								</ui:fragment>
 								
 								<ui:fragment rendered="#{fullScreen.volume.pages.size() > 1}">
 									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageScanPagination', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
@@ -42,7 +40,7 @@
 							</h:panelGroup>
 							
 							
-							<h:panelGroup styleClass="eg3_gotoBox" >
+							<h:panelGroup styleClass="eg3_gotoBox">
 								<h:selectOneMenu value="#{fullScreen.selectedPageNumber}" >
 						   			<f:ajax event="change" listener="#{fullScreen.pageNumberChanged}" render=":fullScreen"/>
 						   			<f:selectItems value="#{fullScreen.pageListMenu}"/>
