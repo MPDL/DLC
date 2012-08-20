@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
-import de.mpg.mpdl.dlc.wf.testing.TEITest;
 
 public class TreeWrapperNode {
 
