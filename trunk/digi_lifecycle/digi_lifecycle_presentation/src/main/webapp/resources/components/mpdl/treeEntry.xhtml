@@ -29,10 +29,10 @@
 			<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',cc.attrs.teiElement.type)}]" rendered="#{not empty cc.attrs.teiElement.type}"/>
 			<h:outputText value="[-]" rendered="#{empty cc.attrs.teiElement.type}"/>
 			<h:outputText value=" #{cc.attrs.teiElement.numeration} " rendered="#{not empty cc.attrs.teiElement.numeration}"/>
-			<h:outputText value=" #{cc.attrs.teiElement.author1inv}" rendered="#{not empty cc.attrs.teiElement.author1inv}"/>
-			<h:outputText value="; #{cc.attrs.teiElement.author2inv}" rendered="#{not empty cc.attrs.teiElement.author2inv}"/>
-			<h:outputText value="; #{cc.attrs.teiElement.author3inv}" rendered="#{not empty cc.attrs.teiElement.author3inv}"/>
-			<h:outputText value=":" rendered="#{(not empty cc.attrs.teiElement.author1inv or not empty cc.attrs.teiElement.author2inv or not empty cc.attrs.teiElement.author3inv) and not empty cc.attrs.teiElement.head}"/>
+			<h:outputText value=" #{cc.attrs.teiElement.docAuthors[0].invertedAuthor}" rendered="#{cc.attrs.teiElement.docAuthors.size() > 0 and not empty cc.attrs.teiElement.docAuthors[0].invertedAuthor}"/>
+			<h:outputText value="; #{cc.attrs.teiElement.docAuthors[1].invertedAuthor}" rendered="#{cc.attrs.teiElement.docAuthors.size() > 1 and not empty cc.attrs.teiElement.docAuthors[1].invertedAuthor}"/>
+			<h:outputText value="; #{cc.attrs.teiElement.docAuthors[2].invertedAuthor}" rendered="#{cc.attrs.teiElement.docAuthors.size() > 2 and not empty cc.attrs.teiElement.docAuthors[2].invertedAuthor}"/>
+			<h:outputText value=":" rendered="#{cc.attrs.teiElement.docAuthors.size() > 0 and not empty cc.attrs.teiElement.head}"/>
 		</h:panelGroup>
 		
 		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='FRONT' or cc.attrs.teiElement.elementType=='BODY' or cc.attrs.teiElement.elementType=='BACK'}">

@@ -69,6 +69,34 @@
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}"/>
 			</h:panelGroup>
 			
+
+			<a4j:repeat value="#{cc.attrs.teiWrapper.teiElement.docAuthors}" var="docAuthor" rowKeyVar="rowKey">
+				<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
+					<h:outputText value="#{lbl.edit_author}"/>
+					<br/>
+					<h:inputText value="#{docAuthor.author}"/>
+					<br/>
+					<h:outputText value="#{lbl.edit_authorInv}"/>
+					<br/>
+					<h:inputText value="#{docAuthor.invertedAuthor}"/>
+					<br/>
+					<h:outputText value="#{lbl.edit_authorPnd}"/>
+					<br/>
+					<h:inputText value="#{docAuthor.key}"/>
+				</h:panelGroup>
+				<h:panelGroup styleClass="eg3_floatRight">
+					<h:commandButton action="#{volumeUtilBean.addNewTeiDocAuthor(rowKey, cc.attrs.teiWrapper.teiElement.docAuthors)}" value=" " title="#{tlt.edit_add_item}#{lbl.edit_author}" styleClass="eg3_ico_add_16">
+						 <f:ajax render="@form" execute="@form"/>
+					</h:commandButton>
+					<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.teiWrapper.teiElement.docAuthors)}" value=" " title="#{tlt.edit_remove_item}#{lbl.edit_author}" styleClass="eg3_ico_remove_16" rendered="#{cc.attrs.teiWrapper.teiElement.docAuthors.size() gt 1}">
+						 <f:ajax render="@form" execute="@form"/>
+					</h:commandButton>
+				</h:panelGroup>
+			</a4j:repeat>
+			
+			
+			<ui:remove>
+			<!-- 
 			<h:panelGroup layout="block" styleClass="eg3_editInputArea" >
 				<h:outputText value="#{lbl.edit_author} 1"/>
 				<br/>
@@ -108,6 +136,8 @@
 				<br/>
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.author3pnd}"/>
 			</h:panelGroup>
+			-->
+			</ui:remove>
 			</h:panelGroup>
 		</ui:fragment>
 	          

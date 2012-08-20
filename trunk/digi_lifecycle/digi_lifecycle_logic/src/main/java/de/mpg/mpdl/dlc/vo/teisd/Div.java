@@ -17,7 +17,7 @@ import org.eclipse.persistence.oxm.annotations.XmlPaths;
 public class Div extends PbOrDiv {
 	
 	
-	
+	/*
 	@XmlAttribute(name="author1")
 	private String author1;
 	
@@ -48,6 +48,10 @@ public class Div extends PbOrDiv {
 	@XmlAttribute(name="author3pnd")
 	private String author3pnd;
 	
+	*/
+	
+	private List<DocAuthor> docAuthors = new ArrayList<DocAuthor>();
+	
 	@XmlPath("tei:head/text()")
 	private List<String> head = new ArrayList<String>();
 	
@@ -66,6 +70,8 @@ public class Div extends PbOrDiv {
 	{
 		super(original);
 		this.setElementType(ElementType.DIV);
+		
+		/*
 		this.setAuthor1(original.getAuthor1());
 		this.setAuthor2(original.getAuthor2());
 		this.setAuthor3(original.getAuthor3());
@@ -78,12 +84,22 @@ public class Div extends PbOrDiv {
 		this.setAuthor2pnd(original.getAuthor2pnd());
 		this.setAuthor3pnd(original.getAuthor3pnd());
 
+*/
+		
+		List<DocAuthor> docAuthorList = new ArrayList<DocAuthor>();
+		
+		for(DocAuthor originalDocAuthor : original.getDocAuthors())
+		{
+			docAuthorList.add(new DocAuthor(originalDocAuthor));
+		}
+		this.setDocAuthors(docAuthorList);
+		
 		List<String> head = new ArrayList<String>();
 		head.addAll(original.getHead());
 		this.setHead(head);
 	}
 
-	
+	/*
 	public String getAuthor1() {
 		return author1;
 	}
@@ -156,6 +172,7 @@ public class Div extends PbOrDiv {
 		this.author3pnd = author3pnd;
 	}
 
+*/
 	public List<String> getHead() {
 		return head;
 	}
@@ -167,6 +184,19 @@ public class Div extends PbOrDiv {
 	public static List<String> headListFactory()
 	{
 		return new ArrayList<String>();
+	}
+	
+	public static List<DocAuthor> docAuthorListFactory()
+	{
+		return new ArrayList<DocAuthor>();
+	}
+
+	public List<DocAuthor> getDocAuthors() {
+		return docAuthors;
+	}
+
+	public void setDocAuthors(List<DocAuthor> docAuthors) {
+		this.docAuthors = docAuthors;
 	}
 	
 	
