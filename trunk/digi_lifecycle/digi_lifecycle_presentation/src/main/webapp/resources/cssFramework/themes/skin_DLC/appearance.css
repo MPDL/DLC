@@ -414,7 +414,9 @@ body .eg3_id_siteTitle {
 	height:1.3333333em;
 	margin-right:0.16666666em;
 }
-
+.eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
+	background-color:#FFFFFF;
+}
 .eg3_metaMenu .eg3_separator {
 	padding:0;
 	margin:0 2em;
@@ -2323,12 +2325,14 @@ body .eg3_id_siteTitle {
 }
 .eg3_icon_resizeSmall_16_16:hover {
 	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_icon_resizeSmall_16_16[disabled] {
 	background-image:url(image/ico_resize_small_2_hover_16_16.png);
 }
 .eg3_icon_resizeSmall_16_16[disabled]:hover {
 	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_icon_resizeMedium_16_16 {
 	width:1.3333em;
@@ -2339,12 +2343,14 @@ body .eg3_id_siteTitle {
 }
 .eg3_icon_resizeMedium_16_16:hover {
 	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_icon_resizeMedium_16_16[disabled] {
 	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
 }
 .eg3_icon_resizeMedium_16_16[disabled]:hover {
 	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_ico_add_16 {
 	background-image:url(image/ico_window_plus_static_16_16.png);
@@ -2354,6 +2360,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_ico_add_16:hover {
 	background-image:url(image/ico_window_plus_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_ico_remove_16 {
 	background-image:url(image/ico_window_minus_static_16_16.png);
@@ -2363,6 +2370,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_ico_remove_16:hover {
 	background-image:url(image/ico_window_minus_hover_16_16.png);
+	text-decoration:none;
 }
 /* invert colored icons */
 .eg3_ico_addi_16 {
@@ -2373,6 +2381,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_ico_addi_16:hover {
 	background-image:url(image/ico_window_plus_hover_16_16.png);
+	text-decoration:none;
 }
 .eg3_ico_removei_16 {
 	background-image:url(image/ico_window_minus_deactivated_16_16.png);
@@ -2382,6 +2391,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_ico_removei_16:hover {
 	background-image:url(image/ico_window_minus_hover_16_16.png);
+	text-decoration:none;
 }
 
 .eg3_ico_sortASC_16 {
@@ -2526,8 +2536,7 @@ body .eg3_id_siteTitle {
 	padding:10% 10% 0 10%;
 }
 
-.rf-tab-cnt .eg3_thumbnail.eg3_active img, 
-.eg3_id_sidebarLeft .rt-tab .eg3_thumbnail img.eg3_active {
+.rf-tab-cnt .eg3_thumbnail.eg3_active {
 	background-color:#EA7125;
 }
 .rf-tab-cnt .eg3_thumbnail .eg3_thumbnailLabel {
