@@ -1,14 +1,15 @@
 // Custom example logic
-function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, maxFileSize) {
+function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, silverlightUrl, maxFileSize) {
 	
 	//alert('Start');
 	var styledUploader = $("#pluploader").pluploadQueue({
 		// General settings
 		preinit: attachCallbacks,
-		runtimes : 'html5',
+		runtimes : 'html5,flash',
 		url : url + ';jsessionid=' + sessionId,
 		max_file_size : '200mb',
 		flash_swf_url : flashUrl,
+		silverlight_xap_url : silverlightUrl,
 		multi_selection : true,
 		multipart : true,
 		multiple_queues : true,
@@ -50,10 +51,17 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 			{
 //				alert($('#'+clientId).find('.hiddenUploadCompleteButton'));
 				$('#'+clientId).find('.hiddenUploadCompleteButton').click();
-		
-//				var element = document.getElementById(clientId);
+				//console.log('UploadComplete');
+				
+				
+				//var element = document.getElementById(clientId);
+				//jsf.ajax.request(element, null, {execute:this.id, render:rerender});
+				//RichFaces.ajax(this,event,{"parameters":{"javax.faces.behavior.event":"click","org.richfaces.ajax.component":"j_idt80:j_idt93:hiddenUploadCompleteButton"} ,"sourceId":this} );
+				
+				
 				// dragSource doesn't work after being rerendered via ajax. see: https://issues.jboss.org/browse/RF-10947
-				//	jsf.ajax.request(element, null, {execute:this.id, render:rerender});
+				
+				/*
 				$.ajax({
 					url: url + ';jsessionid=' + sessionId,
 					success:function(){
@@ -61,6 +69,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, m
 
 					}
 				});
+				*/
 
 			}
 			

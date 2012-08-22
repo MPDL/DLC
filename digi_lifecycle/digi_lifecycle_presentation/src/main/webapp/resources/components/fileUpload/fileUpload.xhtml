@@ -33,41 +33,15 @@
 		<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
 		-->
 	</ui:remove>
-		<h:outputStylesheet library="components/fileUpload/plupload/img" />
+		<h:outputStylesheet library="components/fileUpload/plupload/img"/>
 	
 		<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
 		<!-- Load source versions of the plupload script files -->
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.gears.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.silverlight.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.flash.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.browserplus.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.html5.js"/>
-		<h:outputScript library="components/fileUpload/plupload" name="plupload.html4.js"/>
-		<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js"/>
-	    <h:outputScript library="components/fileUpload" name="plupload_custom.js"/>
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.full.js" target="head"/>
+		<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js" target="head"/>
+	    <h:outputScript library="components/fileUpload" name="plupload_custom.js" target="head"/>
 	    
-	    <script type="text/javascript">
-				$(function(){
-					initUploader('#{cc.clientId}', '#{cc.attrs.rerender}', getViewState(), '#{session.id}', '#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}', '#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf')
-				})
-				
-				function getViewState()
-				{
-					if(document.getElementsByName('javax.faces.ViewState')[0])
-					{
-						var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
-						var regExp = new RegExp('\\+','g');
-						var encodedViewState = viewStateValue.replace(regExp, '\%2B');
-						return encodedViewState;
-					}
-					else
-					{
-						return '';
-					}
-				}
-			//	$("link[href$='standard.css']").remove();
-	    </script>
+	    
 		<style type="text/css">
 			#upload {
 				float:none;
@@ -118,13 +92,42 @@
 				text-align:center;
 			}
 		</style>
+
+		<script type="text/javascript">
+	   			 $(function(e)
+				{
+					initUploader('#{cc.clientId}', 
+							'#{cc.attrs.rerender}',
+							getViewState(),
+							'#{session.id}',
+							'#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}',
+							'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf',
+							'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.silverlight.xap');
+				});
+				
+				function getViewState()
+				{
+					if(document.getElementsByName('javax.faces.ViewState')[0])
+					{
+						var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+						var regExp = new RegExp('\\+','g');
+						var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+						return encodedViewState;
+					}
+					else
+					{
+						return '';
+					}
+				}
+			//	$("link[href$='standard.css']").remove();
+	    </script>
 	
 		<h:form>
 			<div id="#{cc.clientId}" style="width:100%;">
 		 
 			 	<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
 				
-		<ui:remove>		
+			
 				<!-- 
 					<div id="filelist">No runtime found.</div>
 					<br />
@@ -135,10 +138,11 @@
 					</a>
 	-->
 	 
-				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" value="hidden">
+				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="visibility:hidden; display:none;">
 					<a4j:ajax event="click" render="#{cc.attrs.rerender}"/>
 				</h:commandButton>
-		</ui:remove>		 	
+
+				 	
 		    </div>
 		</h:form>
 	</cc:implementation>
