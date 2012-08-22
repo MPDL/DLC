@@ -26,7 +26,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 			'javax.faces.ViewState' : viewState,
 			'javax.faces.partial.ajax' : '1',
 			'javax.faces.partial.execute' : clientId,
-			'javax.faces.source' : clientId,
+			'javax.faces.source' : clientId
 			//'javax.faces.partial.render' : rerender
 			//clientId.toString() : ''
 			
