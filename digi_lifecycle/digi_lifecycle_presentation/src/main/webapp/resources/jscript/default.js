@@ -79,6 +79,7 @@ function updateCustomSelectBox(obj) {
  * resize all dynamic selectBox container to the correct size of invisible selectbox 
  */
 function resizeSelectBox() {
+	
 	$(".eg3_dynamicSelectBox_js").each(function(ind, dynBox) {
 		var selCont = null; //variable for the selectionContent div
 		var dynSB = $(dynBox); // object of the dynamicSelectBox_js
@@ -91,7 +92,7 @@ function resizeSelectBox() {
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
 			var marL = Number(selCont.css("margin-left").replace("px", ""));
 			var marR = Number(selCont.css("margin-right").replace("px", ""));
-			console.log("undefined");
+			//console.log("undefined");
 			slctTag = dynSB.find('select'); //save the select tag in the object variable
 			
 			//if a ajax reload given or the browser had been resized
@@ -345,7 +346,7 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 	$(show_element).show();
 	if (escListener && escListener === true) {
 		$(document).keyup(function(e) {
-			console.log(e.which);
+			//console.log(e.which);
 			switch (e.which) {
 				case 0: //esc button in firefox
 				case 27: //esc button in chrome and IE >= 8
@@ -384,7 +385,7 @@ function rerenderJSFForms() {
 
 function checkIconbar(icoBar) {
 	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible').attr("id").split(":")[1];
-	console.log(activeTab);
+	//console.log(activeTab);
 	switch(activeTab) {
 		case 'toc':
 			if ($('.eg3_contentDetails .rf-tr').width() < $('.eg3_contentDetails').width()) {
@@ -444,7 +445,7 @@ function resizeSidebar(reference) {
  */
 function checkSidebarHeight(reference, call) {
 	if (call) {
-		console.log("call: "+call);
+		//console.log("call: "+call);
 	}
 	
 	switch (reference) {
