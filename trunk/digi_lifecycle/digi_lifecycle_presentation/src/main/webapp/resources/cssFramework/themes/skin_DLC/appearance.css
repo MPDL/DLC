@@ -86,7 +86,7 @@ body {
 
 a {
 	color:#000000;
-	text-decoration: none;
+	text-decoration:none;
 }
 a:hover {
 	color:#EA7125;
@@ -102,13 +102,16 @@ a[disabled] {
 }
 *[onclick] {
 	color:#000000;
-	text-decoration: none;
+	text-decoration:none;
 }
 *[onclick]:hover {
 	color:#EA7125;
 	text-decoration:underline;
 }
 *[onclick]:eg3_active {
+	color:#EA7125;
+}
+*[onclick].eg3_active {
 	color:#EA7125;
 }
 *[type="submit"]:hover {
@@ -119,7 +122,18 @@ a[disabled] {
 	color:#EA7125;
 	text-decoration:none;
 }
-
+*[type="reset"] {
+	cursor:pointer;
+}
+*[type="reset"]:hover {
+	color:#EA7125;
+	text-decoration:underline;
+}
+*[type="reset"]:disabled {
+	cursor:auto;
+	color:#999999;
+	text-decoration:none;
+}
 h1 {
 	font-weight:normal;
 }
@@ -2092,6 +2106,15 @@ body .eg3_id_siteTitle {
 	border-bottom:0.0833333em solid #2F2F2F;
 }
 .eg3_searchPage .eg3_submitPanel input[type=submit]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_searchPage .eg3_submitPanel input[type=reset] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=reset]:hover {
 	text-decoration:none;
 	border-bottom:0.0833333em solid #EA7125;
 }
