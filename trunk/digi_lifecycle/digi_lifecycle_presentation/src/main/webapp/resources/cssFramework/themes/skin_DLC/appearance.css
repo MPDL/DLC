@@ -70,6 +70,14 @@
 
 
 /*****************************************************************************************************************
+ * 							declarations for IE8
+ */
+.eg3_solutionLogo img {
+	max-height:6.5em\9; /* IE 8 */
+	
+}
+
+/*****************************************************************************************************************
  * 							declarations for all other browser
  */
 
@@ -2118,6 +2126,17 @@ body .eg3_id_siteTitle {
 	text-decoration:none;
 	border-bottom:0.0833333em solid #EA7125;
 }
+.eg3_searchPage input:focus+span.eg3_searchTooltip {
+	display:inline;
+}
+.eg3_searchPage .eg3_searchTooltip {
+	position:absolute;
+	left:0;
+	top:1.5833333em;
+	z-index:5;
+	display:none;
+}
+
 .eg3_ingestPage .rf-p 
 {
 	float:none;
