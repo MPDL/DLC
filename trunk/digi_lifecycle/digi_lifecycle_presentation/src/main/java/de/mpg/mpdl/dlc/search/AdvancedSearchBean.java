@@ -19,6 +19,7 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.search.Criterion.Operator;
 import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 
 
@@ -36,7 +37,7 @@ public class AdvancedSearchBean {
 	private SearchCriterion yearFrom = null;
 	private SearchCriterion yearTo = null;
 	
-	private String fulltextSearch= "";
+	private SearchCriterion fulltextSearch= null;;
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();	
 	private OrganizationalUnitServiceBean ouServiceBean =  new OrganizationalUnitServiceBean();	
@@ -62,6 +63,7 @@ public class AdvancedSearchBean {
 		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
+		this.fulltextSearch = new SearchCriterion(SearchType.FULLTEXT, "");
 		//this.contextSearchItem = new ContextSearch();
 		
 		this.init();
@@ -127,10 +129,10 @@ public class AdvancedSearchBean {
 			}
 			
 			//Set fulltext search
-			if(!this.fulltextSearch.equals(""))
+			if(!this.fulltextSearch.getValue().trim().isEmpty())
 			{
-				SearchCriterion ftSc = new SearchCriterion(SearchType.FULLTEXT, this.fulltextSearch);
-				this.searchCriterionList.add(ftSc);
+				
+				this.searchCriterionList.add(this.fulltextSearch);
 			}
 			
 			advancedSearchResultBean.setSearchCriterionList(searchCriterionList);
@@ -226,7 +228,7 @@ public class AdvancedSearchBean {
 	/**
 	 * Set the year search criterion
 	 */
-	private void setYearSearch()
+	private void setYearSearch() throws RuntimeException
 	{
 		if (this.yearFrom != null)
 		{
@@ -251,7 +253,8 @@ public class AdvancedSearchBean {
 		{
 			if (!this.yearTo.equals(""))
 			{
-				//TODO: messaging
+				MessageHelper.errorMessage("Please provide a value for \"year from\"");
+				throw new RuntimeException("\"Year from\" not provided");
 			}
 		}
 	}
@@ -265,7 +268,7 @@ public class AdvancedSearchBean {
 		this.searchCriterionList.add(new SearchCriterion(SearchType.TITLE, ""));
 		
 		this.freeSearch = "";
-		this.fulltextSearch = "";
+		this.fulltextSearch = new SearchCriterion(SearchType.FULLTEXT, "");
 		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
@@ -316,13 +319,7 @@ public class AdvancedSearchBean {
 		this.yearTo = yearTo;
 	}
 
-	public String getFulltextSearch() {
-		return fulltextSearch;
-	}
-
-	public void setFulltextSearch(String fulltextSearch) {
-		this.fulltextSearch = fulltextSearch;
-	}
+	
 	
 	public void newContextScElement()
 	{	
@@ -353,6 +350,14 @@ public class AdvancedSearchBean {
 
 	public void setAllConItems(List<SelectItem> allConItems) {
 		this.allConItems = allConItems;
+	}
+
+	public SearchCriterion getFulltextSearch() {
+		return fulltextSearch;
+	}
+
+	public void setFulltextSearch(SearchCriterion fulltextSearch) {
+		this.fulltextSearch = fulltextSearch;
 	}
 	
 }

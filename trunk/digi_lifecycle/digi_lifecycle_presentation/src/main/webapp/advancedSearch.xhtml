@@ -56,7 +56,7 @@
 											</h:panelGroup>
 											<h:selectOneMenu value="#{scElem.ouId}" >					
 												<f:selectItems value="#{advancedSearchBean.allLibItems}"/>
-												<f:ajax event="change" listener="#{advancedSearchBean.refreshContextList(scElem)}" render=":scForm:ouAndContext"/>
+												<f:ajax event="change" listener="#{advancedSearchBean.refreshContextList(scElem)}" render=":scForm:ouAndContext" />
 											</h:selectOneMenu> 
 										</h:panelGroup>
 									</h:panelGroup>
@@ -79,10 +79,10 @@
 									<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 										<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 											<h:commandButton type="button" action="#{advancedSearchBean.newContextScElement}" value=" " styleClass="eg3_ico_addi_16">
-												<f:ajax render=":scForm:ouAndContext" execute="@form"/>
+												<f:ajax render=":scForm" execute="@form"/>
 											</h:commandButton>
 											<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.contextScElements)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{advancedSearchBean.contextScElements.size()>1}">
-												<f:ajax render=":scForm:ouAndContext" execute="@form"/>
+												<f:ajax render=":scForm" execute="@form"/>
 											</h:commandButton>
 										</h:panelGroup>
 									</h:panelGroup>
@@ -105,7 +105,9 @@
 						</h:panelGroup>
 					</h:panelGroup>
 					
-		<!-- NEW CONNECTOR PLEASE MODIFY the selectOneMenu -->
+		<ui:remove>
+		<!-- NEW 
+		CONNECTOR PLEASE MODIFY the selectOneMenu -->
 				<!-- locigal connector -->
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
@@ -123,6 +125,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
+			</ui:remove>
 				
 					
 				<!-- searchCriterionList -->
@@ -135,6 +138,20 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{sc.operator}"  rendered="#{rowKey > 0}">						
+												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+											</h:selectOneMenu>
+										</h:panelGroup>
+									</h:panelGroup>
+									
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">
 										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 											<span class="eg3_selectionText"></span>
@@ -151,32 +168,21 @@
 										</h:selectOneMenu>
 									</h:panelGroup>
 									
-									<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+									<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight">
 										<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 											<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
 										</h:panelGroup>
 									</h:panelGroup>
 									
-									<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_floatRight" rendered="#{rowKey lt advancedSearchBean.searchCriterionList.size() -1}">
-										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-												<span class="eg3_selectionText"></span>
-											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.operator}">						
-												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-											</h:selectOneMenu>
-										</h:panelGroup>
-									</h:panelGroup>
+									
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-										<h:commandButton type="button" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" value=" " styleClass="eg3_ico_addi_16">
-											<f:ajax render=":#{component.parent.parent.parent.parent.parent.parent.clientId}" execute="@form"/>
+										<h:commandButton action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" value=" " styleClass="eg3_ico_addi_16">
+											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
 										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.searchCriterionList)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-											<f:ajax render=":#{component.parent.parent.parent.parent.parent.parent.clientId}" execute="@form"/>
+											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
 									</h:panelGroup>
 								</h:panelGroup>
@@ -184,6 +190,19 @@
 							
 						<!-- source year -->
 							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
+												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+											</h:selectOneMenu>
+										</h:panelGroup>
+									</h:panelGroup>
+							
 								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
 									<h:outputText value="#{lbl.sc_year}"/>
 								</h:panelGroup>
@@ -219,7 +238,7 @@
 									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
-									<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
+									<h:selectOneMenu value="#{advancedSearchBean.fulltextSearch.operator}">						
 										<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
 										<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
 										<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
@@ -239,7 +258,7 @@
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-								<h:inputText type="text" id="fulltextSearchString" value="#{advancedSearchBean.fulltextSearch}" styleClass="eg3_container_1"/>
+								<h:inputText type="text" id="fulltextSearchString" value="#{advancedSearchBean.fulltextSearch.value}" styleClass="eg3_container_1"/>
 								<h:outputText value="#{lbl.sc_fulltextInfo}"/>
 							</h:panelGroup>
 						</h:panelGroup>
