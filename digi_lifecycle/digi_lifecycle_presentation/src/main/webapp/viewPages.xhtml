@@ -25,10 +25,10 @@
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<ui:fragment rendered="#{not empty viewCollection.col.id}">
+						<ui:fragment rendered="#{not empty viewPages.context.objid}">
 							<h3 class="eg3_multiVolumeTitle">
 								<pretty:link mappingId="volumes">
-									<f:param value="#{viewCollection.col.id}"/>
+									<f:param value="#{viewPages.context.objid}"/>
 									<h:outputText value="#{viewPages.context.properties.name}"/>
 								</pretty:link>
 							</h3>
