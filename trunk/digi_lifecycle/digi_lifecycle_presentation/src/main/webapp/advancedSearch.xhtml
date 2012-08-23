@@ -97,10 +97,8 @@
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_all}"/></h2>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-								<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1"/>
-							</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_9_16">
+							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1"/>
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -168,9 +166,7 @@
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight">
-										<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-											<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
-										</h:panelGroup>
+										<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>
 									</h:panelGroup>
 									
 									
@@ -207,22 +203,20 @@
 								</h:panelGroup>
 								
 								<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight">
-									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-											<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
-										</h:panelGroup>
-										
-										<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
-											<h:outputText value=" - "/>
-										</h:panelGroup>
-										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-											<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
-										</h:panelGroup>
-										<script type="text/javascript">
-											$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
-											$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
-										</script>
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
 									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
+										<h:outputText value=" - "/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
+									</h:panelGroup>
+									<script type="text/javascript">
+										$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
+										$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
+									</script>
 								</h:panelGroup>
 							</h:panelGroup>
 						</h:panelGroup>
