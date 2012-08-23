@@ -251,6 +251,10 @@ body .eg3_id_siteTitle {
 
 .eg3_id_sidebarLeft .eg3_editSidebarContentItem {
 	margin-bottom:0.25em;
+	background-color:transparent;
+}
+.eg3_id_sidebarLeft .eg3_editSidebarContentItem.eg3_active {
+	background-color:#EA7125;
 }
 .eg3_id_sidebarLeft .eg3_sidebarEmptyContentHeader {
 	background-color:#2F2F2F;
@@ -1256,7 +1260,9 @@ body .eg3_id_siteTitle {
 	width:63.1%;
 	padding:0 1.6% 0.1666em 1.6%; 
 }
-
+.eg3_listItemMultiVolume .eg3_itemTitle a:hover {
+	text-decoration:none;
+}
 /*****************************************************************************************************************************************
  ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume .eg3_itemMediabar			******************************
  *****************************************************************************************************************************************/

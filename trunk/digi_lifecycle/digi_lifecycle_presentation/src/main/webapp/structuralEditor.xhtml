@@ -45,7 +45,7 @@
 					<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_container_1 eg3_editSidebarContent" style="min-height:800px;">
 						<a4j:repeat id="thumbsRepeater" var="element" value="#{structuralEditorBean.pbList}">
 							
-							<h:panelGroup id="thumbsContent" layout="block" styleClass="#{element.teiElement.id} eg3_container_1 eg3_editSidebarContentItem"  style="background-color:#{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'lightblue' : 'white'};" rendered="#{element.teiElement.elementType=='PB'}">
+							<h:panelGroup id="thumbsContent" layout="block" styleClass="#{element.teiElement.id} eg3_container_1 eg3_editSidebarContentItem #{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'eg3_active' : ''}" rendered="#{element.teiElement.elementType=='PB'}">
 								<h:outputText value="#{structuralEditorBean.addToClientIdMap(element.teiElement.id, component.parent.clientId)}"/>
 								<h:form id="thumbsForm">
 									<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_sidebarThumbnail" >
@@ -200,21 +200,22 @@
 								{
 									scrollThumbsContainer();
 									scrollTreeContainer();
+									initWindowResizeListener('.eg3_editPage');
 								});
 										
 								jsf.ajax.addOnEvent(function(e)
 								{	
-									
 									//if the ajax request is success
 									//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
 									if(e.status=="success")
 									{
-										//console.log("success");
+										checkSidebarHeight('.eg3_editPage', "ajax");
 										scrollThumbsContainer();
 										scrollTreeContainer();
 										resizeSelectBox();
 									}
 								});
+								
 								 /* ]]> */
 							</script>
 							

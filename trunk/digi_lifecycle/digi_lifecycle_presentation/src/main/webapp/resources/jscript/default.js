@@ -384,7 +384,13 @@ function rerenderJSFForms() {
 
 
 function checkIconbar(icoBar) {
-	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible').attr("id").split(":")[1];
+	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible');
+	
+	if (activeTab.length > 0 && activeTab.attr("id")) {
+		activeTab = activeTab.attr("id").split(":")[1];
+	} else {
+		return false;
+	}
 	//console.log(activeTab);
 	switch(activeTab) {
 		case 'toc':
@@ -393,9 +399,6 @@ function checkIconbar(icoBar) {
 			}
 			break;
 	}
-	
-	/*
-	*/
 }
 
 /**
@@ -403,7 +406,8 @@ function checkIconbar(icoBar) {
  * @used by viewPages.xhtml & co.
  */
 
-function resizeSidebar(reference) {
+function resizeSidebar(reference, availableHeight) {
+	console.log("reference: "+reference+' / refHeight: '+availableHeight);
 	var refHeight = $(reference).height();
 	var sdbHeight = 0;
 	switch (reference) {
@@ -437,6 +441,42 @@ function resizeSidebar(reference) {
 			//sidebar left gets the height of calculated height
 			sdbLeft.css('height', sdbHeight);
 			break;
+		case '.eg3_editPage':
+			console.log("eg3_editPage: "+availableHeight);
+			if (availableHeight && availableHeight > 0) {
+				console.log('found editPage with refHeight');
+				$('.eg3_id_sidebarLeft .eg3_editSidebarContent').css("height", availableHeight);
+			} else {
+				//eg3_iconBar
+				var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+				checkIconbar(icoBar);
+				//sidebar left
+				var sdbLeft = $('.eg3_id_sidebarLeft');
+				//sidebar padding bottom
+				var sdbPadBot = sdbLeft.css("padding-bottom");
+				
+				while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
+					sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
+				}
+				
+				sdbPadBot = Math.round(Number(sdbPadBot));
+				sdbHeight = Math.ceil(refHeight - sdbPadBot);
+				
+				
+				//iconBar height
+				var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
+				//tab header height
+				var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
+				
+				//set height for tab content details
+				$('.eg3_contentDetails').css('height', Math.ceil(sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
+				//set padding bottom in tab content
+				$('.rf-tab-cnt').css('padding-bottom', sdbLeft.css('padding-bottom'));
+				
+				//sidebar left gets the height of calculated height
+				sdbLeft.css('height', sdbHeight);
+			}
+			break;
 	}
 }
 
@@ -445,7 +485,7 @@ function resizeSidebar(reference) {
  */
 function checkSidebarHeight(reference, call) {
 	if (call) {
-		//console.log("call: "+call);
+		console.log("reference: "+reference+" / call: "+call);
 	}
 	
 	switch (reference) {
@@ -454,7 +494,6 @@ function checkSidebarHeight(reference, call) {
 			//otherwise setTimeout for checkSidebarHeight
 			var reloadDone = false;
 			var imgContainer = $('.eg3_viewPageContainer .eg3_viewPage_imgContainer');
-			
 			imgContainer.each(function(i) 
 			{
 				if ($(this).height() > 0) //if the first image has finish loading, set reloadDone on true
@@ -464,52 +503,25 @@ function checkSidebarHeight(reference, call) {
 			});
 			(reloadDone) ? resizeSidebar(reference) : setTimeout("checkSidebarHeight('"+reference+"')", 25); 
 			break;
-	}
-}
-/*
- * this function is used by viewPages.xhtml
- * checks the width of sidebar left
- * if it's expanded it must be less than 80% of the screen width
- */
-function checkSidebarWidth(reference) {
-	var sidebar = ($('.eg3_id_sidebarLeft').length > 0) ? $('.eg3_id_sidebarLeft') : null;
-	/*
-	if (sidebar) {
-		var documentWidth = $(document).width();
-		var curWidthObj = (sidebar.hasClass('eg3_widthAuto')) ? sidebar : $(sidebar.find('.eg3_widthAuto').get(0));
-		var sdbWidth = curWidthObj.width();
-		
-		if (sidebar.hasClass("eg3_expand")) {
-			removeAttributeValue(curWidthObj, 'style', 'width');
-			removeAttributeValue(curWidthObj, 'style', 'max-width');
-			switch (reference) {
-				default:
-					if (sdbWidth > documentWidth * 0.9) //check if the sidebar width is larger than 90 percent of the document width
-					{
-						curWidthObj.css("width", (documentWidth * 0.8)); //resize the sidebar to 80% of document width
-						curWidthObj.css("max-width", (documentWidth * 0.8));
-					} else 
-					{ //check if the sidebar is smaller as the layout container
-						var classes = sidebar.attr("class"); //read all classes from the sidebar to get the layout container
-						classes = classes.split(" "); //separate the classes
-						for (var ci = 0; ci < classes.length; ci++) 
-						{ 
-							if (classes[ci].substr(4, 9) == "container") //search for the layout container class 
-							{ 
-								var classParts = classes[ci].split("_");
-								var minWidth = documentWidth / Number(classParts[classParts.length - 1]); //the last value of class name is the factor for the layout width
-								if (sdbWidth < minWidth) //check if the sidebar width is smaller than the minimum layout width 
-								{
-									eg3_closeOverlay('.eg3_collapseOverlay');
-								}
-							}
-						}
-					}
-					break;
+		case '.eg3_editPage': //the defined height is given by one of the contained images
+			//if minimum one image ready get the height of viewPage container and define the height of sidebar
+			//otherwise setTimeout for checkSidebarHeight
+			var reloadDone = false;
+			var image = $('.eg3_viewPageContainer .eg3_editPage_imgContainer img');
+			
+			
+			var height = image.css("height");
+			height = Number(height.substr(0, height.length - 2));
+			console.log(height);
+			
+			
+			if (height > 0) //if the first image has finish loading, set reloadDone on true
+			{
+				reloadDone = true;
 			}
-		}
+			(reloadDone) ? resizeSidebar(reference, height) : setTimeout("checkSidebarHeight('"+reference+"')", 25); 
+			break;
 	}
-	*/
 }
 
 function eg3_copyToClipboard(infoText, obj) {
@@ -536,13 +548,13 @@ function checkMessageContent() {
 /**
  * function to resize all dynamic selectboxes and specific page moduls on the window resize event
  */
-function initWindowResizeListener() {
+function initWindowResizeListener(page) {
 	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
 	$(window).bind("resize", function() 
 		{ 
 			resizeSelectBox();
 			if ($('.eg3_id_sidebarLeft').length > 0) {
-				checkSidebarHeight('.eg3_viewPage', "window");
+				checkSidebarHeight(page, "window");
 			}
 		} 
 	);
@@ -565,6 +577,4 @@ $(document).ready(function(e) {
 	addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
 	rerenderJSFForms();
-	
-	initWindowResizeListener();
 });

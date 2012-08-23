@@ -13,26 +13,19 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
-<!-- INTERFACE -->
-<cc:interface>
-
-	<cc:attribute name="volume" required="true"/>
-	<cc:attribute name="rendered" required="false" />
-	<cc:attribute name="fulltextHits"/>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="rendered" required="false" />
+		<cc:attribute name="fulltextHits"/>
+	</cc:interface>
 	
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
-
-
-
-	
-
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
 		<h:panelGroup layout="block" class="eg3_listItemMultiVolume eg3_multiVolumeBG_3"  rendered="#{cc.attrs.rendered}">
 		
 	   		<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume}"/>
-	
 			
 			<div class="eg3_itemContent">
 				<div class="eg3_itemContentData">
@@ -48,19 +41,16 @@
 							<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
 								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: "  rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
 							</h:panelGroup>	
-				            	
-            	
-			            	<a4j:commandButton value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}" execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
-			               	</a4j:commandButton> 
-				               		
-			               	<ui:remove>											
-								<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"  rendered="#{not empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"/>
-							</ui:remove>	
-							
-							<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
-								<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)"  rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
-							</h:panelGroup>
+				            
+			            	<a4j:commandLink value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}" execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
+				               	<ui:remove>											
+									<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"  rendered="#{not empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"/>
+								</ui:remove>
 								
+								<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
+									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)"  rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
+								</h:panelGroup>
+							</a4j:commandLink>
 							<br/>
 							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place}"/>
 							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}"/>
