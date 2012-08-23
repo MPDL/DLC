@@ -230,9 +230,9 @@ public class AdvancedSearchBean {
 	 */
 	private void setYearSearch() throws RuntimeException
 	{
-		if (this.yearFrom != null)
+		if (!this.yearFrom.getValue().trim().isEmpty())
 		{
-			if (this.yearTo == null)
+			if (this.yearTo.getValue().trim().isEmpty())
 			{
 				this.searchCriterionList.add(this.yearFrom);
 			}
@@ -251,7 +251,7 @@ public class AdvancedSearchBean {
 		}
 		else
 		{
-			if (!this.yearTo.equals(""))
+			if (!this.yearTo.getValue().trim().isEmpty())
 			{
 				MessageHelper.errorMessage("Please provide a value for \"year from\"");
 				throw new RuntimeException("\"Year from\" not provided");
