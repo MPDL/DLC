@@ -18,7 +18,6 @@
 					//update all selectboxes on the page
 					if(e.status=="success")
 					{
-						//console.log("success");
 						resizeSelectBox();
 					}
 				});
@@ -139,7 +138,7 @@
 							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
 									
-									<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 												<span class="eg3_selectionText"></span>
@@ -190,7 +189,7 @@
 							
 						<!-- source year -->
 							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-								<h:panelGroup layout="block" styleClass="eg3_container_1_8">
+								<h:panelGroup layout="block" styleClass="eg3_container_1_9">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 												<span class="eg3_selectionText"></span>
@@ -207,7 +206,7 @@
 									<h:outputText value="#{lbl.sc_year}"/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+								<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight">
 									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 											<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
