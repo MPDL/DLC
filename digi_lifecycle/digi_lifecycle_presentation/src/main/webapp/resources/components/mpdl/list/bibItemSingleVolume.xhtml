@@ -58,6 +58,30 @@
 					</div>
 				</div>
 				
+				
+				<h:panelGroup layout="block" class="eg3_shortView_js" rendered="#{allVolumesBean.colId == 'my'}">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Last modified</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<pretty:link mappingId="viewPages">
+							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+							<f:param value="recto-verso"/>
+							<f:param value="1"/>
+							<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date} (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
+						</pretty:link>
+					</h:panelGroup>
+					
+					<h:panelGroup rendered="#{not empty cc.attrs.volume.item.properties.latestRelease}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Last released</h:panelGroup>
+						<pretty:link mappingId="viewPages">
+							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}"/>
+							<f:param value="recto-verso"/>
+							<f:param value="1"/>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue"><h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date}  (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/></h:panelGroup>
+						</pretty:link>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				
 				<h:panelGroup layout="block" class="eg3_shortView_js">
 					<ui:remove>
 						<div class="eg3_itemMetaLabel">Creator(s)</div>
