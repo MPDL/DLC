@@ -126,13 +126,13 @@
 				
 					
 				<!-- searchCriterionList -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_title}"/></h2>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
 							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
 									
@@ -184,38 +184,44 @@
 							</a4j:repeat>
 							
 						<!-- source year -->
-							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_9">
-										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-												<span class="eg3_selectionText"></span>
-											</h:panelGroup>
-											<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
-												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-											</h:selectOneMenu>
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+											<span class="eg3_selectionText"></span>
 										</h:panelGroup>
+										<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
+											<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+											<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+										</h:selectOneMenu>
 									</h:panelGroup>
+								</h:panelGroup>
 							
 								<h:panelGroup layout="block" styleClass="eg3_container_21_50">
 									<h:outputText value="#{lbl.sc_year}"/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight">
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_container_21_50 eg3_floatRight eg3_overflow">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_overflow">
 										<h:inputText type="text" id="yearFrom" value="#{advancedSearchBean.yearFrom.value}" title="#{advancedSearchBean.yearFrom.value}" styleClass="eg3_placeholderYearFrom eg3_container_1"/>
+										<h:panelGroup styleClass="eg3_searchTooltip">
+											<h:outputText value="#{lbl.advancedSearch_year_from}"/>
+										</h:panelGroup>
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textCenter">
 										<h:outputText value=" - "/>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_overflow">
 										<h:inputText type="text" id="yearTo" value="#{advancedSearchBean.yearTo.value}" title="#{advancedSearchBean.yearTo.value}" styleClass="eg3_placeholderYearTo eg3_container_1"/>
+										<h:panelGroup styleClass="eg3_searchTooltip">
+											<h:outputText value="#{lbl.advancedSearch_year_to}"/>
+										</h:panelGroup>
 									</h:panelGroup>
 									<script type="text/javascript">
-										$(".eg3_placeholderYearFrom").attr("placeholder", "from (YYYY)");
-										$(".eg3_placeholderYearTo").attr("placeholder", "to (YYYY)");
+										$(".eg3_placeholderYearFrom").attr("placeholder", "#{lbl.advancedSearch_year_from}");
+										$(".eg3_placeholderYearTo").attr("placeholder", "#{lbl.advancedSearch_year_to}");
 									</script>
 								</h:panelGroup>
 							</h:panelGroup>
