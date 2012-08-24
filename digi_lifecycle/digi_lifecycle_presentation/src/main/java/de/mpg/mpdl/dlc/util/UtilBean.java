@@ -19,6 +19,8 @@ import de.mpg.mpdl.dlc.vo.user.User;
 @ManagedBean
 @RequestScoped
 public class UtilBean {
+	
+	private static String standardDateTimePattern = "dd.MM.yyyy - HH:mm";
 
 	public static int getListSize(List list)
 	{
@@ -89,6 +91,15 @@ public class UtilBean {
 				return true;
 		else
 			return false;
+	}
+
+	public String getStandardDateTimePattern() {
+		return standardDateTimePattern;
+	}
+
+	public void setStandardDateTimePattern(
+			String standardDateTimePattern) {
+		UtilBean.standardDateTimePattern = standardDateTimePattern;
 	}
 	
 }
