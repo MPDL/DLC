@@ -435,7 +435,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_id_headerMetaMenu .eg3_icon_quickSearch_16_16 {
 /*	background-image: url("image/_default_16_16.png"); */
-	background-image: url("images/All_Search_LensStart_15_Static.png");
+	background-image: url("image/ico_search_static_16_16.png");
 	width:1.3333333em;
 	height:1.3333333em;
 	margin-right:0.16666666em;
@@ -943,11 +943,6 @@ body .eg3_id_siteTitle {
 	color:#EA7125;
 }
 
-.eg3_bibList .eg3_icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/_default_32_32.png");
-}
 /*****************************************************************************************************
  ******************************				.eg3_bibList .eg3_listHeader		******************************
  *****************************************************************************************************/
@@ -1012,9 +1007,35 @@ body .eg3_id_siteTitle {
 
 .eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory {
 	padding-left:1.8333em;
-	background-image: url("image/_default_16_16.png");
+	background-image: url("image/ico_triangleclose_success_16_16.png");
 	margin-bottom:0.25em;
 }
+.eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory:hover {
+	background-image: url("image/ico_triangleclose_hover_16_16.png");
+}
+
+
+.eg3_bibList .eg3_icon_withdrawnDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_remove_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_privateDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_private_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_reworkDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_rework_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_publishDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_submit_doc_x_deactivated_32_32.png");
+}
+
 /*****************************************************************************************************************
  ******************************				.eg3_bibList .eg3_listBody .eg3_listItem			******************************
  *****************************************************************************************************************/
@@ -1113,11 +1134,6 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea * {
 	float: right;
 }
-.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/_default_32_32.png");
-}
 .eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
@@ -1178,14 +1194,16 @@ body .eg3_id_siteTitle {
 }
 .eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-icon {
 	float: left;
-	background: url("image/_default_16_16.png") no-repeat 0 0.1666em;
+	background: url("image/ico_triangleclose_success_16_16.png") no-repeat 0 0.1666em;
 	background-position:left top;
 	display: block;
     width: 1.25em;
     height: 1.25em;
     margin-right:0.8333em;
 }
-
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-icon:hover {
+	background: url("image/ico_triangleclose_hover_16_16.png") no-repeat 0 0.1666em;
+}
 
 
 
@@ -1206,7 +1224,7 @@ body .eg3_id_siteTitle {
 	background-color:#CC6FF0;
 }*/ 
 .eg3_multiVolumeBG_3 {
-	background-color:#99FF99;
+	background-color:#CACA86;
 }
 .eg3_multiVolumeBG_4 {
 	background-color:#DD003C;
@@ -1259,11 +1277,6 @@ body .eg3_id_siteTitle {
 }
 .eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea * {
 	float: right;
-}
-.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/_default_32_32.png");
 }
 .eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
@@ -1354,11 +1367,6 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea * {
 	float: right;
 }
-.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/_default_32_32.png");
-}
 .eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
 	margin-right:5%;
@@ -1436,11 +1444,6 @@ body .eg3_id_siteTitle {
 }
 .eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea * {
 	float: right;
-}
-.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea .eg3_icon_withdrawn_32_32 {
-	width:2.6666em;
-	height:2.6666em;
-	background-image: url("image/_default_32_32.png");
 }
 .eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
 	margin-top:2.75%;
