@@ -68,7 +68,7 @@
 							<f:param value="recto-verso"/>
 							<f:param value="1"/>
 							<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date.toDate()}">
-								<f:convertDateTime pattern="dd.MM.yyyy - HH:mm"/>
+								<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
 							</h:outputText>
 							<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
 						</pretty:link>
@@ -83,7 +83,7 @@
 							<f:param value="1"/>
 							
 							<h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date.toDate()}"> 
-								<f:convertDateTime pattern="dd.MM.yyyy - HH:mm"/>
+								<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
 							</h:outputText>
 							 <h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/>
 						</pretty:link>
