@@ -66,18 +66,27 @@
 							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 							<f:param value="recto-verso"/>
 							<f:param value="1"/>
-							<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date} (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
+							<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date.toDate()}">
+								<f:convertDateTime pattern="dd.MM.yyyy - HH:mm"/>
+							</h:outputText>
+							<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
 						</pretty:link>
 					</h:panelGroup>
 					
 					<h:panelGroup rendered="#{not empty cc.attrs.volume.item.properties.latestRelease}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Last released</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 						<pretty:link mappingId="viewPages">
 							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}"/>
 							<f:param value="recto-verso"/>
 							<f:param value="1"/>
-							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue"><h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date}  (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/></h:panelGroup>
+							
+							<h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date.toDate()}"> 
+								<f:convertDateTime pattern="dd.MM.yyyy - HH:mm"/>
+							</h:outputText>
+							 <h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/>
 						</pretty:link>
+						</h:panelGroup>
 					</h:panelGroup>
 				</h:panelGroup>
 				
