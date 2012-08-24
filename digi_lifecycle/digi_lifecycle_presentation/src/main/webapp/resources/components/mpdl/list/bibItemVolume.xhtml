@@ -118,6 +118,7 @@
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{volume.pages[0] != null}"/>
 					</div>
 					
+				<ui:remove>
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty volume.item.properties.latestRelease and (volume.item.properties.latestRelease.objid != volume.objidAndVersion) and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="viewPages">
 							<f:param value="#{volume.item.properties.latestRelease.objid}" />
@@ -126,7 +127,8 @@
 							<h:outputText value="#{lbl.list_LatestRelease}" />
 						</pretty:link>
 				</h:panelGroup>
-					
+				</ui:remove>
+				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
 						<f:param value="#{volume.objidAndVersion}" />
