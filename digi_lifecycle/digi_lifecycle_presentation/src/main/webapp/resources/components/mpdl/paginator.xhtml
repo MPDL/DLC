@@ -105,7 +105,9 @@
 				<h:form>
 					<h:inputText type="text" id="inpGoToPageTop" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
 					<h:outputLabel id="lblItemListPageSizeTop" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
-					<h:commandButton type="submit" id="btList_btGoTop" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+					
+					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+					<h:commandButton type="submit" id="btList_btGoTop" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
 				 		<f:ajax event="action" render=":#{cc.clientId}" execute="@form"/>
 				 	</h:commandButton>
 				</h:form>
@@ -204,7 +206,8 @@
 				<h:form>
 					<h:inputText type="text" id="inpGoToPageBottom" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageBottom}" maxlength="5" />
 					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
-					<h:commandButton type="submit" id="btList_btGoBottom" style="visibility:hidden;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+					<h:commandButton type="submit" id="btList_btGoBottom" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
 				 		<f:ajax event="action" render=":#{cc.clientId}"/>
 				 	</h:commandButton>
 				</h:form>
