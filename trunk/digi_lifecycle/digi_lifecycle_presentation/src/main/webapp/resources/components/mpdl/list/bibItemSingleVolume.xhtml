@@ -27,7 +27,8 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea" >
-					<h:panelGroup class="eg3_icon_withdrawn_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my'}">&nbsp;</h:panelGroup>
+					<h:panelGroup class="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my' and cc.attrs.volume.item.properties.version.status=='pending'}">&nbsp;</h:panelGroup>
+					<h:panelGroup class="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my' and cc.attrs.volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
 					<h:panelGroup class="eg3_itemStatusTitle" rendered="#{allVolumesBean.colId == 'my'}">
 						<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
 						<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
@@ -202,7 +203,7 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
-					<div class="eg3_icon_withdrawn_32_32" title="???placeholder???">&nbsp;</div>
+					<div class="eg3_icon_reworkDocument_32_32" title="???placeholder???">&nbsp;</div>
 					<h:panelGroup class="eg3_itemStatusTitle">
 						<h:outputText value="Upload in Progress..."/>
 					</h:panelGroup>
