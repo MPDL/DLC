@@ -188,6 +188,13 @@ function addDisplayControl(target) {
 			break;
 		case '.eg3_listItemMultiVolume':
 			$(target + " .eg3_itemDetailAction_js").click(function(e) {
+				var actionArea = $(this);
+				if (actionArea.children().hasClass("eg3_icon_collapse_16_16")) {
+					eg3_toggleVolumeMediabarActionLabel(actionArea.parents(".eg3_listItemMultiVolume"), "visible");
+				} else {
+					eg3_toggleVolumeMediabarActionLabel(actionArea.parents(".eg3_listItemMultiVolume"), "hidden");
+				}
+				
 				var volume = searchParentTag(this, "eg3_listItemMultiVolume").next();
 				
 				if (volume.hasClass("eg3_listItemVolume")) {
@@ -196,12 +203,33 @@ function addDisplayControl(target) {
 						volume = volume.next();
 					}
 				}
+				
+				var volumeList = $('.eg3_listItemVolume');
+				var volumeListHidden = $('.eg3_listItemVolume:hidden');
+				if (volumeList.length == volumeListHidden.length) {
+					$('.eg3_listHeader .eg3_toggleListItemVolume_js').removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showAllText);
+				} else {
+					$('.eg3_listHeader .eg3_toggleListItemVolume_js').removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideAllText);
+				}
 			});
 			break;
 	}
 }
 
-
+function eg3_toggleVolumeMediabarActionLabel(volume, to_status) {
+	var items = null;
+	switch (to_status) {
+		case 'visible':
+			items = volume.find(".eg3_itemMediabar .eg3_icon_collapse_16_16");
+			items.toggleClass("eg3_icon_collapse_16_16 eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideItemText);
+			break;
+		default:
+			items = volume.find(".eg3_itemMediabar .eg3_icon_expand_16_16");
+			items.toggleClass("eg3_icon_expand_16_16 eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showItemText);
+			break;
+	}
+	
+}
 
 /*
  * function to add function for show or hide all wished elements (e.g. child-elements)
@@ -218,11 +246,29 @@ function addShowHideAll(element, child_elements, component) {
 	}
 	
 	showHideAllBtn.click(function(e) {
+		var btn = $(this);
+		var lbl = btn.find(".eg3_iconActionLabel");
+		if (btn.hasClass("eg3_icon_collapse_16_16")) {
+			btn.toggleClass("eg3_icon_collapse_16_16 eg3_icon_expand_16_16");
+			lbl.text(hideAllText); //the text variable is defined in the current xhtml file
+		} else {
+			btn.toggleClass("eg3_icon_expand_16_16 eg3_icon_collapse_16_16");
+			lbl.text(showAllText); //the text variable is defined in the current xhtml file
+		}
 		if ($(child_elements+':hidden').length > 0) {
 			$(child_elements).show();
+		//	eg3_toggleVolumeMediabarActionLabel($(child_elements), "visible");
+			if (child_elements == '.eg3_listItemVolume') {
+				eg3_toggleVolumeMediabarActionLabel($('.eg3_listItemMultiVolume'), "visible");
+			}
 		} else {
 			$(child_elements).hide();
+//			eg3_toggleVolumeMediabarActionLabel($(child_elements), "hidden");
+			if (child_elements == '.eg3_listItemVolume') {
+				eg3_toggleVolumeMediabarActionLabel($('.eg3_listItemMultiVolume'), "hidden");
+			}
 		}
+		
 	});
 }
 
