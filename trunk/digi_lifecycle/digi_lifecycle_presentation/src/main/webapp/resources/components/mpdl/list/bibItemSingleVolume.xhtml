@@ -139,6 +139,7 @@
 				
 				<br/>
 				
+				<ui:remove>
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{not empty cc.attrs.volume.item.properties.latestRelease and (cc.attrs.volume.item.properties.latestRelease.objid != cc.attrs.volume.objidAndVersion) and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="viewPages">
 						<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}"/>
@@ -148,7 +149,7 @@
 						<h:outputText value="#{lbl.list_LatestRelease}"/>
 					</pretty:link>
 				</h:panelGroup>
-				
+				</ui:remove>
 				
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="thumbnails">
