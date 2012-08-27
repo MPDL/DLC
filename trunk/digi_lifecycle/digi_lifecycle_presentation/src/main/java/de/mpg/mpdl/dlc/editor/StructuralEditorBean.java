@@ -595,7 +595,7 @@ public class StructuralEditorBean {
 			try {
 				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
 				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
-				this.volume = volServiceBean.releaseVolume(volume, getLoginBean().getUserHandle());
+				this.volume = volServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "edit_savedAndReleasedSuccessfully"));
 			} catch (Exception e) {

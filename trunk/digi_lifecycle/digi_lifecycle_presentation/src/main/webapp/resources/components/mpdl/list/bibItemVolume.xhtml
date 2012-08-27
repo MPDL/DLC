@@ -40,10 +40,11 @@
 								<f:param value="#{volume.objidAndVersion}" />
 								<f:param value="recto-verso" />
 								<f:param value="1" />
-								<h:outputText value="#{lbl.list_volume}. " />
-								<h:outputText value="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" rendered="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
+								<h:outputText value="#{volumeUtilBean.getPart_089(volume.modsMetadata)}." rendered="#{not empty volumeUtilBean.getPart_089(volume.modsMetadata)}" />
+								<h:outputText value="#{lbl.list_volume}. " rendered="#{empty volumeUtilBean.getPart_089(volume.modsMetadata)}"/>
+								<h:outputText value="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
 								<br/>
-								<h:outputText value="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}" rendered="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}"/>
+								<h:outputText value="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}"/>
 	
 							</pretty:link> 
 						</div> 

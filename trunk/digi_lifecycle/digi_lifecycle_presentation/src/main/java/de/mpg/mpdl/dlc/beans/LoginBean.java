@@ -91,7 +91,6 @@ public class LoginBean
                     this.login = true;
                     this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
                     MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "login_successful"));
-	     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The message to display"));
                 }
                 catch (Exception e)
                 {

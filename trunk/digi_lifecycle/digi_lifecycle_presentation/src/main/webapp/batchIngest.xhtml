@@ -1,0 +1,60 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:modsEditor="http://java.sun.com/jsf/composite/components/mpdl/modsEditor"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:define name="mainContent">
+		<h:panelGroup layout="block">
+			<h:form id="form2">
+			
+				<h:panelGrid columns="2">
+					<h:outputText value="#{lbl.batchIngest_name}: "/>
+					<h:inputText value ="#{batchIngestBean.name}" />
+					
+					<h:outputText value="#{lbl.admin_upload_collection}: "/>
+
+				
+					<h:selectOneMenu id="contextId" value="#{batchIngestBean.selectedContextId}">
+						<f:selectItems value="#{batchIngestBean.contextSelectItems}" />
+					</h:selectOneMenu>
+					
+					<h:outputText value="#{lbl.batchIngest_directory_images}" />
+					<h:inputText value="#{batchIngestBean.images}" />				
+					
+					<h:outputText value="#{lbl.batchIngest_directory_mab}" />
+					<h:inputText value="#{batchIngestBean.mab}" />
+					
+					<h:outputText value="#{lbl.batchIngest_directory_tei}" />
+					<h:inputText value="#{batchIngestBean.tei}" />
+					
+
+					
+					<ui:remove>	
+						<h:outputText value="#{lbl.user}" />
+						<h:inputText value="#{batchIngestBean.user}" />
+						
+						<h:outputText value="#{lbl.password}" />
+						<h:inputText value="#{batchIngestBean.password}" />
+					</ui:remove>
+				</h:panelGrid>
+				
+				<a4j:commandButton action="#{batchIngestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="log" execute="@form">
+				</a4j:commandButton>
+				
+				<a4j:commandButton action="#{batchIngestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages" execute="@form" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">
+				</a4j:commandButton>
+
+				
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+</html>

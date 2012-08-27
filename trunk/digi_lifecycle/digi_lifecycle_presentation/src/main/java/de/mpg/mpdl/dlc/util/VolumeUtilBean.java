@@ -212,6 +212,8 @@ public class VolumeUtilBean {
 	
 
 	
+
+	
 	
 	public static ModsTitle getAlternativeTitle(ModsMetadata md)
 	{  
@@ -534,7 +536,7 @@ public class VolumeUtilBean {
 			list.add(new ModsIdentifier());
 		}
 		
-		
+		 
 	}
 	
 	
