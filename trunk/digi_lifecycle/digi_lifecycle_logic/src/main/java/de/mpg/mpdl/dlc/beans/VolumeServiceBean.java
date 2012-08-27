@@ -326,7 +326,7 @@ public class VolumeServiceBean {
 		vol.setItem(item);
 		vol = updateVolume(vol, userHandle, null, false);
 		if(operation.equalsIgnoreCase("release"))
-			vol = releaseVolume(vol, userHandle);
+			vol = releaseVolume(vol.getItem().getObjid(), userHandle);
 		}
 		catch(Exception e)
 		{
@@ -558,7 +558,7 @@ public class VolumeServiceBean {
 			{
 				parent = retrieveVolume(multiVolumeId, userHandle);
 				parent = updateMultiVolume(parent, item.getObjid(), userHandle);
-				parent = releaseVolume(parent, userHandle);
+				parent = releaseVolume(parent.getItem().getObjid(), userHandle);
 				
 				//Also add the md record of the multivolume to each volume for indexing etc.
 				MetadataRecord mdRecMv = new MetadataRecord("multivolume");
@@ -635,10 +635,13 @@ public class VolumeServiceBean {
 				logger.info("Time to upload images: " + time);
 			
 			
-				volume = updateVolume(volume, userHandle, teiFile, true);
+				InputStream teiInputStream = null;
+				if(teiFile != null)
+					teiInputStream = teiFile.getInputStream();
+				volume = updateVolume(volume, userHandle, teiInputStream, true);
 			
 				if(operation.equalsIgnoreCase("release"))
-					volume = releaseVolume(volume, userHandle);
+					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
 			}
 		
 			catch (Exception e) 
@@ -700,11 +703,11 @@ public class VolumeServiceBean {
 			
 			if(teiFile != null)
 			{
-				updateVolume(volume, userHandle, teiFile, true);
+				updateVolume(volume, userHandle, teiFile.getInputStream(), true);
 			}
 			
 			if(operation.equalsIgnoreCase("release"))
-				volume = releaseVolume(volume, userHandle);
+				volume = releaseVolume(volume.getItem().getObjid(), userHandle);
 		
 			
 		}catch (Exception e) {
@@ -716,7 +719,7 @@ public class VolumeServiceBean {
 		return volume;
 	}
 	
-	public Volume updateVolume(Volume volume, String userHandle, FileItem teiFile, boolean updateTeiSd) throws Exception
+	public Volume updateVolume(Volume volume, String userHandle, InputStream teiInputStream, boolean updateTeiSd) throws Exception
 	{
 		Component pagedTeiComponent = null ;
 		Component teiComponent = null;
@@ -744,10 +747,10 @@ public class VolumeServiceBean {
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		sthc.setHandle(userHandle);
 			
-		if(teiFile!=null)	
+		if(teiInputStream!=null)	
 			{
 				logger.info("TEI file found");
-				File teiFileWithPbConvention = applyPbConventionToTei(teiFile.getInputStream());
+				File teiFileWithPbConvention = applyPbConventionToTei(teiInputStream);
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 				List<String> pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
 				
@@ -978,16 +981,17 @@ public class VolumeServiceBean {
 	}
 
 
-	public Volume releaseVolume(Volume vol, String userHandle) throws Exception
+	public Volume releaseVolume(String id, String userHandle) throws Exception
 	{ 
-		String id = vol.getItem().getObjid();
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
+		
+		Item item = client.retrieve(id);
 		
 		logger.info("Releasing Volume " + id);
 		TaskParam taskParam=new TaskParam(); 
 	    taskParam.setComment("Submit Volume");
-		taskParam.setLastModificationDate(vol.getItem().getLastModificationDate());
+		taskParam.setLastModificationDate(item.getLastModificationDate());
 		
 		Result res = client.submit(id, taskParam);
 		
@@ -1003,9 +1007,6 @@ public class VolumeServiceBean {
 	public Volume updateMultiVolume(Volume vol, String relationId, String userHandle) throws Exception
 	{
 		logger.info("Trying to update Multivolume item" + vol.getProperties().getVersion().getObjid());
-		
-		
-		
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -1028,6 +1029,36 @@ public class VolumeServiceBean {
 		logger.info("Item updated: " + item.getObjid());
 		
 		return retrieveVolume(item.getObjid(), userHandle);
+	}
+	
+	public String updateMultiVolumeFromId(String multiId, ArrayList<String> volIds, String userHandle) throws Exception
+	{
+		logger.info("Trying to update Multivolume item" + multiId);
+		
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+		
+		Item item = client.retrieve(multiId);
+
+		Relations relations = new Relations();
+		for(String volId : volIds)
+		{
+			if(item.getRelations()!=null)
+				relations = item.getRelations();
+			Reference ref = new ItemRef("/ir/item/"+ volId,"Item " + volId);
+			Relation relation = new Relation(ref);
+			relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart");
+			relations.add(relation);
+		}
+
+		item.setRelations(relations);
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Update Volume");
+		client.update(item);
+
+		logger.info("Item updated: " + item.getObjid());
+		
+		return item.getObjid();
 	}
 	
 	
@@ -1178,7 +1209,7 @@ public class VolumeServiceBean {
 	
 	
 	
-	public static void mabXMLToMODSTest(File mabXML) throws Exception
+	public static ModsMetadata mabXMLToMODSTest(File mabXML) throws Exception
 	{
 		MabXmlTransformation transform = new MabXmlTransformation();
 		File modsFile = transform.mabToMods(null, mabXML);
@@ -1186,25 +1217,26 @@ public class VolumeServiceBean {
 		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		ModsMetadata md = (ModsMetadata)unmarshaller.unmarshal(xml);
-		for(int i= 0; i<md.getRelatedItems().size();i++)
-		{
-			System.err.println(i+" type = " + md.getRelatedItems().get(i).getType());
-			System.err.println(i+" label = " + md.getRelatedItems().get(i).getDisplayLabel());
-			System.err.println(i+" title = " + md.getRelatedItems().get(i).getTitle());
-			System.err.println(i+" parent = " + md.getRelatedItems().get(i).getParentId_010());
-			System.err.println("___________________");
-		}
-		System.out.println("title= " +md.getTitles().size());
-		for(int j=0; j<md.getParts().size(); j++)
-		{
-			System.out.println(j + " type = " + md.getParts().get(j).getType());
-			System.out.println(j + " order = " + md.getParts().get(j).getOrder());
-			System.out.println("value length = " + md.getParts().get(j).getValue().length());
-			System.out.println(j + " value= " + md.getParts().get(j).getValue());
-			System.out.println(j + " volumeDescriptive_089 = " + md.getParts().get(j).getVolumeDescriptive_089());
-			System.out.println(j + " subseries_361 = " + md.getParts().get(j).getSubseries_361());
-			System.err.println("___________________");
-		}
+//		for(int i= 0; i<md.getRelatedItems().size();i++)
+//		{
+//			System.err.println(i+" type = " + md.getRelatedItems().get(i).getType());
+//			System.err.println(i+" label = " + md.getRelatedItems().get(i).getDisplayLabel());
+//			System.err.println(i+" title = " + md.getRelatedItems().get(i).getTitle());
+//			System.err.println(i+" parent = " + md.getRelatedItems().get(i).getParentId_010());
+//			System.err.println("___________________");
+//		}
+//		System.out.println("title= " +md.getTitles().size());
+//		for(int j=0; j<md.getParts().size(); j++)
+//		{
+//			System.out.println(j + " type = " + md.getParts().get(j).getType());
+//			System.out.println(j + " order = " + md.getParts().get(j).getOrder());
+//			System.out.println("value length = " + md.getParts().get(j).getValue().length());
+//			System.out.println(j + " value= " + md.getParts().get(j).getValue());
+//			System.out.println(j + " volumeDescriptive_089 = " + md.getParts().get(j).getVolumeDescriptive_089());
+//			System.out.println(j + " subseries_361 = " + md.getParts().get(j).getSubseries_361());
+//			System.err.println("___________________");
+//		}
+		return md;
 	}
 	
 	
@@ -2383,6 +2415,136 @@ public class VolumeServiceBean {
 		
 		
 		return new VolumeSearchResult(volumeResult, srwResp.getNumberOfRecords());
+	}
+
+
+
+
+
+
+	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, ArrayList<File> images, File footer, File tei) throws Exception {
+		logger.info("Creating new volume/monograph");
+		
+		Volume volume = new Volume();
+		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+		MetadataRecords mdRecs = item.getMetadataRecords();
+		
+		if(mdRecs==null)
+		{
+			mdRecs = new MetadataRecords();
+			item.setMetadataRecords(mdRecs);
+		}
+		
+		volume.setItem(item);
+		volume.setProperties(volume.getItem().getProperties());
+		volume.setModsMetadata(modsMetadata);
+		
+		Mets metsData = new Mets();
+		volume.setMets(metsData);
+		
+		try{
+
+			Volume parent = null;
+
+			if(multiVolumeId != null)
+			{
+				parent = retrieveVolume(multiVolumeId, userHandle);
+
+				//Also add the md record of the multivolume to each volume for indexing etc.
+				MetadataRecord mdRecMv = new MetadataRecord("multivolume");
+				mdRecMv.setContent(parent.getItem().getMetadataRecords().get("escidoc").getContent());
+				item.getMetadataRecords().add(mdRecMv);
+				
+				//Add the relation to the multivolume
+				Relations relations = new Relations();
+				Reference ref = new ItemRef("/ir/item/"+parent.getItem().getObjid(),"Item "+ parent.getItem().getObjid());
+				
+				Relation relation = new Relation(ref);
+				relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#isPartOf");
+				relations.add(relation);
+				item.setRelations(relations);
+				
+			}
+
+				//Convert and upload images 
+				long start = System.currentTimeMillis();		
+				for(File image : images)
+				{
+					String filename = getJPEGFilename(image.getName());
+					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
+					File jpegImage;
+					if(image.getName().endsWith("tif"))
+					{
+						jpegImage = ImageHelper.tiffToJpeg(image, getJPEGFilename(image.getName()));
+					}
+					else
+						jpegImage = image;
+					if(footer != null)
+					{
+						File jpegFooter;
+						if(footer.getName().endsWith("tif"))
+						{
+							jpegFooter = ImageHelper.tiffToJpeg(footer, getJPEGFilename(footer.getName()));
+						}	
+						else
+							jpegFooter = footer;
+						
+						jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
+							
+					}
+					
+					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
+					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+									
+					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
+					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+					
+					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
+					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+					
+					
+					int pos = images.indexOf(image);
+					Page p = new Page();
+					
+					
+					p.setId("page_" + pos);
+					
+
+					p.setOrder(pos);
+					p.setOrderLabel("");
+					p.setType("page");
+					p.setContentIds(itemIdWithoutColon + "/"+ filename);
+					p.setLabel(image.getName());
+					metsData.getPages().add(p);
+					
+				}				
+				long time = System.currentTimeMillis()-start;
+				logger.info("Time to upload images: " + time);
+			
+			
+				InputStream teiInputStream = null;
+				if(tei != null)
+					teiInputStream = new FileInputStream(tei);
+				volume = updateVolume(volume, userHandle, teiInputStream, true);
+			
+				if(operation.equalsIgnoreCase("release"))
+					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
+				
+				return volume.getItem().getObjid();
+			}
+		
+			catch (Exception e) 
+			{
+				logger.error("Error while creating Volume. Trying to rollback", e);
+				rollbackCreation(volume, userHandle);
+				//throw new Exception(e);
+				return null;
+			}
+			
+			
 	}
 	
 
