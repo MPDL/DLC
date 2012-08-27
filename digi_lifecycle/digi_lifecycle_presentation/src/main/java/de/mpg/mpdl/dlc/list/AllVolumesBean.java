@@ -231,7 +231,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
-			vol = volServiceBean.releaseVolume(vol, userHandle);;
+			vol = volServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

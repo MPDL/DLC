@@ -108,7 +108,7 @@ public class IngestBean{
 	
 	private List<String> pagesOfVolume = new ArrayList<String>();
 	
-	
+	 
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
@@ -392,6 +392,7 @@ public class IngestBean{
 	{
 		logger.info("File uploaded" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
+		
 		if(fue.getFileItem()!=null)
 		{
 			if (fue.getFileItem().getName().endsWith(".mab"))
@@ -615,7 +616,7 @@ public class IngestBean{
 
 	
 	public String save(String operation) 
-	{         
+	{            
 		logger.info("SAVE!!");
 		try {
 			if(volumeId.equalsIgnoreCase("new"))
@@ -642,8 +643,6 @@ public class IngestBean{
 		     		if(getImageFiles().size()==0 || (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
 		    		{
 		     			
-		     			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("The message to display"));
-
 		     			if(getImageFiles().size()==0 )
 		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
 		     			if(teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
