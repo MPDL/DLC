@@ -45,6 +45,7 @@ import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
 import net.sf.saxon.s9api.Processor;
+import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathExecutable;
 import net.sf.saxon.s9api.XPathSelector;
@@ -625,7 +626,7 @@ public class VolumeServiceBean {
 
 					p.setOrder(pos);
 					p.setOrderLabel("");
-					p.setType("page");
+					//p.setType("page");
 					p.setContentIds(itemIdWithoutColon + "/"+ filename);
 					p.setLabel(imageItem.getName());
 					metsData.getPages().add(p);
@@ -752,12 +753,20 @@ public class VolumeServiceBean {
 				logger.info("TEI file found");
 				File teiFileWithPbConvention = applyPbConventionToTei(teiInputStream);
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
-				List<String> pbIds = getAllPbIds(new FileInputStream(teiFileWithIds));
+				List<XdmNode> pbs = getAllPbIds(new FileInputStream(teiFileWithIds));
 				
 				//Set ids in mets
 				for(int i=0; i< volume.getMets().getPages().size(); i++)
 				{
-					volume.getMets().getPages().get(i).setId(pbIds.get(i));
+					String pbId = pbs.get(i).getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
+					volume.getMets().getPages().get(i).setId(pbId);
+					
+					String type =  pbs.get(i).getAttributeValue(new QName("type"));
+					if(type!=null)
+					{
+						volume.getMets().getPages().get(i).setType(pbId);
+					}
+					
 					
 				}
 				
@@ -1319,7 +1328,27 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-			System.gc();
+			
+		
+		
+		
+		File tei = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/ernstcurtius_v03_ids.xml");
+		
+		VolumeServiceBean vsb = new VolumeServiceBean();
+		List<XdmNode> list = vsb.getAllPbIds(new FileInputStream(tei));
+		
+		for(XdmNode pb : list)
+		{
+			String pbId = pb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
+			System.out.println(pbId);
+			
+			String type =  pb.getAttributeValue(new QName("type"));
+			System.out.println(type);
+		}
+		
+		
+		
+		
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
 		client.setHandle(null);
@@ -1328,7 +1357,7 @@ public class VolumeServiceBean {
 		
 		for(int i=0; i<100;i++)
 		{
-			
+			/*
 			client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
 			client.setHandle(null);
 			System.out.println("Try " + i );
@@ -1336,7 +1365,7 @@ public class VolumeServiceBean {
 			System.out.println("Result: " + his);
 			his.close();
 			
-			/*
+			
 			
 			HttpGet httpget = new HttpGet("http://dlc.mpdl.mpg.de:8080/ir/item/escidoc:15022/components/component/escidoc:15023/content");
 			HttpResponse response = httpclient.execute(httpget);
@@ -1368,8 +1397,9 @@ public class VolumeServiceBean {
 //		File modsFile = new File("C://Users//yu//Desktop//test.xml");
 //		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
 //		mabXMLToMODSTest(mabXML);
-		File mab = new File("C://Doku//dlc//TEST_MPDL//Frankfurt//mab4vol3.mab");
-		mabXMLToMODSTest(mab);
+		
+//		File mab = new File("C://Doku//dlc//TEST_MPDL//Frankfurt//mab4vol3.mab");
+//		mabXMLToMODSTest(mab);
 
 
 //		updateItem("escidoc:12118");
@@ -2102,9 +2132,38 @@ public class VolumeServiceBean {
 	
 	
 	
-	private  List<String> getAllPbIds(InputStream tei) throws Exception
+	private  List<XdmNode> getAllPbIds(InputStream tei) throws Exception
 	{
 
+		
+		List<XdmNode> pagebreakList = new ArrayList<XdmNode>();
+		
+		
+		
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:pb");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.build(new StreamSource(tei));
+        selector.setContextItem(xdmDoc);
+        
+        for(XdmItem item : selector) {
+            XdmNode node = (XdmNode)item;
+            pagebreakList.add(node);
+           /*
+            Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+            pageId = attribute.getTextContent();
+            */
+        }
+		
+		return pagebreakList;
+		
+		
+		/*
 		List<String> pbIds = new ArrayList<String>();
 		
 		XQDataSource ds = new SaxonXQDataSource();
@@ -2114,6 +2173,8 @@ public class VolumeServiceBean {
         XQResultSequence res = exp.executeQuery("declare namespace tei='http://www.tei-c.org/ns/1.0'; //tei:pb/@xml:id");
         while(res.next())
         {
+        	for(res.getNode().getAttributes())
+        	
         	pbIds.add(res.getNode().getTextContent());
         }
        
@@ -2122,7 +2183,7 @@ public class VolumeServiceBean {
         conn.close();
         
         return pbIds;
-		
+		*/
 		
 		/*
 		Processor proc = new Processor(false);
