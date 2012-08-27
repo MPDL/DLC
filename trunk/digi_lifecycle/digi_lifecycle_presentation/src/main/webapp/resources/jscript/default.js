@@ -131,6 +131,49 @@ function resizeSelectBox() {
 }
 
 
+
+function eg3_bibListOpenAllMediumView() {
+	var bibList = $('.eg3_bibList');
+//	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
+	var listItems = bibList.find(".eg3_listBody .eg3_itemContent");
+	
+	listItems.each(function(ind) {
+		var forwards = $(this).find(".eg3_showHideMediumView_js .eg3_icon_forwardi_16_16");
+		if (forwards.length > 0) {
+			listItems.find(".eg3_iconActionLabel").text(showShortViewText);
+		}
+		forwards.removeClass("eg3_icon_forwardi_16_16").addClass("eg3_icon_backwardi_16_16");
+	});
+	listItems.find(".eg3_mediumView_js").show();
+}
+
+function eg3_bibListHideAllMediumView() {
+	var bibList = $('.eg3_bibList');
+//	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
+	var listItems = bibList.find(".eg3_listBody .eg3_itemContent");
+	
+	listItems.each(function(ind) {
+		var backwards = $(this).find(".eg3_showHideMediumView_js .eg3_icon_backwardi_16_16");
+		if (backwards.length > 0) {
+			listItems.find(".eg3_iconActionLabel").text(showMediumViewText);
+		}
+		backwards.removeClass("eg3_icon_backwardi_16_16").addClass("eg3_icon_forwardi_16_16");
+	});
+	listItems.find(".eg3_mediumView_js").hide();
+}
+
+function eg3_toggleShowHideAllMediumView() {
+	var bibList = $('.eg3_bibList');
+	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
+	if (showAllBtn.hasClass("eg3_icon_collapse_16_16")) {
+		eg3_bibListOpenAllMediumView();
+		showAllBtn.removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideMediumViewText);
+	} else {
+		eg3_bibListHideAllMediumView();
+		showAllBtn.removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showMediumViewText);
+	}
+}
+
 function addShowHideAction() {
 	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
 	$('.eg3_showHideAll_js').click(function(e){
@@ -618,8 +661,6 @@ $(document).ready(function(e) {
 	
 	resizeSelectBox();
 	
-	addShowHideAll('.eg3_showHideAll_js', '.eg3_listItem .eg3_mediumView_js', '.eg3_bibList');
-	addShowHideAll('.eg3_showHideAll_js', '.eg3_listItemMediaAcc .eg3_mediumView_js', '.eg3_bibList');
 	addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
 	rerenderJSFForms();

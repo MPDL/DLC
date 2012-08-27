@@ -23,6 +23,9 @@
 			var showAllText='#{lbl.list_NavElem_ShowAllVolumes}';
 			var showItemText='#{lbl.list_NavElem_More}';
 			var hideItemText='#{lbl.list_NavElem_Less}';
+			var showMediumViewText = '#{lbl.sc_show_allHits}';
+			var showShortViewText = '#{lbl.sc_show_threeHits}';
+			var hideMediumViewText = '#{lbl.sc_hide_allHits}';
 		</script>
 		<h:panelGroup layout="block" styleClass="eg3_bibList">
 			<h:panelGroup layout="block" styleClass="eg3_listHeader">
@@ -51,12 +54,9 @@
 				
 				
 				<h:panelGroup layout="block" styleClass="eg3_content">
-					<ui:remove>
 					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16">
-						<a class="eg3_iconActionLabel" target="_self">Open all</a>
+						<a class="eg3_iconActionLabel" target="_self"><h:outputText value="#{lbl.sc_show_allHits}"/></a>
 					</h:panelGroup>
-					</ui:remove>
-					&#160;
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_mediabarActionArea">
@@ -72,6 +72,13 @@
 				<cc:insertChildren></cc:insertChildren>
 			</h:panelGroup>
 		</h:panelGroup>
-		
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('.eg3_bibList .eg3_listHeader .eg3_showHideAll_js').click(function(e) {
+					eg3_toggleShowHideAllMediumView();
+				});
+				
+			});
+		</script>
 	</cc:implementation>
 </html>
