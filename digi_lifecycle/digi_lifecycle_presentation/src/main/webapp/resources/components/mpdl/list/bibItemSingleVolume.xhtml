@@ -22,7 +22,7 @@
 	
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
-
+		
 		<h:panelGroup id="volume" layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered and not empty cc.attrs.volume.mets}">
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
@@ -128,11 +128,31 @@
 					<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
 					
 					<h:panelGroup layout="block" class="eg3_itemMetaLabel">
-						<h:outputText value="#{lbl.list_fulltextSearchResults}"/>
+						<h:outputText value="#{lbl.sc_number_results}"/>	
+					</h:panelGroup>
+					<h:panelGroup layout="block" class="eg3_itemMetaValue">
+						<h:outputText value="#{cc.attrs.volume.searchResultHighlightSize}"/>
 					</h:panelGroup>
 					
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_showHideMediumView_js" rendered="#{cc.attrs.volume.searchResultHighlightSize gt 3}">
+						<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+							<h:outputText value="&#160;"/>
+						</h:panelGroup>
+						<h:panelGroup layout="block" class="eg3_itemMetaValue">
+							<h:outputLink value="#" title="#{lbl.sc_show_allHits}" styleClass="eg3_icon_forwardi_16_16">
+								<h:panelGroup styleClass="eg3_iconActionLabel"><h:outputText value="#{lbl.sc_show_allHits}"/></h:panelGroup>
+							</h:outputLink>
+						</h:panelGroup>
+					</h:panelGroup>
+					
+					
+					
+					<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.list_fulltextSearchResults}"/>
+					</h:panelGroup>
 					<h:panelGroup layout="block" class="eg3_itemMetaValue">
-						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
+						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" rows="3">
 							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_fullTextSearchItem" rendered="#{highlight.type=='FULLTEXT'}">
 								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
 								
@@ -150,25 +170,53 @@
 										<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'eg3_searchHit')}" escape="false"/>
 									</h:panelGroup>
 								</a4j:repeat>
+								
 							</h:panelGroup>
 						</a4j:repeat>
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_mediumView_js" rendered="false">
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Journal Title</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Astrophysical Journal Letters</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Degree</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Degree Type</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Publishing Info</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Edition, Place: Publisher</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Title</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Visibility</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Public</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Fulltext Hits</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">this is a irgendwie gearteter Text this is a irgendwie gearteter Text</h:panelGroup>
+				<h:panelGroup layout="block" class="eg3_mediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+					<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+						<h:outputText value="&#160;"/>
+					</h:panelGroup>
+					
+					<h:panelGroup layout="block" class="eg3_itemMetaValue">
+						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" first="3">
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_fullTextSearchItem" rendered="#{highlight.type=='FULLTEXT'}">
+								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
+								
+								<pretty:link mappingId="viewPages">
+									<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+									<f:param value="fulltext"/>
+									<f:param value="#{pageNumber}"/>
+									
+									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
+								</pretty:link>
+								
+								<a4j:repeat var="textFragment" value="#{highlight.textFragments}">
+									<h:panelGroup layout="block" styleClass="eg3_container_1">
+										<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'eg3_searchHit')}" escape="false"/>
+									</h:panelGroup>
+								</a4j:repeat>
+								
+							</h:panelGroup>
+						</a4j:repeat>
+					</h:panelGroup>
 				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_showHideMediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+					<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+						<h:outputText value="&#160;"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" class="eg3_itemMetaValue">
+						<h:outputLink value="#" title="#{lbl.sc_show_allHits}" styleClass="eg3_icon_forwardi_16_16">
+							<h:panelGroup styleClass="eg3_iconActionLabel"><h:outputText value="#{lbl.sc_show_allHits}"/></h:panelGroup>
+						</h:outputLink>
+					</h:panelGroup>
+				</h:panelGroup>
+				
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemMediabar">

@@ -68,7 +68,7 @@
 					
 					
 					<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
-						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
+						<h:outputText value="#{lbl.list_fulltextSearchResults} #{cc.attrs.volume.searchResultHighlightSize}"/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >

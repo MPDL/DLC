@@ -774,6 +774,22 @@ body .eg3_id_siteTitle {
 .eg3_id_wrapper .eg3_icon_backward_16_16:hover {
 	background-image: url("image/btn_previous_hover_16_16.png");
 }
+.eg3_id_wrapper a:hover .eg3_icon_backward_16_16 {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16 {
+	background-image: url("image/btn_previous_deactivated_16_16.png");
+	background-position: right;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16:hover {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper a:hover .eg3_icon_backwardi_16_16 {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
 .eg3_id_wrapper .eg3_icon_forward_16_16 {
 	background-image: url("image/btn_next_static_16_16.png");
 	padding:0.0833em 0 0.0833em 1.3333em;
@@ -781,6 +797,21 @@ body .eg3_id_siteTitle {
 	cursor:pointer;
 }
 .eg3_id_wrapper .eg3_icon_forward_16_16:hover {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper a:hover .eg3_icon_forward_16_16 {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_forwardi_16_16 {
+	background-image: url("image/btn_next_deactivated_16_16.png");
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_forwardi_16_16:hover {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper a:hover .eg3_icon_forwardi_16_16 {
 	background-image: url("image/btn_next_hover_16_16.png");
 }
 .eg3_id_wrapper .eg3_icon_skipTolast_16_16 {
@@ -1015,6 +1046,19 @@ body .eg3_id_siteTitle {
 	width:100%;
 	display:none;
 	margin-top:0.41666em;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_backwardi_16_16 {
+	background-position:left;
+	padding-left: 0.5em;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_forwardi_16_16 {
+	background-position:right;
+	padding-right: 0.5em;
+	padding-left:0;
+	margin-left:0;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_forwardi_16_16 .eg3_iconActionLabel {
+	margin-left:0;
 }
 
 .eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory {
