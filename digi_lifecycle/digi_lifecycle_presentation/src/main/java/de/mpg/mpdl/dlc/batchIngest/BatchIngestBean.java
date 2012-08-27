@@ -1,8 +1,16 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.sql.Connection;
+
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -10,7 +18,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import org.apache.log4j.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
@@ -30,10 +37,10 @@ import de.mpg.mpdl.dlc.vo.collection.Collection;
 @URLMapping(id="batchIngest", viewId = "/batchIngest.xhtml", pattern = "/ingest/batch")
 public class BatchIngestBean {
 
-	private static Logger logger = Logger.getLogger(BatchIngestBean.class);
-	private String images = "C://Users//yu//Desktop//batch_f//images";
-	private String mab = "C://Users//yu//Desktop//batch_f//mab";
-	private String tei;
+//	private static Logger logger = Logger.getLogger(BatchIngestBean.class);
+	private String images = "C://Users//yu//Desktop//batch//images";
+	private String mab = "C://Users//yu//Desktop//batch//mab";
+	private String tei = "C://Users//yu//Desktop//batch//tei";
 
 	private String user;
 	private String password;
@@ -258,65 +265,6 @@ public class BatchIngestBean {
 
 
 
-	public static void main(String[] args) throws Exception {
-//		File folder = new File("C://Users//yu//Desktop//Frankfurt_new_test//");
-//
-//		File[] listOfFiles = folder.listFiles();
-//
-//		for (File listOfFile : listOfFiles)
-//
-//		        System.out.println(listOfFile.getName());
-			
-		String mab = "C://Users//yu//Desktop//batch//mab";
-		String tei = "C://Users//yu//Desktop//batch//tei";
-		
-		String images = "C://Users//yu//Desktop//batch//images";
-		
 
-
-				
-//		URL url1 = new URL("http://files.kewerner.name/dlc/tei/");
-//		System.err.println(url1.getProtocol());
-//		BufferedReader in1 = new BufferedReader(new InputStreamReader(url1.openStream()));
-//		String htmlText1;
-//		while ( (htmlText1 = in1.readLine()) != null)
-//		{
-//			System.out.println(htmlText1);
-//		}
-//
-//
-//		Class.forName("org.postgresql.Driver");
-//		String url = "jdbc:postgresql://vm12.mpdl.mpg.de:5432/batchingest";
-//		Properties props = new Properties();
-//		props.setProperty("user","ingestAdmin");
-//		props.setProperty("password","ingestAdmin");
-//
-//		Connection conn = DriverManager.getConnection(url, props);
-//		Statement stmt = conn.createStatement();
-//		ResultSet rs = stmt.executeQuery("SELECT name FROM aa.actions");
-//		while(rs.next())
-//		{
-//
-//	        String s = rs.getString("name");
-//	        System.out.println(s);
-//		}
-		
-        Thread1 t1 = new Thread1(); 
-        Thread ta = new Thread(t1, "A"); 
-        Thread tb = new Thread(t1, "B"); 
-        ta.start(); 
-        tb.start();  	
-		
-
-	}
-	public static class Thread1 implements Runnable { 
-	     public void run() { 
-	          synchronized(this) { 
-	               for (int i = 0; i < 100; i++) { 
-	                    System.out.println(Thread.currentThread().getName() + " synchronized loop " + i); 
-	               } 
-	          } 
-	     }
-		}
 	
 	}
