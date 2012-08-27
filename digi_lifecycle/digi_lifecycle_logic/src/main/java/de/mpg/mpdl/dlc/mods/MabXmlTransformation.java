@@ -39,10 +39,13 @@ public class MabXmlTransformation {
 	Source XML = null;
 
 	public File mabToMods(String mabId, File mabFile) {  
-		File utf8 = mabFileToUtf8(mabFile);
-		File xml = mabUtf8ToXml(utf8);
-		DatensatzType mabRecord = getMabRecord(mabId, xml);
-//		DatensatzType mabRecord = getMabRecord(mabId, mabFile);
+		// if input is .mab		
+//		File utf8 = mabFileToUtf8(mabFile);
+//		File xml = mabUtf8ToXml(utf8);
+//		DatensatzType mabRecord = getMabRecord(mabId, xml);
+		
+		//if input is mabXML
+		DatensatzType mabRecord = getMabRecord(mabId, mabFile);
 		File mods = getMods(mabRecord);
 		return mods;
 	}
@@ -61,6 +64,7 @@ public class MabXmlTransformation {
 		XSL = new StreamSource(url.openStream());
 //		XSL = new StreamSource(new File("C:/Projects/virr/digi_lifecycle/digi_lifecycle_presentation/src/main/resources/xslt/mabToMods/mab2mods.xsl"));
 		XML = new StreamSource(mabRecord.newInputStream());
+
 		
 			File transformed = File.createTempFile("transformed", "xml");
 			Result result = new StreamResult(transformed);
