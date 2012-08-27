@@ -818,7 +818,13 @@ public class StructuralEditorBean {
 	{
 		Pagebreak selectedPagebreak = (Pagebreak)selectedPb.getTeiElement();
 		selectedPagebreak.setType(selectedPbType);
+		//also set in METS
+		selectedPb.getPage().setType(selectedPbType);
+		
 		selectedPagebreak.setNumeration(selectedPbNumeration);
+		//also set in METS
+		selectedPb.getPage().setOrderLabel(selectedPbNumeration);
+				
 		selectedPagebreak.setSubtype(selectedPbSubtype);
 		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
 		initPageListMenu();
@@ -1011,6 +1017,8 @@ public class StructuralEditorBean {
 			TeiElementWrapper pbWrapper = pbList.get(i);
 			
 			pbWrapper.getTeiElement().setType(value);
+			//Also change in mets
+			pbWrapper.getPage().setType(value);
 			
 			if(value.equals("left"))
 			{
