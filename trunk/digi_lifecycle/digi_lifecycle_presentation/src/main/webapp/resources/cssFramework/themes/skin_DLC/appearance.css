@@ -237,13 +237,22 @@ body .eg3_id_siteTitle {
 	min-height:2.75em;
 }
 
-
+.eg3_verticalSpace_row_1 {
+	clear:both;
+	float:left;
+	height:1.33333333em;
+	width:100%;
+	display:block;
+}
 
 .eg3_id_contentDescription .eg3_messageCloseBtn {
 	float: right;
 	margin-right: -0.75%;
 }
 
+.eg3_id_wrapper .eg3_searchHit {
+	background-color:#CACA86;
+}
 
 .eg3_id_sidebarLeft {
 	background-color:#F0F0F0;
@@ -990,6 +999,9 @@ body .eg3_id_siteTitle {
 	font-size:133%;
 	line-height: 125%;
 }
+.eg3_bibList .eg3_itemHeadline .eg3_itemTitle .eg3_itemSubTitle {
+	font-size:90%;
+}
 .eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
 	max-width: 50em;
 	font-size: 166%;
@@ -1014,6 +1026,25 @@ body .eg3_id_siteTitle {
 	background-image: url("image/ico_triangleclose_hover_16_16.png");
 }
 
+.eg3_bibList .eg3_itemMetaValue .eg3_icon_editBtni_16_16 {
+	margin-left:0;
+	padding-left:1.3333em;
+}
+.eg3_bibList .eg3_itemMetaValue .eg3_icon_editBtni_16_16:hover {
+	text-decoration:underline;
+}
+.eg3_bibList .eg3_itemMetaValue input[type="submit"] {
+	margin-left:2%;
+	border-bottom:0.083333em solid #2F2F2F;
+	background-color:transparent;
+}
+.eg3_bibList .eg3_itemMetaValue input[type="submit"]:hover {
+	border-bottom:0.083333em solid #EA7125;
+	text-decoration:none;
+}
+.eg3_bibList .eg3_fullTextSearchItem {
+	margin-bottom:1em;
+}
 
 .eg3_bibList .eg3_icon_withdrawnDocument_32_32 {
 	width:2.6666em;
@@ -1025,7 +1056,7 @@ body .eg3_id_siteTitle {
 	height:2.6666em;
 	background-image: url("image/ico_private_doc_x_deactivated_32_32.png");
 }
-.eg3_bibList .eg3_icon_reworkDocument_32_32 {
+.eg3_bibList .eg3_icon_progressDocument_32_32 {
 	width:2.6666em;
 	height:2.6666em;
 	background-image: url("image/ico_rework_doc_x_deactivated_32_32.png");
@@ -1572,15 +1603,15 @@ body .eg3_id_siteTitle {
 	max-width:13.916667em;
 }
 .eg3_tiledList .eg3_listItem:hover {
-	background-color:#BfBfBf;
+	background-color:#EA7125;
 }
 
 .eg3_tiledList .eg3_itemContent {
 	width:100%;  
-}
+}/*
 .eg3_tiledList .eg3_itemContent:hover {
-	background-color:#DDDDDD;
-}
+	background-color:#DDDDDD; 
+} */
 .eg3_tiledList .eg3_itemIconArea {
 	width:100%;  
 	margin-bottom:0.25em;
@@ -1592,7 +1623,7 @@ body .eg3_id_siteTitle {
 	display:block;
 	width:94.75%;
 	padding:0.3333em 0.3333em 0.25em 0.3333em; 
-	background-color:#aaaaaa;
+	background-color:#F0F0F0;
 }
 .eg3_tiledList .eg3_itemContentData {
 	width:100%;

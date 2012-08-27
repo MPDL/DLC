@@ -12,30 +12,29 @@
 	
 <!-- INTERFACE -->
 <cc:interface>
-	<cc:attribute name="volumes" required="true" />
+	<cc:attribute name="volumes" required="true"/>
 </cc:interface>
 
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<h:panelGroup layout="block" class="eg3_listItemVolume eg3_multiVolumeBG_3" rendered="#{(allVolumesBean.colId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
+		<h:panelGroup layout="block" class="eg3_listItemVolume eg3_multiVolumeBG_3" rendered="#{(prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
 			
 			<h:panelGroup layout="block" class="eg3_itemContent">
-				<div class="eg3_itemContentBg">&nbsp;</div>
-				<div class="eg3_itemContentData">
-					<div class="eg3_itemStatusArea">
-						
-						<h:panelGroup class="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending' and empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
-						<h:panelGroup class="eg3_icon_progressDocument_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending' and not empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
-						<h:panelGroup class="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
-						<h:panelGroup class="eg3_itemStatusTitle" rendered="#{allVolumesBean.colId == 'my'}">
+				<h:panelGroup layout="block" styleClass="eg3_itemContentBg">&nbsp;</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_itemContentData">
+					<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+						<h:panelGroup class="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{volume.item.properties.version.status=='pending' and empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
+						<h:panelGroup class="eg3_icon_progressDocument_32_32" title="#{tlt.list_status}" rendered="#{volume.item.properties.version.status=='pending' and not empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
+						<h:panelGroup class="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
+						<h:panelGroup class="eg3_itemStatusTitle">
 							<h:outputText value="#{lbl.status_pending}" rendered="#{volume.item.properties.version.status=='pending' and empty volume.item.properties.latestRelease}"/>
 							<h:outputText value="#{lbl.status_inProgress}" rendered="#{volume.item.properties.version.status=='pending' and not empty volume.item.properties.latestRelease}"/>
 							<h:outputText value="#{lbl.status_released}" rendered="#{volume.item.properties.version.status=='released'}"/>
 						</h:panelGroup>
-					</div>
-					<div class="eg3_itemHeadline">
-						<div class="eg3_itemTitle">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
+						<h:panelGroup layout="block" styleClass="eg3_itemTitle">
 							<pretty:link mappingId="viewPages">
 								<f:param value="#{volume.objidAndVersion}" />
 								<f:param value="recto-verso" />
@@ -45,13 +44,12 @@
 								<h:outputText value="#{volumeUtilBean.getMainTitle(volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getMainTitle(volume.modsMetadata).title}"/>
 								<br/>
 								<h:outputText value="#{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}"/>
-	
 							</pretty:link> 
-						</div> 
-					</div>
+						</h:panelGroup> 
+					</h:panelGroup>
 				
 				
-					<h:panelGroup layout="block" class="eg3_shortView_js" rendered="#{allVolumesBean.colId == 'my'}">
+					<h:panelGroup layout="block" class="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastModified}"/></h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<pretty:link mappingId="viewPages">
@@ -68,10 +66,9 @@
 								<h:commandButton action="#{allVolumesBean.release(volume)}" value=" #{lbl.button_command_release}" >
 								</h:commandButton>
 							</h:panelGroup>
-							
 						</h:panelGroup>
 						
-						<h:panelGroup rendered="#{not empty volume.item.properties.latestRelease}">
+						<ui:fragment rendered="#{not empty volume.item.properties.latestRelease}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 								<pretty:link mappingId="viewPages">
@@ -84,39 +81,35 @@
 							 		<h:outputText value=" (Version #{volume.item.properties.latestRelease.number})"/>
 								</pretty:link>
 							</h:panelGroup>
-						</h:panelGroup>
+						</ui:fragment>
 						
 						
-						<br/><br/>
+						<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
 					
-						<h:panelGroup  rendered="#{volumeUtilBean.editable(volume)}">
+						<ui:fragment rendered="#{volumeUtilBean.editable(volume)}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-								<pretty:link mappingId="structuralEditor">
+								<pretty:link mappingId="structuralEditor" styleClass="eg3_icon_editBtni_16_16">
 									<f:param value="#{volume.item.originObjid}"/>
 									<h:outputText value="#{lbl.list_EditStruct}"/>
 								</pretty:link>
 							</h:panelGroup>
-						</h:panelGroup>
+						</ui:fragment>
 						
-						<h:panelGroup >
-							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-								<pretty:link mappingId="upload" styleClass="eg3_borderradius_5">
-									<f:param value="#{volume.item.originObjid}"/>
-									<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
-								</pretty:link>
-							</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<pretty:link mappingId="upload" styleClass="eg3_icon_editBtni_16_16">
+								<f:param value="#{volume.item.originObjid}"/>
+								<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
+							</pretty:link>
 						</h:panelGroup>
 					</h:panelGroup>
 				
-					<div class="eg3_shortView_js">
-						
-						
-						<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
-							<h:outputText value="#{lbl.list_fulltextSearchResults}" />
+					<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.list_fulltextSearchResults}"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+						<h:panelGroup layout="block" class="eg3_itemMetaValue">
 							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
 								<h:panelGroup styleClass="xHuge_area0 endline" rendered="#{highlight.type=='FULLTEXT'}">
 									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
@@ -137,74 +130,70 @@
 								</h:panelGroup>
 							</a4j:repeat>
 						</h:panelGroup>
-					</div>
+					</h:panelGroup>
 
-					<div class="eg3_mediumView_js">
-						<div class="eg3_itemMetaLabel">Journal Title</div>
-						<div class="eg3_itemMetaValue">Astrophysical Journal Letters</div>
-						<div class="eg3_itemMetaLabel">Degree</div>
-						<div class="eg3_itemMetaValue">Degree Type</div>
-						<div class="eg3_itemMetaLabel">Publishing Info</div>
-						<div class="eg3_itemMetaValue">Edition, Place: Publisher</div>
-						<div class="eg3_itemMetaLabel">Title</div>
-						<div class="eg3_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</div>
-						<div class="eg3_itemMetaLabel">Visibility</div>
-						<div class="eg3_itemMetaValue">Public</div>
-						<div class="eg3_itemMetaLabel">Fulltext Hits</div>
-						<div class="eg3_itemMetaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</div>
-					</div>
-				</div>
+					<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="false">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Journal Title</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Astrophysical Journal Letters</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Degree</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Degree Type</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Publishing Info</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Edition, Place: Publisher</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Title</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Botanic excursion on beans 50 Chars crop last words ...</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Visibility</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">Public</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">Fulltext Hits</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">...this is a irgendwie gearteter Text...<br/>...this is a irgendwie gearteter Text...</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
 			
-				<div class="eg3_itemMediabar">
-					<div class="eg3_itemMediabarThumb">
+				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+					<h:panelGroup layout="block" styleClass="eg3_itemMediabarThumb">
 						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{volume.pages[0] != null}"/>
-					</div>
+					</h:panelGroup>
 					
 					
 					<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 						<pretty:link mappingId="thumbnails">
-							<f:param value="#{volume.objidAndVersion}" />
+							<f:param value="#{volume.objidAndVersion}"/>
 							<h:outputText value="#{lbl.list_Thumbnails}"/>
 						</pretty:link>
 					</h:panelGroup>
 					
 				<ui:remove>
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty volume.item.properties.latestRelease and (volume.item.properties.latestRelease.objid != volume.objidAndVersion) and allVolumesBean.colId == 'my'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{not empty volume.item.properties.latestRelease and (volume.item.properties.latestRelease.objid != volume.objidAndVersion) and prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="viewPages">
-							<f:param value="#{volume.item.properties.latestRelease.objid}" />
-							<f:param value="recto-verso" />
-							<f:param value="1" />
-							<h:outputText value="#{lbl.list_LatestRelease}" />
+							<f:param value="#{volume.item.properties.latestRelease.objid}"/>
+							<f:param value="recto-verso"/>
+							<f:param value="1"/>
+							<h:outputText value="#{lbl.list_LatestRelease}"/>
 						</pretty:link>
 				</h:panelGroup>
 				
 				
-				
-					
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="upload">
-						<f:param value="#{volume.objidAndVersion}" />
-						<h:outputText value="#{lbl.list_NavElem_Reingest}" />
+						<f:param value="#{volume.objidAndVersion}"/>
+						<h:outputText value="#{lbl.list_NavElem_Reingest}"/>
 					</pretty:link>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending' and loginBean.user.releasable(volume.item.properties.context.objid)}">
-				
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my' and volume.item.properties.version.status=='pending' and loginBean.user.releasable(volume.item.properties.context.objid)}">
 					<h:commandButton action="#{allVolumesBean.release(volume)}" value="#{lbl.button_command_release}" >
 					</h:commandButton>
-
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{allVolumesBean.colId == 'my'and volumeUtilBean.editable(volume)}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'and volumeUtilBean.editable(volume)}">
 					<pretty:link mappingId="structuralEditor">
-						<f:param value="#{volume.item.objid}" />
-						<h:outputText value="#{lbl.list_EditStruct}" />
+						<f:param value="#{volume.item.objid}"/>
+						<h:outputText value="#{lbl.list_EditStruct}"/>
 					</pretty:link>
 				</h:panelGroup>
 				</ui:remove>
 
 					
-				</div>
+				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
 	</a4j:repeat>

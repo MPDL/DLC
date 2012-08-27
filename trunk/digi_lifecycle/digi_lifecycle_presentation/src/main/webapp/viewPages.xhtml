@@ -507,10 +507,10 @@
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPage_fulltext eg3_content_bgColor_3" rendered="#{viewPages.viewType == 'FULLTEXT'}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPage_fulltext eg3_content_bgColor" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 							<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
 							<h:panelGroup layout="block" id="fulltext" styleClass="eg3_container_9_10 eg3_containerCenter">
-								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'searchHit')}" escape="false" rendered="#{viewPages.volume.teiSd!=null}"/>
+								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'eg3_searchHit')}" escape="false" rendered="#{viewPages.volume.teiSd!=null}"/>
 							</h:panelGroup>
 						</h:panelGroup>	
 						

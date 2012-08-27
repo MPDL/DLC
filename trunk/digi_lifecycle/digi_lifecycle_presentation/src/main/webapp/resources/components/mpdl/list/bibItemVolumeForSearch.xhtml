@@ -13,23 +13,29 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 
-<!-- INTERFACE -->
-<cc:interface>
-
-	<cc:attribute name="volume" required="true"/>
-	<cc:attribute name="rendered" required="false" />
-	<cc:attribute name="fulltextHits"/>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="rendered" required="false" />
+		<cc:attribute name="fulltextHits"/>
+	</cc:interface>
 	
-</cc:interface>
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
 
 		<h:panelGroup layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered}">
 			<h:panelGroup layout="block" styleClass="eg3_itemContentBg"><h:outputText value="&#160;"/></h:panelGroup>
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<div class="eg3_itemStatusArea">
-					<div class="eg3_icon_withdrawn_32_32">&nbsp;</div>
+					<h:panelGroup class="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and empty cc.attrs.volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
+					<h:panelGroup class="eg3_icon_progressDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and not empty cc.attrs.volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
+					<h:panelGroup class="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
+					
+					<h:panelGroup class="eg3_itemStatusTitle">
+						<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and empty cc.attrs.volume.item.properties.latestRelease}"/>
+						<h:outputText value="#{lbl.status_inProgress}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and not empty cc.attrs.volume.item.properties.latestRelease}"/>
+						<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
+					</h:panelGroup>
 				</div>
 				
 				<div class="eg3_itemHeadline">
@@ -41,33 +47,32 @@
 							<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
 
 							<h:outputText value="#{lbl.list_volume}. #{volumeUtilBean.getMainTitle(volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(volume.modsMetadata).dateIssued_425.date}." />
-
 						</pretty:link>
 					</div>
 					<!-- Multivolume title -->
-					<br />
-					<br/>
-					<h:outputText value="#{lbl.list_parent}: "/>
-					<pretty:link mappingId="viewMultiVol">
-						<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
-							
-						<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
-						<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.relatedParentVolume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
-					</pretty:link>
+					
 				</div>
 				
 				<div class="eg3_shortView_js">
-					<ui:remove>
-						<div class="eg3_itemMetaLabel">Creator(s)</div>
-						<div class="eg3_itemMetaValue">Name, Prename, Address</div>
-					</ui:remove>
+					<h:panelGroup layout="block" class="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.list_parent}: "/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<pretty:link mappingId="viewMultiVol">
+							<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
+								
+							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
+							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.relatedParentVolume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
+						</pretty:link>
+					</h:panelGroup>
+					
+					
 					<h:panelGroup layout="block" class="eg3_itemMetaLabel" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<h:outputText value="#{lbl.list_fulltextSearchResults}" />
 					</h:panelGroup>
-				
 					<h:panelGroup layout="block" class="eg3_itemMetaValue" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" >
-							<h:panelGroup styleClass="EMPTYCLASS" rendered="#{highlight.type=='FULLTEXT'}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_fullTextSearchItem" rendered="#{highlight.type=='FULLTEXT'}">
 								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
 								
 								<pretty:link mappingId="viewPages">
@@ -78,12 +83,11 @@
 									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
 								</pretty:link>
 								
-								<br/>
-								<a4j:repeat var="textFragment" value="#{highlight.textFragments}" >
-									<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'searchHit')}" escape="false"/>
-									<br/><br/>
+								<a4j:repeat var="textFragment" value="#{highlight.textFragments}">
+									<h:panelGroup layout="block" styleClass="eg3_container_1">
+										<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'eg3_searchHit')}" escape="false"/>
+									</h:panelGroup>
 								</a4j:repeat>
-								<br/><br/>
 							</h:panelGroup>
 						</a4j:repeat>
 					</h:panelGroup>
@@ -110,7 +114,7 @@
 				</div>
 				<br/>
 				
-				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty cc.attrs.volume.item.properties.latestRelease and (cc.attrs.volume.item.properties.latestRelease.objid != cc.attrs.volume.objidAndVersion) and allVolumesBean.colId == 'my'}">
+				<h:panelGroup layout="block" class="eg3_itemMediabarCategory"  rendered="#{not empty cc.attrs.volume.item.properties.latestRelease and (cc.attrs.volume.item.properties.latestRelease.objid != cc.attrs.volume.objidAndVersion) and prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 					<pretty:link mappingId="viewPages">
 							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}" />
 							<f:param value="recto-verso" />
