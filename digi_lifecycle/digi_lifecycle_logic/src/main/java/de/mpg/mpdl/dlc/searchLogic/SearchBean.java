@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.search;
+package de.mpg.mpdl.dlc.searchLogic;
 
 import java.net.URL;
 
@@ -19,8 +19,8 @@ import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
-import de.mpg.mpdl.dlc.search.Criterion.Operator;
-import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
