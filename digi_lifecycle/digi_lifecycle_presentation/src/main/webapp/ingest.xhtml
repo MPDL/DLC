@@ -218,7 +218,7 @@
 					
 					<rich:panel id="footer" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}" rendered="#{ingestBean.volumeId == 'new'}">
 						<f:facet name="header">
-							<h:outputText value="#{lbl.upload_footer}" />
+							<h:outputText value="#{lbl.admin_upload_footer}" />
 						</f:facet>
 						<h:outputText value="#{ingestBean.footer.name} - Found" rendered="#{ingestBean.volumeId == 'new'}"/>
 		            </rich:panel>
