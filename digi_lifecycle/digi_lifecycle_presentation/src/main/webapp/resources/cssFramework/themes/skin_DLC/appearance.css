@@ -251,7 +251,7 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_id_wrapper .eg3_searchHit {
-	background-color:#CACA86;
+	background-color:#99BBEE;
 }
 
 .eg3_id_sidebarLeft {
@@ -1286,24 +1286,33 @@ body .eg3_id_siteTitle {
  ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume	COLORIZING		******************************
  ******************************					multiVolumeBG == multi volume background			******************************
  *********************************************************************************************************************************/
+
 .eg3_multiVolumeBG_1 {
-	background-color:#00AA11;
-}
-/* .eg3_multiVolumeBG_1:hover {
-	background-color:#006FF0;
-} */
-.eg3_multiVolumeBG_2 {
-	background-color:#CCAA11;
-}
-/* .eg3_multiVolumeBG_2:hover {
-	background-color:#CC6FF0;
-}*/ 
-.eg3_multiVolumeBG_3 {
 	background-color:#CACA86;
 }
-.eg3_multiVolumeBG_4 {
-	background-color:#DD003C;
+.eg3_multiVolumeBG_2 {
+	background-color:#99BBEE;
 }
+
+.eg3_multiVolumeBG_3 {
+	background-color:#A193F7;
+}
+.eg3_multiVolumeBG_4 {
+	background-color:#EED299;
+}
+/* .eg3_multiVolumeBG_1:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_2:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_3:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_4:hover {
+	background-color:#EA7125;
+}*/ 
+
 
 
 

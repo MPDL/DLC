@@ -131,16 +131,17 @@ function resizeSelectBox() {
 }
 
 
-
+/*
+ * following functions are for show or hide medium-/short-view in the bibliographic lists
+ */
 function eg3_bibListOpenAllMediumView() {
 	var bibList = $('.eg3_bibList');
-//	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
 	var listItems = bibList.find(".eg3_listBody .eg3_itemContent");
 	
 	listItems.each(function(ind) {
 		var forwards = $(this).find(".eg3_showHideMediumView_js .eg3_icon_forwardi_16_16");
 		if (forwards.length > 0) {
-			listItems.find(".eg3_iconActionLabel").text(showShortViewText);
+			listItems.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showShortViewText);
 		}
 		forwards.removeClass("eg3_icon_forwardi_16_16").addClass("eg3_icon_backwardi_16_16");
 	});
@@ -149,30 +150,82 @@ function eg3_bibListOpenAllMediumView() {
 
 function eg3_bibListHideAllMediumView() {
 	var bibList = $('.eg3_bibList');
-//	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
 	var listItems = bibList.find(".eg3_listBody .eg3_itemContent");
 	
 	listItems.each(function(ind) {
 		var backwards = $(this).find(".eg3_showHideMediumView_js .eg3_icon_backwardi_16_16");
 		if (backwards.length > 0) {
-			listItems.find(".eg3_iconActionLabel").text(showMediumViewText);
+			listItems.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showMediumViewText);
 		}
 		backwards.removeClass("eg3_icon_backwardi_16_16").addClass("eg3_icon_forwardi_16_16");
 	});
 	listItems.find(".eg3_mediumView_js").hide();
 }
 
-function eg3_toggleShowHideAllMediumView() {
+function eg3_bibListToggleAllMediumView() {
 	var bibList = $('.eg3_bibList');
 	var showAllBtn = bibList.find(".eg3_listHeader .eg3_showHideAll_js");
 	if (showAllBtn.hasClass("eg3_icon_collapse_16_16")) {
 		eg3_bibListOpenAllMediumView();
-		showAllBtn.removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideMediumViewText);
+		eg3_bibListSetAllMediumViewBtn(showAllBtn, "open");
 	} else {
 		eg3_bibListHideAllMediumView();
-		showAllBtn.removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showMediumViewText);
+		eg3_bibListSetAllMediumViewBtn(showAllBtn, "close");
 	}
 }
+
+
+function eg3_bibListSetAllMediumViewBtn(btn, status) {
+	switch (status) {
+		case 'open':
+			btn.removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideMediumViewText);
+			break;
+		case 'close':
+		default:
+			btn.removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showMediumViewText);
+			break;
+	}
+}
+
+function eg3_bibListCheckAllMediumViewStatus(itemContent) {
+	var curList = itemContent.parents(".eg3_bibList");
+	var mediumList = curList.find(".eg3_mediumView_js");
+	var openList = curList.find(".eg3_mediumView_js:visible");
+	var toggleAllBtn = curList.find(".eg3_listHeader .eg3_showHideAll_js");
+	if (openList.length == mediumList.length) {
+		eg3_bibListSetAllMediumViewBtn(toggleAllBtn, "open");
+	} else {
+		eg3_bibListSetAllMediumViewBtn(toggleAllBtn, "close");
+	}
+}
+
+function eg3_bibListOpenItemMediumView(itemContent) {
+	var forwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_forwardi_16_16");
+	if (forwards.length > 0) {
+		itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showShortViewText);
+	}
+	forwards.removeClass("eg3_icon_forwardi_16_16").addClass("eg3_icon_backwardi_16_16");
+	itemContent.find(".eg3_mediumView_js").show();
+	eg3_bibListCheckAllMediumViewStatus(itemContent);
+}
+function eg3_bibListHideItemMediumView(itemContent) {
+	var backwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_backwardi_16_16");
+	if (backwards.length > 0) {
+		itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showMediumViewText);
+	}
+	backwards.removeClass("eg3_icon_backwardi_16_16").addClass("eg3_icon_forwardi_16_16");
+	itemContent.find(".eg3_mediumView_js").hide();
+	eg3_bibListCheckAllMediumViewStatus(itemContent);
+}
+function eg3_bibListToggleItemMediumView(obj) {
+	var curItemContent = $(obj).parents(".eg3_itemContent");
+	if (curItemContent.find(".eg3_mediumView_js").is(":visible")) {
+		eg3_bibListHideItemMediumView(curItemContent);
+	} else {
+		eg3_bibListOpenItemMediumView(curItemContent);
+	}
+}
+
 
 function addShowHideAction() {
 	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
