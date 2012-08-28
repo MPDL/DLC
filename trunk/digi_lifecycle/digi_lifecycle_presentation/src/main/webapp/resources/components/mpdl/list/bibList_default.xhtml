@@ -54,16 +54,27 @@
 				
 				
 				<h:panelGroup layout="block" styleClass="eg3_content">
-					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16">
+					<h:panelGroup layout="block" styleClass="eg3_showHideAll_js eg3_icon_collapse_16_16" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
 						<a class="eg3_iconActionLabel" target="_self"><h:outputText value="#{lbl.sc_show_allHits}"/></a>
+						<script type="text/javascript">
+							$(document).ready(function(){
+								$('.eg3_bibList .eg3_listHeader .eg3_showHideAll_js').click(function(e) {
+									eg3_bibListToggleAllMediumView();
+								});
+								$('.eg3_bibList .eg3_listBody .eg3_showHideMediumView_js').click(function(e){
+									eg3_bibListToggleItemMediumView(this);
+								});
+							});
+						</script>
 					</h:panelGroup>
+					<h:outputText value="&#160;" rendered="#{prettyContext.currentMapping.id != 'searchResult'}"/>
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_mediabarActionArea">
 					<h:panelGroup layout="block" styleClass="eg3_toggleListItemVolume_js eg3_icon_collapse_16_16">
-						<h:outputLink styleClass="eg3_iconActionLabel" value="#">
+						<a title="#{lbl.list_NavElem_ShowAllVolumes}" class="eg3_iconActionLabel">
 							<h:outputText value="#{lbl.list_NavElem_ShowAllVolumes}"/>
-						</h:outputLink>
+						</a>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
@@ -72,13 +83,6 @@
 				<cc:insertChildren></cc:insertChildren>
 			</h:panelGroup>
 		</h:panelGroup>
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$('.eg3_bibList .eg3_listHeader .eg3_showHideAll_js').click(function(e) {
-					eg3_toggleShowHideAllMediumView();
-				});
-				
-			});
-		</script>
+		
 	</cc:implementation>
 </html>

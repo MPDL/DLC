@@ -16,31 +16,31 @@
 	<!-- INTERFACE -->
 	<cc:interface>
 		<cc:attribute name="volume" required="true"/>
-		<cc:attribute name="rendered" required="false" />
+		<cc:attribute name="rendered" required="false"/>
 		<cc:attribute name="fulltextHits"/>
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 		
-		<h:panelGroup layout="block" class="eg3_listItemMultiVolume eg3_multiVolumeBG_3"  rendered="#{cc.attrs.rendered}">
+		<h:panelGroup layout="block" styleClass="eg3_listItemMultiVolume eg3_multiVolumeBG_1" rendered="#{cc.attrs.rendered}">
 		
 	   		<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume}"/>
 			
-			<div class="eg3_itemContent">
-				<div class="eg3_itemContentData">
-					<div class="eg3_itemStatusArea" >
-						<h:panelGroup class="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}">&nbsp;</h:panelGroup>
-						<h:panelGroup class="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
-						<h:panelGroup class="eg3_itemStatusTitle">
+			<h:panelGroup layout="block" styleClass="eg3_itemContent">
+				<h:panelGroup layout="block" styleClass="eg3_itemContentData">
+					<h:panelGroup layout="block" styleClass="eg3_itemStatusArea" >
+						<h:panelGroup styleClass="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}">&nbsp;</h:panelGroup>
+						<h:panelGroup styleClass="eg3_icon_publishDocument_32_32" title="#{tlt.list_status}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}">&nbsp;</h:panelGroup>
+						<h:panelGroup styleClass="eg3_itemStatusTitle">
 							<h:outputText value="#{lbl.status_pending}" rendered="#{cc.attrs.volume.item.properties.version.status=='pending'}"/>
 							<h:outputText value="#{lbl.status_released}" rendered="#{cc.attrs.volume.item.properties.version.status=='released'}"/>
 						</h:panelGroup>
-					</div>
-					<div class="eg3_itemHeadline">
-						<div class="eg3_itemTitle">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
+						<h:panelGroup layout="block" styleClass="eg3_itemTitle">
 							<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
-								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: "  rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
+								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: " rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
 							</h:panelGroup>	
 				            
 			            	<a4j:commandLink value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}" execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()" rendered="#{not empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}">
@@ -62,13 +62,12 @@
 							<br/>
 							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place}"/>
 							<h:outputText value="#{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, " rendered="#{not empty volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}"/>
-						</div> 
-					</div>
+						</h:panelGroup> 
+					</h:panelGroup>
 					
-					<div class="eg3_shortView_js">
-						<div class="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_NumberOfVolumes}"/></div>
-						<div class="eg3_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedChildVolumes)}"/></div>
-						
+					<h:panelGroup layout="block" styleClass="eg3_shortView_js">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_NumberOfVolumes}"/></h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue"><h:outputText value="#{volumeUtilBean.getSize(cc.attrs.volume.relatedChildVolumes)}"/></h:panelGroup>
 						
 						<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 							<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
@@ -117,25 +116,25 @@
 								</pretty:link>
 							</h:panelGroup>
 						</ui:fragment>
-					</div>
-				</div>
-			
-				<div class="eg3_itemMediabar">
-					<div class="eg3_itemContentOptions">
-						<div class="eg3_itemDetailAction_js">
-							<div class="eg3_icon_collapse_16_16" >
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+					<h:panelGroup layout="block" styleClass="eg3_itemContentOptions">
+						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
+							<h:panelGroup layout="block" styleClass="eg3_icon_collapse_16_16" >
 								<label class="eg3_iconActionLabel">
 									<h:outputText value="#{lbl.list_NavElem_More}"/>
 								</label>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
 		</h:panelGroup>
-
+		
 		<h:panelGroup layout="block" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
-	 	   <list:bibItemVolume volumes="#{cc.attrs.volume.relatedChildVolumes}" />
+			<list:bibItemVolume volumes="#{cc.attrs.volume.relatedChildVolumes}"/>
 	    </h:panelGroup>
 
 	</cc:implementation>
