@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.util.Consts;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -106,14 +107,7 @@ public class IngestLog
 	
     private Connection connection;
     
-    public static final String teiWithoutImagesError = "tei File without images";
-    public static final String pbsNotEqualToImagesError = "Number of pbs != numbers of Images";
-    public static final String teiSyntaxError = "cannot read the tei File ";
-    public static final String mabTransformError = "can not  transform the MAB file";
-    public static final String multivolumeWithoutVolumeError = "this Multivolume has no volume";
-    public static final String volumeWithoutMultivolumeError = "this volume has no multivolume";
-    public static final String multivolumeRollbackError = "Multivolume Rollback, stop ingest volume";
-    public static final String volumeRollbackError = "Volume Rollback";
+
 
     /**
      * The data format that is used to display start- and end-date.
@@ -355,7 +349,7 @@ public class IngestLog
 					item = new BatchIngestItem();
 					item.setName(name);
 					item.setTeiFile(tFile);
-					String errorMessage = teiWithoutImagesError;
+					String errorMessage = Consts.TEIWITHOUTIMAGESERROR;
 					logger.error(errorMessage + name);
 					item.getErrorMessage().add(errorMessage);
 					errorItems.put(tFile.getName(), item);
@@ -369,14 +363,14 @@ public class IngestLog
 						int numberOfImages = item.getImageFiles().size();
 						if(numberOfTeiPbs != numberOfImages)
 						{
-							String errorMessage = pbsNotEqualToImagesError + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
+							String errorMessage = Consts.PBSNOTEQUALTOIMAGESERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
 							logger.error(errorMessage + name);
 							item.getErrorMessage().add(errorMessage);
 							items.remove(name);
 							errorItems.put(name, item);
 						}
 					} catch (Exception e) {
-						String errorMessage = teiSyntaxError;
+						String errorMessage = Consts.TEISYNTAXERROR;
 						logger.error(errorMessage + name);
 						item.getErrorMessage().add(errorMessage);
 						items.remove(name);
@@ -431,7 +425,7 @@ public class IngestLog
 							volumes.put(name, item);
 							}
 						} catch (Exception e) {
-						String errorMessage = mabTransformError;
+						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
 						item.getErrorMessage().add(errorMessage);
 						items.remove(name);
@@ -462,7 +456,7 @@ public class IngestLog
 							item.setParentId(parentId);
 						}
 						} catch (Exception e) {
-						String errorMessage = mabTransformError;
+						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
 						item.getErrorMessage().add(errorMessage);
 					}
@@ -486,7 +480,7 @@ public class IngestLog
 
 						multiVolumes.put(md.getCatalogueId_001(), md);
 					} catch (Exception e) {
-						String errorMessage = mabTransformError;
+						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
 						item.getErrorMessage().add(errorMessage);
 						errorItems.put(name, item);
@@ -541,7 +535,7 @@ public class IngestLog
 				}
 				else
 				{
-					String errorMessage = multivolumeWithoutVolumeError;
+					String errorMessage = Consts.MULTIVOLUMEWITHOUTVOLUMEWRROR;
 					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null, null, null, null);
 					logger.error(errorMessage);
 					newItem.getErrorMessage().add(errorMessage);
@@ -555,7 +549,7 @@ public class IngestLog
 				Entry vol = (Entry) restVolumes.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = volumeWithoutMultivolumeError;
+				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
 				logger.error(errorMessage);
 				item.getErrorMessage().add(errorMessage);
 				errorItems.put(name, item);
@@ -569,7 +563,7 @@ public class IngestLog
 				Entry vol = (Entry)v.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = volumeWithoutMultivolumeError;
+				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
 				logger.error(errorMessage);
 				item.getErrorMessage().add(errorMessage);
 				errorItems.put(name, item);
@@ -634,7 +628,7 @@ public class IngestLog
 						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							updateLogItemVolume(logItemId, vol.getName(), "message", multivolumeRollbackError);
+							updateLogItemVolume(logItemId, vol.getName(), "message", Consts.MULTIVOLUMEROLLBACKERROR);
 						}
 					}
 					else
@@ -649,7 +643,7 @@ public class IngestLog
 							{
 								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.ERROR.toString());
 								updateLogItemVolume(logItemId, vol.getName(), "status", Status.ROLLBACK.toString());
-								updateLogItem(logItemId, "message", volumeRollbackError);
+								updateLogItem(logItemId, "message", Consts.VOLUMEROLLBACKERROR);
 								updateLogItem(logItemId, "errorlevel", ErrorLevel.PROBLEM.toString());
 
 								updateLog("errorlevel", ErrorLevel.PROBLEM.toString());

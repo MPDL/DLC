@@ -29,9 +29,10 @@
         </f:facet>
 
 		<h:panelGrid columns="2" id="mvPlayer">	
+		<ui:remove>
 			<h:outputText value="id" />
 			<h:outputText value="#{cc.attrs.vol.item.objid}" />
-			
+		</ui:remove>	
 			<h:outputText value="#{lbl.mods_editor}"/>
 			<h:outputText value="#{volumeUtilBean.getFirstEditor(cc.attrs.vol.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)}" />
 			
