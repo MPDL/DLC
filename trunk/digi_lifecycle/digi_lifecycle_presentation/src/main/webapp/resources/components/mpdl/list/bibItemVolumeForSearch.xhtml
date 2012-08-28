@@ -58,12 +58,13 @@
 						<h:outputText value="#{lbl.list_parent}: "/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-						<pretty:link mappingId="viewMultiVol">
+						<!-- <pretty:link mappingId="viewMultiVol">
 							<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
-								
+						 -->		
 							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
 							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.relatedParentVolume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.relatedParentVolume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.relatedParentVolume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.relatedParentVolume.modsMetadata).name}" />
-						</pretty:link>
+						<!-- </pretty:link>
+						 -->
 					</h:panelGroup>
 					
 					
@@ -134,12 +135,14 @@
 				
 
 				<br/>
+				<!--  
 				<h:panelGroup layout="block" class="eg3_itemMediabarCategory">
 					<pretty:link mappingId="viewMultiVol">
 						<f:param value="#{cc.attrs.volume.item.relations[0].objid}" />
 						<h:outputText value="#{lbl.list_NavElemParent}"/>
 					</pretty:link>
-				</h:panelGroup>				
+				</h:panelGroup>	
+				-->			
 			</h:panelGroup>
 		</h:panelGroup>
 
