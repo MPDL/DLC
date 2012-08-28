@@ -9,10 +9,10 @@ import javax.faces.model.SelectItem;
 
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
-import de.mpg.mpdl.dlc.search.SearchBean;
-import de.mpg.mpdl.dlc.search.SortCriterion;
-import de.mpg.mpdl.dlc.search.SortCriterion.SortIndices;
-import de.mpg.mpdl.dlc.search.SortCriterion.SortOrders;
+import de.mpg.mpdl.dlc.searchLogic.SearchBean;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 

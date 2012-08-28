@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.search;
+package de.mpg.mpdl.dlc.searchLogic;
 
 
 public abstract class Criterion {

@@ -20,7 +20,7 @@ public class Page{
 	private String id;
 	
 	@XmlAttribute(name = "TYPE")
-	private String type = "page";
+	private String type;
 	
 	@XmlAttribute(name = "ORDER")
 	private int order;

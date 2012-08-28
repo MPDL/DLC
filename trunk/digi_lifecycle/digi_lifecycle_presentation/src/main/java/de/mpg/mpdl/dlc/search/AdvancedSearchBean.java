@@ -17,8 +17,10 @@ import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
-import de.mpg.mpdl.dlc.search.Criterion.Operator;
-import de.mpg.mpdl.dlc.search.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.searchLogic.SearchBean;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
+import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 

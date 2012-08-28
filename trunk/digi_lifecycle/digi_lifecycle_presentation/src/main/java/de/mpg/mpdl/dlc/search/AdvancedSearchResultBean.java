@@ -18,6 +18,8 @@ import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
+import de.mpg.mpdl.dlc.searchLogic.SearchBean;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 

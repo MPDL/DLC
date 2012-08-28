@@ -1,4 +1,4 @@
-package de.mpg.mpdl.dlc.search;
+package de.mpg.mpdl.dlc.searchLogic;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,7 +137,7 @@ public class SearchCriterion extends Criterion{
 					}
 					*/
 					
-					cql += baseCqlBuilder(sc.getSearchType().getIndexNames(), sc.getValue());
+					cql += baseCqlBuilder(sc.getSearchType().getIndexNames(), sc.getValue(), sc.getConnector());
 
 					for(int j=0; j<sc.getCloseBracket();j++)
 					{
@@ -191,7 +191,7 @@ public class SearchCriterion extends Criterion{
 	 * @param searchString
 	 * @return the cql string or null, if no search string or indexes are given
 	 */
-	protected static String baseCqlBuilder(String[] cqlIndexes, String searchString)
+	protected static String baseCqlBuilder(String[] cqlIndexes, String searchString, String connector)
 	{
 
 		if(searchString!=null && !searchString.trim().isEmpty())
@@ -241,7 +241,7 @@ public class SearchCriterion extends Criterion{
 			for(int j=0; j< cqlIndexes.length; j++)
 			{
 				cqlStringBuilder.append(cqlIndexes[j]);
-				cqlStringBuilder.append("=");
+				cqlStringBuilder.append(connector);
 				
 				if(splittedSearchStrings.size()>1)
 				{
