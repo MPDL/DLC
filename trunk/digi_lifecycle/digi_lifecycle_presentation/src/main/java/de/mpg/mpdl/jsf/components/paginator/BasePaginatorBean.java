@@ -163,13 +163,15 @@ public abstract class BasePaginatorBean<ListElementType>
             currentPartList = retrieveList(getOffset(), elementsPerPage);
             totalNumberOfElements = getTotalNumberOfRecords();
             // reset current page and reload list if list is shorter than the given current page number allows
-            if (getTotalNumberOfElements() <= getOffset())
+            
+            if (getTotalNumberOfElements()>0 && getTotalNumberOfElements() <= getOffset())
             {
                 setCurrentPageNumber(((getTotalNumberOfElements() - 1) / getElementsPerPage()) + 1);
 
                 currentPartList = retrieveList(getOffset(), elementsPerPage);
                 totalNumberOfElements = getTotalNumberOfRecords();
             }
+            
             paginatorPageList.clear();
             for (int i = 0; i < ((getTotalNumberOfElements() - 1) / elementsPerPage) + 1; i++)
             {
