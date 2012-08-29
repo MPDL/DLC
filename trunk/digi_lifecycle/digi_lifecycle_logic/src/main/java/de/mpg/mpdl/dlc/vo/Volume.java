@@ -17,6 +17,7 @@ import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.ItemProperties;
 import de.escidoc.core.resources.sb.search.Highlight;
 import de.escidoc.core.resources.sb.search.SearchHit;
+import de.escidoc.core.resources.sb.search.Type;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -216,7 +217,7 @@ public class Volume {
 		{
 			for (SearchHit hit : this.searchResultHighlight)
 			{
-				if(hit.getTextFragments()!=null)
+				if(hit.getTextFragments()!=null && hit.getType().equals(Type.FULLTEXT))
 				{
 					size += hit.getTextFragments().size();
 				}
