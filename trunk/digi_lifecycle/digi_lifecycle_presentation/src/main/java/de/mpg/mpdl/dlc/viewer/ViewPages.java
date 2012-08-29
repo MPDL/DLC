@@ -158,27 +158,65 @@ public class ViewPages{
 		this.setSelectedRightPage(null);
 		if(ViewType.RECTO_VERSO.equals(viewType))
 		{
-			if(pageforNumber.getType()==null || pageforNumber.getType().isEmpty() || pageforNumber.getType().equals("page"))
+			
+			Page nextPage = null;
+			Page prevPage = null;
+			if(volume.getPages().size() > getSelectedPageNumber())
+			{
+				nextPage = volume.getPages().get(getSelectedPageNumber());
+			}
+			if(getSelectedPageNumber() > 1)
+			{
+				prevPage = volume.getPages().get(getSelectedPageNumber()-2);
+			}
+			
+			
+			
+			if("single".equals(pageforNumber.getType()))
+			{
+				this.setSelectedPage(pageforNumber);
+				this.setSelectedRightPage(null);
+			}
+			else if ("left".equals(pageforNumber.getType()))
+			{
+				this.setSelectedPage(pageforNumber);
+				if(nextPage!=null && "right".equals(nextPage.getType()))
+				{
+					this.setSelectedRightPage(nextPage);
+				}
+				else
+				{
+					this.setSelectedRightPage(null);
+				}
+				
+				
+			}
+			else if ("right".equals(pageforNumber.getType()))
+			{
+				this.setSelectedRightPage(pageforNumber);
+				if(prevPage!=null && "left".equals(prevPage.getType()))
+				{
+					this.setSelectedPage(prevPage);
+				}
+				else
+				{
+					this.setSelectedPage(null);
+				}
+				
+			}
+			else
+			//automatic guess of position
 			{
 				if(getSelectedPageNumber() % 2 == 0)
 				{
 					this.setSelectedPage(pageforNumber);
+					this.setSelectedRightPage(nextPage);
 					
-					try {
-						this.setSelectedRightPage(volume.getPages().get(getSelectedPageNumber()));
-					} catch (IndexOutOfBoundsException e) {
-						this.setSelectedRightPage(null);
-					}
 				}
 				else
 				{
 					this.setSelectedRightPage(pageforNumber);
-					
-					try {
-						this.setSelectedPage(volume.getPages().get(getSelectedPageNumber()-2));
-					} catch (IndexOutOfBoundsException e) {
-						this.setSelectedPage(null);
-					}
+					this.setSelectedPage(prevPage);
 				}
 			}
 			
@@ -213,22 +251,7 @@ public class ViewPages{
 				{
 					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedRightPage());
 				}
-				/*
-				FacesContext fc = FacesContext.getCurrentInstance();
-				if(fc.getPartialViewContext().isAjaxRequest())
-				{
-					if(selectedDiv!=null)
-					{
-						fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(selectedDiv.getId()));
-					}
-					if(oldSelectedDiv!=null)
-					{
-						fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(oldSelectedDiv.getId()));
-					}
-				}
 				
-				System.out.println(fc.getPartialViewContext().getRenderIds());
-				*/
 			}
 			else
 			{
@@ -288,20 +311,44 @@ public class ViewPages{
 	public String goToNextPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) + 1;
-        if(ViewType.RECTO_VERSO.equals(viewType) && volume.getPages().size()>= selectedPageNumber + 2)
+		
+		
+		/*
+		Page nextPage = null;
+    	if(volume.getPages().size() > getSelectedPageNumber())
+    	{
+    		nextPage = volume.getPages().get(getSelectedPageNumber());
+    	}
+		*/
+		
+    	int lastCurrentPageNumber = 0;
+    	
+        if(ViewType.RECTO_VERSO.equals(viewType))
         {
         	
-        		selectedPageNumber += 2;
-        		loadVolume();
+        	//If both pages are displayed or only the right page, take the number of the right page
+        	if(selectedRightPage!=null)
+        	{
+        		lastCurrentPageNumber = volume.getPages().indexOf(selectedRightPage) + 1;
+        	}
+        	//If only the left page is displayed, take the left one
+        	else if (selectedPage!=null)
+        	{
+        		lastCurrentPageNumber = volume.getPages().indexOf(selectedPage) + 1;
+        	}
+
         }
         
-        else if (volume.getPages().size()>= selectedPageNumber + 1)
+        else 
         {
-           selectedPageNumber ++;
-           loadVolume();
+           lastCurrentPageNumber = selectedPageNumber;
         }
         
-        
+        if (volume.getPages().size()>= lastCurrentPageNumber + 1)
+        {
+        	selectedPageNumber = lastCurrentPageNumber + 1;
+        	loadVolume();
+        }
         
         return "";
 	}
@@ -309,18 +356,45 @@ public class ViewPages{
 	public String goToPreviousPage()
 	{
 //		selectedPageNumber = volume.getPages().indexOf(selectedPage) - 1;
+		/*
+		Page prevPage = null;
+		if(getSelectedPageNumber() > 1)
+		{
+			prevPage = volume.getPages().get(getSelectedPageNumber()-2);
+		}
+		*/
 		
-		if(ViewType.RECTO_VERSO.equals(viewType) && selectedPageNumber - 2 > 0)
+		int firstCurrentPageNumber = 0;
+		
+		
+		if(ViewType.RECTO_VERSO.equals(viewType))
         {
-			selectedPageNumber -= 2;
-			loadVolume();
+
+			//If both pages are displayed or only the left page, take the number of the left page
+        	if(selectedPage!=null)
+        	{
+        		firstCurrentPageNumber = volume.getPages().indexOf(selectedPage) + 1;
+        	}
+        	//If only the left page is displayed, take the right one
+        	else if (selectedRightPage!=null)
+        	{
+        		firstCurrentPageNumber = volume.getPages().indexOf(selectedRightPage) + 1;
+        	}
+        	
+			
         }
 		
-		else if (selectedPageNumber -1 > 0)
+		else 
         {
-           selectedPageNumber --;
-           loadVolume();
+			firstCurrentPageNumber = selectedPageNumber;
         }
+		
+		if (firstCurrentPageNumber -1 > 0)
+		{
+			selectedPageNumber = firstCurrentPageNumber - 1;
+	        loadVolume();
+		}
+		
         return null;
 	} 
 	
