@@ -17,7 +17,9 @@
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_organisationUnitStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
-				<h:outputText value="&#160;"/>
+				<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" >
+					<h:outputText value="Homepage des #{viewOU.orga.escidocMd.title}" style="color:white; float:right; padding-right:30px"/>
+				</h:outputLink>
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">

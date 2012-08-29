@@ -106,6 +106,7 @@ public class IngestLog
 	private int ingestedItems;
 	
     private Connection connection;
+
     
 
 
@@ -148,6 +149,8 @@ public class IngestLog
 		
 		saveLog();
 	}
+	
+
 
 	public static Connection getConnection()
 	{
@@ -156,19 +159,45 @@ public class IngestLog
 		Connection connection = null;
 		try{
 			Properties props = new Properties();
-			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.name"));
-			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.password"));
-//			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-//			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
+//			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.name"));
+//			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.password"));
+			System.out.println(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
+			System.out.println(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
+			props.setProperty("user","ingestAdmin");
+			props.setProperty("password","ingestAdmin");
 			Class.forName("org.postgresql.Driver");
 			url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
 			connection = DriverManager.getConnection(url, props);
-//			connection.close();
-			
+
+			URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
+
+		    File file = new File(sqlURL.toURI());
+		    StringBuilder fileContents = new StringBuilder((int)file.length());
+		    Scanner scanner = new Scanner(file);
+		    String lineSeparator = System.getProperty("line.separator");
+		    String dbScript;
+
+		    try {
+		        while(scanner.hasNextLine())        
+		            fileContents.append(scanner.nextLine() + lineSeparator);
+		       
+		        dbScript = fileContents.toString();
+		    } finally {
+		        scanner.close();
+		    }
+
+	        String[] queries = dbScript.split(";");
+            for (String query : queries)
+            {
+                logger.debug("Executing statement: " + query);
+                Statement stmt = connection.createStatement();
+                stmt.executeUpdate(query);
+                stmt.close();
+            }
 		}
 		catch(Exception e)
 		{
-			connection = createNewDB(connection);
+			logger.error("cannot set up Batch Ingest Databae");
 		}
 		return connection;
 	}
@@ -288,7 +317,6 @@ public class IngestLog
 				updateLog("errorlevel", ErrorLevel.ERROR.toString());
 				updateLog("step", Step.STOPPED.toString());
 			}
-
 		
 		} catch (Exception e) {
 			updateLog("errorlevel", ErrorLevel.ERROR.toString());
@@ -459,6 +487,7 @@ public class IngestLog
 						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
 						item.getErrorMessage().add(errorMessage);
+
 					}
 				}
 				else
@@ -932,58 +961,6 @@ public class IngestLog
 		return parentId;
 	}
 	
-	
-	//create new database and tables for batch-ingest if not exists
-	public static Connection createNewDB(Connection connection )
-	{
-		
-
-//		String newDB = "CREATE DATABASE batch-ingest" + " WITH OWNER=\"ingestAdmin\"";
-
-		try {
-			String url = PropertyReader.getProperty("dlc.database.connection.url");
-			
-			Properties props = new Properties();
-			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.name"));
-			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.password"));
-//			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-//			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
-			connection = DriverManager.getConnection(url, props);
-			
-			
-			URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
-
-		    File file = new File(sqlURL.toURI());
-		    StringBuilder fileContents = new StringBuilder((int)file.length());
-		    Scanner scanner = new Scanner(file);
-		    String lineSeparator = System.getProperty("line.separator");
-		    String dbScript;
-
-		    try {
-		        while(scanner.hasNextLine())        
-		            fileContents.append(scanner.nextLine() + lineSeparator);
-		       
-		        dbScript = fileContents.toString();
-		    } finally {
-		        scanner.close();
-		    }
-
-	        String[] queries = dbScript.split(";");
-            for (String query : queries)
-            {
-                logger.debug("Executing statement: " + query);
-                Statement stmt = connection.createStatement();
-                stmt.executeUpdate(query);
-                stmt.close();
-            }
- 		} catch (Exception e1) {
-			 logger.error("cannot set up Batch Ingest Databae");
-		}
-		return connection;
-	}
-	
-	
-    
     void setConnection(Connection connection) {
 		this.connection = connection;
 	}

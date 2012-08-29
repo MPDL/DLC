@@ -96,8 +96,7 @@ public class FullScreen {
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{sessionBean.setLogoLink(volumeOu.getId());
 					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
-					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
-							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
+					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home").replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
 			} catch (Exception e) {

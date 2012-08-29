@@ -68,8 +68,8 @@ public class SessionBean implements Serializable
 	    			|| viewId.equals("/volumes.xhtml")
 	    			|| viewId.equals("/ingest.xhtml")
 	    			|| viewId.equals("/advancedSearch.xhtml")
-	    			||viewId.equals("/admin.xhtml")
-	    			||viewId.equals("/ou.xhtml"))
+	    			||viewId.equals("/admin.xhtml"))
+//	    			||viewId.equals("/ou.xhtml"))
 	    		{logoUrl = "";
 	    		setLogoTlt("DLC");} 
 	    	if (logoUrl == null || logoUrl.equals("")) 

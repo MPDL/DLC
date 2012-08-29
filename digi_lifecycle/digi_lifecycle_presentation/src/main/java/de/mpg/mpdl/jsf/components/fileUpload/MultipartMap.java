@@ -132,7 +132,6 @@ public class MultipartMap extends HashMap<String, Object> {
         /** NEW */
         try {
 			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-			System.err.println(System.getProperty("java.io.tmpdir"));
 			diskFileItemFactory.setRepository(new File(System.getProperty("java.io.tmpdir")));
 			diskFileItemFactory.setSizeThreshold(0);
 			

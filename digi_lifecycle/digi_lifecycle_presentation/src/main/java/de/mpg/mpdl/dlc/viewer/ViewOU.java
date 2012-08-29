@@ -19,6 +19,7 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
@@ -55,6 +56,8 @@ public class ViewOU {
 	private Organization orga;
 	
 	private List<Volume> vols_Carousel = new ArrayList<Volume>();
+	private ApplicationBean appBean = new ApplicationBean();
+	private SessionBean sessionBean = new SessionBean();
 	
 	@URLAction(onPostback=false)
 	public void loadOu()
@@ -66,6 +69,15 @@ public class ViewOU {
 				this.orga = ouServiceBean.retrieveOrganization(id);
 				if(vols_Carousel !=null)
 					{this.vols_Carousel.clear();}
+				
+				if(!"".equals(orga.getDlcMd().getFoafOrganization().getImgURL()))
+				{
+					sessionBean.setLogoLink(orga.getId());
+					sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
+					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
+							.replace("$1", orga.getEscidocMd().getTitle()));
+				}
+				
 				
 				SearchCriterion sc = null;
 
