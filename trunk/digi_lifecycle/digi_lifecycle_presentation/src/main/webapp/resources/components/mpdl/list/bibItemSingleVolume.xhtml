@@ -216,7 +216,20 @@
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
 				<h:panelGroup layout="block" styleClass="eg3_itemMediabarThumb">
+
+
+				<pretty:link mappingId="viewPages">
+					<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+					<f:param value="recto-verso"/>
+					<f:param value="1"/>
+					<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
+
 					<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(cc.attrs.volume.pages[0].contentIds, 'THUMBNAIL')}" alt="" title="???placeholder" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+					
+				</pretty:link>
+
+
+
 				</h:panelGroup>
 				
 				<br/>

@@ -1,9 +1,12 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 
 public class IngestProcess extends Thread{
 	
@@ -22,6 +25,10 @@ public class IngestProcess extends Thread{
 	private String tei;
 	
 	private IngestLog log;
+	private long lastBeat = 0;
+	
+	private ContextServiceBean contectServiceBean = new ContextServiceBean();
+
 	
 	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String mab, String tei, String images) 
 	{
@@ -48,6 +55,7 @@ public class IngestProcess extends Thread{
 		}
 	}
 
+	
 	String getLogName() {
 		return logName;
 	}

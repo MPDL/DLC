@@ -1,7 +1,6 @@
 package de.mpg.mpdl.dlc.viewer;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -12,18 +11,22 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
-import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @SessionScoped
@@ -36,6 +39,7 @@ public class ViewCollection {
 	protected LoginBean loginBean;
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	private OrganizationalUnitServiceBean orgaServiceBean = new OrganizationalUnitServiceBean();
 		
 	private Collection col;
 	
@@ -43,7 +47,8 @@ public class ViewCollection {
 	//volumes which schown in carousel
 	private List<Volume> volumes = new ArrayList<Volume>();	
 
-
+	private ApplicationBean appBean = new ApplicationBean();
+	private SessionBean sessionBean = new SessionBean();
 	
 	@URLAction(onPostback=false)
 	public void loadCollection()
@@ -54,6 +59,16 @@ public class ViewCollection {
 			if(col==null || !col.getId().equals(id))
 			{
 				this.col = contextServiceBean.retrieveCollection(id, null);
+				
+				Organization orga = orgaServiceBean.retrieveOrganization(col.getId());
+				
+				if(!"".equals(orga.getDlcMd().getFoafOrganization().getImgURL()))
+				{
+					sessionBean.setLogoLink(orga.getId());
+					sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
+					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
+							.replace("$1", orga.getEscidocMd().getTitle()));
+				}
 				
 				if(volumes!=null)
 					this.volumes.clear();
