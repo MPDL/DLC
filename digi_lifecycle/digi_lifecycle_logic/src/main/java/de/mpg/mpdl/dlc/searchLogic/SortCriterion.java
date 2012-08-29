@@ -18,7 +18,7 @@ public class SortCriterion {
 		TITLE_FILTER("/sort/dlc/title"),
 		AUTHOR_FILTER("/sort/dlc/author"),
 		YEAR_FILTER("/sort/dlc/year"),
-		NEWESR_FILTER("/sort/properties/latest-release/date");
+		NEWEST_FILTER("/sort/properties/latest-release/date");
 		
 		private String indexName;
 		
@@ -112,7 +112,7 @@ public class SortCriterion {
 	{
 		
 			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndices.STATUS_FILTER, SortOrders.ASCENDING));
+			scList.add(new SortCriterion(SortIndices.NEWEST_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.TITLE_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.YEAR_FILTER, SortOrders.DESCENDING));
