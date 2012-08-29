@@ -1,10 +1,12 @@
 package de.mpg.mpdl.dlc.search;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 import org.z3950.zing.cql.CQLBooleanNode;
@@ -20,6 +22,9 @@ import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 
@@ -40,7 +45,35 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	private ApplicationBean appBean = new ApplicationBean();
 	private SessionBean sessionBean = new SessionBean();
 	
-	private List<SearchCriterion> searchCriterionList;	
+	private List<SearchCriterion> searchCriterionList;
+
+	private List<SortCriterion> sortCriterionList = SortCriterion.getStandardSortCriteria();	
+	
+	@ManagedProperty("#{internationalizationHelper}")
+	private InternationalizationHelper internationalizationHelper;
+	
+	
+	public AdvancedSearchResultBean()
+	{
+		
+	}
+	
+	@Override
+	public List<SortCriterion> getSortCriterionList()
+	{
+		return sortCriterionList ;
+	}
+
+	
+	@Override
+	public List<SelectItem> getSortIndicesMenu() {
+		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
+		scMenuList.add(new SelectItem(SortIndices.TITLE.name(), internationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(SortIndices.AUTHOR.name(), internationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(SortIndices.YEAR.name(), internationalizationHelper.getLabel("sort_criterion_year")));
+		scMenuList.add(new SelectItem(SortIndices.NEWEST.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
+		return scMenuList;
+	}
 	
 	
 	@Override
@@ -133,5 +166,16 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 		return buffer;
 		
 	}
+
+	public InternationalizationHelper getInternationalizationHelper() {
+		return internationalizationHelper;
+	}
+
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+		this.internationalizationHelper = internationalizationHelper;
+	}
+
+
+	
 	
 }

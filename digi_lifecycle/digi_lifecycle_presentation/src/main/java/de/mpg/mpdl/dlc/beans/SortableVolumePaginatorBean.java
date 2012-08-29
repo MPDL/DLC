@@ -19,26 +19,28 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volume> {
 
 	
-	private List<SortCriterion> sortCriterionList = SortCriterion.getStandardSortCriteria();
+	//private List<SortCriterion> sortCriterionList; //= SortCriterion.getStandardSortCriteria();
+	//private List<SortCriterion> sortCriterionFilterList = SortCriterion.getStandardFilterSortCriteria();
 
-	public List<SortCriterion> getSortCriterionList() {
-		return sortCriterionList;
-	}
-
-	public void setSortCriterionList(List<SortCriterion> sortCriterionList) {
-		this.sortCriterionList = sortCriterionList;
-	}
 	
-	public List<SelectItem> getSortIndicesMenu()
-	{
-		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		for(SortIndices si : SortIndices.values())
-		{
-			scMenuList.add(new SelectItem(si.name(), getSortCriterionString(si.name())));
-			
-		}
-		return scMenuList;
+	public abstract List<SortCriterion> getSortCriterionList();
+
+	
+	
+	/*
+	public List<SortCriterion> getSortCriterionFilterList() {
+		return sortCriterionFilterList ;
 	}
+
+	public void setSortCriterionFilterList(List<SortCriterion> sortCriterionList) {
+		this.sortCriterionFilterList = sortCriterionList;
+	}
+	*/
+	
+	public abstract List<SelectItem> getSortIndicesMenu();
+	
+		
+	
 	
 	public String changeSortCriteria()
 	{
@@ -62,31 +64,7 @@ public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volu
 	}
 	
 	
-	public String getSortCriterionString(String crit)
-	{
-		String criterion = "";
-        ResourceBundle bundleLabel = ResourceBundle.getBundle(
-                "Label",FacesContext.getCurrentInstance().getApplication().getDefaultLocale());
-		
-		if (crit.equals("AUTHOR")) 
-		{
-			criterion = bundleLabel.getString("sort_criterion_author");
-		}
-		if (crit.equals("YEAR")) 
-		{
-			criterion = bundleLabel.getString("sort_criterion_year");
-		}
-		if (crit.equals("TITLE")) 
-		{
-			criterion = bundleLabel.getString("sort_criterion_title");
-		}
-		if (crit.equals("NEWEST")) 
-		{
-			criterion = bundleLabel.getString("sort_criterion_newest");
-		}
-		
-		return criterion;
-	}
+	
 	
 
 	

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
@@ -33,6 +34,7 @@ import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -55,6 +57,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
+	private List<SortCriterion> sortCriterionList = SortCriterion.getStandardFilterSortCriteria();	
+	
+	@ManagedProperty("#{internationalizationHelper}")
+	private InternationalizationHelper internationalizationHelper;
+	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
@@ -66,7 +73,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	public AllVolumesBean()
 	{		
 		super();
-		//TODO
+		
 	}
 
 
@@ -89,17 +96,32 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		}
 	}
 	
-	
+
+	@Override
+	public List<SortCriterion> getSortCriterionList() {
+		return sortCriterionList;
+	}
+
+
+	@Override
+	public List<SelectItem> getSortIndicesMenu() {
+		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
+		scMenuList.add(new SelectItem(SortIndices.NEWEST_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
+		scMenuList.add(new SelectItem(SortIndices.TITLE_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(SortIndices.AUTHOR_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(SortIndices.YEAR_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_year")));
+		return scMenuList;
+	}
   
 
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
 		VolumeSearchResult res = null;
-
+		List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
 		if(colId.equalsIgnoreCase("my") )
 		{
-			List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
+			
 			FilterCriterion fc;
 //			for(Grant grant: loginBean.getUser().getGrants())
 //			{
@@ -149,20 +171,25 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 					}
 				}
 			}
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, SortCriterion.getStandardFilterSortCriteria(), limit, offset, loginBean.getUserHandle());
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 			
 			
 		}
 		else{
-			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			//List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 			if(collection != null)
 			{
-				SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
-				scList.add(sc);
+				fcList.add(new FilterCriterion(FilterParam.CONTEXT_ID, colId));
+				//SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
+				//scList.add(sc);
 			}
-			res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
+			
+			
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
+			//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 		
@@ -276,6 +303,18 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 		return volumes;
 	}
-	
+
+
+	public InternationalizationHelper getInternationalizationHelper() {
+		return internationalizationHelper;
+	}
+
+
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+		this.internationalizationHelper = internationalizationHelper;
+	}
+
+
+
 	
 }
