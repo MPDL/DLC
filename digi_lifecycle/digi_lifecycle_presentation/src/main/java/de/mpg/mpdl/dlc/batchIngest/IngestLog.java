@@ -281,6 +281,11 @@ public class IngestLog
 		
 		this.itemsForBatchIngest.clear();
 		this.errorItems.clear();
+
+	    SessionExtenderTask seTask = new SessionExtenderTask(userHandle, userId);
+	    seTask.start();
+
+	    
 		
 		try {
 			File imagesFolder = new File(images);
@@ -325,6 +330,7 @@ public class IngestLog
 		
 		Date endDate = new Date();
 		updateLog("enddate", endDate.toString());
+		seTask.stop();
 		return "";
 	}
 	
