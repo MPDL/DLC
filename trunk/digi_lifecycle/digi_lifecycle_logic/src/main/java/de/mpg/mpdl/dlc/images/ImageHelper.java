@@ -25,6 +25,7 @@ import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.ImageEncoder;
 import com.sun.media.jai.codec.JPEGEncodeParam;
+import com.sun.media.jai.codec.PNGDecodeParam;
 import com.sun.media.jai.codec.SeekableStream;
 import com.sun.media.jai.codec.TIFFDecodeParam;
 
@@ -227,8 +228,31 @@ public class ImageHelper{
 	        fos.close();
 	        
 	        return tmpFile;
+	    } 
+	    
+	    public static File pngToJpeg(File pngFile, String name) 
+	    {
 	    	
-	    }  
+	    	File tmpFile = null;
+	    	try{
+	    		tmpFile = File.createTempFile(name, "jpg.tmp");
+		    	SeekableStream s = new FileSeekableStream(pngFile);
+		    	PNGDecodeParam param = new PNGDecodeParam();
+		        ImageDecoder dec = ImageCodec.createImageDecoder("png", s, param);
+		        RenderedImage ri = dec.decodeAsRenderedImage(0);
+		        
+		        FileOutputStream fos = new FileOutputStream(tmpFile);
+		        JPEGEncodeParam jParam = new JPEGEncodeParam();
+		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
+		        imageEncoder.encode(ri);
+		        fos.close();
+	    	}catch(Exception e)
+	    	{
+	    		logger.error("cann not convert png to jpeg", e);
+	    	}
+	    	
+	    	return tmpFile;
+	    }
 	    
 		
 		public static RenderedImage readAndTile(File f) throws Exception {
@@ -290,6 +314,12 @@ public class ImageHelper{
 		File tiffFooter = new File("C://Users//yu//Desktop//test//footer_mpirg.tif");
 		String dir= "C://Users//yu//Desktop//test//";
 
+		
+		File png = new File("C:/Users/yu/Desktop/solution_logo_216_75.png");
+
+		
+		File jpegImage = pngToJpeg(png, "solution_logo_216_75.jpg");
+		
 
 		try {
 //			tiffToJpeg(tiffScan, "scan.jpg", dir);
