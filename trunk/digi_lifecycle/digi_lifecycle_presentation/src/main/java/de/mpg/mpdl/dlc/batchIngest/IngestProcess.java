@@ -2,6 +2,8 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 import java.util.Date;
 
+import java.util.concurrent.Executors;
+
 import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
@@ -54,6 +56,10 @@ public class IngestProcess extends Thread{
 			
 		}
 	}
+
+
+
+
 
 	
 	String getLogName() {
