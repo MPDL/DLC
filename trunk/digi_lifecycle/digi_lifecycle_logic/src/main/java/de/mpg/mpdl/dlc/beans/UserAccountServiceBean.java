@@ -54,8 +54,24 @@ public class UserAccountServiceBean {
 
 		}catch(Exception e)
 		{
-			logger.error("Erroe init other ejbx " + e.getMessage());
+			logger.error("Error init other ejbx " + e.getMessage());
 		}
+	}
+	
+	public UserAccount retrieveUserHandle(String handle, String userId)
+	{
+		UserAccount ua = null;
+		logger.info("Retrieving User Account");
+		try
+		{
+			UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(handle);
+			ua = client.retrieve(userId);
+		}catch(Exception e)
+		{
+			logger.error("retrieve User" + e.getMessage());
+		}
+		return ua;
 	}
 	
 	public User retrieveUserById(String userId,String userHandle)
