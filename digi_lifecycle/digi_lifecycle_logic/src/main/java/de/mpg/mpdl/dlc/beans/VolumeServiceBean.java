@@ -584,9 +584,13 @@ public class VolumeServiceBean {
 					String filename = getJPEGFilename(imageItem.getName());
 					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
 					File jpegImage;
-					if(imageItem.getName().endsWith("tif"))
+					if(imageItem.getName().endsWith("tif") || imageItem.getName().endsWith("tiff"))
 					{
 						jpegImage = ImageHelper.tiffToJpeg(imageItem.getStoreLocation(), getJPEGFilename(imageItem.getName()));
+					}
+					else if(imageItem.getName().endsWith("png"))
+					{
+						jpegImage = ImageHelper.pngToJpeg(imageItem.getStoreLocation(), getJPEGFilename(imageItem.getName()));
 					}
 					else
 						jpegImage = imageItem.getStoreLocation();
@@ -596,7 +600,9 @@ public class VolumeServiceBean {
 						if(footer.getName().endsWith("tif"))
 						{
 							jpegFooter = ImageHelper.tiffToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
-						}	
+						}
+						else if(imageItem.getName().endsWith("png"))
+							jpegFooter = ImageHelper.pngToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
 						else
 							jpegFooter = footer.getStoreLocation();
 						
@@ -1330,8 +1336,8 @@ public class VolumeServiceBean {
 	{
 			
 		
-		
-		
+
+		/*	
 		File tei = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/ernstcurtius_v03_ids.xml");
 		
 		VolumeServiceBean vsb = new VolumeServiceBean();
@@ -1354,10 +1360,10 @@ public class VolumeServiceBean {
 		client.setHandle(null);
 		
 		DefaultHttpClient httpclient = new DefaultHttpClient();
-		
+			
 		for(int i=0; i<100;i++)
 		{
-			/*
+			
 			client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
 			client.setHandle(null);
 			System.out.println("Try " + i );
@@ -1382,10 +1388,10 @@ public class VolumeServiceBean {
 			}
 
 			System.out.println("Result: " + sb.toString());
-			*/
+			
 			
 		}
-	
+	*/
 	
 	
 //		VolumeServiceBean vsb =new VolumeServiceBean();
