@@ -24,9 +24,11 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.Consts;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -285,8 +287,6 @@ public class IngestLog
 	    SessionExtenderTask seTask = new SessionExtenderTask(userHandle, userId);
 	    seTask.start();
 
-	    
-		
 		try {
 			File imagesFolder = new File(images);
 			readImagesToItems(itemsForBatchIngest,imagesFolder);
@@ -303,7 +303,6 @@ public class IngestLog
 			int totalItems = itemsForBatchIngest.size() + errorItems.size();
 			updateLog("total_items", Integer.toString(totalItems));
 			
-			//TODO update Log
 			if(itemsForBatchIngest.size() >0 )
 			{
 				itemsForBatchIngest = saveLogItems(itemsForBatchIngest, ErrorLevel.FINE);
@@ -317,15 +316,18 @@ public class IngestLog
 			{
 				saveItems(itemsForBatchIngest);
 				updateLog("step", Step.FINISHED.toString());
+				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_finish"));
 			}
 			else{
 				updateLog("errorlevel", ErrorLevel.ERROR.toString());
 				updateLog("step", Step.STOPPED.toString());
+				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
 			}
 		
 		} catch (Exception e) {
 			updateLog("errorlevel", ErrorLevel.ERROR.toString());
 			updateLog("step", Step.STOPPED.toString());
+			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_stop"));
 		}
 		
 		Date endDate = new Date();
@@ -966,6 +968,8 @@ public class IngestLog
 		}
 		return parentId;
 	}
+	
+
 	
     void setConnection(Connection connection) {
 		this.connection = connection;

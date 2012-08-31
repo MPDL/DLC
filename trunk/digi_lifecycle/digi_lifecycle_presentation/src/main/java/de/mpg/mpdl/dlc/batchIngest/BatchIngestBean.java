@@ -110,12 +110,21 @@ public class BatchIngestBean {
 		System.out.println("Vorgang gestartet");
 		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), mab, tei, images);
 	    ingestProcess.start();
-	    this.name = "";
+	    clear();
+	    logger.info("batch ingest finished");
+
 		return "";
 	}
 	
+	public String clear()
+	{
+		this.name ="";
+		this.images = "";
+		this.mab = "";
+		this.tei = "";
+		return "";
+	}
 	
-
 
 	public String getMab() {
 		return mab;
