@@ -27,13 +27,13 @@
 					</h:selectOneMenu>
 					
 					<h:outputText value="#{lbl.batchIngest_directory_images}" />
-					<h:inputText value="#{batchIngestBean.images}" />				
+					<h:inputText value="#{batchIngestBean.images}" style="width:500px"/>				
 					
 					<h:outputText value="#{lbl.batchIngest_directory_mab}" />
-					<h:inputText value="#{batchIngestBean.mab}" />
+					<h:inputText value="#{batchIngestBean.mab}" style="width:500px"/>
 					
 					<h:outputText value="#{lbl.batchIngest_directory_tei}" />
-					<h:inputText value="#{batchIngestBean.tei}" />
+					<h:inputText value="#{batchIngestBean.tei}" style="width:500px"/>
 					
 
 					
@@ -44,9 +44,15 @@
 						<h:outputText value="#{lbl.password}" />
 						<h:inputText value="#{batchIngestBean.password}" />
 					</ui:remove>
+					
 				</h:panelGrid>
 				
-				<a4j:commandButton action="#{batchIngestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="log" execute="@form">
+				<br/>
+				<a4j:commandButton action="#{batchIngestBean.clear}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" render="messages">
+					<f:ajax render="form2" />
+				</a4j:commandButton>
+				
+				<a4j:commandButton action="#{batchIngestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages" execute="@form">
 				</a4j:commandButton>
 				
 				<a4j:commandButton action="#{batchIngestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages" execute="@form" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">

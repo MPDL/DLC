@@ -50,6 +50,7 @@ public class IngestProcess extends Thread{
 	{
 		log = new IngestLog(logName, step, action, errorLevel, userId, contextId, images, mab, tei,  userHandle);
 		try {
+
 			log.checkAndSaveItems();
 		} catch (Exception e) {
 			logger.error("Erroe while checking ingest data", e);
