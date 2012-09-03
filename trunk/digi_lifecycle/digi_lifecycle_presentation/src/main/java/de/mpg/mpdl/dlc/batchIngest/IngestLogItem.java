@@ -2,39 +2,53 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 public class IngestLogItem extends IngestLog{
 	
-
+	
 	private String escidocId;
-	private IngestLog parent;
+
+	private String message;
 	private String contentModel;
-	
-	public IngestLogItem()
-	{
-		
-	}
-	
-	
-	
-	String getEscidocId() {
+	private Integer imagesNr;
+	private boolean hasFooter;
+	private boolean hasTEI;
+	public String getEscidocId() {
 		return escidocId;
 	}
-	void setEscidocId(String escidocId) {
+	public void setEscidocId(String escidocId) {
 		this.escidocId = escidocId;
 	}
-	IngestLog getParent() {
-		return parent;
+
+	public String getMessage() {
+		return message;
 	}
-	void setParent(IngestLog parent) {
-		this.parent = parent;
+	public void setMessage(String message) {
+		this.message = message;
 	}
-	String getContentModel() {
+	public String getContentModel() {
 		return contentModel;
 	}
-	void setContentModel(String contentModel) {
+	public void setContentModel(String contentModel) {
 		this.contentModel = contentModel;
 	}
+	public Integer getImagesNr() {
+		return imagesNr;
+	}
+	public void setImagesNr(Integer imagesNr) {
+		this.imagesNr = imagesNr;
+	}
+	public boolean isHasFooter() {
+		return hasFooter;
+	}
+	public void setHasFooter(boolean hasFooter) {
+		this.hasFooter = hasFooter;
+	}
+	public boolean isHasTEI() {
+		return hasTEI;
+	}
+	public void setHasTEI(boolean hasTEI) {
+		this.hasTEI = hasTEI;
+	}
 	
-	
-	
+
 	
 
 }

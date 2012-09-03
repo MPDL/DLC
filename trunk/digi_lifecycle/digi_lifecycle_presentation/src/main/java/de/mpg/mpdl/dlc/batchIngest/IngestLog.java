@@ -90,6 +90,7 @@ public class IngestLog
 	private int totalItems;
 	
     private int logId;
+    private int id;
 	private String userHandle;
     private String message;
     
@@ -105,11 +106,11 @@ public class IngestLog
 	private Object currentLog = new Object();
 	private Object currentItem = new Object();
 	private Object currentItemVolume = new Object();
-	private int ingestedItems;
+
 	
     private Connection connection;
 
-    
+    private List<BatchIngestItem> items = new ArrayList<BatchIngestItem>();
 
 
     /**
@@ -316,18 +317,18 @@ public class IngestLog
 			{
 				saveItems(itemsForBatchIngest);
 				updateLog("step", Step.FINISHED.toString());
-				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_finish"));
+//				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_finish"));
 			}
 			else{
 				updateLog("errorlevel", ErrorLevel.ERROR.toString());
 				updateLog("step", Step.STOPPED.toString());
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
+//				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
 			}
 		
 		} catch (Exception e) {
 			updateLog("errorlevel", ErrorLevel.ERROR.toString());
 			updateLog("step", Step.STOPPED.toString());
-			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_stop"));
+//			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
 		}
 		
 		Date endDate = new Date();
@@ -971,112 +972,112 @@ public class IngestLog
 	
 
 	
-    void setConnection(Connection connection) {
+	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
 
 
-	String getName() {
+	public String getName() {
 		return name;
 	}
 
-	void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	Step getStep() {
+	public Step getStep() {
 		return step;
 	}
 
-	void setStep(Step step) {
+	public void setStep(Step step) {
 		this.step = step;
 	}
 
-	Status getStatus() {
+	public Status getStatus() {
 		return status;
 	}
 
-	void setStatus(Status status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 
-	ErrorLevel getErrorLevel() {
+	public ErrorLevel getErrorLevel() {
 		return errorLevel;
 	}
 
-	void setErrorLevel(ErrorLevel errorLevel) {
+	public void setErrorLevel(ErrorLevel errorLevel) {
 		this.errorLevel = errorLevel;
 	}
 
-	Date getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
 
-	void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
 
-	Date getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
 
-	void setEndDate(Date endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 
-	String getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	void setUserId(String userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-	String getContextId() {
+	public String getContextId() {
 		return contextId;
 	}
 
-	void setContextId(String contextId) {
+	public void setContextId(String contextId) {
 		this.contextId = contextId;
 	}
 
-	int getFinishedItems() {
+	public int getFinishedItems() {
 		return finishedItems;
 	}
 
-	void setFinishedItems(int finishedItems) {
+	public void setFinishedItems(int finishedItems) {
 		this.finishedItems = finishedItems;
 	}
 
-	int getTotalItems() {
+	public int getTotalItems() {
 		return totalItems;
 	}
 
-	void setTotalItems(int totalItems) {
+	public void setTotalItems(int totalItems) {
 		this.totalItems = totalItems;
 	}
 
-	int getLogId() {
+	public int getLogId() {
 		return logId;
 	}
 
-	void setLogId(int logId) {
+	public void setLogId(int logId) {
 		this.logId = logId;
 	}
 
-	String getUserHandle() {
+	public String getUserHandle() {
 		return userHandle;
 	}
 
-	void setUserHandle(String userHandle) {
+	public void setUserHandle(String userHandle) {
 		this.userHandle = userHandle;
 	}
 
-	String getMessage() {
+	public String getMessage() {
 		return message;
 	}
 
-	void setMessage(String message) {
+	public void setMessage(String message) {
 		this.message = message;
 	}
 
@@ -1096,35 +1097,50 @@ public class IngestLog
 	public void setErrorItems(HashMap<String, BatchIngestItem> errorItems) {
 		this.errorItems = errorItems;
 	}
-	String getMab() {
+	public String getMab() {
 		return mab;
 	}
-	void setMab(String mab) {
+	public void setMab(String mab) {
 		this.mab = mab;
 	}
-	String getTei() {
+	public String getTei() {
 		return tei;
 	}
-	void setTei(String tei) {
+	public void setTei(String tei) {
 		this.tei = tei;
 	}
-	String getImages() {
+	public String getImages() {
 		return images;
 	}
-	void setImages(String images) {
+	public void setImages(String images) {
 		this.images = images;
 	}
 
 
-	int getIngestedItems() {
-		return ingestedItems;
+
+
+
+	public List<BatchIngestItem> getItems() {
+		return items;
 	}
 
 
-	void setIngestedItems(int ingestedItems) {
-		this.ingestedItems = ingestedItems;
+	public void setItems(List<BatchIngestItem> items) {
+		this.items = items;
+	}
+
+
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
 	} 
     
+	
+	
 	
 	
 	
