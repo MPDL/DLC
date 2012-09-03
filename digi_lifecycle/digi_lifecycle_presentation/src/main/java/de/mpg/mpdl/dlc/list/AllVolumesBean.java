@@ -35,6 +35,7 @@ import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -258,9 +259,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
-			vol = volServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);;
+			vol = volServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);
+			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "edit_savedAndReleasedSuccessfully"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveAndReleaseStruct"));
+			logger.error("Error while releasing volume " + vol.getObjidAndVersion(), e);
 		}
 
 	}
