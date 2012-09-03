@@ -1,0 +1,226 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:define name="mainContent">
+	
+	<mpdl:paginator paginatorBean="#{ingestLogBean}">
+		<h:panelGroup layout="block">
+		    <rich:dataTable var="log" value="#{ingestLogBean.logs}">
+		        <f:facet name="header">
+		            <rich:columnGroup>
+		                <rich:column>
+		                	<h:outputText value="Name" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="Step" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="Status" />
+		                </rich:column>
+		                <rich:column >
+		                    <h:outputText value="Errorlevel" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="Startdate" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="Enddate" />
+		                </rich:column>
+		                <rich:column >
+		                    <h:outputText value="Context" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="TotalItems" />
+		                </rich:column>		                
+		                <rich:column>
+		                    <h:outputText value="Finished Items" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="message" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="escidoc ID" />
+		                </rich:column>		                
+		                <rich:column>
+		                    <h:outputText value="contentModel" />
+		                </rich:column>		                
+		                <rich:column>
+		                    <h:outputText value="imagesNr" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="hasFooter" />
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="hasTEI" />
+		                </rich:column>		                	             
+		           
+		            </rich:columnGroup>
+		        </f:facet>
+		        
+		        <rich:column>
+            		<h:outputText value="#{log.name}" />
+       			</rich:column>
+		        <rich:column>
+            		<h:outputText value="#{log.step}" />
+       			</rich:column>
+       			<rich:column>
+            		<h:outputText value="#{log.status}" />
+       			</rich:column>
+		        <rich:column>
+            		<h:outputText value="#{log.errorLevel}" />
+       			</rich:column>
+       			<rich:column>
+            		<h:outputText value="#{log.startDate}" />
+       			</rich:column>
+		        <rich:column>
+            		<h:outputText value="#{log.endDate}" />
+       			</rich:column>
+       			<rich:column>
+            		<h:outputText value="#{log.contextId}" />
+       			</rich:column>
+       			<rich:column>
+            		<h:outputText value="#{log.totalItems}" />
+       			</rich:column>
+		        <rich:column>
+            		<h:outputText value="#{log.finishedItems}" />
+       			</rich:column>
+       			
+       			<rich:collapsibleSubTable var="logItem" value="#{ingestLogBean.getIngestLogItems(log.id)}" rendered="#{log.totalItems > 0}">
+	       			<rich:column>
+	            		<h:outputText value="#{logItem.name}" />
+	       			</rich:column>
+	       			<rich:column>
+	            		<h:outputText value="" />
+	       			</rich:column>
+
+	       			<rich:column>
+	            		<h:outputText value="#{logItem.status}" />
+	       			</rich:column>
+			        <rich:column>
+	            		<h:outputText value="#{logItem.errorLevel}" />
+	       			</rich:column>
+	       			<rich:column>
+	            		<h:outputText value="#{logItem.startDate}" />
+	       			</rich:column>
+			        <rich:column>
+	            		<h:outputText value="#{logItem.endDate}" />
+	       			</rich:column>
+	       			<rich:column>
+	            		<h:outputText value="" />
+	       			</rich:column>
+	       			<rich:column>
+	            		<h:outputText value="" />
+	       			</rich:column>
+	       			<rich:column>
+	            		<h:outputText value="" />
+	       			</rich:column>	       				       			
+	       			<rich:column>
+	            		<h:outputText value="#{logItem.message}" />
+	       			</rich:column>
+	       			<rich:column rendered="#{not empty logItem.escidocId and logItem.contentModel != 'escidoc:2002'}">
+	       				<pretty:link mappingId = "viewPages">
+	       					<f:param value="#{logItem.escidocId}"/>
+							<f:param value="recto-verso"/>
+							<f:param value="1"/>
+
+		            		<h:outputText value="#{logItem.escidocId}" />
+		            	</pretty:link>
+		       		</rich:column>
+	       			<rich:column rendered="#{empty logItem.escidocId or logItem.contentModel == 'escidoc:2002'}">
+            			<h:outputText value="#{logItem.escidocId}" />
+	       			</rich:column>
+			        <rich:column>
+	            		<h:outputText value="#{logItem.contentModel}" />
+	       			</rich:column>
+			        <rich:column>
+	            		<h:outputText value="#{logItem.imagesNr}" />
+	       			</rich:column>
+
+	       			<rich:column>
+	            		<h:outputText value="#{logItem.hasFooter}" />
+	       			</rich:column>
+			        <rich:column>
+	            		<h:outputText value="#{logItem.hasTEI}" />
+	       			</rich:column>
+		       		
+		       		<rich:collapsibleSubTable var="logItemVolume" value="#{ingestLogBean.getIngestLogItemVolumes(logItem.id)}" rendered="#{logItem.contentModel == 'escidoc:2002'}">
+		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.name}" />
+		       			</rich:column>
+		       			<rich:column>
+		            		<h:outputText value="" />
+		       			</rich:column>
+	
+		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.status}" />
+		       			</rich:column>
+				        <rich:column>
+		            		<h:outputText value="#{logItemVolume.errorLevel}" />
+		       			</rich:column>
+		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.startDate}" />
+		       			</rich:column>
+				        <rich:column>
+		            		<h:outputText value="#{logItemVolume.endDate}" />
+		       			</rich:column>
+		       			<rich:column>
+		            		<h:outputText value="" />
+		       			</rich:column>
+		       			<rich:column>
+		            		<h:outputText value="" />
+		       			</rich:column>
+		       			<rich:column>
+		            		<h:outputText value="" />
+		       			</rich:column>	       				       			
+		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.message}" />
+		       			</rich:column>
+		       			<rich:column rendered="#{not empty logItemVolume.escidocId}">
+		       				<pretty:link mappingId = "viewPages">
+		       					<f:param value="#{logItemVolume.escidocId}"/>
+								<f:param value="recto-verso"/>
+								<f:param value="1"/>
+
+			            		<h:outputText value="#{logItemVolume.escidocId}" />
+			            	</pretty:link>
+		       			</rich:column>
+		       			<rich:column rendered="#{empty logItemVolume.escidocId}">
+			            	<h:outputText value="#{logItemVolume.escidocId}" />			            	
+		       			</rich:column>
+				        <rich:column>
+		            		<h:outputText value="#{logItemVolume.contentModel}" />
+		       			</rich:column>
+				        <rich:column>
+		            		<h:outputText value="#{logItemVolume.imagesNr}" />
+		       			</rich:column>
+	
+		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.hasFooter}" />
+		       			</rich:column>
+				        <rich:column>
+		            		<h:outputText value="#{logItemVolume.hasTEI}" />
+		       			</rich:column>
+	       			</rich:collapsibleSubTable>
+	       			
+       			</rich:collapsibleSubTable>
+		 
+		    </rich:dataTable>
+		
+		
+		</h:panelGroup>
+	</mpdl:paginator>
+	</ui:define>
+</ui:composition>
+
+</html>
