@@ -11,6 +11,7 @@
 	<!-- INTERFACE -->
 	<cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
 		<cc:attribute name="fileUploadListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)" required="true"/>
+		<cc:attribute name="onUploadCompleteAction" method-signature="java.lang.String method()"/>
 		<cc:attribute name="rerender" type="java.lang.String"/>
 	</cc:interface>
 	
@@ -136,8 +137,8 @@
 					</a>
 	-->
 	 
-				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" style="visibility:hidden; display:none;">
-					<a4j:ajax event="click" render="#{cc.attrs.rerender}"/>
+				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" action="#{cc.attrs.onUploadCompleteAction}" style="visibility:hidden; display:none;">
+					<a4j:ajax render=":#{cc.attrs.rerender}"/>
 				</h:commandButton>
 
 				 	

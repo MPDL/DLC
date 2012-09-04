@@ -16,6 +16,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmNode;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
@@ -70,14 +73,14 @@ public class IngestBean{
  
 	private static Logger logger = Logger.getLogger(IngestBean.class);
    
-	private ArrayList<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
+	private List<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
 	private DiskFileItem footer;
 	
 	private FileItem mabFile;
 	private ModsMetadata modsMetadata  = new ModsMetadata();
 	
 	private FileItem teiFile;
-	private int numberOfTeiPbs;
+	private List<XdmNode> teiPbFacsValues;
 
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
@@ -230,7 +233,7 @@ public class IngestBean{
     public String clearUploadedTEI() 
     {     
     	this.teiFile = null;
-    	this.numberOfTeiPbs = 0;
+    	this.teiPbFacsValues = null;
         return "";
     }
     
@@ -261,7 +264,7 @@ public class IngestBean{
     	addModsMetadata();
     	if(teiFile != null)
     		this.teiFile = null;
-    	numberOfTeiPbs = 0;
+    	this.teiPbFacsValues = null;
     	if(footer != null)
     		this.footer = null;
     	return "";
@@ -279,11 +282,11 @@ public class IngestBean{
         return System.currentTimeMillis();
     }
  
-    public ArrayList<DiskFileItem> getImageFiles() {
+    public List<DiskFileItem> getImageFiles() {
         return imageFiles; 
     }
  
-    public void setImageFiles(ArrayList<DiskFileItem> files) {
+    public void setImageFiles(List<DiskFileItem> files) {
         this.imageFiles = files;
     }
     
@@ -407,7 +410,8 @@ public class IngestBean{
 				this.setTeiFile(fue.getFileItem());
 				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
 				try {
-					numberOfTeiPbs = volumeService.validateTei(diskTeiFile.getInputStream());
+					
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(diskTeiFile.getInputStream());
 				} catch (Exception e) {
 					logger.error("error while validating TEI", e);
 					MessageHelper.errorMessage("Error while validating TEI"); 
@@ -423,6 +427,58 @@ public class IngestBean{
 
 			}
 		}
+	}
+	
+	public String uploadComplete()
+	{
+		System.out.println("UPLOAD COMPLETE!!!!");
+		imageFiles = sortImagesByTeiFile(imageFiles, teiPbFacsValues);
+		return null;
+	}
+		
+	
+	public static List<DiskFileItem> sortImagesByTeiFile(List<DiskFileItem> imageFiles, List<XdmNode> teiPbFacsValues)
+	{
+		//Sort images using pb facs attribute in tei file
+				
+			List<DiskFileItem> imageFilesSorted = new ArrayList<DiskFileItem>();
+			if(teiPbFacsValues != null && imageFiles.size() == teiPbFacsValues.size())
+			{
+				
+				for(XdmNode node : teiPbFacsValues)
+				{
+					String facs = node.getAttributeValue(new QName("facs"));
+					boolean found = false;
+					if(facs!=null)
+					{
+						
+						for(DiskFileItem imgFile : imageFiles)
+						{
+							if(facs.equals(imgFile.getName()))
+							{
+								imageFilesSorted.add(imgFile);
+								found=true;
+								break;
+							}
+						}
+					}
+					if(!found)
+					{
+						
+						imageFilesSorted = imageFiles;
+						break;
+					}
+					
+				}
+				
+			}
+			else
+			{
+				imageFilesSorted = imageFiles;
+			}
+			
+			return imageFilesSorted;
+	
 	}
 	
 
@@ -640,12 +696,12 @@ public class IngestBean{
 				
 				else
 				{
-		     		if(getImageFiles().size()==0 || (teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
+		     		if(getImageFiles().size()==0 || (teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
 		    		{
 		     			
 		     			if(getImageFiles().size()==0 )
 		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
-		     			if(teiFile!=null && getNumberOfTeiPbs()!=getImageFiles().size())
+		     			if(teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size())
 		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 		     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
 		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_nullTitle"));
@@ -738,13 +794,6 @@ public class IngestBean{
 		this.modsMetadata = modsMetadata;
 	}
 
-	public int getNumberOfTeiPbs() {
-		return numberOfTeiPbs;
-	}
-
-	public void setNumberOfTeiPbs(int numberOfTeiPbs) {
-		this.numberOfTeiPbs = numberOfTeiPbs;
-	}
 
 	public String getSelectedContextId() {
 		return selectedContextId;
@@ -878,6 +927,16 @@ public class IngestBean{
 
 	public void setFooter(DiskFileItem footer) {
 		this.footer = footer;
+	}
+
+
+	public List<XdmNode> getTeiPbFacsValues() {
+		return teiPbFacsValues;
+	}
+
+
+	public void setTeiPbFacsValues(List<XdmNode> teiPbFacsValues) {
+		this.teiPbFacsValues = teiPbFacsValues;
 	}
 	
 	
