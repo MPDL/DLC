@@ -65,11 +65,10 @@ public class ApplicationBean
     private String domain;
     private String appTitle;
     private String contextPath;
-    private String userLocaleString;
+   
     private String dfgUrl = null;
 
-	private static Locale userLocale;
-    private String selectedHelpPage;
+
     private String cmMultiVol;
     private String cmVolume;
     private String cmMono;
@@ -111,6 +110,7 @@ public class ApplicationBean
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
 		}
     	
+    	/*
     	this.userLocale = FacesContext.getCurrentInstance().getExternalContext().getRequestLocale();
     	Iterator<Locale> supportedLocales = FacesContext.getCurrentInstance().getApplication().getSupportedLocales();
     	boolean found = false;
@@ -137,7 +137,7 @@ public class ApplicationBean
             this.selectedHelpPage = "help/dlc_help_en.html";
         }
         this.userLocaleString = userLocale.getLanguage();
-    	
+    	*/
     	try {
 			this.domain = PropertyReader.getProperty("dlc.instance.url");
 	        this.contextPath = PropertyReader.getProperty("dlc.context.path");
@@ -210,32 +210,7 @@ public class ApplicationBean
 		this.contextPath = contextPath;
 	}
 
-    public String getUserLocaleString()
-    {
-    	return userLocaleString;
-    }
-	public void setUserLocaleString(String userLocaleString) 
-	{
-		this.userLocaleString = userLocaleString;
-	}
-
-    public Locale getUserLocale() {
-		return userLocale;
-	}
-
-	public void setUserLocale(Locale userLocale) {
-		this.userLocale = userLocale;
-	}
-
-    public String getSelectedHelpPage()
-    {
-        return selectedHelpPage;
-    }
-    
-	public void setSelectedHelpPage(String selectedHelpPage)
-	{
-		this.selectedHelpPage = selectedHelpPage;
-	}  
+   
 	
     
     
@@ -263,41 +238,7 @@ public class ApplicationBean
 		this.cmMono = cmMono;
 	}
 
-	/**
-     * toggle the locale.
-     * @param event
-     */
-    public void changeLanguage(ValueChangeEvent event)
-    {
-    	FacesContext fc = FacesContext.getCurrentInstance();
-    	if (event.getOldValue() != null && !event.getOldValue().equals(event.getNewValue()))
-    	{
-    		Locale locale = null;
-    		String language = event.getNewValue().toString();
-            String country = language.toUpperCase();
-            this.userLocaleString = language;
-            try
-            {
-                locale = new Locale(language, country);
-                fc.getViewRoot().setLocale(locale);
-                Locale.setDefault(locale);
-                userLocale = locale;
-                logger.debug("New locale: " + language + "_" + country + " : " + locale);
-            }
-            catch (Exception e)
-            {
-                logger.error("unable to switch to locale using language = " + language + " and country = " + country, e);
-            }
-            if (language.equals("de"))
-            {
-                this.selectedHelpPage = HELP_PAGE_DE;
-            }
-            else
-            {
-                this.selectedHelpPage = HELP_PAGE_EN;
-            }
-    	}
-    }
+	
     
     public String getHelpAnchor()
     {
