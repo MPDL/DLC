@@ -1606,7 +1606,18 @@ public class VolumeServiceBean {
 		
 	}
 	
+	
+	public static void importVolumeIntoVolume(Volume volWithData, Volume volumeWithoutData, String userHandle)throws Exception
+	{
+		createVolumeFromItem(volWithData.getItem(), userHandle, volumeWithoutData);
+	}
+	
 	public static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
+	{
+		return createVolumeFromItem(item, userHandle, null);
+	}
+	
+	public static Volume createVolumeFromItem(Item item, String userHandle, Volume oldVol ) throws Exception
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1626,7 +1637,14 @@ public class VolumeServiceBean {
 		//Unmarshaller unmarshaller = JaxBWrapper.getInstance("", schemaLocation)
 		ModsMetadata md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
 		
-		vol = new Volume();
+		if(oldVol==null){
+			vol = new Volume();
+		}
+		else
+		{
+			vol = oldVol;
+		}
+		
 		vol.setModsMetadata(md);
 		
 		long timeMods = System.currentTimeMillis()-startMods;

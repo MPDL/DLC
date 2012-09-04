@@ -258,13 +258,15 @@ public class ContextServiceBean {
 		return c;
 	}
 	
-	/*
+	
 	public static void main(String[] args) throws Exception {
-		System.out.println(createContextAdminDescriptor());
+//		System.out.println(createContextAdminDescriptor());
+		
+
 		
 	}
 	
-	
+	/*
 	public static String createContextAdminDescriptor() throws Exception
 	{
 		
