@@ -153,8 +153,6 @@ public class IngestLog
 		saveLog();
 	}
 	
-
-
 	public static Connection getConnection()
 	{
 		String url;
@@ -164,10 +162,8 @@ public class IngestLog
 			Properties props = new Properties();
 //			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.name"));
 //			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.super_user.password"));
-			System.out.println(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-			System.out.println(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
-			props.setProperty("user","ingestAdmin");
-			props.setProperty("password","ingestAdmin");
+			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
+			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 			Class.forName("org.postgresql.Driver");
 			url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
 			connection = DriverManager.getConnection(url, props);
@@ -315,6 +311,8 @@ public class IngestLog
 
 			if(errorItems.size()==0)
 			{
+				updateLog("step", Step.STARTED.toString());
+				updateLog("startdate", new Date().toString());
 				saveItems(itemsForBatchIngest);
 				updateLog("step", Step.FINISHED.toString());
 //				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_finish"));
@@ -636,13 +634,15 @@ public class IngestLog
 			try {
 			
 				Date sDate = new Date();
+				updateLogItem(logItemId, "startdate", sDate.toString());
 				String itemId = null;
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
 					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, bi.getTeiFile());
-
+					
+					updateLogItem(logItemId, "item_id", itemId);
 					Date eDate = new Date();
-					updateLogItem(logItemId, sDate.toString(), itemId, eDate.toString());
+					updateLogItem(logItemId, "enddate", eDate.toString());
 					if(itemId == null)
 					{
 						updateLogItem(logItemId, "errorlevel", ErrorLevel.ERROR.toString());
@@ -689,12 +689,13 @@ public class IngestLog
 							else
 								volIds.add(volId);
 						}
-						eDate = new Date();
+						
 						itemId = volumeService.updateMultiVolumeFromId(itemId, volIds, userHandle);
-
+						updateLogItem(logItemId, "item_id", itemId);
 						if(status.toString().equalsIgnoreCase("release"))
 							volumeService.releaseVolume(itemId, userHandle);
-						updateLogItem(logItemId, sDate.toString(), itemId, eDate.toString());
+						eDate = new Date();
+						updateLogItem(logItemId, "enddate", eDate.toString());
 					}
 					
 				}
@@ -758,31 +759,7 @@ public class IngestLog
 			throw new RuntimeException("Error while uploading log", e);
 		}
 	}
-	
-	/**
-	 * set startDate, escidocId, endDate in the database
-	 * @param logItemId Item database ID
-	 * @param startDateValue
-	 * @param itemId escidoc ID
-	 * @param endDateValue
-	 */
-	private void updateLogItem(String logItemId, String startDateValue, String itemId, String endDateValue)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET startdate = '" + startDateValue + "', item_id = '"+ itemId+ "', enddate = '" + endDateValue + "' WHERE id = "+ logItemId);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
+
 	
 	/**
 	 * update database
