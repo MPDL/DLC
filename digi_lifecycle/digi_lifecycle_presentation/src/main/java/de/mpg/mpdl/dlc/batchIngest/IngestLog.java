@@ -22,10 +22,15 @@ import java.util.Properties;
 import java.util.Scanner;
 import java.util.Map.Entry;
 
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmNode;
+
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.ingest.IngestBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.Consts;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -394,7 +399,9 @@ public class IngestLog
 					item.setTeiFile(tFile);
 					logger.info("read tei for " + name);
 					try {
-						int numberOfTeiPbs = volumeService.validateTei(new FileInputStream(tFile));
+						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new FileInputStream(tFile));
+						item.setImageFiles(sortImagesByTeiFile(item.getImageFiles(), pbList));
+						int numberOfTeiPbs = pbList.size();
 						int numberOfImages = item.getImageFiles().size();
 						if(numberOfTeiPbs != numberOfImages)
 						{
@@ -415,6 +422,51 @@ public class IngestLog
 				}
 			}
 		}
+	}
+	
+	
+	public static List<File> sortImagesByTeiFile(List<File> imageFiles, List<XdmNode> teiPbFacsValues)
+	{
+		//Sort images using pb facs attribute in tei file
+				
+			List<File> imageFilesSorted = new ArrayList<File>();
+			if(teiPbFacsValues != null && imageFiles.size() == teiPbFacsValues.size())
+			{
+				
+				for(XdmNode node : teiPbFacsValues)
+				{
+					String facs = node.getAttributeValue(new QName("facs"));
+					boolean found = false;
+					if(facs!=null)
+					{
+						
+						for(File imgFile : imageFiles)
+						{
+							if(facs.equals(imgFile.getName()))
+							{
+								imageFilesSorted.add(imgFile);
+								found=true;
+								break;
+							}
+						}
+					}
+					if(!found)
+					{
+						
+						imageFilesSorted = imageFiles;
+						break;
+					}
+					
+				}
+				
+			}
+			else
+			{
+				imageFilesSorted = imageFiles;
+			}
+			
+			return imageFilesSorted;
+	
 	}
 	
 	private void readMabToItems(HashMap<String, BatchIngestItem> items, HashMap<String, BatchIngestItem> errorItems, File mabFolder)

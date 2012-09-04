@@ -18,7 +18,7 @@ public class BatchIngestItem {
 	
 	private File teiFile;
 	
-	private ArrayList<File> imageFiles = new ArrayList<File>();
+	private List<File> imageFiles = new ArrayList<File>();
 	
 	private File footer;
 	
@@ -80,11 +80,11 @@ public class BatchIngestItem {
 		this.teiFile = teiFile;
 	}
 
-	public ArrayList<File> getImageFiles() {
+	public List<File> getImageFiles() {
 		return imageFiles;
 	}
 
-	public void setImageFiles(ArrayList<File> imageFiles) {
+	public void setImageFiles(List<File> imageFiles) {
 		this.imageFiles = imageFiles;
 	}
 	
