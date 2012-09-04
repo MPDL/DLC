@@ -18,11 +18,11 @@
 <!-- IMPLEMENTATION -->
 <cc:implementation>
 	<a4j:repeat id="vol" value="#{cc.attrs.volumes}" var="volume" rows="0" rowKeyVar="index">
-		<h:panelGroup layout="block" styleClass="eg3_listItemVolume eg3_multiVolumeBG_1" rendered="#{(prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
+		<h:panelGroup layout="block" id="volume" styleClass="eg3_listItemVolume eg3_multiVolumeBG_1" rendered="#{(prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my' and !utilBean.ifOwner(volume.item, loginBean.user)) ? 'false' : 'true'}">
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemContent">
 				<h:panelGroup layout="block" styleClass="eg3_itemContentBg">&nbsp;</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="eg3_itemContentData">
+				<h:panelGroup layout="block" binding="#{requestScope.foo}" id="x" styleClass="eg3_itemContentData">
 					<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
 						<h:panelGroup styleClass="eg3_icon_privateDocument_32_32" title="#{tlt.list_status}" rendered="#{volume.item.properties.version.status=='pending' and empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
 						<h:panelGroup styleClass="eg3_icon_progressDocument_32_32" title="#{tlt.list_status}" rendered="#{volume.item.properties.version.status=='pending' and not empty volume.item.properties.latestRelease}">&nbsp;</h:panelGroup>
@@ -63,9 +63,26 @@
 							
 							<h:panelGroup rendered="#{volume.item.properties.version.status=='pending' and loginBean.user.releasable(volume.item.properties.context.objid)}">
 								<h:commandButton action="#{allVolumesBean.release(volume)}" value=" #{lbl.button_command_release}" >
+									<f:ajax render="volume :messages" />
 								</h:commandButton>
 							</h:panelGroup>
+							
+
 						</h:panelGroup>
+						
+						<script type="text/javascript">
+						      function toggle(id) {
+							      alert(id)
+						        var element = document.getElementById(id);
+						    //    alert(element.id);
+						        if(element.style.display == 'block') {
+						          element.style.display = 'none';
+						        } else {
+						          element.style.display = 'block'
+						        }
+						        
+						      }
+    					</script>
 						
 						<ui:fragment rendered="#{not empty volume.item.properties.latestRelease}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>

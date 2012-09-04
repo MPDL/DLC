@@ -23,7 +23,7 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 		
-		<h:panelGroup layout="block" styleClass="eg3_listItemMultiVolume eg3_multiVolumeBG_1" rendered="#{cc.attrs.rendered}">
+		<h:panelGroup layout="block" id="multiVol" styleClass="eg3_listItemMultiVolume eg3_multiVolumeBG_1" rendered="#{cc.attrs.rendered}">
 		
 	   		<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume}"/>
 			
@@ -85,7 +85,9 @@
 								</pretty:link>
 								
 								<h:panelGroup rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
-									<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5"/>
+									<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
+										<f:ajax render="multiVol :messages" />
+									</h:commandButton>
 								</h:panelGroup>
 							</h:panelGroup>
 							
