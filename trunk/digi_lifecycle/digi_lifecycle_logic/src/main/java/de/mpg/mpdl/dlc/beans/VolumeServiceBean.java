@@ -2505,7 +2505,7 @@ public class VolumeServiceBean {
 
 
 
-	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, ArrayList<File> images, File footer, File tei) throws Exception {
+	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, File tei) throws Exception {
 		logger.info("Creating new volume/monograph");
 		
 		Volume volume = new Volume();
