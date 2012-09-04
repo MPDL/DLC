@@ -112,7 +112,7 @@ public class SortCriterion {
 	{
 		
 			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndices.NEWEST_FILTER, SortOrders.ASCENDING));
+			scList.add(new SortCriterion(SortIndices.NEWEST_FILTER, SortOrders.DESCENDING));
 			scList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.TITLE_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.YEAR_FILTER, SortOrders.DESCENDING));
