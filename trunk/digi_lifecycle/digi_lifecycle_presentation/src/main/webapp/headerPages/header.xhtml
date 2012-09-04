@@ -62,8 +62,8 @@
 							<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 								<span class="eg3_selectionText"></span>
 							</h:panelGroup>
-							<h:selectOneMenu id="selSelectLocale" value="#{applicationBean.userLocaleString}" immediate="true" onchange="submit();"
-								valueChangeListener="#{applicationBean.changeLanguage}" title="#{tlt.meta_language}">
+							<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}" immediate="true" onchange="submit();"
+								valueChangeListener="#{internationalizationHelper.changeLanguage}" title="#{tlt.meta_language}">
 								<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
 								<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
 							</h:selectOneMenu> 

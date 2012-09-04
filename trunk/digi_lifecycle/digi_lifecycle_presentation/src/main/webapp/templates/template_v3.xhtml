@@ -29,7 +29,7 @@ Gesellschaft zur Förderung der Wissenschaft e.V.
 All rights reserved. Use is subject to license terms.
  */
 -->
-<f:view encoding="UTF-8" locale="#{applicationBean.userLocaleString}"
+<f:view encoding="UTF-8" locale="#{internationalizationHelper.userLocaleString}"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -61,7 +61,7 @@ All rights reserved. Use is subject to license terms.
 			<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
 		</h:head>
 
-		<h:body lang="#{applicationBean.userLocaleString}">
+		<h:body lang="#{internationalizationHelper.userLocaleString}">
 			<h:outputScript library="jscript" name="jquery-ui-1.8.21.min.js" target="head"/>
 			
 			<h:panelGroup rendered="#{loginBean.loginState}"/>

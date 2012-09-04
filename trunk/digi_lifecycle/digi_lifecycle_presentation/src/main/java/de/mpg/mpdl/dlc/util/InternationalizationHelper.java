@@ -57,8 +57,10 @@ public class InternationalizationHelper
     private static Logger logger = Logger.getLogger(InternationalizationHelper.class);
     public static final String LABEL_BUNDLE = "Label";
     public static final String MESSAGES_BUNDLE = "Messages";
-    public static final String HELP_PAGE_DE = "help/virr_help_de.html";
-    public static final String HELP_PAGE_EN = "help/virr_help_en.html";
+    //TODO help_page
+    public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
+    public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
+    
     private String selectedHelpPage;
     private String userLocaleString = "en";
     private List<String> test = new ArrayList<String>();
