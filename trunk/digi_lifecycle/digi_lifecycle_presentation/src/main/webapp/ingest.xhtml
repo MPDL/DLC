@@ -46,7 +46,7 @@
 			<!-- left content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 				<rich:panel id="upload" header="#{lbl.admin_upload_header}" styleClass="eg3_uploadContainer">
-					<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}"></fu:fileUpload>
+					<fu:fileUpload rerender="form2" fileUploadListener="#{ingestBean.fileUploaded}" onUploadCompleteAction="#{ingestBean.uploadComplete}"></fu:fileUpload>
 				</rich:panel>
 			</h:panelGroup>
 			<script type="text/javascript">
@@ -167,14 +167,14 @@
 					</rich:panel>
 					
 					<rich:panel id="teiInfo" header="#{lbl.admin_upload_teiInfo}" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
-						<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references (message)" rendered="#{ingestBean.volumeId == 'new'}"/>
-						<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.numberOfTeiPbs} scan references (message)" rendered="#{ingestBean.teiFile != null and ingestBean.volumeId != 'new' and ingestBean.volume.item.components.size() == 3}"/>
+						<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.teiPbFacsValues.size()} scan references (message)" rendered="#{ingestBean.volumeId == 'new'}"/>
+						<h:outputText value="#{ingestBean.teiFile.name} - Found #{ingestBean.teiPbFacsValues.size()} scan references (message)" rendered="#{ingestBean.teiFile != null and ingestBean.volumeId != 'new' and ingestBean.volume.item.components.size() == 3}"/>
 						<h:outputText value="tei vorhanden" rendered="#{empty ingestBean.teiFile and ingestBean.volumeId != 'new' and ingestBean.volume.item.components.size() == 3}" />
 						<br/>
-						<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.numberOfTeiPbs > 0 and ingestBean.volumeId == 'new'}">
+						<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.teiPbFacsValues.size() > 0 and ingestBean.volumeId == 'new'}">
 							<f:ajax render=":#{component.parent.clientId}" />
 						</h:commandButton>
-						<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="reset tei" rendered="#{ingestBean.numberOfTeiPbs > 0}">
+						<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="reset tei" rendered="#{ingestBean.teiPbFacsValues.size() > 0}">
 							<f:ajax render=":#{component.parent.clientId}" />
 						</h:commandButton>
 					</rich:panel>

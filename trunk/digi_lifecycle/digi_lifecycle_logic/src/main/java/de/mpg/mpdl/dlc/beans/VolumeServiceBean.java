@@ -759,7 +759,7 @@ public class VolumeServiceBean {
 				logger.info("TEI file found");
 				File teiFileWithPbConvention = applyPbConventionToTei(teiInputStream);
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
-				List<XdmNode> pbs = getAllPbIds(new FileInputStream(teiFileWithIds));
+				List<XdmNode> pbs = getAllPbs(new FileInputStream(teiFileWithIds));
 				
 				//Set ids in mets
 				for(int i=0; i< volume.getMets().getPages().size(); i++)
@@ -2156,14 +2156,11 @@ public class VolumeServiceBean {
 	
 	
 	
-	private  List<XdmNode> getAllPbIds(InputStream tei) throws Exception
+	public static  List<XdmNode> getAllPbs(InputStream tei) throws Exception
 	{
 
 		
 		List<XdmNode> pagebreakList = new ArrayList<XdmNode>();
-		
-		
-		
 		Processor proc = new Processor(false);
         XPathCompiler xpath = proc.newXPathCompiler();
         xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
@@ -2184,6 +2181,7 @@ public class VolumeServiceBean {
             */
         }
 		
+        tei.close();
 		return pagebreakList;
 		
 		
