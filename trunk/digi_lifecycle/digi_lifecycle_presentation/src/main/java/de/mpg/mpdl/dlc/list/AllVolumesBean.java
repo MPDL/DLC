@@ -260,7 +260,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		String userHandle = loginBean.getUserHandle();
 		try {
 			vol = volServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);
-			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "edit_savedAndReleasedSuccessfully"));
+			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "releasedSuccessfully"));
 		} catch (Exception e) {
 			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveAndReleaseStruct"));
 			logger.error("Error while releasing volume " + vol.getObjidAndVersion(), e);
