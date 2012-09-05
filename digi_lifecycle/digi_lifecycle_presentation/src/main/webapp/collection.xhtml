@@ -12,9 +12,9 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:remove>
-	<ui:define name="breadcrumpTitle">			
+	<ui:define name="breadcrumbTitle">			
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
-			<mpdl:hierarchicalBreadcrumb ou="#{viewCollection.col}">
+			<mpdl:hierarchicalBreadcrumb ouTitle="#{viewCollection.col.ouTitle}">
 			</mpdl:hierarchicalBreadcrumb>
 		</h:panelGroup>	
 	</ui:define>
@@ -26,6 +26,12 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_collectionStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
 				<h:outputText value="&#160;"/>
+				<ui:remove>
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
+					<mpdl:hierarchicalBreadcrumb ouId = "#{viewCollection.col.ouId}" ouTitle="#{viewCollection.col.ouTitle}">
+					</mpdl:hierarchicalBreadcrumb>
+					</h:panelGroup>
+				</ui:remove>
 			</h:panelGroup>
 			
 			<!-- title -->

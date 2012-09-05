@@ -17,6 +17,11 @@
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_organisationUnitStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
+				<ui:remove>
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
+						<mpdl:hierarchicalBreadcrumb />
+					</h:panelGroup>
+				</ui:remove>
 				<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" >
 					<h:outputText value="Homepage des #{viewOU.orga.escidocMd.title}" style="color:white; float:right; padding-right:30px"/>
 				</h:outputLink>
