@@ -126,7 +126,7 @@ public class AdvancedSearchBean {
 			if (!this.freeSearch.equals(""))
 			{
 				//Set free search
-				SearchCriterion scFree = new SearchCriterion(SearchType.FREE_AND_FULLTEXT, this.freeSearch);
+				SearchCriterion scFree = new SearchCriterion(SearchType.FREE, this.freeSearch);
 				this.searchCriterionList.add(scFree);
 			}
 			
