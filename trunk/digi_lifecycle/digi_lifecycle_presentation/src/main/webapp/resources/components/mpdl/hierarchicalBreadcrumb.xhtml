@@ -10,7 +10,8 @@
 
 
 <cc:interface>
-	<cc:attribute name ="ou" />
+	<cc:attribute name ="ouId" />
+	<cc:attribute name = "ouTitle" />
 
 	<cc:attribute name="colId"/>
 	<cc:attribute name="colName" />
@@ -23,24 +24,30 @@
 <cc:implementation>
 
 <h:panelGroup layout="block" >
+	<h:panelGroup >
+		<h:outputLink id="lnkDlc" title="#{tlt.meta_dlc}"
+			value="#{applicationBean.domain}/#{applicationBean.contextPath}/">
+			<h:outputText value="#{lbl.header_lnk_dlc} -> " style="color: #EA7125;" />
+		</h:outputLink>
+	</h:panelGroup>
 	<h:panelGroup rendered="#{not empty cc.attrs.ou}">
 		<pretty:link mappingId ="ou">
 			<f:param value="#{cc.attrs.ou.ouId}" />
-			<h:outputText value="#{cc.attrs.ou.ouTitle} -> " />
+			<h:outputText value="#{cc.attrs.ou.ouTitle} -> " style="color: #EA7125;" />
 		</pretty:link>
 	</h:panelGroup>
 	
 	<h:panelGroup rendered="#{not empty cc.attrs.colId}">
 		<pretty:link mappingId ="collection">
 			<f:param value="#{cc.attrs.colId}" />
-			<h:outputText value="#{cc.attrs.colName} -> " />
+			<h:outputText value="#{cc.attrs.colName} -> " style="color: #EA7125;" />
 		</pretty:link>
 	</h:panelGroup>
 
 	<h:panelGroup rendered="#{cc.attrs.volumes}">	
 		<pretty:link mappingId="volumes" >
 			<f:param value="#{cc.attrs.colId}" />
-			<h:outputText value="volumes ->" /><br/>
+			<h:outputText value="volumes ->" style="color: #EA7125;" /><br/>
 		</pretty:link>
 	</h:panelGroup>
 	
@@ -50,7 +57,7 @@
 			<f:param value="#{cc.attrs.volume.item.objid}" />
 			<f:param value="recto-verso" />
 			<f:param value="1" />
-			<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title} " />
+			<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.volume.modsMetadata).title} " style="color: #EA7125;" />
 		</pretty:link>
 	</h:panelGroup>
 </h:panelGroup>
