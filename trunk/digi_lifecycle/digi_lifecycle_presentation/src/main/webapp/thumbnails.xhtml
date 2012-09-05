@@ -37,7 +37,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_listHeader"/>
 				<h:panelGroup layout="block" styleClass="eg3_listBody">
 					<ul>
-						<a4j:repeat var="var" value="#{cc.attrs.paginatorBean.currentPartList}">
+						<a4j:repeat var="var" value="#{thumbnailsBean.currentPartList}">
 							<mpdl:thumbnail page="#{var}" />
 						</a4j:repeat>
 					</ul>

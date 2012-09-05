@@ -71,7 +71,7 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	{
 		pageList = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle()).getPages();
 		totalNumberOfRecords = pageList.size();
-		List<Page> subList = pageList.subList(offset, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
+		List<Page> subList = pageList.subList(offset-1, (totalNumberOfRecords > (offset+limit))?(offset+limit): totalNumberOfRecords);
 
 		return subList;
 	}
