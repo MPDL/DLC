@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -39,7 +42,7 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 @ManagedBean
 @ViewScoped
 @URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml", onPostback=false)
-public class ViewPages{
+public class ViewPages implements Observer{
 	
 	@URLQueryParameter("fm")
 	private String fulltextMatches;
@@ -98,6 +101,17 @@ public class ViewPages{
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
+	@ManagedProperty("#{internationalizationHelper}")
+	private InternationalizationHelper internationalizationHelper;
+	
+	
+	
+	@PostConstruct
+	public void postConstruct()
+	{
+		internationalizationHelper.addObserver(this);
+	}
+	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{     
@@ -138,7 +152,7 @@ public class ViewPages{
 		this.pageListMenu.clear();
 		for(Page p : volume.getPages())
 		{
-			pageListMenu.add(new SelectItem(p.getOrder()+1, "Seite " + p.getOrderLabel() + " / Bild " + (p.getOrder()+1)));
+			pageListMenu.add(new SelectItem(p.getOrder()+1, InternationalizationHelper.getLabel("list_Page") + " " + p.getOrderLabel() + " / " + InternationalizationHelper.getLabel("list_Scan") +" " + (p.getOrder()+1)));
 		}
 	}
 	
@@ -694,4 +708,21 @@ public class ViewPages{
 		this.digilibQueryString = digilibQueryString;
 	}
 	
+	
+
+	public InternationalizationHelper getInternationalizationHelper() {
+		return internationalizationHelper;
+	}
+
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+		this.internationalizationHelper = internationalizationHelper;
+	}
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		initPageListMenu();
+		
+	}
+
+
 }
