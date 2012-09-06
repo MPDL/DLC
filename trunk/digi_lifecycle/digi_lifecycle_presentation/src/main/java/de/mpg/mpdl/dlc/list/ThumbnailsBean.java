@@ -13,12 +13,13 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.viewer.ViewPages;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
@@ -31,7 +32,7 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	
 	private static Logger logger = Logger.getLogger(ThumbnailsBean.class); 
 
-	
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	
 	@ManagedProperty("#{loginBean}")
@@ -40,19 +41,20 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	private String volumeId;
 	private Volume volume;
 	private int totalNumberOfRecords;
+	
+	private Context context;
 
 	private List<Page> pageList = new ArrayList<Page>();
     
 	public ThumbnailsBean()
 	{
-		super();
+		super();		
 	}
 	
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{  
 		try { 
-//			System.out.println("ID: " + volume.getProperties().getLatestVersion().getObjid());
 			if(volume==null || !volumeId.equals(volume.getObjidAndVersion()))
 			{
 				this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
@@ -60,7 +62,7 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 				setElementsPerPage(24);
 				setCurrentPageNumber(1);
 			}
-
+			this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 			
 		} catch (Exception e) {
 			logger.error("Problem while loading Volume", e);
@@ -118,6 +120,13 @@ public class ThumbnailsBean extends BasePaginatorBean<Page>{
 	}
 	
 
+	public Context getContext() {
+		return context;
+	}
 
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
 
 }

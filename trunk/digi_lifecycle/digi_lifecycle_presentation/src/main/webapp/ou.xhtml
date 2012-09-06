@@ -22,8 +22,9 @@
 						<mpdl:hierarchicalBreadcrumb />
 					</h:panelGroup>
 				</ui:remove>
-				<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" >
-					<h:outputText value="Homepage des #{viewOU.orga.escidocMd.title}" style="color:white; float:right; padding-right:30px"/>
+				<br/>
+				<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" target="_blank" title="#{tlt.ouUrl}" >
+					<h:outputText value="Homepage: #{viewOU.orga.escidocMd.title}" style="color:white; float:right; padding-right:30px"/>
 				</h:outputLink>
 			</h:panelGroup>
 			
