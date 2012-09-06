@@ -56,6 +56,14 @@
 					</c:forEach>
 				</ul>
 			</ui:fragment>
+			<ui:fragment rendered="#{not empty cc.attrs.descriptionTitleLink and not empty cc.attrs.descriptionTitleLinkID}">
+				<b>
+					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}">
+						<f:param value="#{cc.attrs.descriptionTitleLink}" />
+						<h:outputText value="#{lbl.view_ou_ColLink}"/>
+					</pretty:link>
+				</b>
+			</ui:fragment>
 		</h:panelGroup>
 		
 		<ui:fragment rendered="#{not empty cc.attrs.searchSize}">
