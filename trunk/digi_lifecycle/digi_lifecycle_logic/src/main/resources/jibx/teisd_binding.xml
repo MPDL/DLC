@@ -67,7 +67,7 @@
 	 
 	  <mapping name="figure" class="de.mpg.mpdl.dlc.vo.teisd.Figure" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
 	 	
-	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
+	 	<collection get-method="getHead" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
 	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
 	 	<value style="element" name="figDesc" field="figDesc" usage="optional" default=""/>
