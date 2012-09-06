@@ -37,7 +37,7 @@ public class UrlHelper
         }
         catch (Exception e)
         {
-            MessageHelper.errorMessage("'" + uri + "'" + ApplicationBean.getResource("Messages", "error_invalidUri"));
+            MessageHelper.errorMessage("'" + uri + "'" + InternationalizationHelper.getMessage("error_invalidUri"));
         }
         return false;
     }

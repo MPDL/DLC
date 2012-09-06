@@ -25,6 +25,7 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.UserAccountServiceBean;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -180,7 +181,7 @@ public class AdminBean{
 			
 		if(collection.getName().equals("") || collection.getDescription().equals(""))
 		{
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_newCollection"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_newCollection"));
 			return "pretty:admin";
 		}
 		if(editCollectionId != null && editCollectionId.equals(collection.getId()))

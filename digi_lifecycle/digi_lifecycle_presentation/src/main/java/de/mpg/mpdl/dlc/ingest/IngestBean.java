@@ -38,6 +38,7 @@ import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 import de.mpg.mpdl.dlc.searchLogic.FilterCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
@@ -683,7 +684,7 @@ public class IngestBean{
 					
 	     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
 	     			{
-	     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_nullTitle"));	
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));	
 	     				return "";
 	     			}
 					if(mabFile == null)
@@ -691,7 +692,7 @@ public class IngestBean{
 		    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-		    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
+		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
 				}
 				
 				else
@@ -700,11 +701,11 @@ public class IngestBean{
 		    		{
 		     			
 		     			if(getImageFiles().size()==0 )
-		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_imageUpload"));
+		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
 		     			if(teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size())
-		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
 		     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
-		     				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_nullTitle"));
+		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
 		     			return "";
 		    		}
 					if(mabFile == null)
@@ -718,9 +719,9 @@ public class IngestBean{
 					clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		if(getSelectedContentModel().equals("Monograph"))
-		    			MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
+		    			MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
 		    		else
-			    		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
+			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 				}
 			}
 			else{
@@ -729,7 +730,7 @@ public class IngestBean{
 					for(DiskFileItem file: imageFiles)
 						if(!pagesOfVolume.contains(file.getName()))
 						{
-			    			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongImages")); //getNumberOfTeiPbs()
+			    			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongImages")); //getNumberOfTeiPbs()
 			    			return "";
 						}
 				}
@@ -740,7 +741,7 @@ public class IngestBean{
 				
 			}
 		} catch (Exception e) {
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_internal")+ ":" + e.getMessage());
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_internal")+ ":" + e.getMessage());
 		}
 //		ModsMetadata md = new ModsMetadata();
 //		ModsTitle title = new ModsTitle();

@@ -38,6 +38,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import javax.faces.application.Application;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -184,6 +185,7 @@ public class InternationalizationHelper
         this.test = test;
     }
     
+    /*
     public String getLabel(String placeholder)
     {
         return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(placeholder);
@@ -194,6 +196,7 @@ public class InternationalizationHelper
         return ResourceBundle.getBundle(this.getSelectedMessagesBundle()).getString(placeholder);
     }
     
+    */
     public String getLabelForEnum(String prefix, String enumString)
     {
     	try {
@@ -261,6 +264,37 @@ public class InternationalizationHelper
 		return itemList;
 
 	}
+	
+	public static String getMessage (String name)
+    {
+    	return getResource("Messages", name);
+    }
+	
+	public static String getLabel (String name)
+    {
+    	return getResource("Label", name);
+    }
+	
+	public static String getTooltip (String name)
+    {
+    	return getResource("Tooltips", name);
+    }
+	
+	
+	 public static String getResource (String bundle, String name)
+	    {
+	    	try{
+	    	Application application = FacesContext.getCurrentInstance().getApplication();
+		    InternationalizationHelper i18nHelper = (InternationalizationHelper) application.getVariableResolver().resolveVariable(FacesContext.getCurrentInstance(), "internationalizationHelper");
+		    ResourceBundle rBundle = ResourceBundle.getBundle(bundle, i18nHelper.getUserLocale());
+		    return rBundle.getString(name);
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		logger.warn("Value: " + name + " not found in resource bundle: " + bundle);
+	    		return name;
+	    	}
+	    }
 	
 	
 

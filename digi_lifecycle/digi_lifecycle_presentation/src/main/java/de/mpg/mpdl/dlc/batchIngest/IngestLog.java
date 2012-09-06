@@ -320,18 +320,18 @@ public class IngestLog
 				updateLog("startdate", new Date().toString());
 				saveItems(itemsForBatchIngest);
 				updateLog("step", Step.FINISHED.toString());
-//				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_finish"));
+//				MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_finish"));
 			}
 			else{
 				updateLog("errorlevel", ErrorLevel.ERROR.toString());
 				updateLog("step", Step.STOPPED.toString());
-//				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
+//				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
 			}
 		
 		} catch (Exception e) {
 			updateLog("errorlevel", ErrorLevel.ERROR.toString());
 			updateLog("step", Step.STOPPED.toString());
-//			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest_stop"));
+//			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
 		}
 		
 		Date endDate = new Date();

@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.list.AllVolumesBean;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 
@@ -118,7 +119,7 @@ public class SessionBean implements Serializable
 	    			||viewId.equals("/ou.xhtml"))
 	    		{logoTlt = "";} 
 	    	if (logoTlt == null || logoTlt.equals("")) 
-	    		{logoTlt = appBean.getResource("Tooltips", "main_home").replace("$1", "DLC");}
+	    		{logoTlt = InternationalizationHelper.getTooltip("main_home").replace("$1", "DLC");}
 	    	return logoTlt;
 	    }
 	    

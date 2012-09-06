@@ -90,7 +90,7 @@ public class LoginBean
                 	this.userHandle = newUserHandle;
                     this.login = true;
                     this.user = userAccountServiceBean.retrieveCurrentUser(newUserHandle);
-                    MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "login_successful"));
+                    MessageHelper.infoMessage(InternationalizationHelper.getMessage("login_successful"));
                 }
                 catch (Exception e)
                 {
@@ -172,7 +172,7 @@ public class LoginBean
 
 	    		//Direct to hompage when log out, because of changing rights.
 	    		FacesContext.getCurrentInstance().getExternalContext().redirect(dlc_URL);
-                MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "logout_successful"));
+                MessageHelper.infoMessage(InternationalizationHelper.getMessage("logout_successful"));
 
 
 			}

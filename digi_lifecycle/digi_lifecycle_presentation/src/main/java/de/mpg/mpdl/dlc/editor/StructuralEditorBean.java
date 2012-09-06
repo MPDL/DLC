@@ -199,7 +199,7 @@ public class StructuralEditorBean {
 					
 				} catch (Exception e) {
 					logger.error("Could not load volume " + volumeId, e );
-					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
 					volume = null;
 				}
 				
@@ -280,7 +280,7 @@ public class StructuralEditorBean {
 	{
 		this.volume = null;
 		loadVolume();
-		MessageHelper.infoMessage(ApplicationBean.getResource("Messages","edit_changesReverted"));
+		MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_changesReverted"));
 	}
 	
 
@@ -548,7 +548,7 @@ public class StructuralEditorBean {
 		
 		if(validationList.size()>0)
 		{
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages","edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("edit_notSavedValidationErrors"));
 		}
 		else
 		{
@@ -559,9 +559,9 @@ public class StructuralEditorBean {
 				flatTeiElementList = null;
 				volumeLoaded();
 				
-				MessageHelper.infoMessage(ApplicationBean.getResource("Messages","edit_savedSuccessfully"));
+				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveStruct"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveStruct"));
 				logger.error("Error while saving created TEI-SD.", e);
 				
 			}
@@ -590,7 +590,7 @@ public class StructuralEditorBean {
 	{
 		if(validationList.size()>0)
 		{
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages","edit_notSavedValidationErrors"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("edit_notSavedValidationErrors"));
 		}
 		else
 		{
@@ -601,9 +601,9 @@ public class StructuralEditorBean {
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
-				MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "edit_savedAndReleasedSuccessfully"));
+				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedAndReleasedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_saveAndReleaseStruct"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveAndReleaseStruct"));
 				logger.error("Error while saving and releasing structure.", e);
 				
 			}
@@ -859,7 +859,7 @@ public class StructuralEditorBean {
 					currentValue = Integer.parseInt(selectedPaginationStartValue);
 					
 				} catch (NumberFormatException e) {
-					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartArabic"));
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStartArabic"));
 					return;
 				} 
 			}
@@ -871,7 +871,7 @@ public class StructuralEditorBean {
 					currentValue = RomanNumberConverter.convert(selectedPaginationStartValue);
 					
 				} catch (NumberFormatException e) {
-					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRoman"));
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStartRoman"));
 					return;
 				}
 			}
@@ -893,17 +893,17 @@ public class StructuralEditorBean {
 					}
 					else
 					{
-						MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRectoVerso"));
+						MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStartRectoVerso"));
 						return;
 					}
 					
 				} catch (NumberFormatException e) {
-					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartArabic"));
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStartArabic"));
 					return;
 				} 
 				catch (Exception e)
 				{
-					MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStartRectoVerso"));
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStartRectoVerso"));
 					return;
 				}
 				
@@ -912,7 +912,7 @@ public class StructuralEditorBean {
 			/*
 			if(!selectedPaginationPattern.isEmpty() && !selectedPaginationPattern.contains("?"))
 			{
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongPaginationPattern"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongPaginationPattern"));
 				return;
 			}
 			*/
@@ -1003,7 +1003,7 @@ public class StructuralEditorBean {
 			}
 		else
 		{
-			MessageHelper.errorMessage(ApplicationBean.getResource("message", "error_wrongStart"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStart"));
 		}
 		
 		
@@ -2097,30 +2097,30 @@ public class StructuralEditorBean {
 	public List<SelectItem> getStructTypeList()
 	{
 		 List<SelectItem> result = new ArrayList<SelectItem>();
-		 result.add(new SelectItem("acknowledgement", ApplicationBean.getResource("Label", "structuretype_acknowledgement")));
-		 result.add(new SelectItem("additional", ApplicationBean.getResource("Label", "structuretype_additional")));
-		 result.add(new SelectItem("advertisement", ApplicationBean.getResource("Label", "structuretype_advertisement")));
-		 result.add(new SelectItem("appendix", ApplicationBean.getResource("Label", "structuretype_appendix")));
-		 result.add(new SelectItem("article", ApplicationBean.getResource("Label", "structuretype_article")));
-		 result.add(new SelectItem("bibliography", ApplicationBean.getResource("Label", "structuretype_bibliography")));
-		 result.add(new SelectItem("book", ApplicationBean.getResource("Label", "structuretype_book")));
-		 result.add(new SelectItem("chapter", ApplicationBean.getResource("Label", "structuretype_chapter")));
-		 result.add(new SelectItem("content", ApplicationBean.getResource("Label", "structuretype_content")));
-		 result.add(new SelectItem("corrigenda", ApplicationBean.getResource("Label", "structuretype_corrigenda")));
-		 result.add(new SelectItem("curriculum vitae", ApplicationBean.getResource("Label", "structuretype_curriculum_vitae")));
-		 result.add(new SelectItem("dedication", ApplicationBean.getResource("Label", "structuretype_dedication")));
-		 result.add(new SelectItem("imprimatur", ApplicationBean.getResource("Label", "structuretype_imprimatur")));
-		 result.add(new SelectItem("imprint", ApplicationBean.getResource("Label", "structuretype_imprint")));
-		 result.add(new SelectItem("index", ApplicationBean.getResource("Label", "structuretype_index")));
-		 result.add(new SelectItem("letter", ApplicationBean.getResource("Label", "structuretype_letter")));
-		 result.add(new SelectItem("miscellaneous", ApplicationBean.getResource("Label", "structuretype_miscellaneous")));
-		 result.add(new SelectItem("musical notation", ApplicationBean.getResource("Label", "structuretype_musical_notation")));
-		 result.add(new SelectItem("part", ApplicationBean.getResource("Label", "structuretype_part")));
-		 result.add(new SelectItem("preface", ApplicationBean.getResource("Label", "structuretype_preface")));
-		 result.add(new SelectItem("privileges", ApplicationBean.getResource("Label", "structuretype_privileges")));
-		 result.add(new SelectItem("provenance", ApplicationBean.getResource("Label", "structuretype_provenance")));
-		 result.add(new SelectItem("review", ApplicationBean.getResource("Label", "structuretype_review")));
-		 result.add(new SelectItem("section", ApplicationBean.getResource("Label", "structuretype_section")));
+		 result.add(new SelectItem("acknowledgement", InternationalizationHelper.getLabel("structuretype_acknowledgement")));
+		 result.add(new SelectItem("additional", InternationalizationHelper.getLabel("structuretype_additional")));
+		 result.add(new SelectItem("advertisement", InternationalizationHelper.getLabel("structuretype_advertisement")));
+		 result.add(new SelectItem("appendix", InternationalizationHelper.getLabel("structuretype_appendix")));
+		 result.add(new SelectItem("article", InternationalizationHelper.getLabel("structuretype_article")));
+		 result.add(new SelectItem("bibliography", InternationalizationHelper.getLabel("structuretype_bibliography")));
+		 result.add(new SelectItem("book", InternationalizationHelper.getLabel("structuretype_book")));
+		 result.add(new SelectItem("chapter", InternationalizationHelper.getLabel("structuretype_chapter")));
+		 result.add(new SelectItem("content", InternationalizationHelper.getLabel("structuretype_content")));
+		 result.add(new SelectItem("corrigenda", InternationalizationHelper.getLabel("structuretype_corrigenda")));
+		 result.add(new SelectItem("curriculum vitae", InternationalizationHelper.getLabel("structuretype_curriculum_vitae")));
+		 result.add(new SelectItem("dedication", InternationalizationHelper.getLabel("structuretype_dedication")));
+		 result.add(new SelectItem("imprimatur", InternationalizationHelper.getLabel("structuretype_imprimatur")));
+		 result.add(new SelectItem("imprint", InternationalizationHelper.getLabel("structuretype_imprint")));
+		 result.add(new SelectItem("index", InternationalizationHelper.getLabel("structuretype_index")));
+		 result.add(new SelectItem("letter", InternationalizationHelper.getLabel("structuretype_letter")));
+		 result.add(new SelectItem("miscellaneous", InternationalizationHelper.getLabel("structuretype_miscellaneous")));
+		 result.add(new SelectItem("musical notation", InternationalizationHelper.getLabel("structuretype_musical_notation")));
+		 result.add(new SelectItem("part", InternationalizationHelper.getLabel("structuretype_part")));
+		 result.add(new SelectItem("preface", InternationalizationHelper.getLabel("structuretype_preface")));
+		 result.add(new SelectItem("privileges", InternationalizationHelper.getLabel("structuretype_privileges")));
+		 result.add(new SelectItem("provenance", InternationalizationHelper.getLabel("structuretype_provenance")));
+		 result.add(new SelectItem("review", InternationalizationHelper.getLabel("structuretype_review")));
+		 result.add(new SelectItem("section", InternationalizationHelper.getLabel("structuretype_section")));
 
 		 return result;
 	}
