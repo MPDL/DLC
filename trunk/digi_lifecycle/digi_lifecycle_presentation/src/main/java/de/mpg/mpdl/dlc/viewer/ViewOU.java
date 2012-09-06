@@ -8,6 +8,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
@@ -21,15 +22,18 @@ import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.search.AdvancedSearchResultBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 
@@ -56,9 +60,18 @@ public class ViewOU {
 	
 	private Organization orga;
 	
+	private List<Context> collections;
+	
+	private List<String> collectionSearchStrings;
+	
 	private List<Volume> vols_Carousel = new ArrayList<Volume>();
 	private ApplicationBean appBean = new ApplicationBean();
 	private SessionBean sessionBean = new SessionBean();
+	
+	@ManagedProperty("#{advancedSearchResultBean}")
+	private AdvancedSearchResultBean advancedSearchResultBean;
+	
+	private SearchBean searchBean = new SearchBean();
 	
 	@URLAction(onPostback=false)
 	public void loadOu()
@@ -82,10 +95,16 @@ public class ViewOU {
 				
 				SearchCriterion sc = null;
 
-				List <Context> contextL = contextServiceBean.retrieveOUContexts(id);
-				if (contextL != null && contextL.size()>0)
+				collections = contextServiceBean.retrieveOUContexts(id);
+				collectionSearchStrings = new ArrayList<String>(collections.size());
+				for(int i=0; i<collections.size(); i++)
 				{
-					for(Context context : contextL)
+					collectionSearchStrings.add(null);
+				}
+				
+				if (collections != null && collections.size()>0)
+				{
+					for(Context context : collections)
 					{
 						List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 						sc = new SearchCriterion(SearchType.CONTEXT_ID, context.getObjid());
@@ -171,6 +190,53 @@ public class ViewOU {
 	public void setVols_Carousel(List<Volume> vols_Carousel) {
 		this.vols_Carousel = vols_Carousel;
 	}
+
+	public List<Context> getCollections() {
+		return collections;
+	}
+
+	public void setCollections(List<Context> collections) {
+		this.collections = collections;
+	}
+
+	public List<String> getCollectionSearchStrings() {
+		return collectionSearchStrings;
+	}
+
+	public void setCollectionSearchStrings(List<String> collectionSearchStrings) {
+		this.collectionSearchStrings = collectionSearchStrings;
+	}
+	
+	public String searchInCollection()
+	{
+		try {
+
+			String collNumber = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("searchParam");
+			int pos = Integer.parseInt(collNumber);
+			Context ctx = collections.get(pos);
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			scList.add(new SearchCriterion(SearchType.CONTEXT_ID, ctx.getObjid()));
+			scList.add(new SearchCriterion(SearchType.FREE, collectionSearchStrings.get(pos)));
+			
+			advancedSearchResultBean.setSearchCriterionList(scList);
+			String cql = searchBean.getAdvancedSearchCQL(scList);
+			advancedSearchResultBean.setCqlQuery(cql);
+			return "pretty:searchResult";
+		} catch (Exception e) {
+			logger.error("Error while creating CQL query", e);
+			return "";
+		}
+	}
+
+	public AdvancedSearchResultBean getAdvancedSearchResultBean() {
+		return advancedSearchResultBean;
+	}
+
+	public void setAdvancedSearchResultBean(AdvancedSearchResultBean advancedSearchResultBean) {
+		this.advancedSearchResultBean = advancedSearchResultBean;
+	}
+
+	
 	
 	
 	
