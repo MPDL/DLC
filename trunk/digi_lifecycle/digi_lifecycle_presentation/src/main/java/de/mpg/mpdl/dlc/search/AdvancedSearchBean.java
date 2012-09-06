@@ -21,6 +21,7 @@ import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 
@@ -75,7 +76,7 @@ public class AdvancedSearchBean {
 	{
 		//Set the libraries list
 		List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
-		ouSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allLib")));
+		ouSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allLib")));
 		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
 		{
 			ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
@@ -84,7 +85,7 @@ public class AdvancedSearchBean {
 		
 		//Set the contexts list
 		List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
-		contextSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allCon")));
+		contextSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allCon")));
 		for(Context c : contextServiceBean.retrieveAllcontexts())
 		{
 			contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
@@ -103,7 +104,7 @@ public class AdvancedSearchBean {
 		//Prepare context list (depends on library selection)
 		String ouId = cs.getOuId();
 		List<SelectItem> contextSelectItems= new ArrayList<SelectItem>();
-		contextSelectItems.add(new SelectItem("",ApplicationBean.getResource("Label", "sc_allCon")));			
+		contextSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allCon")));			
 		if (ouId != null && !ouId.equals(""))
 		{
 			for(Context c : contextServiceBean.retrieveOUContexts(ouId))

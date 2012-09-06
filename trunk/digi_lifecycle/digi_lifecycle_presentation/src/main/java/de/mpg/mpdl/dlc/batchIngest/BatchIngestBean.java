@@ -19,6 +19,7 @@ import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -103,10 +104,10 @@ public class BatchIngestBean {
 		
 		if("".equals(mab) || "".equals(images))
 		{
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_batch_ingest"));	
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest"));	
 			return "";
 		}
-		MessageHelper.infoMessage(ApplicationBean.getResource("Messages", "info_batch_ingest_start"));	
+		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));	
 		System.out.println("Vorgang gestartet");
 		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), mab, tei, images);
 	    ingestProcess.start();

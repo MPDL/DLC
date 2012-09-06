@@ -28,6 +28,7 @@ import de.mpg.mpdl.dlc.export.Export;
 import de.mpg.mpdl.dlc.export.ExportBean;
 import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.export.Export.ExportTypes;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
@@ -96,11 +97,11 @@ public class FullScreen {
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{sessionBean.setLogoLink(volumeOu.getId());
 					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
-					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home").replace("$1", volumeOu.getEscidocMd().getTitle()));}
+					sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home").replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
 			} catch (Exception e) {
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
 				logger.error("Error while loading volume", e);
 			}
 		}

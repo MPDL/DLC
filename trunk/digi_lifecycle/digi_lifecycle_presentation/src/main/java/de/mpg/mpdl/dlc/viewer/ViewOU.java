@@ -27,6 +27,7 @@ import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
@@ -74,7 +75,7 @@ public class ViewOU {
 				{
 					sessionBean.setLogoLink(orga.getId());
 					sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
-					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
+					sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home")
 							.replace("$1", orga.getEscidocMd().getTitle()));
 				}
 				

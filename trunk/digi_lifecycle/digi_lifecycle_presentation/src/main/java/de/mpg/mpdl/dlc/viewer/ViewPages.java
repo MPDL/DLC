@@ -28,6 +28,7 @@ import de.mpg.mpdl.dlc.export.Export;
 import de.mpg.mpdl.dlc.export.Export.ExportTypes;
 import de.mpg.mpdl.dlc.export.ExportBean;
 import de.mpg.mpdl.dlc.export.ExportServlet;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -115,7 +116,7 @@ public class ViewPages{
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{sessionBean.setLogoLink(volumeOu.getId());
 					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
-					sessionBean.setLogoTlt(appBean.getResource("Tooltips", "main_home")
+					sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home")
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
@@ -126,7 +127,7 @@ public class ViewPages{
 				
 				
 			} catch (Exception e) {
-				MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_loadVolume"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
 				logger.error("Error while loading volume", e);
 			}
 		}
@@ -262,7 +263,7 @@ public class ViewPages{
 		catch (Exception e) 
 		{
 			logger.error("Structural element cannot be selected for this page.", e);
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_wrongStructElem"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongStructElem"));
 		}
 		
 		
@@ -481,7 +482,7 @@ public class ViewPages{
 			return teiHtml;
 		} catch (Exception e) {
 			logger.error("Coulod not display fulltext for " + volumeId + " / Page " + selectedPageNumber, e);
-			MessageHelper.errorMessage(ApplicationBean.getResource("Messages", "error_ftDisplay"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_ftDisplay"));
 			return "";
 		}
 	}

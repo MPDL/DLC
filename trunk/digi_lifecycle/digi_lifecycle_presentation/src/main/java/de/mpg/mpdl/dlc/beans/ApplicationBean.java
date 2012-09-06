@@ -252,6 +252,7 @@ public class ApplicationBean
         return helpAnchor;
     }
     
+    /*
     public static String getResource (String bundle, String name)
     {
     	try{
@@ -266,6 +267,7 @@ public class ApplicationBean
     		return name;
     	}
     }
+    */
     
     public String getDfgUrl() {
     	if (dfgUrl == null)
