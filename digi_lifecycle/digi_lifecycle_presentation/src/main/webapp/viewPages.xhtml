@@ -36,10 +36,6 @@
 						<br/>
 						<h:panelGroup styleClass="eg3_floatLeft">
 							<h:form>
-								<pretty:link mappingId="viewPages">
-									<f:param value="#{viewPages.volumeId}" />
-									<f:param value="single" />
-									<f:param value="1" />
 									<h3 class="eg3_volumeTitle">
 										<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
 											<h:outputText value="#{volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}: " rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}"/>
@@ -56,8 +52,6 @@
 										<h:outputText value=", #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}"/>
 										<h:outputText value="."/>
 									</h3>
-									<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
-								</pretty:link>
 							</h:form>
 							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
 						</h:panelGroup>

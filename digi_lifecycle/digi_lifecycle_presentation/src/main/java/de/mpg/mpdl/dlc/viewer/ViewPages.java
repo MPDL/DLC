@@ -30,7 +30,6 @@ import de.mpg.mpdl.dlc.export.ExportBean;
 import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
