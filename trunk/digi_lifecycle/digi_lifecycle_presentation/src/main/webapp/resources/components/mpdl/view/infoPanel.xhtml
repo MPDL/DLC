@@ -22,6 +22,7 @@
 		<cc:attribute name="searchTitle" required="false"/>
 		<cc:attribute name="searchPlaceholder" required="false"/>
 		<cc:attribute name="searchSize" required="false"/>
+		<cc:attribute name="colLink" required="false"/>
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -60,6 +61,14 @@
 				<b>
 					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}">
 						<f:param value="#{cc.attrs.descriptionTitleLink}" />
+						<h:outputText value="#{lbl.view_ou_ColLink}"/>
+					</pretty:link>
+				</b>
+			</ui:fragment>
+			<ui:fragment rendered="#{not empty cc.attrs.colLink}">
+				<b>
+					<pretty:link mappingId="volumes">
+						<f:param value="#{viewCollection.col.id}" />
 						<h:outputText value="#{lbl.view_ou_ColLink}"/>
 					</pretty:link>
 				</b>
