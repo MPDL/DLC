@@ -4,19 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.search.AdvancedSearchResultBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
@@ -43,6 +47,13 @@ public class ViewCollection {
 	private OrganizationalUnitServiceBean orgaServiceBean = new OrganizationalUnitServiceBean();
 		
 	private Collection col;
+	
+	private String searchString;
+	
+	@ManagedProperty("#{advancedSearchResultBean}")
+	private AdvancedSearchResultBean advancedSearchResultBean;
+	
+	private SearchBean searchBean = new SearchBean();
 	
 	
 	//volumes which schown in carousel
@@ -141,6 +152,50 @@ public class ViewCollection {
 
 	public void setCol(Collection col) {
 		this.col = col;
+	}
+	
+	
+	public String searchInCollection()
+	{
+		try {
+
+			
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+			scList.add(new SearchCriterion(SearchType.CONTEXT_ID, col.getId()));
+			scList.add(new SearchCriterion(SearchType.FREE, searchString));
+			
+			advancedSearchResultBean.setSearchCriterionList(scList);
+			String cql = searchBean.getAdvancedSearchCQL(scList);
+			advancedSearchResultBean.setCqlQuery(cql);
+			return "pretty:searchResult";
+		} catch (Exception e) {
+			logger.error("Error while creating CQL query", e);
+			return "";
+		}
+	}
+
+
+
+	public String getSearchString() {
+		return searchString;
+	}
+
+
+
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
+
+
+
+	public AdvancedSearchResultBean getAdvancedSearchResultBean() {
+		return advancedSearchResultBean;
+	}
+
+
+
+	public void setAdvancedSearchResultBean(AdvancedSearchResultBean advancedSearchResultBean) {
+		this.advancedSearchResultBean = advancedSearchResultBean;
 	}
 
 

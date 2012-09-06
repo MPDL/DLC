@@ -54,7 +54,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<view:infoPanel descriptionData="#{viewCollection.col.description}" 
 									searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}"
-									colLink="#{viewCollection.col.id}"/>
+									searchAction="#{viewCollection.searchInCollection}" searchInput="#{viewCollection.searchString}" colLink="#{viewCollection.col.id}"/>
 				</h:panelGroup>
 						
 				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-top:2em; margin-bottom:2em;">
