@@ -56,7 +56,7 @@
 			}
 		</style>
 		
-	    <ui:fragment rendered="#{not (cc.attrs.selectedStructuralType == 'TITLE_PAGE' or cc.attrs.selectedStructuralType == 'FIGURE')}">     
+	    <ui:fragment rendered="#{cc.attrs.selectedStructuralType != 'TITLE_PAGE' and cc.attrs.selectedStructuralType != 'FIGURE'}">     
 		    <h:panelGroup layout="block">
 		         <h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1" rendered="#{cc.attrs.selectedStructuralType == 'free'}">
 		         	<h:panelGroup layout="block" styleClass="eg3_container_1_3">
@@ -78,6 +78,7 @@
 					</h:panelGroup>
 					<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_3_5"/>
 				</h:panelGroup>
+				<h:outputText value="#{cc.attrs.teiWrapper.teiElement.docAuthors}" />
 				
 				<a4j:repeat value="#{cc.attrs.teiWrapper.teiElement.docAuthors}" var="docAuthor" rowKeyVar="rowKey">
 					<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">

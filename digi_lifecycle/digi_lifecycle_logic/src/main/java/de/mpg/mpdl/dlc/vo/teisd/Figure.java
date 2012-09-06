@@ -6,12 +6,12 @@ import java.util.List;
 
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
 
-public class Figure extends PbOrDiv {
+public class Figure extends Div {
 	
 	
 	private String figDesc;
 	
-	private List<String> head = new ArrayList<String>();
+	
 
 	public Figure() {
 		super(ElementType.FIGURE);
@@ -35,14 +35,7 @@ public class Figure extends PbOrDiv {
 		this.figDesc = figureDesc;
 	}
 
-	public List<String> getHead() {
-		return head;
-	}
-
-	public void setHead(List<String> head) {
-		this.head = head;
-	}
-
+	
 	
 
 }
