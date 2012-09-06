@@ -22,7 +22,11 @@
 		<cc:attribute name="searchTitle" required="false"/>
 		<cc:attribute name="searchPlaceholder" required="false"/>
 		<cc:attribute name="searchSize" required="false"/>
+		<cc:attribute name="searchInput" required="false"/>
+		<cc:attribute name="searchAction" method-signature="java.lang.String method()" required="false"/>
+		<cc:attribute name="searchParam" required="false"/>
 		<cc:attribute name="colLink" required="false"/>
+
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -80,7 +84,16 @@
 				<ui:fragment rendered="#{not empty cc.attrs.searchTitle}">
 					<h4><h:outputText value="#{cc.attrs.searchTitle}"/></h4>
 				</ui:fragment>
-				<input type="search" class="eg3_container_1" placeholder="#{(not empty cc.attrs.searchPlaceholder) ? cc.attrs.searchPlaceholder : ''}" title="#{(not empty cc.attrs.searchTitle) ? cc.attrs.searchTitle : ''}"/>
+				<h:form>
+				<h:inputText value="#{cc.attrs.searchInput}" title="#{(not empty cc.attrs.searchTitle) ? cc.attrs.searchTitle : ''}" styleClass="searchCollectionInput"/>
+				<h:commandButton action="#{cc.attrs.searchAction}" value="Go" >
+					<f:param name="searchParam" value="#{cc.attrs.searchParam}"/>
+				</h:commandButton>
+				
+				</h:form>
+				<script type="text/javascript">
+							$('.searchCollectionInput').attr("placeholder", "#{(not empty cc.attrs.searchPlaceholder) ? cc.attrs.searchPlaceholder : ''}");
+				</script>
 			</h:panelGroup>
 		</ui:fragment>
 	</cc:implementation>

@@ -39,11 +39,7 @@
 			
 			<!-- main content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-				<view:infoPanel descriptionTitle="" descriptionData="
-				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+				<view:infoPanel descriptionTitle="" descriptionData="#{viewOU.orga.escidocMd.description}
 				"/>
 				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewOU.vols_Carousel}" style="margin-bottom:2em;">
 					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
@@ -118,14 +114,9 @@
 				</h:panelGroup>
 				
 				<ui:fragment rendered="#{not empty applicationBean.getContext(viewOU.orga.id)}">
-					<a4j:repeat value="#{applicationBean.getContext(viewOU.orga.id)}" var="context">
+					<a4j:repeat value="#{viewOU.collections}" var="context" rowKeyVar="rowKey">
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="
-							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-								Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-								ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-								aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-							" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}"/>
+							<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}"/>
 						</h:panelGroup>
 
 					</a4j:repeat>
