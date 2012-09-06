@@ -36,6 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Observable;
 import java.util.ResourceBundle;
 
 import javax.faces.application.Application;
@@ -51,7 +52,7 @@ import org.apache.log4j.Logger;
 
 @ManagedBean
 @SessionScoped
-public class InternationalizationHelper
+public class InternationalizationHelper extends Observable
 {
 
     public static final String BEAN_NAME = "InternationalizationHelper";
@@ -153,6 +154,8 @@ public class InternationalizationHelper
             {
                 selectedHelpPage = HELP_PAGE_EN;
             }
+            super.setChanged();
+            super.notifyObservers();
     	}
     }
 

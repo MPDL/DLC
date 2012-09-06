@@ -6,7 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -46,7 +49,7 @@ import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "structuralEditor", pattern = "/edit/#{structuralEditorBean.volumeId}", viewId = "/structuralEditor.xhtml")
-public class StructuralEditorBean {
+public class StructuralEditorBean implements Observer {
 
 	private static Logger logger = Logger.getLogger(StructuralEditorBean.class);
 
@@ -151,6 +154,12 @@ public class StructuralEditorBean {
 	{
 		init();
 		
+	}
+	
+	@PostConstruct
+	public void postConstruct()
+	{
+		internationalizationHelper.addObserver(this);
 	}
 	
 	
@@ -2287,6 +2296,17 @@ public class StructuralEditorBean {
 
 	public void setSelectedPbSubtype(String selectedPbSubtype) {
 		this.selectedPbSubtype = selectedPbSubtype;
+	}
+
+
+	/**
+	 * Update select item lists when language has changed
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		initPageListMenu();
+		structureTypeSelectItems = internationalizationHelper.getStructureTypeSelectItems();
+		
 	}
 
 	
