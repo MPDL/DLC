@@ -18,22 +18,22 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 			{title : "Xml Files", extensions : "xml"},
 			{title : "Mab Files", extensions : "mab"}
 		],
+		
 		file_data_name : clientId,
+		
 		multipart_params : {
-			//'form1' : 'form1',
-			//'form1:offset' : '',
-			//'form1:Header:selSelectLocale' : 'de',
+			
 			'javax.faces.ViewState' : viewState,
 			'javax.faces.partial.ajax' : '1',
 			'javax.faces.partial.execute' : clientId,
 			'javax.faces.source' : clientId
-			//'javax.faces.partial.render' : rerender
-			//clientId.toString() : ''
+			
 			
 			
 		},
+		
 		headers : {
-			'Cookie' : 'JSESSIONID=' + sessionId,
+			//'Cookie' : 'JSESSIONID=' + sessionId,
 			'X-Requested-With' : 'XmlHttpRequest',
 			'Faces-Request' : 'partial/ajax'
 		}
