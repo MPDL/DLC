@@ -432,7 +432,6 @@ public class IngestBean{
 	
 	public String uploadComplete()
 	{
-		System.out.println("UPLOAD COMPLETE!!!!");
 		imageFiles = sortImagesByTeiFile(imageFiles, teiPbFacsValues);
 		return null;
 	}
