@@ -179,9 +179,7 @@
 						</h:commandButton>
 					</rich:panel>
 					
-					<rich:dragIndicator id="ind" acceptClass="accept" rejectClass="reject" draggingClass="default">
-						<h:outputText value="#{msg.upload_DragDrop}" />
-		  		  	</rich:dragIndicator>
+					
 		  		  	
 					<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}" rendered="#{ingestBean.volumeId == 'new'}">
 						<f:facet name="header">
@@ -189,28 +187,76 @@
 						</f:facet>
 						<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}" />
 						
-			            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
-			                 <f:facet name="header">
-								<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.button_command_clearArea}" rendered="#{ingestBean.size>0}">
+						<ui:fragment rendered="#{ingestBean.size>0}" >
+							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" rendered="#{ingestBean.size>0}">
 									<f:ajax render=":#{component.parent.parent.clientId}" />
-								</h:commandButton>
-		                    </f:facet>
-		                    <a4j:outputPanel layout="block">
-		                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
-		                        <rich:dropTarget acceptedTypes="file" dropValue="#{file}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
-		                        <h:outputText value="#{file.name}"/>
-								<h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_remove_16">
-									<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
-								</h:commandButton>
-		                    </a4j:outputPanel>
-		                </rich:dataGrid>
-		    			
+							</h:commandButton>
+							<br/>
+							<h:selectOneMenu value="#{ingestBean.sortImagesAlgorithm}">
+								<f:selectItem itemLabel="#{lbl.ingest_sortAlphabetical}" itemValue="alphanumeric"/>
+								<f:selectItem itemLabel="#{lbl.ingest_sortIntelligent}" itemValue="intelligent"/>
+							</h:selectOneMenu>
+							<h:commandButton value="#{lbl.ingest_sortImages}" action="#{ingestBean.sortImages}" >
+								<a4j:ajax render="imageInfo" execute="imageInfo" />
+							</h:commandButton>
+							
+							 
+				            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
+				                 <f:facet name="header">
+			                    </f:facet>
+			                    <style>
+			                    	.dragDefault {
+			                    		border: 1px solid black;
+			                    		background-color: white;
+			                    	}
+			                    	
+			                    	.dragAccept {
+			                    		border: 1px solid black;
+			                    		background-color: green;
+			                    	}
+			                    	.fileArea
+			                    	{
+			                    		border:1px solid black
+			                    	}
+			                    	
+			                    
+			                    </style>
+			                    
+			                    	<rich:dragIndicator id="ind" acceptClass="dragAccept" rejectClass="reject" draggingClass="dragDefault">
+										<h:outputText value="#{file.name}" />
+		  		  					</rich:dragIndicator>
+		  		  					
+		  		  					<a4j:outputPanel style="float:left; height:10px; width:200px; background-color:white">
+		  		  						<rich:dropTarget  acceptedTypes="file" dropValue="#{row}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
+			                        </a4j:outputPanel>
+			                        
+			                        <br/>
+			                       
+			                        <a4j:outputPanel styleClass="fileArea">
+				                        <h:outputText value="#{file.name}" />
+				                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
+			                      	</a4j:outputPanel>
+			                       
+			                         <h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_removei_16">
+										<a4j:ajax render=":#{component.parent.parent.parent.clientId}"/>
+									</h:commandButton>
+			                    
+			                </rich:dataGrid>
+			               	<a4j:outputPanel style="float:left; height:10px; width:200px; background-color:white">
+			                	<rich:dropTarget  acceptedTypes="file" dropValue="#{ingestBean.size}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
+			                </a4j:outputPanel>
+			                
+		    			</ui:fragment>
 					</rich:panel>
 					
 					<rich:panel id="pages" rendered="#{ingestBean.volumeId != 'new'}" styleClass="eg3_completeUploadedImages">
 						<f:facet name="header">
 							<h:outputText value="#{lbl.admin_upload_images}" />
 						</f:facet>	
+						
+						
+						
+						
 			            <rich:dataGrid columns="1" id="page" value="#{ingestBean.pagesOfVolume}" var="page" rowKeyVar="row">
 		                	<h:outputText value="#{page}"></h:outputText>
 		                </rich:dataGrid>
