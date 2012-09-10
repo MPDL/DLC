@@ -102,19 +102,22 @@ public class TreeWrapperNode {
 	public boolean getMovableDown()
 	{
 		
-		
-		if(this.getTeiElementWrapper().getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper()))
+		if(parent!=null)
 		{
-			
-			int indexInParent = parent.getChildren().indexOf(this);
-			if(indexInParent + 1 < parent.getChildren().size())
+			if(this.getTeiElementWrapper().getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper()))
 			{
-				TeiElementWrapper siblingAfter = parent.getChildren().get(indexInParent + 1).getTeiElementWrapper();
-				return siblingAfter.getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper());
-						
+				
+				int indexInParent = parent.getChildren().indexOf(this);
+				if(indexInParent + 1 < parent.getChildren().size())
+				{
+					TeiElementWrapper siblingAfter = parent.getChildren().get(indexInParent + 1).getTeiElementWrapper();
+					return siblingAfter.getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper());
+							
+				}
+				
 			}
-			
 		}
+		
 
 		return false;
 		
