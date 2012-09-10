@@ -12,13 +12,14 @@ public class SortCriterion {
 		TITLE("sort.dlc.title"),
 		AUTHOR("sort.dlc.author"),
 		YEAR("sort.dlc.year"),
-		NEWEST("sort.escidoc.latest-release.date"),
+		NEWEST("sort.escidoc.creation-date"),
 		
 		STATUS_FILTER("/properties/public-status"),
 		TITLE_FILTER("/sort/dlc/title"),
 		AUTHOR_FILTER("/sort/dlc/author"),
 		YEAR_FILTER("/sort/dlc/year"),
-		NEWEST_FILTER("/sort/properties/latest-release/date");
+		NEWEST_FILTER("/sort/properties/creation-date"),
+		LAST_MODIFIED_FILTER("/sort/last-modification-date");
 		
 		private String indexName;
 		
@@ -112,7 +113,7 @@ public class SortCriterion {
 	{
 		
 			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndices.NEWEST_FILTER, SortOrders.DESCENDING));
+			scList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.DESCENDING));
 			scList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.TITLE_FILTER, SortOrders.ASCENDING));
 			scList.add(new SortCriterion(SortIndices.YEAR_FILTER, SortOrders.DESCENDING));
