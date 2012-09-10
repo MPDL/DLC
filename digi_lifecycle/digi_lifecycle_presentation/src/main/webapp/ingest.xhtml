@@ -201,32 +201,46 @@
 							</h:commandButton>
 							
 							 
-				            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
-				                 <f:facet name="header">
-			                    </f:facet>
-			                    <style>
+							 
+							 <style>
 			                    	.dragDefault {
-			                    		border: 1px solid black;
+			                    		border: 5px solid red;
 			                    		background-color: white;
+			                    		cursor:move;
 			                    	}
 			                    	
 			                    	.dragAccept {
-			                    		border: 1px solid black;
-			                    		background-color: green;
+			                    		border: 5px solid green;
+			                    		
 			                    	}
+			                    	
+			                    	.dragReject {
+			                    		border: 5px solid red;
+			                    		
+			                    	}
+			                    	
 			                    	.fileArea
 			                    	{
-			                    		border:1px solid black
+			                    		border:1px solid black;
+			                    		cursor:move;
+			                    		
 			                    	}
 			                    	
 			                    
 			                    </style>
 			                    
-			                    	<rich:dragIndicator id="ind" acceptClass="dragAccept" rejectClass="reject" draggingClass="dragDefault">
+							 
+				            <rich:dataGrid columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row">
+				                 <f:facet name="header">
+			                    </f:facet>
+			                    
+			                    
+			                    	<rich:dragIndicator id="ind" acceptClass="dragAccept" rejectClass="dragReject" draggingClass="dragDefault">
 										<h:outputText value="#{file.name}" />
 		  		  					</rich:dragIndicator>
 		  		  					
-		  		  					<a4j:outputPanel style="float:left; height:10px; width:200px; background-color:white">
+		  		  					
+		  		  					<a4j:outputPanel styleClass="dropArea" style="float:left; height:10px; width:200px; background-color:white">
 		  		  						<rich:dropTarget  acceptedTypes="file" dropValue="#{row}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
 			                        </a4j:outputPanel>
 			                        
@@ -247,6 +261,48 @@
 			                </a4j:outputPanel>
 			                
 		    			</ui:fragment>
+		    			<script>
+		    			/*
+			                    var down = false;
+			                    $(document).mousedown(function() {
+			                        down = true;
+			                        console.log('down');
+			                    });
+			                     $(document).mouseup(function() {
+			                        down = false;
+			                        console.log('up');
+			                    });
+
+
+								
+			                    
+			                    function mouseOverHandler(elem)
+			                    {	
+				                    $(elem).mouseenter(function() {
+									console.log('mouseover: ' + down);
+									
+			                    	if(down)
+					                    {
+					                    	$(this).css('height','20px');
+					                    	$(this).css('background-color','red');
+					                    }
+					                  });
+					                  
+				                    $(elem).mouseout(function() {
+				                  
+					                    $(this).css('height','10px');
+				                    
+				                    });
+				                }
+								
+				                $('.dropArea').each(function(index, value) {
+					                mouseOverHandler($(this));
+					                });
+			                    
+*/
+			                    </script>
+		    			
+		    			
 					</rich:panel>
 					
 					<rich:panel id="pages" rendered="#{ingestBean.volumeId != 'new'}" styleClass="eg3_completeUploadedImages">
