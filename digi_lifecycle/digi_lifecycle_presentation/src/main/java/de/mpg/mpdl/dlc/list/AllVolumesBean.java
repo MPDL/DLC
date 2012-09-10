@@ -107,10 +107,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	@Override
 	public List<SelectItem> getSortIndicesMenu() {
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		scMenuList.add(new SelectItem(SortIndices.NEWEST_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
-		scMenuList.add(new SelectItem(SortIndices.TITLE_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_title")));
-		scMenuList.add(new SelectItem(SortIndices.AUTHOR_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_author")));
-		scMenuList.add(new SelectItem(SortIndices.YEAR_FILTER.name(), internationalizationHelper.getLabel("sort_criterion_year")));
+		scMenuList.add(new SelectItem(SortIndices.LAST_MODIFIED_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_lastModified")));
+		scMenuList.add(new SelectItem(SortIndices.NEWEST_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_newest")));
+		scMenuList.add(new SelectItem(SortIndices.TITLE_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(SortIndices.AUTHOR_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(SortIndices.YEAR_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_year")));
 		return scMenuList;
 	}
   
