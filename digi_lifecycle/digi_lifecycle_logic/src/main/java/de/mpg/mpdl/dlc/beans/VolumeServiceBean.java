@@ -695,6 +695,7 @@ public class VolumeServiceBean {
 				}
 			}
 		
+			/*
 			if(modsMetadata != null)
 			{
 				volume.setModsMetadata(modsMetadata);
@@ -710,8 +711,9 @@ public class VolumeServiceBean {
 			
 			if(teiFile != null)
 			{
+			*/
 				updateVolume(volume, userHandle, teiFile.getInputStream(), true);
-			}
+			//}
 			
 			if(operation.equalsIgnoreCase("release"))
 				volume = releaseVolume(volume.getItem().getObjid(), userHandle);
@@ -786,42 +788,50 @@ public class VolumeServiceBean {
 				//Add paged TEI as component
 				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFileWithIds));
 				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
-				if(pagedTeiComponent==null)
-				{
-					
-					pagedTeiComponent = new Component();
-					ComponentProperties pagedTeiCompProps = new ComponentProperties();
-					pagedTeiComponent.setProperties(pagedTeiCompProps);
-					
-					pagedTeiComponent.getProperties().setMimeType("text/xml");
-					pagedTeiComponent.getProperties().setContentCategory("tei-paged");
-					pagedTeiComponent.getProperties().setVisibility("public");
-					ComponentContent pagedTeiContent = new ComponentContent();
-					pagedTeiComponent.setContent(pagedTeiContent);
-					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-					volume.getItem().getComponents().add(pagedTeiComponent);
-				}
 				
+				
+				if(pagedTeiComponent!=null)
+				{
+					volume.getItem().getComponents().remove(pagedTeiComponent);
+				}
+
+				pagedTeiComponent = new Component();
+				ComponentProperties pagedTeiCompProps = new ComponentProperties();
+				pagedTeiComponent.setProperties(pagedTeiCompProps);
+				
+				pagedTeiComponent.getProperties().setMimeType("text/xml");
+				pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+				pagedTeiComponent.getProperties().setVisibility("public");
+				ComponentContent pagedTeiContent = new ComponentContent();
+				pagedTeiComponent.setContent(pagedTeiContent);
+				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				volume.getItem().getComponents().add(pagedTeiComponent);
 				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
+				
+				
+				
+				
 				
 				
 				//Add original TEI as component
 				URL uploadedTei = sthc.upload(new FileInputStream(teiFileWithIds));
-				if(teiComponent==null)
+				
+				if(teiComponent!=null)
 				{
-					teiComponent = new Component();
-					ComponentProperties teiCompProps = new ComponentProperties();
-					teiComponent.setProperties(teiCompProps);
-					
-					teiComponent.getProperties().setMimeType("text/xml");
-					teiComponent.getProperties().setContentCategory("tei");
-					teiComponent.getProperties().setVisibility("public");
-					ComponentContent teiContent = new ComponentContent();
-					teiComponent.setContent(teiContent);
-					teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-					volume.getItem().getComponents().add(teiComponent);
+					volume.getItem().getComponents().remove(teiComponent);
 				}
 				
+				teiComponent = new Component();
+				ComponentProperties teiCompProps = new ComponentProperties();
+				teiComponent.setProperties(teiCompProps);
+				
+				teiComponent.getProperties().setMimeType("text/xml");
+				teiComponent.getProperties().setContentCategory("tei");
+				teiComponent.getProperties().setVisibility("public");
+				ComponentContent teiContent = new ComponentContent();
+				teiComponent.setContent(teiContent);
+				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				volume.getItem().getComponents().add(teiComponent);
 				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
 			}
 			
@@ -838,21 +848,23 @@ public class VolumeServiceBean {
 				File teiSdWithIds = addIdsToTei(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
 				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIds));
 				
-				if(teiSdComponent==null)
+				if(teiSdComponent!=null)
 				{
-					teiSdComponent = new Component();
-					ComponentProperties teiSdCompProps = new ComponentProperties();
-					teiSdComponent.setProperties(teiSdCompProps);
-					
-					teiSdComponent.getProperties().setMimeType("text/xml");
-					teiSdComponent.getProperties().setContentCategory("tei-sd");
-					teiSdComponent.getProperties().setVisibility("public");
-					ComponentContent teiSdContent = new ComponentContent();
-					teiSdComponent.setContent(teiSdContent);
-					teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-					
-					volume.getItem().getComponents().add(teiSdComponent);
+					volume.getItem().getComponents().remove(teiSdComponent);
 				}
+				
+				
+				teiSdComponent = new Component();
+				ComponentProperties teiSdCompProps = new ComponentProperties();
+				teiSdComponent.setProperties(teiSdCompProps);
+				
+				teiSdComponent.getProperties().setMimeType("text/xml");
+				teiSdComponent.getProperties().setContentCategory("tei-sd");
+				teiSdComponent.getProperties().setVisibility("public");
+				ComponentContent teiSdContent = new ComponentContent();
+				teiSdComponent.setContent(teiSdContent);
+				teiSdComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				volume.getItem().getComponents().add(teiSdComponent);
 				teiSdComponent.getContent().setXLinkHref(uploadedTeiSd.toExternalForm());
 				
 				//If there's no fulltext TEI, use TEI-SD as paged component for search and fulltext display
@@ -861,22 +873,27 @@ public class VolumeServiceBean {
 					//Add paged TEI as component
 					String pagedTei = transformTeiToPagedTei(new FileInputStream(teiSdWithIds));
 					URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
-					if(pagedTeiComponent==null)
+					
+					if(pagedTeiComponent!=null)
 					{
-						
-						pagedTeiComponent = new Component();
-						ComponentProperties pagedTeiCompProps = new ComponentProperties();
-						pagedTeiComponent.setProperties(pagedTeiCompProps);
-						
-						pagedTeiComponent.getProperties().setMimeType("text/xml");
-						pagedTeiComponent.getProperties().setContentCategory("tei-paged");
-						pagedTeiComponent.getProperties().setVisibility("public");
-						ComponentContent pagedTeiContent = new ComponentContent();
-						pagedTeiComponent.setContent(pagedTeiContent);
-						pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
-						
-						volume.getItem().getComponents().add(pagedTeiComponent);
+						volume.getItem().getComponents().remove(pagedTeiComponent);
 					}
+					
+					
+					
+					pagedTeiComponent = new Component();
+					ComponentProperties pagedTeiCompProps = new ComponentProperties();
+					pagedTeiComponent.setProperties(pagedTeiCompProps);
+					
+					pagedTeiComponent.getProperties().setMimeType("text/xml");
+					pagedTeiComponent.getProperties().setContentCategory("tei-paged");
+					pagedTeiComponent.getProperties().setVisibility("public");
+					ComponentContent pagedTeiContent = new ComponentContent();
+					pagedTeiComponent.setContent(pagedTeiContent);
+					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+					
+					volume.getItem().getComponents().add(pagedTeiComponent);
+					
 					
 					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}

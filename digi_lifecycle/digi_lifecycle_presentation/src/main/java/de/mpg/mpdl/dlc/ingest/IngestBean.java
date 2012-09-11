@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.ingest;
 
 import java.io.File;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -123,7 +125,8 @@ public class IngestBean{
 		if(volumeId != null  && !volumeId.equalsIgnoreCase("new"))
 		{ 
 			try {
-				this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
+				//this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
+				this.volume = volumeService.loadCompleteVolume(volumeId,  loginBean.getUserHandle());
 				if(mabFile == null)
 					this.modsMetadata = volume.getModsMetadata();
 				if(volume.getMets()!=null)
@@ -134,6 +137,10 @@ public class IngestBean{
 						String name = p.getContentIds().substring(beginIndex+1);
 						this.pagesOfVolume.add(name);
 					}
+				}
+				if(volume.getTei()!=null)
+				{
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(volume.getTei().getBytes("UTF-8")));
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -740,10 +747,8 @@ public class IngestBean{
 			    			return "";
 						}
 				}
-				if(mabFile != null)
-					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles);
-				else
-					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, null, imageFiles);
+				
+				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles);
 				
 			}
 		} catch (Exception e) {
@@ -1114,6 +1119,22 @@ public class IngestBean{
 
 	        return s1Length - s2Length;
 	    }
+	}
+	
+	
+	public Component getTeiComponent()
+	{
+		if(volume!=null && volume.getItem()!=null)
+		{
+			for(Component c : volume.getItem().getComponents())
+			{
+				if(c.getProperties().getContentCategory().equals("tei"))
+				{
+					return c;
+				}
+			}
+		}
+		return null;
 	}
 
 

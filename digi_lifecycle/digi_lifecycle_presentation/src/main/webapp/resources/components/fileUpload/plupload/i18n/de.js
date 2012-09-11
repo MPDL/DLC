@@ -1,11 +1,11 @@
 // German
 plupload.addI18n({
-    'Select files' : 'Dateien hochladen',
+    'Select files' : ' ',
     'Add files to the upload queue and click the start button.' : 'Dateien hinzuf&uuml;gen und auf \'Hochladen\' klicken.',
     'Filename' : 'Dateiname',
     'Status' : 'Status',
     'Size' : 'Gr&ouml;&szlig;e',
-    'Add files' : 'Dateien', // hinzuf&uuml;gen',
+    'Add files' : 'Dateien hinzuf&uuml;gen',
     'Stop current upload' : 'Aktuelles Hochladen stoppen',
     'Start uploading queue' : 'Hochladen starten',
     'Uploaded %d/%d files': '%d/%d Dateien sind hochgeladen',
