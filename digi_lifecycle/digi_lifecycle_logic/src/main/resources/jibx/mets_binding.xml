@@ -15,6 +15,7 @@
 						<value style="attribute" name="ORDER" field="order" usage="optional"/>
 						
 						<value style="attribute" name="ORDERLABEL" field="orderLabel" usage="optional"/>
+						<value style="attribute" name="LABEL" field="label" usage="optional"/>
 						<value style="attribute" name="CONTENTIDS" field="contentIds" usage="optional"/>
 					
 					</structure>

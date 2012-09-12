@@ -72,6 +72,7 @@ public class ImageController {
 	}
 	
 	
+	/*
 	public static String deleteFileOnImageServer(String directory, String filename) throws Exception
 	{
 		HttpClient client = new HttpClient();
@@ -93,7 +94,7 @@ public class ImageController {
 		return response;
 		
 	}
-
+*/
 	
 	/*
 	public static List<String> uploadFilesToImageServer(List<File> items, String directory) throws Exception
