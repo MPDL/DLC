@@ -419,7 +419,7 @@
 							<h:commandButton type="button" styleClass="eg3_icon_annotation_16_16" title="#{tlt.paginator_goToAnnotation}"/>
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color">
+						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
 							<h:form>
 								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow">
 									<h:panelGroup layout="block" styleClass="eg3_overlayHeader eg3_alternate_color_1">
@@ -512,9 +512,11 @@
 						
 						<!--provenance and url  -->
 						<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1 eg3_container_1" rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
+							
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top" rendered="#{viewPages.selectedPage!=null}">
 								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
 							</h:panelGroup>
+							
 							<h:panelGroup layout="block" styleClass="eg3_permalinkBox eg3_container_1_2 eg3_borderradius_5_top eg3_floatRight" rendered="#{viewPages.selectedRightPage!=null}">
 								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true"/> 
 							</h:panelGroup>
@@ -525,6 +527,7 @@
 								<h:inputText styleClass="eg3_permalinkBoxText" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true"/> 
 							</h:panelGroup>
 						</h:panelGroup>
+
 					
 					<!-- END OF RECTO_VERSO & FULLTEXT -->
 					</h:panelGroup>
