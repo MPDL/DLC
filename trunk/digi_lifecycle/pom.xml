@@ -77,6 +77,16 @@
 			<organization>Max Planck Digital Library</organization>
 			<timezone>+2</timezone>
 		</developer>
+		<developer>
+			<id>kulas</id>
+			<name>Andrea Kulas</name>
+			<email>kulas@mpdl.mpg.de</email>
+			<roles>
+				<role>Project coordination</role>
+			</roles>
+			<organization>Max Planck Digital Library</organization>
+			<timezone>+2</timezone>
+		</developer>
         <developer>
           <id>haarlaender</id>
             <name>Markus Haarlaender</name>
@@ -93,6 +103,26 @@
             <email>yu@mpdl.mpg.de</email>
             <roles>
                 <role>Software developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+        <developer>
+          <id>kleinfercher</id>
+            <name>Friederike Kleinfercher</name>
+            <email>kleinfercher@mpdl.mpg.de</email>
+            <roles>
+                <role>Software developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+        <developer>
+          <id>schlender</id>
+            <name>Marco Schlender</name>
+            <email>schlender@mpdl.mpg.de</email>
+            <roles>
+                <role>GUI developer</role>
             </roles>
             <organization>Max Planck Digital Library</organization>
             <timezone>+2</timezone>
