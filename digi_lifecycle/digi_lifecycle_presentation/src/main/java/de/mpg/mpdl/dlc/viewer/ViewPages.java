@@ -72,7 +72,7 @@ public class ViewPages implements Observer{
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 
-	private int selectedPageNumber;
+	private int selectedPageNumber=1;
 	
 	private Page selectedPage;
 	
