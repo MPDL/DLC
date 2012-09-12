@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
@@ -30,8 +31,10 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	
 	
 	private SearchBean searchBean = new SearchBean();
-	private ApplicationBean appBean = new ApplicationBean();
-	private SessionBean sessionBean = new SessionBean();
+	
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
@@ -56,8 +59,16 @@ public class QuickSearchResultBean extends BasePaginatorBean<Volume> {
 	}
 
 	public void setQuery(String query) {
-		this.sessionBean.setLatestCql(query);
+		this.getSessionBean().setLatestCql(query);
 		this.query = query;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 	
 	
