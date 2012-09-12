@@ -131,7 +131,7 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" styleClass="eg3_container_1" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
+							<rich:tab header="#{lbl.view_tab_biblMd}" id="bibmd" rendered="#{viewPages.volume.modsMetadata != null}" styleClass="eg3_container_1" onmouseover="$('span.double_area0').width('40em'); $('span.double_area0').css('opacity','0.8')" onmouseout="$('span.double_area0').width('18.83em');$('span.double_area0').css('opacity','1');">
 								<h:commandButton value="#{lbl.button_command_isbd}">
 									<rich:componentControl target="isbdPopup" operation="show"/>
 								</h:commandButton>
@@ -154,9 +154,9 @@
 							    </rich:popupPanel>							
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_description}" id="desc">
+							<!-- <rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="volume has kod. md">  </rich:tab>-->
 								
-							</rich:tab>
+							
 						</rich:tabPanel>
 				
 					</h:form>
