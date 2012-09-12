@@ -271,7 +271,9 @@
 						<h:outputText value="&#160;"/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
-							<h:commandButton type="reset" value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.resetSearch}"/>
+							<a4j:commandButton type="reset" value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
+											   action="#{advancedSearchBean.resetSearch}" render=":scForm:ouAndContext">			
+							</a4j:commandButton>
 							<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
 					</h:panelGroup>
 				</h:panelGroup>	

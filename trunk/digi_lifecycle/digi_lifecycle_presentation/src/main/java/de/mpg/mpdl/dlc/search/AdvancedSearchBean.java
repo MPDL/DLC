@@ -79,7 +79,11 @@ public class AdvancedSearchBean {
 		ouSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allLib")));
 		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
 		{
-			ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+			//Only add an ou if it has a context otherwise there is no collection which we can search in
+			if (contextServiceBean.retrieveOUContexts(ou.getObjid()).size() > 0)
+			{
+				ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+			}
 		}
 		this.setAllLibItems(ouSelectItems);
 		
@@ -275,10 +279,21 @@ public class AdvancedSearchBean {
 		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
+		//Reset context
 		this.contextScElements.clear();
 		ContextSearch cs = new ContextSearch();
 		refreshContextList(cs);
 		this.contextScElements.add(cs);
+		
+		//Reset ou
+		List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
+		ouSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allLib")));
+		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
+		{
+			ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
+		}
+		this.setAllLibItems(ouSelectItems);
+		
 		return"";
 	}
 
