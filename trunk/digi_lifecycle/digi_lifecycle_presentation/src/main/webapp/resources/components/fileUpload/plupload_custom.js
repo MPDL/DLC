@@ -49,8 +49,8 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 			//If last file was uploaded
 			if ((uploader.total.uploaded + 1) == uploader.files.length)
 			{
-//				alert($('#'+clientId).find('.hiddenUploadCompleteButton'));
-				$('#'+clientId).find('.hiddenUploadCompleteButton').click();
+				//alert($('#'+clientId).find('.hiddenUploadCompleteButton'));
+				$('[id="'+clientId+'"]').find('.hiddenUploadCompleteButton').click();
 				//console.log('UploadComplete');
 				
 				

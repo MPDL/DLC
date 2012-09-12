@@ -59,6 +59,25 @@ public class ImageHelper{
 		}
 	}
 	
+	public static String appendPaths(String path1, String path2)
+	{
+
+		String appendedPath = "";
+		if(path1.endsWith("/") && path2.startsWith("/"))
+		{
+			appendedPath = path1 + path2.substring(1); 
+		}
+		else if(!path1.endsWith("/") && !path2.startsWith("/"))
+		{
+			appendedPath = path1 + "/" + path2; 
+		}
+		else
+		{
+			appendedPath = path1 + path2; 
+		}
+		return appendedPath;
+	}
+	
 	public static String getFullImageUrl(String subUrl, Type type)
 
 	{
@@ -84,7 +103,8 @@ public class ImageHelper{
 		    	}
 	    	}
 			
-			String url = mainUrl + typeUrl + subUrl;
+			String url = appendPaths(mainUrl, typeUrl);
+			url = appendPaths(url, subUrl);
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for sub url page " + subUrl, e);

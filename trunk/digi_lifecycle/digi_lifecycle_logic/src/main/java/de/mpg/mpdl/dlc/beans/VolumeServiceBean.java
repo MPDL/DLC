@@ -105,6 +105,7 @@ import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
@@ -529,7 +530,7 @@ public class VolumeServiceBean {
 	
 
 	
-	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<DiskFileItem> images, DiskFileItem footer, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem footer, FileItem teiFile) throws Exception
 	{
 		
 		logger.info("Creating new volume/monograph");
@@ -579,65 +580,9 @@ public class VolumeServiceBean {
 
 				//Convert and upload images 
 				long start = System.currentTimeMillis();		
-				for(DiskFileItem imageItem : images)
-				{
-					String filename = getJPEGFilename(imageItem.getName());
-					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
-					File jpegImage;
-					if(imageItem.getName().endsWith("tif") || imageItem.getName().endsWith("tiff"))
-					{
-						jpegImage = ImageHelper.tiffToJpeg(imageItem.getStoreLocation(), getJPEGFilename(imageItem.getName()));
-					}
-					else if(imageItem.getName().endsWith("png"))
-					{
-						jpegImage = ImageHelper.pngToJpeg(imageItem.getStoreLocation(), getJPEGFilename(imageItem.getName()));
-					}
-					else
-						jpegImage = imageItem.getStoreLocation();
-					if(footer != null)
-					{
-						File jpegFooter;
-						if(footer.getName().endsWith("tif"))
-						{
-							jpegFooter = ImageHelper.tiffToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
-						}
-						else if(imageItem.getName().endsWith("png"))
-							jpegFooter = ImageHelper.pngToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
-						else
-							jpegFooter = footer.getStoreLocation();
-						
-						jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
-							
-					}
-					
-					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
-					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
-									
-					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
-					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
-					
-					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
-					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-					
-					
-					int pos = images.indexOf(imageItem);
-					Page p = new Page();
-					
-					
-					p.setId("page_" + pos);
-					
-
-					p.setOrder(pos);
-					p.setOrderLabel("");
-					//p.setType("page");
-					p.setContentIds(itemIdWithoutColon + "/"+ filename);
-					p.setLabel(imageItem.getName());
-					metsData.getPages().add(p);
-					
-				}				
+				
+				uploadImagesAndCreateMets(images, footer, item.getObjid(), volume);
+				
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
 			
@@ -662,7 +607,83 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<DiskFileItem> images)
+	public static void uploadImagesAndCreateMets(List<IngestImage> images, DiskFileItem footer, String itemId, Volume vol) throws Exception
+	{
+		
+		Mets metsData = new Mets();
+		vol.setMets(metsData);
+		String itemIdWithoutColon = itemId.replaceAll(":", "_");
+		
+		
+		for(IngestImage imageItem : images)
+		{
+			String filename = getJPEGFilename(imageItem.getName());
+			
+			//If image is added on disk, uplaod it
+			if(IngestImage.Type.DISK.equals(imageItem.getType()))	
+			{
+
+				File jpegImage;
+				if(imageItem.getName().endsWith("tif") || imageItem.getName().endsWith("tiff"))
+				{
+					jpegImage = ImageHelper.tiffToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
+				}
+				else if(imageItem.getName().endsWith("png"))
+				{
+					jpegImage = ImageHelper.pngToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
+				}
+				else
+					jpegImage = imageItem.getDiskFileItem().getStoreLocation();
+				
+				
+				if(footer != null)
+				{
+					File jpegFooter;
+					if(footer.getName().endsWith("tif"))
+					{
+						jpegFooter = ImageHelper.tiffToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
+					}
+					else if(imageItem.getName().endsWith("png"))
+						jpegFooter = ImageHelper.pngToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
+					else
+						jpegFooter = footer.getStoreLocation();
+					
+					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
+						
+				}
+				
+				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+				File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
+				String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+								
+				String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+				File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
+				String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+				
+				String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+				File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
+				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+				
+				
+				
+			}
+			
+				int pos = images.indexOf(imageItem);
+				Page p = new Page();
+				p.setId("page_" + pos);
+				p.setOrder(pos);
+				p.setOrderLabel("");
+
+				//p.setType("page");
+				p.setContentIds(itemIdWithoutColon + "/"+ filename);
+				p.setLabel(imageItem.getName());
+				metsData.getPages().add(p);
+			
+			
+		}				
+	}
+	
+	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images)
 	{
 		Item item = volume.getItem();
 		ItemHandlerClient client;
@@ -671,28 +692,15 @@ public class VolumeServiceBean {
 			
 			client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);				
+			
+			
+			
+			
+			
+			
 			if(images.size() >0)
 			{
-				for(DiskFileItem imageItem : images)
-				{
-					String filename = getJPEGFilename(imageItem.getName());
-					String itemIdWithoutColon = item.getObjid().replaceAll(":", "_");
-					 
-					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-					File thumbnailFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.THUMBNAIL);
-					ImageController.deleteFileOnImageServer(thumbnailsDir, filename);
-					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
-									
-					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-					File webFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.WEB);
-					ImageController.deleteFileOnImageServer(webDir, filename);
-					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
-					
-					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-					File originalFile = ImageHelper.scaleImage(imageItem.getStoreLocation(), filename, Type.ORIGINAL);
-					ImageController.deleteFileOnImageServer(originalDir, filename);
-					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-				}
+				uploadImagesAndCreateMets(images, null, volume.getItem().getObjid(), volume);
 			}
 		
 			/*
@@ -708,12 +716,24 @@ public class VolumeServiceBean {
 				if(teiFile == null)
 					client.update(item);
 			}
-			
-			if(teiFile != null)
-			{
 			*/
-				updateVolume(volume, userHandle, teiFile.getInputStream(), true);
-			//}
+			
+			InputStream teiInputStream = null;
+			if(modsMetadata!=null)
+			{
+				volume.setModsMetadata(modsMetadata);
+			}
+			if(teiFile!=null)
+			{
+				teiInputStream = teiFile.getInputStream();
+			}
+			
+			
+			if(teiFile != null || modsMetadata != null)
+			{
+			
+				updateVolume(volume, userHandle, teiInputStream, true);
+			}
 			
 			if(operation.equalsIgnoreCase("release"))
 				volume = releaseVolume(volume.getItem().getObjid(), userHandle);

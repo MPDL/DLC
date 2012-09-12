@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -37,6 +38,7 @@ import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.list.AllVolumesBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 import de.mpg.mpdl.dlc.searchLogic.FilterCriterion;
@@ -46,6 +48,8 @@ import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
+import de.mpg.mpdl.dlc.viewer.ViewPages;
+import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -72,13 +76,13 @@ import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
  */
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 @URLMapping(id="upload", viewId = "/ingest.xhtml", pattern = "/upload/#{ingestBean.volumeId}")
 public class IngestBean{
  
 	private static Logger logger = Logger.getLogger(IngestBean.class);
    
-	private List<DiskFileItem> imageFiles = new ArrayList<DiskFileItem>();
+	private List<IngestImage> imageFiles = new ArrayList<IngestImage>();
 	private DiskFileItem footer;
 	
 	private FileItem mabFile;
@@ -118,14 +122,17 @@ public class IngestBean{
 	
 	private String sortImagesAlgorithm;
 	
+	private boolean sortableByTei = false;
+	
 	 
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
-		if(volumeId != null  && !volumeId.equalsIgnoreCase("new"))
+		if(!volumeId.equals("new") && volume==null)
 		{ 
 			try {
 				//this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
+				clearAllData();
 				this.volume = volumeService.loadCompleteVolume(volumeId,  loginBean.getUserHandle());
 				if(mabFile == null)
 					this.modsMetadata = volume.getModsMetadata();
@@ -133,25 +140,31 @@ public class IngestBean{
 				{
 					for(Page p : volume.getMets().getPages())
 					{	
+						imageFiles.add(new IngestImage(p));
+						/*
 						int beginIndex = p.getContentIds().indexOf("/");
 						String name = p.getContentIds().substring(beginIndex+1);
 						this.pagesOfVolume.add(name);
+						*/
 					}
 				}
 				if(volume.getTei()!=null)
 				{
 					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(volume.getTei().getBytes("UTF-8")));
+					
 				}
+				uploadComplete();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
 		}
-		else
-		{
-			if(volume != null)
+		else if(volumeId.equals("new"))
+		{	
+			/*
+				volume=null;
 				clearAllData();
-			volume = null;
+				*/
 		}
 	}
 	
@@ -170,6 +183,8 @@ public class IngestBean{
 	public void init()
 	{  
 		this.contextSelectItems.clear();
+		
+		
 		SelectItem item;
 		List<String> ids = new ArrayList();
 		//init contexts 
@@ -182,7 +197,8 @@ public class IngestBean{
 					for(Collection c : loginBean.getUser().getCreatedCollections())
 						this.contextSelectItems.add(new SelectItem(c.getId(),c.getName()));
 				}
-				else {
+				else 
+				{
 					for(Collection c : loginBean.getUser().getDepositorCollections())
 					{  
 						if(!ids.contains(c.getId()))
@@ -202,9 +218,11 @@ public class IngestBean{
 						}
 					}
 				}
-			}catch(Exception e)
+				this.selectedContextId = (String)contextSelectItems.get(0).getValue();
+			}
+			catch(Exception e)
 			{
-					
+					logger.error("Error while retrieving contexts", e);
 			}
 		}
 		if(contextSelectItems.size()>0)
@@ -217,11 +235,14 @@ public class IngestBean{
 	{
 
 		this.modsMetadata.getTitles().add(new ModsTitle());
-		this.modsMetadata.getNames().add(new ModsName());
+		ModsName modsName = new ModsName();
+		modsName.setDisplayLabel("author");
+		this.modsMetadata.getNames().add(modsName);
 		this.modsMetadata.getNotes().add(new ModsNote());
 		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
 		this.modsMetadata.getIdentifiers().add(new ModsIdentifier());
 		ModsPublisher publisher = new ModsPublisher();
+		publisher.setDisplayLabel("publisher");
 		publisher.setDateIssued_425(new ModsDate());
     	this.modsMetadata.getPublishers().add(publisher);
 		this.modsMetadata.getKeywords().add("");
@@ -232,10 +253,7 @@ public class IngestBean{
 		this.modsMetadata.getParts().add(new ModsPart());
 	}
 
-    public void paint(OutputStream stream, Object object) throws Exception {
-    	stream.write(getImageFiles().get((Integer) object).get());
-        stream.close();
-    }
+   
     
     public String clearUploadedImages() 
     {    
@@ -246,6 +264,7 @@ public class IngestBean{
     {     
     	this.teiFile = null;
     	this.teiPbFacsValues = null;
+    	uploadComplete();
         return "";
     }
     
@@ -294,11 +313,11 @@ public class IngestBean{
         return System.currentTimeMillis();
     }
  
-    public List<DiskFileItem> getImageFiles() {
+    public List<IngestImage> getImageFiles() {
         return imageFiles; 
     }
  
-    public void setImageFiles(List<DiskFileItem> files) {
+    public void setImageFiles(List<IngestImage> files) {
         this.imageFiles = files;
     }
     
@@ -435,24 +454,70 @@ public class IngestBean{
 			}
 			else
 			{
-				imageFiles.add((DiskFileItem)fue.getFileItem());
-
+				IngestImage ingestImage = new IngestImage((DiskFileItem)fue.getFileItem());
+				if(imageFiles.contains(ingestImage))
+				{
+					int pos = imageFiles.indexOf(ingestImage);
+					imageFiles.remove(pos);
+					imageFiles.add(pos, ingestImage);
+				}
+				else
+				{
+					imageFiles.add(ingestImage);
+				}
+				
+				/*
+				if(volumeId.equals("new"))
+				{
+					
+				}
+				
+				else
+				{
+					//replace files with same name, else add to end;
+					//TODO MANY
+					
+					
+					boolean replaced = false;
+					for(String filename : pagesOfVolume)
+					{
+						
+						if(filename.equals(VolumeServiceBean.getJPEGFilename(fue.getFileItem().getName())))
+						{
+							replaced = true;
+							imageFiles.add((DiskFileItem)fue.getFileItem());
+							MessageHelper.infoMessage(fue.getFileItem().getName() + InternationalizationHelper.getMessage("ingest_imageReplacesSuccessfully") );
+							break;
+							xxx
+						}
+					}
+					
+					
+					
+				}
+				 */
 			}
 		}
 	}
 	
 	public String uploadComplete()
 	{
-		imageFiles = sortImagesByTeiFile(imageFiles, teiPbFacsValues);
+		sortableByTei = sortImagesByTeiFile();
+		if(sortableByTei)
+		{
+			this.sortImagesAlgorithm = "tei";
+		}
 		return null;
 	}
 		
 	
-	public static List<DiskFileItem> sortImagesByTeiFile(List<DiskFileItem> imageFiles, List<XdmNode> teiPbFacsValues)
+	public boolean sortImagesByTeiFile()
 	{
 		//Sort images using pb facs attribute in tei file
 				
-			List<DiskFileItem> imageFilesSorted = new ArrayList<DiskFileItem>();
+			
+			
+			List<IngestImage> imageFilesSorted = new ArrayList<IngestImage>();
 			if(teiPbFacsValues != null && imageFiles.size() == teiPbFacsValues.size())
 			{
 				
@@ -463,7 +528,7 @@ public class IngestBean{
 					if(facs!=null)
 					{
 						
-						for(DiskFileItem imgFile : imageFiles)
+						for(IngestImage imgFile : imageFiles)
 						{
 							if(facs.equals(imgFile.getName()))
 							{
@@ -476,25 +541,39 @@ public class IngestBean{
 					if(!found)
 					{
 						
-						imageFilesSorted = imageFiles;
-						break;
+						//imageFilesSorted = imageFiles;
+						return false;
 					}
 					
 				}
+				imageFiles = imageFilesSorted;
+				return true;
 				
 			}
 			else
 			{
-				imageFilesSorted = imageFiles;
+				
 			}
 			
-			return imageFilesSorted;
+			
+			return false;
 	
 	}
 	
 
 	
-	
+	public List<SelectItem> getSortImageSelectItem()
+	{
+		List<SelectItem> sortImageSelectItems = new ArrayList<SelectItem>();
+		if(sortableByTei)
+		{
+			sortImageSelectItems.add(new SelectItem("tei", InternationalizationHelper.getLabel("ingest_sortTei")));
+		}
+		sortImageSelectItems.add(new SelectItem("intelligent", InternationalizationHelper.getLabel("ingest_sortIntelligent")));
+		sortImageSelectItems.add(new SelectItem("alphanumeric", InternationalizationHelper.getLabel("ingest_sortAlphabetical")));
+		
+		return sortImageSelectItems;
+	}
 	
 	
     
@@ -531,7 +610,7 @@ public class IngestBean{
 	}
 	  
 	public void processDrop(DropEvent e) {
-		FileItem draggedFile = (FileItem)e.getDragValue();
+		IngestImage draggedFile = (IngestImage)e.getDragValue();
 		//FileItem droppedFile = (FileItem)e.getDropValue();
 		int draggedFileIndex = getImageFiles().indexOf(draggedFile);
 		//int droppedFileIndex = getImageFiles().indexOf(droppedFile);
@@ -542,19 +621,20 @@ public class IngestBean{
 		if(draggedFileIndex < droppedFileIndex)
 		{
 			getImageFiles().remove(draggedFileIndex);
-			getImageFiles().add(droppedFileIndex-1, (DiskFileItem) draggedFile);
+			getImageFiles().add(droppedFileIndex-1, (IngestImage) draggedFile);
 		}
 		else
 		{
 			getImageFiles().remove(draggedFileIndex);
-			getImageFiles().add(droppedFileIndex, (DiskFileItem)draggedFile);
+			getImageFiles().add(droppedFileIndex, (IngestImage)draggedFile);
 		}
 		
 	}
 	
-	public void deleteImage(int i, FileItem file)
+	public void deleteImage(int i, IngestImage file)
 	{
 		getImageFiles().remove(i);
+		uploadComplete();
 	}
 	
 	
@@ -702,7 +782,7 @@ public class IngestBean{
 	     			}
 					if(mabFile == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
-		    		Volume volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
+		    		volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
@@ -723,7 +803,14 @@ public class IngestBean{
 		    		}
 					if(mabFile == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
-					Volume volume = null;
+					//Volume volume = null;
+					
+					List<DiskFileItem> diskFileItems = new ArrayList<DiskFileItem>();
+					for(IngestImage img : imageFiles)
+					{
+						diskFileItems.add(img.getDiskFileItem());
+					}
+					
 					if(getSelectedContentModel().equals("Monograph"))
 		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
 					else
@@ -735,22 +822,50 @@ public class IngestBean{
 		    			MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
 		    		else
 			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
+		    		
+		    		FacesContext context = FacesContext.getCurrentInstance();
+		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+		    		allVolBean.setColId("my");
+		    		
+		    		return "pretty:allVolumesBean";
 				}
 			}
 			else{
+				/*
 				if(imageFiles != null)
 				{
-					for(DiskFileItem file: imageFiles)
+					
+					for(IngestImage file: imageFiles)
 						if(!pagesOfVolume.contains(file.getName()))
 						{
 			    			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongImages")); //getNumberOfTeiPbs()
 			    			return "";
 						}
 				}
+				*/
+				
+				if(getImageFiles().size()==0 || (teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size()) || (modsMetadata.getTitles().get(0).getTitle().equals("")))
+	    		{
+	     			
+	     			if(getImageFiles().size()==0 )
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
+	     			if(teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size())
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+	     			if(modsMetadata.getTitles().get(0).getTitle().equals(""))
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
+	     			return "";
+	    		}
 				
 				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles);
 				
 			}
+			
+			FacesContext context = FacesContext.getCurrentInstance();
+    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+    		allVolBean.setColId("my");
+    		allVolBean.setCurrentPageNumber(1);
+    		return "pretty:allVolumesBean";
+			
 		} catch (Exception e) {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_internal")+ ":" + e.getMessage());
 		}
@@ -964,6 +1079,11 @@ public class IngestBean{
 			Collections.sort(imageFiles, new AlphanumComparator());
 		}
 		
+		else if (sortImagesAlgorithm.equals("tei"))
+		{
+			sortImagesByTeiFile();
+		}
+		
 		return "";
 	}
 
@@ -978,11 +1098,11 @@ public class IngestBean{
 	}
 	
 	
-	public class AlphanumericDiskFileComparator implements Comparator<DiskFileItem>
+	public class AlphanumericDiskFileComparator implements Comparator<IngestImage>
 	{
 
 		@Override
-		public int compare(DiskFileItem o1, DiskFileItem o2) {
+		public int compare(IngestImage o1, IngestImage o2) {
 			return o1.getName().compareTo(o2.getName());
 		}
 		
@@ -1027,7 +1147,7 @@ public class IngestBean{
 	 *   Use the static "sort" method from the java.util.Collections class:
 	 *   Collections.sort(your list, new AlphanumComparator());
 	 */
-	public class AlphanumComparator implements Comparator<DiskFileItem>
+	public class AlphanumComparator implements Comparator<IngestImage>
 	{
 	    private final boolean isDigit(char ch)
 	    {
@@ -1065,7 +1185,7 @@ public class IngestBean{
 	        return chunk.toString();
 	    }
 
-	    public int compare(DiskFileItem o1, DiskFileItem o2)
+	    public int compare(IngestImage o1, IngestImage o2)
 	    {
 	    	/*
 	        if (!(o1 instanceof String) || !(o2 instanceof String))
@@ -1137,7 +1257,11 @@ public class IngestBean{
 		return null;
 	}
 
-
+	public String getAttributeValue(XdmNode node, String attributeName)
+	{
+		return node.getAttributeValue(new QName(attributeName));
+	}
+	
 
 
 }

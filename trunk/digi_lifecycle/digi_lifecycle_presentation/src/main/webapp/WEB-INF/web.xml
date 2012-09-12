@@ -62,6 +62,14 @@
     <servlet-name>Faces Servlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>Image Servlet</servlet-name>
+	<servlet-class>de.mpg.mpdl.dlc.servlet.ImageServlet</servlet-class>
+  </servlet>
+	<servlet-mapping>
+		<servlet-name>Image Servlet</servlet-name>
+		<url-pattern>/images/*</url-pattern>
+	</servlet-mapping>
   <session-config>
     <session-timeout>180</session-timeout>
   </session-config>
