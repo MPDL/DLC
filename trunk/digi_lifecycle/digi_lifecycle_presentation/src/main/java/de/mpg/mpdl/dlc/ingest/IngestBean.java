@@ -153,6 +153,7 @@ public class IngestBean{
 					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(volume.getTei().getBytes("UTF-8")));
 					
 				}
+				this.selectedContentModel = volume.getItem().getProperties().getContentModel().getObjid();
 				uploadComplete();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -173,9 +174,9 @@ public class IngestBean{
 	{
 		addModsMetadata();
 		//init contentModel
-		this.contentModelItems.add(new SelectItem("Monograph", "Monograph"));
-		this.contentModelItems.add(new SelectItem("Multivolume", "Multivolume"));
-		this.contentModelItems.add(new SelectItem("Volume", "Volume"));
+		this.contentModelItems.add(new SelectItem(VolumeServiceBean.monographContentModelId, "Monograph"));
+		this.contentModelItems.add(new SelectItem(VolumeServiceBean.multivolumeContentModelId, "Multivolume"));
+		this.contentModelItems.add(new SelectItem(VolumeServiceBean.volumeContentModelId, "Volume"));
 		this.selectedContentModel = (String) contentModelItems.get(0).getValue();
 	}
 	  
@@ -772,7 +773,7 @@ public class IngestBean{
 			if(volumeId.equalsIgnoreCase("new"))
 			{
 
-				if(getSelectedContentModel().equals("Multivolume"))
+				if(getSelectedContentModel().equals(VolumeServiceBean.multivolumeContentModelId))
 				{
 					
 	     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
@@ -786,6 +787,9 @@ public class IngestBean{
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
+		    		this.setVolumeId(volume.getItem().getObjid());
+		    		this.volume = null;
+		    		return "pretty:upload";
 				}
 				
 				else
@@ -824,10 +828,15 @@ public class IngestBean{
 			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 		    		
 		    		FacesContext context = FacesContext.getCurrentInstance();
+					ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
+					viewPagesBean.setVolumeId(volume.getObjidAndVersion());
+		    		
+		    		return "pretty:viewPages";
+		    		/*
 		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
 		    		allVolBean.setColId("my");
-		    		
-		    		return "pretty:allVolumesBean";
+		    		return "pretty:volumes";
+		    		*/
 				}
 			}
 			else{
@@ -861,10 +870,16 @@ public class IngestBean{
 			}
 			
 			FacesContext context = FacesContext.getCurrentInstance();
-    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+			ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
+			viewPagesBean.setVolumeId(volume.getObjidAndVersion());
+    		
+    		return "pretty:viewPages";
+			/*
+			AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
     		allVolBean.setColId("my");
     		allVolBean.setCurrentPageNumber(1);
-    		return "pretty:allVolumesBean";
+    		return "pretty:volumes";
+    		*/
 			
 		} catch (Exception e) {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_internal")+ ":" + e.getMessage());

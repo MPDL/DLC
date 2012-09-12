@@ -25,7 +25,7 @@
 				function toggleDisplay(element) 
 				{
 		//			element.style.display = element.style.display == "none" ? "" : "none"; 
-					if(document.getElementById('form1:contentModel').value == 'Multivolume') 
+					if(document.getElementById('form1:contentModel').value == #{applicationBean.cmMultiVol}) 
 					{
 						element.style.display = "none";
 					}
@@ -91,7 +91,6 @@
 						</rich:popupPanel>
 	
 					</rich:panel>
-					<ui:remove>
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
@@ -104,7 +103,7 @@
 									</h:panelGroup>
 									<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 										<f:selectItems value="#{ingestBean.contentModelItems}"/>
-										<f:ajax event="change" render="select modsInfo teiInfo imageInfo"/>
+										<f:ajax event="change" render="@form"/>
 									</h:selectOneMenu> 
 								</h:panelGroup>
 							</h:panelGroup>
@@ -127,7 +126,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{ingestBean.selectedContentModel == 'Volume'}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{ingestBean.selectedContentModel == applicationBean.cmVolume}">
 							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 								<h:outputText value="#{lbl.admin_upload_multiv} :"/>
 							</h:panelGroup>
@@ -143,7 +142,6 @@
 							</h:panelGroup>	
 						</h:panelGroup>
 					</rich:panel>
-					</ui:remove>
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
 						<h:outputText value="#{ingestBean.mabFile.name}" />
 						<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
@@ -152,13 +150,13 @@
 						<h:panelGroup layout="block" rendered="#{not empty ingestBean.volume}">				
 							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="true"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Multivolume'}">
+						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
 							<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
 						</h:panelGroup>
-						<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Monograph'}">
+						<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmMono}">
 							<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel=='Volume'}">
+						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmVolume}">
 							<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
 						</h:panelGroup>
 						
@@ -172,7 +170,7 @@
 					</rich:panel>
 					
 					
-					<rich:panel id="teiInfo" header="#{lbl.admin_upload_teiInfo}" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
+					<rich:panel id="teiInfo" header="#{lbl.admin_upload_teiInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}">
 							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.teiFile}"/>
 							<h:outputText value="#{ingestBean.teiFile.name} - #{ingestBean.teiPbFacsValues.size()} #{lbl.ingest_scanReferencesFound}" rendered="#{not empty ingestBean.teiFile}"/>
@@ -199,7 +197,7 @@
 					
 					
 		  		  	
-					<rich:panel id="imageInfo" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}">
+					<rich:panel id="imageInfo" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
 							<h:outputText value="#{lbl.admin_upload_images} (#{ingestBean.imageFiles.size()})" />
 						</f:facet>
@@ -293,7 +291,7 @@
 					
 					
 					
-					<rich:panel id="footer" style="display:#{ingestBean.selectedContentModel == 'Multivolume' ? 'none' : ''}" rendered="#{ingestBean.volumeId == 'new'}">
+					<rich:panel id="footer" rendered="#{ingestBean.volumeId == 'new' and ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
 							<h:outputText value="#{lbl.admin_upload_footer}" />
 						</f:facet>
