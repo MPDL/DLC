@@ -53,9 +53,10 @@ public class FullScreen {
 	
 	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
 	
-	private ApplicationBean appBean = new ApplicationBean();
+
 	
-	private SessionBean sessionBean = new SessionBean();
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	private Context context;
 	
@@ -358,5 +359,13 @@ public class FullScreen {
 
 	public void setDigilibQueryString(String digilibQueryString) {
 		this.digilibQueryString = digilibQueryString;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 }

@@ -42,8 +42,9 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	
 	private SearchBean searchBean = new SearchBean();
-	private ApplicationBean appBean = new ApplicationBean();
-	private SessionBean sessionBean = new SessionBean();
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	private List<SearchCriterion> searchCriterionList;
 
@@ -101,7 +102,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	public void setCqlQuery(String query) {
 		if (this.getCurrentPartList().size() > 0)
 		{
-			this.sessionBean.setLatestCql(query);
+			this.getSessionBean().setLatestCql(query);
 		}
 		this.cqlQuery = query;
 	}
@@ -173,6 +174,14 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 
 	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
 		this.internationalizationHelper = internationalizationHelper;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 
 

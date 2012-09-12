@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
@@ -28,12 +29,14 @@ public class SessionBean implements Serializable
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
     private List<Volume> startpageVolumes = new ArrayList<Volume>();
     private AllVolumesBean avb = new AllVolumesBean();
-    private ApplicationBean appBean = new ApplicationBean();
     
-    private static String logoUrl;
-    private static String logoLink;
-    private static String logoTlt;
-    private static String latestCql = null;
+    @ManagedProperty("#{applicationBean}")
+    private ApplicationBean appBean;
+    
+    private String logoUrl;
+    private String logoLink;
+    private String logoTlt;
+    private String latestCql = null;
     
 	public List<Volume> getStartpageVolumes() {
 		return startpageVolumes;
@@ -96,14 +99,14 @@ public class SessionBean implements Serializable
 	    			||viewId.equals("/ou.xhtml"))
 	    		{logoLink = "";} 
 	    	if (logoLink == null || logoLink.equals("")) 
-	    		{return appBean.getDomain()+"/"+appBean.getContextPath()+"/";}
+	    		{return getAppBean().getDomain()+"/"+getAppBean().getContextPath()+"/";}
 	    	return logoLink;
 	    }
 	    
 	    
 	    public void setLogoLink(String id)
 	    {	
-	    	String url = appBean.getDomain() + "/"+appBean.getContextPath()+"/ou/" + id;
+	    	String url = getAppBean().getDomain() + "/"+getAppBean().getContextPath()+"/ou/" + id;
 	    	logoLink = url;
 	    }
 	    
@@ -135,6 +138,14 @@ public class SessionBean implements Serializable
 
 		public void setLatestCql(String cql) {
 			latestCql = cql;
+		}
+
+		public ApplicationBean getAppBean() {
+			return appBean;
+		}
+
+		public void setAppBean(ApplicationBean appBean) {
+			this.appBean = appBean;
 		}
     
 }

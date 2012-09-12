@@ -59,8 +59,9 @@ public class ViewCollection {
 	//volumes which schown in carousel
 	private List<Volume> volumes = new ArrayList<Volume>();	
 
-	private ApplicationBean appBean = new ApplicationBean();
-	private SessionBean sessionBean = new SessionBean();
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	@URLAction(onPostback=false)
 	public void loadCollection()
@@ -196,6 +197,18 @@ public class ViewCollection {
 
 	public void setAdvancedSearchResultBean(AdvancedSearchResultBean advancedSearchResultBean) {
 		this.advancedSearchResultBean = advancedSearchResultBean;
+	}
+
+
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 
 

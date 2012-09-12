@@ -65,8 +65,9 @@ public class ViewOU {
 	private List<String> collectionSearchStrings;
 	
 	private List<Volume> vols_Carousel = new ArrayList<Volume>();
-	private ApplicationBean appBean = new ApplicationBean();
-	private SessionBean sessionBean = new SessionBean();
+	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	@ManagedProperty("#{advancedSearchResultBean}")
 	private AdvancedSearchResultBean advancedSearchResultBean;
@@ -234,6 +235,14 @@ public class ViewOU {
 
 	public void setAdvancedSearchResultBean(AdvancedSearchResultBean advancedSearchResultBean) {
 		this.advancedSearchResultBean = advancedSearchResultBean;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 
 	

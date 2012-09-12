@@ -4,6 +4,7 @@ package de.mpg.mpdl.dlc.ingest;
 import java.io.File;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
@@ -148,9 +153,14 @@ public class IngestBean{
 						*/
 					}
 				}
-				if(volume.getTei()!=null)
+				if(volume.getTeiSdXml()!=null)
 				{
-					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(volume.getTei().getBytes("UTF-8")));
+					ByteArrayOutputStream bos = new ByteArrayOutputStream();
+					Source xmlSource = new DOMSource(volume.getTeiSdXml());
+					StreamResult sr = new StreamResult(bos);
+					
+					TransformerFactory.newInstance().newTransformer().transform(xmlSource, sr);
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(bos.toByteArray()));
 					
 				}
 				this.selectedContentModel = volume.getItem().getProperties().getContentModel().getObjid();

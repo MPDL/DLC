@@ -63,10 +63,7 @@ public class ViewPages implements Observer{
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
-	
-	private ApplicationBean appBean = new ApplicationBean();
-	
-	private SessionBean sessionBean = new SessionBean();
+
 	
 	private Context context;
 	
@@ -104,7 +101,8 @@ public class ViewPages implements Observer{
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
 	
-	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
 	
 	@PostConstruct
 	public void postConstruct()
@@ -722,6 +720,14 @@ public class ViewPages implements Observer{
 	public void update(Observable o, Object arg) {
 		initPageListMenu();
 		
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 
 
