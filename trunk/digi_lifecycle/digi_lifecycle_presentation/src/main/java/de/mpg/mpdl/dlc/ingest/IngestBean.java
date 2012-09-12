@@ -426,7 +426,7 @@ public class IngestBean{
 					teiPbFacsValues = VolumeServiceBean.getAllPbs(diskTeiFile.getInputStream());
 				} catch (Exception e) {
 					logger.error("error while validating TEI", e);
-					MessageHelper.errorMessage("Error while validating TEI"); 
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei")); 
 				}
 			}
 			else if(fue.getFileItem().getName().startsWith("footer"))
