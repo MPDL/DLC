@@ -414,10 +414,13 @@
 						
 						</h:panelGroup>
 						
+						<ui:remove>
 						<h:panelGroup style="margin-left:2%;">
 							<h:commandButton type="button" styleClass="eg3_icon_viewer_16_16#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" title="#{tlt.paginator_goToDLCViewer}"/>
 							<h:commandButton type="button" styleClass="eg3_icon_annotation_16_16" title="#{tlt.paginator_goToAnnotation}"/>
 						</h:panelGroup>
+						</ui:remove>
+						
 						
 						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
 							<h:form>
