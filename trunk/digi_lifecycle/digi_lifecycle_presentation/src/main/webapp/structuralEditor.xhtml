@@ -14,6 +14,19 @@
 
 	<ui:composition template="templates/template_v3.xhtml">
 		<ui:define name="separateContentHeader">
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
+			
+			
+			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head"/>
+			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head"/>
+			
+			
+		
+			
+			
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
@@ -219,8 +232,45 @@
 								 /* ]]> */
 							</script>
 							
-							<h:panelGroup id="pageScan" layout="block" styleClass="eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1">
-								<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds, 'WEB')}"/>
+							<h:panelGroup id="pageScan" layout="block" styleClass="digilib eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1">
+								
+								
+									<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
+									
+								
+									<script type="text/javascript">
+								 /* <![CDATA[ */
+								 		
+						                var opts = {
+								            'citationLinkIds' : ['citationLink','permaLink'],    
+						                	'interactionMode' : 'embedded',
+						                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
+						                    'showRegionNumbers' : true,
+						                    'logoUrl' : '',
+						                    'buttonSettings' : {
+						                        'embedded' : {
+						                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+						                            'buttonSetWidth' : 18,
+						                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","rot","brgt","cont","reset"],
+						                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+						                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+						                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+						                            'arrowSet' : ["up", "down", "left", "right"],
+						                            'buttonSets' : ['standardSet', 'specialSet']
+					                            
+						                            }
+						                    }
+						                    //, scalerInset : -10
+										}; //end opts
+										var digilibObject = $('.digilib').digilib(opts);
+										$('.digilib .keep.buttons').draggable({containment : "parent"});
+									    /* ]]> */
+					       		 </script>
+								
+								
+								
+								
+								
 								<script type="text/javascript">
 									$('.eg3_editSidebarContent').css("height", $('.eg3_editPage_imgContainer').height());
 								</script>

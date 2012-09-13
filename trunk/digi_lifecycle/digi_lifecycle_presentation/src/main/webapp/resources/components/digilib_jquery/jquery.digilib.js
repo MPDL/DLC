@@ -870,7 +870,8 @@ if (typeof console === 'undefined') {
     };
 
     var storeOptions = function (data) {
-        /*
+        
+    	
     	// save digilib options in cookie
         var settings = data.settings;
         if (data.dlOpts) {
@@ -897,7 +898,7 @@ if (typeof console === 'undefined') {
             //console.debug("set cookie=", ck, " value=", qs);
             $.cookie(ck, qs);
         }
-        */
+        
         
     };
 

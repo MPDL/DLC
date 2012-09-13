@@ -1983,8 +1983,13 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer {
 	min-height:66.5em;
 }
+.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer .scaler { /* digilib container */
+	min-height:66.5em !important;
+	width:100% !important;
+	background-color:transparent;
+}
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer img {
-	width:100%;
+	width:100%; 
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editActionButtonbar {
 	margin-top:0.333333em;
