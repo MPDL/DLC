@@ -200,25 +200,36 @@ function eg3_bibListCheckAllMediumViewStatus(itemContent) {
 }
 
 function eg3_bibListOpenItemMediumView(itemContent) {
-	var forwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_forwardi_16_16");
+	var forwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_forwardi_16_16, .eg3_itemDetailAction_js");
 	if (forwards.length > 0) {
-		itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showShortViewText);
+		if (forwards.hasClass("eg3_itemDetailAction_js")) {
+			forwards.find(".eg3_iconActionLabel").text(hideRelatedPublications);
+		} else {
+			itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showShortViewText);
+			forwards.removeClass("eg3_icon_forwardi_16_16").addClass("eg3_icon_backwardi_16_16");
+		}
 	}
-	forwards.removeClass("eg3_icon_forwardi_16_16").addClass("eg3_icon_backwardi_16_16");
+	
 	itemContent.find(".eg3_mediumView_js").show();
 	eg3_bibListCheckAllMediumViewStatus(itemContent);
 }
 function eg3_bibListHideItemMediumView(itemContent) {
-	var backwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_backwardi_16_16");
+	var backwards = itemContent.find(".eg3_showHideMediumView_js .eg3_icon_backwardi_16_16, .eg3_itemDetailAction_js");
 	if (backwards.length > 0) {
-		itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showMediumViewText);
+		if (backwards.hasClass("eg3_itemDetailAction_js")) {
+			backwards.find(".eg3_iconActionLabel").text(showRelatedPublications);
+		} else {
+			itemContent.find(".eg3_showHideMediumView_js .eg3_iconActionLabel").text(showMediumViewText);
+			backwards.removeClass("eg3_icon_backwardi_16_16").addClass("eg3_icon_forwardi_16_16");
+		}
 	}
-	backwards.removeClass("eg3_icon_backwardi_16_16").addClass("eg3_icon_forwardi_16_16");
+	
 	itemContent.find(".eg3_mediumView_js").hide();
 	eg3_bibListCheckAllMediumViewStatus(itemContent);
 }
 function eg3_bibListToggleItemMediumView(obj) {
 	var curItemContent = $(obj).parents(".eg3_itemContent");
+	
 	if (curItemContent.find(".eg3_mediumView_js").is(":visible")) {
 		eg3_bibListHideItemMediumView(curItemContent);
 	} else {
