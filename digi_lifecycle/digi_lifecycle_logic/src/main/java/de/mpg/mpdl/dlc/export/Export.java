@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.export;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,11 +10,14 @@ import org.apache.log4j.Logger;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
+import com.lowagie.text.Chapter;
+import com.lowagie.text.Phrase;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -168,6 +172,11 @@ public class Export {
 		Context context = contextServiceBean.retrieveContext(vol.getItem().getProperties().getContext().getObjid(), null);
 		Organization volumeOu = orgServiceBean.retrieveOrganization(context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());		
 
+		Paragraph plain = new Paragraph(" ");
+		Paragraph para = new Paragraph();
+		Phrase phrase1 = new Phrase();
+		Phrase phrase2 = new Phrase();
+		
 		try {
 			Image ou;
 			ou = Image.getInstance (volumeOu.getDlcMd().getFoafOrganization().getImgURL());
@@ -178,60 +187,147 @@ public class Export {
 			this.logger.warn("An organization could not be load for pdf export. " + e.getMessage());
 		} 
 
-		document.add(new Paragraph(" "));
-		document.add(new Paragraph(" "));
+		document.add(plain);
+		document.add(plain);
+		
+		Font font = FontFactory.getFont("Verdana");
+		Font fontbold = FontFactory.getFont("Verdana", 12, Font.BOLD);		
+		Font fontColor = FontFactory.getFont("Verdana", 14);
+		fontColor.setColor(Color.decode("#EA7125"));
+		Font fontitalic = FontFactory.getFont("Verdana", 12, Font.ITALIC);
 		
 		//write metadata to pdf
 		if (md.getTitles() != null && md.getTitles().size() > 0)
 		{
 			document.addTitle(md.getTitles().get(0).getTitle());
-			document.add(new Paragraph(md.getTitles().get(0).getTitle(),FontFactory.getFont(FontFactory.TIMES_BOLD, 16, Font.BOLD)));
-			document.add(new Paragraph(" "));
-			document.add(new Paragraph(" "));
+			para = new Paragraph(md.getTitles().get(0).getTitle(),FontFactory.getFont("Verdana", 16, Font.BOLD));
+			para.setAlignment(Element.ALIGN_CENTER);
+			document.add(para);
 		}
-
-		document.add(new Paragraph("Collection: " + context.getProperties().getName()));
-		if (vol.getRelatedParentVolume() != null) //Item is a volume (not monograf)
-			document.add(new Paragraph("Multivolume: " + vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle()));
+		para = new Paragraph("Collection: " + context.getProperties().getName(), fontColor);
+		para.setAlignment(Element.ALIGN_CENTER);
+		document.add(para);
+		
+		if (vol.getRelatedParentVolume() != null) //Item is a volume (not monograph)
+		{
+			phrase1 = new Phrase("Multivolume: ", fontbold);
+			phrase2 = new Phrase(vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		document.add(new Paragraph(" "));
 		if (md.getCatalogueId_001() != null)
-			document.add(new Paragraph("Catalog id: " + md.getCatalogueId_001()));
+		{
+			phrase1 = new Phrase("Catalog id: ", fontbold);
+			phrase2 = new Phrase(md.getCatalogueId_001());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getSignature_544() != null)
-			document.add(new Paragraph("Signature: " + md.getSignature_544()));
+		{	
+			phrase1 = new Phrase("Signature: ", fontbold);
+			phrase2 = new Phrase(md.getSignature_544());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getNames() != null && md.getNames().size() > 0)
 		{
-			document.add(new Paragraph("Author(s): " ));
+			phrase1 = new Phrase("Author(s): ", fontbold);
+			phrase2 = new Phrase(md.getSignature_544());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+			document.add(new Paragraph( ));
 			for (int i = 0; i< md.getNames().size(); i++)
 			{
 				ModsName mn = md.getNames().get(i);
-				document.add(new Paragraph("          " + mn.getDisplayLabel()));
-				document.add(new Paragraph("          MAB id: " + mn.getMabId()));
-				document.add(new Paragraph("          Type: " + mn.getType()));
-				document.add(new Paragraph("          Name: " + mn.getName()));
-				document.add(new Paragraph("          Role: " + mn.getRole()));
-				document.add(new Paragraph("          Authority: " + mn.getRoleTermAuthority()));
+				para = new Paragraph("          " + mn.getDisplayLabel(),fontbold); document.add(para);
+				para = new Paragraph("          MAB id: " + mn.getMabId(),fontitalic); document.add(para);
+				para = new Paragraph("          Type: " + mn.getType(),fontitalic); document.add(para);
+				para = new Paragraph("          Name: " + mn.getName(),fontitalic); document.add(para);
+				para = new Paragraph("          Role: " + mn.getRole(),fontitalic); document.add(para);
+				para = new Paragraph("          Authority: " + mn.getRoleTermAuthority(),fontitalic); document.add(para);
 			}
+			document.add(plain);
 		}		
 		if (md.getTitles()!= null && md.getTitles().size() > 1 && md.getTitles().get(1) != null && md.getTitles().get(1).getSubTitle() != null)
-			document.add(new Paragraph("Subtitle: " + md.getTitles().get(1).getSubTitle()));
+		{			
+			phrase1 = new Phrase("Subtitle: ", fontbold);
+			phrase2 = new Phrase(md.getTitles().get(1).getSubTitle());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getNotes() != null && md.getNotes().size() > 0)
-			document.add(new Paragraph("Statement of responsibility: " + md.getNotes().get(0).getNote()));
+		{
+			phrase1 = new Phrase("Statement of responsibility: ", fontbold);
+			phrase2 = new Phrase(md.getNotes().get(0).getNote());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getPublishers() != null && md.getPublishers().get(0).getPlace() != null)
-		document.add(new Paragraph("Publishing Place: " + md.getPublishers().get(0).getPlace()));
+		{
+			phrase1 = new Phrase("Publishing Place: ", fontbold);
+			phrase2 = new Phrase(md.getPublishers().get(0).getPlace());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getPublishers() != null && md.getPublishers().get(0).getPublisher() != null)
-			document.add(new Paragraph("Publisher: "+ md.getPublishers().get(0).getPublisher()));
+		{
+			phrase1 = new Phrase("Publisher: ", fontbold);
+			phrase2 = new Phrase(md.getPublishers().get(0).getPublisher());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getLanguage_037() !=null && md.getLanguage_037().getLanguage() != null)
-			document.add(new Paragraph("Language: " + md.getLanguage_037().getLanguage()));
+		{
+			phrase1 = new Phrase("Language: ", fontbold);
+			phrase2 = new Phrase(md.getLanguage_037().getLanguage());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getPhysicalDescriptions() != null && md.getPhysicalDescriptions().size()>0 && md.getPhysicalDescriptions().get(0) != null)
-			document.add(new Paragraph("Extents: " + md.getPhysicalDescriptions().get(0).getExtent()));
-		document.add(new Paragraph("Number of Scans: " + vol.getPages().size()));	
+		{
+			phrase1 = new Phrase("Extents: ", fontbold);
+			phrase2 = new Phrase(md.getPhysicalDescriptions().get(0).getExtent());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
+		phrase1 = new Phrase("Number of Scans: ", fontbold);
+		phrase2 = new Phrase(vol.getPages().size());
+		para = new Paragraph();
+		para.add(phrase1);
+		para.add(phrase2);
+		document.add(para);
 		if (md.getKeywords() != null && md.getKeywords().size() > 0)
 		{
-			document.add(new Paragraph("Keywords: "));	
+			phrase1 = new Phrase("Keywords: ", fontbold);		
+			para = new Paragraph();
+			para.add(phrase1);
 			for (int i = 0; i<md.getKeywords().size(); i++)
 			{
-				document.add(new Paragraph("          " + md.getKeywords().get(i)));				
-			}			
+				phrase2 = new Phrase("          " + md.getKeywords().get(i));
+				para.add(phrase2);
+			}	
+			document.add(para);	
 		}
 		
 		return document;
@@ -247,7 +343,10 @@ public class Export {
 	 */
 	private Document createTree(List <PbOrDiv> elems, Document doc) throws DocumentException
 	{
-		String entry = "";
+		Paragraph para = new Paragraph();
+		Font font = FontFactory.getFont("Verdana");
+		Font fontbold = FontFactory.getFont("Verdana", 12, Font.BOLD);
+		Font fontitalic = FontFactory.getFont("Verdana", 12, Font.ITALIC);
 		
 		for (int i = 0; i < elems.size(); i++)
 		{
@@ -257,32 +356,38 @@ public class Export {
 					Div elem = (Div) elems.get(i);
 					if (elem.getType() != null)
 					{
-						entry += "[" + elem.getType() + "] ";
+						para.add(level + "[" + elem.getType() + "] ");
 					}
 					else
 					{
-						entry += "[Section] ";
+						para.add(level + "[section] ");
 					}
 					if (elem.getNumeration() != null)
 					{
-						entry += elem.getNumeration();
+						para.add(elem.getNumeration());
 					}
 					
 					if(elem.getDocAuthors()!=null && elem.getDocAuthors().size()>0)
 					{
+						para.add(": ");
+						
 						int n=0;
 						for(DocAuthor docAuthor : elem.getDocAuthors())
 						{
 							if(n>0)
 							{
-								entry += "; ";
+								para.add("; ");
 							}
 							
-							entry += docAuthor.getAuthor();
+							para.add(new Phrase(docAuthor.getAuthor(), fontitalic));
 							n++;
 							
 						}
-						entry += " : ";
+						para.add(": ");
+					}
+					else
+					{
+						para.add(": ");
 					}
 					
 					/*
@@ -304,22 +409,24 @@ public class Export {
 						entry += " : ";
 					}
 					*/
+					//Element title
 					if (elem.getHead().size() > 0)
 					{
-						entry += " [" + elem.getHead().get(0) + "]";
+						Phrase title = new Phrase(" " + elem.getHead().get(0) + " ", fontbold);
+						para.add(title);
 					}
 					if (elem.getElementType().name().equals("TITLE_PAGE"))
 					{
 						TitlePage tp = (TitlePage) elem;
-						entry += this.replaceLineBreaksWithBlanks(tp.getDocTitles().get(0).getTitle());
+						para.add(this.replaceLineBreaksWithBlanks(tp.getDocTitles().get(0).getTitle()));
 					}
 					
-					doc.add(new Paragraph(level + entry));
-					entry = "";
+					doc.add(para);
+					para = new Paragraph();
 				}
 				if (elems.get(i).getElementType().name().equals("FIGURE"))
 				{
-					doc.add(new Paragraph(level + "[" + elems.get(i).getElementType().name()+ "]"));
+					doc.add(new Paragraph(level + "[figure]"));
 				}
 			
 				
@@ -327,8 +434,9 @@ public class Export {
 			{
 				level+="  ";
 				this.createTree(elems.get(i).getPbOrDiv(), doc);
-				level = level.substring(level.length() -2);
+				level = level.substring(0, level.length() - 2);
 			}	
+			
 		}
 		
 		return doc;
