@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,6 +25,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
@@ -155,12 +157,7 @@ public class IngestBean{
 				}
 				if(volume.getTeiSdXml()!=null)
 				{
-					ByteArrayOutputStream bos = new ByteArrayOutputStream();
-					Source xmlSource = new DOMSource(volume.getTeiSdXml());
-					StreamResult sr = new StreamResult(bos);
-					
-					TransformerFactory.newInstance().newTransformer().transform(xmlSource, sr);
-					teiPbFacsValues = VolumeServiceBean.getAllPbs(new ByteArrayInputStream(bos.toByteArray()));
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
 					
 				}
 				this.selectedContentModel = volume.getItem().getProperties().getContentModel().getObjid();
@@ -452,8 +449,9 @@ public class IngestBean{
 				this.setTeiFile(fue.getFileItem());
 				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
 				try {
-					
-					teiPbFacsValues = VolumeServiceBean.getAllPbs(diskTeiFile.getInputStream());
+					InputStream teiIs = diskTeiFile.getInputStream();
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(teiIs));
+					teiIs.close();
 				} catch (Exception e) {
 					logger.error("error while validating TEI", e);
 					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei")); 

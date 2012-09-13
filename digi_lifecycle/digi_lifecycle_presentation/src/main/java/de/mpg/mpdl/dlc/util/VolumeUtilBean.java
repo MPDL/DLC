@@ -739,6 +739,26 @@ public class VolumeUtilBean {
 			*/
 	}
 	
+	public static Page getTitlePage(Volume v)
+	{
+		if(v.getPages()!=null && v.getPages().size()>0)
+		{
+			
+			for(Page p : v.getPages())
+			{
+				if(p.getType()!=null && p.getType().equals("titlePage"))
+				{
+					return p;
+				}
+			}
+			
+			return v.getPages().get(0);
+		}
+		
+		return null;
+		
+	}
+	
 
 	
 	

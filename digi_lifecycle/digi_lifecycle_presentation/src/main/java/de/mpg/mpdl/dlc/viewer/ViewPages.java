@@ -13,6 +13,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.xml.transform.dom.DOMSource;
+
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.log4j.Logger;
 
@@ -104,6 +108,8 @@ public class ViewPages implements Observer{
 	@ManagedProperty("#{sessionBean}")
 	private SessionBean sessionBean;
 	
+	private List<XdmNode> pbList;
+	
 	@PostConstruct
 	public void postConstruct()
 	{
@@ -134,6 +140,7 @@ public class ViewPages implements Observer{
 				if(volume.getTeiSd()!=null)
 				{
 					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
+					this.pbList = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
 				}
 				
 				
@@ -173,6 +180,11 @@ public class ViewPages implements Observer{
 			
 			Page nextPage = null;
 			Page prevPage = null;
+			
+			String pageViewType = null;
+			String nextPageViewType = null;
+			String prevPageViewType = null;
+			
 			if(volume.getPages().size() > getSelectedPageNumber())
 			{
 				nextPage = volume.getPages().get(getSelectedPageNumber());
@@ -184,15 +196,38 @@ public class ViewPages implements Observer{
 			
 			
 			
-			if("single".equals(pageforNumber.getType()))
+			if(volume.getTeiSdXml()!=null)
+			{
+				for(XdmNode node : pbList)
+				{
+					String id = node.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace", "id"));
+					String type = node.getAttributeValue(new QName("type"));
+					if(pageforNumber.getId().equals(id))
+					{
+						pageViewType = type;
+					}
+					else if (nextPage!=null && nextPage.getId().equals(id))
+					{
+						nextPageViewType = type;
+					}
+					else if (prevPage!=null && prevPage.getId().equals(id))
+					{
+						prevPageViewType = type;
+					}
+				}
+			}
+			
+			
+			
+			if("single".equals(pageViewType))
 			{
 				this.setSelectedPage(pageforNumber);
 				this.setSelectedRightPage(null);
 			}
-			else if ("left".equals(pageforNumber.getType()))
+			else if ("left".equals(pageViewType))
 			{
 				this.setSelectedPage(pageforNumber);
-				if(nextPage!=null && "right".equals(nextPage.getType()))
+				if(nextPage!=null && "right".equals(nextPageViewType))
 				{
 					this.setSelectedRightPage(nextPage);
 				}
@@ -203,10 +238,10 @@ public class ViewPages implements Observer{
 				
 				
 			}
-			else if ("right".equals(pageforNumber.getType()))
+			else if ("right".equals(pageViewType))
 			{
 				this.setSelectedRightPage(pageforNumber);
-				if(prevPage!=null && "left".equals(prevPage.getType()))
+				if(prevPage!=null && "left".equals(prevPageViewType))
 				{
 					this.setSelectedPage(prevPage);
 				}
