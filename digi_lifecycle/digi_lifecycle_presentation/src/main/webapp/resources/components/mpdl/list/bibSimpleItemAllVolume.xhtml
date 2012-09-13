@@ -66,7 +66,7 @@
 						<pretty:link mappingId="viewPagesWithoutNumber">
 							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 							<f:param value="recto-verso"/>
-							<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
 							
 							<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
 								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: "/>

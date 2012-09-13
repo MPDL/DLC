@@ -13,8 +13,8 @@
 		<h:panelGroup layout="block" styleClass="eg3_id_headerMetaMenu">
 			<menu class="eg3_metaMenu">
 				<nav>
-					<pretty:link mappingId="user" rendered="#{loginBean.login}">
-						<h:outputLabel id="txtAccountUserName" styleClass="EMPTYCLASS" value="#{loginBean.user.loginName}"></h:outputLabel>
+					<pretty:link mappingId="user" rendered="#{loginBean.login}" title="#{tlt.meta_userprofile}">
+						<h:outputText id="txtAccountUserName" value="#{loginBean.user.loginName}"/>
 					</pretty:link>
 					
 					<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
