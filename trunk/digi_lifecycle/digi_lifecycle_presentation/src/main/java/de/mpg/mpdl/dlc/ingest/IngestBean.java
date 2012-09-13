@@ -839,7 +839,7 @@ public class IngestBean{
 					ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
 					viewPagesBean.setVolumeId(volume.getObjidAndVersion());
 		    		
-		    		return "pretty:viewPages";
+		    		return "pretty:viewPagesWithoutNumber";
 		    		/*
 		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
 		    		allVolBean.setColId("my");
@@ -881,7 +881,7 @@ public class IngestBean{
 			ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
 			viewPagesBean.setVolumeId(volume.getObjidAndVersion());
     		
-    		return "pretty:viewPages";
+    		return "pretty:viewPagesWithoutNumber";
 			/*
 			AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
     		allVolBean.setColId("my");

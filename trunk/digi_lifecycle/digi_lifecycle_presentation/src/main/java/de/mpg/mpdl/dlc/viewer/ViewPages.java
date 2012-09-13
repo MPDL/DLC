@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
+import com.ocpsoft.pretty.faces.annotation.URLMappings;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
@@ -37,6 +38,7 @@ import de.mpg.mpdl.dlc.export.ExportBean;
 import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -45,7 +47,13 @@ import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 
 @ManagedBean
 @ViewScoped
-@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml", onPostback=false)
+@URLMappings
+	(mappings = {
+			@URLMapping(id = "viewPagesWithoutNumber", pattern = "/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}", viewId = "/viewPages.xhtml", onPostback=false),
+			@URLMapping(id = "viewPages", pattern = "/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}", viewId = "/viewPages.xhtml", onPostback=false)
+		
+	})
+
 public class ViewPages implements Observer{
 	
 	@URLQueryParameter("fm")
@@ -73,7 +81,7 @@ public class ViewPages implements Observer{
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 
-	private int selectedPageNumber=1;
+	private int selectedPageNumber=0;
 	
 	private Page selectedPage;
 	
@@ -141,6 +149,21 @@ public class ViewPages implements Observer{
 				{
 					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
 					this.pbList = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
+				}
+				
+				//If no Page Number is given, try to go to title page, if available
+				if(this.selectedPageNumber==0)
+				{
+					if(volume.getTeiSd()!=null)
+					{
+						Page p = VolumeUtilBean.getTitlePage(volume);
+						this.setSelectedPageNumber(volume.getPages().indexOf(p) + 1);
+					}
+					else
+					{
+						this.selectedPageNumber = 1;
+					}
+					
 				}
 				
 				
@@ -287,9 +310,11 @@ public class ViewPages implements Observer{
 		
 		try
 		{
-			if(getVolume().getPagedTei() != null && hasSelected == false)
+			if(getVolume().getTeiSdXml() != null && hasSelected == false)
 			{
 				PbOrDiv oldSelectedDiv = selectedDiv;
+				/*
+			
 				if(getSelectedPage()!=null)
 				{
 					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedPage());
@@ -298,6 +323,8 @@ public class ViewPages implements Observer{
 				{
 					this.selectedDiv = volServiceBean.getDivForPage(volume, getSelectedRightPage());
 				}
+				*/
+				this.selectedDiv = volServiceBean.getDivForPage(volume, pageforNumber);
 				
 			}
 			else
