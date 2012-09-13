@@ -831,8 +831,7 @@ public class StructuralEditorBean implements Observer {
 	{
 		Pagebreak selectedPagebreak = (Pagebreak)selectedPb.getTeiElement();
 		selectedPagebreak.setType(selectedPbType);
-		//also set in METS
-		selectedPb.getPage().setType(selectedPbType);
+		
 		
 		selectedPagebreak.setNumeration(selectedPbNumeration);
 		//also set in METS
@@ -1030,8 +1029,7 @@ public class StructuralEditorBean implements Observer {
 			TeiElementWrapper pbWrapper = pbList.get(i);
 			
 			pbWrapper.getTeiElement().setType(value);
-			//Also change in mets
-			pbWrapper.getPage().setType(value);
+			
 			
 			if(value.equals("left"))
 			{

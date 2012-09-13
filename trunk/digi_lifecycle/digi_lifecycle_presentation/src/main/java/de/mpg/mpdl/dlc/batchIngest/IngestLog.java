@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.batchIngest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
@@ -21,6 +22,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.Map.Entry;
+
+import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
@@ -399,7 +402,8 @@ public class IngestLog
 					item.setTeiFile(tFile);
 					logger.info("read tei for " + name);
 					try {
-						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new FileInputStream(tFile));
+						//InputStream teiIs = new FileInputStream(tFile);
+						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new StreamSource(tFile));
 						item.setImageFiles(sortImagesByTeiFile(item.getImageFiles(), pbList));
 						int numberOfTeiPbs = pbList.size();
 						int numberOfImages = item.getImageFiles().size();

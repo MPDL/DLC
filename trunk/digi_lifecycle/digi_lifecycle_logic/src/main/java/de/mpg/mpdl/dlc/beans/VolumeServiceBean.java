@@ -781,24 +781,7 @@ public class VolumeServiceBean {
 				logger.info("TEI file found");
 				File teiFileWithPbConvention = applyPbConventionToTei(teiInputStream);
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
-				List<XdmNode> pbs = getAllPbs(new FileInputStream(teiFileWithIds));
-				
-				//Set ids in mets
-				for(int i=0; i< volume.getMets().getPages().size(); i++)
-				{
-					String pbId = pbs.get(i).getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
-					volume.getMets().getPages().get(i).setId(pbId);
-					
-					String type =  pbs.get(i).getAttributeValue(new QName("type"));
-					if(type!=null)
-					{
-						volume.getMets().getPages().get(i).setType(pbId);
-					}
-					
-					
-				}
-				
-				
+
 				//Transform TEI to Tei-SD and add to volume
 				String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
 				IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
@@ -860,20 +843,50 @@ public class VolumeServiceBean {
 			//if vol has a teiSd and it should be updated
 			if(volume.getTeiSd()!=null && updateTeiSd)
 			{
+				
+				
+				
+				
 				IMarshallingContext marshContext = bfactTei.createMarshallingContext();
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
 
-				//Add Ids to teiSd
+				//Add Ids to teiSd, if none are there
 				File teiSdWithIds = addIdsToTei(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
-				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIds));
+				
+				//Set ids in mets
+				List<XdmNode> pbs = getAllPbs(new StreamSource(teiSdWithIds));
+				XdmNode titlePagePb = getTitlePagePb(new StreamSource(teiSdWithIds));
+				
+				String titlePageId = null;
+				if(titlePagePb!=null)
+				{
+					 titlePageId = titlePagePb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace", "id"));
+				}
+				
+				
+				for(int i=0; i< volume.getMets().getPages().size(); i++)
+				{
+					String pbId = pbs.get(i).getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
+					String numeration = pbs.get(i).getAttributeValue(new QName("n"));
+					volume.getMets().getPages().get(i).setId(pbId);
+					volume.getMets().getPages().get(i).setOrderLabel(numeration);
+					
+					
+					if(pbId.equals(titlePageId))
+					{
+						volume.getMets().getPages().get(i).setType("titlePage");
+					}
+					
+				}
+				
 				
 				if(teiSdComponent!=null)
 				{
 					volume.getItem().getComponents().remove(teiSdComponent);
 				}
 				
-				
+				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIds));
 				teiSdComponent = new Component();
 				ComponentProperties teiSdCompProps = new ComponentProperties();
 				teiSdComponent.setProperties(teiSdCompProps);
@@ -2192,8 +2205,59 @@ public class VolumeServiceBean {
 	
 	
 	
+	public static  XdmNode getPb(Source tei, String id) throws Exception
+	{
+
+		
+		List<XdmNode> pagebreakList = new ArrayList<XdmNode>();
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:pb[@xml:id='"+id+"']");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.build(tei);
+        selector.setContextItem(xdmDoc);
+        
+        if(selector.iterator().hasNext())
+        {
+        	return (XdmNode) selector.iterator().next();
+        }
+        
+		
+        
+		return null;
+	}
 	
-	public static  List<XdmNode> getAllPbs(InputStream tei) throws Exception
+	public static  XdmNode getTitlePagePb(Source tei) throws Exception
+	{
+
+		
+		String pageId = "";
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:titlePage[1]/preceding::tei:pb[1]");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.wrap(tei);
+        selector.setContextItem(xdmDoc);
+        
+        
+		if(selector.iterator().hasNext())
+		{
+			return (XdmNode) selector.iterator().next();
+		}
+		
+		return null;
+	}
+	
+	
+	public static  List<XdmNode> getAllPbs(Source tei) throws Exception
 	{
 
 		
@@ -2206,7 +2270,7 @@ public class VolumeServiceBean {
         XPathSelector selector = xx.load();
         
         net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
-        XdmNode xdmDoc = db.build(new StreamSource(tei));
+        XdmNode xdmDoc = db.build(tei);
         selector.setContextItem(xdmDoc);
         
         for(XdmItem item : selector) {
@@ -2218,7 +2282,7 @@ public class VolumeServiceBean {
             */
         }
 		
-        tei.close();
+        //tei.close();
 		return pagebreakList;
 		
 		
