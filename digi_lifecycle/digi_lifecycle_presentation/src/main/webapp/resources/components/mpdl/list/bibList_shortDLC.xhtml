@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+	<!-- INTERFACE -->
+	<cc:interface></cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<script type="text/javascript">
+			var hideAllText='#{lbl.list_NavElem_HideAllVolumes}';
+			var showAllText='#{lbl.list_NavElem_ShowAllVolumes}';
+			var showItemText='#{lbl.list_NavElem_More}';
+			var hideItemText='#{lbl.list_NavElem_Less}';
+			var showMediumViewText = '#{lbl.sc_show_allHits}';
+			var showShortViewText = '#{lbl.sc_show_threeHits}';
+			var hideMediumViewText = '#{lbl.sc_hide_allHits}';
+			var hideRelatedPublications = '#{lbl.list_NavElem_HideRelatedPublications}';
+			var showRelatedPublications = '#{lbl.list_NavElem_ShowRelatedPublications}';
+		</script>
+		<h:panelGroup layout="block" styleClass="eg3_bibList">
+			<h:panelGroup layout="block" styleClass="eg3_listBody">
+				<cc:insertChildren></cc:insertChildren>
+			</h:panelGroup>
+		</h:panelGroup>
+		<script type="text/javascript">
+		$(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js").click(function(ev){
+			eg3_bibListToggleItemMediumView(this);
+		})
+			
+		</script>
+	</cc:implementation>
+</html>

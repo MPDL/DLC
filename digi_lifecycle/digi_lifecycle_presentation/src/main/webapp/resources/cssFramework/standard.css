@@ -159,7 +159,9 @@ option {
 	width:auto !important;
 }
 
-
+.eg3_noMarginLeft {
+	margin-left:0 !important;
+}
 .eg3_noDecoration {
 	text-decoration:none;
 }
