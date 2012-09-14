@@ -149,6 +149,27 @@ public class ViewPages implements Observer{
 				{
 					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
 					this.pbList = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
+					
+					for(int i=0; i<pbList.size(); i++)
+					{
+						try {
+							XdmNode pb = pbList.get(i);
+							String type = pb.getAttributeValue(new QName("type"));
+							String id = pb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace", "id"));
+							
+							Page pageDummy = new Page();
+							pageDummy.setId(id);
+							
+							int index = volume.getPages().indexOf(pageDummy);
+							if(index>=0)
+							{
+								volume.getPages().get(index).setViewType(type);
+							}
+							
+						} catch (Exception e) {
+							logger.warn("could not set viewType for page", e);
+						}
+					}
 				}
 				
 				//If no Page Number is given, try to go to title page, if available
@@ -204,9 +225,7 @@ public class ViewPages implements Observer{
 			Page nextPage = null;
 			Page prevPage = null;
 			
-			String pageViewType = null;
-			String nextPageViewType = null;
-			String prevPageViewType = null;
+			
 			
 			if(volume.getPages().size() > getSelectedPageNumber())
 			{
@@ -216,6 +235,11 @@ public class ViewPages implements Observer{
 			{
 				prevPage = volume.getPages().get(getSelectedPageNumber()-2);
 			}
+			
+			/*
+			String pageViewType = null;
+			String nextPageViewType = null;
+			String prevPageViewType = null;
 			
 			
 			
@@ -239,18 +263,18 @@ public class ViewPages implements Observer{
 					}
 				}
 			}
+			*/
 			
 			
-			
-			if("single".equals(pageViewType))
+			if("single".equals(pageforNumber.getViewType()))
 			{
 				this.setSelectedPage(pageforNumber);
 				this.setSelectedRightPage(null);
 			}
-			else if ("left".equals(pageViewType))
+			else if ("left".equals(pageforNumber.getViewType()))
 			{
 				this.setSelectedPage(pageforNumber);
-				if(nextPage!=null && "right".equals(nextPageViewType))
+				if(nextPage!=null && "right".equals(nextPage.getViewType()))
 				{
 					this.setSelectedRightPage(nextPage);
 				}
@@ -261,10 +285,10 @@ public class ViewPages implements Observer{
 				
 				
 			}
-			else if ("right".equals(pageViewType))
+			else if ("right".equals(pageforNumber.getViewType()))
 			{
 				this.setSelectedRightPage(pageforNumber);
-				if(prevPage!=null && "left".equals(prevPageViewType))
+				if(prevPage!=null && "left".equals(prevPage.getViewType()))
 				{
 					this.setSelectedPage(prevPage);
 				}
@@ -790,6 +814,14 @@ public class ViewPages implements Observer{
 
 	public void setSessionBean(SessionBean sessionBean) {
 		this.sessionBean = sessionBean;
+	}
+
+	public List<XdmNode> getPbList() {
+		return pbList;
+	}
+
+	public void setPbList(List<XdmNode> pbList) {
+		this.pbList = pbList;
 	}
 
 
