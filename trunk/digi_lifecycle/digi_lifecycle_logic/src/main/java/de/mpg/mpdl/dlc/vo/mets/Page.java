@@ -34,10 +34,6 @@ public class Page{
 	@XmlAttribute(name = "CONTENTIDS")
 	private String contentIds;
 	
-	/*
-	 * viewType not in Xml, just setted by viewPage
-	 */
-	private String viewType;
 	
 	/*
 	@XmlPath("mets:fptr[1]/@FILEID")
@@ -131,13 +127,7 @@ public class Page{
 			
 	}
 
-	public String getViewType() {
-		return viewType;
-	}
-
-	public void setViewType(String viewType) {
-		this.viewType = viewType;
-	}
+	
 
 	
 	/*

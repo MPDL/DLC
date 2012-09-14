@@ -427,6 +427,8 @@ function eg3_openOverlay(listButton, cnt) {
 			if (curControlPanel && curControlPanel.length > 0) {
 				curControlPanel.addClass("eg3_expand");
 			}
+			
+			var staticThumbs = $('.eg3_thumbnail.eg3_floatNone').attr("static", "eg3_floatNone").removeClass("eg3_floatNone");
 			break;
 	}
 	if (($(window).width() * 0.8) < curTabPanelContent.width()) {
@@ -480,6 +482,7 @@ function eg3_closeOverlay(listButton, cnt) {
 			if (curControlPanel) {
 				curControlPanel.removeClass("eg3_expand");
 			}
+			var staticThumbs = $('.eg3_thumbnail[static="eg3_floatNone"]').removeAttr("static").addClass("eg3_floatNone");
 			break;
 	}
 	
@@ -560,7 +563,7 @@ function checkIconbar(icoBar) {
  */
 
 function resizeSidebar(reference, availableHeight) {
-	console.log("reference: "+reference+' / refHeight: '+availableHeight);
+//	console.log("reference: "+reference+' / refHeight: '+availableHeight);
 	var refHeight = $(reference).height();
 	var sdbHeight = 0;
 	switch (reference) {
