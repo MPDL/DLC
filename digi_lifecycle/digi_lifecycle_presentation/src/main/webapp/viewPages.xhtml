@@ -76,14 +76,16 @@
 			</h:panelGroup>
 		</ui:remove>
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2">
-	
+				<script type="text/javascript">
+					var curContent = "toc";
+				</script>
 			<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
 					<h:form styleClass="eg3_overflow_z50">
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax">
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();">
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree(); curContent='toc';">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" " disabled="true"/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
@@ -105,16 +107,16 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs();">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs(); curContent='thumbs';">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'thumbs');" value=" " disabled="true"/>
-				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'thumbs');" value=" "/>
+									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" " disabled="true"/>
+				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 								</h:panelGroup>
 								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;">
 									<h:panelGroup  layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										
 										<a4j:repeat var="var" value="#{viewPages.pageList}" rowKeyVar="rowKey">
-											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail" style="#{ (var.viewType == 'single' || var.viewType=='verso' || ((empty var.viewType) and (rowKey+1) % 2 == 1)) ? 'float:none;' : '' }">
+											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail #{ (viewPages.viewTypeMap[var] == 'single' ||viewPages.viewTypeMap[var]=='verso' || ((empty viewPages.viewTypeMap[var]) and (rowKey+1) % 2 == 1)) ? 'eg3_floatNone' : '' }" >
 												<h:commandLink  action="#{viewPages.goToPage(var)}">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}"/>
 													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
@@ -184,7 +186,7 @@
 							//without a height value the page jump to top because of to slowly image loading
 							if (e.status == "begin") {
 								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-								eg3_closeOverlay('.eg3_collapseOverlay');
+								eg3_closeOverlay('.eg3_collapseOverlay', curContent);
 							}
 							//if the ajax request is success
 							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour

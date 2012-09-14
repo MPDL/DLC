@@ -118,6 +118,8 @@ public class ViewPages implements Observer{
 	
 	private List<XdmNode> pbList;
 	
+	private Map<Page, String> viewTypeMap = new HashMap<Page, String>();
+	
 	@PostConstruct
 	public void postConstruct()
 	{
@@ -163,7 +165,7 @@ public class ViewPages implements Observer{
 							int index = volume.getPages().indexOf(pageDummy);
 							if(index>=0)
 							{
-								volume.getPages().get(index).setViewType(type);
+								viewTypeMap.put(volume.getPages().get(index), type);
 							}
 							
 						} catch (Exception e) {
@@ -236,12 +238,12 @@ public class ViewPages implements Observer{
 				prevPage = volume.getPages().get(getSelectedPageNumber()-2);
 			}
 			
+			
+			String pageViewType = viewTypeMap.get(pageforNumber);
+			String nextPageViewType = viewTypeMap.get(nextPage);
+			String prevPageViewType = viewTypeMap.get(prevPage);
+			
 			/*
-			String pageViewType = null;
-			String nextPageViewType = null;
-			String prevPageViewType = null;
-			
-			
 			
 			if(volume.getTeiSdXml()!=null)
 			{
@@ -266,15 +268,15 @@ public class ViewPages implements Observer{
 			*/
 			
 			
-			if("single".equals(pageforNumber.getViewType()))
+			if("single".equals(pageViewType))
 			{
 				this.setSelectedPage(pageforNumber);
 				this.setSelectedRightPage(null);
 			}
-			else if ("left".equals(pageforNumber.getViewType()))
+			else if ("left".equals(pageViewType))
 			{
 				this.setSelectedPage(pageforNumber);
-				if(nextPage!=null && "right".equals(nextPage.getViewType()))
+				if(nextPage!=null && "right".equals(nextPageViewType))
 				{
 					this.setSelectedRightPage(nextPage);
 				}
@@ -285,10 +287,10 @@ public class ViewPages implements Observer{
 				
 				
 			}
-			else if ("right".equals(pageforNumber.getViewType()))
+			else if ("right".equals(pageViewType))
 			{
 				this.setSelectedRightPage(pageforNumber);
-				if(prevPage!=null && "left".equals(prevPage.getViewType()))
+				if(prevPage!=null && "left".equals(prevPageViewType))
 				{
 					this.setSelectedPage(prevPage);
 				}
@@ -822,6 +824,14 @@ public class ViewPages implements Observer{
 
 	public void setPbList(List<XdmNode> pbList) {
 		this.pbList = pbList;
+	}
+
+	public Map<Page, String> getViewTypeMap() {
+		return viewTypeMap;
+	}
+
+	public void setViewTypeMap(Map<Page, String> viewTypeMap) {
+		this.viewTypeMap = viewTypeMap;
 	}
 
 
