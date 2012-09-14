@@ -1648,7 +1648,17 @@ body .eg3_id_siteTitle {
 	width:100%;
 }
 
-
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem {
+	margin-bottom:2em;
+	padding-top:0.1666666em;
+	padding-bottom:0.1666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem:last-child {
+	margin-bottom:0;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem:hover {
+	background-color:#B7B7B7;
+}
 
 
 

@@ -66,7 +66,7 @@
 						<pretty:link mappingId="viewPagesWithoutNumber">
 							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 							<f:param value="recto-verso"/>
-							<f:param name="fm" value="#{cc.attrs.fulltextHits}" />
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
 							
 							<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
 								<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: "/>
@@ -105,7 +105,7 @@
 						
 						<h:panelGroup id="releaseButton" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
 							<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
-								<f:ajax render="simpleAllVolume :messages" />
+								<f:ajax render="simpleAllVolume :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
 					</h:panelGroup>
@@ -200,7 +200,7 @@
 					</ui:fragment>
 				</h:panelGroup>
 				
-				
+				<!-- START mediumView for SEARCH -->
 				<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_showHideMediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
@@ -249,15 +249,15 @@
 		
 		
 		<!-- volumes which are in ingest process -->
-		<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSingleVolume" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
-			<h:panelGroup layout="block" styleClass="eg3_itemContent">
-				<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
-					<h:panelGroup layout="block" styleClass="eg3_icon_reworkDocument_32_32" title="???placeholder???">&nbsp;</h:panelGroup>
+		<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
 					<h:panelGroup styleClass="eg3_itemStatusTitle">
 						<h:outputText value="Upload in Progress..."/>
 					</h:panelGroup>
 				</h:panelGroup>
-				
+			</h:panelGroup>
+			<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
 					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
 							<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
@@ -342,7 +342,7 @@
 							
 							<h:panelGroup rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
 								<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
-									<f:ajax render="multiItemContent :messages" />
+									<f:ajax render="multiItemContent :messages"/>
 								</h:commandButton>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -372,7 +372,7 @@
 								<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
 							</pretty:link>
 						</h:panelGroup>
-					</ui:fragment>
+					</ui:fragment> <!-- END volumes and my data -->
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedChildVolumes.size() gt 0}">
 						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
@@ -404,14 +404,72 @@
 					
 					<!-- multi volume childs -->
 					<a4j:repeat var="child_volume" value="#{cc.attrs.volume.relatedChildVolumes}">
-						<h:panelGroup layout="block" styleClass="eg3_itemSubTitle eg3_container_1">
-							<pretty:link mappingId="viewPagesWithoutNumber">
-								<f:param value="#{child_volume.objidAndVersion}" />
-								<f:param value="recto-verso" />
-								<h:outputText value="#{volumeUtilBean.getPart_089(child_volume.modsMetadata)}. " rendered="#{not empty volumeUtilBean.getPart_089(child_volume.modsMetadata)}"/>
-								<h:outputText value="#{volumeUtilBean.getMainTitle(child_volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getMainTitle(child_volume.modsMetadata).title}"/>
-								<h:outputText value="#{volumeUtilBean.getPublisher(child_volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(child_volume.modsMetadata).dateIssued_425.date}"/>
-							</pretty:link>
+						<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1 #{(prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my') ? 'eg3_multiVolumeItem' : ''}">
+							<h:panelGroup layout="block" styleClass="eg3_itemSubTitle eg3_container_1">
+								<pretty:link mappingId="viewPagesWithoutNumber">
+									<f:param value="#{child_volume.objidAndVersion}"/>
+									<f:param value="recto-verso"/>
+									<h:outputText value="#{volumeUtilBean.getPart_089(child_volume.modsMetadata)}. " rendered="#{not empty volumeUtilBean.getPart_089(child_volume.modsMetadata)}"/>
+									<h:outputText value="#{volumeUtilBean.getMainTitle(child_volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getMainTitle(child_volume.modsMetadata).title}"/>
+									<h:outputText value="#{volumeUtilBean.getPublisher(child_volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(child_volume.modsMetadata).dateIssued_425.date}"/>
+								</pretty:link>
+							</h:panelGroup>
+							<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+								<h:panelGroup layout="block" styleClass="eg3_clearLeft eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.list_lastModified}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+									<pretty:link mappingId="viewPages">
+										<f:param value="#{child_volume.objidAndVersion}"/>
+										<f:param value="recto-verso"/>
+										<f:param value="1"/>
+										<h:outputText value="#{child_volume.item.properties.latestVersion.date.toDate()}">
+											<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+										</h:outputText>
+										<h:outputText value=" (Version #{child_volume.item.properties.latestVersion.number})"/>
+									</pretty:link>
+									
+									<h:panelGroup rendered="#{child_volume.item.properties.version.status=='pending' and loginBean.user.releasable(child_volume.item.properties.context.objid)}">
+										<h:commandButton action="#{allVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
+											<f:ajax render="child_volume :messages"/>
+										</h:commandButton>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<ui:fragment rendered="#{not empty child_volume.item.properties.latestRelease}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<pretty:link mappingId="viewPages">
+											<f:param value="#{child_volume.item.properties.latestRelease.objid}"/>
+											<f:param value="recto-verso"/>
+											<f:param value="1"/>
+											<h:outputText value="#{child_volume.item.properties.latestRelease.date.toDate()}"> 
+												<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+											</h:outputText>
+									 		<h:outputText value=" (Version #{child_volume.item.properties.latestRelease.number})"/>
+										</pretty:link>
+									</h:panelGroup>
+								</ui:fragment>
+								<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+								
+								<ui:fragment rendered="#{volumeUtilBean.editable(child_volume)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<pretty:link mappingId="structuralEditor" styleClass="eg3_icon_editBtni_16_16">
+											<f:param value="#{child_volume.item.originObjid}"/>
+											<h:outputText value="#{lbl.list_EditStruct}"/>
+										</pretty:link>
+									</h:panelGroup>
+								</ui:fragment>
+								
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+									<pretty:link mappingId="upload" styleClass="eg3_icon_editBtni_16_16">
+										<f:param value="#{child_volume.item.originObjid}"/>
+										<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
+									</pretty:link>
+								</h:panelGroup>
+							</ui:fragment><!-- END my volumes -->
 						</h:panelGroup>
 					</a4j:repeat>
 					
