@@ -105,7 +105,7 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" onenter="scrollThumbs();">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs();">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'thumbs');" value=" " disabled="true"/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'thumbs');" value=" "/>
@@ -113,8 +113,8 @@
 								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="height:600px;">
 									<h:panelGroup  layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										
-										<a4j:repeat var="var" value="#{viewPages.pageList}">
-											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail">
+										<a4j:repeat var="var" value="#{viewPages.pageList}" rowKeyVar="rowKey">
+											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail" style="#{ (var.viewType == 'single' || var.viewType=='verso' || ((empty var.viewType) and (rowKey+1) % 2 == 1)) ? 'float:none;' : '' }">
 												<h:commandLink  action="#{viewPages.goToPage(var)}">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}"/>
 													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
@@ -123,6 +123,8 @@
 													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
 													<h:outputText value="/ #{lbl.list_Page} #{var.orderLabel} " rendered="#{not empty var.orderLabel}"/>
 												</h:panelGroup>
+												
+												
 											</h:panelGroup>
 										</a4j:repeat>
 										

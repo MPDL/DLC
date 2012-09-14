@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.XdmNode;
+
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.resources.om.item.component.Component;
@@ -756,6 +759,20 @@ public class VolumeUtilBean {
 		}
 		
 		return null;
+		
+	}
+	
+	
+	public static String getTypeAttribute(XdmNode pbNode)
+	{
+		if(pbNode!=null)
+		{
+			return pbNode.getAttributeValue(new QName("type"));
+		}
+		
+		return null;
+		
+		
 		
 	}
 	

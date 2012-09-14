@@ -35,6 +35,11 @@ public class Page{
 	private String contentIds;
 	
 	/*
+	 * viewType not in Xml, just setted by viewPage
+	 */
+	private String viewType;
+	
+	/*
 	@XmlPath("mets:fptr[1]/@FILEID")
 	@XmlIDREF
 	private MetsFile thumbnailFile = new MetsFile();
@@ -124,6 +129,14 @@ public class Page{
 			return this.equals(o);
 		}
 			
+	}
+
+	public String getViewType() {
+		return viewType;
+	}
+
+	public void setViewType(String viewType) {
+		this.viewType = viewType;
 	}
 
 	
