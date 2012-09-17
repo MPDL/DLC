@@ -23,38 +23,7 @@
 		
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
-						<ui:fragment rendered="#{not empty viewPages.context.objid}">
-							<h3 class="eg3_multiVolumeTitle">
-								<pretty:link mappingId="volumes">
-									<f:param value="#{viewPages.context.objid}"/>
-									<h:outputText value="#{viewPages.context.properties.name}"/>
-								</pretty:link>
-							</h3>
-						</ui:fragment>
-						<br/>
-						<h:panelGroup styleClass="eg3_floatLeft">
-							<h:form>
-									<h3 class="eg3_volumeTitle">
-										<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
-											<h:outputText value="#{volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}: " rendered="#{not empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}"/>
-										</h:panelGroup>
-										
-										<h:outputText value="#{volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getTitle(viewPages.volume.modsMetadata).title}"/>
-										
-										<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(viewPages.volume.modsMetadata).name}">
-											<h:outputText value=" / #{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)" rendered="#{not empty volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/>
-										</h:panelGroup>
-						
-										<h:outputText value=". - #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).place}"/>
-										<h:outputText value=" : #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).publisher}"/>
-										<h:outputText value=", #{volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(viewPages.volume.modsMetadata).dateIssued_425.date}"/>
-										<h:outputText value="."/>
-									</h3>
-							</h:form>
-							<h4 class="eg3_volumeDetails"><h:outputText value="#{volumeUtilBean.getFirstEditor(viewPages.volume.modsMetadata).name}"/></h4>
-						</h:panelGroup>
-					</h:panelGroup>
+					<modsViewer:header volume="#{viewPages.volume}" collection="#{viewPages.context}"/>
 				</h:panelGroup>
 			</h:panelGroup>
 		</ui:define>

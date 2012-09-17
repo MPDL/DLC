@@ -427,6 +427,229 @@ public class VolumeUtilBean {
 	}
 	
 	
+	
+	public static String getFullTitleView(Volume vol)
+	{
+		String shortTitle = getShortTitleView(vol);
+		String subTitle = getSubTitleView(vol);
+		
+		if(!isEmpty(subTitle))
+		{
+			return shortTitle + ". - " + subTitle + ".";
+		}
+		else
+		{
+			return shortTitle + ".";
+		}
+		
+	}
+	
+	public static String getSubTitleView(Volume vol)
+	{
+		if(vol.getModsMetadata()!=null)
+		{
+			StringBuffer sb = new StringBuffer();
+			ModsPublisher modsPublisher = VolumeUtilBean.getPublisher(vol.getModsMetadata());
+			String publisher, place, dateIssued;
+			publisher = place = dateIssued = null;
+			
+			if(modsPublisher!=null)
+			{
+				publisher = modsPublisher.getPublisher();
+				place = modsPublisher.getPlace();
+				if(modsPublisher.getDateIssued_425()!=null)
+				{
+					dateIssued = modsPublisher.getDateIssued_425().getDate();
+				}
+			}
+
+					
+				if(!isEmpty(place))
+				{
+					sb.append(place);
+				}
+				
+				if(!isEmpty(place) && !isEmpty(publisher))
+				{
+					sb.append(" : ");
+				}
+				
+				if(!isEmpty(publisher))
+				{
+					sb.append(publisher);
+				}
+				
+				
+				
+				if(!isEmpty(dateIssued))
+				{
+					if(!isEmpty(place) || !isEmpty(publisher))
+					{
+						sb.append(", ");
+					}
+					sb.append(dateIssued);
+				}
+
+				
+			return sb.toString();
+	}
+		return null;
+	}
+	
+	public static String getShortTitleView(Volume vol)
+	{
+		if(vol.getModsMetadata()!=null)
+		{
+			StringBuffer sb = new StringBuffer();
+			
+			ModsName firstModsAuthor = VolumeUtilBean.getFirstAuthor(vol.getModsMetadata());
+			
+			ModsTitle modsTitle = VolumeUtilBean.getTitle(vol.getModsMetadata());
+			
+			ModsName firstModsEditor = VolumeUtilBean.getFirstEditor(vol.getModsMetadata());
+			
+
+			String firstAuthor, title, firstEditor;
+			firstAuthor = title = firstEditor = null;
+			
+			if(firstModsAuthor!=null)
+			{
+				firstAuthor = firstModsAuthor.getName();
+			}
+			if(modsTitle!=null)
+			{
+				title = modsTitle.getTitle();
+			}
+			if(firstModsEditor!=null)
+			{
+				firstEditor = firstModsEditor.getName();
+			}
+
+			//Verfasser 1
+			if(!isEmpty(firstAuthor))
+			{
+				sb.append(firstAuthor);
+				sb.append(": ");
+			}
+			
+			//Ansetzungstitel oder Titel
+			if(!isEmpty(title))
+			{
+				sb.append(title);
+			}
+			else
+			{
+				// n/a falls kein Titel vorhanden 
+				sb.append(InternationalizationHelper.getLabel("na_no_volume_title"));
+			}
+			
+			//Herausgeber 1, falls kein Verfasser vorhanden
+			if(isEmpty(firstAuthor) && !isEmpty(firstEditor))
+			{
+				sb.append(" / ");
+				sb.append(firstEditor);
+				sb.append(" (" + InternationalizationHelper.getLabel("view_dtls_editor_suffix") + ")");
+				
+			}
+			
+			
+			return sb.toString();
+			
+
+
+		}
+		
+		return null;
+	}
+	
+	public static String getVolumeShortTitleView(Volume vol)
+	{
+		
+		if(vol.getModsMetadata()!=null)
+		{
+			StringBuffer sb = new StringBuffer();
+			
+			String part = VolumeUtilBean.getPart_089(vol.getModsMetadata());
+			
+			ModsTitle modsTitle = VolumeUtilBean.getMainTitle(vol.getModsMetadata());
+			
+			ModsPublisher modsPublisher = VolumeUtilBean.getPublisher(vol.getModsMetadata());
+			
+
+			String  title, dateIssued;
+			title = dateIssued = null;
+		
+			if(modsTitle!=null)
+			{
+				title = modsTitle.getTitle();
+			}
+			
+			if(modsPublisher!=null)
+			{
+				if(modsPublisher.getDateIssued_425()!=null)
+				{
+					dateIssued = modsPublisher.getDateIssued_425().getDate();
+				}
+			}
+			
+			if(!isEmpty(part))
+			{
+				sb.append(part + ". ");
+			}
+			if(!isEmpty(title))
+			{
+				sb.append(title);
+			}
+			
+			return sb.toString();
+		}
+			
+		return null;
+		
+	}
+	
+	public static String getVolumeSubTitleView(Volume vol)
+	{
+		
+		if(vol.getModsMetadata()!=null)
+		{
+			ModsPublisher modsPublisher = VolumeUtilBean.getPublisher(vol.getModsMetadata());
+			if(modsPublisher!=null && modsPublisher.getDateIssued_425()!=null && modsPublisher.getDateIssued_425().getDate()!=null)
+			{
+				return modsPublisher.getDateIssued_425().getDate();
+			}
+			
+			
+		}
+			
+		return null;
+		
+	}
+	
+	public static String getVolumeFullTitleView(Volume vol)
+	{
+		
+		String shortTitle = getVolumeShortTitleView(vol);
+		String subTitle = getVolumeSubTitleView(vol);
+		
+		if(!isEmpty(subTitle))
+		{
+			return shortTitle + ". - " + subTitle + ".";
+		}
+		else
+		{
+			return shortTitle + ".";
+		}
+	}
+	
+	
+	
+	public static boolean isEmpty(String s)
+	{
+		return s==null || s.isEmpty();
+	}
+	
+	
 	public static Volume getVolume(String id) throws Exception
 	{
 		VolumeServiceBean volServiceBean = new VolumeServiceBean();
