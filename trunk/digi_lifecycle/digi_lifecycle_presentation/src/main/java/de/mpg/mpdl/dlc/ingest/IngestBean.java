@@ -437,7 +437,7 @@ public class IngestBean{
 		
 		if(fue.getFileItem()!=null)
 		{
-			if (fue.getFileItem().getName().endsWith(".mab"))
+			if (fue.getFileItem().getName().endsWith(".mab.xml"))
 			{
 				if(this.volumeId != null)
 					this.modsMetadata = new ModsMetadata(); 

@@ -16,7 +16,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 		filters : [
 			{title : "Image files", extensions : "jpg,jpeg,JPG,JPEG,tif,tiff,TIFF,png,PNG"},
 			{title : "Xml Files", extensions : "xml"},
-			{title : "Mab Files", extensions : "mab"}
+			{title : "Mab Files", extensions : "mab.xml"}
 		],
 		
 		file_data_name : clientId,

@@ -148,7 +148,7 @@
 						</h:panelGroup>
 						
 						<br/>
-						<h:commandButton action="#{ingestBean.clearUploadedMAB}" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
+						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
 							<f:ajax render=":#{component.parent.clientId}" />
 						</h:commandButton>
 						<h:commandButton action="#{ingestBean.resetMAB}" value="reset Metadata" rendered="#{not empty ingestBean.mabFile and not empty ingestBean.volume}">
@@ -176,7 +176,7 @@
 						<br/>
 						<h:outputText value="#{lbl.ingest_TeiNumberOfPbWrong}" styleClass="eg3_messageError" rendered="#{(not empty ingestBean.teiPbFacsValues) and ingestBean.teiPbFacsValues.size() != ingestBean.imageFiles.size()}"/>
 						<br/>
-						<h:commandButton action="#{ingestBean.clearUploadedTEI}" value="#{lbl.ingest_clearTei}" rendered="#{not empty ingestBean.teiFile}">
+						<h:commandButton action="#{ingestBean.clearUploadedTEI}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearTei}" rendered="#{not empty ingestBean.teiFile}">
 							<f:ajax render="@form" />
 						</h:commandButton>
 						
@@ -191,15 +191,15 @@
 						<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}" />
 						
 						<ui:fragment rendered="#{ingestBean.size>0}" >
-							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" rendered="#{ingestBean.volumeId == 'new' and ingestBean.size>0}">
-									<f:ajax render="@form" />
+							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" styleClass="eg3_borderradius_5" rendered="#{ingestBean.volumeId == 'new' and ingestBean.size>0}">
+								<f:ajax render="@form" />
 							</h:commandButton>
-							<br/>
+							<br/><br/>
 							<h:selectOneMenu value="#{ingestBean.sortImagesAlgorithm}">
 								<f:selectItems value="#{ingestBean.sortImageSelectItem}"/>
 								
 							</h:selectOneMenu>
-							<h:commandButton value="#{lbl.ingest_sortImages}" action="#{ingestBean.sortImages}" >
+							<h:commandButton value="#{lbl.ingest_sortImages}" styleClass="eg3_borderradius_5" action="#{ingestBean.sortImages}" >
 								<a4j:ajax render="imageInfo" execute="imageInfo" />
 							</h:commandButton>
 							<br/><br/>
