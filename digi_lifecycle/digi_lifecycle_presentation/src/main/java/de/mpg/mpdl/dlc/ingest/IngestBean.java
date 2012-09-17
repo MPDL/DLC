@@ -823,14 +823,14 @@ public class IngestBean{
 						diskFileItems.add(img.getDiskFileItem());
 					}
 					
-					if(getSelectedContentModel().equals("Monograph"))
+					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
 		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
 					else
 			    		volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
 						
 					clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-		    		if(getSelectedContentModel().equals("Monograph"))
+		    		if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
 		    			MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMonograph")+"[" + volume.getItem().getObjid()+"]");
 		    		else
 			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
