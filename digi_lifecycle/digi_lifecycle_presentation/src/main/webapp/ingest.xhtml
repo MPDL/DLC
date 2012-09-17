@@ -11,6 +11,17 @@
 
 <ui:composition template="templates/template_v3.xhtml">
 
+
+
+		<ui:define name="separateContentHeader">
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader" rendered="#{ingestBean.volumeId != 'new'}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<modsViewer:header volume="#{ingestBean.volume}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</ui:define>
+
 	<ui:define name="mainContent">
 		<script type="text/javascript">
 			function ajaxExecuting(data)
