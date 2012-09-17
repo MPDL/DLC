@@ -8,7 +8,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl">
 
 	<!-- INTERFACE -->
 	<cc:interface>
@@ -31,8 +32,16 @@
 		<h:panelGroup styleClass="eg3_floatLeft">
 			<h:form>
 					<h3 class="eg3_volumeTitle">
-						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}"/>
-						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+					<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+						<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
+						<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
+							<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
+						</a4j:commandLink>
+					</h:panelGroup>
+						
+						
+						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}" />
+						
 					</h3>
 			</h:form>
 			
