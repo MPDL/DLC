@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="volume" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+	<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
+
+		<h3 class="eg3_multiVolumeTitle">
+			<pretty:link mappingId="volumes">
+				<f:param value="#{cc.attrs.volume.item.properties.context.objid}"/>
+				<h:outputText value="#{cc.attrs.volume.item.properties.context.getXLinkTitle()}"/>
+			</pretty:link>
+		</h3>
+
+		<br/>
+		<h:panelGroup styleClass="eg3_floatLeft">
+			<h:form>
+					<h3 class="eg3_volumeTitle">
+						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}"/>
+						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+					</h3>
+			</h:form>
+			
+			
+			<h4 class="eg3_volumeDetails" >
+				<br/>
+				<h:outputText value="#{volumeUtilBean.getVolumeFullTitleView(cc.attrs.volume)}"  rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+			</h4>
+		</h:panelGroup>
+	</h:panelGroup>
+		
+	</cc:implementation>
+</html>
