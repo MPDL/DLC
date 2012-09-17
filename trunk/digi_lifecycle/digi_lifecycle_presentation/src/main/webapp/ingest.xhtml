@@ -23,31 +23,7 @@
 		</ui:define>
 
 	<ui:define name="mainContent">
-		<script type="text/javascript">
-			function ajaxExecuting(data)
-			{
-				if (data.status == 'complete') 
-				{
-					toggleDisplay(document.getElementById('form1:teiInfo'));
-					toggleDisplay(document.getElementById('form1:imageInfo'));
-				}
 		
-
-				function toggleDisplay(element) 
-				{
-		//			element.style.display = element.style.display == "none" ? "" : "none"; 
-					if(document.getElementById('form1:contentModel').value == '#{applicationBean.cmMultiVol}') 
-					{
-						element.style.display = "none";
-					}
-					else
-					{
-						element.style.display = "";
-					}
-				}
-			}
-			
-		</script>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_ingestPage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
