@@ -141,7 +141,7 @@ public class VolumeUtilBean {
 
 		for(ModsName mn : md.getNames())
 		{
-			if(mn.getDisplayLabel().equals("author1"))
+			if("author1".equalsIgnoreCase(mn.getDisplayLabel()))
 				return mn;
 		}
 		return new ModsName();
@@ -151,7 +151,7 @@ public class VolumeUtilBean {
 	{
 		for(ModsName mn : md.getNames())
 		{
-			if(mn.getDisplayLabel().equals("body1"))
+			if("body1".equalsIgnoreCase(mn.getDisplayLabel()))
 				return mn;
 		}
 		return new ModsName();
@@ -163,9 +163,9 @@ public class VolumeUtilBean {
 	{  
 		for(ModsTitle mt : md.getTitles())
 		{
-			if(mt.getType() !=null && "alternative".equals(mt.getType()))
+			if("alternative".equalsIgnoreCase(mt.getType()))
 				return mt;
-			else if("mainTitle".equals(mt.getDisplayLabel()))
+			else if("mainTitle".equalsIgnoreCase(mt.getDisplayLabel()))
 				return mt;
 		}
 		return new ModsTitle();
@@ -175,9 +175,9 @@ public class VolumeUtilBean {
 	{ 
 		for(ModsPublisher mp : md.getPublishers())
 		{
-			if("publisher1".equals(mp.getDisplayLabel()))
+			if("publisher1".equalsIgnoreCase(mp.getDisplayLabel()))
 				return mp;
-			else if("printer1".equals(mp.getDisplayLabel()))
+			else if("printer1".equalsIgnoreCase(mp.getDisplayLabel()))
 				return mp;
 		}
 		return null;
@@ -187,7 +187,7 @@ public class VolumeUtilBean {
 	{ 
 		for(ModsPublisher mp : md.getPublishers())
 		{
-			if(mp.getDisplayLabel().equals("publisher1"))
+			if("publisher1".equalsIgnoreCase(mp.getDisplayLabel()))
 				return mp;
 		}
 		return null;
@@ -198,7 +198,7 @@ public class VolumeUtilBean {
 	{
 
 		for(ModsName mn : md.getNames())
-			if(mn.getDisplayLabel().equals("editor1"))
+			if("editor1".equalsIgnoreCase(mn.getDisplayLabel()))
 				return mn;
 		return new ModsName();
 	}
@@ -207,7 +207,7 @@ public class VolumeUtilBean {
 	{    
 		for(ModsTitle mt : md.getTitles())
 		{
-			if("mainTitle".equals(mt.getDisplayLabel()))
+			if("mainTitle".equalsIgnoreCase(mt.getDisplayLabel()))
 				return mt;
 		}
 		return new ModsTitle();
@@ -222,7 +222,7 @@ public class VolumeUtilBean {
 	{  
 		for(ModsTitle mt : md.getTitles())
 		{
-			if(mt.getType() !=null && mt.getType().equals("alternative"))
+			if("alternative".equalsIgnoreCase(mt.getType()))
 				return mt;
 		}
 		return new ModsTitle();
@@ -233,7 +233,7 @@ public class VolumeUtilBean {
 	public static ModsTitle getUniformTitle(ModsMetadata md)
 	{
 		for(ModsTitle mt : md.getTitles())
-			if(mt.getType().equals("uniform"))
+			if("uniform".equalsIgnoreCase(mt.getType()))
 				return mt;
 		return new ModsTitle();
 	}
@@ -251,7 +251,7 @@ public class VolumeUtilBean {
 	public static ModsTitle getParallelTitle(ModsMetadata md)
 	{
 		for(ModsTitle mt : md.getTitles())
-			if(mt.getDisplayLabel() !=null && mt.getDisplayLabel().equals("parallelTitle"))
+			if("parallelTitle".equalsIgnoreCase(mt.getDisplayLabel()))
 				return mt;
 		return new ModsTitle();
 	}
@@ -262,7 +262,7 @@ public class VolumeUtilBean {
 	public static ModsRelatedItem getSeries451(ModsMetadata md)
 	{
 		for(ModsRelatedItem ms : md.getRelatedItems())
-			if(ms.getDisplayLabel()!=null && ms.getDisplayLabel().equals("series1"))
+			if("series1".equalsIgnoreCase(ms.getDisplayLabel()))
 				return ms;
 		return new ModsRelatedItem();
 	}
@@ -271,7 +271,7 @@ public class VolumeUtilBean {
 	public static ModsRelatedItem getSeries451a(ModsMetadata md)
 	{
 		for(ModsRelatedItem ms : md.getRelatedItems())
-			if(ms.getDisplayLabel()!=null && ms.getDisplayLabel().equals("series2"))
+			if("series2".equalsIgnoreCase( ms.getDisplayLabel()))
 				return ms;
 		return new ModsRelatedItem();
 	}
@@ -279,7 +279,7 @@ public class VolumeUtilBean {
 	public static ModsNote getNoteThesis(ModsMetadata md)
 	{
 		for(ModsNote mn : md.getNotes())
-			if(mn.getType()!=null && mn.getType().equals("thesis"))
+			if("thesis".equalsIgnoreCase( mn.getType()))
 				return mn;
 		return new ModsNote();
 	}
@@ -950,7 +950,7 @@ public class VolumeUtilBean {
 
 		for(Component c : volume.getItem().getComponents())
 		{
-			if("tei".equals(c.getProperties().getContentCategory()))
+			if("tei".equalsIgnoreCase(c.getProperties().getContentCategory()))
 			{
 				return false;
 			}
@@ -972,7 +972,7 @@ public class VolumeUtilBean {
 			
 			for(Page p : v.getPages())
 			{
-				if(p.getType()!=null && p.getType().equals("titlePage"))
+				if("titlePage".equalsIgnoreCase(p.getType()))
 				{
 					return p;
 				}
