@@ -61,7 +61,9 @@
 		
 		<ui:define name="citationLinkContent">
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
-				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="$('.eg3_citationLink').toggle();" style="margin-left:2%; background-color:transparent;"/>
+				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" 
+					   onclick="$('.eg3_citationLink').toggle(); citationLink.select(); citationLink.focus();" 
+					   style="margin-left:2%; background-color:transparent;"/>
 				<br/>
 				<h:inputText id="citationLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_citationLink eg3_floatRight"/>
 			</h:panelGroup>
