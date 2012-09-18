@@ -5,7 +5,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 	var styledUploader = $("#pluploader").pluploadQueue({
 		// General settings
 		preinit: attachCallbacks,
-		runtimes : 'html5,flash',
+		runtimes : 'html5,flash,html4',
 		url : url + ';jsessionid=' + sessionId,
 		max_file_size : '200mb',
 		flash_swf_url : flashUrl,
