@@ -46,7 +46,9 @@
 			<h:outputText value=" #{cc.attrs.teiElement.numeration} " rendered="#{not empty cc.attrs.teiElement.numeration}"/>
 		</h:panelGroup>
 		
-		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.head[0])}" rendered="#{not empty cc.attrs.teiElement.head}"/>
+		<a4j:repeat var="head" value="#{cc.attrs.teiElement.head}" >
+			<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(head)}" />
+		</a4j:repeat>
 		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.docTitles[0].title)}" rendered="#{cc.attrs.teiElement.elementType == 'TITLE_PAGE'}"/>
 	
 		<f:ajax render="#{cc.attrs.render}"/>
