@@ -128,7 +128,9 @@
 							    </rich:popupPanel>							
 							</rich:tab>
 							
-							<!-- <rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="volume has kod. md">  </rich:tab>-->
+							<rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="#{not empty viewPages.volume.codicological}">  
+								<h:outputText value="#{viewPages.volume.codicological}" />
+							</rich:tab>
 								
 							
 						</rich:tabPanel>

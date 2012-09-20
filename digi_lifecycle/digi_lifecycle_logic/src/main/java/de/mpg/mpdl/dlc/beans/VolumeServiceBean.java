@@ -1940,6 +1940,23 @@ public class VolumeServiceBean {
 		return tei;
 	}
 	
+	public String loadCodicologicalMd(Volume vol, String userHandle) throws Exception
+	{
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
+
+		String cdc = null;
+		for(Component c : vol.getItem().getComponents())
+		{
+			if (c.getProperties().getContentCategory().equals("codicological"))
+			{
+				cdc = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+			}
+		}
+		vol.setCodicological(cdc);
+		return cdc;
+	}
+	
 	
 	private static String convertStreamToString(InputStream is)
             throws IOException {
@@ -2399,6 +2416,15 @@ public class VolumeServiceBean {
         validator.validate(tei);    
 	}
 	
+	public static void validateCodicologicalMd(Source cdc) throws Exception
+	{
+        SchemaFactory factory = SchemaFactory.newInstance("http://relaxng.org/ns/structure/1.0", "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);       
+        URL url = VolumeServiceBean.class.getClassLoader().getResource("schemas/DLC-CDC.rng");        
+        Schema schema = factory.newSchema(new File(url.toURI()));      
+        Validator validator = schema.newValidator();       
+        validator.validate(cdc);    
+	}
+	
 	
 	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
 	{
@@ -2485,7 +2511,8 @@ public class VolumeServiceBean {
 				{
 					loadTeiSd(volume, userHandle);
 					loadTei(volume, userHandle);
-					loadPagedTei(volume, userHandle);					
+					loadPagedTei(volume, userHandle);
+					loadCodicologicalMd(volume, userHandle);
 				}
 				else if(volume.getItem().getProperties().getContentModel().getObjid().equals(multivolumeContentModelId))
 				{
@@ -2520,6 +2547,7 @@ public class VolumeServiceBean {
 					loadTeiSd(volume, userHandle);
 					loadTei(volume, userHandle);
 					loadPagedTei(volume, userHandle);
+					loadCodicologicalMd(volume, userHandle);
 				}
 				return volume;
 			}

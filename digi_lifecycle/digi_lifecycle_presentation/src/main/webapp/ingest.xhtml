@@ -188,6 +188,26 @@
 					</rich:panel>
 					
 					
+					<rich:panel id="cdcInfo" header="#{lbl.ingest_cdcInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
+						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}">
+							<h:outputText value="#{lbl.ingest_noCodicologicalAvailable}" rendered="#{empty ingestBean.codicologicalFile}"/>
+							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
+							<br/>
+						</h:panelGroup>
+						
+						
+						
+						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}">
+							<h:outputText value="#{lbl.ingest_CodicologicalAlreadyAvailable}" rendered="#{not empty ingestBean.volume.codicological and empty ingestBean.codicologicalFile}"/>
+							<h:outputText value="#{lbl.ingest_CodicologicalOverwriteWarning}" rendered="#{ingestBean.codicologicalFile != null and (not empty ingestBean.volume.codicological)}" styleClass="eg3_messageError"/><br/>
+							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
+						</h:panelGroup>
+						<br/>
+						<h:commandButton action="#{ingestBean.clearUploadedCodicological}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearCodicological}" rendered="#{not empty ingestBean.codicologicalFile}">
+							<f:ajax render="@form" />
+						</h:commandButton>
+						
+					</rich:panel>
 		  		  	
 					<rich:panel id="imageInfo" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
