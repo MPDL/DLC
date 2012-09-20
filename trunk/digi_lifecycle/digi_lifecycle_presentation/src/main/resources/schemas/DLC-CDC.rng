@@ -1,0 +1,1324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<!--
+########### KHI Proposal für kodikologische Metadaten ################
+            _________________________________________ 
+ 
+  Format:		RelaxNG
+  InitDate:		06/2011
+  Last Update:	10/2011 by Zieger
+  Project:		MPDL Digitalization Lifecycle
+  Hint:			Best viewed with TAB Width of 4!
+  Authors:		Wolfram Zieger, Dr. Annette Creutzburg
+  Revisors:		Klaus Werner (Hertziana) and others
+
+######################################################################
+
+Erste Diskussionsvorschlge zur Optimierung:
+	- Boolean Elemente in die Attribute (oder auch raus)
+	- "Detail-Freitextfelder" nicht für jedes einzelne Thema als EInzelelement,
+		sondern EIN Freitext-Feld für Details, was die entsprechenden Themen als
+		Attribut übergibt
+	- Tags nicht mit "_" Zusammensetzung, sondern mit Groß Klein Schreibung
+		also nicht "Exemplarbeschreibung_Main" sondern "ExemplarbeschreibungMain"
+	- Tags nach englisch übersetzen
+	- Tags nicht abkürzen
+	
+Sonstige Hinweise:
+	- IDs dürfen nicht mit Zahlen anfangen oder leer sein; das gilt auch für IDReferer- Workaround 
+		für Zahlen-Only-IDs: mit _Unterstrich beginnen
+-->
+
+
+
+	<start>
+		<ref name="CodologDesc"/>
+	</start>
+	<define name="CodologDesc">
+		<element name="CodologDesc">
+			<zeroOrMore>
+				<ref name="Exemplarbeschreibung_Main"/>
+			</zeroOrMore>
+
+			<zeroOrMore>
+				<ref name="Provenienz"/>
+			</zeroOrMore>
+
+			<zeroOrMore>
+				<ref name="Portraits"/>
+			</zeroOrMore>
+
+			<zeroOrMore>
+				<ref name="FileSystemLinks"/>
+			</zeroOrMore>
+
+			<zeroOrMore>
+				<ref name="Pnd_Personen"/>
+			</zeroOrMore>
+
+			<zeroOrMore>
+				<ref name="Ort"/>
+			</zeroOrMore>
+
+			<optional>
+				<attribute name="generated">
+					<data type="dateTime"/>
+				</attribute>
+			</optional>
+
+		</element>
+	</define>
+	<define name="Exemplarbeschreibung_Main">
+		<element name="Exemplarbeschreibung_Main">
+
+			<zeroOrMore>
+				<element name="ExemplarDataset">
+					
+					<attribute name="SuperIdentnummer">
+						<data type="ID" />
+					</attribute>
+					
+					<!-- 
+						not sure, if this is enough! Because there may be two or more signatures which appeal
+						to the very same Aleph Sys Number or old Allegro Opac Identnummer.
+						At the moment I think we should use an additional own ID for every record - could be a 
+						combination of signature and Identnummer (something which isn't to be defiened within this
+						scheme). That would also conclude that Identnummer is not an ID anymore - as it may 
+						appear more than once.
+					-->
+					
+					<oneOrMore>
+						<element name="Identnummer">
+							<attribute name="Typ">
+								<choice>
+									<value>Allegro</value>
+									<value>AlephSys</value>
+									<value>BVB</value>
+									<value>Access</value>  <!-- nur für das KHI sinnvoll - aber das KHI als "Erfinder" darf das, oder? -->
+									<value></value>
+								</choice>
+							</attribute>
+						
+							<data type="token" />	<!-- nicht als ID, weil es bei einigen Konstrukten zu ID Dopplungen kommen würde -->
+						</element>
+					</oneOrMore>
+					
+					
+					<optional>
+						<element name="Signatur">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<zeroOrMore>
+						<!-- zeroOrMore in RelaxNG heißt, dass dieses Element wiederholt werden kann -->
+						<element name="Objekttyp">
+							<choice>
+								<value>gedrucktes Buch</value>
+								<value>Handschrift</value>
+								<value>handschriftliches Dokument</value>
+								<value>maschinenschriftliches Manuskript</value>
+								<value>Tafelband gebunden</value>
+								<value>Tafelband ungebunden</value>
+								<value>Zeitschrift</value>
+								<value>Druckgraphik Einzelblatt</value>
+								<value>Photographie</value>
+								<value>Zeitungsartikel</value>
+								<value>Photokopie</value>
+								<value>Einzelblatt handschriftlich</value>
+								<value>Einzelblatt gedruckt</value>
+								<value>Zeichnung</value>
+								<value>Malerei</value>
+								<value></value>
+							</choice>
+						</element>
+					</zeroOrMore>
+					
+					<optional>
+						<element name="Erscheinungszeitraum">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>vor 1400</value>
+								<value>1400-1499</value>
+								<value>1500-1599</value>
+								<value>1600-1699</value>
+								<value>1700-1799</value>
+								<value>1800-1899</value>
+								<value>1900-1999</value>
+								<value>2000 und später</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Bearbeitungsstand">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+							
+								<value>unbearbeitet</value>
+								<value>Stufe 1</value>
+								<value>Stufe 2</value>
+								<value>Stufe 3</value>
+								<value>nur Exemplarbeschreibung</value>
+								<value>nur Digitalisierung</value>
+								<value>Stufe 4 Ingest in DLC</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+
+					<!-- 
+					######### 	not necessary, because this is not a part of the exemplaric description  #########
+					<optional>
+						<element name="Sprache">
+							<choice>
+								<value>Dummy for predefined term 1</value>
+								<value>Dummy for predefined term 2</value>
+								<value>Dummy for predefined term ...n</value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Druckort">
+							<choice>
+								<value>Dummy for predefined term 1</value>
+								<value>Dummy for predefined term 2</value>
+								<value>Dummy for predefined term ...n</value>
+							</choice>
+						</element>
+					</optional>
+					##############################################################################################
+					-->
+
+
+					<optional>
+						<element name="Band_Anzahl">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Fehlende_Teile">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Fehlbindung">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Einzelblaetter_eingebunden">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Bedruckte_Blaetter_lose">
+							<optional>
+								<attribute name="available">
+									<data type="boolean"/>
+								</attribute>
+							</optional>
+
+							<data type="token"/>
+						</element>
+					</optional>
+								
+
+					<optional>
+						<element name="Handschriftliche_Blaetter_lose">
+							<optional>
+								<attribute name="available">
+									<data type="boolean"/>
+								</attribute>
+							</optional>
+
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<zeroOrMore>
+						<element name="Beigabe">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Brief</value>
+									<value>Foto</value>
+									<value>Devotionalie</value>
+									<value>Notizblatt</value>
+									<value></value>
+								</choice>
+									
+						</element>
+					</zeroOrMore>
+
+					<optional>
+						<element name="Beigabe_lose_Details">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="Beigabe_eingeklebt_Details">
+							<data type="token" />
+						</element>
+					</optional>
+					
+
+
+					<optional>
+						<element name="Vorsatz">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+							
+								<value>Band ohne Vorsatzblätter</value>
+								<value>Vorsatzblatt mit Wasserzeichen</value>
+								<value>Vorsatzblätter bei Neubindung</value>
+								<value>Vorsatzblätter bei Neubindung</value>
+								<value>alte Bindung ohne Vorsatzblätter</value>
+								<value>Originalbindung ohne Vorsatzblätter</value>
+								<value>Vorsatz als Umschlagpapier</value>
+								<value>alte Bindung mit neuem Vorsatz</value>
+								<value>altes Vorsatzblatt mit neuem Vorsatzblatt verbunden</value>
+								<value>Vorsatzblatt entfernt</value>
+								<value>vorderes Vorsatzblatt handschriftlich beschrieben</value>
+								<value>Vorsatzblatt mit Widmungseintrag</value>
+								<value>Vorsatzblatt mit Stiftungsnotiz</value>
+								<value>Vorsatzblatt mit Besitzeintrag</value>
+								<value>alte Vorsatzblätter zum Spiegel verklebt</value>
+								<value>neue Vorsatzblätter bei Restaurierung</value>
+								<value>Vorsatz aus Buntpapier</value>
+								<value>Vorsatz aus Marmorpapier</value>
+								<value>vorderes Vorsatzblatt mit alter Signatur</value>
+								<value>Vorsatzblatt mit Handzeichnung</value>
+								<value>Vorsatz aus Goldbrokatpapier</value>
+								<value>Vorsatz aus gefärbtem Papier</value>
+								<value>altes Vorsatzblatt mit Interimsumschlag verklebt</value>
+								<value>Vorsatzblatt mit Signatur</value>
+								<value>Neubindung ohne Vorsatz</value>
+								<value>Pergament</value>
+								<value>Andere Variante – siehe Details</value>
+								<value></value>
+							</choice>
+
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Vorsatz_Details">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="Beschreibstoff_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<optional>
+						<element name="Paginierung_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Schnitt">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Goldschnitt</value>
+								<value>Farbschnitt</value>
+								<value>Schnitt bemalt</value>
+								<value>Schnitt mit Titel beschriftet</value>
+								<value>ohne Schnittverzierung</value>
+								<value>Sprenkelschnitt</value>
+								<value>Marmorschnitt</value>
+								<value>Schnitt eingeritzt</value>
+								<value>Tupfschnitt</value>
+								<value>Schnittpunzierung</value>
+								<value>Abziehschnitt</value>
+								<value>Kreideschnitt</value>
+								<value>verschobener Schnitt</value>
+								<value>Silberschnitt</value>
+								<value>Goldschnitt punziert</value>
+								<value>bei Neubindung beschnitten</value>
+								<value>Blätter unbeschnitten</value>
+								<value>Kopfgoldschnitt</value>
+								<value>Fore-edge-painting</value>
+								<value>Bögen teilweise unaufgeschnitten</value>
+								<value>aufgeschnitten</value>
+								<value>Blätter teilweise unbeschnitten</value>
+								<value></value>
+							</choice>
+							
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Schnitt_Details">
+							<data type="token" />
+						</element>
+					</optional>
+					
+
+					<optional>
+						<element name="Blattweiser">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Blattweiser Pergament</value>
+								<value>Blattweiser Leder</value>
+								<value>Blattweiser Papier</value>
+								<value>Lesezeichen, unbeschriebenes Papier</value>
+								<value>Lesezeichen lose, mit Tinte beschrieben</value>
+								<value>Lesezeichen, ausgeschnitten und bedruckt</value>
+								<value>Lesezeichen bemalt</value>
+								<value></value>
+							</choice>
+														
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Blattweiser_Details">
+							<data type="token" />
+						</element>
+					</optional>
+					
+
+					<optional>
+						<element name="Beschnittene_Blaetter">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Wasserzeichen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Siegel">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Siegel_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Wappen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Randverzierungen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Randillustrationen">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="Sonstige_Illustrationen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Initialen">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Initialen_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Rubrizierung">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Kapitelüberschriften</value>
+								<value>Satzzeichen</value>
+								<value>andere</value>
+								<value>Titelblatt</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Rubrizierung_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Druckgraphik_Bildzyklus">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Druckgraphik">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<!--                 *** Not Used at the KHI ***
+					<optional>
+						<element name="Musiknotation">
+							<data type="token" />
+						</element>
+					</optional>
+
+					-->
+					<!-- ################## Portraits-Link hier ################ -->
+
+					<zeroOrMore>
+						<element name="PortraitsRef">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+
+					<!-- ####################################################### -->
+					
+
+					<optional>
+						<element name="Portraits_Notizen">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<zeroOrMore>
+						<element name="Marginalien"> 
+							<choice>
+								<value>Interlinearglossen</value>
+								<value>Marginalglossen</value>
+								<value>Korrekturen</value>
+								<value>Randnotizen</value>
+								<value>Zeigehand</value>
+								<value>autonome Randzeichnungen</value>
+								<value>Schemata</value>
+								<value>Stammbaum</value>
+								<value>Federproben</value>
+								<value>Anstreichungen</value>
+								<value>Unterstreichungen</value> <!-- Weitere Values denkbar -->
+								<value></value>
+							</choice>
+
+						</element>
+					</zeroOrMore>
+
+					<optional>
+						<element name="Marginalien_Details">
+							<data type="token"/>
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="Sonstige_Eintragungen_handschriftlich">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="Beibaende">
+							<optional>
+								<attribute name="available">
+									<data type="boolean"/>
+								</attribute>
+							</optional>
+
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<!-- ............................................................................ -->
+
+					<optional>
+						<element name="Handschriftlicher_Besitzeintrag">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Unidentifizierter_Vorbesitzer">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Stiftungsnotiz">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Widmung">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Autorensignatur">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Exlibris">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Exlibris_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Besitzstempel">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Sonstige_Stempel">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Etiketten">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<!-- ############### Provenience Link hier ############# -->
+
+					<zeroOrMore>
+						<element name="provenienceRef">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+
+					<!-- ################################################### -->
+
+
+					<optional>
+						<element name="Kaufvermerke">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Alte_Signaturen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Erwerbungsjahr_Besitzer_aktuell">
+							<data type="short"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Erwerbungsmodalitaeten">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Geschenk</value>
+								<value>Ankauf über Antiquariat</value>
+								<value>Tausch</value>
+								<value>Ankauf von Privatperson</value>
+								<value>Ankauf über Auktionshaus</value>
+								<value>Gallerie</value>
+								<value>Nachlass</value>
+								<value>Ankauf</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Erwerbungsmodalitaeten_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Bezahlter_Buchpreis">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<!-- ............................................................................ -->
+
+					<optional>
+						<element name="Einband">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Pergamenteinband</value>
+								<value>Pergament auf Holz</value>
+								<value>Pergament auf Pappe</value>
+								<value>Halbpergamenteinband</value>
+								<value>Viertelpergamenteinband</value>
+								<value>flexibler Pergamenteinband</value>
+								<value>Schweinsledereinband</value>
+								<value>Schweinsleder auf Holz</value>
+								<value>Schweinsleder auf Pappe</value>
+								<value>Wildschweinledereinband</value>
+								<value>Wildschweinleder auf Holz</value>
+								<value>Wildschweinleder auf Pappe</value>
+								<value>Kalbsledereinband</value>
+								<value>Kalbsleder auf Holz</value>
+								<value>Kalbsleder auf Pappe</value>
+								<value>Ziegenledereinband</value>
+								<value>Ziegenleder auf Holz</value>
+								<value>Ziegenleder auf Pappe</value>
+								<value>Schafsledereinband</value>
+								<value>Schafsleder auf Holz</value>
+								<value>Schafsleder auf Pappe</value>
+								<value>Halbledereinband</value>
+								<value>Viertelledereinband</value>
+								<value>Pappeinband</value>
+								<value>Pappeinband - Flexibler Pappeinband</value>
+								<value>Pappeinband - Marmorpapier auf Pappe</value>
+								<value>Pappeinband - Buntpapier auf Pappe</value>
+								<value>Pappeinband - Brokatpapier auf Pappe</value>
+								<value>Pappeinband - Büttenpapier</value>
+								<value>Interimsumschlag - Papier</value>
+								<value>Interimseinband - Pappe</value>
+								<value>Ganzgewebeband</value>
+								<value>Ganzgewebeband - Baumwolle</value>
+								<value>Ganzgewebeband - Leinenband</value>
+								<value>Gewebeband - Efalin Feinleinen</value>
+								<value>Ganzgewebeband - Samtband</value>
+								<value>Ganzgewebeband - Seide</value>
+								<value>Halbgewebeband</value>
+								<value>Halbgewebeband - Baumwolle</value>
+								<value>Halbgewebeband - Leinen</value>
+								<value>Halbgewebeband - Efalin Feinleinen</value>
+								<value>Halbgewebeband - Samt</value>
+								<value>Halbgewebeband - Seide</value>
+								<value>Ganzgewebe - Mappe</value>
+								<value>Viertelgewebeband</value>
+								<value>Pamphlet-binding</value>
+								<value>ohne festen Einband</value>
+								<value>Maroquineinband</value>
+								<value>Prachteinband</value>
+								<value>Boxcalfband</value>
+								<value>Pappeinband - Pappmappe</value>
+								<value>Ledermappe</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Einband_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Aelterer_Einband_integriert">
+							<data type="boolean"/>
+						</element>
+					</optional>
+					
+					<zeroOrMore>
+						<element name="Einbanddekor">
+							<choice>
+
+								<value>Flacher Rücken</value>
+								<value>Bünde</value>
+								<value>Doppelbünde</value>
+								<value>Querbänder</value>
+								<value>Blindstempelung</value>
+								<value>Blindstempelung - Einzelstempel</value>
+								<value>Blindstempelung - Rollenstempel</value>
+								<value>Blindstempelung - Plattenstempel</value>
+								<value>Goldprägung</value>
+								<value>Streicheisenlinien</value>
+								<value>Lederschnitt</value>
+								<value>Goldschnitt punziert</value>
+								<value>Goldschnitt bemalt</value>
+								<value>Intarsien</value>
+								<value>Einlegearbeit</value>
+								<value>Wachsmalerei</value>
+								<value>Lackmalerei</value>
+								<value>Silberbemalung</value>
+								<value>Schalblonierung farbig</value>
+								<value>Stehkantenvergoldung</value>
+								<value>Innenkantenvergoldung</value>
+								<value>Wappensupralibros</value>
+								<value>Portraitsupralibros</value>
+								<value>Cameo</value>
+								<value>Motto</value>
+								<value>Buckel</value>
+								<value>Eckbeschläge</value>
+								<value>Schließbänder Leder oder Metall</value>
+								<value>Schleifenschließen Leder</value>
+								<value>Schleifenschließen textil</value>
+								<value></value>
+							</choice>
+						</element>
+					</zeroOrMore>
+					<optional>
+						<element name="Einbanddekor_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Lesebaendchen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Klebepappe">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Eingepraegte_Datierung">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Besitzerinitialien">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<zeroOrMore>
+						<element name="Makulatur">
+							<choice>
+
+								<value>Einbandbezug</value>
+								<value>Spiegel</value>
+								<value>Vorsatzblatt</value>
+								<value>Falzstreifen</value>
+								<value>Pappdeckel geleimt</value>
+								<value>historische Restaurierung</value>
+								<value>Hinterklebung</value>
+								<value></value>
+							</choice>
+						</element>
+					</zeroOrMore>
+
+					<optional>
+						<element name="Makulatur_Beschreibung">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Spiegel_Marmorpapier">
+							<data type="boolean"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Rueckenbreite">
+							<data type="float"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Hoehe">
+							<data type="float"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Standort">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>Duodez</value>
+								<value>Oktav</value>
+								<value>Quart</value>
+								<value>Folio</value>
+								<value>Groß-Folio</value>
+								<value>Planschrank Ms.</value>
+								<value>Folio liegend</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Zustand">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Restaurierungsbedarf">
+							<choice>
+							<!-- 	
+								It's possible to use an additional scheme overwriting those values
+								(as it is designated by using RelaxNG schemes) in order to fit them 
+								into your project specifics
+							-->
+								<value>hoch</value>
+								<value>mittel</value>
+								<value>gering</value>
+								<value>kein</value>
+								<value>unentschieden</value>
+								<value></value>
+							</choice>
+						</element>
+					</optional>
+
+
+					<zeroOrMore>
+						<element name="Restaurierungs-Art">
+							<choice>
+								<value>Einbandrestaurierung</value>
+								<value>Papierrestaurierung</value>
+								<value></value>
+							</choice>
+						</element>
+					</zeroOrMore>
+
+
+					<optional>
+						<element name="Restaurierungsmassnahmen_Details">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<!-- ################## Media Links hier ################### -->
+					<!-- Medialinks eventuell für Lifecycle nicht sinnvoll? -->
+					<zeroOrMore>
+						<element name="mediaRef">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+					<!-- ####################################################### -->
+
+
+
+					<optional>
+						<element name="Konservatorische_Massnahmen">
+							<data type="token" />
+						</element>
+					</optional>
+
+
+					<!-- not really necessary, maybe suitable for internal usage			
+					
+					<optional>
+						<element name="Buchscanner_einfach">
+							<data type="boolean"/>
+						</element>
+					</optional>
+					-->
+
+
+					<optional>
+						<element name="Nummerierte_Ausgabe">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Sonstige_Bemerkungen">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="VD-Nr">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="EDIT16-Id">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="ICCU-Id">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="ISTC-Nr">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Sonstige-Id">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Aktueller_Marktwert">
+							<data type="token" />
+						</element>
+					</optional>
+							
+					
+					
+				</element> <!-- ExemplarDataset Container Ende -->	
+			</zeroOrMore>
+
+		</element> <!-- Exemplarbeschreibung_Main Element zu -->
+	</define> <!-- Exemplarbeschreibung_Main define zu -->
+
+
+
+
+	<!-- ############################ Provenience Modul ab hier ################# -->
+
+	<define name="Provenienz">
+		<element name="Provenienz">
+
+			<zeroOrMore>
+				<element name="ProvenienzDataset">
+					
+					<attribute name="provID">
+						<data type="ID" />
+					</attribute>
+
+					<optional>
+						<element name="Institution">
+							<data type="token"/>
+						</element>
+					</optional>
+
+
+					<!-- ....................... Personen Links hier ..............  -->
+					<zeroOrMore>
+						<element name="ProvPerson">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+					<!-- ............................................................ -->
+
+					<optional>
+						<element name="Personschreibw">
+							<data type="token"/>
+						</element>
+					</optional>
+
+
+					<!-- ................. Orts Links hier .......................... -->
+					<zeroOrMore>
+						<element name="Ort">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+					<!-- ........................................................... -->
+
+					<optional>
+						<element name="Ortschreibw">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Jahr">
+							<data type="token"/>
+						</element>
+					</optional>
+					
+				</element> <!-- ProvenienzDataset Container Ende -->	
+			</zeroOrMore>
+			
+
+			
+
+		</element> <!-- Ende Provenience Modul -->
+	</define>
+
+
+
+	<!-- ############################ Portraits Modul ab hier ################# -->
+
+	<define name="Portraits">
+		<element name="Portraits">
+
+			<zeroOrMore>
+				<element name="PortraitDataset">
+					
+					<attribute name="PortrID">
+						<data type="ID" />
+					</attribute>
+
+					<!-- ################## Personen Links hier ################### -->
+					<zeroOrMore>
+						<element name="PortrPerson">
+							<optional>
+								<attribute name="ref">
+									<data type="IDREF"/>
+								</attribute>
+							</optional>
+
+						</element>
+					</zeroOrMore>
+					<!-- ####################################################### -->
+
+					<optional>
+						<element name="Personenschreibweise">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Notizen">
+							<data type="token"/>
+						</element>
+					</optional>
+					
+				</element> <!-- PortraitDataset Container Ende -->	
+			</zeroOrMore>
+
+		</element> <!-- PortraitsModul Ende -->
+	</define>
+
+
+
+
+	<!-- ############################ Filesystem Links Modul ab hier ################# -->
+
+	<define name="FileSystemLinks">
+		<element name="FileSystemLinks">
+
+			<zeroOrMore>
+				<element name="FileSystemLinkDataset">
+					
+					<attribute name="FileSysID">
+						<data type="ID" />
+					</attribute>
+
+					<element name="FileSystemLink">
+						<data type="anyURI"/>
+					</element>
+
+					<optional>
+						<element name="Kategorie">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Ausgabe">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Beschreibung">
+							<data type="string"/>
+						</element>
+					</optional>
+
+					
+				</element> <!-- FileSystemLinkDataset Container Ende -->	
+			</zeroOrMore>
+
+		</element> <!-- FileSystemLink Modul endet hier -->
+	</define>
+
+
+
+
+	<!-- ############################ PND_Personen Modul ab hier ################# -->
+
+	<define name="Pnd_Personen">
+		<element name="Pnd_Personen">
+
+			<zeroOrMore>
+				<element name="PersonenDataset">
+
+					<oneOrMore> <!-- eine der IDs *muss* aber da stehen! -->
+						<attribute name="PND">
+							<data type="ID" />
+						</attribute>
+					</oneOrMore>
+
+					<optional>
+						<attribute name="CNP">
+							<data type="ID" />
+						</attribute>
+					</optional>
+					
+
+					<optional>
+						<element name="Vorname">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Nachname">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<zeroOrMore>
+						<element name="PersonenEigenschaften">
+							<choice>
+								<value>Künstler</value>
+								<value>Autor</value>
+								<value>historische Person</value>
+								<value>Heiliger</value>
+								<value></value>
+							</choice>
+						</element>
+					</zeroOrMore>
+
+					<optional>
+						<element name="SonstEigenschaft">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Notizen">
+							<data type="string" />
+						</element>
+					</optional>
+
+
+				</element> <!-- PersonenDataset Container Ende -->	
+			</zeroOrMore>
+
+		</element> <!-- Pnd_Personen Modul endet hier -->
+	</define>
+
+
+
+	<!-- ############################ Ort Modul ab hier ################# -->
+
+	<define name="Ort">
+		<element name="Ort">
+
+			<zeroOrMore>
+				<element name="OrtDataset">
+					
+					<attribute name="Ortsschlagwort">
+						<data type="ID"/>
+					</attribute>
+
+					<optional>
+						<element name="Ortsname">
+							<data type="token"/>
+						</element>
+					</optional>
+
+					<optional>
+						<element name="Land">
+							<data type="token"/>
+						</element>
+					</optional>
+
+
+				</element> <!-- OrtDataset Container Ende -->	
+			</zeroOrMore>
+
+		</element>  <!-- Ortsmodul endet hier -->
+	</define>
+
+</grammar>
