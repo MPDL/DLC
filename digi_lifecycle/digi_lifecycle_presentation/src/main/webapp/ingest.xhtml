@@ -65,7 +65,7 @@
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
 							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
-								<f:ajax render="modsInfo teiInfo imageInfo" />
+								<a4j:ajax render="modsInfo teiInfo imageInfo" />
 							</h:commandButton>
 						</h:panelGroup>
 						<rich:popupPanel id="popup" modal="true" resizeable="false">
@@ -90,7 +90,7 @@
 									</h:panelGroup>
 									<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 										<f:selectItems value="#{ingestBean.contentModelItems}"/>
-										<f:ajax event="change" render="@form"/>
+										<a4j:ajax event="change" render="@form"/>
 									</h:selectOneMenu> 
 								</h:panelGroup>
 							</h:panelGroup>
@@ -107,7 +107,7 @@
 									</h:panelGroup>
 									<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
 										<f:selectItems value="#{ingestBean.contextSelectItems}"/>
-										<f:ajax event="change" render="select" />
+										<a4j:ajax event="change" render="select" />
 									</h:selectOneMenu>
 								</h:panelGroup>
 							</h:panelGroup>
@@ -154,10 +154,10 @@
 						
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
-							<f:ajax render=":#{component.parent.clientId}" />
+							<a4j:ajax render=":#{component.parent.clientId}" />
 						</h:commandButton>
 						<h:commandButton action="#{ingestBean.resetMAB}" value="reset Metadata" rendered="#{not empty ingestBean.mabFile and not empty ingestBean.volume}">
-							<f:ajax render=":#{component.parent.clientId}" />
+							<a4j:ajax render=":#{component.parent.clientId}" />
 						</h:commandButton>
 					</rich:panel>
 					
@@ -182,7 +182,7 @@
 						<h:outputText value="#{lbl.ingest_TeiNumberOfPbWrong}" styleClass="eg3_messageError" rendered="#{(not empty ingestBean.teiPbFacsValues) and ingestBean.teiPbFacsValues.size() != ingestBean.imageFiles.size()}"/>
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedTEI}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearTei}" rendered="#{not empty ingestBean.teiFile}">
-							<f:ajax render="@form" />
+							<a4j:ajax render="@form" />
 						</h:commandButton>
 						
 					</rich:panel>
@@ -204,7 +204,7 @@
 						</h:panelGroup>
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedCodicological}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearCodicological}" rendered="#{not empty ingestBean.codicologicalFile}">
-							<f:ajax render="@form" />
+							<a4j:ajax render="@form" />
 						</h:commandButton>
 						
 					</rich:panel>
@@ -217,7 +217,7 @@
 						
 						<ui:fragment rendered="#{ingestBean.size>0}" >
 							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" styleClass="eg3_borderradius_5" rendered="#{ingestBean.volumeId == 'new' and ingestBean.size>0}">
-								<f:ajax render="@form" />
+								<a4j:ajax render="@form" />
 							</h:commandButton>
 							<br/><br/>
 							<h:selectOneMenu value="#{ingestBean.sortImagesAlgorithm}">
