@@ -563,7 +563,7 @@ public class StructuralEditorBean implements Observer {
 		{
 			try {
 				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
@@ -605,7 +605,7 @@ public class StructuralEditorBean implements Observer {
 		{
 			try {
 				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, true);
+				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				this.volume = volServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
