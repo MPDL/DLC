@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -30,9 +31,12 @@ import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
+import org.apache.bcel.generic.CPInstruction;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
+import org.apache.tika.Tika;
+import org.apache.tika.mime.MimeTypes;
 import org.richfaces.event.DropEvent;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
@@ -57,6 +61,7 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.viewer.ViewPages;
 import de.mpg.mpdl.dlc.vo.IngestImage;
+import de.mpg.mpdl.dlc.vo.IngestImage.Type;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -92,11 +97,13 @@ public class IngestBean{
 	private List<IngestImage> imageFiles = new ArrayList<IngestImage>();
 	private DiskFileItem footer;
 	
-	private FileItem mabFile;
+	private DiskFileItem mabFile;
 	private ModsMetadata modsMetadata  = new ModsMetadata();
 	
-	private FileItem teiFile;
+	private DiskFileItem teiFile;
 	private List<XdmNode> teiPbFacsValues;
+	
+	private DiskFileItem codicologicalFile;
 
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
@@ -131,6 +138,18 @@ public class IngestBean{
 	
 	private boolean sortableByTei = false;
 	
+	private Tika tika = new Tika();
+
+	private DiskFileItem recentlyUpladedMabFile;
+
+	private DiskFileItem recentlyUpladedTeiFile;
+
+	private DiskFileItem recentlyUpladedFooterFile;
+	
+	private DiskFileItem recentlyUpladedCodicologigalFile;
+
+	private List<DiskFileItem> recentlyUploadedImageFiles = new ArrayList<DiskFileItem>();
+	
 	 
 	@URLAction(onPostback=false)
 	public void loadContext()
@@ -141,8 +160,9 @@ public class IngestBean{
 				//this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
 				clearAllData();
 				this.volume = volumeService.loadCompleteVolume(volumeId,  loginBean.getUserHandle());
-				if(mabFile == null)
-					this.modsMetadata = volume.getModsMetadata();
+				//if(mabFile == null)
+				
+				this.modsMetadata = volume.getModsMetadata();
 				if(volume.getMets()!=null)
 				{
 					for(Page p : volume.getMets().getPages())
@@ -161,7 +181,7 @@ public class IngestBean{
 					
 				}
 				this.selectedContentModel = volume.getItem().getProperties().getContentModel().getObjid();
-				uploadComplete();
+				checkSortImagesByTei();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -272,7 +292,7 @@ public class IngestBean{
     {     
     	this.teiFile = null;
     	this.teiPbFacsValues = null;
-    	uploadComplete();
+    	checkSortImagesByTei();
         return "";
     }
     
@@ -439,84 +459,147 @@ public class IngestBean{
 		{
 			if (fue.getFileItem().getName().endsWith(".mab.xml"))
 			{
-				if(this.volumeId != null)
-					this.modsMetadata = new ModsMetadata(); 
-				this.setMabFile(fue.getFileItem());
-				processMabFile(fue.getFileItem());
+				recentlyUpladedMabFile = (DiskFileItem)fue.getFileItem();
+				
 			}
+			else if(fue.getFileItem().getName().endsWith(".cdc.xml"))
+			{
+				
+				recentlyUpladedCodicologigalFile = (DiskFileItem)fue.getFileItem();
+				
+				
+			}
+			
 			else if(fue.getFileItem().getName().endsWith(".xml"))
 			{
-				this.setTeiFile(fue.getFileItem());
-				DiskFileItem diskTeiFile = (DiskFileItem)teiFile;
-				try {
-					InputStream teiIs = diskTeiFile.getInputStream();
-					teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(teiIs));
-					teiIs.close();
-				} catch (Exception e) {
-					logger.error("error while validating TEI", e);
-					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei")); 
-				}
+				
+				recentlyUpladedTeiFile = (DiskFileItem)fue.getFileItem();
+				
+				
 			}
 			else if(fue.getFileItem().getName().startsWith("footer"))
 			{
-				this.setFooter((DiskFileItem)fue.getFileItem());
+				recentlyUpladedFooterFile = (DiskFileItem)fue.getFileItem();
+				
 			}
 			else
 			{
-				IngestImage ingestImage = new IngestImage((DiskFileItem)fue.getFileItem());
-				if(imageFiles.contains(ingestImage))
-				{
-					int pos = imageFiles.indexOf(ingestImage);
-					imageFiles.remove(pos);
-					imageFiles.add(pos, ingestImage);
-				}
-				else
-				{
-					imageFiles.add(ingestImage);
-				}
 				
-				/*
-				if(volumeId.equals("new"))
-				{
-					
-				}
 				
-				else
-				{
-					//replace files with same name, else add to end;
-					//TODO MANY
-					
-					
-					boolean replaced = false;
-					for(String filename : pagesOfVolume)
-					{
-						
-						if(filename.equals(VolumeServiceBean.getJPEGFilename(fue.getFileItem().getName())))
-						{
-							replaced = true;
-							imageFiles.add((DiskFileItem)fue.getFileItem());
-							MessageHelper.infoMessage(fue.getFileItem().getName() + InternationalizationHelper.getMessage("ingest_imageReplacesSuccessfully") );
-							break;
-							xxx
-						}
-					}
-					
-					
-					
-				}
-				 */
+				recentlyUploadedImageFiles .add((DiskFileItem)fue.getFileItem());
+				
+				
+			
 			}
 		}
 	}
 	
 	public String uploadComplete()
 	{
+		
+		
+		//process mab
+		if(recentlyUpladedMabFile!=null)
+		{
+			try {
+				this.modsMetadata = processMabFile(recentlyUpladedMabFile);
+				this.mabFile = recentlyUpladedMabFile;
+			} catch (Exception e) {
+				logger.error("error while processing mab xml", e);
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidMab"));
+				//this.modsMetadata = new ModsMetadata();
+			}
+			recentlyUpladedMabFile = null;
+		}
+		
+		
+		
+		//validate tei
+		if(recentlyUpladedTeiFile!=null)
+		{
+			try {
+				
+				VolumeServiceBean.validateTei(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
+				teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
+				this.teiFile = recentlyUpladedTeiFile;
+			} catch (Exception e) {
+				logger.error("Error while validating TEI", e);
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei") + "\n " + e.getMessage()); 
+			}
+			
+			recentlyUpladedTeiFile = null;
+		}
+		
+		
+		
+		if(recentlyUpladedFooterFile!=null)
+		{
+			try {
+				String footerMimetype = tika.detect(recentlyUpladedFooterFile.getStoreLocation());
+				
+				if(!footerMimetype.startsWith("image/"))
+				{	
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidImage") + ": " + recentlyUpladedFooterFile.getName());
+				}
+				else
+				{
+					this.footer = recentlyUpladedFooterFile;
+				}
+			} catch (Exception e) {
+				logger.error("Error while reading footer", e);
+			}
+			
+			this.recentlyUpladedFooterFile = null;
+		}
+		
+
+		//validate Images
+		for(DiskFileItem img : recentlyUploadedImageFiles)
+		{
+			IngestImage ingestImage = new IngestImage(img);
+			
+			try {
+
+				String mimetype = tika.detect(ingestImage.getDiskFileItem().getStoreLocation());
+				
+				if(!mimetype.startsWith("image/"))
+				{	
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidImage") + ": " + ingestImage.getName());
+				}
+				else
+				{
+					if(imageFiles.contains(ingestImage))
+					{
+						int pos = imageFiles.indexOf(ingestImage);
+						imageFiles.remove(pos);
+						imageFiles.add(pos, ingestImage);
+					}
+					else
+					{
+						imageFiles.add(ingestImage);
+					}
+				}
+			} catch (IOException e) {
+				
+				logger.error("Could not detect mimetype for " +ingestImage.getName());	
+			}
+		}
+		
+		recentlyUploadedImageFiles.clear();
+		
+	
+		checkSortImagesByTei();
+		
+		return null;
+	}
+	
+	public void checkSortImagesByTei()
+	{
 		sortableByTei = sortImagesByTeiFile();
 		if(sortableByTei)
 		{
 			this.sortImagesAlgorithm = "tei";
 		}
-		return null;
 	}
 		
 	
@@ -586,20 +669,18 @@ public class IngestBean{
 	
 	
     
-	private void processMabFile(FileItem fileItem) {
+	private ModsMetadata processMabFile(FileItem fileItem) throws Exception{
 		
-		try { 
-			if(fileItem instanceof DiskFileItem)
-			{
-				DiskFileItem item = (DiskFileItem) fileItem;
-				MabXmlTransformation transform = new MabXmlTransformation();
-				File modsFile = transform.mabToMods(null, item.getStoreLocation());
-				this.modsMetadata = VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
-				System.out.println("");
-			}
-		} catch (Exception e) {
-			logger.error("Error while transforming MAB", e);
+	
+		if(fileItem instanceof DiskFileItem)
+		{
+			DiskFileItem item = (DiskFileItem) fileItem;
+			MabXmlTransformation transform = new MabXmlTransformation();
+			File modsFile = transform.mabToMods(null, item.getStoreLocation());
+			return VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
 		}
+		return null;
+		
 		
 		
 		
@@ -643,7 +724,7 @@ public class IngestBean{
 	public void deleteImage(int i, IngestImage file)
 	{
 		getImageFiles().remove(i);
-		uploadComplete();
+		checkSortImagesByTei();
 	}
 	
 	
@@ -824,9 +905,9 @@ public class IngestBean{
 					}
 					
 					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
-		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
+		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
 					else
-			    		volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile);
+			    		volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
 						
 					clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
@@ -873,7 +954,7 @@ public class IngestBean{
 	     			return "";
 	    		}
 				
-				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles);
+				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 				
 			}
 			
@@ -924,7 +1005,7 @@ public class IngestBean{
 		return mabFile;
 	}
 
-	public void setMabFile(FileItem mabFile) {
+	public void setMabFile(DiskFileItem mabFile) {
 		this.mabFile = mabFile;
 	}
 
@@ -932,7 +1013,7 @@ public class IngestBean{
 		return teiFile;
 	}
 
-	public void setTeiFile(FileItem teiFile) {
+	public void setTeiFile(DiskFileItem teiFile) {
 		this.teiFile = teiFile;
 	}
 
@@ -1283,6 +1364,16 @@ public class IngestBean{
 	public String getAttributeValue(XdmNode node, String attributeName)
 	{
 		return node.getAttributeValue(new QName(attributeName));
+	}
+
+
+	public DiskFileItem getCodicologicalFile() {
+		return codicologicalFile;
+	}
+
+
+	public void setCodicologicalFile(DiskFileItem codicologicalFile) {
+		this.codicologicalFile = codicologicalFile;
 	}
 	
 

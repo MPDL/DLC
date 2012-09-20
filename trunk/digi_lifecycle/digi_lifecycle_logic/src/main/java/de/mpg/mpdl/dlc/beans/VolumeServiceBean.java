@@ -38,6 +38,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQConstants;
 import javax.xml.xquery.XQDataSource;
@@ -68,6 +71,7 @@ import org.jibx.runtime.JiBXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
@@ -326,7 +330,7 @@ public class VolumeServiceBean {
 		vol.setProperties(item.getProperties());
 		vol.setModsMetadata(modsMetadata);
 		vol.setItem(item);
-		vol = updateVolume(vol, userHandle, null, false);
+		vol = updateVolume(vol, userHandle, null, null, false);
 		if(operation.equalsIgnoreCase("release"))
 			vol = releaseVolume(vol.getItem().getObjid(), userHandle);
 		}
@@ -530,7 +534,7 @@ public class VolumeServiceBean {
 	
 
 	
-	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem footer, FileItem teiFile) throws Exception
+	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem footer, DiskFileItem teiFile, DiskFileItem codicologicalFile) throws Exception
 	{
 		
 		logger.info("Creating new volume/monograph");
@@ -587,10 +591,12 @@ public class VolumeServiceBean {
 				logger.info("Time to upload images: " + time);
 			
 			
+				/*
 				InputStream teiInputStream = null;
 				if(teiFile != null)
 					teiInputStream = teiFile.getInputStream();
-				volume = updateVolume(volume, userHandle, teiInputStream, true);
+					*/
+				volume = updateVolume(volume, userHandle, teiFile, codicologicalFile, true);
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
@@ -649,21 +655,24 @@ public class VolumeServiceBean {
 						jpegFooter = footer.getStoreLocation();
 					
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
+					
+					
 						
 				}
 				
 				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
 				File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
 				String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+				
 								
 				String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
 				File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
 				String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
 				
+				
 				String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
 				File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
 				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-				
 				
 				
 			}
@@ -683,7 +692,7 @@ public class VolumeServiceBean {
 		}				
 	}
 	
-	public Volume update(Volume volume, String userHandle, String operation,  FileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images)
+	public Volume update(Volume volume, String userHandle, String operation,  DiskFileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem cdcFile)
 	{
 		Item item = volume.getItem();
 		ItemHandlerClient client;
@@ -723,16 +732,13 @@ public class VolumeServiceBean {
 			{
 				volume.setModsMetadata(modsMetadata);
 			}
-			if(teiFile!=null)
-			{
-				teiInputStream = teiFile.getInputStream();
-			}
 			
 			
-			if(teiFile != null || modsMetadata != null)
+			
+			if(teiFile != null || modsMetadata != null || cdcFile!=null)
 			{
 			
-				updateVolume(volume, userHandle, teiInputStream, true);
+				updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			}
 			
 			if(operation.equalsIgnoreCase("release"))
@@ -748,11 +754,12 @@ public class VolumeServiceBean {
 		return volume;
 	}
 	
-	public Volume updateVolume(Volume volume, String userHandle, InputStream teiInputStream, boolean updateTeiSd) throws Exception
+	public Volume updateVolume(Volume volume, String userHandle, DiskFileItem teiFile, DiskFileItem cdcFile, boolean updateTeiSd) throws Exception
 	{
 		Component pagedTeiComponent = null ;
 		Component teiComponent = null;
 		Component teiSdComponent = null;
+		Component cdcComponent = null;
 
 		try 
 		{
@@ -771,15 +778,19 @@ public class VolumeServiceBean {
 				{
 					teiSdComponent = c;
 				}
+				else if (c.getProperties().getContentCategory().equals("codicological"))
+				{
+					cdcComponent = c;
+				}
 			}
 
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		sthc.setHandle(userHandle);
 			
-		if(teiInputStream!=null)	
+		if(teiFile!=null)	
 			{
 				logger.info("TEI file found");
-				File teiFileWithPbConvention = applyPbConventionToTei(teiInputStream);
+				File teiFileWithPbConvention = applyPbConventionToTei(new FileInputStream(teiFile.getStoreLocation()));
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 
 				//Transform TEI to Tei-SD and add to volume
@@ -831,6 +842,7 @@ public class VolumeServiceBean {
 				teiComponent.getProperties().setMimeType("text/xml");
 				teiComponent.getProperties().setContentCategory("tei");
 				teiComponent.getProperties().setVisibility("public");
+				teiComponent.getProperties().setFileName(teiFile.getName());
 				ComponentContent teiContent = new ComponentContent();
 				teiComponent.setContent(teiContent);
 				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
@@ -843,10 +855,7 @@ public class VolumeServiceBean {
 			//if vol has a teiSd and it should be updated
 			if(volume.getTeiSd()!=null && updateTeiSd)
 			{
-				
-				
-				
-				
+
 				IMarshallingContext marshContext = bfactTei.createMarshallingContext();
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
@@ -931,6 +940,37 @@ public class VolumeServiceBean {
 					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}
 			}
+			
+			
+			//Add codicological metadata as component
+			if(cdcFile!=null)	
+			{
+				logger.info("Codicological file found");
+				
+				URL uploadedCdc = sthc.upload(cdcFile.getStoreLocation());
+				
+				if(cdcComponent!=null)
+				{
+					volume.getItem().getComponents().remove(cdcComponent);
+				}
+
+				cdcComponent = new Component();
+				ComponentProperties cdcCompProps = new ComponentProperties();
+				cdcComponent.setProperties(cdcCompProps);
+				
+				cdcComponent.getProperties().setMimeType("text/xml");
+				cdcComponent.getProperties().setContentCategory("codicological");
+				cdcComponent.getProperties().setVisibility("public");
+				cdcComponent.getProperties().setFileName(cdcFile.getName());
+				ComponentContent cdcContent = new ComponentContent();
+				cdcComponent.setContent(cdcContent);
+				cdcComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
+				volume.getItem().getComponents().add(cdcComponent);
+				cdcComponent.getContent().setXLinkHref(uploadedCdc.toExternalForm());
+			}
+				
+
+			
 			
 			//Clear all mdRecords
 			volume.getItem().getMetadataRecords().clear();		
@@ -1387,9 +1427,26 @@ public class VolumeServiceBean {
 			
 		
 
-		/*	
-		File tei = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/ernstcurtius_v03_ids.xml");
 		
+		File tei = new File("R:/dlc Ingest Daten/test_Berlin/B836F1_1885/B836F1_1885.xml");
+		
+		SchemaFactory factory = SchemaFactory.newInstance("http://relaxng.org/ns/structure/1.0", "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);
+	       
+       
+        
+        Schema schema = factory.newSchema(new File("C:/Projects/digi_lifecycle/digi_lifecycle_presentation/src/main/resources/schemas/DLC-TEI.rng"));
+    
+      
+        Validator validator = schema.newValidator();
+
+       
+        validator.validate(new StreamSource(tei));
+		
+		List<XdmNode> list = VolumeServiceBean.getAllPbs(new StreamSource(tei));
+		System.out.println(list);
+		
+		
+		/*
 		VolumeServiceBean vsb = new VolumeServiceBean();
 		List<XdmNode> list = vsb.getAllPbIds(new FileInputStream(tei));
 		
@@ -2332,6 +2389,17 @@ public class VolumeServiceBean {
 	}
 	
 	
+	
+	public static void validateTei(Source tei) throws Exception
+	{
+        SchemaFactory factory = SchemaFactory.newInstance("http://relaxng.org/ns/structure/1.0", "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);       
+        URL url = VolumeServiceBean.class.getClassLoader().getResource("schemas/DLC-TEI.rng");        
+        Schema schema = factory.newSchema(new File(url.toURI()));      
+        Validator validator = schema.newValidator();       
+        validator.validate(tei);    
+	}
+	
+	
 	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
 	{
 
@@ -2606,7 +2674,7 @@ public class VolumeServiceBean {
 
 
 
-	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, File tei) throws Exception {
+	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception {
 		logger.info("Creating new volume/monograph");
 		
 		Volume volume = new Volume();
@@ -2709,10 +2777,7 @@ public class VolumeServiceBean {
 				logger.info("Time to upload images: " + time);
 			
 			
-				InputStream teiInputStream = null;
-				if(tei != null)
-					teiInputStream = new FileInputStream(tei);
-				volume = updateVolume(volume, userHandle, teiInputStream, true);
+				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
@@ -2729,6 +2794,11 @@ public class VolumeServiceBean {
 			}
 			
 			
+	}
+	
+	public static DiskFileItem fileToDiskFileItem(File f)
+	{
+		return new DiskFileItem(f.getName(), null, true, f.getName(), 0, f);
 	}
 	
 

@@ -694,7 +694,9 @@ public class IngestLog
 				String itemId = null;
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
-					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, bi.getTeiFile());
+					
+					
+					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
 					
 					updateLogItem(logItemId, "item_id", itemId);
 					Date eDate = new Date();
@@ -730,7 +732,7 @@ public class IngestLog
 						ArrayList<String> volIds = new ArrayList<String>();
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, vol.getTeiFile());
+							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, VolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
 							eDate = new Date();
 							updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
 							if(volId == null)

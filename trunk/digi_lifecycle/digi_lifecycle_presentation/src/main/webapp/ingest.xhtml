@@ -37,7 +37,7 @@
 						<h:outputText value="#{msg.ingest_uploadInfo}" escape="false"/>
 					</h:panelGroup>
 					<br/><br/>
-					<fu:fileUpload rerender="@form" execute="@form" fileUploadListener="#{ingestBean.fileUploaded}" onUploadCompleteAction="#{ingestBean.uploadComplete}"></fu:fileUpload>
+					<fu:fileUpload rerender="@form :messages" execute="@form" fileUploadListener="#{ingestBean.fileUploaded}" onUploadCompleteAction="#{ingestBean.uploadComplete}"></fu:fileUpload>
 				</rich:panel>
 			</h:panelGroup>
 			<script type="text/javascript">
@@ -131,12 +131,17 @@
 					</rich:panel>
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
 						<h:outputText value="#{ingestBean.mabFile.name}" />
+						
+						<ui:remove>
 						<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
 							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="false"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" rendered="#{not empty ingestBean.volume}">				
+						</ui:remove>
+						
+						<h:panelGroup layout="block" rendered="#{not empty ingestBean.volume or not empty ingestBean.mabFile}">				
 							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="true"/>
 						</h:panelGroup>
+						
 						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
 							<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
 						</h:panelGroup>
