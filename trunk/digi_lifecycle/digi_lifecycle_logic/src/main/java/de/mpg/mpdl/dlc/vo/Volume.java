@@ -52,6 +52,9 @@ public class Volume {
 	@XmlTransient
 	private String tei;
 	
+	@XmlTransient
+	private String codicological;
+	
 	
 	private TeiSd teiSd;
 	
@@ -258,6 +261,14 @@ public class Volume {
 	public String getObjidAndVersion()
 	{
 		return this.getItem().getOriginObjid() + ":" + this.getItem().getProperties().getVersion().getNumber();
+	}
+
+	public String getCodicological() {
+		return codicological;
+	}
+
+	public void setCodicological(String codicological) {
+		this.codicological = codicological;
 	}
 	
 

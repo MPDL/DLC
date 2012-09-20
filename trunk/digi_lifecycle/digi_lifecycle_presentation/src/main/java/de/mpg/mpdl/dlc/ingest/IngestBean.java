@@ -296,6 +296,14 @@ public class IngestBean{
         return "";
     }
     
+    public String clearUploadedCodicological() 
+    {     
+    	this.codicologicalFile = null;
+        return "";
+    }
+    
+    
+    
 
     
     public String clearUploadedMAB() 
@@ -528,6 +536,21 @@ public class IngestBean{
 			}
 			
 			recentlyUpladedTeiFile = null;
+		}
+		
+		//validate codicological md
+		if(recentlyUpladedCodicologigalFile!=null)
+		{
+			try {
+				
+				VolumeServiceBean.validateCodicologicalMd(new StreamSource(recentlyUpladedCodicologigalFile.getStoreLocation()));
+				this.codicologicalFile = recentlyUpladedCodicologigalFile;
+			} catch (Exception e) {
+				logger.error("Error while validating TEI", e);
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidCodicological") + "\n " + e.getMessage()); 
+			}
+			
+			recentlyUpladedCodicologigalFile = null;
 		}
 		
 		
