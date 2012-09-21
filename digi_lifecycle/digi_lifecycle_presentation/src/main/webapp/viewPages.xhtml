@@ -129,7 +129,53 @@
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="#{not empty viewPages.volume.codicological}">  
-								<h:outputText value="#{viewPages.volume.codicological}" />
+								<style>
+									.cdc
+									{
+										width:95.95%;
+										padding:0 2%;
+
+									}
+									
+									
+									.cdcLabelHeader 
+									{
+										font-weight: bold;
+										font-size: 150%;
+									
+									}
+									
+									.cdcLabel
+									{
+										margin-right:2%;
+										font-weight: bold;
+										
+									}
+									
+									.cdcValue
+									{
+										
+										
+									}
+									
+									.cdcLabelAttr
+									{
+										padding:0 2%;
+										font-weight: bold;
+										
+									}
+									
+									.cdcValueAttr
+									{
+										
+									}
+								
+								
+								</style>
+								
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto">
+									<h:outputText value="#{viewPages.codicologicalXhtml}" escape="false" />
+								</h:panelGroup>
 							</rich:tab>
 								
 							

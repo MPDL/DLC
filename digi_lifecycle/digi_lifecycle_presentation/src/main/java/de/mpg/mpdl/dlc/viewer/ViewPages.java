@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.viewer;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +15,22 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
 
+import net.sf.saxon.s9api.ExtensionFunction;
+import net.sf.saxon.s9api.ItemType;
+import net.sf.saxon.s9api.OccurrenceIndicator;
+import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.SaxonApiException;
+import net.sf.saxon.s9api.SequenceType;
+import net.sf.saxon.s9api.XPathCompiler;
+import net.sf.saxon.s9api.XPathExecutable;
+import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmAtomicValue;
+import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XdmValue;
 
 import org.apache.log4j.Logger;
 
@@ -120,6 +134,8 @@ public class ViewPages implements Observer{
 	
 	private Map<Page, String> viewTypeMap = new HashMap<Page, String>();
 	
+	private String codicologicalXhtml;
+	
 	@PostConstruct
 	public void postConstruct()
 	{
@@ -188,6 +204,8 @@ public class ViewPages implements Observer{
 					}
 					
 				}
+				
+				
 				
 				
 			} catch (Exception e) {
@@ -586,6 +604,8 @@ public class ViewPages implements Observer{
 		}
 	}
 	
+
+	
 	public String[] getFulltextMatchesAsArray()
 	{
 		String[] matches = new String[0];
@@ -832,6 +852,51 @@ public class ViewPages implements Observer{
 
 	public void setViewTypeMap(Map<Page, String> viewTypeMap) {
 		this.viewTypeMap = viewTypeMap;
+	}
+
+	public String getCodicologicalXhtml() {
+		
+		try {
+			if(codicologicalXhtml==null && volume.getCodicological()!=null)
+			{
+				 ExtensionFunction i18n = new ExtensionFunction() {
+		                public QName getName() {
+		                    return new QName("http://dlc.mpdl.mpg.de", "i18n");
+		                }
+
+		                public XdmValue call(XdmValue[] arguments) throws SaxonApiException {
+		                    String arg = ((XdmAtomicValue)arguments[0].itemAt(0)).getStringValue();
+		                    String result = InternationalizationHelper.getLabel(arg);
+		                    return new XdmAtomicValue(result);
+		                }
+
+						@Override
+						public SequenceType[] getArgumentTypes() {
+			                   return new SequenceType[]{
+			                           SequenceType.makeSequenceType(
+			                               ItemType.STRING, OccurrenceIndicator.ONE)};
+						}
+
+						@Override
+						public SequenceType getResultType() {
+							 return SequenceType.makeSequenceType(
+				                        ItemType.STRING, OccurrenceIndicator.ONE
+				                    );
+						}
+		            };
+
+				
+				this.codicologicalXhtml = VolumeServiceBean.transformCodicologicalToHtml(new StreamSource(new StringReader(volume.getCodicological())), i18n);
+			}
+		} catch (Exception e) {
+			logger.error("error while transforming codicological md to xhtml");
+		}
+		
+		return codicologicalXhtml;
+	}
+
+	public void setCodicologicalXhtml(String codicologicalXhtml) {
+		this.codicologicalXhtml = codicologicalXhtml;
 	}
 
 
