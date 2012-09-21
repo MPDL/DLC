@@ -47,13 +47,18 @@ import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQResultSequence;
 
+import net.sf.saxon.s9api.ExtensionFunction;
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathExecutable;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XsltCompiler;
+import net.sf.saxon.s9api.XsltExecutable;
+import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 import org.apache.axis.types.NonNegativeInteger;
@@ -2827,6 +2832,41 @@ public class VolumeServiceBean {
 	public static DiskFileItem fileToDiskFileItem(File f)
 	{
 		return new DiskFileItem(f.getName(), null, true, f.getName(), 0, f);
+	}
+	
+	
+	public static String transformCodicologicalToHtml(Source cdcXml, ExtensionFunction extFuncs)throws Exception
+	{
+		
+		
+		
+		
+			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/codicologicalToHtml/codicologicalToHtml.xsl");
+			System.setProperty("javax.xml.transform.TransformerFactory",
+					"net.sf.saxon.TransformerFactoryImpl");
+			
+			Processor proc = new Processor(false);
+			if(extFuncs!=null)
+			{
+				proc.registerExtensionFunction(extFuncs);
+			}
+			
+			XsltCompiler xsltCompiler = proc.newXsltCompiler();
+			XsltExecutable xsltExecutable = xsltCompiler.compile(new StreamSource(url.openStream()));
+			
+			XsltTransformer xsltTransformer = xsltExecutable.load();
+			xsltTransformer.setSource(cdcXml);
+			
+			StringWriter sw = new StringWriter();
+			xsltTransformer.setDestination(new Serializer(sw));
+			
+			xsltTransformer.transform();
+			
+
+			
+			
+			return sw.toString();
+		
 	}
 	
 
