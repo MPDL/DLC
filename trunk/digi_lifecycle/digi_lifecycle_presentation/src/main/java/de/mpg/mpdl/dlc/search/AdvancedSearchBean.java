@@ -153,6 +153,7 @@ public class AdvancedSearchBean {
 				this.searchCriterionList.add(this.cdcSearch);
 			}
 			
+		
 			advancedSearchResultBean.setSearchCriterionList(searchCriterionList);
 			String cql = searchBean.getAdvancedSearchCQL(searchCriterionList);
 			advancedSearchResultBean.setCqlQuery(cql);
