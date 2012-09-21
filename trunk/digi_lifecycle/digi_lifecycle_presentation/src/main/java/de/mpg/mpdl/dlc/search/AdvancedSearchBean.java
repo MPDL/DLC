@@ -40,7 +40,9 @@ public class AdvancedSearchBean {
 	private SearchCriterion yearFrom = null;
 	private SearchCriterion yearTo = null;
 	
-	private SearchCriterion fulltextSearch= null;;
+	private SearchCriterion fulltextSearch= null;
+	
+	private SearchCriterion cdcSearch= null;
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();	
 	private OrganizationalUnitServiceBean ouServiceBean =  new OrganizationalUnitServiceBean();	
@@ -67,6 +69,8 @@ public class AdvancedSearchBean {
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		
 		this.fulltextSearch = new SearchCriterion(SearchType.FULLTEXT, "");
+		
+		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		//this.contextSearchItem = new ContextSearch();
 		
 		this.init();
@@ -128,7 +132,7 @@ public class AdvancedSearchBean {
 			this.setCollectionSearch();
 			this.setYearSearch();
 			
-			if (!this.freeSearch.equals(""))
+			if (!this.freeSearch.trim().equals(""))
 			{
 				//Set free search
 				SearchCriterion scFree = new SearchCriterion(SearchType.FREE, this.freeSearch);
@@ -140,6 +144,13 @@ public class AdvancedSearchBean {
 			{
 				
 				this.searchCriterionList.add(this.fulltextSearch);
+			}
+			
+			//Set cdc search
+			if(!this.cdcSearch.getValue().trim().isEmpty())
+			{
+				
+				this.searchCriterionList.add(this.cdcSearch);
 			}
 			
 			advancedSearchResultBean.setSearchCriterionList(searchCriterionList);
@@ -376,6 +387,14 @@ public class AdvancedSearchBean {
 
 	public void setFulltextSearch(SearchCriterion fulltextSearch) {
 		this.fulltextSearch = fulltextSearch;
+	}
+
+	public SearchCriterion getCdcSearch() {
+		return cdcSearch;
+	}
+
+	public void setCdcSearch(SearchCriterion cdcSearch) {
+		this.cdcSearch = cdcSearch;
 	}
 	
 }

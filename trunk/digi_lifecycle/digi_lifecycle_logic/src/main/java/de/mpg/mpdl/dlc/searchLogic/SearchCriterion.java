@@ -30,7 +30,9 @@ public class SearchCriterion extends Criterion{
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}),
 		OBJECTTYPE(new String[]{"escidoc.objecttype"}),
 	
-		CREATEDBY(new String[]{"escidoc.created-by.name"});
+		CREATEDBY(new String[]{"escidoc.created-by.name"}),
+		
+		CODICOLOGICAL(new String[]{"dlc.cdc.metadata"});
 		
 		private String[] indexNames;
 		
