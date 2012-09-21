@@ -5,24 +5,24 @@
     
     <!--Element with no child nodes -->
     <xsl:template match="*[not(*)]">
-    	<div class="cdc">
-		    <xsl:if test="normalize-space(text())!=''">
+    	 <xsl:if test="normalize-space(text()) or @*">
+    	 <div class="cdc">
 		    <span class="cdcLabel">
-				<xsl:value-of select="dlc:i18n(concat('codicological_', name()))"/>
+				<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
 			</span>
 			<span class="cdcValue">
 				<xsl:value-of select="text()"/>
 			</span>
-	    	</xsl:if>
     	</div>
+    	</xsl:if>
     	<xsl:apply-templates select="@*"/>
     </xsl:template>
     
       <!--Attribute -->
      <xsl:template match="@*">
-     	<div class="eg3_container_1">
+     	<div class="cdcAttr">
 	    	<span class="cdcLabelAttr">
-	    		<xsl:value-of select="dlc:i18n(concat('codicological_', name()))"/>
+	    		<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
 	    	</span>
 	    	<span class="cdcValueAttr">
 	    		<xsl:value-of select="."/>
@@ -33,7 +33,7 @@
     <!--Element with child nodes -->
     <xsl:template match="*">
     	<div class="eg3_container_1 cdcLabelHeader">
-    		<xsl:value-of select="dlc:i18n(concat('codicological_', name()))"/>
+    		<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
     	</div>
     	<xsl:apply-templates select="@*|*"/>
     </xsl:template>

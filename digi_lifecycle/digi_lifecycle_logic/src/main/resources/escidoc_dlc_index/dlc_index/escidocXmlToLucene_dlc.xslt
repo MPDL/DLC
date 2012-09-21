@@ -246,6 +246,7 @@
 	<!-- RECURSIVE ITERATION OF ELEMENTS -->
 	<!-- ITERATE ALL ELEMENTS AND WRITE ELEMENT-NAME AND ELEMENT-VALUE -->
     <xsl:template name="processElementTree">
+        <xsl:param name="root" select="."/>
         <!-- name of index-field -->
         <xsl:param name="path"/>
         <!-- prefix for index-name -->
@@ -286,7 +287,7 @@
                     </xsl:call-template>
                     <!-- ADDITIONALLY WRITE VALUE IN metadata-index -->
                     <xsl:call-template name="writeIndexField">
-                        <xsl:with-param name="context" select="$CONTEXTNAME"/>
+                        <xsl:with-param name="context" select="$context"/>
                         <xsl:with-param name="fieldname">metadata</xsl:with-param>
                         <xsl:with-param name="fieldvalue" select="."/>
                         <xsl:with-param name="indextype">TOKENIZED</xsl:with-param>
@@ -295,7 +296,7 @@
                 </xsl:if>
             </xsl:for-each>
         </xsl:if>
-        <xsl:for-each select="./*">
+        <xsl:for-each select="$root/*">
             <xsl:variable name="fieldname">
                 <xsl:choose>
                     <xsl:when test="$nametype='element'">
@@ -399,106 +400,86 @@
   		<xsl:variable name="mime-type">
 			<xsl:value-of select="$components[$num]/*[local-name()='properties']/*[local-name()='mime-type']"/>
 		</xsl:variable>
-  		<xsl:choose>
-  		<!-- ONLY Do fulltext indexing for paged TEI -->
-  			<xsl:when test="string($component-type) and $component-type='tei-paged'">
+  		
+  			<!-- do fulltext indexing for paged TEI -->
+  			<xsl:if test="string($component-type) and $component-type='tei-paged'">
 				
 				<xsl:variable name="tei" select="escidoc-core-accessor:getDomDocument($components[$num]/*[local-name()='content']/@xlink:href, 'false')"/>
 
-
-<!--
-
-				 <IndexField index="TOKENIZED" store="YES" termVector="NO">
-                                        <xsl:attribute name="IFname">
-                                                <xsl:value-of select="'teitest'"/>
-                                        </xsl:attribute>
-                   			 <xsl:value-of select="$tei//page"/>
-                                </IndexField>
-
-
-
-
--->
-
-
-				
 				<!-- SEPERATELY STORE EACH FULLTEXT IN DIFFERENT FIELD FOR HIGHLIGHTING -->
-   			
     			<xsl:for-each select="$tei//*[local-name()='page']">
 			
-				<xsl:variable name="textContent">
-					<xsl:apply-templates mode="teiToIndexText"/>
-				</xsl:variable>
+					<xsl:variable name="textContent">
+						<xsl:apply-templates mode="teiToIndexText"/>
+					</xsl:variable>
 
-
-				 <IndexField index="TOKENIZED" store="YES" termVector="NO">
-                                       
-                                        <xsl:attribute name="IFname">
-                                                <xsl:value-of select="concat($CONTEXTNAME,'.fulltext')"/>
-                                        </xsl:attribute>
-			                 <xsl:attribute name="store">
-                        			<xsl:value-of select="$STORE_FOR_SCAN"/>
-                    			</xsl:attribute>
-					<xsl:if test="$textContent and normalize-space($textContent)">
-						<xsl:value-of select="$textContent"/>
- 					</xsl:if>
-
-                                </IndexField>
-
-
-
-
-
-
-
-			<IndexField index="NO" store="YES" termVector="NO">
-					<xsl:attribute name="IFname">
-						<xsl:value-of select="concat('stored_fulltext',position())"/>
-					</xsl:attribute>
-					<!-- eSciDoc only stores an Index if the trimmed value is not empty. And the numbering of the highlight index fields must be consecutively.
-						Thus, if the content of an page is empty, anyway write a dummy field. --> 
-					<xsl:choose>
-						<xsl:when test="$textContent and normalize-space($textContent)">
+					<!-- Generic fulltext fields for each page -->
+				 	<IndexField index="TOKENIZED" store="YES" termVector="NO">           
+	                     <xsl:attribute name="IFname">
+	                             <xsl:value-of select="concat($CONTEXTNAME,'.fulltext')"/>
+	                     </xsl:attribute>
+		                 <xsl:attribute name="store">
+                       			<xsl:value-of select="$STORE_FOR_SCAN"/>
+                   		</xsl:attribute>
+						<xsl:if test="$textContent and normalize-space($textContent)">
 							<xsl:value-of select="$textContent"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="'&#160;'"/>
-						</xsl:otherwise>
-					</xsl:choose>
-					
-					
-				</IndexField>
-    			<!-- SEPERATELY STORE FILENAME FOR EACH FULLTEXT FOR HIGHLIGHTING -->
-    			<IndexField index="NO" store="YES" termVector="NO">
-					<xsl:attribute name="IFname">
-						<xsl:value-of select="concat('stored_filename',position())"/>
-					</xsl:attribute>
-					<xsl:value-of select="@*[local-name()='id']"/>
-				</IndexField>
+	 					</xsl:if>
+                     </IndexField>
+
+					<!-- Special fulltext fieldsfor each page -->
+					<IndexField index="NO" store="YES" termVector="NO">
+						<xsl:attribute name="IFname">
+							<xsl:value-of select="concat('stored_fulltext',position())"/>
+						</xsl:attribute>
+						<!-- eSciDoc only stores an Index if the trimmed value is not empty. And the numbering of the highlight index fields must be consecutively.
+							Thus, if the content of an page is empty, anyway write a dummy field. --> 
+						<xsl:choose>
+							<xsl:when test="$textContent and normalize-space($textContent)">
+								<xsl:value-of select="$textContent"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="'&#160;'"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</IndexField>
+				
+	    			<!-- SEPERATELY STORE FILENAME FOR EACH FULLTEXT FOR HIGHLIGHTING -->
+	    			<IndexField index="NO" store="YES" termVector="NO">
+						<xsl:attribute name="IFname">
+							<xsl:value-of select="concat('stored_filename',position())"/>
+						</xsl:attribute>
+						<xsl:value-of select="@*[local-name()='id']"/>
+					</IndexField>
     			</xsl:for-each>
 
-				<xsl:choose>
-					<xsl:when test="$components[$num + 1]">
-						<xsl:call-template name="processComponents">
-							<xsl:with-param name="num" select="$num + 1"/>
-							<xsl:with-param name="components" select="$components"/>
-							<xsl:with-param name="matchNum" select="$matchNum + 1"/>
-						</xsl:call-template>
-					</xsl:when>
-				</xsl:choose>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:choose>
-					<xsl:when test="$components[$num + 1]">
-						<xsl:call-template name="processComponents">
-							<xsl:with-param name="num" select="$num + 1"/>
-							<xsl:with-param name="components" select="$components"/>
-							<xsl:with-param name="matchNum" select="$matchNum"/>
-						</xsl:call-template>
-					</xsl:when>
-				</xsl:choose>
-			</xsl:otherwise>
-		</xsl:choose>
+				
+			</xsl:if>
+			
+			<!-- do fulltext indexing for codicological md -->
+  			<xsl:if test="string($component-type) and $component-type='codicological'">
+  				<xsl:variable name="cdcData" select="escidoc-core-accessor:getDomDocument($components[$num]/*[local-name()='content']/@xlink:href, 'false')"/>
+  				 <xsl:call-template name="processElementTree">
+  				 	<xsl:with-param name="root" select="$cdcData"/>
+			        <xsl:with-param name="path"/>
+			        <xsl:with-param name="context">dlc.cdc</xsl:with-param>
+			     	<xsl:with-param name="indexAttributes">yes</xsl:with-param>
+                	<xsl:with-param name="nametype">element</xsl:with-param>
+  				 </xsl:call-template>
+  			</xsl:if>
+			
+			
+			<xsl:if test="$components[$num + 1]">
+				<xsl:call-template name="processComponents">
+					<xsl:with-param name="num" select="$num + 1"/>
+					<xsl:with-param name="components" select="$components"/>
+					<xsl:with-param name="matchNum" select="$matchNum + 1"/>
+				</xsl:call-template>
+			</xsl:if>
+			
+			
+			
+			
+			
 	</xsl:template>
 
 
