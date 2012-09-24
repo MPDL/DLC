@@ -153,7 +153,7 @@ public class SearchBean {
 		}
 		
 		//set first operator always to "AND"
-		if(listWithoutEmptyEntries!=null && listWithoutEmptyEntries.size()>=0)
+		if(listWithoutEmptyEntries!=null && listWithoutEmptyEntries.size()>0)
 		{
 			listWithoutEmptyEntries.get(0).setOperator(Operator.AND);
 		}
