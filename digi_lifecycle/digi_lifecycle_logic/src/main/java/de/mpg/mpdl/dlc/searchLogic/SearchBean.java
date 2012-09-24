@@ -150,15 +150,9 @@ public class SearchBean {
 		{
 			listWithoutEmptyEntries.get(0).setOpenBracket(listWithoutEmptyEntries.get(0).getOpenBracket()+1);
 			listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).setCloseBracket(listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).getCloseBracket()+1);
-		}
-		
-		//set first operator always to "AND"
-		if(listWithoutEmptyEntries!=null && listWithoutEmptyEntries.size()>0)
-		{
+			//set first operator always to "AND"
 			listWithoutEmptyEntries.get(0).setOperator(Operator.AND);
 		}
-		
-		
 		
 		scListStandard.addAll(listWithoutEmptyEntries);
 		return scListStandard;
