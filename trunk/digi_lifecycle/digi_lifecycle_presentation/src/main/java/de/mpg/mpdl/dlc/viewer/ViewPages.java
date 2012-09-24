@@ -760,7 +760,7 @@ public class ViewPages implements Observer{
 
 	public void setTreeExpansionStateMap(Map<PbOrDiv, Boolean> treeExpansionStateMap) {
 		this.treeExpansionStateMap = treeExpansionStateMap;
-	}
+	} 
 
 	public Organization getVolumeOu() {
 		return volumeOu;
