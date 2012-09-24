@@ -12,6 +12,7 @@
 	<!-- INTERFACE -->
 	<cc:interface>
 		<cc:attribute name="modsMetadata" required="true"/>
+		<cc:attribute name="volumeOu" required="true"/>
 		<cc:attribute name="editable" type="java.lang.Boolean" required="true"/>
 	</cc:interface>
 	
@@ -486,6 +487,14 @@
 				</h:panelGroup>
 			</h:panelGroup>
 	<!-- END OF metadata container -->
+	
+	
+			<ui:fragment rendered="#{not empty cc.attrs.volumeOu.dlcMd.foafOrganization.cataloguePrefix and not empty cc.attrs.modsMetadata.catalogueId_001}">
+				<br/>
+				<h:outputLink value="#{cc.attrs.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{cc.attrs.modsMetadata.catalogueId_001}" >
+					<h:outputText value="#{lbl.catalogue_link}" style="text-decoration:underline; font-weight:bold"/>
+				</h:outputLink>
+			</ui:fragment>
 		</h:panelGroup>
 		
 	</cc:implementation>
