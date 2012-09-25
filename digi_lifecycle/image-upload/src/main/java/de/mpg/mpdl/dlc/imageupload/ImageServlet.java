@@ -242,7 +242,7 @@ public class ImageServlet extends HttpServlet {
 		
 		String mainDir =(String)PropertyReader.getProperty("image-upload.destDir");
 		
-		if(req.getPathInfo()==null || req.getPathInfo().trim().isEmpty() || req.getPathInfo().contains(".."))
+		if(req.getPathInfo()==null || req.getPathInfo().trim().isEmpty() || req.getPathInfo().contains("..") || !req.getPathInfo().substring(1).contains("/"))
 		{
 			resp.sendError(HttpStatus.SC_FORBIDDEN);
 			return;
@@ -253,7 +253,7 @@ public class ImageServlet extends HttpServlet {
 		
 		if(!f.exists())
 		{
-			resp.sendError(HttpStatus.SC_NOT_FOUND, "Image or directory " + req.getPathInfo() + " not found!");
+			resp.sendError(HttpStatus.SC_NOT_FOUND, "Image or directory " + req.getPathInfo() + " not found! " + f.getAbsolutePath());
 			return;
 		}
 		else
@@ -270,7 +270,7 @@ public class ImageServlet extends HttpServlet {
 				}
 				else
 				{
-					resp.setStatus(HttpStatus.SC_ACCEPTED);
+					resp.setStatus(HttpStatus.SC_OK);
 
 				}
 				
