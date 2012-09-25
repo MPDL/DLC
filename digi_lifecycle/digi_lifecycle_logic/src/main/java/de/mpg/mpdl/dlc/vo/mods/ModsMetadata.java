@@ -87,7 +87,7 @@ public class ModsMetadata {
 	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
 	private List<String> keywords = new ArrayList<String>();
 	
-	@XmlPath("mods:abtract/text()")
+	@XmlPath("mods:abstract/text()")
 	private String freeText;
 
 
