@@ -17,6 +17,9 @@
 		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</developerConnection>
 		<url>https://zim02.gwdg.de/repos/virr/</url>
 	</scm>
+	<properties>
+                <project.warName>image-upload</project.warName>
+     </properties>
 	<build>
 		<plugins>
 			<plugin>
@@ -33,6 +36,16 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.1.1</version>
+		        <configuration>
+		        	<!-- Exclude dlc.properties from war file, because it should be copied to tomcat conf directory -->
+		        	<packagingExcludes>**/image-upload.properties</packagingExcludes>
+		        	<warName>${project.warName}</warName>
+		        </configuration> 
+		    </plugin>
 			<!-- 
 			<plugin>
 				<groupId>org.jvnet.jaxb2.maven2</groupId>
