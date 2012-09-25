@@ -26,7 +26,7 @@ import de.mpg.mpdl.dlc.vo.Volume;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
-	@XmlPath("mods:recordInfo/mods:recordIdentifier[@ID='mab001']/text()")
+	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='mab001']/text()")
 	private String catalogueId_001;
 	
 	/**
