@@ -245,7 +245,7 @@
 	<xsl:template name="mab001ToRecordIdentifier">
 		<xsl:element name="mods:recordInfo">
 			<xsl:element name="mods:recordIdentifier">
-				<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
+				<xsl:attribute name="source"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
 				<xsl:value-of select="."/>
 			</xsl:element>
 		</xsl:element>
