@@ -25,11 +25,8 @@ public class ImageHelper{
 	
     public static File scaleAndStoreImage(String destDir, int res, BufferedImage input, String fileName, String imgType, Type type) throws Exception{
 	         	BufferedImage scaledImage;
-		       
 
-		       
 		        scaledImage = scaleImage(input, res, type);
-		        
 		        
 		        File destDirFile = new File(destDir);
 		        if(!destDirFile.exists())
@@ -79,7 +76,7 @@ public class ImageHelper{
     	BufferedImage newImg = null;
     	Image rescaledImage;
     	
-    	
+
     	if(Type.ORIGINAL.equals(type))
     	{
     		 rescaledImage = image;

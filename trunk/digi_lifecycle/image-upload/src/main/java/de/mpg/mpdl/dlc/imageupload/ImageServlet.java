@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.imageupload;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.httpclient.Header;
@@ -41,15 +43,15 @@ public class ImageServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		String destDir =(String)PropertyReader.getProperty("image-upload.destDir");
+		String mainDir =(String)PropertyReader.getProperty("image-upload.destDir");
 		
-		File f = new File(destDir + req.getPathInfo());
+		File f = new File(mainDir + req.getPathInfo());
 		
 		ServletContext sc = getServletContext();
 		
 		if(!f.exists())
 		{
-			resp.sendError(HttpStatus.SC_NOT_FOUND, "Image not found");
+			resp.sendError(HttpStatus.SC_NOT_FOUND, "Image " + req.getPathInfo() + " not found!");
 			return;
 		}
 		else
@@ -68,6 +70,7 @@ public class ImageServlet extends HttpServlet {
 		        out.write(buf, 0, count);
 		    }
 		    fis.close();
+		    out.flush();
 		    out.close();
 			
 		}
@@ -77,7 +80,7 @@ public class ImageServlet extends HttpServlet {
 	{
 		try 
 		{
-			String authHeader = req.getHeader("authorization");
+			String authHeader = req.getHeader("Authorization");
 			String encodedValue = authHeader.split(" ")[1];
 			
 			String decodedValue = new String((Base64.decodeBase64(encodedValue.getBytes())));
@@ -122,7 +125,7 @@ public class ImageServlet extends HttpServlet {
 				 */
 				List<FileItem> items = upload.parseRequest(req);
 				Iterator<FileItem> itr = items.iterator();
-				String destDir = "";
+				String subDir = "";
 				
 				while(itr.hasNext()) {
 					FileItem item = (FileItem) itr.next();
@@ -133,10 +136,10 @@ public class ImageServlet extends HttpServlet {
 						
 						if(item.getFieldName().equals("directory"))
 						{
-							destDir = item.getString();
+							subDir = item.getString();
 							
-							log("Directory retrieved: " + destDir);
-							if(destDir.contains("../"))
+							log("Directory retrieved: " + subDir);
+							if(subDir.contains("../"))
 							{
 								throw new Exception("Filepath not allowed");
 							}
@@ -150,8 +153,49 @@ public class ImageServlet extends HttpServlet {
 							", Content type = "+item.getContentType()+
 							", File Size = "+item.getSize());
 
-						String filename = storeImages(destDir, item, "jpg");
-						out.write(destDir + "/" + filename);
+						
+						String mainDir = PropertyReader.getProperty("image-upload.destDir");
+						
+						
+						//Write file to directory
+						if(!mainDir.endsWith("/") || subDir.startsWith("/"))
+						{
+							mainDir=mainDir + "/";
+						}
+						if(!subDir.endsWith("/"))
+						{
+							subDir = subDir + "/";
+						}
+						
+						subDir = subDir.replaceAll(":", "_");
+						
+						File dirFile = new File(mainDir + subDir);
+						if(!dirFile.exists())
+						{
+							dirFile.mkdirs();
+						}
+						
+						File f = new File(dirFile, item.getName());
+						if(!f.exists())
+						{
+							f.createNewFile();
+						}
+					    FileOutputStream output = new FileOutputStream(f);
+					    InputStream tempFileInput = ((DiskFileItem)item).getInputStream();
+					    
+					    byte[] buf = new byte[2048];
+					    int count = 0;
+					    while((count = tempFileInput.read(buf)) != -1)
+					    {
+					    	output.write(buf, 0, count);
+					    }
+					    output.flush();
+					    output.close();
+					    
+					    tempFileInput.close();
+
+						//String filename = storeImages(destDir, item, "jpg");
+						out.write(subDir + f.getName());
 					}
 					
 				}
@@ -169,6 +213,95 @@ public class ImageServlet extends HttpServlet {
 		
 	}
 	
+	
+	
+	@Override
+	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
+	{
+		
+		try 
+		{
+			String authHeader = req.getHeader("Authorization");
+			String encodedValue = authHeader.split(" ")[1];
+			
+			String decodedValue = new String((Base64.decodeBase64(encodedValue.getBytes())));
+			String username = decodedValue.split(":")[0];
+			String password = decodedValue.split(":")[1];
+			
+			if(!(username.equals(PropertyReader.getProperty("image-upload.username"))) || !(password.equals(PropertyReader.getProperty("image-upload.password"))))
+			{
+				resp.sendError(HttpStatus.SC_FORBIDDEN);
+				return;
+			}
+		} catch (Exception e)
+		{
+			resp.sendError(HttpStatus.SC_UNAUTHORIZED);
+			return;
+		}
+		
+		
+		String mainDir =(String)PropertyReader.getProperty("image-upload.destDir");
+		
+		if(req.getPathInfo()==null || req.getPathInfo().trim().isEmpty() || req.getPathInfo().contains(".."))
+		{
+			resp.sendError(HttpStatus.SC_FORBIDDEN);
+			return;
+		}
+		
+		
+		File f = new File(mainDir + req.getPathInfo());
+		
+		if(!f.exists())
+		{
+			resp.sendError(HttpStatus.SC_NOT_FOUND, "Image or directory " + req.getPathInfo() + " not found!");
+			return;
+		}
+		else
+		{
+			
+			
+			try {
+				boolean deleteSuccess = deleteDir(f);
+				if(!deleteSuccess)
+				{
+					resp.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Could not delete all files");
+					return;
+					
+				}
+				else
+				{
+					resp.setStatus(HttpStatus.SC_ACCEPTED);
+
+				}
+				
+			} catch (Exception e) {
+				resp.sendError(HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+				return;
+			}
+			
+			
+		}
+	}
+	
+	
+	
+	public static boolean deleteDir(File dir) throws Exception{
+	    if (dir.isDirectory()) {
+	        String[] children = dir.list();
+	        for (int i=0; i<children.length; i++) {
+	            boolean success = deleteDir(new File(dir, children[i]));
+	            if (!success) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    // The directory is now empty so delete it
+	    return dir.delete();
+	}
+	
+	
+	/*
 	 public String storeImages(String destDir, FileItem input, String imgType) throws Exception{
 			BufferedImage bufferedImage = ImageIO.read(input.getInputStream());
 			String dir = PropertyReader.getProperty("image-upload.destDir") + "/original/" + destDir;
@@ -188,5 +321,6 @@ public class ImageServlet extends HttpServlet {
 	 		
 			return orig.getName();
 		 }
+		 */
 
 }
