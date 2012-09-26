@@ -742,16 +742,27 @@ public class StructuralEditorBean implements Observer {
 		else //DIV type
 		{
 			
+			Div div;
+			
+			if(!ElementType.DIV.equals(currentEditElementWrapper.getTeiElement().getElementType()))
+			{
+				div = new Div();
+				div.getHead().add("");
+				div.getDocAuthors().add(new DocAuthor());
+			}
+			else
+			{
+				div = (Div)currentEditElementWrapper.getTeiElement();
+			}
 			//currentTeiElementEditType = ElementType.DIV;
-			Div div = new Div();
+			
 			
 			if(!"free".equals(selectedStructuralEditType)) 
 			{
 				div.setType(selectedStructuralEditType);
 			}
 			
-			div.getHead().add("");
-			div.getDocAuthors().add(new DocAuthor());
+			
 			
 			currentEditElementWrapper.setTeiElement(div);
 		}
