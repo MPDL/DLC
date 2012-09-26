@@ -138,6 +138,18 @@
 							<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
 						</pretty:link>
 					</h:panelGroup>
+					
+					<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+									<f:ajax render="@all :messages"/>
+	 							</h:commandButton>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					
+					
 				</h:panelGroup>
 				
 				<!-- START shortView for SEARCH -->
@@ -349,6 +361,16 @@
 								<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
 							</pretty:link>
 						</h:panelGroup>
+						
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid) and empty cc.attrs.volume.relatedChildVolumes}">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+								<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+										<f:ajax render="@all :messages"/>
+		 							</h:commandButton>
+							</h:panelGroup>
+						</ui:fragment>
+						
 					</ui:fragment> <!-- END volumes and my data -->
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedChildVolumes.size() gt 0}">
@@ -445,6 +467,15 @@
 										<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
 									</pretty:link>
 								</h:panelGroup>
+								
+								<ui:fragment rendered="#{child_volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(child_volume.item.properties.context.objid)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<h:commandButton action="#{allVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+									<f:ajax render="@all :messages"/>
+	 							</h:commandButton>
+						</h:panelGroup>
+					</ui:fragment>
 							</ui:fragment><!-- END my volumes -->
 						</h:panelGroup>
 					</a4j:repeat>
