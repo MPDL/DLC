@@ -148,6 +148,10 @@ public class VolumeServiceBean {
 	
 
 	private static TransformerFactory transfFact;
+	
+	
+	
+	
 
 	static
 	{
@@ -2868,6 +2872,25 @@ public class VolumeServiceBean {
 			return sw.toString();
 		
 	}
+	
+	public void deleteVolume(Volume vol, String userHandle) throws Exception
+	{
+		
+		ItemHandlerClient itemHandler = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		itemHandler.setHandle(userHandle);
+			
+		
+		
+		if(!multivolumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
+		{
+			String dirName = vol.getItem().getObjid().replaceAll(":", "_");
+			ImageController.deleteFilesFromImageServer(dirName);
+		}
+			
+		itemHandler.delete(vol.getItem().getObjid());
+		
+	}
+	
 	
 
 }

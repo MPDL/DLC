@@ -29,6 +29,7 @@ import org.apache.commons.net.ftp.FTPReply;
 */
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
 
@@ -64,6 +65,47 @@ public class ImageController {
     	logger.info("Image Upload servlet responded with: " + method.getStatusCode() + "\n" + response);
     	method.releaseConnection( );
     	if(response == null || !(method.getStatusCode()==201 || method.getStatusCode()==200))
+    	{
+    		throw new RuntimeException("File Upload Servlet responded with: " + method.getStatusCode() + "\n" + method.getResponseBodyAsString());
+    	}
+
+    	return response;
+	}
+	
+	public static void deleteFilesFromImageServer(String subDir) throws Exception
+	{
+		
+		String thumbsUrl = ImageHelper.getFullImageUrl(subDir, Type.THUMBNAIL);
+		deleteFileFromImageServer(thumbsUrl);
+		
+		String webUrl = ImageHelper.getFullImageUrl(subDir, Type.WEB);
+		deleteFileFromImageServer(webUrl);
+		
+		String originalUrl = ImageHelper.getFullImageUrl(subDir, Type.ORIGINAL);
+		deleteFileFromImageServer(originalUrl);
+
+	}
+	
+	private static String deleteFileFromImageServer(String url) throws Exception
+	{
+		HttpClient client = new HttpClient( );
+
+		
+    	DeleteMethod method = new DeleteMethod(url);
+    
+    	//parts[1] = new FilePart( item.getName(), tmpFile );
+    	HttpMethodParams params = new HttpMethodParams();
+    	String username = PropertyReader.getProperty("image-upload.username");
+    	String password = PropertyReader.getProperty("image-upload.password");
+    	String handle = "Basic " + new String(Base64.encodeBase64((username + ":" + password).getBytes()));
+    	method.addRequestHeader("Authorization", handle);
+    	
+    	// Execute and print response
+    	client.executeMethod( method );
+    	String response = method.getResponseBodyAsString( );
+    	logger.info("Image Upload servlet responded with: " + method.getStatusCode() + "\n" + response);
+    	method.releaseConnection( );
+    	if(response == null || !(method.getStatusCode()==202 || method.getStatusCode()==201 || method.getStatusCode()==200))
     	{
     		throw new RuntimeException("File Upload Servlet responded with: " + method.getStatusCode() + "\n" + method.getResponseBodyAsString());
     	}

@@ -274,6 +274,22 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	}
 	
+	public void delete(Volume vol)
+	{ 
+		String userHandle = loginBean.getUserHandle();
+		try {
+			volServiceBean.deleteVolume(vol, userHandle);
+		
+
+			
+			MessageHelper.infoMessage(InternationalizationHelper.getMessage("success_deleteVolume"));
+		} catch (Exception e) {
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_deleteVolume"));
+			logger.error("Error while deleting volume " + vol.getObjidAndVersion(), e);
+		}
+
+	}
+	
 	/**
 	 * Retrieve the 5 last works of all collections
 	 * TODO: check multivolume, what can be displayed here?
