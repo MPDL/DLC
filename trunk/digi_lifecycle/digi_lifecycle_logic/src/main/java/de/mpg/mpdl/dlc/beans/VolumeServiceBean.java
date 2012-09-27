@@ -119,8 +119,10 @@ import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.Page;
+import de.mpg.mpdl.dlc.vo.mods.ModsLocationSEC;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
+import de.mpg.mpdl.dlc.vo.mods.ModsURLSEC;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
@@ -830,12 +832,7 @@ public class VolumeServiceBean {
 				pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(pagedTeiComponent);
 				pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
-				
-				
-				
-				
-				
-				
+
 				//Add original TEI as component
 				URL uploadedTei = sthc.upload(new FileInputStream(teiFileWithIds));
 				
@@ -858,9 +855,7 @@ public class VolumeServiceBean {
 				volume.getItem().getComponents().add(teiComponent);
 				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
 			}
-			
-			
-			
+
 			//if vol has a teiSd and it should be updated
 			if(volume.getTeiSd()!=null && updateTeiSd)
 			{
@@ -880,8 +875,7 @@ public class VolumeServiceBean {
 				if(titlePagePb!=null)
 				{
 					 titlePageId = titlePagePb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace", "id"));
-				}
-				
+				}				
 				
 				for(int i=0; i< volume.getMets().getPages().size(); i++)
 				{
@@ -889,13 +883,11 @@ public class VolumeServiceBean {
 					String numeration = pbs.get(i).getAttributeValue(new QName("n"));
 					volume.getMets().getPages().get(i).setId(pbId);
 					volume.getMets().getPages().get(i).setOrderLabel(numeration);
-					
-					
+									
 					if(pbId.equals(titlePageId))
 					{
 						volume.getMets().getPages().get(i).setType("titlePage");
-					}
-					
+					}				
 				}
 				
 				
@@ -929,9 +921,7 @@ public class VolumeServiceBean {
 					{
 						volume.getItem().getComponents().remove(pagedTeiComponent);
 					}
-					
-					
-					
+
 					pagedTeiComponent = new Component();
 					ComponentProperties pagedTeiCompProps = new ComponentProperties();
 					pagedTeiComponent.setProperties(pagedTeiCompProps);
@@ -944,12 +934,10 @@ public class VolumeServiceBean {
 					pagedTeiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 					
 					volume.getItem().getComponents().add(pagedTeiComponent);
-					
-					
+									
 					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}
 			}
-			
 			
 			//Add codicological metadata as component
 			if(cdcFile!=null)	
@@ -977,10 +965,7 @@ public class VolumeServiceBean {
 				volume.getItem().getComponents().add(cdcComponent);
 				cdcComponent.getContent().setXLinkHref(uploadedCdc.toExternalForm());
 			}
-				
 
-			
-			
 			//Clear all mdRecords
 			volume.getItem().getMetadataRecords().clear();		
 			
@@ -1011,19 +996,22 @@ public class VolumeServiceBean {
 			client.setHandle(userHandle);
 			Item updatedItem = client.update(volume.getItem());
 			logger.info("Item updated: " + updatedItem.getObjid());
-			return createVolumeFromItem(updatedItem, userHandle);
-
+			
+			volume = createVolumeFromItem(updatedItem, userHandle);
+			
+			updateMd(volume, userHandle);
+			
+			return volume;
 			
 		} 
 		catch (Exception e) 
 		{
 			logger.error("Error while updating volume " + volume.getItem().getObjid(), e);
 			throw new Exception(e);
-		}
-		
+		}		
 	}
 	
-	public Item updateMd (Volume vol, String userHandle) throws Exception
+	public static Item updateMd (Volume vol, String userHandle) throws Exception
 	{
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
@@ -1042,9 +1030,23 @@ public class VolumeServiceBean {
 		{
 			//add component url of tei sd to mods md (related item)
 			ModsRelatedItem mri = new ModsRelatedItem();
-			mri.setType("tei-sd");
-			mri.setName("tei");
-			mri.setValue(PropertyReader.getProperty("dlc.instance.url") + teiSdUrl);
+			List <ModsRelatedItem> relList = vol.getModsMetadata().getRelatedItems();
+			
+			for (int i =0; i< relList.size(); i++)
+			{
+				if (relList.get(i).getDisplayLabel().equalsIgnoreCase("tei-sd"))
+				{
+					relList.remove(i);
+				}
+			}
+			
+			mri.setDisplayLabel("tei-sd");
+			//TODO
+			ModsURLSEC url = new ModsURLSEC();
+			url.setValue("http://dlc.mpdl.mpg.de:8080" + teiSdUrl + "/content");
+			ModsLocationSEC loc = new ModsLocationSEC();
+			loc.setSec_url(url);
+			mri.setSec_location(loc);
 			vol.getModsMetadata().getRelatedItems().add(mri);
 		}
 
@@ -1737,8 +1739,8 @@ public class VolumeServiceBean {
 	public static Volume createVolumeFromItem(Item item, String userHandle, Volume oldVol ) throws Exception
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle); 
+//		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+//		client.setHandle(userHandle); 
 		System.err.println("item id = " + item.getObjid());
 		TeiSd teiSd = null;
 		Document teiSdXml = null;
@@ -1862,6 +1864,7 @@ public class VolumeServiceBean {
 			}
 			vol.setRelatedVolumes(relatedVols);
 		}
+		
 		return vol;
 	}
 	
