@@ -1081,9 +1081,10 @@ public class VolumeServiceBean {
 		try 
 		{
 			
-			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-			client.setHandle(userHandle);
-			client.delete(vol.getItem().getObjid());
+			//ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			//client.setHandle(userHandle);
+			//client.delete(vol.getItem().getObjid());
+			deleteVolume(vol, userHandle);
 			logger.info("Item successfully deleted");
 		} 
 		catch (Exception e) 
