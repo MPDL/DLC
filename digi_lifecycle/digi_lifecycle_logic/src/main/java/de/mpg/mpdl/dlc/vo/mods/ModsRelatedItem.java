@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
@@ -18,14 +17,8 @@ public class ModsRelatedItem {
 	@XmlAttribute(name = "type")
 	private String type;
 	
-	@XmlAttribute(name = "name")
-	private String name;
-	
 	@XmlAttribute(name = "displayLabel")
 	private String displayLabel;
-
-	@XmlPath("text()")
-	private String value;
 	
 	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='local']/text()")
 	private String parentId_010;
@@ -53,11 +46,6 @@ public class ModsRelatedItem {
 	
 	@XmlElement(name = "mods:physicalDescription", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPhysicalDescription> sec_physicalDescriptions = new ArrayList<ModsPhysicalDescription>();
-
-	
-	public String getValue() {
-		return value;
-	}
 
 
 	public ModsRelatedItem getSec_relatedItems() {
@@ -91,11 +79,6 @@ public class ModsRelatedItem {
 	}
 
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-
 	public String getParentId_010() {
 		return parentId_010;
 	}
@@ -113,16 +96,6 @@ public class ModsRelatedItem {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 
