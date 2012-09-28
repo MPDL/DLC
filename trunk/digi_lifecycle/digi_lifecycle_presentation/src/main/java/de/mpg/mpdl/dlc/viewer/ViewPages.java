@@ -9,11 +9,13 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.PostRemove;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 
@@ -140,6 +142,12 @@ public class ViewPages implements Observer{
 	public void postConstruct()
 	{
 		internationalizationHelper.addObserver(this);
+	}
+	
+	@PreDestroy
+	public void preDestroy()
+	{
+		internationalizationHelper.deleteObserver(this);
 	}
 	
 	@URLAction(onPostback=false)
@@ -826,7 +834,7 @@ public class ViewPages implements Observer{
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		initPageListMenu();
+			
 		
 	}
 
