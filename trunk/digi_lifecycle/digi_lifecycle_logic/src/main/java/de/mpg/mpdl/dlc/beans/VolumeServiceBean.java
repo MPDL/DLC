@@ -215,7 +215,7 @@ public class VolumeServiceBean {
 	
 	public enum VolumeStatus{
 		pending("pending"),
-		submittet("submittet"),
+		submitted("submitted"),
 		released("released");
 		
 		private String status;
@@ -749,7 +749,7 @@ public class VolumeServiceBean {
 			if(teiFile != null || modsMetadata != null || cdcFile!=null)
 			{
 			
-				updateVolume(volume, userHandle, teiFile, cdcFile, true);
+				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			}
 			
 			if(operation.equalsIgnoreCase("release"))
@@ -992,14 +992,28 @@ public class VolumeServiceBean {
 				metsMdRec.setContent(metsDoc.getDocumentElement());
 			}
 			
+			updateMd(volume, userHandle);
+			
 			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);
 			Item updatedItem = client.update(volume.getItem());
 			logger.info("Item updated: " + updatedItem.getObjid());
+			String currentStatus = updatedItem.getProperties().getVersion().getStatus();
+			if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
+			{
+				TaskParam taskParam=new TaskParam(); 
+			    taskParam.setComment("Submit Volume");
+				taskParam.setLastModificationDate(updatedItem.getLastModificationDate());
+				
+				Result res = client.submit(updatedItem.getObjid(), taskParam);
+				logger.info("Item submitted: " + updatedItem.getObjid());
+			}
 			
-			volume = createVolumeFromItem(updatedItem, userHandle);
+		
 			
-			updateMd(volume, userHandle);
+			volume = retrieveVolume(updatedItem.getObjid(), userHandle);
+			
+			
 			
 			return volume;
 			
@@ -1011,10 +1025,10 @@ public class VolumeServiceBean {
 		}		
 	}
 	
-	public static Item updateMd (Volume vol, String userHandle) throws Exception
+	public static void updateMd (Volume vol, String userHandle) throws Exception
 	{
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
+		//ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		//client.setHandle(userHandle);
 		// Add MODS element 'relatedItem'
 		String teiSdUrl = "";
 		for (int i = 0; i< vol.getItem().getComponents().size(); i++)
@@ -1058,8 +1072,8 @@ public class VolumeServiceBean {
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
 		
-		Item updatedItem = client.update(vol.getItem());
-		return updatedItem;
+		//Item updatedItem = client.update(vol.getItem());
+		//return updatedItem;
 	}
 	
 	private static String getJPEGFilename(String filename)
@@ -1104,18 +1118,19 @@ public class VolumeServiceBean {
 		client.setHandle(userHandle);
 		
 		Item item = client.retrieve(id);
-		
+
 		logger.info("Releasing Volume " + id);
+		
+		//TaskParam taskParam=new TaskParam(); 
+	    //taskParam.setComment("Submit Volume");
+		//taskParam.setLastModificationDate(item.getLastModificationDate());
+		
+		//Result res = client.submit(id, taskParam);
+		
 		TaskParam taskParam=new TaskParam(); 
-	    taskParam.setComment("Submit Volume");
-		taskParam.setLastModificationDate(item.getLastModificationDate());
-		
-		Result res = client.submit(id, taskParam);
-		
-		taskParam=new TaskParam(); 
 	    taskParam.setComment("Release Volume");
-		taskParam.setLastModificationDate(res.getLastModificationDate());
-		res = client.release(id, taskParam);
+		taskParam.setLastModificationDate(item.getLastModificationDate());
+		Result res = client.release(id, taskParam);
 		
 		
 		return retrieveVolume(id, userHandle);
@@ -1139,13 +1154,23 @@ public class VolumeServiceBean {
 		relation.setPredicate("http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart");
 		relations.add(relation);
 		item.setRelations(relations);
-		TaskParam taskParam=new TaskParam(); 
-	    taskParam.setComment("Update Volume");
-		client.update(item);
-
-		logger.info("Item updated: " + item.getObjid());
+		Item updatedItem = client.update(item);
 		
-		return retrieveVolume(item.getObjid(), userHandle);
+		logger.info("Item updated: " + updatedItem.getObjid());
+		String currentStatus = updatedItem.getProperties().getVersion().getStatus();
+		
+		if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
+		{
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Submit Volume");
+			taskParam.setLastModificationDate(updatedItem.getLastModificationDate());
+			Result res = client.submit(updatedItem.getObjid(), taskParam);
+		}
+		
+
+		logger.info("Item updated and submitted: " + updatedItem.getObjid());
+		
+		return retrieveVolume(updatedItem.getObjid(), userHandle);
 	}
 	
 	public String updateMultiVolumeFromId(String multiId, ArrayList<String> volIds, String userHandle) throws Exception
@@ -1169,13 +1194,23 @@ public class VolumeServiceBean {
 		}
 
 		item.setRelations(relations);
-		TaskParam taskParam=new TaskParam(); 
-	    taskParam.setComment("Update Volume");
-		client.update(item);
-
-		logger.info("Item updated: " + item.getObjid());
 		
-		return item.getObjid();
+		Item updatedItem = client.update(item);
+		logger.info("Item updated: " + updatedItem.getObjid());
+		String currentStatus = updatedItem.getProperties().getVersion().getStatus();
+		
+		if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
+		{
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Submit Volume");
+			taskParam.setLastModificationDate(updatedItem.getLastModificationDate());
+			Result res = client.submit(updatedItem.getObjid(), taskParam);
+			logger.info("Item submitted: " + updatedItem.getObjid());
+		}
+
+		
+		
+		return updatedItem.getObjid();
 	}
 	
 	

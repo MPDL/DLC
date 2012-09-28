@@ -41,12 +41,12 @@
 				
 				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
-						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and empty cc.attrs.volume.item.properties.latestRelease}">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
 							<a title="#{lbl.status_pending}" disabled="disabled">
 								<h:panelGroup styleClass="eg3_icon_privateDocument_32_32">&nbsp;</h:panelGroup>
 							</a>
 						</ui:fragment>
-						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and not empty cc.attrs.volume.item.properties.latestRelease}">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and not empty cc.attrs.volume.item.properties.latestRelease}">
 							<a title="#{lbl.status_inProgress}" disabled="disabled">
 								<h:panelGroup styleClass="eg3_icon_progressDocument_32_32">&nbsp;</h:panelGroup>
 							</a>
@@ -95,7 +95,7 @@
 							<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
 						</pretty:link>
 						
-						<h:panelGroup id="releaseButton" rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
+						<h:panelGroup id="releaseButton" rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
 							<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
 								<f:ajax render="simpleAllVolume :messages"/>
  							</h:commandButton>
@@ -283,12 +283,12 @@
 			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
 				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
 					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
-						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and empty cc.attrs.volume.item.properties.latestRelease}">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
 							<a title="#{lbl.status_pending}" disabled="disabled">
 								<h:panelGroup styleClass="eg3_icon_privateDocument_32_32">&nbsp;</h:panelGroup>
 							</a>
 						</ui:fragment>
-						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and not empty cc.attrs.volume.item.properties.latestRelease}">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and not empty cc.attrs.volume.item.properties.latestRelease}">
 							<a title="#{lbl.status_inProgress}" disabled="disabled">
 								<h:panelGroup styleClass="eg3_icon_progressDocument_32_32">&nbsp;</h:panelGroup>
 							</a>
@@ -334,7 +334,7 @@
 								<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
 							</pretty:link>
 							
-							<h:panelGroup rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
+							<h:panelGroup rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
 								<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
 									<f:ajax render="multiItemContent :messages"/>
 								</h:commandButton>
@@ -432,7 +432,7 @@
 										<h:outputText value=" (Version #{child_volume.item.properties.latestVersion.number})"/>
 									</pretty:link>
 									
-									<h:panelGroup rendered="#{child_volume.item.properties.version.status=='pending' and loginBean.user.releasable(child_volume.item.properties.context.objid)}">
+									<h:panelGroup rendered="#{child_volume.item.properties.version.status=='submitted' and loginBean.user.releasable(child_volume.item.properties.context.objid)}">
 										<h:commandButton action="#{allVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
 											<f:ajax render="child_volume :messages"/>
 										</h:commandButton>
