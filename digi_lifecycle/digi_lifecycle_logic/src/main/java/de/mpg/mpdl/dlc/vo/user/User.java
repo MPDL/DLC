@@ -7,6 +7,7 @@ import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 
@@ -154,6 +155,12 @@ public class User {
 			return true;
 		else
 			return false;
+	}
+	
+	public boolean deletable(Volume vol)
+	{
+		return id.equals(vol.getItem().getProperties().getCreatedBy().getObjid());
+		
 	}
 
 	

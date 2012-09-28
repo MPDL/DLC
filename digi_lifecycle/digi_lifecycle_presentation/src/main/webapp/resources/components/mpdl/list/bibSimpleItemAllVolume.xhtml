@@ -139,7 +139,7 @@
 						</pretty:link>
 					</h:panelGroup>
 					
-					<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
+					<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.deletable(cc.attrs.volume)}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
@@ -362,7 +362,7 @@
 							</pretty:link>
 						</h:panelGroup>
 						
-						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid) and empty cc.attrs.volume.relatedChildVolumes}">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.deletable(cc.attrs.volume) and empty cc.attrs.volume.relatedChildVolumes}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 								<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
@@ -468,7 +468,7 @@
 									</pretty:link>
 								</h:panelGroup>
 								
-								<ui:fragment rendered="#{child_volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.releasable(child_volume.item.properties.context.objid)}">
+								<ui:fragment rendered="#{child_volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.deletable(child_volume)}">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 										<h:commandButton action="#{allVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
