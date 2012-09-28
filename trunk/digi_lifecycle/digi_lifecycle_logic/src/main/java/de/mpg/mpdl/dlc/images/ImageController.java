@@ -52,6 +52,7 @@ public class ImageController {
     	parts[0] = new StringPart("directory", directory);
     	parts[1] = new FilePart(filename, new FilePartSource(filename, item));
     	
+    	
     	//parts[1] = new FilePart( item.getName(), tmpFile );
     	HttpMethodParams params = new HttpMethodParams();
     	method.setRequestEntity(new MultipartRequestEntity(parts, params));

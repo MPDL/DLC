@@ -276,7 +276,7 @@
 									<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
 										<h:commandButton  value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
 										<h:outputText value="&#160;"/>
-										<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5"/>
+										<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5" rendered="#{loginBean.user.releasable(structuralEditorBean.volume.item.properties.context.objid)}"/>
 										<h:outputText value="&#160;"/>
 										<h:commandButton  value="#{lbl.button_command_revert}" action="#{structuralEditorBean.revert}" styleClass="eg3_borderradius_5"/>
 									</h:panelGroup>

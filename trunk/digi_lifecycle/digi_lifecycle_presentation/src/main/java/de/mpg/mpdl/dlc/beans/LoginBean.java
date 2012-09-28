@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.beans;
 
+import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -19,6 +20,8 @@ import org.richfaces.event.ItemChangeEvent;
 
 import com.ocpsoft.pretty.PrettyContext;
 
+import de.escidoc.core.client.UserAccountHandlerClient;
+import de.escidoc.core.client.interfaces.UserAccountHandler;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -164,6 +167,7 @@ public class LoginBean
 				this.userHandle = null;
 				this.login = false;
 				this.user = null;
+			
 				FacesContext fc = FacesContext.getCurrentInstance();
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		        session.invalidate();

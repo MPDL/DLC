@@ -144,7 +144,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 //				}
 //			}
 			
-			/*
+			
 			if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
 			{
 				for(int i=0; i< loginBean.getUser().getModeratorCollections().size(); i++)
@@ -174,7 +174,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 					}
 				}
 			}
-			*/
+			
 			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
