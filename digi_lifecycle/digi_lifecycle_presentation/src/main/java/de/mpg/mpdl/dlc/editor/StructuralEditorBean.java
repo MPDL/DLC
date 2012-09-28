@@ -197,8 +197,11 @@ public class StructuralEditorBean implements Observer {
 	@URLAction(onPostback=false)
 	public void loadVolume()
 	{
+		System.out.println("NOT POSTBACK");
+		System.out.println(FacesContext.getCurrentInstance().getViewRoot().getViewId());
 		if(loginBean.isLogin())
 		{
+			
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{   logger.info("Load new volume for structural editing " + volumeId);
 				try {

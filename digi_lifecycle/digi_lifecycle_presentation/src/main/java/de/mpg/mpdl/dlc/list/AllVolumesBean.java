@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -24,6 +25,7 @@ import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.editor.StructuralEditorBean;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 import de.mpg.mpdl.dlc.searchLogic.FilterCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
@@ -36,6 +38,7 @@ import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.viewer.ViewPages;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -341,5 +344,16 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 
 
+	public String editStructure(Volume vol)
+	{
+		FacesContext context = FacesContext.getCurrentInstance();
+		StructuralEditorBean editBean = (StructuralEditorBean) context.getApplication().evaluateExpressionGet(context, "#{structuralEditorBean}", StructuralEditorBean.class);
+		editBean.setVolumeId(vol.getItem().getOriginObjid());
+		editBean.setVolume(null);
+		
+		return "pretty:structuralEditor";
+		
+	}
+	
 	
 }
