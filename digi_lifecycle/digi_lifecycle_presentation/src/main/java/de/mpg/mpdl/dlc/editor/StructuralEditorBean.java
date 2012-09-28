@@ -10,6 +10,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -160,6 +161,12 @@ public class StructuralEditorBean implements Observer {
 	public void postConstruct()
 	{
 		internationalizationHelper.addObserver(this);
+	}
+	
+	@PreDestroy
+	public void preDestroy()
+	{
+		internationalizationHelper.deleteObserver(this);
 	}
 	
 	
