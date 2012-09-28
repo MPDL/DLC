@@ -173,6 +173,7 @@
 						
 						
 						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}">
+							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.volume.tei and empty ingestBean.volume.teiSd and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiAlreadyAvailable}" rendered="#{not empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiSdAlreadyAvailable}" rendered="#{not empty ingestBean.volume.teiSd and empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiOverwriteWarning}" rendered="#{ingestBean.teiFile != null and (not empty ingestBean.volume.tei or empty ingestBean.volume.teiSd)}" styleClass="eg3_messageError"/><br/>
@@ -198,6 +199,7 @@
 						
 						
 						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}">
+							<h:outputText value="#{lbl.ingest_noCodicologicalAvailable}" rendered="#{empty ingestBean.codicologicalFile and empty ingestBean.volume.codicological}"/>
 							<h:outputText value="#{lbl.ingest_CodicologicalAlreadyAvailable}" rendered="#{not empty ingestBean.volume.codicological and empty ingestBean.codicologicalFile}"/>
 							<h:outputText value="#{lbl.ingest_CodicologicalOverwriteWarning}" rendered="#{ingestBean.codicologicalFile != null and (not empty ingestBean.volume.codicological)}" styleClass="eg3_messageError"/><br/>
 							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
