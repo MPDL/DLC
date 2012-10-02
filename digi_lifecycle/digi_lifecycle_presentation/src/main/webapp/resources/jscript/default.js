@@ -716,6 +716,29 @@ function initWindowResizeListener(page) {
 	);
 }
 
+var modalPopup;
+
+function loadPopup(listItem) {
+	var popContent = jQuery(listItem).parents(".eg3_itemContent").find('.modalDialog').html();
+	modalPopup = jQuery("#modalPopup");
+	var wrapper = jQuery(".eg3_id_wrapper");
+	if (!modalPopup || modalPopup.length === 0 || typeof modalPopup == undefined) {
+		modalPopup = jQuery('<div id="modalPopup" class="modalDialog"></div>').insertBefore(wrapper);
+	}
+	modalPopup.html(popContent);
+	modalPopup.show();
+}
+function unloadPopup() {
+	modalPopup.html("");
+	modalPopup.hide();
+}
+function listenMultiVolume() {
+	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemTitle");
+	multiVolumeLink.click(function(e) {
+		stopDefaultAction(e);
+		loadPopup(this);
+	});
+}
 
 $(document).ready(function(e) {
 	/*

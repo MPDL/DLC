@@ -308,9 +308,9 @@
 				<!-- START eg3_itemHeadline -->
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
 					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-						<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
-						<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}" />
-						</a4j:commandLink>
+						<h:outputLink>
+							<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}"/>
+						</h:outputLink>
 						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemSubTitle">
 							<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
 						</h:panelGroup>
