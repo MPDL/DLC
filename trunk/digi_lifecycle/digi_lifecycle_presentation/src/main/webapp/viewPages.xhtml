@@ -467,7 +467,7 @@
 											<li><h:commandLink title="#{tlt.export_as_pdf}" styleClass="eg3_selectionText" 
 															  action="#{viewPages.export('PDF')}"><h:outputText value="#{lbl.export_as_pdf}"/></h:commandLink></li>
 											<li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText"	
-															  value="#{applicationBean.dfgUrl}#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=zvddmets" target="_blank"><h:outputText value="#{lbl.export_dfg_viewer}"/></h:outputLink></li>
+															  value="#{applicationBean.dfgUrl}#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord%26identifier=#{viewPages.volumeIdWithoutObjId}%26metadataPrefix=zvddmets" target="_blank"><h:outputText value="#{lbl.export_dfg_viewer}"/></h:outputLink></li>
 											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" 
 															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=dlc" target="_blank"><h:outputText value="#{lbl.export_mets_mods}"/></h:outputLink></li>															  
 											<!--  <li><h:outputLink title="#{tlt.export_oai_dc}" styleClass="eg3_selectionText" 
