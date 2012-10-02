@@ -2,7 +2,6 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -11,12 +10,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,11 +60,8 @@ import net.sf.saxon.s9api.XsltTransformer;
 import net.sf.saxon.xqj.SaxonXQDataSource;
 
 import org.apache.axis.types.NonNegativeInteger;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.methods.DeleteMethod;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
@@ -76,17 +71,11 @@ import org.jibx.runtime.JiBXException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
-import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
-import de.escidoc.core.client.exceptions.EscidocException;
-import de.escidoc.core.client.exceptions.InternalClientException;
-import de.escidoc.core.client.exceptions.TransportException;
-import de.escidoc.core.client.exceptions.application.security.AuthenticationException;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
 import de.escidoc.core.resources.HttpInputStream;
 import de.escidoc.core.resources.common.MetadataRecord;
@@ -104,7 +93,6 @@ import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
 import de.escidoc.core.resources.om.item.component.ComponentProperties;
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.images.ImageController;
@@ -123,11 +111,8 @@ import de.mpg.mpdl.dlc.vo.mods.ModsLocationSEC;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.mods.ModsURLSEC;
-import de.mpg.mpdl.dlc.vo.organization.Organization;
-import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
-import de.mpg.mpdl.dlc.vo.user.User;
 
 
 
@@ -801,6 +786,7 @@ public class VolumeServiceBean {
 		if(teiFile!=null)	
 			{
 				logger.info("TEI file found");
+				System.out.println(teiFile.getStoreLocation());
 				File teiFileWithPbConvention = applyPbConventionToTei(new FileInputStream(teiFile.getStoreLocation()));
 				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 
@@ -1076,7 +1062,7 @@ public class VolumeServiceBean {
 		//return updatedItem;
 	}
 	
-	private static String getJPEGFilename(String filename)
+	public static String getJPEGFilename(String filename)
 	{
 		
 //		if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
@@ -1471,10 +1457,7 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
-			
-		
-
-		
+		/*	
 		File tei = new File("R:/dlc Ingest Daten/test_Berlin/B836F1_1885/B836F1_1885.xml");
 		
 		SchemaFactory factory = SchemaFactory.newInstance("http://relaxng.org/ns/structure/1.0", "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);
@@ -1491,6 +1474,7 @@ public class VolumeServiceBean {
 		
 		List<XdmNode> list = VolumeServiceBean.getAllPbs(new StreamSource(tei));
 		System.out.println(list);
+		*/
 		
 		
 		/*
@@ -2739,10 +2723,7 @@ public class VolumeServiceBean {
 			vol.setSearchResultHighlight(rec.getRecordData().getHighlight());	
 			volumeResult.add(vol);
 		} 
-		
-		
-		
-		return new VolumeSearchResult(volumeResult, srwResp.getNumberOfRecords());
+	return new VolumeSearchResult(volumeResult, srwResp.getNumberOfRecords());
 	}
 
 
@@ -2762,7 +2743,7 @@ public class VolumeServiceBean {
 			mdRecs = new MetadataRecords();
 			item.setMetadataRecords(mdRecs);
 		}
-		
+		  
 		volume.setItem(item);
 		volume.setProperties(volume.getItem().getProperties());
 		volume.setModsMetadata(modsMetadata);
@@ -2872,9 +2853,19 @@ public class VolumeServiceBean {
 			
 	}
 	
-	public static DiskFileItem fileToDiskFileItem(File f)
-	{
-		return new DiskFileItem(f.getName(), null, true, f.getName(), 0, f);
+	public static DiskFileItem fileToDiskFileItem(File f) throws IOException
+	{ 
+		DiskFileItem fileItem = (DiskFileItem) new DiskFileItemFactory().createItem(f.getName(), "text/plain", false, f.getName());
+		InputStream input = new FileInputStream(f);
+		OutputStream os = fileItem.getOutputStream();
+		int r = input.read();
+		while(r != -1)
+		{
+			os.write(r);
+			r = input.read();
+		}
+		os.flush();
+		return fileItem;
 	}
 	
 	

@@ -14,13 +14,25 @@ public class BatchIngestItem {
 	
 	private String name;
 	
+	private String dlcDirectory;
+	
+
+	
 	private ModsMetadata modsMetadata;
 	
 	private File teiFile;
 	
+	private int teiPbs;
+	
 	private List<File> imageFiles = new ArrayList<File>();
 	
+	private int imageNr;
+	
+	private String imagesDirectory;
+	
 	private File footer;
+	
+	private int footerNr;
 	
 	private String parentId;
 	
@@ -36,16 +48,16 @@ public class BatchIngestItem {
 	
 	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, File teiFile, ArrayList<File> imagesFiles, File footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> errorMessage)
 	{
-		super();
+		
 		this.contentModel = contentModel;
 		this.name = name;
 		this.modsMetadata = modsMetadata;
 		this.teiFile = teiFile;
-		this.imageFiles = imagesFiles;
+		this.imageFiles = imageFiles;
 		this.footer = footer;
 		this.parentId = parentId;
 		this.volumes = volumes;
-		this.errorMessage  = errorMessage;
+		this.errorMessage = errorMessage;
 	}
 
 	public String getName() {
@@ -122,10 +134,70 @@ public class BatchIngestItem {
 	public List<String> getErrorMessage() {
 		return errorMessage;
 	}
-	
-	
-	
-	
+
+
+	public String getDlcDirectory() {
+		return dlcDirectory;
+	}
+
+
+	public void setDlcDirectory(String dlcDirectory) {
+		this.dlcDirectory = dlcDirectory;
+	}
+
+
+
+
+
+
+
+
+	public int getTeiPbs() {
+		return teiPbs;
+	}
+
+
+	public void setTeiPbs(int teiPbs) {
+		this.teiPbs = teiPbs;
+	}
+
+
+	public int getImageNr() {
+		return imageNr;
+	}
+
+
+	public void setImageNr(int imageNr) {
+		this.imageNr = imageNr;
+	}
+
+
+	public String getImagesDirectory() {
+		return imagesDirectory;
+	}
+
+
+	public void setImagesDirectory(String imagesDirectory) {
+		this.imagesDirectory = imagesDirectory;
+	}
+
+
+	public int getFooterNr() {
+		return footerNr;
+	}
+
+
+	public void setFooterNr(int footerNr) {
+		this.footerNr = footerNr;
+	}
+
+
+	public void setErrorMessage(List<String> errorMessage) {
+		this.errorMessage = errorMessage;
+	}
+
+
+
 	
 	
 	
