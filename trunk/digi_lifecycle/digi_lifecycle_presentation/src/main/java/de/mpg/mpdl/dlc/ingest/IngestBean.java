@@ -81,11 +81,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
- 
-/**
- * @author Ilya Shaikovsky
- *
- */
+
 
 @ManagedBean
 @ViewScoped
@@ -456,7 +452,7 @@ public class IngestBean{
 		setMoveTo(0);
 		System.out.println("ORDER changed!!" + getMoveTo());
 	}
-	
+	         
 	*/
 	public void fileUploaded(FileUploadEvent evt)
 	{

@@ -26,6 +26,9 @@
 						<f:selectItems value="#{batchIngestBean.contextSelectItems}" />
 					</h:selectOneMenu>
 					
+					<h:outputText value="#{lbl.batchIngest_directory_server}" />
+					<h:inputText value="#{batchIngestBean.server}" style="width:500px"/>					
+					
 					<h:outputText value="#{lbl.batchIngest_directory_images}" />
 					<h:inputText value="#{batchIngestBean.images}" style="width:500px"/>				
 					
@@ -35,15 +38,12 @@
 					<h:outputText value="#{lbl.batchIngest_directory_tei}" />
 					<h:inputText value="#{batchIngestBean.tei}" style="width:500px"/>
 					
-
+					<h:outputText value="#{lbl.user}" />
+					<h:inputText value="#{batchIngestBean.user}" />
 					
-					<ui:remove>	
-						<h:outputText value="#{lbl.user}" />
-						<h:inputText value="#{batchIngestBean.user}" />
-						
-						<h:outputText value="#{lbl.password}" />
-						<h:inputText value="#{batchIngestBean.password}" />
-					</ui:remove>
+					<h:outputText value="#{lbl.password}" />
+					<h:inputSecret value="#{batchIngestBean.password}" />
+					
 					
 				</h:panelGrid>
 				

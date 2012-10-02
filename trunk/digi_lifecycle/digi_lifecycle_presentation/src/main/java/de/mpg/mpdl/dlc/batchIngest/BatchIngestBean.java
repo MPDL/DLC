@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,10 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPConnectionClosedException;
+import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -17,7 +23,6 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -34,8 +39,9 @@ public class BatchIngestBean {
 	private static Logger logger = Logger.getLogger(BatchIngestBean.class);
 	private String images;
 	private String mab;
-	private String tei ;
+	private String tei;
 
+	private String server;
 	private String user;
 	private String password;
 	
@@ -94,7 +100,7 @@ public class BatchIngestBean {
 			this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
 	}
 	
-	public String save(String action) throws Exception
+	public String save(String action)
 	{
 		if("".equals(name))
 		{
@@ -107,12 +113,18 @@ public class BatchIngestBean {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest"));	
 			return "";
 		}
-		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));	
-		System.out.println("Vorgang gestartet");
-		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), mab, tei, images);
-	    ingestProcess.start();
+		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
+		try
+		{
+			ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, user, password, mab, tei, images);
+			ingestProcess.start();
+		}catch(Exception e)
+		{
+			MessageHelper.infoMessage("login failed");
+		}
+	   
 	    clear();
-	    logger.info("batch ingest finished");
+//	    logger.info("batch ingest finished");
 
 		return "";
 	}
@@ -120,9 +132,9 @@ public class BatchIngestBean {
 	public String clear()
 	{
 		this.name ="";
-		this.images = "";
-		this.mab = "";
-		this.tei = "";
+//		this.images = "";
+//		this.mab = "";
+//		this.tei = "";
 		return "";
 	}
 	
@@ -186,6 +198,16 @@ public class BatchIngestBean {
 		this.loginBean = loginBean;
 	}
 	
+	
+	
+	public String getServer() {
+		return server;
+	}
+
+	public void setServer(String server) {
+		this.server = server;
+	}
+
 	public String getUser() {
 		return user;
 	}
@@ -211,6 +233,10 @@ public class BatchIngestBean {
 	}
 
 
+	
+
+
+	
 
 
 	

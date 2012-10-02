@@ -10,6 +10,7 @@ public class IngestLogItem extends IngestLog{
 	private Integer imagesNr;
 	private boolean hasFooter;
 	private boolean hasTEI;
+	private String esciDocStatus;
 	public String getEscidocId() {
 		return escidocId;
 	}
@@ -46,6 +47,12 @@ public class IngestLogItem extends IngestLog{
 	}
 	public void setHasTEI(boolean hasTEI) {
 		this.hasTEI = hasTEI;
+	}
+	public String getEsciDocStatus() {
+		return esciDocStatus;
+	}
+	public void setEsciDocStatus(String esciDocStatus) {
+		this.esciDocStatus = esciDocStatus;
 	}
 	
 

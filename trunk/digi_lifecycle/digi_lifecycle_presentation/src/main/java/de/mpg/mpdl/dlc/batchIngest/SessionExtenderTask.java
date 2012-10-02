@@ -39,6 +39,7 @@ public class SessionExtenderTask {
     {
     	timer.cancel();
     	timer.purge();
+    	 System.err.println("Stop Retrieving user Account every 15 minutes.");
     }
 
     private class LoopTask extends TimerTask {
