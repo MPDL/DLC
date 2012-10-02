@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS dlc_batch_ingest_log(
 CREATE TABLE IF NOT EXISTS dlc_batch_ingest_log_item(
     id serial NOT NULL,
     name character varying NOT NULL,
-    status character varying NOT NULL,
     errorlevel character varying,
     startdate timestamp,
     enddate timestamp,
@@ -29,7 +28,6 @@ CREATE TABLE IF NOT EXISTS dlc_batch_ingest_log_item(
 CREATE TABLE IF NOT EXISTS dlc_batch_ingest_log_item_volume(
   id serial NOT NULL,
   name character varying NOT NULL,
-  status character varying NOT NULL,
   errorlevel character varying,
   startdate timestamp without time zone,
   enddate timestamp without time zone,

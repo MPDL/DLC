@@ -18,6 +18,8 @@ public final class Consts {
     
     public static final String VOLUMEROLLBACKERROR = "Volume Rollback";
     
+    public static final String MULTIFOOTER = "More than one Footer exist";
+    
     
     private Consts()
     {

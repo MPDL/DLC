@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +22,8 @@ import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Status;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.util.PropertyReader;
 
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
@@ -39,6 +43,11 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	private int totalNumberOfRecords;
 	
 	private Connection conn; 
+	
+	private VolumeServiceBean volumeService = new VolumeServiceBean();
+	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
 
 	
 	public IngestLogBean()
@@ -196,13 +205,21 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		return logItem;
 	}
 	
-    public IngestLogItem fillLogItem(ResultSet resultSet) throws SQLException
+    public IngestLogItem fillLogItem(ResultSet resultSet) throws SQLException, IOException, URISyntaxException
     {
     	IngestLogItem logItem = null;
     	logItem = new IngestLogItem();
     	logItem.setId(resultSet.getInt("id"));
     	logItem.setName(resultSet.getString("name"));
-    	logItem.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+//    	logItem.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+    	try {
+//    		logItem.setStatus(Status.valueOf(volumeService.releaseVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString()));
+    		if(resultSet.getString("item_id") != null)
+    			logItem.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
+
+    	} catch (Exception e) {
+			e.printStackTrace();
+		}
     	logItem.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
     	logItem.setStartDate(resultSet.getTimestamp("startdate"));
     	logItem.setEndDate(resultSet.getTimestamp("enddate"));
@@ -280,13 +297,19 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		return logItemVolume;
 	}
 	
-    public IngestLogItemVolume fillLogItemVolume(ResultSet resultSet) throws SQLException
+    public IngestLogItemVolume fillLogItemVolume(ResultSet resultSet) throws SQLException, IOException, URISyntaxException
     {
     	IngestLogItemVolume logItemVolume = null;
     	logItemVolume = new IngestLogItemVolume();
     	logItemVolume.setId(resultSet.getInt("id"));
     	logItemVolume.setName(resultSet.getString("name"));
-    	logItemVolume.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+//    	logItemVolume.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
+    	try {
+    		if(resultSet.getString("item_id") != null && !"null".equals(resultSet.getString("item_id")))
+    			logItemVolume.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	logItemVolume.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
     	logItemVolume.setStartDate(resultSet.getTimestamp("startdate"));
     	logItemVolume.setEndDate(resultSet.getTimestamp("enddate"));
@@ -294,6 +317,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	logItemVolume.setMessage(resultSet.getString("message"));
     	logItemVolume.setEscidocId(resultSet.getString("item_id"));
     	logItemVolume.setContentModel(resultSet.getString("content_model"));
+    	
     	logItemVolume.setImagesNr(resultSet.getInt("images_nr"));
     	logItemVolume.setHasFooter(resultSet.getBoolean("footer"));
     	logItemVolume.setHasTEI(resultSet.getBoolean("tei"));
@@ -327,6 +351,13 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		this.conn = conn;
 	}
 
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
 
 
 

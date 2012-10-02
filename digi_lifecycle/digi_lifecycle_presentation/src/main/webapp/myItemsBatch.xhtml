@@ -105,7 +105,7 @@
 	       			</rich:column>
 
 	       			<rich:column>
-	            		<h:outputText value="#{logItem.status}" />
+	            		<h:outputText value="#{logItem.esciDocStatus}" />
 	       			</rich:column>
 			        <rich:column>
 	            		<h:outputText value="#{logItem.errorLevel}" />
@@ -128,7 +128,7 @@
 	       			<rich:column>
 	            		<h:outputText value="#{logItem.message}" />
 	       			</rich:column>
-	       			<rich:column rendered="#{not empty logItem.escidocId and logItem.contentModel != 'escidoc:2002'}">
+	       			<rich:column rendered="#{not empty logItem.escidocId and logItem.contentModel != applicationBean.cmMultiVol}">
 	       				<pretty:link mappingId = "viewPages">
 	       					<f:param value="#{logItem.escidocId}"/>
 							<f:param value="recto-verso"/>
@@ -137,11 +137,14 @@
 		            		<h:outputText value="#{logItem.escidocId}" />
 		            	</pretty:link>
 		       		</rich:column>
-	       			<rich:column rendered="#{empty logItem.escidocId or logItem.contentModel == 'escidoc:2002'}">
+	       			<rich:column rendered="#{empty logItem.escidocId or logItem.contentModel == applicationBean.cmMultiVol}">
             			<h:outputText value="#{logItem.escidocId}" />
 	       			</rich:column>
-			        <rich:column>
-	            		<h:outputText value="#{logItem.contentModel}" />
+			        <rich:column rendered="#{logItem.contentModel != applicationBean.cmMultiVol}">
+	            		<h:outputText value="#{lbl.monograph}" />
+	       			</rich:column>
+	       			<rich:column rendered="#{logItem.contentModel == applicationBean.cmMultiVol}">
+	            		<h:outputText value="#{lbl.multivolume}" />
 	       			</rich:column>
 			        <rich:column>
 	            		<h:outputText value="#{logItem.imagesNr}" />
@@ -154,7 +157,7 @@
 	            		<h:outputText value="#{logItem.hasTEI}" />
 	       			</rich:column>
 		       		
-		       		<rich:collapsibleSubTable var="logItemVolume" value="#{ingestLogBean.getIngestLogItemVolumes(logItem.id)}" rendered="#{logItem.contentModel == 'escidoc:2002'}">
+		       		<rich:collapsibleSubTable var="logItemVolume" value="#{ingestLogBean.getIngestLogItemVolumes(logItem.id)}" rendered="#{logItem.contentModel == applicationBean.cmMultiVol}">
 		       			<rich:column>
 		            		<h:outputText value="#{logItemVolume.name}" />
 		       			</rich:column>
@@ -163,7 +166,7 @@
 		       			</rich:column>
 	
 		       			<rich:column>
-		            		<h:outputText value="#{logItemVolume.status}" />
+		            		<h:outputText value="#{logItemVolume.esciDocStatus}" />
 		       			</rich:column>
 				        <rich:column>
 		            		<h:outputText value="#{logItemVolume.errorLevel}" />
@@ -199,7 +202,7 @@
 			            	<h:outputText value="#{logItemVolume.escidocId}" />			            	
 		       			</rich:column>
 				        <rich:column>
-		            		<h:outputText value="#{logItemVolume.contentModel}" />
+		            		<h:outputText value="#{lbl.volume}" />
 		       			</rich:column>
 				        <rich:column>
 		            		<h:outputText value="#{logItemVolume.imagesNr}" />
