@@ -54,8 +54,6 @@ public class IngestProcess extends Thread{
 		/*
 		log = new IngestLog_NFS_Backup(logName, step, action, errorLevel, userId, contextId, images, mab, tei,  userHandle);
 		*/
-		
-		
 		log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, userName, password, images, mab, tei);
 		try {
 
@@ -64,13 +62,15 @@ public class IngestProcess extends Thread{
 				log.ftpSaveItems();
 			else
 				log.updateDB();
+//			log.clear();
 		} catch (Exception e) {
 			logger.error("Error while checking ingest data", e);
-		}
-//		finally
-//		{
 //			log.clear();
-//		}
+		}
+		finally
+		{
+			log.clear();
+		}
 	}
 
 

@@ -429,6 +429,9 @@ public class IngestLog
 			}
 		}
 		itemsForBatchIngest.clear();
+		itemsForBatchIngest = null;
+		errorItems.clear();
+		errorItems = null;
 		System.gc();
 		for(String d : dirs)
 		{
