@@ -144,7 +144,7 @@
 						</pretty:link>
 					</h:panelGroup>
 					
-					<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='pending' and loginBean.user.deletable(cc.attrs.volume)}">
+					<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='submitted' and loginBean.user.deletable(cc.attrs.volume)}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
