@@ -302,6 +302,7 @@ body .eg3_id_siteTitle {
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
+	min-height:36.5em;
 }
 .eg3_id_content form {
 	display:inline;
@@ -1031,19 +1032,25 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listBody {
 	width:100%;
 }
-.eg3_bibList .eg3_itemHeadline .eg3_itemTitle {
+.eg3_bibList .eg3_itemTitle {
 	max-width: 50em;
 	font-size:115%;
-	line-height: 125%;
+	line-height: 145%;
+}
+.eg3_bibList .eg3_itemHeadline .eg3_itemTitle {
 	font-weight:bold;
 }
-.eg3_bibList .eg3_itemSubTitle {
+.eg3_bibList .eg3_itemSubTitle,
+.eg3_bibList .eg3_itemPublishingInformation {
+	font-size:115%;
+	line-height: 145%;
 	font-weight:normal;
+	max-width:50em;
 }
 .eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
 	max-width: 50em;
 	font-size: 166%;
-	line-height: 125%;
+	line-height: 145%;
 }
 .eg3_bibList .eg3_shortView_js {
 	width:100%;
@@ -1611,29 +1618,29 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMetaLabel {
 	width:20.08%;
 	text-align:right;
-	padding:0 1.6%;
+	padding:0 0.8%;
+	line-height:145%;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMetaValue {
 	width:63.41%;
-	padding:0 1.6% 0 1.6%; 
+	padding:0 0.8%;
+	line-height:145%; 
 }
 
-.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemSubTitle {
-	padding-right:1.6%;
-	max-width:50em;
-}
-.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js .eg3_itemSubTitle {
-	padding-left:1.6%;
-	margin-bottom:0.25em;
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js .eg3_itemInclusiveAction .eg3_itemSubTitle {
+	margin-bottom:0.5em;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemContentOptions {
-	padding-left:1.6%;
-	padding-right:1.6%;
-	margin-top:0.5em;
+	margin-top:0.75em;
 	margin-bottom:1em;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js .eg3_itemContentOptions {
 	margin-top:1em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_shortView_js,
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js {
+	padding-left:1.6%;
+	padding-right:1.6%;
 }
 
 /******************************		.eg3_bibList .eg3_listBody .eg3_listItemSimpleAllVolume .eg3_itemMediabar	******************************/
@@ -1649,11 +1656,13 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem {
-	margin-bottom:2em;
 	padding-top:0.1666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem.eg3_itemInclusiveAction {
+	margin-bottom:2em;
 	padding-bottom:0.1666666em;
 }
-.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem:last-child {
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem.eg3_itemInclusiveAction:last-child {
 	margin-bottom:0;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem:hover {
@@ -2245,9 +2254,11 @@ body .eg3_id_siteTitle {
 	padding-right:10%;
 	margin-bottom:2em;
 	display:block;
+	overflow-x:visible;
 }
-.eg3_infoPanel h3 {
+.eg3_infoPanel h2 {
 	font-weight:bold;
+	line-height:145%;
 }
 .eg3_infoPanel p {
 	margin-top:1%;
@@ -2255,11 +2266,16 @@ body .eg3_id_siteTitle {
 }
 .eg3_infoPanel .eg3_providerList li {
 	line-height:145%;
+	margin-bottom:0.3333333em;
 }
 .eg3_inline_searchBox {
 	position: absolute; 
 	right: 0px; 
 	top: 0px;
+	white-space:nowrap;
+}
+.eg3_inline_searchBox h3 {
+	line-height:145%;
 }
 .eg3_infoPanel .eg3_inline_searchBox {
 	margin-right: -13%;
@@ -2270,7 +2286,9 @@ body .eg3_id_siteTitle {
 .eg3_inline_searchBox input:focus {
 	text-align:left;
 }
-
+.eg3_inline_searchBox .searchCollectionInput {
+	margin-right:0.25em;
+}
 
 /*****************************************************************************************************
  *******************************					category				**************************

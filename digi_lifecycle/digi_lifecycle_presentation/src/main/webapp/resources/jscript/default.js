@@ -733,7 +733,7 @@ function unloadPopup() {
 	modalPopup.hide();
 }
 function listenMultiVolume() {
-	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemTitle");
+	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemHeadline .eg3_itemTitle");
 	multiVolumeLink.click(function(e) {
 		stopDefaultAction(e);
 		loadPopup(this);
