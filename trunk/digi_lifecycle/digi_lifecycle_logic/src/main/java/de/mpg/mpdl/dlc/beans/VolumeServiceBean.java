@@ -2909,7 +2909,7 @@ public class VolumeServiceBean {
 		ItemHandlerClient itemHandler = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		itemHandler.setHandle(userHandle);
 			
-		
+		itemHandler.delete(vol.getItem().getObjid());
 		
 		if(!multivolumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
 		{
@@ -2917,7 +2917,7 @@ public class VolumeServiceBean {
 			ImageController.deleteFilesFromImageServer(dirName);
 		}
 			
-		itemHandler.delete(vol.getItem().getObjid());
+		
 		
 	}
 	
