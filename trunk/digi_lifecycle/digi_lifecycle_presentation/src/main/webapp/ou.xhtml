@@ -115,7 +115,7 @@
 				<ui:fragment rendered="#{not empty applicationBean.getContext(viewOU.orga.id)}">
 					<a4j:repeat value="#{viewOU.collections}" var="context" rowKeyVar="rowKey">
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}"/>
+							<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}" colLink="#{context.objid}"/>
 						</h:panelGroup>
 
 					</a4j:repeat>

@@ -34,15 +34,15 @@
 	
 		<h:panelGroup styleClass="eg3_infoPanel">
 			<ui:fragment rendered="#{not empty cc.attrs.descriptionTitle and (empty cc.attrs.descriptionTitleLink or empty cc.attrs.descriptionTitleLinkID)}">
-				<h3><h:outputText value="#{cc.attrs.descriptionTitle}"/></h3>
+				<h2><h:outputText value="#{cc.attrs.descriptionTitle}"/></h2>
 			</ui:fragment>
 			<ui:fragment rendered="#{not empty cc.attrs.descriptionTitleLink and not empty cc.attrs.descriptionTitleLinkID}">
-				<h3>
+				<h2>
 					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}">
 						<f:param value="#{cc.attrs.descriptionTitleLink}" />
 						<h:outputText value="#{cc.attrs.descriptionTitle}"/>
 					</pretty:link>
-				</h3>
+				</h2>
 			</ui:fragment>
 			<ui:fragment rendered="#{!cc.attrs.isProviderList}">
 				<p>
@@ -61,37 +61,31 @@
 					</c:forEach>
 				</ul>
 			</ui:fragment>
-			<ui:fragment rendered="#{not empty cc.attrs.descriptionTitleLink and not empty cc.attrs.descriptionTitleLinkID}">
-				<b>
-					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}">
-						<f:param value="#{cc.attrs.descriptionTitleLink}" />
-						<h:outputText value="#{lbl.view_ou_ColLink}"/>
-					</pretty:link>
-				</b>
-			</ui:fragment>
-			<ui:fragment rendered="#{not empty cc.attrs.colLink}">
-				<b>
-					<pretty:link mappingId="volumes">
-						<f:param value="#{viewCollection.col.id}" />
-						<h:outputText value="#{lbl.view_ou_ColLink}"/>
-					</pretty:link>
-				</b>
-			</ui:fragment>
 		</h:panelGroup>
 		
 		<ui:fragment rendered="#{not empty cc.attrs.searchSize}">
 			<h:panelGroup styleClass="#{cc.attrs.searchSize} eg3_inline_searchBox">
+				<ui:fragment rendered="#{not empty cc.attrs.colLink}">
+					<h3>
+						<pretty:link mappingId="volumes">
+							<f:param value="#{cc.attrs.colLink}" />
+							<h:outputText value="#{lbl.view_ou_ColLink}"/>
+						</pretty:link>
+					</h3>
+				</ui:fragment>
+				<ui:remove>
 				<ui:fragment rendered="#{not empty cc.attrs.searchTitle}">
 					<h4><h:outputText value="#{cc.attrs.searchTitle}"/></h4>
 				</ui:fragment>
+				</ui:remove>
 				<h:form>
 					<h:inputText value="#{cc.attrs.searchInput}" title="#{(not empty cc.attrs.searchTitle) ? cc.attrs.searchTitle : ''}" styleClass="searchCollectionInput"/>
-					<h:commandButton action="#{cc.attrs.searchAction}" value="Go" >
+					<h:commandButton action="#{cc.attrs.searchAction}" value="Go" style="position:absolute; top:-100000em;">
 						<f:param name="searchParam" value="#{cc.attrs.searchParam}"/>
 					</h:commandButton>
 				</h:form>
 				<script type="text/javascript">
-							$('.searchCollectionInput').attr("placeholder", "#{(not empty cc.attrs.searchPlaceholder) ? cc.attrs.searchPlaceholder : ''}");
+					$('.searchCollectionInput').attr("placeholder", "#{(not empty cc.attrs.searchPlaceholder) ? cc.attrs.searchPlaceholder : ''}");
 				</script>
 			</h:panelGroup>
 		</ui:fragment>
