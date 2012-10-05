@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <datensatz xmlns="http://www.ddb.de/professionell/mabxml/mabxml-1.xsd" mabVersion="M2.0" status="n" typ="h">
+  <feld ind=" " nr="001">BV037912937</feld>
+  <feld ind=" " nr="100">Alberti, Romano</feld>
+  <feld ind=" " nr="331">Origine, Et Progresso Dell'Academia Del Dissegno, De Pittori, Scultori, &amp; Architetti di Roma</feld>
+  <feld ind="a" nr="335">Dove si contengono molti utilißimi discorsi, &amp; Filosofici ragionamenti appartenenti alle sudette profeßioni, et in particolare ad alcune nove definitioni del Dissegno, della Pittura, Scultura, et Architettura</feld>
+  <feld ind=" " nr="339">Recitati sotto il regimento dell'Eccellente Sig. Cauagliero Federico Zuccari, &amp; raccolti da Romano Alberti Secretario dell'Academia</feld>
+  <feld ind=" " nr="410">Pavia</feld>
+  <feld ind=" " nr="412">Bartoli</feld>
+  <feld ind=" " nr="425">1604</feld>
+  <feld ind=" " nr="433">[6] Bl., 79 S., [4] Bl.</feld>
+  <feld ind="b" nr="100">Zuccari, Federico</feld>
+  <feld ind=" " nr="501">Vorlageform des Erscheinungsvermerks: In Pavia, Per Pietro Bartoli, M. D. CIV. - Bibliograph. Nachweis: Schlosser. - Ex Libris Ernst Steinmann, Olga von Gerstfeldt</feld>
+</datensatz>

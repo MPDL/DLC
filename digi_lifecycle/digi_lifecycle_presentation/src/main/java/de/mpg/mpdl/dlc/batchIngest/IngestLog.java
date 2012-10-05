@@ -212,16 +212,16 @@ public class IngestLog
 		try{
 			Properties props = new Properties();
 			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
+			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
 			Class.forName("org.postgresql.Driver");
 			url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
 			connection = DriverManager.getConnection(url, props);
 
 			URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
 
-		    File file = new File(sqlURL.toURI());
-		    StringBuilder fileContents = new StringBuilder((int)file.length());
-		    Scanner scanner = new Scanner(file);
+		    //File file = new File(sqlURL.toURI());
+		    StringBuilder fileContents = new StringBuilder();
+		    Scanner scanner = new Scanner(sqlURL.openStream());
 		    String lineSeparator = System.getProperty("line.separator");
 		    String dbScript;
 
@@ -505,7 +505,7 @@ public class IngestLog
 			{
 				if(d.isDirectory() && !".".equals(d.getName()) && !"..".equals(d.getName()))
 				{
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "\\" +  UUID.randomUUID().toString();
+					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					
 					String name = d.getName();
@@ -527,13 +527,13 @@ public class IngestLog
 						if(tmpFile.getName().startsWith("footer"))
 						{
 							footerNr ++;
-							File footer = new File(dlcDirectory + "\\"+ tmpFile.getName());
+							File footer = new File(dlcDirectory + "/"+ tmpFile.getName());
 							newItem.setFooter(footer);
 						}
 						else
 						{
 						imageNr ++;
-						File image = new File(dlcDirectory + "\\"+ tmpFile.getName());
+						File image = new File(dlcDirectory + "/"+ tmpFile.getName());
 						newItem.getImageFiles().add(image);
 						}
 					}
@@ -576,12 +576,12 @@ public class IngestLog
 				if(item == null)
 				{
 					item = new BatchIngestItem();
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "\\" +  UUID.randomUUID().toString();
+					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					item.setName(name);
 					item.setDlcDirectory(dlcDirectory);
 					
-					File tFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
 					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					
@@ -594,7 +594,7 @@ public class IngestLog
 				else 
 				{
 					String dlcDirectory = item.getDlcDirectory();
-					File tFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
 					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					item.setTeiFile(tFile);
@@ -702,12 +702,12 @@ public class IngestLog
 			{	
 				String dlcDirectory = item.getDlcDirectory();
 				
-//				File tFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+//				File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 //				FileOutputStream out = new FileOutputStream(tFile);
 //				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
 				
 				
-				File mFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 				FileOutputStream fileOut = new FileOutputStream(mFile);
 				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);		
 
@@ -744,7 +744,7 @@ public class IngestLog
 			else if((item = errorItems.get(name))!= null)
 			{
 				String dlcDirectory = item.getDlcDirectory();
-				File mFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 				FileOutputStream fileOut = new FileOutputStream(mFile);
 				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);	
 				MabXmlTransformation transform = new MabXmlTransformation();
@@ -780,12 +780,12 @@ public class IngestLog
 			{
 				item = new BatchIngestItem();
 				
-				String dlcDirectory = System.getProperty("java.io.tmpdir") + "\\" +  UUID.randomUUID().toString();
+				String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
 				new File(dlcDirectory).mkdir();
 				item.setName(name);
 				item.setDlcDirectory(dlcDirectory);
 				
-				File mFile = new File(dlcDirectory + "\\"+ tmpFile.getName());
+				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 				FileOutputStream fileOut = new FileOutputStream(mFile);
 				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);	
 
@@ -924,7 +924,7 @@ public class IngestLog
 //					if(i.getName().equals(f.getName()))
 //					{
 //						String pathname = '/'+ f.getName();
-//						File jpegImage = new File(dlcDirectory + "\\"+ f.getName());
+//						File jpegImage = new File(dlcDirectory + "/"+ f.getName());
 //						FileOutputStream out = new FileOutputStream(i);
 //						ftp.retrieveFile(imagesDirectory+"/"+ f.getName(), out);
 //						fi.remove();
