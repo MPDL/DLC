@@ -1584,7 +1584,7 @@ body .eg3_id_siteTitle {
 .eg3_bibList .eg3_listItemSimpleAllVolume {
 	width:100%;
 /*	border-top:0.08333em solid #7F7F7F; */
-	background-color:#EEF2F0;
+/*	background-color:#EEF2F0; */
 	margin-bottom:2.5em;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume:hover {
