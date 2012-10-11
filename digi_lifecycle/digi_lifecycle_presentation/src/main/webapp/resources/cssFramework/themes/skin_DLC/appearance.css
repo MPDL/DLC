@@ -235,12 +235,34 @@ body .eg3_id_siteTitle {
 
 
 .eg3_border_1 {
-	border:solid 0.09em #B2B2B2;
+	border-width:0.09em;
+}
+.eg3_borderstyle_1 {
+	border-color:#B2B2B2;
+	border-style:solid;
 }
 
+.eg3_opacLink {
+	text-decoration:underline;
+	font-weight:bold;
+}
 
 .eg3_ribbon {
 	min-height:2.75em;
+}
+
+.eg3_ribbon a {
+	color:#FFFFFF;
+}
+.eg3_ribbon a:hover {
+	color:#EA7125;
+}
+.eg3_ribbon .eg3_furtherInformation {
+	margin-top:0.75em;
+	margin-right:2%;
+}
+.eg3_ribbon .eg3_furtherInformation a {
+	margin-left:2em;
 }
 
 .eg3_verticalSpace_row_1 {
@@ -302,7 +324,7 @@ body .eg3_id_siteTitle {
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
-	min-height:36.5em;
+	min-height:38.66666em;
 }
 .eg3_id_content form {
 	display:inline;
@@ -368,10 +390,10 @@ body .eg3_id_siteTitle {
 	height:1.333333em;
 	padding:0;
 	font-size:95%;
-	background-image:url('image/btn_descending_static_16_16.png'); 
+	background-image:url('image/btn_descending_deactivated_16_16.png'); 
 	background-position:right top;
 	text-align: left;
-	background-color:#2F2F2F;
+	background-color:#FFFFFF;
 }
 .eg3_dynamicSelectBox_js:hover {
 	background-image:url('image/btn_descending_hover_16_16.png');
@@ -387,7 +409,8 @@ body .eg3_id_siteTitle {
 	padding:0 0.6666em 0.16666em 0.6666em;
 	font-size: 97%;
 	height: 1.16666em;
-	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+/*	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+	border:0 none;
 }
 .eg3_dynamicSelectBox_js .eg3_selectionText {
 	display:block;
@@ -706,7 +729,9 @@ body .eg3_id_siteTitle {
  *****************************************************************************************************************************/
 .eg3_paginatorWave {
 	width: 100%;
+	min-height:2.5em;
 	margin:0 0 0.2% 0;
+	padding-top:0.25em;
 	color:#F0F0F0;
 	background-color:#2F2F2F;
 }
@@ -720,13 +745,15 @@ body .eg3_id_siteTitle {
 }
 .eg3_paginatorWave .eg3_rangeSelector {
 	width:14.38%;
-	padding:0.75em 0 0 1.6%;
+	padding:0.5em 0 0 1.6%;
 }
 .eg3_paginatorWave .eg3_rangeSelector .eg3_dynamicSelectBox_js {
 	margin:0.08333em 0 0;
 }
 .eg3_paginatorWave .eg3_rangeSelector .eg3_selectionText {
 	float:left;
+	color:#000000;
+	margin-top:0.08333333em;
 }
 .eg3_paginatorWave .eg3_rangeSelector .eg3_selectLabel {
 	float:left;
@@ -852,7 +879,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_paginatorWave .eg3_gotoBox {
 	width:16.6%;
-	padding:0.83333em 0 0 0;
+	padding:0.5em 0 0 0;
 }
 .eg3_paginatorWave .eg3_gotoInput {
 	width:23%;
@@ -1033,7 +1060,7 @@ body .eg3_id_siteTitle {
 	width:100%;
 }
 .eg3_bibList .eg3_itemTitle {
-	max-width: 50em;
+	max-width: 70em;
 	font-size:115%;
 	line-height: 145%;
 }
@@ -1046,6 +1073,9 @@ body .eg3_id_siteTitle {
 	line-height: 145%;
 	font-weight:normal;
 	max-width:50em;
+}
+.eg3_bibList .eg3_itemPublishingInformation {
+	clear:left;
 }
 .eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
 	max-width: 50em;
@@ -1588,7 +1618,7 @@ body .eg3_id_siteTitle {
 	margin-bottom:2.5em;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume:hover {
-	background-color:#D8D8D8;
+	background-color:#E9E9E9;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemDetailAction_js:hover {
 	color:#EA7125;
@@ -1600,7 +1630,7 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemHeadline {
-	width:63.41%;
+	width:93.41%;
 	padding:0.083333em 1.6% 0.1666em 1.6%; 
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemStatusArea {
@@ -2344,6 +2374,10 @@ body .eg3_id_siteTitle {
 	display:none;
 }
 
+.eg3_sumOfSearchResult {
+	padding:0.75em 0;
+}
+
 .eg3_ingestPage .rf-p 
 {
 	float:none;
@@ -2850,11 +2884,18 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
  ******************************						DIGILIB					**************************
  ******************************				Buttonbar & Image				**************************
  *****************************************************************************************************/
+
 .digilib .keep.buttons {
 	width:2.5em;
 	background-color:#FFFFFF !important;
 	padding:0.75em 0.25em !important;
 	cursor:move;
+}
+div.eg3_singleView div.digilib div.keep.buttons {
+	opacity: 1 !important;
+	-moz-opacity: 1 !important;
+	filter: alpha(opacity=100) !important; /* for IE 7 & IE 8 necessary */
+	right:-3.083333em !important;
 }
 .digilib .keep.buttons img.button:hover {
 	background-color:#CCCCCC !important;

@@ -45,8 +45,12 @@
 			
 		</style>
 		
-		<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
-			<h:outputText value="&#160;"/>
+		<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon eg3_textRight">
+			<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
+				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_projectdescription}"><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h:outputLink>
+				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_guideline}"><h:outputText value="#{lbl.HomePage_title_guideline}"/></h:outputLink>
+				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_install}"><h:outputText value="#{lbl.HomePage_title_install}"/></h:outputLink>
+			</h:panelGroup>
 		</h:panelGroup>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1">

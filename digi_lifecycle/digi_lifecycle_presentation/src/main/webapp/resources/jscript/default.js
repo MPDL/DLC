@@ -110,7 +110,9 @@ function resizeSelectBox() {
 			} else { //otherwise 
 				newDynSBWidth = Math.floor( (slctTag.width()) ); //calculate the new width for the dynamicSelectBox_js
 			}
-			
+			if (dynSB.hasClass("eg3_border_1")) {
+				newDynSBWidth -= 2;
+			} 
 			var newSelContWidth = Math.floor(newDynSBWidth - drpDwnIconWidth - padL - padR) - 1; //calculate the new width for the selectContent container with 1px less for a better optical border
 			
 			//declare the new values to the objects
@@ -127,7 +129,10 @@ function resizeSelectBox() {
 		}
 	});
 	updateCustomSelectBox();
-	initWindowResizeListener();
+	
+	//check if the current page for editing or for viewing, the eg3_editPage class is only in use for editing
+	var curPage = ($('.eg3_editPage_imgContainer').length > 0) ? '.eg3_editPage' : '.eg3_viewPage';
+	initWindowResizeListener(curPage);
 }
 
 
@@ -705,6 +710,7 @@ function checkMessageContent() {
  * function to resize all dynamic selectboxes and specific page moduls on the window resize event
  */
 function initWindowResizeListener(page) {
+	console.log("init: "+page);
 	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
 	$(window).bind("resize", function() 
 		{ 

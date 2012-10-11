@@ -22,10 +22,11 @@
 						<mpdl:hierarchicalBreadcrumb />
 					</h:panelGroup>
 				</ui:remove>
-				<br/>
-				<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" target="_blank" title="#{tlt.ouUrl}" >
-					<h:outputText value="Homepage: #{viewOU.orga.escidocMd.title}" style="color:white; float:right; padding-right:30px"/>
-				</h:outputLink>
+				<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
+					<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" target="_blank" title="#{tlt.ouUrl}">
+						<h:outputText value="Homepage: #{viewOU.orga.escidocMd.title}"/>
+					</h:outputLink>
+				</h:panelGroup>
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
