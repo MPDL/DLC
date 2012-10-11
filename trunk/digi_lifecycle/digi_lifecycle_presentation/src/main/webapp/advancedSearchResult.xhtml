@@ -16,10 +16,6 @@
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_1_5">
 				
-				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-					<h:outputLabel styleClass="eg3_selectLabel" value="(#{cc.attrs.paginatorBean.totalNumberOfRecords} #{lbl.list_totalNumberOfHits})"/>
-				</h:panelGroup>
-				
 				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
 					<h:outputText value="#{lbl.list_sortCriterion}: "/>
 				</h:panelGroup>
@@ -29,7 +25,7 @@
 						<a4j:repeat var="sortCriterion" value="#{advancedSearchResultBean.sortCriterionList}">
 							<h:panelGroup layout="block" styleClass="eg3_container_1">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1 eg3_border_1 eg3_borderstyle_1">
 										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
 											<span class="eg3_selectionText"></span>
 										</h:panelGroup>
@@ -54,6 +50,9 @@
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_textCenter eg3_sumOfSearchResult">
+					<h:outputLabel styleClass="eg3_selectLabel" value="#{cc.attrs.paginatorBean.totalNumberOfRecords} #{lbl.list_totalNumberOfHits}"/>
+				</h:panelGroup>
 				<list:bibList_shortDLC rendered="#{advancedSearchResultBean.currentPartList.size() > 0}">
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
 						<list:bibSimpleItemAllVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}"/>

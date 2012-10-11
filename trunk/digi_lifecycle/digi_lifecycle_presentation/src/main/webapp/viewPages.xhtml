@@ -93,11 +93,10 @@
 													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationLink"/>
 												</h:commandLink>
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
+													
+													<h:outputText value="#{lbl.list_Page} #{var.orderLabel} / " rendered="#{not empty var.orderLabel}"/>
 													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
-													<h:outputText value="/ #{lbl.list_Page} #{var.orderLabel} " rendered="#{not empty var.orderLabel}"/>
 												</h:panelGroup>
-												
-												
 											</h:panelGroup>
 										</a4j:repeat>
 										
@@ -112,7 +111,7 @@
 								<h:panelGroup>
 									<modsViewer:default modsMetadata="#{viewPages.volume.modsMetadata}" volumeOu="#{viewPages.volumeOu}" editable="false"/>
 									<h:outputLink value="#{viewPages.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{viewPages.volume.modsMetadata.catalogueId_001}"/>
-
+									
 									<!--<h:outputText value="#{viewPages.volume.item.properties.contentModel.objid}"/>  -->
 								</h:panelGroup>
 							    <rich:popupPanel id="isbdPopup" modal="false" autosized="true">
@@ -125,7 +124,7 @@
 									<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2003'}">
 										<modsViewer:isbd_vol parentVolume="#{viewPages.volume.relatedParentVolume}" modsMetadata="#{viewPages.volume.modsMetadata}"/>
 									</h:panelGroup>
-							    </rich:popupPanel>							
+							    </rich:popupPanel>	
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="#{not empty viewPages.volume.codicological}">  
@@ -142,7 +141,6 @@
 										width:95.95%;
 										padding-top:0%;
 										padding-left:5%;
-
 									}
 									
 									
@@ -151,19 +149,16 @@
 										font-weight: bold;
 										font-size: 150%;
 										margin-top: 5%;
-									
 									}
 									
 									.cdcLabel
 									{
 										margin-right:2%;
 										font-weight: bold;
-										
 									}
 									
 									.cdcValue
 									{
-										
 										
 									}
 									
@@ -171,15 +166,12 @@
 									{
 										margin-right:2%;
 										font-weight: bold;
-										
 									}
 									
 									.cdcValueAttr
 									{
 										
 									}
-								
-								
 								</style>
 								
 								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto">
@@ -187,9 +179,7 @@
 								</h:panelGroup>
 							</rich:tab>
 								
-							
 						</rich:tabPanel>
-				
 					</h:form>
 				</h:panelGroup>
 				
@@ -197,8 +187,7 @@
 					<script type="text/javascript">
 					/* <![CDATA[ */
 						
-						function resizeFulltext() 
-						{
+						function resizeFulltext() {
 							// function to resize the text-area box on the right side of the image
 							// @returns {Boolean}
 							var fullText = $('.eg3_viewPage_fulltext .eg3_containerCenter');
@@ -208,8 +197,7 @@
 							}
 						}
 						 
-						jsf.ajax.addOnEvent(function(e)
-						{	
+						jsf.ajax.addOnEvent(function(e) {	
 							//notice the container height for setting a min-height while ajax reloading
 							//without a height value the page jump to top because of to slowly image loading
 							if (e.status == "begin") {
@@ -218,8 +206,7 @@
 							}
 							//if the ajax request is success
 							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-							if(e.status=="success")
-							{
+							if (e.status=="success") {
 								scrollTree();
 								scrollThumbs();
 								checkSidebarHeight('.eg3_viewPage', "ajax");
@@ -227,8 +214,7 @@
 							}
 						});
 						
-						function scrollTree()
-						{
+						function scrollTree() {
 							var selectedDivId= '#{viewPages.selectedDiv.id}';
 							var containerId = "#{rich:clientId('tocTreeContainer')}";
 							
@@ -237,8 +223,7 @@
 							resetViewPageContainer();
 						}
 						
-						function scrollThumbs()
-						{
+						function scrollThumbs() {
 							var selectedPageId= "#{viewPages.selectedPage.id}";
 							var selectedRightPageId= "#{viewPages.selectedRightPage.id}";
 							
@@ -247,36 +232,30 @@
 							var containerId = "#{rich:clientId('thumbnailContainer')}";
 							
 
-							if(selectedPageId)
-							{
+							if (selectedPageId) {
 								scrollDiv(containerId, selectedPageId);
 								$('.' + selectedPageId).addClass("eg3_active");
-								if(selectedRightPageId)
-								{
+								if(selectedRightPageId) {
 									$('.' + selectedRightPageId).addClass("eg3_active");
 								}
 							}
-							else
-							{
+							else {
 								scrollDiv(containerId, selectedRightPageId);
 								$('.' + selectedRightPageId).addClass("eg3_active");
 							}
 							
 						}
 						
-						function scrollDiv(containerId, scrollToClassId)
-						{
+						function scrollDiv(containerId, scrollToClassId) {
 						
-							if(containerId && scrollToClassId)
-							{
+							if (containerId && scrollToClassId) {
 								//add an backslahs before all colons					
 								containerId = containerId.replace(/:/g, "\\:");
 								var containerDiv = $('#' + containerId);
 								var scrollToElement = $('.' + scrollToClassId);
 						
 								var pos = scrollToElement.offset();
-								if(pos!=null)
-								{
+								if(pos!=null) {
 									var containerPos = containerDiv.offset();				
 									var currentScroll = containerDiv.scrollTop();				
 									var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
@@ -291,8 +270,7 @@
 						{
 							var reloadDone = false;
 							
-							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) 
-							{
+							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) {
 								if ($(this).height() > 0) 
 								{
 									reloadDone = true;
@@ -302,8 +280,7 @@
 						}
 						
 						
-						$(document).ready(function(e)
-						{
+						$(document).ready(function(e) {
 							scrollTree();
 							scrollThumbs();
 							
@@ -455,11 +432,11 @@
 						
 						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
 							<h:form>
-								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow">
+								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow_z20">
 									<h:panelGroup layout="block" styleClass="eg3_overlayHeader eg3_alternate_color_1">
 										<h:panelGroup styleClass="eg3_selectionText"><h:outputText value="#{lbl.export_headline}"/></h:panelGroup>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_overlayBody eg3_right eg3_borderradius_5">
+									<h:panelGroup layout="block" styleClass="eg3_overlayBody eg3_right eg3_borderradius_5 eg3_overflow_z50">
 										<ul>
 											<!--  <li><h:outputLink title="#{tlt.export_page_print}" styleClass="eg3_selectionText" 
 															  value=""><h:outputText value="#{lbl.export_page_print}"/></h:outputLink></li>
@@ -488,7 +465,7 @@
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 	
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
-							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer">
+							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer eg3_overflow_z20">
 								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400,viewPages.digilibQueryString)}"/>
 							</h:panelGroup>
 							
