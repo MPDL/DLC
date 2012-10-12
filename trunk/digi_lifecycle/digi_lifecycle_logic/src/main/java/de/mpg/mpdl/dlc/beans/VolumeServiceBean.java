@@ -528,7 +528,7 @@ public class VolumeServiceBean {
 	*/
 	
 	
-
+/*
 	
 	public Volume createNewVolume(String operation, String contentModel, String contextId, String multiVolumeId,String userHandle, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem footer, DiskFileItem teiFile, DiskFileItem codicologicalFile) throws Exception
 	{
@@ -537,6 +537,9 @@ public class VolumeServiceBean {
 		
 		Volume volume = new Volume();
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+		
+	
+		
 		MetadataRecords mdRecs = item.getMetadataRecords();
 		
 		if(mdRecs==null)
@@ -587,11 +590,7 @@ public class VolumeServiceBean {
 				logger.info("Time to upload images: " + time);
 			
 			
-				/*
-				InputStream teiInputStream = null;
-				if(teiFile != null)
-					teiInputStream = teiFile.getInputStream();
-					*/
+				
 				volume = updateVolume(volume, userHandle, teiFile, codicologicalFile, true);
 			
 				if(operation.equalsIgnoreCase("release"))
@@ -608,8 +607,8 @@ public class VolumeServiceBean {
 			return volume;
 	}
 	
-	
-	public static void uploadImagesAndCreateMets(List<IngestImage> images, DiskFileItem footer, String itemId, Volume vol) throws Exception
+	*/
+	public void uploadImagesAndCreateMets(List<IngestImage> images, DiskFileItem footer, String itemId, Volume vol) throws Exception
 	{
 		
 		Mets metsData = new Mets();
@@ -873,7 +872,11 @@ public class VolumeServiceBean {
 					if(pbId.equals(titlePageId))
 					{
 						volume.getMets().getPages().get(i).setType("titlePage");
-					}				
+					}	
+					else
+					{
+						volume.getMets().getPages().get(i).setType(null);
+					}
 				}
 				
 				
@@ -1078,7 +1081,7 @@ public class VolumeServiceBean {
 	}
 
 
-	private void rollbackCreation(Volume vol, String userHandle) {
+	public void rollbackCreation(Volume vol, String userHandle) {
 		logger.info("Trying to delete item" + vol.getItem().getObjid());
 		try 
 		{
@@ -1477,266 +1480,18 @@ public class VolumeServiceBean {
 		*/
 		
 		
-		/*
-		VolumeServiceBean vsb = new VolumeServiceBean();
-		List<XdmNode> list = vsb.getAllPbIds(new FileInputStream(tei));
-		
-		for(XdmNode pb : list)
-		{
-			String pbId = pb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
-			System.out.println(pbId);
-			
-			String type =  pb.getAttributeValue(new QName("type"));
-			System.out.println(type);
-		}
 		
 		
-		
-		
-		
-		ItemHandlerClient client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
-		client.setHandle(null);
-		
-		DefaultHttpClient httpclient = new DefaultHttpClient();
-			
-		for(int i=0; i<100;i++)
-		{
-			
-			client = new ItemHandlerClient(new URL("http://dlc.mpdl.mpg.de:8080"));
-			client.setHandle(null);
-			System.out.println("Try " + i );
-			InputStream his = client.retrieveContent("escidoc:15022", "escidoc:15023");
-			System.out.println("Result: " + his);
-			his.close();
-			
-			
-			
-			HttpGet httpget = new HttpGet("http://dlc.mpdl.mpg.de:8080/ir/item/escidoc:15022/components/component/escidoc:15023/content");
-			HttpResponse response = httpclient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-			
-			InputStream is = entity.getContent();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			byte[] buffer = new byte[1024];
-			StringBuffer sb = new StringBuffer();
-			String line =null;
-			while((line = br.readLine())!=null)
-			{
-				sb.append(line);
-			}
+		File tei = new File("R:/dlc Ingest Daten/test_KHI/tei/L_1122_a-tei.xml");
+		File teiFileWithPbConvention = applyPbConventionToTei(new FileInputStream(tei));
+		File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
 
-			System.out.println("Result: " + sb.toString());
-			
-			
-		}
-	*/
-	
-	
-//		VolumeServiceBean vsb =new VolumeServiceBean();
-
-//		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
-//		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new FileInputStream(new File("C://Users//yu//Desktop//teisd.xml")), "UTF-8");
+		//Transform TEI to Tei-SD and add to volume
+		String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
+		System.out.println(teiSdString);
+		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
+		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
 		
-
-//		File modsFile = new File("C://Users//yu//Desktop//test.xml");
-//		File mabXML = new File("C://Users//yu//Desktop//Frankfurt_new_test//556188.mabxml");
-//		mabXMLToMODSTest(mabXML);
-		
-//		File mab = new File("C://Doku//dlc//TEST_MPDL//Frankfurt//mab4vol3.mab");
-//		mabXMLToMODSTest(mab);
-
-
-//		updateItem("escidoc:12118");
-
-
-//		HttpInputStream is = client.retrieveContent("escidoc:11001", "escidoc:12008");
-//
-//		
-//		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-//		StringBuilder stringBuilder = new StringBuilder();
-//		String line = null;
-//
-//		while ((line = bufferedReader.readLine()) != null) {
-//		stringBuilder.append(line + "\n");
-//		}
-//
-//		bufferedReader.close();
-//		
-//		System.out.println(stringBuilder.toString());
-		
-
-//		TaskParam taskParam=new TaskParam(); 
-//	    taskParam.setComment("Submit Volume");
-//		taskParam.setLastModificationDate(item.getLastModificationDate());
-
-		
-		//TaskParam taskParam=new TaskParam(); 
-//	    taskParam.setComment("Submit Volume");
-//		taskParam.setLastModificationDate(item.getLastModificationDate());
-		
-//		Result res = client.submit(item.getObjid(), taskParam);
-		//taskParam=new TaskParam(); 
-	    //taskParam.setComment("Release Volume");
-		//taskParam.setLastModificationDate(item.getLastModificationDate());
-		//client.release("escidoc:8003", taskParam);
-
-		/*
-		
-		
-		ModsDocument modsDoc = ModsDocument.Factory.newInstance();
-		modsDoc.addNewMods().addNewTitleInfo().addNewTitle().set("Test Title");
-		
-		HashMap suggestedPrefixes = new HashMap();
-		suggestedPrefixes.put("http://www.w3.org/1999/xlink", "xlink");
-		XmlOptions opts = new XmlOptions();
-		opts.setSaveSuggestedPrefixes(suggestedPrefixes);
-		opts.setSavePrettyPrint();
-		MetsDocument doc = MetsDocument.Factory.newInstance(opts);
-	
-		
-		
-		ItemHandlerClient client = new ItemHandlerClient(new URL(url));
-		client.setHandle(auth.getHandle());
-		client.delete("escidoc:5030");
-		*/
-		
-		/*
-		 * 
-		Item item = new Item();
-		item.getProperties().setContext(new ContextRef("escidoc:5002"));
-		item.getProperties().setContentModel(new ContentModelRef("escidoc:4001"));
-		
-		
-		MetadataRecords mdRecs = new MetadataRecords();
-		MetadataRecord mdRec = new MetadataRecord("escidoc");
-		mdRecs.add(mdRec);
-		item.setMetadataRecords(mdRecs);
-		
-		MetsDocument metsDoc = MetsDocument.Factory.newInstance();
-		Mets mets = metsDoc.addNewMets();
-		
-		MdSecType dmdSec = mets.addNewDmdSec();
-		dmdSec.setID("dmd_0");
-		MdWrap mdWrap = dmdSec.addNewMdWrap();
-		mdWrap.setMIMETYPE("text/xml");
-		mdWrap.setMDTYPE(MDTYPE.MODS);
-		XmlData xmlData = mdWrap.addNewXmlData();
-		
-		XmlCursor dataCursor = xmlData.newCursor();
-		XmlCursor modsCursor = modsDoc.getMods().newCursor();
-		modsCursor.copyXml(dataCursor);
-		modsCursor.dispose();
-		dataCursor.dispose();
-		
-		
-		//Add METS xml to mdRecord of Item
-		mdRec.setContent((Element)metsDoc.getMets().getDomNode());
-		
-		
-		
-		item = client.create(item);
-		
-		System.out.println(item.getObjid());
-		
-		
-		*/
-		
-		
-		
-//		ContentModelHandlerClient cmh = new ContentModelHandlerClient(new URL(url));
-//		cmh.setHandle(auth.getHandle());
-//		
-//		ContentModel cm = new ContentModel();
-//		cm.getProperties().setName("Content_Model_DLC_ITEM_NEW");
-//		cm.getProperties().setDescription("Content Model for Digitization Lifecycle Items");
-//		
-//		cm = cmh.create(cm);
-//		System.out.println(cm.getObjid());
-		 
-		
-		/*
-		 * 			
-			
-			
-			ContextHandlerClient chc = new ContextHandlerClient(new URL(url));
-			chc.setHandle(auth.getHandle());
-			
-			Context context = new Context();
-			ContextProperties properties = new ContextProperties();
-		
-		    properties.setName("DLC_Example_Context");
-		
-		
-		    properties.setDescription("Example context for Digitization Lifecycle Project");
-		
-		    properties.setType("dlc");
-		
-		
-		    OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
-		
-		    ous.add(new OrganizationalUnitRef(ou.getObjid()));
-		    properties.setOrganizationalUnitRefs(ous);
-		
-		    context.setProperties(properties);
-		
-		    context = chc.create(context);
-		    System.out.println("Context: " + context.getObjid());
-		    taskParam = new TaskParam();
-		    taskParam.setComment("Open Context");
-			taskParam.setLastModificationDate(context.getLastModificationDate());
-		
-			Result result = chc.open(context.getObjid(), taskParam);
-			System.out.println("Context: " + result.toString());^
-			
-			
-			
-			UserAccountHandlerClient uac = new UserAccountHandlerClient(new URL(url));
-				UserAccount ua = new UserAccount();
-		
-			
-		    UserAccountProperties properties = new UserAccountProperties();
-		    properties.setLoginName("dlc_user");
-		    properties.setName("DLC Test User");
-		
-		    ua.setProperties(properties);
-		
-		    ua = uac.create(ua);
-		    TaskParam taskParam=new TaskParam(); 
-		    taskParam.setComment("Activate User");
-		    taskParam.setLastModificationDate(ua.getLastModificationDate());
-		    uac.activate(ua.getObjid(), taskParam);
-		  
-		    
-			UserAccount ua = uac.retrieve("dlc_user");
-			
-		    TaskParam taskParam=new TaskParam(); 
-		    taskParam.setPassword("dlc");
-		    taskParam.setLastModificationDate(ua.getLastModificationDate());
-		    uac.updatePassword(ua.getObjid(), taskParam);
-		    
-		    
-		    Grant grant = new Grant();
-		    GrantProperties grantProperties = new GrantProperties();
-		    grantProperties.setGrantRemark("new context grant");
-		    grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
-		    RoleRef roleRef = new RoleRef("escidoc:role-depositor");
-		    grantProperties.setRole(roleRef);
-		    grant.setGrantProperties(grantProperties);
-		    
-		    uac.createGrant(ua.getObjid(), grant);
-		    System.out.println("Granted Depositor");
-		    
-		    grant = new Grant();
-		   grantProperties = new GrantProperties();
-		    grantProperties.setGrantRemark("new context grant");
-		    grantProperties.setAssignedOn(new ContextRef("escidoc:5002"));
-		    roleRef = new RoleRef("escidoc:role-moderator");
-		    grantProperties.setRole(roleRef);
-		    grant.setGrantProperties(grantProperties);
-		    
-		    uac.createGrant(ua.getObjid(), grant);
-		    System.out.println("Granted Moderator");
-		 */
 		
 
         
@@ -2205,7 +1960,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public String transformTeiToTeiSd(InputStream teiXml)throws Exception
+	public static String transformTeiToTeiSd(InputStream teiXml)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
