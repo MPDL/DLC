@@ -45,6 +45,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.CreateVolumeThread;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
@@ -923,11 +924,24 @@ public class IngestBean{
 						diskFileItems.add(img.getDiskFileItem());
 					}
 					
+					
+					
+					
 					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
-		    			volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+					{
+						CreateVolumeThread cvt = new CreateVolumeThread(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+						cvt.start();
+						//volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+					}
+		    			
 					else
-			    		volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
-						
+					{
+						CreateVolumeThread cvt = new CreateVolumeThread (operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+						cvt.start();
+						//volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+					}
+			    		
+					/*	
 					clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
@@ -935,16 +949,24 @@ public class IngestBean{
 		    		else
 			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 		    		
+		    		*/
+					Thread.sleep(3000);
+					
+					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadInProgress"));
+		    		FacesContext context = FacesContext.getCurrentInstance();
+		    		/*
 		    		FacesContext context = FacesContext.getCurrentInstance();
 					ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
 					viewPagesBean.setVolumeId(volume.getObjidAndVersion());
 		    		
 		    		return "pretty:viewPagesWithoutNumber";
-		    		/*
-		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
-		    		allVolBean.setColId("my");
-		    		return "pretty:volumes";
 		    		*/
+		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+		    		
+		    		allVolBean.setColId("my");
+		    		allVolBean.setCurrentPageNumber(1);
+		    		return "pretty:volumes";
+		    		
 				}
 			}
 			else{
