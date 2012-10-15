@@ -28,12 +28,11 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.editor.StructuralEditorBean;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
-import de.mpg.mpdl.dlc.searchLogic.FilterCriterion;
+
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
-import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
@@ -160,11 +159,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
 		VolumeSearchResult res = null;
-		List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
+		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
 		if(colId.equalsIgnoreCase("my") )
 		{
 			
-			FilterCriterion fc;
+			SearchCriterion fc;
 //			for(Grant grant: loginBean.getUser().getGrants())
 //			{
 //				
@@ -191,9 +190,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				{
 					Collection c = loginBean.getUser().getModeratorCollections().get(i);
 					if(i == 0)
-						fc = new FilterCriterion(FilterParam.CONTEXT_ID, c.getId());
+						fc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
 					else
-						fc = new FilterCriterion(Operator.OR,FilterParam.CONTEXT_ID, c.getId());
+						fc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
 					fcList.add(fc);
 				}
 			}
@@ -204,12 +203,12 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 					Collection c = loginBean.getUser().getDepositorCollections().get(i);
 					if(fcList.size()==0)
 					{
-						fc = new FilterCriterion(FilterParam.CREATED_BY,loginBean.getUser().getId());
+						fc = new SearchCriterion(SearchType.CREATED_BY,loginBean.getUser().getId());
 						fcList.add(fc);
 					}
 					else
 					{
-						fc = new FilterCriterion(Operator.OR, FilterParam.CREATED_BY,loginBean.getUser().getId());
+						fc = new SearchCriterion(Operator.OR, SearchType.CREATED_BY,loginBean.getUser().getId());
 						fcList.add(fc);
 					}
 				}
@@ -217,9 +216,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			
 			if(filterString!=null && !filterString.trim().isEmpty())
 			{
-				fc = new FilterCriterion(Operator.AND, FilterParam.TITLE, filterString, 1, 0);
+				fc = new SearchCriterion(Operator.AND, SearchType.TITLE, filterString, 1, 0);
 				fcList.add(fc);
-				fc = new FilterCriterion(Operator.OR, FilterParam.AUTHOR, filterString, 0, 1);
+				fc = new SearchCriterion(Operator.OR, SearchType.AUTHOR, filterString, 0, 1);
 				fcList.add(fc);
 			}
 			
@@ -233,7 +232,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			//List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 			if(collection != null)
 			{
-				fcList.add(new FilterCriterion(FilterParam.CONTEXT_ID, colId));
+				fcList.add(new SearchCriterion(SearchType.CONTEXT_ID, colId));
 				//SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
 				//scList.add(sc);
 			}

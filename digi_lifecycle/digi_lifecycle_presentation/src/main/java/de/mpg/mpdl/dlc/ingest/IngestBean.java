@@ -53,9 +53,11 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.list.AllVolumesBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
-import de.mpg.mpdl.dlc.searchLogic.FilterCriterion;
+
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
-import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
+
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -1114,15 +1116,15 @@ public class IngestBean{
 
 	public List<SelectItem> getMultiVolItems() throws Exception{
 		multiVolItems.clear(); 
-		List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
-		FilterCriterion sc = null ;
+		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
+		SearchCriterion sc = null ;
 		if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
 		{
 			for(Collection c : loginBean.getUser().getModeratorCollections())
 			{
 				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
 				{
-					sc = new FilterCriterion(FilterParam.CONTEXT_ID, getSelectedContextId());
+					sc = new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId());
 					fcList.add(sc);
 				}
 			}
@@ -1134,7 +1136,7 @@ public class IngestBean{
 			{
 				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
 				{
-					sc = new FilterCriterion( FilterParam.CREATED_BY, loginBean.getUser().getId());
+					sc = new SearchCriterion( SearchType.CREATED_BY, loginBean.getUser().getId());
 					fcList.add(sc);
 				}
 				
