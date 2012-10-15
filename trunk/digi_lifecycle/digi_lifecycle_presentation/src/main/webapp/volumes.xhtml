@@ -30,7 +30,25 @@
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+					
 					<h:form>
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
+											<span class="eg3_selectionText"></span>
+										</h:panelGroup>
+										<h:selectOneMenu value="#{allVolumesBean.selectedSortCriterion}">
+											<f:selectItems value="#{allVolumesBean.sortIndicesMenu}"/>
+											<f:ajax event="change" listener="#{allVolumesBean.changeSortCriteria}" render="@all"/>
+										</h:selectOneMenu>
+									</h:panelGroup>
+								</h:panelGroup>
+						</h:panelGroup>
+						
+						
+						<ui:remove>
+						
 						<a4j:repeat var="sortCriterion" value="#{allVolumesBean.sortCriterionList}">
 							<h:panelGroup layout="block" styleClass="eg3_container_1">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
@@ -54,7 +72,9 @@
 								</h:panelGroup>
 							</h:panelGroup>
 						</a4j:repeat>
+						</ui:remove>
 					</h:form>
+					
 				</h:panelGroup>
 			</h:panelGroup>
 		
