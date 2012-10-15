@@ -97,6 +97,7 @@ public class SearchBean {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	public VolumeSearchResult quickSearchVolumes(String query, int limit, int offset) throws Exception
 	{
 		
@@ -107,7 +108,7 @@ public class SearchBean {
 
 		return search(volTypes, scList, SortCriterion.getStandardSortCriteria(), limit, offset);
 	}
-	
+	*/
 	/**
 	 * Searches for an advanced query string in all metadata of monographs and multivolumes
 	 * @param query
@@ -200,7 +201,7 @@ public class SearchBean {
 			cql += " sortby";
 			for(SortCriterion sc : sortList)
 			{
-				cql += " " + sc.getSortIndex().getIndexName() + " " + sc.getSortOrder().getOrderName();
+				cql += " " + sc.getSortIndex().getSearchIndexName() + " " + sc.getSortOrder().getOrderName();
 			}
 		}
 		

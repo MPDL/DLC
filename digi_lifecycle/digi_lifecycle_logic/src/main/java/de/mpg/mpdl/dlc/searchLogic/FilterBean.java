@@ -42,7 +42,7 @@ public class FilterBean {
 			query += " sortby";
 			for(SortCriterion sc : sortList)
 			{
-				query += " \"" + sc.getSortIndex().getIndexName() + "\"" + sc.getSortOrder().getOrderName(); 
+				query += " \"" + sc.getSortIndex().getFilterIndexName() + "\"" + sc.getSortOrder().getOrderName(); 
 			}
 		}
 		System.out.println("Filter query:" + query);

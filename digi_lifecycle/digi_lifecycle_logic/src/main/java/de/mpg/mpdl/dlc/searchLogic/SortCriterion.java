@@ -1,40 +1,92 @@
 package de.mpg.mpdl.dlc.searchLogic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SortCriterion {
 
 	
+
+	public enum CombinedSortCriterion
+	{
+		AUTHOR_TITLE_ASC(new SortCriterion[]{
+				new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING)}),
+		AUTHOR_TITLE_DESC(new SortCriterion[]{
+				new SortCriterion(SortIndices.AUTHOR, SortOrders.DESCENDING),
+				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING)}),
+		TITLE_YEAR_ASC(new SortCriterion[]{
+				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
+		TITLE_YEAR_DESC(new SortCriterion[]{
+				new SortCriterion(SortIndices.TITLE, SortOrders.DESCENDING),
+				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
+		YEAR_DESC(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)),
+		LAST_MODIFIED_DESC(new SortCriterion(SortIndices.LAST_MODIFIED, SortOrders.DESCENDING)),
+		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING));
+		
+		private List<SortCriterion> scList;
+		
+		
+		private CombinedSortCriterion(SortCriterion[] scList) {
+			this.scList = Arrays.asList(scList);
+		}
+		
+		private CombinedSortCriterion(List<SortCriterion> scList) {
+			this.scList = scList;
+		}
+		private CombinedSortCriterion(SortCriterion sc) {
+			this.scList = new ArrayList<SortCriterion>();
+			this.scList.add(sc);
+		}
+
+		public List<SortCriterion> getScList() {
+			return scList;
+		}
+
+		public void setScList(List<SortCriterion> scList) {
+			this.scList = scList;
+		}
+	}
+	
+	
 	public enum SortIndices
 	{
 		
-		TITLE("sort.dlc.title"),
-		AUTHOR("sort.dlc.author"),
-		YEAR("sort.dlc.year"),
-		NEWEST("sort.escidoc.creation-date"),
+		TITLE("sort.dlc.title", "/sort/dlc/title"),
+		AUTHOR("sort.dlc.author", "/sort/dlc/author"),
+		YEAR("sort.dlc.year", "/sort/dlc/year"),
+		NEWEST("sort.escidoc.creation-date", "/sort/properties/creation-date"),
+		STATUS("", "/properties/public-status"),
+		LAST_MODIFIED("", "/sort/last-modification-date");
 		
-		STATUS_FILTER("/properties/public-status"),
-		TITLE_FILTER("/sort/dlc/title"),
-		AUTHOR_FILTER("/sort/dlc/author"),
-		YEAR_FILTER("/sort/dlc/year"),
-		NEWEST_FILTER("/sort/properties/creation-date"),
-		LAST_MODIFIED_FILTER("/sort/last-modification-date");
+		private String searchIndexName;
+		private String filterIndexName;
 		
-		private String indexName;
-		
-		SortIndices(String index)
+		SortIndices(String searchIndexName, String filterIndexName)
 		{
-			this.setIndexName(index);
+			this.searchIndexName = searchIndexName;
+			this.filterIndexName = filterIndexName;
 		}
 
-		public String getIndexName() {
-			return indexName;
+		public String getSearchIndexName() {
+			return searchIndexName;
 		}
 
-		public void setIndexName(String indexName) {
-			this.indexName = indexName;
+		public void setSearchIndexName(String searchIndexName) {
+			this.searchIndexName = searchIndexName;
 		}
+
+		public String getFilterIndexName() {
+			return filterIndexName;
+		}
+
+		public void setFilterIndexName(String filterIndexName) {
+			this.filterIndexName = filterIndexName;
+		}
+
+		
 	}
 	
 	
@@ -98,28 +150,8 @@ public class SortCriterion {
 		this.sortOrder = sortOrder;
 	}
 	
-	public static List<SortCriterion> getStandardSortCriteria()
-	{
-		
-			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING));
-			scList.add(new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING));
-			scList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
-			
-			return scList;
-	}
 	
-	public static List<SortCriterion> getStandardFilterSortCriteria()
-	{
-		
-			List<SortCriterion> scList  = new ArrayList<SortCriterion>();
-			scList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.DESCENDING));
-			scList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
-			scList.add(new SortCriterion(SortIndices.TITLE_FILTER, SortOrders.ASCENDING));
-			scList.add(new SortCriterion(SortIndices.YEAR_FILTER, SortOrders.DESCENDING));
-			
-			return scList;
-	}
+	
 	
 	
 	
