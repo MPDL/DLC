@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -34,6 +35,7 @@ import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
 import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
@@ -61,7 +63,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
-	private List<SortCriterion> sortCriterionList = SortCriterion.getStandardFilterSortCriteria();	
+	//private List<SortCriterion> sortCriterionList = new ArrayList<SortCriterion>();	
+	
+	private CombinedSortCriterion selectedSortCriterion; 
 	
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
@@ -80,6 +84,29 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 	}
 
+	
+	@URLAction(onPostback=false)
+	public void init()
+	{ 
+		
+		//update();
+		if(collection==null || (!collection.getId().equals(colId)))
+		{
+			
+			
+			if("my".equals(colId))
+			{
+				selectedSortCriterion = CombinedSortCriterion.LAST_MODIFIED_DESC;
+				//sortCriterionList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.ASCENDING));
+			}
+			else
+			{
+				selectedSortCriterion = CombinedSortCriterion.AUTHOR_TITLE_ASC;
+				//sortCriterionList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
+			}
+		}
+		
+	}
 
 	@URLAction(onPostback=false)
 	public void loadContext()
@@ -103,18 +130,24 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	@Override
 	public List<SortCriterion> getSortCriterionList() {
-		return sortCriterionList;
+		return selectedSortCriterion.getScList();
 	}
 
 
 	@Override
 	public List<SelectItem> getSortIndicesMenu() {
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		scMenuList.add(new SelectItem(SortIndices.LAST_MODIFIED_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_lastModified")));
-		scMenuList.add(new SelectItem(SortIndices.NEWEST_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_newest")));
-		scMenuList.add(new SelectItem(SortIndices.TITLE_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_title")));
-		scMenuList.add(new SelectItem(SortIndices.AUTHOR_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_author")));
-		scMenuList.add(new SelectItem(SortIndices.YEAR_FILTER.name(), InternationalizationHelper.getLabel("sort_criterion_year")));
+		
+		
+		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC, InternationalizationHelper.getLabel("sort_criterion_year")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_newest")));
+		if("my".equals(colId))
+		{
+			scMenuList.add(new SelectItem(CombinedSortCriterion.LAST_MODIFIED_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_lastModified")));
+		}
+		
 		return scMenuList;
 	}
   
@@ -354,6 +387,19 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		return "pretty:structuralEditor";
 		
 	}
+
+
+	public CombinedSortCriterion getSelectedSortCriterion() {
+		return selectedSortCriterion;
+	}
+
+
+	public void setSelectedSortCriterion(CombinedSortCriterion selectedSortCriterion) {
+		this.selectedSortCriterion = selectedSortCriterion;
+	}
+
+
+	
 	
 	
 }

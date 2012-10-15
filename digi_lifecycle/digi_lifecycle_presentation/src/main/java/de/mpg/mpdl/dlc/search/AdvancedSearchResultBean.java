@@ -23,6 +23,7 @@ import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -48,7 +49,9 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	private List<SearchCriterion> searchCriterionList;
 
-	private List<SortCriterion> sortCriterionList = SortCriterion.getStandardSortCriteria();	
+	//private List<SortCriterion> sortCriterionList = SortCriterion.getStandardSortCriteria();	
+	
+	private CombinedSortCriterion selectedSortCriterion = CombinedSortCriterion.AUTHOR_TITLE_ASC;
 	
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
@@ -62,17 +65,17 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	@Override
 	public List<SortCriterion> getSortCriterionList()
 	{
-		return sortCriterionList ;
+		return selectedSortCriterion.getScList();
 	}
 
 	
 	@Override
 	public List<SelectItem> getSortIndicesMenu() {
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		scMenuList.add(new SelectItem(SortIndices.TITLE.name(), internationalizationHelper.getLabel("sort_criterion_title")));
-		scMenuList.add(new SelectItem(SortIndices.AUTHOR.name(), internationalizationHelper.getLabel("sort_criterion_author")));
-		scMenuList.add(new SelectItem(SortIndices.YEAR.name(), internationalizationHelper.getLabel("sort_criterion_year")));
-		scMenuList.add(new SelectItem(SortIndices.NEWEST.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_ASC.name(), internationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_ASC.name(), internationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC.name(), internationalizationHelper.getLabel("sort_criterion_year")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
 		return scMenuList;
 	}
 	
@@ -182,6 +185,14 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 
 	public void setSessionBean(SessionBean sessionBean) {
 		this.sessionBean = sessionBean;
+	}
+
+	public CombinedSortCriterion getSelectedSortCriterion() {
+		return selectedSortCriterion;
+	}
+
+	public void setSelectedSortCriterion(CombinedSortCriterion selectedSortCriterion) {
+		this.selectedSortCriterion = selectedSortCriterion;
 	}
 
 
