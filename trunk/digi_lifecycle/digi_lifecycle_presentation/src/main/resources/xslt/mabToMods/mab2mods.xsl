@@ -111,7 +111,7 @@
 						checks for 403 and 425
 					-->
 				</xsl:for-each>
-				<xsl:for-each select="key('fields', '425')">
+				<xsl:for-each select="key('fields', '425')[@ind=' ']">
 					<xsl:call-template name="mab425ToOriginInfo"/>
 					<!--
 						mab425ToOriginInfo
@@ -621,7 +621,10 @@
 					<xsl:element name="mods:dateIssued">
 						<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 						<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
-						<xsl:value-of select="key('fields', '425')"/>
+						<xsl:value-of select="key('fields', '425')[@ind=' ']"/>
+
+						
+						
 					</xsl:element>
 				</xsl:element>
 			</xsl:otherwise>
