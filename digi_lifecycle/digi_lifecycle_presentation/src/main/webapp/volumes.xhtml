@@ -75,21 +75,31 @@
 						</ui:remove>
 					</h:form>
 					
+					</h:panelGroup>
 					
-					<h:form>
-						<h:panelGroup layout="block" styleClass="eg3_container_1">
-								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-									<h:panelGroup layout="block" styleClass="eg3_container_1">
-										
-										<h:commandButton action="#{allVolumesBean.resetFilter}" value="X" rendered="#{not empty allVolumesBean.filterString}"/>
-										<h:inputText value="#{allVolumesBean.filterString}"/>
-										<h:commandButton action="#{allVolumesBean.filterResults}" value="Filter"/>
-										
+					
+				
+				
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+						<h:outputText value="#{lbl.list_filter}: "/>
+					</h:panelGroup>
+				
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+						<h:form>
+							<h:panelGroup layout="block" styleClass="eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+										<h:panelGroup layout="block" styleClass="eg3_container_1">
+											
+											<h:commandButton styleClass="eg3_borderradius_5" action="#{allVolumesBean.resetFilter}" value="X" rendered="#{not empty allVolumesBean.filterString}"/>
+											<h:inputText value="#{allVolumesBean.filterString}"/>
+											<h:commandButton styleClass="eg3_borderradius_5" action="#{allVolumesBean.filterResults}" value="OK"/>
+											
+										</h:panelGroup>
 									</h:panelGroup>
-								</h:panelGroup>
-						</h:panelGroup>
-					</h:form>
-				</h:panelGroup>
+							</h:panelGroup>
+						</h:form>
+					</h:panelGroup>
+			
 			</h:panelGroup>
 		
 		
