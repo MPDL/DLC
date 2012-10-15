@@ -622,9 +622,6 @@
 						<xsl:attribute name="keyDate"><xsl:value-of select="'yes'"/></xsl:attribute>
 						<xsl:attribute name="encoding"><xsl:value-of select="'w3cdtf'"/></xsl:attribute>
 						<xsl:value-of select="key('fields', '425')[@ind=' ']"/>
-
-						
-						
 					</xsl:element>
 				</xsl:element>
 			</xsl:otherwise>
