@@ -76,6 +76,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private int totalNumberOfRecords;
 	private Collection collection;
 	private String colId;
+	private String oldColId;
+	
+	private String filterString;
 	
 
 	public AllVolumesBean()
@@ -90,9 +93,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		
 		//update();
-		if(collection==null || (!collection.getId().equals(colId)))
+		if(oldColId==null || (!oldColId.equals(colId)))
 		{
-			
+			oldColId = colId;
+			filterString = null;
 			
 			if("my".equals(colId))
 			{
@@ -209,6 +213,14 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 						fcList.add(fc);
 					}
 				}
+			}
+			
+			if(filterString!=null && !filterString.trim().isEmpty())
+			{
+				fc = new FilterCriterion(Operator.AND, FilterParam.TITLE, filterString, 1, 0);
+				fcList.add(fc);
+				fc = new FilterCriterion(Operator.OR, FilterParam.TITLE, filterString, 0, 1);
+				fcList.add(fc);
 			}
 			
 			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
@@ -399,6 +411,28 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 
+	public String getFilterString() {
+		return filterString;
+	}
+
+
+	public void setFilterString(String filterString) {
+		this.filterString = filterString;
+	}
+
+
+	public String filterResults()
+	{
+		setCurrentPageNumber(1);
+		return getNavigationString();
+	}
+	
+	public String resetFilter()
+	{
+		this.filterString=null;
+		setCurrentPageNumber(1);
+		return getNavigationString();
+	}
 	
 	
 	

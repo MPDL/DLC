@@ -75,6 +75,20 @@
 						</ui:remove>
 					</h:form>
 					
+					
+					<h:form>
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_container_1">
+										
+										<h:commandButton action="#{allVolumesBean.resetFilter}" value="X" rendered="#{not empty allVolumesBean.filterString}"/>
+										<h:inputText value="#{allVolumesBean.filterString}"/>
+										<h:commandButton action="#{allVolumesBean.filterResults}" value="Filter"/>
+										
+									</h:panelGroup>
+								</h:panelGroup>
+						</h:panelGroup>
+					</h:form>
 				</h:panelGroup>
 			</h:panelGroup>
 		
