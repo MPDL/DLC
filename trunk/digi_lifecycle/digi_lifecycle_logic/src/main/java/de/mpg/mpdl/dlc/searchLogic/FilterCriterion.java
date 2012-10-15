@@ -10,7 +10,10 @@ public class FilterCriterion extends Criterion{
 		CREATED_BY(new String[]{"/properties/created-by/id"}),
 		CONTENT_MODEL_ID(new String[]{"/properties/content-model/id"}),
 		CONTEXT_ID(new String[]{"/properties/context/id"}),
-		STATUS(new String[]{"/properties/public-status"});
+		STATUS(new String[]{"/properties/public-status"}),
+		
+		TITLE(new String[]{"/dlc/title"}),
+		AUTHOR(new String[]{"/dlc/author"});
 		
 		private String[] params;
 		
