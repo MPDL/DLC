@@ -1835,6 +1835,13 @@ public class VolumeServiceBean {
 		//transfFact.setURIResolver(new StandardURIResolver());
 		
 		Transformer transformer = transfFact.newTransformer(xsltSource);
+		
+	
+		transformer.setParameter("numberHeadings", "false");
+		transformer.setParameter("numberFigures", "false");
+		transformer.setParameter("numberTables", "false");
+		transformer.setParameter("numberParagraphs", "false");
+		  
 		transformer.setParameter("autoToc", "false");
 		transformer.setParameter("autoHead", "false");
 		transformer.setParameter("institution", "");
