@@ -950,6 +950,8 @@ public class IngestBean{
 			    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newVolume")+ title + "[" + volume.getItem().getObjid()+"]");
 		    		
 		    		*/
+					
+					//Wait 3 seconds until the empty item was created
 					Thread.sleep(3000);
 					
 					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadInProgress"));
