@@ -127,7 +127,7 @@ public class SearchBean {
 	public String getAdvancedSearchCQL(List<SearchCriterion> scList) throws Exception
 	{
 		//VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.MULTIVOLUME, VolumeTypes.VOLUME};
-		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(null, scList));
+		String cql =  SearchCriterion.toCql(getCompleteSearchCriterions(null, scList), false);
 		return cql;
 	}
 	
@@ -179,7 +179,7 @@ public class SearchBean {
 		
 		//SearchCriterion itemCriterion = new SearchCriterion(SearchType.OBJECTTYPE, "item");
 		//scList.add(0, itemCriterion);
-		String cqlQuery = SearchCriterion.toCql(scList);
+		String cqlQuery = SearchCriterion.toCql(scList, false);
 		
 		return searchByCql(cqlQuery, sortList, limit, offset, index, userHandle);
 	}

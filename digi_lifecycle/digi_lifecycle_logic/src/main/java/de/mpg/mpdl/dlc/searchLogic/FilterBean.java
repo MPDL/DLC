@@ -18,7 +18,6 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
-import de.mpg.mpdl.dlc.searchLogic.FilterCriterion.FilterParam;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -28,7 +27,7 @@ public class FilterBean {
 	private static Logger logger = Logger.getLogger(FilterBean.class);
 	
 	
-	public VolumeSearchResult itemFilter(VolumeTypes[] volTypes, VolumeStatus[] volStatus, List<FilterCriterion> fcList, List<SortCriterion> sortList, int limit, int offset, String userHandle) throws Exception
+	public VolumeSearchResult itemFilter(VolumeTypes[] volTypes, VolumeStatus[] volStatus, List<SearchCriterion> fcList, List<SortCriterion> sortList, int limit, int offset, String userHandle) throws Exception
 	{
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -69,14 +68,14 @@ public class FilterBean {
 	}
 	
 	
-	private String getCompleteFilterQueries(VolumeTypes[] volTypes, VolumeStatus[] volStatus, List<FilterCriterion> fcList)
+	private String getCompleteFilterQueries(VolumeTypes[] volTypes, VolumeStatus[] volStatus, List<SearchCriterion> fcList)
 	{
-		List<FilterCriterion> fcStandard = getStandardFilterCriterions(volTypes, volStatus);
+		List<SearchCriterion> fcStandard = getStandardFilterCriterions(volTypes, volStatus);
 		//throw out empty entries
-		List<FilterCriterion> listWithoutEmptyEntries = new ArrayList<FilterCriterion>();
-		for(FilterCriterion fc : fcList)
+		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
+		for(SearchCriterion fc : fcList)
 		{
-			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getFilterParam()!=null)
+			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getSearchType()!=null)
 			{
 				listWithoutEmptyEntries.add(fc);
 			}
@@ -91,13 +90,13 @@ public class FilterBean {
 		
 		fcStandard.addAll(listWithoutEmptyEntries);
 		
-		return FilterCriterion.toCql(fcStandard);
+		return SearchCriterion.toCql(fcStandard, true);
 	}
 	
 	
-	private static List<FilterCriterion> getStandardFilterCriterions(VolumeTypes[] volTypes, VolumeStatus[] volStatus)
+	private static List<SearchCriterion> getStandardFilterCriterions(VolumeTypes[] volTypes, VolumeStatus[] volStatus)
 	{
-		List<FilterCriterion> fcList = new ArrayList<FilterCriterion>();
+		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
 		
 
 		
@@ -108,24 +107,24 @@ public class FilterBean {
 			//first with "and" and opening bracket
 			if(i==0)
 			{
-				FilterCriterion fcContentModel;
+				SearchCriterion fcContentModel;
 				if(volTypes.length >1)
-					fcContentModel = new FilterCriterion(Operator.AND, FilterParam.CONTENT_MODEL_ID, volType.getContentModelId(), 1, 0);
+					fcContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 1, 0);
 				else
-					fcContentModel = new FilterCriterion(Operator.AND, FilterParam.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
+					fcContentModel = new SearchCriterion(Operator.AND, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
 					
 				fcList.add(fcContentModel);
 			}
 			//last with "or" and closing brakcket
 			else if(i==volTypes.length-1)
 			{
-				FilterCriterion fcContentModel = new FilterCriterion(Operator.OR, FilterParam.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 1);
+				SearchCriterion fcContentModel = new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 1);
 				fcList.add(fcContentModel);
 			}
 			//others with "or" and without brackets
 			else
 			{
-				FilterCriterion fcContentModel= new FilterCriterion(Operator.OR, FilterParam.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
+				SearchCriterion fcContentModel= new SearchCriterion(Operator.OR, SearchType.CONTENT_MODEL_ID, volType.getContentModelId(), 0, 0);
 				fcList.add(fcContentModel);
 			}
 		}
@@ -136,22 +135,22 @@ public class FilterBean {
 			VolumeStatus status = volStatus[i];
 			if(i==0)
 			{
-				FilterCriterion fcStatus;
+				SearchCriterion fcStatus;
 				if(volStatus.length >1)
-					fcStatus = new FilterCriterion(Operator.AND, FilterParam.STATUS,status.getStatus(), 1, 0);
+					fcStatus = new SearchCriterion(Operator.AND, SearchType.STATUS,status.getStatus(), 1, 0);
 				else
-					fcStatus = new FilterCriterion(Operator.AND, FilterParam.STATUS,status.getStatus(), 0, 0);
+					fcStatus = new SearchCriterion(Operator.AND, SearchType.STATUS,status.getStatus(), 0, 0);
 				
 				fcList.add(fcStatus);
 			}
 			else if( i == volStatus.length -1)
 			{
-				FilterCriterion fcStatus = new FilterCriterion(Operator.OR, FilterParam.STATUS,status.getStatus(), 0, 1);
+				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.STATUS,status.getStatus(), 0, 1);
 				fcList.add(fcStatus);
 			}
 			else
 			{
-				FilterCriterion fcStatus = new FilterCriterion(Operator.OR, FilterParam.STATUS,status.getStatus(), 0, 0);
+				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.STATUS,status.getStatus(), 0, 0);
 				fcList.add(fcStatus);
 			}
 				

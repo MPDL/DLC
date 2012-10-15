@@ -9,45 +9,61 @@ import java.util.regex.Pattern;
 
 public class SearchCriterion extends Criterion{
 
+	
+	
 	public enum SearchType
 	{
-		FREE(new String[]{"escidoc.metadata"}), 
-		FREE_AND_FULLTEXT(new String[]{"escidoc.metadata","escidoc.fulltext"}), 
-		AUTHOR(new String[]{"dlc.author"}), 
-		TITLE(new String[]{"dlc.title"}), 
-		PLACE(new String[]{"dlc.place"}), 
-		PUBLISHER(new String[]{"dlc.publisher"}),
-		YEAR(new String[]{"dlc.year"}), 
-		KEYWORD(new String[]{"dlc.subject"}), 
-		ID(new String[]{"dlc.identifier"}), 
-		FULLTEXT(new String[]{"escidoc.fulltext"}),
-		CORPORATE(new String[]{"dlc.corporate"}),
-		SHELFMARK(new String[]{"dlc.shelfmark"}), //TODO check
+		FREE(new String[]{"escidoc.metadata"}, null), 
+		FREE_AND_FULLTEXT(new String[]{"escidoc.metadata","escidoc.fulltext"}, null), 
+		AUTHOR(new String[]{"dlc.author"}, new String[]{"/dlc/author"}), 
+		TITLE(new String[]{"dlc.title"}, new String[]{"/dlc/title"}), 
+		PLACE(new String[]{"dlc.place"}, null), 
+		PUBLISHER(new String[]{"dlc.publisher"}, null),
+		YEAR(new String[]{"dlc.year"}, null), 
+		KEYWORD(new String[]{"dlc.subject"}, null), 
+		ID(new String[]{"dlc.identifier"}, null), 
+		FULLTEXT(new String[]{"escidoc.fulltext"}, null),
+		CORPORATE(new String[]{"dlc.corporate"}, null),
+		SHELFMARK(new String[]{"dlc.shelfmark"}, null), //TODO check
 		
 		//TODO: structmd title and author
 		
-		CONTEXT_ID(new String[]{"escidoc.context.objid"}),
-		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}),
-		OBJECTTYPE(new String[]{"escidoc.objecttype"}),
+		CONTEXT_ID(new String[]{"escidoc.context.objid"}, new String[]{"/properties/context/id"}),
+		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}, new String[]{"/properties/content-model/id"}),
+		OBJECTTYPE(new String[]{"escidoc.objecttype"}, null),
 	
-		CREATEDBY(new String[]{"escidoc.created-by.name"}),
+		CREATED_BY(new String[]{"escidoc.created-by.name"}, new String[]{"/properties/created-by/id"}),
 		
-		CODICOLOGICAL(new String[]{"dlc.cdc.metadata"});
+		CODICOLOGICAL(new String[]{"dlc.cdc.metadata"}, null),
 		
-		private String[] indexNames;
+		STATUS(null, new String[]{"/properties/public-status"});
 		
-		SearchType(String[] indexNames)
+		private String[] searchIndexNames;
+		private String[] filterIndexNames;
+		
+		SearchType(String[] searchIndexNames, String[] filterIndexNames)
 		{
-			this.indexNames = indexNames;
+			this.searchIndexNames = searchIndexNames;
+			this.filterIndexNames = filterIndexNames;
 		}
 
-		public String[] getIndexNames() {
-			return indexNames;
+		public String[] getSearchIndexNames() {
+			return searchIndexNames;
 		}
 
-		public void setIndexes(String[] indexNames) {
-			this.indexNames = indexNames;
-		};
+		public void setSearchIndexNames(String[] searchIndexNames) {
+			this.searchIndexNames = searchIndexNames;
+		}
+
+		public String[] getFilterIndexNames() {
+			return filterIndexNames;
+		}
+
+		public void setFilterIndexNames(String[] filterIndexNames) {
+			this.filterIndexNames = filterIndexNames;
+		}
+
+	
 
 	}
 	
@@ -94,7 +110,7 @@ public class SearchCriterion extends Criterion{
 	public void setSearchType(SearchType searchType) {
 		this.searchType = searchType;
 	}
-	public static String toCql(List<SearchCriterion> cList) {
+	public static String toCql(List<SearchCriterion> cList, boolean filter ) {
 		{
 			  
 			String cql = "";  
@@ -139,7 +155,15 @@ public class SearchCriterion extends Criterion{
 					}
 					*/
 					
-					cql += baseCqlBuilder(sc.getSearchType().getIndexNames(), sc.getValue(), sc.getConnector());
+					if(!filter)
+					{
+						cql += baseCqlBuilder(sc.getSearchType().getSearchIndexNames(), sc.getValue(), sc.getConnector());
+					}
+					else
+					{
+						cql += baseCqlBuilder(sc.getSearchType().getFilterIndexNames(), sc.getValue(), sc.getConnector());
+					}
+					
 
 					for(int j=0; j<sc.getCloseBracket();j++)
 					{
@@ -242,7 +266,10 @@ public class SearchCriterion extends Criterion{
 			
 			for(int j=0; j< cqlIndexes.length; j++)
 			{
-				cqlStringBuilder.append(cqlIndexes[j]);
+				
+				cqlStringBuilder.append("\""+cqlIndexes[j]+"\"");
+				
+				
 				cqlStringBuilder.append(connector);
 				
 				if(splittedSearchStrings.size()>1)
