@@ -219,7 +219,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			{
 				fc = new FilterCriterion(Operator.AND, FilterParam.TITLE, filterString, 1, 0);
 				fcList.add(fc);
-				fc = new FilterCriterion(Operator.OR, FilterParam.TITLE, filterString, 0, 1);
+				fc = new FilterCriterion(Operator.OR, FilterParam.AUTHOR, filterString, 0, 1);
 				fcList.add(fc);
 			}
 			
