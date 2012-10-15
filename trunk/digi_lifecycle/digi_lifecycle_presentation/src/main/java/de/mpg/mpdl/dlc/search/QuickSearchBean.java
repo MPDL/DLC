@@ -24,9 +24,10 @@ public class QuickSearchBean {
 	
 	private String searchString;
 	
+	/*
 	@ManagedProperty("#{quickSearchResultBean}")
 	private QuickSearchResultBean quickSearchResultBean;
-	
+	*/
 	@ManagedProperty("#{advancedSearchResultBean}")
 	private AdvancedSearchResultBean advancedSearchResultBean;
 	
@@ -66,6 +67,7 @@ public class QuickSearchBean {
 		this.searchString = searchString;
 	}
 
+	/*
 	public QuickSearchResultBean getQuickSearchResultBean() {
 		return quickSearchResultBean;
 	}
@@ -73,7 +75,7 @@ public class QuickSearchBean {
 	public void setQuickSearchResultBean(QuickSearchResultBean quickSearchResultBean) {
 		this.quickSearchResultBean = quickSearchResultBean;
 	}
-
+*/
 	public AdvancedSearchResultBean getAdvancedSearchResultBean() {
 		return advancedSearchResultBean;
 	}
