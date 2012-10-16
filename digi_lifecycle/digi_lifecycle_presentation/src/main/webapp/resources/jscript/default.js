@@ -92,7 +92,7 @@ function resizeSelectBox() {
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
 			var marL = Number(selCont.css("margin-left").replace("px", ""));
 			var marR = Number(selCont.css("margin-right").replace("px", ""));
-			//console.log("undefined");
+			
 			slctTag = dynSB.find('select'); //save the select tag in the object variable
 			
 			//if a ajax reload given or the browser had been resized
@@ -127,7 +127,7 @@ function resizeSelectBox() {
 			//slctTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
 			slctTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
 		}
-	});
+	}); //end of each
 	updateCustomSelectBox();
 	
 	//check if the current page for editing or for viewing, the eg3_editPage class is only in use for editing
@@ -502,12 +502,11 @@ function eg3_closeOverlay(listButton, cnt) {
  * @param show_element:String - used in case of jQuery selection
  * @param escListener:Boolean - if set, the escape listener will change the input formats back
  */
-function eg3_switchInputType(hide_element, show_element, escListener) {
+function eg3_switchInputType(hide_element, show_element, escListener, callbackFunction) {
 	$(hide_element).hide();
 	$(show_element).show();
 	if (escListener && escListener === true) {
 		$(document).keyup(function(e) {
-			//console.log(e.which);
 			switch (e.which) {
 				case 0: //esc button in firefox
 				case 27: //esc button in chrome and IE >= 8
@@ -516,6 +515,9 @@ function eg3_switchInputType(hide_element, show_element, escListener) {
 					break;
 			}
 		});
+	}
+	if (callbackFunction) {
+		setTimeout(callbackFunction, 10);
 	}
 }
 
@@ -552,7 +554,7 @@ function checkIconbar(icoBar) {
 	} else {
 		return false;
 	}
-	//console.log(activeTab);
+	
 	switch(activeTab) {
 		case 'toc':
 			if ($('.eg3_contentDetails .rf-tr').width() < $('.eg3_contentDetails').width()) {
@@ -568,7 +570,6 @@ function checkIconbar(icoBar) {
  */
 
 function resizeSidebar(reference, availableHeight) {
-//	console.log("reference: "+reference+' / refHeight: '+availableHeight);
 	var refHeight = $(reference).height();
 	var sdbHeight = 0;
 	switch (reference) {
@@ -603,9 +604,7 @@ function resizeSidebar(reference, availableHeight) {
 			sdbLeft.css('height', sdbHeight);
 			break;
 		case '.eg3_editPage':
-			console.log("eg3_editPage: "+availableHeight);
 			if (availableHeight && availableHeight > 0) {
-				console.log('found editPage with refHeight');
 				$('.eg3_id_sidebarLeft .eg3_editSidebarContent').css("height", availableHeight);
 			} else {
 				//eg3_iconBar
@@ -645,10 +644,6 @@ function resizeSidebar(reference, availableHeight) {
  * function to check if the reference has a defined height
  */
 function checkSidebarHeight(reference, call) {
-	if (call) {
-		console.log("reference: "+reference+" / call: "+call);
-	}
-	
 	switch (reference) {
 		case '.eg3_viewPage': //the defined height is given by one of the contained images
 			//if minimum one image ready get the height of viewPage container and define the height of sidebar
@@ -673,8 +668,6 @@ function checkSidebarHeight(reference, call) {
 			
 			var height = image.css("height");
 			height = Number(height.substr(0, height.length - 2));
-			console.log(height);
-			
 			
 			if (height > 0) //if the first image has finish loading, set reloadDone on true
 			{
@@ -710,7 +703,6 @@ function checkMessageContent() {
  * function to resize all dynamic selectboxes and specific page moduls on the window resize event
  */
 function initWindowResizeListener(page) {
-	console.log("init: "+page);
 	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
 	$(window).bind("resize", function() 
 		{ 
