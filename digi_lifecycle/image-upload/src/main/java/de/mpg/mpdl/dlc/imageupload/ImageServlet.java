@@ -32,18 +32,25 @@ import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.imageupload.ImageHelper.Type;
 
 
 public class ImageServlet extends HttpServlet {
 	
-	
+	public static Logger logger = Logger.getLogger(ImageServlet.class);
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
 	{
-		String mainDir =(String)PropertyReader.getProperty("image-upload.destDir");
+		String mainDir = null;
+		try {
+			mainDir = (String)PropertyReader.getProperty("image-upload.destDir");
+		} catch (Exception e) {
+			logger.error("Could not read properties", e);
+			resp.sendError(HttpStatus.SC_NOT_FOUND, "Properties not found!");
+		}
 		
 		File f = new File(mainDir + req.getPathInfo());
 		
@@ -101,7 +108,7 @@ public class ImageServlet extends HttpServlet {
 		
 		if(ServletFileUpload.isMultipartContent(req))
 		{
-			
+			try {
 			// Create a factory for disk-based file items
 			DiskFileItemFactory factory = new DiskFileItemFactory();
 
@@ -119,7 +126,7 @@ public class ImageServlet extends HttpServlet {
 			resp.setContentType("text/plain");
 		     
 			
-			try {
+			
 				/*
 				 * Parse the request
 				 */
@@ -240,7 +247,13 @@ public class ImageServlet extends HttpServlet {
 		}
 		
 		
-		String mainDir =(String)PropertyReader.getProperty("image-upload.destDir");
+		String mainDir  =null;
+		try {
+			mainDir = (String)PropertyReader.getProperty("image-upload.destDir");
+		} catch (URISyntaxException e) {
+			logger.error("Could not read properties", e);
+			resp.sendError(HttpStatus.SC_NOT_FOUND, "Properties not found!");
+		}
 		
 		if(req.getPathInfo()==null || req.getPathInfo().trim().isEmpty() || req.getPathInfo().contains("..") || !req.getPathInfo().substring(1).contains("/"))
 		{
