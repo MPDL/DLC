@@ -152,6 +152,7 @@ public class Volume {
 	}
 
 	public Item getItem() {
+		this.item.getProperties().getContentModel().getObjid();
 		return item;
 	}
 

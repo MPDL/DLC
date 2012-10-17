@@ -124,6 +124,13 @@ public class UserAccountServiceBean {
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getModeratorCollections().add(c);
 	        	}
+				  
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
+	        	{
+					user.getGrants().add(grant);
+					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					user.getMdEditorCollections().add(c);
+	        	}
 			}
 		}catch(Exception e)
 		{
@@ -186,7 +193,14 @@ public class UserAccountServiceBean {
 					user.getGrants().add(grant);
 					user.getDepositorCollections().add(c);
 					user.getDepositorContextIds().add(c.getId());
-	        	}			
+	        	}		
+				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
+	        	{
+					user.getGrants().add(grant);
+					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					user.getMdEditorCollections().add(c);
+					user.getMdEditorContextIds().add(c.getId());
+	        	}
 			}			
 
 		}catch(Exception e)
@@ -306,7 +320,7 @@ public class UserAccountServiceBean {
 				}
 			} 
 			Grant grant = new Grant();
-			if(user.getDepositorContextIds().size()>0 || user.getModeratorContextIds().size()>0)
+			if(user.getDepositorContextIds().size()>0 || user.getModeratorContextIds().size()>0 || user.getMdEditorContextIds().size() >0)
 			{
 
 				for(Grant g : client.retrieveCurrentGrants(ua.getObjid()))
@@ -327,9 +341,14 @@ public class UserAccountServiceBean {
 					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.modifier"), contextInfo);
+
+				}
+				for(String contextInfo : user.getMdEditorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
 				}
+				
 				ua = client.retrieve(ua.getObjid());
 			}
 			
@@ -389,7 +408,13 @@ public class UserAccountServiceBean {
 					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.modifier"), contextInfo);
+				}
+			}
+			if(user.getMdEditorContextIds().size() >0)
+			{
+				for(String contextInfo : user.getMdEditorContextIds())
+				{
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), contextInfo);
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}

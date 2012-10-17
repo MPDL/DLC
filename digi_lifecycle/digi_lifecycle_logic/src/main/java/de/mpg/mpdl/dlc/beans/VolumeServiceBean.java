@@ -2562,11 +2562,9 @@ public class VolumeServiceBean {
 						}	
 						else
 							jpegFooter = footer;
-						
 						jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
 							
 					}
-					
 					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
 					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
 					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
@@ -2681,8 +2679,6 @@ public class VolumeServiceBean {
 			String dirName = vol.getItem().getObjid().replaceAll(":", "_");
 			ImageController.deleteFilesFromImageServer(dirName);
 		}
-			
-		
 		
 	}
 	
