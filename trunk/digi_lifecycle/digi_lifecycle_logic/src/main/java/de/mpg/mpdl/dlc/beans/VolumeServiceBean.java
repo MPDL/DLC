@@ -1812,9 +1812,9 @@ public class VolumeServiceBean {
 		String pagedTeiResult = getTeiForPage(p, pagedTei);
 		//logger.info(pagedTeiResult);
 		
-
+		//System.out.println(pagedTeiResult);
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/officialTei2/xhtml2/tei.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/dlc-tei-xsl-6.15/xml/tei/profiles/dlc/html/to.xsl");
 		//URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei2html.xsl");
 		
 		Source xsltSource = new StreamSource(url.toExternalForm());
@@ -1836,7 +1836,7 @@ public class VolumeServiceBean {
 		
 		Transformer transformer = transfFact.newTransformer(xsltSource);
 		
-	
+	/*
 		transformer.setParameter("numberHeadings", "false");
 		transformer.setParameter("numberFigures", "false");
 		transformer.setParameter("numberTables", "false");
@@ -1849,8 +1849,11 @@ public class VolumeServiceBean {
 		transformer.setParameter("topNavigationPanel", "false");
 		transformer.setParameter("showFigures", "false");
 		transformer.setParameter("linkPanel", "false");
+		
+		
+		*/
+		//transformer.setParameter("pbid", p.getId());
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setParameter("pbid", p.getId());
 		transformer.transform(teiXmlSource, res);
 		
 
