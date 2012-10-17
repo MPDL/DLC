@@ -20,6 +20,8 @@ import javax.media.jai.PlanarImage;
 
 import org.apache.log4j.Logger;
 
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
@@ -206,22 +208,31 @@ public class ImageHelper{
 		    return resizedImage;  
 	    }  
 	    
-		public static File mergeImages(File inputFile, File footer) throws IOException {
-		       //creating a bufferd image array from image files  
-		        BufferedImage scanBI = ImageIO.read(inputFile);  
-		        BufferedImage footerBI = ImageIO.read(footer);
-		        
-		        int scanWidth = scanBI.getWidth();
-		        int footerWidth = footerBI.getWidth();
-		        int scanHeight = scanBI.getHeight();
-		        int footerHeight = footerBI.getHeight();
-//		        if(scanWidth == footerWidth)
-//		        {
+		public static File mergeImages(File inputFile, File footer){
+				try {
+			       //creating a bufferd image array from image files  
+					BufferedImage scanBI = ImageIO.read(inputFile);
+			        BufferedImage footerBI = ImageIO.read(footer);
+			        
+			        int scanWidth = scanBI.getWidth();
+			        int footerWidth = footerBI.getWidth();
+			        int scanHeight = scanBI.getHeight();
+			        int footerHeight = footerBI.getHeight();
+			        
+			        if(scanWidth < footerWidth)
+			        {
+			        	footerBI = scaleImage(footerBI, scanWidth, scanHeight);
+			        	footerHeight = footerBI.getHeight();
+			        }
 		            BufferedImage finalImg  = new BufferedImage(scanWidth, scanHeight+ footerHeight, scanBI.getType());
 		        	finalImg.createGraphics().drawImage(scanBI,0,0, null);
 		        	finalImg.createGraphics().drawImage(footerBI,0, scanHeight, null);
 		            ImageIO.write(finalImg, "jpg", inputFile);
-//		        }
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}  
+
 		        return inputFile;
 
 		    }     
@@ -232,21 +243,32 @@ public class ImageHelper{
 	     * @param String Source 
 	     * @throws IOException 
 	     */  
-	    public static File tiffToJpeg(File tiffFile, String name) throws Exception 
+	    public static File tiffToJpeg(File tiffFile, String name) 
 	    {  
 	    	
-	    	File tmpFile = File.createTempFile(name,"jpg.tmp");
-	        SeekableStream s = new FileSeekableStream(tiffFile);
-	        TIFFDecodeParam param = new TIFFDecodeParam();
-	        ImageDecoder dec = ImageCodec.createImageDecoder("tiff", s, param);
-	        RenderedImage ri = dec.decodeAsRenderedImage(0);
-	        
-	        FileOutputStream fos = new FileOutputStream(tmpFile);
-	        JPEGEncodeParam jParam = new JPEGEncodeParam();
-	        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
-	        imageEncoder.encode(ri);
-	        fos.close();
-	        
+	    	File tmpFile = null;
+	    	try
+	    	{
+	    		tmpFile =File.createTempFile(name,"jpg.tmp");
+	    		logger.info("tmpFile Name = " + tmpFile.getName() + " | Path = " + tmpFile.getAbsolutePath());
+	    		logger.info("Name = " + tiffFile.getName() + " | Path = " + tiffFile.getAbsolutePath() + " | Size = " + tiffFile.length());
+		        SeekableStream s = new FileSeekableStream(tiffFile);
+		        TIFFDecodeParam param = new TIFFDecodeParam();
+		        ImageDecoder dec = ImageCodec.createImageDecoder("tiff", s, param);
+		        RenderedImage ri = dec.decodeAsRenderedImage(0);
+		        
+		        FileOutputStream fos = new FileOutputStream(tmpFile);
+//		        JPEGEncodeParam jParam = new JPEGEncodeParam();
+//		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
+//		        imageEncoder.encode(ri);
+		        
+		        JPEGImageEncoder jpeg = JPEGCodec.createJPEGEncoder(fos);
+		        jpeg.encode(ri.getData());
+		        fos.close();
+	    	}catch(Exception e)
+	    	{
+	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
+	    	}
 	        return tmpFile;
 	    } 
 	    
@@ -268,7 +290,7 @@ public class ImageHelper{
 		        fos.close();
 	    	}catch(Exception e)
 	    	{
-	    		logger.error("cann not convert png to jpeg", e);
+	    		logger.error("cann not convert png to jpeg. Error: " + e.getMessage());
 	    	}
 	    	
 	    	return tmpFile;
@@ -310,7 +332,57 @@ public class ImageHelper{
 			   return null;
 			} 
     
-	    
+		public static String getJPEGFilename(String filename)
+		{
+			
+//			if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
+			// if(filename.matches(".+?(\\.jpg|\\.JPEG|\\.jpeg|\\.JPG|\\.Jpeg)"))
+			if(filename.matches("^.*?(jpg|jpeg|JPG|JPEG)$"))
+			{
+				return filename;
+			}
+			else
+			{
+				return filename + ".jpg";
+			}
+		}
+
+		private static String splitSuffix(String name)
+		{
+			int dot = name.lastIndexOf('.');
+//			String extension = (dot == -1) ? "" : name.substring(dot+1);
+			String base = (dot == -1) ? name : name.substring(0, dot);
+			return base;
+		}
+		
+		
+	public static void convertTiffToJpeg(String inputDic, String outputDic) throws IOException
+	{
+    	File images = new File(inputDic);
+    	File[] list = images.listFiles();
+    	if(list.length >0)
+    	{
+    		for(File i : list)
+    		{
+    			String name = splitSuffix(i.getName());
+    			String jpegName = name + ".jpg";
+    			File jpegImage = new File(outputDic + "//"+jpegName);
+
+
+    	        SeekableStream s = new FileSeekableStream(i);
+    	        TIFFDecodeParam param = new TIFFDecodeParam();
+    	        ImageDecoder dec = ImageCodec.createImageDecoder("tiff", s, param);
+    	        RenderedImage ri = dec.decodeAsRenderedImage(0);
+    	        
+    	        FileOutputStream fos = new FileOutputStream(jpegImage);
+    	        JPEGEncodeParam jParam = new JPEGEncodeParam();
+    	        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
+    	        imageEncoder.encode(ri);
+    	        fos.close();
+    			
+    		}
+    	}
+	}
     public static void main(String[] arg) throws Exception
     {
     	/*
@@ -330,34 +402,15 @@ public class ImageHelper{
 		
 		 */
  
-		File tiffScan = new File("C://Users//yu//Desktop//test//dt9bg18q+bd1=d0001.tif");	
-		File tiffFooter = new File("C://Users//yu//Desktop//test//footer_mpirg.tif");
-		String dir= "C://Users//yu//Desktop//test//";
+//    	String inputDic = "C://Doku//dlc//TEST_MPDL//ROM//batch//images//Va6400-1990a";
+//    	String outputDic = "C://Doku//dlc//TEST_MPDL//ROM//batch//jpegimages//Va6400-1990a"; 
+//    	convertTiffToJpeg(inputDic, outputDic);   
+    	
 
-		
-		File png = new File("C:/Users/yu/Desktop/solution_logo_216_75.png");
 
-		
-		File jpegImage = pngToJpeg(png, "solution_logo_216_75.jpg");
-		
 
-		try {
-//			tiffToJpeg(tiffScan, "scan.jpg", dir);
-//			tiffToJpeg(tiffFooter, "footer.jpg", dir);
-			
-			
-			RenderedImage ri = readAndTile(tiffScan);
-			ImageIO.write(ri, "jpg", new File("C://Users//yu//Desktop//test//scan.jpg"));
-			
-			RenderedImage ri2 = readAndTile(tiffFooter);
-			ImageIO.write(ri2, "jpg", new File("C://Users//yu//Desktop//test//footer.jpg"));
 
-			mergeImages(new File("C://Users//yu//Desktop//test//scan.jpg"), new File("C://Users//yu//Desktop//test//footer.jpg"));
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
  		
     }
    

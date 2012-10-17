@@ -31,9 +31,11 @@ public class User {
 	
 	private List<Collection> depositorCollections = new ArrayList<Collection>();
 	private List<Collection> moderatorCollections = new ArrayList<Collection>();
+	private List<Collection> mdEditorCollections = new ArrayList<Collection>();
 	
 	private List<String> depositorContextIds = new ArrayList<String>();
 	private List<String> moderatorContextIds = new ArrayList<String>();
+	private List<String> mdEditorContextIds = new ArrayList<String>();
 
 	
 	public String getId() {
@@ -161,6 +163,22 @@ public class User {
 	{
 		return id.equals(vol.getItem().getProperties().getCreatedBy().getObjid());
 		
+	}
+
+	public List<Collection> getMdEditorCollections() {
+		return mdEditorCollections;
+	}
+
+	public void setMdEditorCollections(List<Collection> mdEditorCollections) {
+		this.mdEditorCollections = mdEditorCollections;
+	}
+
+	public List<String> getMdEditorContextIds() {
+		return mdEditorContextIds;
+	}
+
+	public void setMdEditorContextIds(List<String> mdEditorContextIds) {
+		this.mdEditorContextIds = mdEditorContextIds;
 	}
 
 	

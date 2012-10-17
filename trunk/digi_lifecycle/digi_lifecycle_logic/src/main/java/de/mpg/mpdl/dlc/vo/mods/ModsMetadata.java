@@ -119,6 +119,7 @@ public class ModsMetadata {
 	public void setPhysicalDescriptions(
 			List<ModsPhysicalDescription> physicalDescriptions) {
 		this.physicalDescriptions = physicalDescriptions;
+
 	}
 
 
