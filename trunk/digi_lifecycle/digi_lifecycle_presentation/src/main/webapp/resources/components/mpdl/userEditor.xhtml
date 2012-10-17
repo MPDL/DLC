@@ -71,6 +71,15 @@
 					<f:selectItems value="#{adminBean.contextSelectItems}" />
 				</h:selectManyListbox>
 			</h:panelGroup>	
+			
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:outputText value="#{lbl.admin_user_md_editor} : "/>
+			</h:panelGroup>
+            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyListbox value="#{cc.attrs.user.mdEditorContextIds}">
+					<f:selectItems value="#{adminBean.contextSelectItems}" />
+				</h:selectManyListbox>
+			</h:panelGroup>	
 
 
 

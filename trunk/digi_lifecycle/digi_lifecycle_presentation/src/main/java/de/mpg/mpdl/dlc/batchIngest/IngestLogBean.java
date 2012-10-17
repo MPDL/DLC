@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 
@@ -56,27 +57,38 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	}
 	
 	public List<IngestLog> retrieveList(int offset, int limit) throws Exception {
-		logs.clear();
+		logs.clear();    
 		this.conn = IngestLog.getConnection();
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		String query = null;
-		
+		List<IngestLog> allLogs = new ArrayList<IngestLog>();
 		try
 		{
-			query = "select * from dlc_batch_ingest_log where user_id = ?";
-			statement = conn.prepareStatement(query);
+			String q = "select * from dlc_batch_ingest_log where user_id = ? ORDER BY id DESC";
+			ResultSet resultSet;
+			PreparedStatement statement;
+			statement = conn.prepareStatement(q);
 			statement.setString(1, userId);
 			resultSet = statement.executeQuery();
+
 			
+//			String query = "select * from dlc_batch_ingest_log where user_id = ? and id between ? and ? ";
+//			statement = conn.prepareStatement(query);
+//			statement.setString(1, userId);
+//			statement.setInt(2, offset);
+//			statement.setInt(3, limit);
+//			resultSet = statement.executeQuery();
+
             while (resultSet.next())
             {
             	int id = resultSet.getInt("id");
             	IngestLog log = getIngestLog(id);
-                logs.add(log);
+            	allLogs.add(log);
             }
-            
-            this.totalNumberOfRecords = logs.size();
+            this.totalNumberOfRecords = allLogs.size();
+            for(int i = offset; i< offset+limit; i++)
+            {
+            	System.err.println("i =" + i);
+            	logs.add(allLogs.get(i-1));
+            }
             
   		}catch(Exception e)
 		{
@@ -84,6 +96,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		}
 		return logs;
 	}
+	
+	
+
 
 	public int getTotalNumberOfRecords() {
 
@@ -91,9 +106,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	}
 
 
+	@Override
 	public String getNavigationString() {
-
-		return "";
+		return "pretty:myItemsBatch";
 	}
 	
 

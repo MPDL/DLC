@@ -130,27 +130,38 @@
 						</h:panelGroup>
 					</rich:panel>
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
-						<h:outputText value="#{ingestBean.mabFile.name}" />
 						
-						<ui:remove>
-						<h:panelGroup layout="block" rendered="#{not empty ingestBean.mabFile}">				
-							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="false"/>
-						</h:panelGroup>
-						</ui:remove>
+						<ui:fragment rendered="#{not empty ingestBean.volume or not empty ingestBean.mabFile}">
+							<h:panelGroup layout="block" rendered="#{ingestBean.modsMetadata.catalogueId_001.length() >0}">
+								<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="true"/>
+							</h:panelGroup>
+							
+							<ui:fragment rendered="#{ingestBean.modsMetadata.catalogueId_001 == '' or empty ingestBean.modsMetadata.catalogueId_001}"> 
+								<h:panelGroup layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMultiVol}">
+									<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
+								</h:panelGroup>
+								<h:panelGroup  layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMono}">
+									<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmVolume}">
+									<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
+								</h:panelGroup>
+
+							</ui:fragment> 
+
+						</ui:fragment>
 						
-						<h:panelGroup layout="block" rendered="#{not empty ingestBean.volume or not empty ingestBean.mabFile}">				
-							<modsViewer:default modsMetadata="#{ingestBean.modsMetadata}" editable="true"/>
-						</h:panelGroup>
-						
-						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
-							<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
-						</h:panelGroup>
-						<h:panelGroup  layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmMono}">
-							<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
-						</h:panelGroup>
-						<h:panelGroup layout="block" rendered="#{empty ingestBean.mabFile and empty ingestBean.volume and ingestBean.selectedContentModel==applicationBean.cmVolume}">
-							<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
-						</h:panelGroup>
+						<ui:fragment rendered= "#{empty ingestBean.mabFile and empty ingestBean.volume}">
+							<h:panelGroup layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
+								<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
+							</h:panelGroup>
+							<h:panelGroup  layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMono}">
+								<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmVolume}">
+								<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
+							</h:panelGroup>
+						</ui:fragment>
 						
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">

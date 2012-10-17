@@ -36,7 +36,7 @@ public class LoginBean
     private boolean login;
     private static Logger logger = Logger.getLogger(LoginBean.class);
     private static final String LOGIN_URL = "aa/login?target=$1";
-    public static final String LOGOUT_URL = "aa/logout?target=$1";
+    public static final String LOGOUT_URL = "aa/logout/clear.jsp?target=$1";
     private String userHandle;
     private User user;
     private String tab = "toc";
@@ -169,14 +169,22 @@ public class LoginBean
 				this.user = null;
 			
 				FacesContext fc = FacesContext.getCurrentInstance();
+				PrettyContext pc = PrettyContext.getCurrentInstance();
+				
+				//logout from escidoc
+	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ pc.getContextPath();
+				fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
+
+				//delete session
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		        session.invalidate();
-
-	    		String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
-
-	    		//Direct to hompage when log out, because of changing rights.
-	    		FacesContext.getCurrentInstance().getExternalContext().redirect(dlc_URL);
+				
+				//Direct to hompage when log out, because of changing rights.
+//				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
+//				fc.getExternalContext().redirect(dlc_URL);
+				
                 MessageHelper.infoMessage(InternationalizationHelper.getMessage("logout_successful"));
+
 
 
 			}
@@ -191,7 +199,12 @@ public class LoginBean
 
     public static String getLoginUrl() throws Exception
     {
-    	return PropertyReader.getProperty("escidoc.common.login.url")+LOGIN_URL;
+    	return PropertyReader.getProperty("escidoc.common.login.url") + LOGIN_URL;
+    }
+    
+    public static String getLogoutUrl() throws Exception
+    {
+    	return PropertyReader.getProperty("escidoc.common.login.url") + LOGOUT_URL;
     }
 
 }
