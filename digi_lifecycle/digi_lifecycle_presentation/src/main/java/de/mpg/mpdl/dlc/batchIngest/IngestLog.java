@@ -914,28 +914,8 @@ public class IngestLog
 			try{
 				FileOutputStream out = new FileOutputStream(i);
 				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
-				logger.info("downloading image to " + dlcDirectory + " : " + i.getName());
-//				FTPFile[] files = ftp.listFiles(imagesDirectory);
-//				Iterator fi = Arrays.asList(files).iterator();
-//				
-//				while(fi.hasNext())
-//				{
-//					File f = (File)fi.next();
-//					if(i.getName().equals(f.getName()))
-//					{
-//						String pathname = '/'+ f.getName();
-//						File jpegImage = new File(dlcDirectory + "/"+ f.getName());
-//						FileOutputStream out = new FileOutputStream(i);
-//						ftp.retrieveFile(imagesDirectory+"/"+ f.getName(), out);
-//						fi.remove();
-//					}
-//					else if(footer.getName().equals(f.getName()))
-//					{
-//						FileOutputStream out = new FileOutputStream(footer);
-//						ftp.retrieveFile(imagesDirectory+"/"+ f.getName(), out);
-////						fi.remove();
-//					}
-//				}
+				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+
 			}catch(IOException e)
 			{
 				logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
@@ -945,7 +925,7 @@ public class IngestLog
 		try {
 			out = new FileOutputStream(footer);
 			ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
-			logger.info("downloading footer to " + dlcDirectory + " : " + footer.getName());
+			logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
 		} catch (IOException e) {
 			logger.error("Error while copying Image from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 		}

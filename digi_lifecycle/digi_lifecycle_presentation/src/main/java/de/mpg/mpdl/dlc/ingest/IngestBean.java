@@ -162,7 +162,7 @@ public class IngestBean{
 				this.volume = volumeService.loadCompleteVolume(volumeId,  loginBean.getUserHandle());
 				//if(mabFile == null)
 				
-				this.modsMetadata = volume.getModsMetadata();
+				this.modsMetadata = retrieveModsMetadata(volume.getModsMetadata());
 				if(volume.getMets()!=null)
 				{
 					for(Page p : volume.getMets().getPages())
@@ -194,6 +194,62 @@ public class IngestBean{
 				clearAllData();
 				*/
 		}
+	}
+	
+	public ModsMetadata retrieveModsMetadata(ModsMetadata md)
+	{
+		
+		if(md.getNames().size() == 0)
+		{
+			ModsName modsName = new ModsName();
+			modsName.setDisplayLabel("author");
+			md.getNames().add(modsName);
+		}
+		if(md.getNotes().size() == 0)
+			md.getNotes().add(new ModsNote());
+		
+		if(md.getIdentifiers().size() == 0)
+		{
+			md.getIdentifiers().add(new ModsIdentifier());
+			md.getIdentifiers().add(new ModsIdentifier());
+		}
+		
+		if(md.getIdentifiers().size() == 1)
+		{
+			md.getIdentifiers().add(new ModsIdentifier());
+		}
+		
+		if(md.getPublishers().size() == 0 )
+		{
+			ModsPublisher publisher = new ModsPublisher();
+			publisher.setDisplayLabel("publisher");
+			publisher.setDateIssued_425(new ModsDate());
+	    	md.getPublishers().add(publisher);
+		}
+		if(md.getKeywords().size()==0)
+			md.getKeywords().add("");
+		if(md.getLanguage_037() == null)
+			md.setLanguage_037(new ModsLanguage());
+		
+
+		
+		if(md.getRelatedItems().size()== 0)
+			md.getRelatedItems().add(new ModsRelatedItem());
+		
+		if(md.getPhysicalDescriptions().size()==0)
+			md.getPhysicalDescriptions().add(new ModsPhysicalDescription());
+		
+		if(md.getParts().size() == 0)
+		{
+			md.getParts().add(new ModsPart());
+			md.getParts().add(new ModsPart());
+		}
+		if(md.getParts().size() == 1)
+		{
+			md.getParts().add(new ModsPart());
+		}
+		
+		return md;
 	}
 	
 	
@@ -803,7 +859,7 @@ public class IngestBean{
 		{
 			if(publisher.getDisplayLabel().equals("publisher"))
 			{
-				publisher.setDisplayLabel("printer1");
+				publisher.setDisplayLabel("publisher1");
 				md.getPublishers().remove(0);
 				md.getPublishers().add(publisher);
 			}
@@ -1000,6 +1056,8 @@ public class IngestBean{
 	     			return "";
 	    		}
 				
+				if(mabFile == null)
+					modsMetadata = updateModsMetadata(modsMetadata);
 				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 				
 			}
