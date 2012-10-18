@@ -258,12 +258,11 @@ public class ImageHelper{
 		        RenderedImage ri = dec.decodeAsRenderedImage(0);
 		        
 		        FileOutputStream fos = new FileOutputStream(tmpFile);
-//		        JPEGEncodeParam jParam = new JPEGEncodeParam();
-//		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
-//		        imageEncoder.encode(ri);
+		        JPEGEncodeParam jParam = new JPEGEncodeParam();
+		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
+		        imageEncoder.encode(ri);
 		        
-		        JPEGImageEncoder jpeg = JPEGCodec.createJPEGEncoder(fos);
-		        jpeg.encode(ri.getData());
+		        fos.flush();
 		        fos.close();
 	    	}catch(Exception e)
 	    	{
@@ -287,6 +286,7 @@ public class ImageHelper{
 		        JPEGEncodeParam jParam = new JPEGEncodeParam();
 		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
 		        imageEncoder.encode(ri);
+		        fos.flush();
 		        fos.close();
 	    	}catch(Exception e)
 	    	{
@@ -378,6 +378,7 @@ public class ImageHelper{
     	        JPEGEncodeParam jParam = new JPEGEncodeParam();
     	        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
     	        imageEncoder.encode(ri);
+    	        fos.flush();
     	        fos.close();
     			
     		}

@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
