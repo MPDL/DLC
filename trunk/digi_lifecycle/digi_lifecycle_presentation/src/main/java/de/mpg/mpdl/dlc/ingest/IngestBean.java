@@ -973,7 +973,7 @@ public class IngestBean{
 		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
 		     			return "";
 		    		}
-					if(mabFile == null)
+					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
 					//Volume volume = null;
 					

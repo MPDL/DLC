@@ -28,7 +28,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-					<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" />
+					<h:inputText value="#{cc.attrs.modsMetadata.catalogueId_001}" title="#{cc.attrs.modsMetadata.catalogueId_001}"/>
 				</h:panelGroup>
 			</h:panelGroup>
 		
@@ -42,7 +42,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}" />
+							<h:inputText value="#{title.title}" title="#{title.title}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -53,7 +53,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}"/>
+							<h:inputText value="#{title.title}" title="#{title.title}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -64,7 +64,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.subTitle}" />
+							<h:inputText value="#{title.subTitle}" title="#{title.subTitle}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -75,7 +75,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}" />
+							<h:inputText value="#{title.title}" title="#{title.title}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -86,7 +86,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}" />
+							<h:inputText value="#{title.title}" title="#{title.title}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -97,7 +97,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}" />
+							<h:inputText value="#{title.title}" title="#{title.title}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -108,7 +108,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{title.title}" />
+							<h:inputText value="#{title.title}" title="#{title.title}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -116,54 +116,51 @@
 				</a4j:repeat>
 			</h:panelGroup>
 			
-
-			
 		<!-- names -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.names.size()>0}">
-			
-			<!-- authors -->	
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getAuthorsForTitle(cc.attrs.modsMetadata.names)}">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-							<h:outputText value="#{lbl.mods_author}"/>
-						</h:panelGroup>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{volumeUtilBean.getAuthorsForTitle(cc.attrs.modsMetadata.names)}" />	
-					</h:panelGroup>               
-				</h:panelGroup>
-				
-			<!-- editors -->
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getEditorsForTitle(cc.attrs.modsMetadata.names)}">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-							<h:outputText value="#{lbl.mods_editor}"/>
-						</h:panelGroup>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{volumeUtilBean.getEditorsForTitle(cc.attrs.modsMetadata.names)}" />	
-					</h:panelGroup>               
-				</h:panelGroup>
-			<!-- bodys -->
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getBodiesForTitle(cc.attrs.modsMetadata.names)}">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-							<h:outputText value="#{lbl.mods_body}"/>
-						</h:panelGroup>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{volumeUtilBean.getBodiesForTitle(cc.attrs.modsMetadata.names)}" />	
-					</h:panelGroup>               
-				</h:panelGroup>
 				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
+					<ui:fragment rendered="#{name.displayLabel.startsWith('author')}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_author}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+							<h:inputText value="#{name.name}" title="#{name.type}"/>
+						</h:panelGroup>               
+					</ui:fragment>
+
+					
+					<ui:fragment rendered="#{name.displayLabel.startsWith('editor')}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_editor}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">				
+							<h:inputText value="#{name.name}" title="#{name.name}"/>
+						</h:panelGroup>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{name.displayLabel.startsWith('body')}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_body}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">					
+							<h:inputText value="#{name.name}" title="#{name.name}"/>
+						</h:panelGroup>
+					</ui:fragment>
+
 					<ui:fragment rendered="#{empty name.displayLabel}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_gefeiertePerson}"/>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{name.name}" />					
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">					
+							<h:inputText value="#{name.name}" title="#{name.name}" />
 						</h:panelGroup>
 					</ui:fragment>
 				</a4j:repeat>
@@ -173,40 +170,63 @@
 		<!-- publishers -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.publishers.size() > 0}">
 				<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
+				
 					<ui:fragment rendered="#{not empty publisher.publisher and publisher.displayLabel.startsWith('publisher')}">
-						<ui:fragment rendered="#{not empty volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}">
-		 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
-		 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-									<h:outputText value="#{lbl.mods_publisher}"/>
-								</h:panelGroup>
+	 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+	 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_publisher}"/>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-								<h:outputText value="#{volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}" />
-							</h:panelGroup>
-						</ui:fragment>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+
+							<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}" />
+						</h:panelGroup>
 					</ui:fragment>
 					
 					<ui:fragment rendered="#{not empty publisher.publisher and publisher.displayLabel.startsWith('printer')}">
-						<ui:fragment rendered="#{not empty volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}">
-		 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-		 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-									<h:outputText value="#{lbl.mods_publisher}"/>
-								</h:panelGroup>
+	 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+	 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_printer}"/>
 							</h:panelGroup>
-							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue" >
-								<h:outputText value="#{volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}" />
-							</h:panelGroup>
-						</ui:fragment>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+
+							<h:inputText value="#{publisher.publisher}" title="#{publisher.publisher}"/>
+						</h:panelGroup>
 					</ui:fragment>
 					
-					<ui:fragment rendered="#{not empty publisher.edition}">
+					<ui:fragment rendered="#{not empty publisher.place}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_publisherPlace}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+
+							<h:inputText value="#{publisher.place}" title="#{publisher.place}" />
+						</h:panelGroup>
+					</ui:fragment>
+
+					<ui:fragment rendered="#{not empty publisher.dateIssued_425}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+
+							<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
+						</h:panelGroup>
+					</ui:fragment>
+		 "#{not empty publisher.edition}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{publisher.edition}" />
+
+							<h:inputText value="#{publisher.edition}" title="#{publisher.edition}" />
 						</h:panelGroup>
 					</ui:fragment>					
 
@@ -214,20 +234,20 @@
 			</h:panelGroup>
 
 		<!-- physicalDescriptions -->
-		
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
-				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getCollationsForTitle(cc.attrs.modsMetadata.physicalDescriptions)}">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
-						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-							<h:outputText value="#{lbl.mods_extends}"/>
-						</h:panelGroup>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{volumeUtilBean.getCollationsForTitle(cc.attrs.modsMetadata.physicalDescriptions)}" />	
-					</h:panelGroup>               
-				</h:panelGroup>
-				
 				<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
+					<ui:fragment rendered="#{not empty pd.extent}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_extent}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+
+							<h:inputText value="#{pd.extent}" title="#{pd.extent}" />
+						</h:panelGroup>
+					</ui:fragment>
+					
 					<ui:fragment rendered = "#{not empty pd.materialDesignation_334}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -235,11 +255,11 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{pd.materialDesignation_334}" />
+							<h:inputText value="#{pd.materialDesignation_334}" title="#{pd.materialDesignation_334}" />
 						</h:panelGroup>
 					</ui:fragment>
 				</a4j:repeat>
-			</h:panelGroup>		
+			</h:panelGroup>
 
 
 		<!-- notes -->
@@ -252,18 +272,18 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragment>
-					
-					<ui:fragment rendered="#{note.type== 'statement of responsibility'}">
+					</ui:fragmen dered="#{note.type== 'statement of responsibility'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_SOR}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -275,28 +295,27 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragment>
-					
-					<ui:fragment rendered="#{empty note.type}">
+					</ui:fragmen dered="#{empty note.type}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_annotation}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragment>
-					<ui:fragment rendered="#{note.type=='summary of volumes'}">
+					</ui:fragmen #{note.type=='summary of volumes'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_SOV}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{note.type=='subject completeness'}">
@@ -306,7 +325,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{note.type=='indexes'}">
@@ -316,7 +335,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{note.type=='remainder of title for whole item'}">
@@ -326,7 +345,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{note.type=='reponsibility for whole item'}">
@@ -336,7 +355,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{note.note}" />
+							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</ui:fragment>
 				</a4j:repeat>
@@ -352,7 +371,7 @@
 						</h:panelGroup>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{keyword}" />
+						<h:inputText value="#{keyword}" title="#{keyword}" />
 					</h:panelGroup>
 				</a4j:repeat>
 			</h:panelGroup>
@@ -368,7 +387,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'isbn' and identifier.invalid == 'yes'}">
@@ -378,7 +397,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'issn' and empty identifier.invalid}">
@@ -388,7 +407,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'issn' and identifier.invalid == 'yes'}">
@@ -398,7 +417,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'zdb-id'}">
@@ -408,7 +427,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'local'}">
@@ -418,7 +437,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'doi'}">
@@ -428,7 +447,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					<ui:fragment rendered="#{identifier.type == 'urn'}">
@@ -438,7 +457,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{identifier.value}" />
+							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 				</a4j:repeat>
@@ -452,7 +471,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-					<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" />
+					<h:inputText value="#{cc.attrs.modsMetadata.language_037.language}" title="#{cc.attrs.modsMetadata.language_037.language}" />
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -466,7 +485,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{part.value}" />
+							<h:inputText value="#{part.value}" title="#{part.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -477,7 +496,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{part.volumeDescriptive_089}" />
+							<h:inputText value="#{part.volumeDescriptive_089}" title="#{part.volumeDescriptive_089}"/>
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -488,7 +507,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{part.subseries_361}"/>
+							<h:inputText value="#{part.subseries_361}"  title="#{part.subseries_361}"/>
 						</h:panelGroup>
 					</ui:fragment>
 				</a4j:repeat>
@@ -502,7 +521,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-					<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" />
+					<h:inputText value="#{cc.attrs.modsMetadata.signature_544}" title="#{cc.attrs.modsMetadata.signature_544}" />
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -514,7 +533,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-					<h:outputText value="#{cc.attrs.modsMetadata.freeText}" />
+					<h:inputText value="#{cc.attrs.modsMetadata.freeText}" title ="#{cc.attrs.modsMetadata.freeText}" />
 				</h:panelGroup>
 			</h:panelGroup>
 			
@@ -528,7 +547,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.parentId_010}" />
+							<h:inputText value="#{ri.parentId_010}" title="#{ri.parentId_010}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -539,7 +558,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.title}" />
+							<h:inputText value="#{ri.title}" title="#{ri.title}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -550,52 +569,65 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.title}" />
+							<h:inputText value="#{ri.title}" title="#{ri.title}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
 					<!--  Sekundärausgabe -->
-					<ui:fragment rendered="#{ri.sec_Publisher.size() > 0}" >
-						<a4j:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
-						
-
-						
+					<ui:fragment rendered="#{ri.sec_publisher.size() > 0}" >
+						<a4j:repeat var="sec_publisher" value ="ri.sec_publisher" >
 							<ui:fragment rendered="#{not empty sec_publisher.publisher and sec_publisher.displayLabel == 'publisher3'}">
-								<ui:fragment rendered="#{not empty volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}">
-				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
-				 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-											<h:outputText value="#{lbl.mods_publisher}"/>
-										</h:panelGroup>
+			 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+			 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+										<h:outputText value="#{lbl.mods_publisher}"/>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:outputText value="#{volumeUtilBean.getPublisherOrPrinterForTitle(sec_publisher)}" />
-									</h:panelGroup>
-								</ui:fragment>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+									<h:inputText value="#{sec_publisher.publisher}" title="#{sec_publisher.publisher}" />
+								</h:panelGroup>
 							</ui:fragment>
 							
 							<ui:fragment rendered="#{not empty publisher.publisher and sec_publisher.displayLabel == 'manufacturer'}">
-								<ui:fragment rendered="#{not empty volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}">
-				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
-				 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-											<h:outputText value="#{lbl.mods_publisher}"/>
-										</h:panelGroup>
+			 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+			 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+										<h:outputText value="#{lbl.mods_printer}"/>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:outputText value="#{volumeUtilBean.getPublisherOrPrinterForTitle(sec_publisher)}" />
-									</h:panelGroup>
-								</ui:fragment>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue" >
+									<h:inputText value="#{sec_publisher.publisher}" title="#{sec_publisher.publisher}" />
+								</h:panelGroup>
 							</ui:fragment>
 							<ui:fragment rendered="#{not empty publisher.publisher and sec_publisher.displayLabel == 'creator'}">
-								<ui:fragment rendered="#{not empty volumeUtilBean.getPublisherOrPrinterForTitle(publisher)}">
-				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
-				 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-											<h:outputText value="#{lbl.mods_publisher}"/>
-										</h:panelGroup>
+			 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+			 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+										<h:outputText value="#{lbl.mods_creator}"/>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:outputText value="#{volumeUtilBean.getPublisherOrPrinterForTitle(sec_publisher)}" />
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue" >
+									<h:inputText value="#{sec_publisher.publisher}" title="#{sec_publisher.publisher}" />
+								</h:panelGroup>
+							</ui:fragment>
+							
+							<ui:fragment rendered="#{not empty sec_publisher.place}">
+								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+										<h:outputText value="#{lbl.mods_publisherPlace}"/>
 									</h:panelGroup>
-								</ui:fragment>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+									<h:inputText value="#{sec_publisher.place}" title="#{sec_publisher.place}" />
+								</h:panelGroup>
+							</ui:fragment>
+		
+							<ui:fragment rendered="#{not empty sec_publisher.dateIssued_425}">
+								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+										<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+									<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
+								</h:panelGroup>
 							</ui:fragment>
 							
 							<ui:fragment rendered="#{not empty sec_publisher.edition}">
@@ -605,7 +637,7 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-									<h:outputText value="#{sec_publisher.edition}" />
+									<h:inputText value="#{sec_publisher.edition}" title="#{publisher.edition}" />
 								</h:panelGroup>
 							</ui:fragment>	
 						</a4j:repeat>
@@ -620,7 +652,7 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-									<h:outputText value="#{sec_identifier.value}" />
+									<h:inputText value="#{sec_identifier.value}" title="#{sec_identifier.value}" />
 								</h:panelGroup>
 							</ui:fragment>
 							<ui:fragment rendered="#{sec_identifier.type == 'issn'}">
@@ -630,7 +662,7 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-									<h:outputText value="#{sec_identifier.value}" />
+									<h:inputText value="#{sec_identifier.value}" title="#{sec_identifier.value}" />
 								</h:panelGroup>
 							</ui:fragment>
 						</a4j:repeat>
@@ -643,7 +675,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.sec_location.sec_signature_646}" />
+							<h:inputText value="#{ri.sec_location.sec_signature_646}" title="#{ri.sec_location.sec_signature_646}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -654,7 +686,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.sec_location.sec_url.value}" />
+							<h:inputText value="#{ri.sec_location.sec_url.value}" title="#{ri.sec_location.sec_url.value}" />
 						</h:panelGroup>
 					</ui:fragment>
 					
@@ -665,7 +697,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.sec_notes.note}" />
+							<h:inputText value="#{ri.sec_notes.note}" title="#{ri.sec_notes.note}" />
 						</h:panelGroup>				
 					</ui:fragment>
 					
@@ -676,7 +708,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.sec_relatedItems.title}" />
+							<h:inputText value="#{ri.sec_relatedItems.title}" title="#{ri.sec_relatedItems.title}" />
 						</h:panelGroup>				
 					</ui:fragment>
 					
@@ -687,7 +719,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:outputText value="#{ri.sec_copyright}" />
+							<h:inputText value="#{ri.sec_copyright}" title="#{ri.sec_copyright}" />
 						</h:panelGroup>				
 					</ui:fragment>
 					
@@ -700,7 +732,7 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-									<h:outputText value="#{sec_pd.sec_technicalIndication}" />
+									<h:inputText value="#{sec_pd.sec_technicalIndication}" title="#{sec_pd.sec_technicalIndication}" />
 								</h:panelGroup>	
 							</ui:fragment>
 							
@@ -711,22 +743,11 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-									<h:outputText value="#{sec_pd.extent}" />
+									<h:inputText value="#{sec_pd.extent}" title="#{sec_pd.extent}" />
 								</h:panelGroup>	
 							</ui:fragment>
 						</a4j:repeat>			
 					</ui:fragment>					
-					
-					
-					
-					
-					
-					
-		
-
-
-				
-					
 					
 					<!-- END OF Sekundärausgabe -->
 					
