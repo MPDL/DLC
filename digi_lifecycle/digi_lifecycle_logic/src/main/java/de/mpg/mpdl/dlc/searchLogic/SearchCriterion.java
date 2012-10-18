@@ -36,7 +36,8 @@ public class SearchCriterion extends Criterion{
 		
 		CODICOLOGICAL(new String[]{"dlc.cdc.metadata"}, null),
 		
-		STATUS(null, new String[]{"/properties/public-status"});
+		PUBLIC_STATUS(null, new String[]{"/properties/public-status"}),
+		VERSION_STATUS(null, new String[]{"/properties/version/status"});
 		
 		private String[] searchIndexNames;
 		private String[] filterIndexNames;

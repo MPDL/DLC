@@ -201,7 +201,8 @@ public class VolumeServiceBean {
 	public enum VolumeStatus{
 		pending("pending"),
 		submitted("submitted"),
-		released("released");
+		released("released"),
+		withdrawn("withdrawn");
 		
 		private String status;
 		
@@ -2694,7 +2695,7 @@ public class VolumeServiceBean {
 	
 	public void withdrawVolume(Volume vol, String userHandle) throws Exception
 	{
-		
+
 		ItemHandlerClient itemHandler = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		itemHandler.setHandle(userHandle);
 		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();

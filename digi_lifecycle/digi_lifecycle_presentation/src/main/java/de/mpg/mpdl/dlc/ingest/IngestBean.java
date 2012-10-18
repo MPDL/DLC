@@ -1204,7 +1204,10 @@ public class IngestBean{
 
 		//		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, SortCriterion.getStandardSortCriteria(), 1000, 0);
 //		VolumeSearchResult vsr = volumeService.filterSearch(query, scList, limit, offset, index, userHandle);
-		VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.released}, fcList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 1000, 0, loginBean.getUserHandle());
+		VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, 
+				new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
+				new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
+				fcList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 1000, 0, loginBean.getUserHandle());
 		for(Volume vol : vsr.getVolumes())
 		{
 			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));

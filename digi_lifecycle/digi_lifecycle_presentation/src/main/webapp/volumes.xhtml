@@ -80,10 +80,34 @@
 					
 				
 					<ui:fragment rendered="#{allVolumesBean.colId=='my'}">
+					
+				
+				
+						<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+							<h:outputText value="#{lbl.list_stateFilter}: "/>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+							<h:form>
+								<h:panelGroup layout="block" styleClass="eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+											<h:panelGroup layout="block" styleClass="eg3_container_1">
+												<h:selectOneMenu value="#{allVolumesBean.filterItemState}">
+													<f:selectItem itemLabel="#{lbl.list_statefilter_allExceptWithdrawn}" itemValue="all"/>
+													<f:selectItem itemLabel="#{lbl.list_statefilter_submitted}" itemValue="submitted"/>
+													<f:selectItem itemLabel="#{lbl.list_statefilter_released}" itemValue="released"/>
+													<f:selectItem itemLabel="#{lbl.list_statefilter_withdrawn}" itemValue="withdrawn"/>
+													<f:ajax event="change" listener="#{allVolumesBean.filterResults}" render="@all"/>
+												</h:selectOneMenu>										
+											</h:panelGroup>
+										</h:panelGroup>
+								</h:panelGroup>
+							</h:form>
+						</h:panelGroup>
+						
+				
 					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
 						<h:outputText value="#{lbl.list_filter}: "/>
 					</h:panelGroup>
-				
 					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 						<h:form>
 							<h:panelGroup layout="block" styleClass="eg3_container_1">
