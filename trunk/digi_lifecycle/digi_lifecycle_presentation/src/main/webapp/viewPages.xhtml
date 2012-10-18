@@ -25,6 +25,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<modsViewer:header volume="#{viewPages.volume}" collection="#{viewPages.context}"/>
 				</h:panelGroup>
+				<!-- TODO labels -->
 				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
 			</h:panelGroup>
 			
