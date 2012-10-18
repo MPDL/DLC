@@ -25,7 +25,11 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<modsViewer:header volume="#{viewPages.volume}" collection="#{viewPages.context}"/>
 				</h:panelGroup>
+				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
 			</h:panelGroup>
+			
+			
+			
 		</ui:define>
 		
 		<ui:define name="citationLink">
@@ -34,13 +38,13 @@
 					$('.eg3_citationOverlayArea').show(400);
 				}
 			</script>
-			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea">
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" onclick="activateCitationContent();"/>
 			</h:panelGroup>
 		</ui:define>
 		
 		<ui:define name="citationLinkContent">
-			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea">
+			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea"  rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 				<button class="eg3_container_1" onclick="$(this).parent().hide('slow');">
 					<h:panelGroup styleClass="eg3_icon_close_16_16" style="display:inline-block;"/>
 				</button>
@@ -114,7 +118,7 @@
 		
 		<ui:define name="mainContent">
 			
-			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2">
+			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 				<script type="text/javascript">
 					var curContent = "toc";
 				</script>
