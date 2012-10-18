@@ -1,14 +1,11 @@
 package de.mpg.mpdl.dlc.list;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
@@ -18,8 +15,6 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.common.Relation;
-import de.escidoc.core.resources.om.context.Context;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
@@ -39,11 +34,9 @@ import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortOrders;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
-import de.mpg.mpdl.dlc.viewer.ViewPages;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
-import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @SessionScoped
@@ -110,7 +103,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			}
 		}
 		
-	}
+	} 
 
 	@URLAction(onPostback=false)
 	public void loadContext()
@@ -212,6 +205,19 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 						fc = new SearchCriterion(Operator.OR, SearchType.CREATED_BY,loginBean.getUser().getId());
 						fcList.add(fc);
 					}
+				}
+			}
+			
+			if(loginBean.getUser().getMdEditorCollections() != null && loginBean.getUser().getMdEditorCollections().size() >0)
+			{
+				for(int i = 0; i < loginBean.getUser().getMdEditorCollections().size(); i++)
+				{
+					Collection c = loginBean.getUser().getMdEditorCollections().get(i);
+					if(i == 0)
+						fc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
+					else
+						fc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
+					fcList.add(fc);
 				}
 			}
 			
