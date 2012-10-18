@@ -337,6 +337,22 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	}
 	
+	public void withdraw(Volume vol)
+	{ 
+		String userHandle = loginBean.getUserHandle();
+		try {
+			volServiceBean.withdrawVolume(vol, userHandle);
+		
+
+			
+			MessageHelper.infoMessage(InternationalizationHelper.getMessage("success_withdrawVolume"));
+		} catch (Exception e) {
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_withdrawVolume"));
+			logger.error("Error while withdrawing volume " + vol.getObjidAndVersion(), e);
+		}
+
+	}
+	
 	/**
 	 * Retrieve the 5 last works of all collections
 	 * TODO: check multivolume, what can be displayed here?

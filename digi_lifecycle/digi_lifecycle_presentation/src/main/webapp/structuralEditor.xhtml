@@ -66,11 +66,11 @@
 										<h:outputText value="#{lbl.edit_scan} #{element.page.order + 1}"/>
 										<h:outputText value=" / #{lbl.edit_page} #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}"/>
 										</b>
-										<h:outputText value=" (#{internationalizationHelper.getLabelForEnum('pageType_', element.teiElement.subtype)})" rendered="#{not empty element.teiElement.subtype}"/>
-										<h:panelGroup rendered="#{not empty element.teiElement.type}">
-											<h:outputText value=" (#{lbl.displayType_single})" rendered="#{element.teiElement.type=='single'}"/>
-											<h:outputText value=" (#{lbl.displayType_recto})" rendered="#{element.teiElement.type=='left'}"/>
-											<h:outputText value=" (#{lbl.displayType_verso})" rendered="#{element.teiElement.type=='right'}"/>
+										<h:outputText value=" (#{internationalizationHelper.getLabelForEnum('pageType_', element.teiElement.type)})" rendered="#{not empty element.teiElement.type}"/>
+										<h:panelGroup rendered="#{not empty element.teiElement.rend}">
+											<h:outputText value=" (#{lbl.displayType_single})" rendered="#{element.teiElement.rend=='single'}"/>
+											<h:outputText value=" (#{lbl.displayType_recto})" rendered="#{element.teiElement.rend=='left'}"/>
+											<h:outputText value=" (#{lbl.displayType_verso})" rendered="#{element.teiElement.rend=='right'}"/>
 										</h:panelGroup>
 										
 										<br/><br/>
@@ -334,7 +334,7 @@
 									<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
 										<h:commandButton  value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
 										<h:outputText value="&#160;"/>
-										<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5" rendered="#{loginBean.user.releasable(structuralEditorBean.volume.item.properties.context.objid)}"/>
+										<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5" rendered="#{loginBean.user.releasable(structuralEditorBean.volume)}"/>
 										<h:outputText value="&#160;"/>
 										<h:commandButton  value="#{lbl.button_command_revert}" action="#{structuralEditorBean.revert}" styleClass="eg3_borderradius_5"/>
 									</h:panelGroup>
@@ -429,7 +429,7 @@
 																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																	<span class="eg3_selectionText"></span>
 																</h:panelGroup>
-																<h:selectOneMenu value="#{structuralEditorBean.selectedPbType}">
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPbRend}">
 																	<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																	<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
 																	<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
@@ -447,7 +447,7 @@
 																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																	<span class="eg3_selectionText"></span>
 																</h:panelGroup>
-																<h:selectOneMenu value="#{structuralEditorBean.selectedPbSubtype}">
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPbType}">
 																	<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																	<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
 																	<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
@@ -574,7 +574,7 @@
 																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																		<span class="eg3_selectionText"></span>
 																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
+																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.rend}">
 																		<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																		<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
 																		<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
@@ -619,7 +619,7 @@
 																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																		<span class="eg3_selectionText"></span>
 																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.subtype}">
+																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
 																		<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																		<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
 																		<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>

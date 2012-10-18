@@ -20,13 +20,16 @@ public abstract class PbOrDiv {
 	}
 	
 	@XmlAttribute(name = "id", namespace = "http://www.w3.org/XML/1998/namespace")
-	private String id;
+	protected String id;
 	
 	@XmlAttribute(name = "n")
-	private String numeration;
+	protected String numeration;
 	
 	@XmlAttribute(name="type")
-	private String type;
+	protected String type;
+	
+	@XmlAttribute(name="rend")
+	protected String rend;
 	
 	@XmlElements
 	(value = {
@@ -56,6 +59,7 @@ public abstract class PbOrDiv {
 		this.setParent(original.getParent());
 		this.setPbOrDiv(original.getPbOrDiv());
 		this.setType(original.getType());
+		this.setRend(original.getRend());
 	}
 	
 	public PbOrDiv()
@@ -117,7 +121,21 @@ public abstract class PbOrDiv {
 		this.elementType = elementType;
 	}
 	
-	
+	/*
+	 * Workaround for a4j:repeat
+	 */
+	public List<PersName> getPersNames()
+	{
+		return null;
+	}
+
+	public String getRend() {
+		return rend;
+	}
+
+	public void setRend(String rend) {
+		this.rend = rend;
+	}
 	
 	
 

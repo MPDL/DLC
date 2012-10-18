@@ -48,6 +48,7 @@ import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.Front;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.PersName;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 @ManagedBean
@@ -776,6 +777,21 @@ public class VolumeUtilBean {
 		else
 		{
 			list.add(new DocAuthor());
+		}
+		
+		
+	}
+	
+	public void addNewPersName(Integer pos, List<PersName> list)
+	{
+
+		if(pos!=null)
+		{
+			list.add(pos+1, new PersName());
+		}
+		else
+		{
+			list.add(new PersName());
 		}
 		
 		

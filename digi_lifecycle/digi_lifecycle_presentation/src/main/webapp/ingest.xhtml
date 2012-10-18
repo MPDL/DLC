@@ -61,7 +61,7 @@
 							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
-							<a4j:commandButton action="#{ingestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">
+							<a4j:commandButton action="#{ingestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()" rendered="#{loginBean.user.isModerator(ingestBean.selectedContextId)}">
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
 							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">

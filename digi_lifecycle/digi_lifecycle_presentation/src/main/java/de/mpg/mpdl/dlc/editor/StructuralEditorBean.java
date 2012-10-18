@@ -44,6 +44,7 @@ import de.mpg.mpdl.dlc.vo.teisd.Figure;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
+import de.mpg.mpdl.dlc.vo.teisd.PersName;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
@@ -73,7 +74,7 @@ public class StructuralEditorBean implements Observer {
 	private TeiElementWrapper selectedPb;
 	private String selectedPbType;
 	private String selectedPbNumeration;
-	private String selectedPbSubtype;
+	private String selectedPbRend;
 	
 	
 	
@@ -658,6 +659,7 @@ public class StructuralEditorBean implements Observer {
 			currentNewElement = new TeiElementWrapper();
 			Figure figure = new Figure();
 			figure.getHead().add("");
+			figure.getPersNames().add(new PersName());
 			currentNewElement.setTeiElement(figure);
 			
 		}
@@ -736,6 +738,7 @@ public class StructuralEditorBean implements Observer {
 			//currentTeiElementEditType = ElementType.FIGURE;
 			Figure figure = new Figure();
 			figure.getHead().add("");
+			figure.getPersNames().add(new PersName());
 			currentEditElementWrapper.setTeiElement(figure);
 			
 		}
@@ -858,7 +861,7 @@ public class StructuralEditorBean implements Observer {
 		//also set in METS
 		selectedPb.getPage().setOrderLabel(selectedPbNumeration);
 				
-		selectedPagebreak.setSubtype(selectedPbSubtype);
+		selectedPagebreak.setRend(selectedPbRend);
 		rerenderThumbnailPage(new TeiElementWrapper[]{selectedPb});
 		initPageListMenu();
 		MessageHelper.infoMessage(internationalizationHelper.getMessage("edit_actionSuccessful"));
@@ -1042,14 +1045,14 @@ public class StructuralEditorBean implements Observer {
 	{
 		int startIndex = pbList.indexOf(selectedPb);
 		
-		String value = selectedPb.getTeiElement().getType();
+		String value = ((Pagebreak)selectedPb.getTeiElement()).getRend();
 		List<TeiElementWrapper> paginatedPages = new ArrayList<TeiElementWrapper>();
 		
 		for(int i=startIndex; i<pbList.size(); i++)
 		{
 			TeiElementWrapper pbWrapper = pbList.get(i);
 			
-			pbWrapper.getTeiElement().setType(value);
+			pbWrapper.getTeiElement().setRend(value);
 			
 			
 			if(value.equals("left"))
@@ -1080,7 +1083,7 @@ public class StructuralEditorBean implements Observer {
 	{
 		int startIndex = pbList.indexOf(selectedPb);
 		
-		String value = ((Pagebreak)selectedPb.getTeiElement()).getSubtype();
+		String value = ((Pagebreak)selectedPb.getTeiElement()).getType();
 		List<TeiElementWrapper> paginatedPages = new ArrayList<TeiElementWrapper>();
 		
 		for(int i=startIndex; i<pbList.size(); i++)
@@ -1088,7 +1091,7 @@ public class StructuralEditorBean implements Observer {
 			TeiElementWrapper pbWrapper = pbList.get(i);
 			Pagebreak pb = (Pagebreak)pbWrapper.getTeiElement();
 			
-			pb.setSubtype(value);
+			pb.setType(value);
 			paginatedPages.add(pbWrapper);
 			
 			
@@ -1866,7 +1869,7 @@ public class StructuralEditorBean implements Observer {
 		this.setSelectedPb(pb);
 		this.selectedPbType = pb.getTeiElement().getType();
 		this.selectedPbNumeration = pb.getTeiElement().getNumeration();
-		this.selectedPbSubtype = ((Pagebreak)pb.getTeiElement()).getSubtype();
+		this.selectedPbRend = ((Pagebreak)pb.getTeiElement()).getRend();
 		
 		this.selectedGoToBoxPageId = pb.getTeiElement().getId();
 		rerenderThumbnailPage(new TeiElementWrapper[]{oldSelectedPb, selectedPb});
@@ -2308,13 +2311,13 @@ public class StructuralEditorBean implements Observer {
 	}
 
 
-	public String getSelectedPbSubtype() {
-		return selectedPbSubtype;
+	public String getSelectedPbRend() {
+		return selectedPbRend;
 	}
 
 
-	public void setSelectedPbSubtype(String selectedPbSubtype) {
-		this.selectedPbSubtype = selectedPbSubtype;
+	public void setSelectedPbRend(String selectedPbRend) {
+		this.selectedPbRend = selectedPbRend;
 	}
 
 

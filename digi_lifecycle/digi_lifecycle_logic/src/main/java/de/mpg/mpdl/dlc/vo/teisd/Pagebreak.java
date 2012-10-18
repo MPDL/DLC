@@ -24,6 +24,8 @@ public class Pagebreak extends PbOrDiv{
 	
 	@XmlAttribute(name="subtype")
 	private String subtype;
+	
+
 
 	
 	public Pagebreak() {
@@ -71,7 +73,8 @@ public class Pagebreak extends PbOrDiv{
 	public void setPrev(String prev) {
 		this.prev = prev;
 	}
-	
+
+
 	
 
 }
