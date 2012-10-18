@@ -55,7 +55,7 @@
 				<a4j:commandButton action="#{batchIngestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages" execute="@form">
 				</a4j:commandButton>
 				
-				<a4j:commandButton action="#{batchIngestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages" execute="@form" rendered="#{loginBean.user.releasable(ingestBean.selectedContextId)}">
+				<a4j:commandButton action="#{batchIngestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages" execute="@form" rendered="#{loginBean.user.isModerator(ingestBean.selectedContextId)}">
 				</a4j:commandButton>
 
 				

@@ -135,7 +135,6 @@
 				</h:panelGroup>
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_21_50"/>
 			</h:panelGroup>
-			
 			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
 					<h:outputText value="#{lbl.edit_numeration}"/>
@@ -149,6 +148,51 @@
 				</h:panelGroup>
 				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.figDesc}" styleClass="eg3_container_21_50"/>
 			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+					<h:outputText value="#{lbl.edit_caption}"/>
+				</h:panelGroup>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.caption}" styleClass="eg3_container_21_50"/>
+			</h:panelGroup>
+			
+			<a4j:repeat value="#{cc.attrs.teiWrapper.teiElement.persNames}" var="persName" rowKeyVar="rowKey" >
+					<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_main_color eg3_groupTitle" style="padding-left:1%; padding-top:0.25em;">
+							<h:outputText value="#{lbl.edit_author} #{rowKey+1}"/>
+							
+							<h:panelGroup styleClass="eg3_floatRight" style="margin-top:-0.6666666em; margin-right:1%;">
+								<h:commandButton action="#{volumeUtilBean.addNewPersName(rowKey, cc.attrs.teiWrapper.teiElement.persNames)}" value=" " title="#{tlt.edit_add_item}#{lbl.edit_author}" styleClass="eg3_ico_addi_16">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.teiWrapper.teiElement.persNames)}" value=" " title="#{tlt.edit_remove_item}#{lbl.edit_author}" styleClass="eg3_ico_removei_16" rendered="#{cc.attrs.teiWrapper.teiElement.docAuthors.size() gt 1}">
+									 <f:ajax render="@form" execute="@form"/>
+								</h:commandButton>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:outputLabel styleClass="eg3_inputLabel" for="author">
+								<h:outputText value="#{lbl.edit_author}"/>
+							</h:outputLabel>
+						</h:panelGroup>
+						<h:inputText value="#{persName.author}" id="author" styleClass="eg3_container_3_5"/>
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:outputLabel styleClass="eg3_inputLabel" for="invertedAuthor">
+								<h:outputText value="#{lbl.edit_authorInv}"/>
+							</h:outputLabel>
+						</h:panelGroup>
+						<h:inputText value="#{persName.invertedAuthor}" id="invertedAuthor" styleClass="eg3_container_3_5"/>
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:outputLabel styleClass="eg3_inputLabel" for="key">
+								<h:outputText value="#{lbl.edit_authorPnd}"/>
+							</h:outputLabel>
+						</h:panelGroup>
+						<h:inputText value="#{persName.key}" id="key" styleClass="eg3_container_3_5"/>
+					</h:panelGroup>
+				</a4j:repeat>
+
 		</h:panelGroup>
 	            
 	</cc:implementation>

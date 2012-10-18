@@ -180,7 +180,7 @@ public class ViewPages implements Observer{
 					{
 						try {
 							XdmNode pb = pbList.get(i);
-							String type = pb.getAttributeValue(new QName("type"));
+							String rend = pb.getAttributeValue(new QName("rend"));
 							String id = pb.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace", "id"));
 							
 							Page pageDummy = new Page();
@@ -189,7 +189,7 @@ public class ViewPages implements Observer{
 							int index = volume.getPages().indexOf(pageDummy);
 							if(index>=0)
 							{
-								viewTypeMap.put(volume.getPages().get(index), type);
+								viewTypeMap.put(volume.getPages().get(index), rend);
 							}
 							
 						} catch (Exception e) {

@@ -37,6 +37,9 @@
 	 
 	 
 	 <mapping name="div" class="de.mpg.mpdl.dlc.vo.teisd.Div" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
+	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
+	 	</collection>
 	 	
 	 	<!-- 
 	 	<value style="attribute" name="author1" field="author1" usage="optional" whitespace="trim" default=""/>
@@ -49,6 +52,7 @@
 	 	<value style="attribute" name="author2pnd" field="author2pnd" usage="optional"  whitespace="trim" default=""/>
 	 	<value style="attribute" name="author3pnd" field="author3pnd" usage="optional"  whitespace="trim" default=""/>
 	 	-->
+	 	<structure name="byline" usage="optional">
 	 	<collection field="docAuthors" item-type="de.mpg.mpdl.dlc.vo.teisd.DocAuthor" factory="de.mpg.mpdl.dlc.vo.teisd.Div.docAuthorListFactory" usage="optional">		
 			<structure name="docAuthor" usage="optional">
 				<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
@@ -58,9 +62,7 @@
 			</structure>
 	 	</collection>
 	 	
-	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
-	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
-	 	</collection>
+	 	</structure>
 	 	
 	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>
@@ -70,8 +72,20 @@
 	 	<collection get-method="getHead" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
 	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
-	 	<value style="element" name="figDesc" field="figDesc" usage="optional" default=""/>
-
+	 	
+	 	<structure name="figDesc" usage="optional">
+	 		<value style="text" field="figDesc" type="java.lang.String" usage="optional" default=""/>
+	 		<collection field="persNames" item-type="de.mpg.mpdl.dlc.vo.teisd.PersName" factory="de.mpg.mpdl.dlc.vo.teisd.Figure.persNameListFactory" usage="optional">
+		 		<structure name="persName" usage="optional">
+		 			<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
+					<value style="attribute" name="key" field="key" usage="optional" default=""/>
+					<value style="attribute" name="ana" field="invertedAuthor" usage="optional" default=""/>
+					<value style="text" field="author" usage="optional" default=""/>
+				</structure>
+	 		</collection>		
+	 		
+	 	</structure>
+		<value style="element" name="caption" field="caption" type="java.lang.String" usage="optional" default=""/>
 	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>
 	 
@@ -80,6 +94,7 @@
 	 		<value style="attribute" name="next" field="next" usage="optional" default=""/>
 	 		<value style="attribute" name="prev" field="prev" usage="optional" default=""/>
 	 		<value style="attribute" name="subtype" field="subtype" usage="optional" default=""/>
+	 		<value style="attribute" name="rend" field="rend" usage="optional" default=""/>
 	 
 	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 

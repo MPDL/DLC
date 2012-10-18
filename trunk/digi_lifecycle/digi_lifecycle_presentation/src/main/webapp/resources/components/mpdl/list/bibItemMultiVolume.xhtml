@@ -84,7 +84,7 @@
 									<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
 								</pretty:link>
 								
-								<h:panelGroup rendered="#{cc.attrs.volume.item.properties.version.status=='pending' and loginBean.user.releasable(cc.attrs.volume.item.properties.context.objid)}">
+								<h:panelGroup rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
 									<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
 										<f:ajax render="multiVol :messages" />
 									</h:commandButton>

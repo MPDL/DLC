@@ -151,18 +151,69 @@ public class User {
 	}
 
 	
-	public boolean releasable(String contextId)
+	public boolean isModerator(String contextId)
 	{
-		if(moderatorContextIds.contains(contextId))
-			return true;
-		else
-			return false;
+		return moderatorContextIds.contains(contextId);
+	}
+	
+	public boolean releasable(Volume vol)
+	{
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
+		
+		boolean stateCondition = !"withdrawn".equals(publicStatus) && "submitted".equals(versionStatus);
+		
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		{
+			return stateCondition;
+		}
+		else if(id.equals(vol.getProperties().getCreatedBy().getObjid()))
+		{
+			return stateCondition;
+		}
+		
+		return false;
 	}
 	
 	public boolean deletable(Volume vol)
 	{
-		return id.equals(vol.getItem().getProperties().getCreatedBy().getObjid());
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
+		boolean stateCondition = !"released".equals(publicStatus) && !"withdrawn".equals(publicStatus);
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		{
+			
+			
+			return stateCondition;
+					
+		}
+		else if(id.equals(vol.getProperties().getCreatedBy().getObjid()))
+		{
+			return stateCondition;
+		}
 		
+		return false;
+				
+		
+	}
+	
+	public boolean withdrawable(Volume vol)
+	{
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
+		
+		boolean stateCondition = "released".equals(publicStatus);
+		
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		{
+			return stateCondition;
+		}
+		else if(id.equals(vol.getProperties().getCreatedBy().getObjid()))
+		{
+			return stateCondition;
+		}
+		
+		return false;
 	}
 
 	public List<Collection> getMdEditorCollections() {

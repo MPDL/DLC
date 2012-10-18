@@ -2671,8 +2671,39 @@ public class VolumeServiceBean {
 		
 		ItemHandlerClient itemHandler = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		itemHandler.setHandle(userHandle);
-			
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		
+		//if already submitted, revise first
+		if("submitted".equals(versionStatus))
+		{
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Revise Volume for deletion");
+			taskParam.setLastModificationDate(vol.getItem().getLastModificationDate());
+			Result res = itemHandler.revise(vol.getItem().getObjid(), taskParam);
+		}
+		
 		itemHandler.delete(vol.getItem().getObjid());
+		
+		if(!multivolumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
+		{
+			String dirName = vol.getItem().getObjid().replaceAll(":", "_");
+			ImageController.deleteFilesFromImageServer(dirName);
+		}
+		
+	}
+	
+	public void withdrawVolume(Volume vol, String userHandle) throws Exception
+	{
+		
+		ItemHandlerClient itemHandler = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		itemHandler.setHandle(userHandle);
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		
+		TaskParam taskParam=new TaskParam(); 
+	    taskParam.setComment("Withdraw Volume");
+		taskParam.setLastModificationDate(vol.getItem().getLastModificationDate());
+		
+		itemHandler.withdraw(vol.getItem().getObjid(), taskParam);
 		
 		if(!multivolumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
 		{

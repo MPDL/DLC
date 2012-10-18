@@ -11,6 +11,10 @@ public class Figure extends Div {
 	
 	private String figDesc;
 	
+	private String caption;
+	
+	
+	private List<PersName> persNames = new ArrayList<PersName>();
 	
 
 	public Figure() {
@@ -25,6 +29,16 @@ public class Figure extends Div {
 		List<String> head = new ArrayList<String>();
 		head.addAll(original.getHead());
 		this.setHead(head);
+		
+		List<PersName> persNameList = new ArrayList<PersName>();
+		
+		for(PersName originalPersName : original.getPersNames())
+		{
+			persNameList.add(new PersName(originalPersName));
+		}
+		this.setPersNames(persNameList);
+		
+		this.setCaption(original.getCaption());
 	}
 	
 	public String getFigDesc() {
@@ -35,7 +49,27 @@ public class Figure extends Div {
 		this.figDesc = figureDesc;
 	}
 
-	
+	public List<PersName> getPersNames() {
+		return persNames;
+	}
+
+	public void setPersNames(List<PersName> persNames) {
+		this.persNames = persNames;
+	}
+
+	public static List<PersName> persNameListFactory()
+	{
+		return new ArrayList<PersName>();
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
 	
 
 }
