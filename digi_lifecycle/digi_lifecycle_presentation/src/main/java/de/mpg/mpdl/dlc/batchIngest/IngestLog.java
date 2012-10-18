@@ -29,6 +29,7 @@ import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
@@ -913,10 +914,14 @@ public class IngestLog
 		{
 			try{
 				FileOutputStream out = new FileOutputStream(i);
-				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+				ftp.setFileType(FTP.BINARY_FILE_TYPE);
+				boolean result = ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+				//logger.info("result for file " +dlcDirectory + " | " + i.getName() + " "+ result);
+				out.flush();
+				out.close();
 				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
 
-			}catch(IOException e)
+			}catch(Exception e)
 			{
 				logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 			}
@@ -925,8 +930,10 @@ public class IngestLog
 		try {
 			out = new FileOutputStream(footer);
 			ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
+			out.flush();
+			out.close();
 			logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("Error while copying Image from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 		}
 
