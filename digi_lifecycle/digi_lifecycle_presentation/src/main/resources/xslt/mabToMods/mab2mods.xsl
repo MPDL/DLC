@@ -345,7 +345,7 @@
 					<xsl:if test="@ind=' ' or @ind='a'">
 						<xsl:value-of select="'aut'"/>
 					</xsl:if>
-					<xsl:if test="@ind=' ' or @ind='f'">
+					<xsl:if test="@ind='f'">
 						<xsl:value-of select="'hnr'"/>
 					</xsl:if>
 					<xsl:if test="not(@ind=' ' or @ind='a' or @ind='f')">
