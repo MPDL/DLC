@@ -49,6 +49,7 @@ public class ModsRelatedItem {
 
 
 	public ModsRelatedItem getSec_relatedItems() {
+
 		return sec_relatedItems;
 	}
 
