@@ -236,7 +236,7 @@ public class User {
 		}
 		
 		
-		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()) || mdEditorContextIds.contains(vol.getProperties().getContext().getObjid()) )
 		{
 			return teiNotAvailable && stateCondition;
 		}

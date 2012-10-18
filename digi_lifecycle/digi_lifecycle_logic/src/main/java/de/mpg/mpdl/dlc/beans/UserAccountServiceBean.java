@@ -175,7 +175,7 @@ public class UserAccountServiceBean {
 					Attributes attributes = client.retrieveAttributes(userId);
 					String ouID = attributes.get(0).getValue();
 					user.setOu(ouServiceBean.retrieveOU(ouID));
-					
+					  
 //					user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userId));
 					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle, userId));
 					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,userId));
@@ -195,7 +195,7 @@ public class UserAccountServiceBean {
 					user.getDepositorContextIds().add(c.getId());
 	        	}		
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
-	        	{
+	        	{   
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getMdEditorCollections().add(c);
