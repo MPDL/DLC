@@ -38,6 +38,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.mods.ModsPart;
+import de.mpg.mpdl.dlc.vo.mods.ModsPhysicalDescription;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
@@ -996,6 +997,84 @@ public class VolumeUtilBean {
 		
 		
 	}
+	
+	public static String getAuthorsForTitle(List<ModsName> names)
+	{
+		String output = "";
+		for(ModsName name : names)
+		{
+			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("author"))
+			{
+				if(output == "")
+					output = name.getName();
+				else
+					output = output + " ; " + name.getName(); 
+			}
+		}
+		return output;
+	}
+	
+	public static String getEditorsForTitle(List<ModsName> names)
+	{
+		String output = "";
+		for(ModsName name : names)
+		{
+			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("editor"))
+			{
+				if(output == "")
+					output = name.getName();
+				else
+					output = output + " ; " + name.getName(); 
+			}
+		}
+		return output;
+	}
+	
+	public static String getBodiesForTitle(List<ModsName> names)
+	{
+		String output = "";
+		for(ModsName name : names)
+		{
+			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("body"))
+			{
+				if(output == "")
+					output = name.getName();
+				else
+					output = output + " ; " + name.getName(); 
+			}
+		}
+		return output;
+	}
+	
+	public static String getPublisherOrPrinterForTitle(ModsPublisher publisher)
+	{
+		String output = "";
+		if(publisher.getPlace() != null)
+			output += publisher.getPlace() + " : ";
+		if(publisher.getPublisher() != null)
+			output += publisher.getPublisher() + ", ";
+		if(publisher.getDateIssued_425().getDate() != null)
+			output += publisher.getDateIssued_425().getDate();
+		return output;
+	}
+	
+	public static String getCollationsForTitle(List<ModsPhysicalDescription> physicalDescriptions)
+	{
+		String output = "";
+		for(ModsPhysicalDescription pd : physicalDescriptions)
+		{
+			if(pd.getExtent() != null)
+			{
+				if(output == "")
+					output = pd.getExtent();
+				else
+					output = output + " ; " + pd.getExtent(); 
+			}
+		}
+		return output;
+	}
+	
+
 	
 
 	

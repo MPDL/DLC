@@ -585,7 +585,8 @@ public class IngestLog
 					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
 					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
-					
+					out.flush();
+					out.close();
 					item.setTeiFile(tFile);
 					String errorMessage = Consts.TEIWITHOUTIMAGESERROR;
 					logger.error(errorMessage + name);
@@ -598,6 +599,8 @@ public class IngestLog
 					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
 					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
+					out.flush();
+					out.close();
 					item.setTeiFile(tFile);
 
 					logger.info("read tei for " + name);
@@ -709,8 +712,10 @@ public class IngestLog
 				
 				
 				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream fileOut = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);		
+				FileOutputStream out = new FileOutputStream(mFile);
+				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);		
+				out.flush();
+				out.close();
 
 				
 				MabXmlTransformation transform = new MabXmlTransformation();
@@ -746,8 +751,10 @@ public class IngestLog
 			{
 				String dlcDirectory = item.getDlcDirectory();
 				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream fileOut = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);	
+				FileOutputStream out = new FileOutputStream(mFile);
+				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+				out.flush();
+				out.close();
 				MabXmlTransformation transform = new MabXmlTransformation();
 
 				File modsFile = transform.mabToMods(null, mFile);
@@ -787,9 +794,10 @@ public class IngestLog
 				item.setDlcDirectory(dlcDirectory);
 				
 				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream fileOut = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), fileOut);	
-
+				FileOutputStream out = new FileOutputStream(mFile);
+				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+				out.flush();
+				out.close();
 				MabXmlTransformation transform = new MabXmlTransformation();
 				File modsFile = transform.mabToMods(null, mFile);
 				try {
@@ -915,8 +923,7 @@ public class IngestLog
 			try{
 				FileOutputStream out = new FileOutputStream(i);
 				ftp.setFileType(FTP.BINARY_FILE_TYPE);
-				boolean result = ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
-				//logger.info("result for file " +dlcDirectory + " | " + i.getName() + " "+ result);
+				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 				out.flush();
 				out.close();
 				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
