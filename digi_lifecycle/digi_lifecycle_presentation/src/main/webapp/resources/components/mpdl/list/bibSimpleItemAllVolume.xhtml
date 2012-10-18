@@ -282,8 +282,13 @@
 			<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
 					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-						<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}: #{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}. - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>
-						<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}). - #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).place} : #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).publisher}, #{volumeUtilBean.getPublisher(cc.attrs.volume.modsMetadata).dateIssued_425.date}" rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}"/>					
+						<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1" rendered="#{allVolumesBean.colId == 'my'}">
+						<h:outputText value="(#{cc.attrs.volume.item.properties.context.getXLinkTitle()})"/>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
