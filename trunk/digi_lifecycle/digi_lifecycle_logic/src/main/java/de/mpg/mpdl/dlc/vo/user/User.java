@@ -6,6 +6,7 @@ import java.util.List;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -203,6 +204,58 @@ public class User {
 		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
 		
 		boolean stateCondition = "released".equals(publicStatus);
+		
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		{
+			return stateCondition;
+		}
+		else if(id.equals(vol.getProperties().getCreatedBy().getObjid()))
+		{
+			return stateCondition;
+		}
+		
+		return false;
+	}
+	
+	public boolean structureEditable(Volume vol)
+	{
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
+		
+		boolean stateCondition = !"withdrawn".equals(publicStatus);
+		
+		boolean teiNotAvailable = true;
+
+		
+		for(Component c : vol.getItem().getComponents())
+		{
+			if("tei".equalsIgnoreCase(c.getProperties().getContentCategory()))
+			{
+				teiNotAvailable =  false;
+			}
+		}
+		
+		
+		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
+		{
+			return teiNotAvailable && stateCondition;
+		}
+		else if(id.equals(vol.getProperties().getCreatedBy().getObjid()))
+		{
+			return teiNotAvailable && stateCondition;
+		}
+		
+		return false;
+	}
+	
+	public boolean mdEditable(Volume vol)
+	{
+		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
+		String publicStatus = vol.getItem().getProperties().getPublicStatus().getXmlValue(); 
+		
+		boolean stateCondition = !"withdrawn".equals(publicStatus);
+		
+		
 		
 		if(moderatorContextIds.contains(vol.getProperties().getContext().getObjid()))
 		{

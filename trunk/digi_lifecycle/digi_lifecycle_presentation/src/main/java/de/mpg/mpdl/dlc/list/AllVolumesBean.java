@@ -79,6 +79,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 	private String filterString;
 	
+	private String filterItemState;
 
 	public AllVolumesBean()
 	{		
@@ -222,7 +223,29 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				fcList.add(fc);
 			}
 			
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			VolumeStatus[] volVersionStatus = new VolumeStatus[]{};
+			VolumeStatus[] volPublicStatus = new VolumeStatus[]{};
+			if("all".equals(filterItemState))
+			{
+				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
+			}
+			else if("submitted".equals(filterItemState))
+			{
+				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending};
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
+			}
+			else if("released".equals(filterItemState))
+			{
+				volVersionStatus = new VolumeStatus[]{VolumeStatus.released};
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.released};
+			}
+			else if("withdrawn".equals(filterItemState))
+			{
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.withdrawn};
+			}
+			
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 			
@@ -238,7 +261,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			}
 			
 			
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
+			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 			//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
@@ -447,6 +470,16 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		this.filterString=null;
 		setCurrentPageNumber(1);
 		return getNavigationString();
+	}
+
+
+	public String getFilterItemState() {
+		return filterItemState;
+	}
+
+
+	public void setFilterItemState(String filterItemState) {
+		this.filterItemState = filterItemState;
 	}
 	
 	
