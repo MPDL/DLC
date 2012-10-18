@@ -115,43 +115,101 @@
 						</h:panelGroup>
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
-								<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
-									<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
-										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":messages :edit :paginator"/>
-									</h:commandLink>
-									<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
-										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-										<f:ajax render=":messages :edit :paginator"/>
-									</h:commandLink>
-								</ui:fragment>
 								
-								<h:panelGroup styleClass="eg3_pageScanPagination">
-									<h:outputText value="#{lbl.list_Page} #{structuralEditorBean.selectedPb.teiElement.numeration} / " rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
-									<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
+								<h:panelGroup styleClass="eg3_defaultPagination">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight eg3_pagePaginationLabel">
+										<h:outputText value="#{lbl.list_Page} #{structuralEditorBean.selectedPb.teiElement.numeration} / " rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+										<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
+									</h:panelGroup>
 									
-									<ui:fragment rendered="#{structuralEditorBean.volume.pages.size() > 1}">
-										<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageScanPagination', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
-									</ui:fragment>
+									<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
+											<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+											<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+										</ui:fragment>
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order lt 1}">
+											<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+											<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+										</ui:fragment>
+										
+										<ui:fragment rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+											<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_defaultPagination', '.eg3_quickPagination', true, 'resizeSelectBox()');" class="eg3_icon_editBtn_16_16"/>
+										</ui:fragment>
+										
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
+											<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+												<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+											<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+										</ui:fragment>
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 >= structuralEditorBean.volume.pages.size()}">
+											<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+											<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
+										</ui:fragment>
+									</h:panelGroup>
+								
 								</h:panelGroup>
 								
-								<h:panelGroup styleClass="eg3_gotoBox" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
-									<h:selectOneMenu value="#{structuralEditorBean.selectedGoToBoxPageId}" >
-							   			<f:ajax event="change" listener="#{structuralEditorBean.pageNumberChanged}" render=":messages :edit :paginator"/>
-							   			<f:selectItems value="#{structuralEditorBean.pageListMenu}"/>
-							   		</h:selectOneMenu>
+								
+								
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_quickPagination eg3_textCenter" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+									<!-- pagination buttons for previous -->
+									
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
+											<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+											<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+												<f:ajax render=":messages :edit :paginator"/>
+											</h:commandLink>
+										</ui:fragment>
+										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order lt 1}">
+											<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+											<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+										</ui:fragment>
+									
+									<h:panelGroup styleClass="eg3_dynamicSelectBox_js eg3_container_1_3" style="display:inline-block;">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+											<span class="eg3_selectionText">
+												<h:outputText value="#{lbl.list_Page} #{structuralEditorBean.selectedPb.teiElement.numeration} / " rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+												<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
+											</span>
+										</h:panelGroup>
+										<h:selectOneMenu value="#{structuralEditorBean.selectedGoToBoxPageId}" >
+								   			<f:ajax event="change" listener="#{structuralEditorBean.pageNumberChanged}" render=":messages :edit :paginator"/>
+								   			<f:selectItems value="#{structuralEditorBean.pageListMenu}"/>
+								   		</h:selectOneMenu>
+								   	</h:panelGroup>
+							   		
+							   		<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
+										<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+											<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandLink>
+										<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+											<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 >= structuralEditorBean.volume.pages.size()}">
+										<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+										<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
+									</ui:fragment>
 						   		</h:panelGroup>
 								
-								<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
-									<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
-										<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
-										<f:ajax render=":messages :edit :paginator"/>
-									</h:commandLink>
-									<h:commandLink action="#{structuralEditorBean.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
-										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16"/>
-										<f:ajax render=":messages :edit :paginator"/>
-									</h:commandLink>
-								</ui:fragment>
+								
 							</h:form>
 						
 						</h:panelGroup>

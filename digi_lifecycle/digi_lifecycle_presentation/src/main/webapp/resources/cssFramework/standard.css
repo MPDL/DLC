@@ -169,6 +169,9 @@ option {
 	text-decoration:none;
 }
 
+.eg3_noWrap {
+	white-space:nowrap;
+}
 
 /*
  * global grid-size definitions

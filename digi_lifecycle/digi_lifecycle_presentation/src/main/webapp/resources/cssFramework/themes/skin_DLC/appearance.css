@@ -162,23 +162,19 @@ h6 {
 }
 
 input[type="search"] {
-/*	border: solid 0.08333em #B2B2B2; */
 	border:none;
 	padding:0 0.1666em;
 }
 input[type="text"] {
-/*	border: solid 0.08333em #B2B2B2; */
 	border:none;
 	padding:0 0.1666em;
 }
 input[type="number"] {
-/*	border: solid 0.09em #B2B2B2; */	/* because of webkit engine, the border must be up-rounded for 1px */
 	border:none;
 	padding:0 0.1666em;
 }
 select {
 	padding:0;
-/*	border: solid 0.08333em #B2B2B2; */
 	border:none;
 }
 button:disabled {
@@ -195,12 +191,11 @@ body .eg3_id_wrapper {
 	overflow:hidden;
 }
 body .eg3_id_header {
-	/*	background-color:#C6AD84; */
-/*	padding-bottom:1em; */
 	width:100%;
 	background-image:url("image/image_headerBackground_1280_217.png");
 	background-position:top;
 	background-repeat:repeat;
+	background-color:#D1D0B5; /* background-color with a color of the image */
 }
 body .eg3_id_headerMetaMenu {
 	width:100%;
@@ -235,10 +230,17 @@ body .eg3_id_siteTitle {
 
 
 .eg3_border_1 {
-	border-width:0.09em;
+	border-width:0.0909em;
+}
+.eg3_border_1_right {
+	border-right-width:0.0909em; /* the value must be round up for browser as chrome with webkit engine */
 }
 .eg3_borderstyle_1 {
 	border-color:#B2B2B2;
+	border-style:solid;
+}
+.eg3_borderstyle_2 {
+	border-color:#FFFFFF;
 	border-style:solid;
 }
 
@@ -364,14 +366,6 @@ body .eg3_id_siteTitle {
 .eg3_fiveRows {  /* 1row = 0,166666667em */
 	height:6em;
 }
-/* not necessary at the moment
-.eg3_sixRows {
-	height:7.08333em;
-}
-.eg3_fiftyRows {
-	height:58.3333em;
-}
-*/
 
 
 
@@ -798,6 +792,20 @@ body .eg3_id_siteTitle {
 .eg3_id_wrapper .eg3_icon_skipTofirst_16_16:hover {
 	background-image: url("image/btn_first_hover_16_16.png");
 }
+.eg3_id_wrapper .eg3_icon_skipTofirsti_16_16 {
+	background-image: url("image/btn_first_deactivated_16_16.png");
+	background-position: right;
+	text-align:left;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTofirsti_16_16.eg3_disabled:hover {
+	cursor:default;
+	background-image: url("image/btn_first_deactivated_16_16.png");
+}
+
+
 .eg3_id_wrapper .eg3_icon_backward_16_16 {
 	background-image: url("image/btn_previous_static_16_16.png");
 	background-position: right;
@@ -820,6 +828,10 @@ body .eg3_id_siteTitle {
 }
 .eg3_id_wrapper .eg3_icon_backwardi_16_16:hover {
 	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_previous_deactivated_16_16.png");
+	cursor:default;
 }
 .eg3_id_wrapper a:hover .eg3_icon_backwardi_16_16 {
 	background-image: url("image/btn_previous_hover_16_16.png");
@@ -845,6 +857,10 @@ body .eg3_id_siteTitle {
 .eg3_id_wrapper .eg3_icon_forwardi_16_16:hover {
 	background-image: url("image/btn_next_hover_16_16.png");
 }
+.eg3_id_wrapper .eg3_icon_forwardi_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_next_deactivated_16_16.png");
+	cursor:default;
+}
 .eg3_id_wrapper a:hover .eg3_icon_forwardi_16_16 {
 	background-image: url("image/btn_next_hover_16_16.png");
 }
@@ -860,6 +876,17 @@ body .eg3_id_siteTitle {
 }
 .eg3_icon_skipTolast_16_16:hover .eg3_iconActionLabel {
 /*	color:#EA7125; */
+}
+.eg3_id_wrapper .eg3_icon_skipTolasti_16_16 {
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	background-image: url("image/btn_last_deactivated_16_16.png");
+	text-align:left;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTolasti_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_last_deactivated_16_16.png");
+	cursor:default;
 }
 .eg3_paginatorWave .eg3_pageNumber {
 	margin:0 0.1666667em;
@@ -1706,7 +1733,7 @@ body .eg3_id_siteTitle {
  ******************************				grid list						******************************
  ******************************		list with different dynamic width		****************************** 
  *********************************************************************************************************/
- /* not in use a.t.m. 
+ /* not in use a.t.m. but maybe for batch ingest
 .eg3_gridList {
 	border-spacing:0;
 }
@@ -1822,67 +1849,6 @@ body .eg3_id_siteTitle {
 }
 
 
-
-/*****************************************************************************************************
- ******************************				tiled list thumb						******************************
- ******************************			list with dynamic width				****************************** 
- *****************************************************************************************************/
-/* not in use a.t.m. - replaced by richfaces component
-.eg3_tiledListThumbOverlay {
-	width:98%; 
-	padding:0 1.6%;
-}
-.eg3_tiledListThumbOverlay.eg3_overlay {
-	background-color:#ffffff;
-	min-width:200%;
-}
-.eg3_tiledListThumbOverlay .eg3_listHeader {
-	width:100%;
-}
-.eg3_tiledListThumbOverlay .eg3_listBody {
-	width:100%;
-	height:56.75em;
-	overflow-y:auto;
-}
-.eg3_tiledListThumbOverlay li.eg3_listItem {
-	float:left;
-	margin:0.5em 1.6% 1em 1.6%;
-	width:16.78%; 
-	max-width:5.666666667em;
-}
-.eg3_tiledListThumbOverlay .eg3_listItem:hover {
-	background-color:#BfBfBf;
-}
-.eg3_tiledListThumb .eg3_itemContent {
-	width:100%;
-}
-.eg3_tiledListThumbOverlay .eg3_itemContent:hover .eg3_itemIconArea .eg3_itemIconBorder {
-	background-color:#DDDDDD;
-}
-.eg3_tiledListThumbOverlay .eg3_itemIconArea {
-	width:100%;
-}
-.eg3_tiledListThumbOverlay .eg3_itemIconArea img {
-	width:100%;
-}
-.eg3_tiledListThumbOverlay .eg3_itemIconBorder {
-	display:block;
-	width:89%;
-/*	padding:0.3333em; */
-/*	padding:5%; 
-	background-color:#aaaaaa;
-}
-.eg3_tiledListThumbOverlay .eg3_itemContentData {
-	width:100%;
-}
-.eg3_tiledListThumbOverlay .eg3_itemContentData .eg3_itemMetaText {
-	font-size:75%;
-}
-.eg3_tiledListThumbOverlay .eg3_itemControlArea {
-	width:100%;
-}
-*/
-
 /*************************************************************************************************************
  ******************************				item detail view		******************************
  ******************************				header					****************************** 
@@ -1917,12 +1883,62 @@ body .eg3_id_siteTitle {
 	margin-top:3.5em;
 	width:17%;
 }
+.eg3_standardHeader .eg3_citationLinkArea input[type="button"]{
+	margin-left:2%; 
+	background-color:transparent;
+}
 .eg3_standardHeader .eg3_citationLink {
 	display:none;
 	background-color:transparent;
 	width:96%;
 	padding:0 1.5%;
 }
+.eg3_citationOverlayArea {
+	position:absolute; 
+	right:0; 
+	width:50%;
+	width:40em\9; /* fix width for IE8 */
+	max-width:40em;
+	min-height:5em; 
+	padding:0 1em;
+	display:none;
+	background-color: rgb(240,240,240); /* color: 2f2f2f */
+/*	background-color: rgba(240,240,240, 0.95); 
+	background-color:transparent\9; */
+	/* the first 2 chars defines the transparency in hexa decimal of the following color value - F2 = 5% transparency */ 
+/*	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#F2F0F0F0,endColorstr=#F2F0F0F0); */
+	zoom:1; 
+	z-index:500;
+}
+.eg3_citationOverlayArea input[readonly] {
+	margin-top:0.25em;
+	margin-bottom:1.25em;
+}
+.eg3_citationOverlayArea input[readonly].eg3_container_1 {
+	width:98.75%;
+}
+.eg3_citationOverlayArea button {
+	margin-bottom:1em;
+}
+.eg3_citationOverlayArea label {
+	margin-right:1em;
+}
+.eg3_markTextButton {
+	cursor:pointer;
+}
+.eg3_markTextButton:hover {
+	color:#EA7125;
+}
+.eg3_markTextButton.eg3_disabled,
+.eg3_markTextButton[disabled] {
+	cursor:default;
+}
+.eg3_markTextButton:hover.eg3_disabled,
+.eg3_markTextButton[disabled]:hover {
+	cursor:default;
+	color:#2F2F2F;
+}
+
 
 .eg3_id_wrapper .eg3_viewPageContainer {
 	overflow:visible;
@@ -1940,11 +1956,15 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_viewPageMenu *:hover {
 	text-decoration:none;
 }
-.eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox {
-	display:none;
-	color:#F0F0F0;
+.eg3_viewPageMenu .eg3_quickPagination {
+	display:none; 
+	padding-top:0.25em;
 }
-.eg3_viewPage .eg3_viewPageMenu .eg3_gotoBox input {
+.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionText{
+	padding-top:0.0833333em;
+	color:#2F2F2F;
+}
+.eg3_viewPage .eg3_viewPageMenu .eg3_quickPagination input {
 	text-align:center;
 }
 .eg3_viewPageMenu form {
@@ -1956,7 +1976,6 @@ body .eg3_id_siteTitle {
 .eg3_viewPageMenu .eg3_modusBtn {
 	padding-left:0.83333em;
 	padding-right:0.83333em;
-	border-right:0.0909em solid #ffffff;
 	background-color:transparent;
 }
 .eg3_viewPageMenu .eg3_modusBtn:hover {
@@ -1987,6 +2006,17 @@ body .eg3_id_siteTitle {
 	color:#EA7125;
 }
 
+.eg3_viewPageMenu .eg3_pagePaginationLabel {
+	padding-top:0.166666666em;
+}
+.eg3_viewPageMenu .eg3_paginationButtons {
+	width:10em;
+	margin:-0.25em 0.25em 0 0.25em;
+}
+
+.eg3_viewPage .eg3_viewPage_imgContainer {
+	min-height:34em;
+}
 
 
 .eg3_viewPage .eg3_singleView {
@@ -2137,37 +2167,6 @@ body .eg3_id_siteTitle {
 	border:none;
 }
 
-.eg3_viewPage .eg3_ownershipBox {
-	border:solid 0.09em #CCCCCC;
-	width:auto;
-	max-width:49.68%;
-	overflow-x:auto !important;
-}
-.eg3_viewPage .eg3_ownershipBoxText {
-	padding:0 0.33333em;
-	line-height:175%;
-	width:100%;
-	color:#FFFFFF;
-	white-space:nowrap;
-}
-
-
-
-.eg3_viewPage .eg3_permalinkBox {
-	border:solid 0.09em #CCCCCC;
-}
-.eg3_permalinkBox.eg3_container_1_2 {
-	width:49.73%;
-}
-.eg3_viewPage .eg3_permalinkBoxText {
-	margin:0 2%;
-	line-height:175%;
-	width:95.5%;
-	color:#FFFFFF;
-	background-color:#000000;
-	white-space:nowrap;
-}
-
 
 
 
@@ -2175,15 +2174,16 @@ body .eg3_id_siteTitle {
 	color:#F0F0F0;
 	background-color:#2F2F2F;
 }
+.eg3_fullscreenPage .eg3_ribbon {
+	padding-top:0.5em;
+	min-height:2em;
+}
 .eg3_fullscreenPage .eg3_viewPageMenu a:hover {
 	text-decoration:none;
 }
-.eg3_fullscreenPage .eg3_viewPageMenu .eg3_gotoBox {
-	display:none;
-	color:#F0F0F0;
-}
 .eg3_fullscreenPage .eg3_viewPageMenu .eg3_icon_closei_16_16 {
 	cursor:pointer;
+	margin-right:0.5em;
 }
 
 /*************************************************************************************************************
@@ -2266,12 +2266,14 @@ body .eg3_id_siteTitle {
  *****************************************************************************************************/
 .eg3_id_wrapper .eg3_overlayBox { /*overflow:visible;*/ }
 .eg3_overlayBox .eg3_overlayHeader { padding:7%; }
-.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em; display:none; background-color:#2F2F2F; color:#ffffff; border:0.0909em solid #ffffff; }
-.eg3_overlayBox .eg3_overlayBody.eg3_left { left:0; }
-.eg3_overlayBox .eg3_overlayBody.eg3_right { right:0; }
+.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em 0.66666em; display:none; background-color:#2F2F2F; margin-right:-0.5em; }
+.eg3_overlayBox .eg3_overlayBody a { color:#FFFFFF; }
+.eg3_overlayBox .eg3_overlayBody a:hover { color:#EA7125; }
+.eg3_overlayBox .eg3_overlayBody.eg3_posRight { right:0; }
+.eg3_overlayBox .eg3_overlayBody.eg3_posBottom { bottom:0; }
 .eg3_overlayBox .eg3_overlayHeader:hover+.eg3_overlayBody { display:block; }
 .eg3_overlayBox .eg3_overlayBody:hover { display:block; }
-.eg3_overlayBox .eg3_overlayBody .eg3_selectionText { white-space:nowrap; line-height:2em; color:#ffffff; }
+.eg3_overlayBox .eg3_overlayBody .eg3_selectionText { white-space:nowrap; line-height:2em; color:#FFFFFF; }
 .eg3_overlayBox .eg3_overlayBody .eg3_selectionText:hover { color:#EA7125; }
 
 
@@ -2280,8 +2282,8 @@ body .eg3_id_siteTitle {
  *******************************					infoPanel				**************************
  *****************************************************************************************************/
 .eg3_infoPanel {
-	max-width:50em;
-	padding-right:10%;
+	width:80%;
+	max-width:70em;
 	margin-bottom:2em;
 	display:block;
 	overflow-x:visible;
@@ -2293,6 +2295,7 @@ body .eg3_id_siteTitle {
 .eg3_infoPanel p {
 	margin-top:1%;
 	line-height:145%;
+	max-width:70em;
 }
 .eg3_infoPanel .eg3_providerList li {
 	line-height:145%;
@@ -2375,7 +2378,7 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_sumOfSearchResult {
-	padding:0.75em 0;
+	padding:0.75em 0 0.75em 0;
 }
 
 .eg3_ingestPage .rf-p 
@@ -2413,9 +2416,12 @@ body .eg3_id_siteTitle {
 	text-decoration:none;
 }
 
+.eg3_ingestPage .eg3_uploadContainer {
+	padding:0;
+}
 .eg3_ingestPage .eg3_uploadContainer .rf-p-hdr {
 	width:96%;
-	padding:1.99999%;
+	padding:1.75% 1.9999% 1.75%;
 	margin:0;
 	border:none;
 	font-size:150%;
@@ -2561,6 +2567,10 @@ body .eg3_id_siteTitle {
 	background-image:url(image/ico_close_hover_16_16.png);
 	text-decoration:none;
 }
+button:hover .eg3_icon_close_16_16 {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+} 
 .eg3_icon_closei_16_16 {
 	width:1.3333em;
 	height:1.3333em;
@@ -2903,7 +2913,11 @@ div.eg3_singleView div.digilib div.keep.buttons {
 .digilib img {
 	cursor:pointer;
 }
-
+/* annotation marker */
+div.digilib div.mark {
+	color:red !important;
+	font-size:1.25em !important;
+}
 
 .infiniteCarousel .arrow.forward {
 	background:url("image/ico_next_success_32_32.png") no-repeat;
