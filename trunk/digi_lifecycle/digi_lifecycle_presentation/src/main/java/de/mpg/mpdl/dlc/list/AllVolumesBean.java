@@ -79,7 +79,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 	private String filterString;
 	
-	private String filterItemState;
+	private String filterItemState = "all";
 
 	public AllVolumesBean()
 	{		
