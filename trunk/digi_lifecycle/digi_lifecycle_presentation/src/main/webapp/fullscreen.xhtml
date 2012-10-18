@@ -15,49 +15,102 @@
 			<h:panelGroup id="fullScreen" styleClass="eg3_container_1 eg3_fullscreenPage">
 				
 				<!-- viewPageMenu -->
-				<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter eg3_container_1">
+				<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_textCenter eg3_container_1 eg3_ribbon">
 					
 					<h:panelGroup id="pageBrowser" styleClass="eg3_textCenter">
 						<h:form styleClass="eg3_pageBrowser">
-							<ui:fragment rendered="#{fullScreen.selectedPageNumber > 1}">
-								<h:commandLink action="#{fullScreen.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
-									<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-									<f:ajax render=":fullScreen"/>
-								</h:commandLink>
-								<h:commandLink action="#{fullScreen.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
-									<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-									<f:ajax render=":fullScreen"/>
-								</h:commandLink>
-							</ui:fragment>
-							
-							<h:panelGroup styleClass="eg3_pageScanPagination">
-								<h:outputText value="#{lbl.list_Page} #{fullScreen.selectedPage.orderLabel} / " rendered="#{not empty fullScreen.selectedPage.orderLabel and fullScreen.selectedPage != null}"/>
-								<h:outputText value="#{lbl.list_Scan} #{fullScreen.selectedPage.order+1}" rendered="#{fullScreen.selectedPage != null}"/>
+						
+							<h:panelGroup styleClass="eg3_defaultPagination">
 								
-								<ui:fragment rendered="#{fullScreen.volume.pages.size() > 1}">
-									<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_pageScanPagination', '.eg3_gotoBox', true);" class="eg3_icon_editBtn_16_16"/>
-								</ui:fragment>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_textRight">
+									<h:outputText value="#{lbl.list_Page} #{fullScreen.selectedPage.orderLabel} / " rendered="#{not empty fullScreen.selectedPage.orderLabel and fullScreen.selectedPage != null}"/>
+									<h:outputText value="#{lbl.list_Scan} #{fullScreen.selectedPage.order+1}" rendered="#{fullScreen.selectedPage != null}"/>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
+									
+									<ui:fragment rendered="#{fullScreen.selectedPageNumber > 1}">
+										<h:commandLink action="#{fullScreen.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+											<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":fullScreen"/>
+										</h:commandLink>
+										<h:commandLink action="#{fullScreen.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+											<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":fullScreen"/>
+										</h:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{fullScreen.selectedPageNumber lt 2}">
+										<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+										<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+									</ui:fragment>
+									
+									<ui:fragment rendered="#{fullScreen.volume.pages.size() > 1}">
+										<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_defaultPagination', '.eg3_quickPagination', true, 'resizeSelectBox()');" class="eg3_icon_editBtn_16_16"/>
+									</ui:fragment>
+									
+									<ui:fragment rendered="#{fullScreen.selectedPageNumber lt fullScreen.volume.pages.size()}">
+										<h:commandLink action="#{fullScreen.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+											<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":fullScreen"/>
+										</h:commandLink>
+										<h:commandLink action="#{fullScreen.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+											<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":fullScreen"/>
+										</h:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{fullScreen.selectedPageNumber >= fullScreen.volume.pages.size()}">
+										<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+										<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
+									</ui:fragment>
+								</h:panelGroup>
+								
 							</h:panelGroup>
 							
-							
-							<h:panelGroup styleClass="eg3_gotoBox">
-								<h:selectOneMenu value="#{fullScreen.selectedPageNumber}" >
-						   			<f:ajax event="change" listener="#{fullScreen.pageNumberChanged}" render=":fullScreen"/>
-						   			<f:selectItems value="#{fullScreen.pageListMenu}"/>
-						   		</h:selectOneMenu>
+							<h:panelGroup styleClass="eg3_quickPagination">
+								
+								<ui:fragment rendered="#{fullScreen.selectedPageNumber > 1}">
+									<h:commandLink action="#{fullScreen.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+										<f:ajax render=":fullScreen"/>
+									</h:commandLink>
+									<h:commandLink action="#{fullScreen.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+										<f:ajax render=":fullScreen"/>
+									</h:commandLink>
+								</ui:fragment>
+								<ui:fragment rendered="#{fullScreen.selectedPageNumber lt 2}">
+									<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+									<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+								</ui:fragment>
+								
+								<h:panelGroup styleClass="eg3_dynamicSelectBox_js eg3_container_1_5" style="display:inline-block;">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+										<span class="eg3_selectionText">
+											<h:outputText value="#{lbl.list_Page} #{fullScreen.selectedPage.orderLabel} / " rendered="#{not empty fullScreen.selectedPage.orderLabel and fullScreen.selectedPage != null}"/>
+											<h:outputText value="#{lbl.list_Scan} #{fullScreen.selectedPage.order+1}" rendered="#{fullScreen.selectedPage != null}"/>
+										</span>
+									</h:panelGroup>
+									<h:selectOneMenu value="#{fullScreen.selectedPageNumber}" >
+							   			<f:ajax event="change" listener="#{fullScreen.pageNumberChanged}" render=":fullScreen"/>
+							   			<f:selectItems value="#{fullScreen.pageListMenu}"/>
+							   		</h:selectOneMenu>
+						   		</h:panelGroup>
+						   		
+						   		<ui:fragment rendered="#{fullScreen.selectedPageNumber lt fullScreen.volume.pages.size()}">
+									<h:commandLink action="#{fullScreen.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+										<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
+										<f:ajax render=":fullScreen"/>
+									</h:commandLink>
+									<h:commandLink action="#{fullScreen.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
+										<f:ajax render=":fullScreen"/>
+									</h:commandLink>
+								</ui:fragment>
+								<ui:fragment rendered="#{fullScreen.selectedPageNumber >= fullScreen.volume.pages.size()}">
+									<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+									<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
+								</ui:fragment>
 					   		</h:panelGroup>
-							
-							<ui:fragment rendered="#{fullScreen.selectedPageNumber lt fullScreen.volume.pages.size()}">
-								<h:commandLink action="#{fullScreen.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
-									<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-									<f:ajax render=":fullScreen"/>
-								</h:commandLink>
-								<h:commandLink action="#{fullScreen.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
-									<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
-									<f:ajax render=":fullScreen"/>
-								</h:commandLink>
-							</ui:fragment>
-							
 							
 							<pretty:link mappingId="viewPages" title="#{tlt.paginator_closeFullscreen}" styleClass="eg3_floatRight eg3_icon_closei_16_16">
 								<f:param value="#{fullScreen.volumeId}"/>

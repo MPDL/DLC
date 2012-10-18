@@ -1138,7 +1138,7 @@ if (typeof console === 'undefined') {
         var $elem = data.$elem;
         var settings = data.settings;
         var show = settings.showZoomArrows;
-        console.log('zoom arrows:', show);
+//        console.log('zoom arrows:', show);
         if (!show) return;
         var mode = settings.interactionMode;
         var arrowNames = settings.buttonSettings[mode].arrowSet;
@@ -1466,7 +1466,7 @@ if (typeof console === 'undefined') {
         // start event capturing
         $scaler.one('mousedown.dlSetMark', function (evt) {
             // event handler adding a new mark
-            console.log("setmark at=", evt);
+//            console.log("setmark at=", evt);
             var mpos = geom.position(evt);
             var pos = data.imgTrafo.invtransform(mpos);
             data.marks.push(pos);
@@ -1768,7 +1768,7 @@ if (typeof console === 'undefined') {
                 $debug.append($logDiv);
                 };
             };
-        console.log = logFunction('_log'); 
+//        console.log = logFunction('_log'); 
         //console.debug = logFunction('_debug'); 
         console.error = logFunction('_error');
         }
