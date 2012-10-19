@@ -12,12 +12,10 @@
 		
 		<ui:define name="mainContent">
 			<script type="text/javascript">
-				jsf.ajax.addOnEvent(function(e)
-				{	
+				jsf.ajax.addOnEvent(function(e) {	
 					//if the ajax request is success
 					//update all selectboxes on the page
-					if(e.status=="success")
-					{
+					if(e.status=="success") {
 						resizeSelectBox();
 					}
 				});
@@ -50,7 +48,7 @@
 								<h:panelGroup layout="block" styleClass="eg3_container_1">
 									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
 											<h:selectOneMenu value="#{scElem.ouId}" >					
@@ -66,7 +64,7 @@
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor eg3_main_color">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
 											<h:selectOneMenu value="#{scElem.contextId}" onchange="updateCustomSelectBox(this);">								
@@ -91,14 +89,14 @@
 					</h:panelGroup>
 					
 				<!-- freeSearch -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" style="margin: 2.5em 0 4.5em 0;">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_all}"/></h2>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_9_16">
-							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1"/>
+							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1 eg3_quickSearchInput"/>
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -110,7 +108,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
 								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
 									<h:selectOneMenu value="">						
@@ -138,7 +136,7 @@
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
 											<h:selectOneMenu value="#{sc.operator}"  rendered="#{rowKey > 0}">						
@@ -150,7 +148,7 @@
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">
-										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 											<span class="eg3_selectionText"></span>
 										</h:panelGroup>
 										<h:selectOneMenu value="#{sc.searchType}">						
@@ -189,7 +187,7 @@
 							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_9">
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 											<span class="eg3_selectionText"></span>
 										</h:panelGroup>
 										<h:selectOneMenu value="#{advancedSearchBean.yearFrom.operator}">						
@@ -236,7 +234,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
 								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
 									<h:selectOneMenu value="#{advancedSearchBean.fulltextSearch.operator}">						
@@ -251,7 +249,7 @@
 					
 					
 				<!-- fullText -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_fulltext}"/></h2>
@@ -271,7 +269,7 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
 								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-									<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+									<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 										<span class="eg3_selectionText"></span>
 									</h:panelGroup>
 									<h:selectOneMenu value="#{advancedSearchBean.cdcSearch.operator}">						
@@ -285,7 +283,7 @@
 					</h:panelGroup>
 					
 					<!-- fullText -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"/></h2>
@@ -299,23 +297,18 @@
 					</h:panelGroup>
 					
 					
-					
-				<!-- submit area -->
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-						<h:outputText value="&#160;"/>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
-							<a4j:commandButton type="reset" value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
-											   action="#{advancedSearchBean.resetSearch}" render=":scForm:ouAndContext">			
-							</a4j:commandButton>
-							<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
-					</h:panelGroup>
-				</h:panelGroup>	
-					
-					
-					
-					
+					<!-- submit area -->
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
+							<h:outputText value="&#160;"/>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
+								<a4j:commandButton type="reset" value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
+												   action="#{advancedSearchBean.resetSearch}" render=":scForm:ouAndContext">			
+								</a4j:commandButton>
+								<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
+						</h:panelGroup>
+					</h:panelGroup>	
 								
 				</h:form>
 			<!-- END OF searchPage -->
