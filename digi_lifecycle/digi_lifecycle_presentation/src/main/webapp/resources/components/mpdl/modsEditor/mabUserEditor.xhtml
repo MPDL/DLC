@@ -214,11 +214,10 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-
 							<h:inputText value="#{publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
 						</h:panelGroup>
 					</ui:fragment>
-		 "#{not empty publisher.edition}">
+		 			<ui:fragment rendered="#{not empty publisher.edition}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
@@ -275,7 +274,8 @@
 
 							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragmen dered="#{note.type== 'statement of responsibility'}">
+					</ui:fragment>
+					<ui:fragment rendered="#{note.type== 'statement of responsibility'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_SOR}"/>
@@ -298,7 +298,8 @@
 
 							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragmen dered="#{empty note.type}">
+					</ui:fragment>
+					<ui:fragment rendered="#{empty note.type}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_annotation}"/>
@@ -308,7 +309,8 @@
 
 							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
-					</ui:fragmen #{note.type=='summary of volumes'}">
+					</ui:fragment>
+					<ui:fragment rendered="#{note.type=='summary of volumes'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_note_SOV}"/>
@@ -574,8 +576,8 @@
 					</ui:fragment>
 					
 					<!--  Sekundärausgabe -->
-					<ui:fragment rendered="#{ri.sec_publisher.size() > 0}" >
-						<a4j:repeat var="sec_publisher" value ="ri.sec_publisher" >
+					<ui:fragment rendered="#{ri.sec_Publisher.size() > 0}" >
+						<a4j:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
 							<ui:fragment rendered="#{not empty sec_publisher.publisher and sec_publisher.displayLabel == 'publisher3'}">
 			 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
 			 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
