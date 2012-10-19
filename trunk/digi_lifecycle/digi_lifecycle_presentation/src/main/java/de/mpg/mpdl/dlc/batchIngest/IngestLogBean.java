@@ -86,7 +86,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
             this.totalNumberOfRecords = allLogs.size();
             for(int i = offset; i< offset+limit; i++)
             {
-            	System.err.println("i =" + i);
             	logs.add(allLogs.get(i-1));
             }
             
@@ -227,14 +226,14 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	logItem.setId(resultSet.getInt("id"));
     	logItem.setName(resultSet.getString("name"));
 //    	logItem.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
-    	try {
-//    		logItem.setStatus(Status.valueOf(volumeService.releaseVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString()));
-    		if(resultSet.getString("item_id") != null)
-    			logItem.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
-
-    	} catch (Exception e) {
-			e.printStackTrace();
-		}
+//    	try {
+////    		logItem.setStatus(Status.valueOf(volumeService.releaseVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString()));
+//    		if(resultSet.getString("item_id") != null)
+//    			logItem.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
+//
+//    	} catch (Exception e) {
+//			e.printStackTrace();
+//		}
     	logItem.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
     	logItem.setStartDate(resultSet.getTimestamp("startdate"));
     	logItem.setEndDate(resultSet.getTimestamp("enddate"));
@@ -319,12 +318,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	logItemVolume.setId(resultSet.getInt("id"));
     	logItemVolume.setName(resultSet.getString("name"));
 //    	logItemVolume.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
-    	try {
-    		if(resultSet.getString("item_id") != null && !"null".equals(resultSet.getString("item_id")))
-    			logItemVolume.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//    	try {
+//    		if(resultSet.getString("item_id") != null && !"null".equals(resultSet.getString("item_id")))
+//    			logItemVolume.setEsciDocStatus(volumeService.retrieveVolume(resultSet.getString("item_id"), loginBean.getUserHandle()).getItem().getProperties().getPublicStatus().toString());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
     	logItemVolume.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
     	logItemVolume.setStartDate(resultSet.getTimestamp("startdate"));
     	logItemVolume.setEndDate(resultSet.getTimestamp("enddate"));

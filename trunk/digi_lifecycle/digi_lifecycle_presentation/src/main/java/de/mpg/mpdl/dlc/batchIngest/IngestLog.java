@@ -70,7 +70,7 @@ public class IngestLog
      */
     public enum Status
     {
-        PENDING, RELEASED, ROLLBACK
+        PRIVATE, PUBLIC, ROLLBACK
     }
 	
     /**
@@ -79,11 +79,12 @@ public class IngestLog
      * - FINE:      everything is alright
      * - PROBLEM:   import worked, but something could have been done better
      * - ERROR:   items can not be imported because of validation failure
+     * - Exception: item can not be ingested because of internal exception, ingest data correct
      * - FATAL:     data correct, because of interruption due to system errors can not be completed
      */
     public enum ErrorLevel
     {
-        FINE, PROBLEM, ERROR, FATAL
+        FINE, PROBLEM, ERROR, EXCEPTION, FATAL
     }
     
     private static Logger logger = Logger.getLogger(IngestLog.class);
@@ -149,9 +150,9 @@ public class IngestLog
     	this.step = step;
     	try {
 			if(action.equalsIgnoreCase("save"))
-				this.status = Status.PENDING;
+				this.status = Status.PRIVATE;
 			else
-				this.status = Status.RELEASED;
+				this.status = Status.PUBLIC;
 		} catch (Exception e) {
 			// TODO Auto-generat
 			e.printStackTrace();
