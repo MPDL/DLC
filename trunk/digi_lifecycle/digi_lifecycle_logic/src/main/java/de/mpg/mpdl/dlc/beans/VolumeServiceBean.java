@@ -752,7 +752,7 @@ public class VolumeServiceBean {
 	}
 	
 	public Volume updateVolume(Volume volume, String userHandle, DiskFileItem teiFile, DiskFileItem cdcFile, boolean updateTeiSd) throws Exception
-	{
+	{  
 		Component pagedTeiComponent = null ;
 		Component teiComponent = null;
 		Component teiSdComponent = null;
