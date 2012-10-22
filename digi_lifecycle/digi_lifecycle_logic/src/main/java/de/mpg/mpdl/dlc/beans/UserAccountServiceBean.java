@@ -116,6 +116,7 @@ public class UserAccountServiceBean {
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getDepositorCollections().add(c);
+					user.getDepositorContextIds().add(c.getId());
 	        	}			
 				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
@@ -123,6 +124,7 @@ public class UserAccountServiceBean {
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getModeratorCollections().add(c);
+					user.getModeratorContextIds().add(c.getId());
 	        	}
 				  
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
@@ -130,6 +132,7 @@ public class UserAccountServiceBean {
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					user.getMdEditorCollections().add(c);
+					user.getMdEditorContextIds().add(c.getId());
 	        	}
 			}
 		}catch(Exception e)
