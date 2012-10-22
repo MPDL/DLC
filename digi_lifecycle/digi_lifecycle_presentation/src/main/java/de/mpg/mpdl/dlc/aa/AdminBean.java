@@ -275,14 +275,7 @@ public class AdminBean{
 		this.collection = collection;
 	}
    
-	public User getUser() {  
-		System.out.println(this.user.getDepositorCollections().size());
-		System.out.println(this.user.getDepositorContextIds().size());
-		System.out.println(this.user.getMdEditorCollections().size());
-		System.out.println(this.user.getMdEditorContextIds().size());
-		System.out.println(this.user.getModeratorCollections().size());
-		System.out.println(this.user.getModeratorContextIds().size());
-		
+	public User getUser() {  		
 		return user;
 	}
 
