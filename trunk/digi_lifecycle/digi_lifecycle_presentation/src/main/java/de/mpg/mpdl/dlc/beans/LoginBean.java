@@ -172,7 +172,7 @@ public class LoginBean
 				PrettyContext pc = PrettyContext.getCurrentInstance();
 				
 				//logout from escidoc
-	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ PropertyReader.getProperty("dlc.context.path") + "/";
+	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
 				fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
 
 				//delete session
