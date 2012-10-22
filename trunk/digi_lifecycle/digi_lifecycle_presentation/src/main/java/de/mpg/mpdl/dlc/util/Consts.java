@@ -14,9 +14,9 @@ public final class Consts {
     
     public static final String VOLUMEWITHOUTMULTIVOLUMEERROR = "this volume has no multivolume";
     
-    public static final String MULTIVOLUMEROLLBACKERROR = "Multivolume Rollback, stop ingest volume";
+    public static final String MULTIVOLUMEROLLBACKERROR = "an internal exception occured, Multivolume Rollback, stop ingest volume";
     
-    public static final String VOLUMEROLLBACKERROR = "Volume Rollback";
+    public static final String VOLUMEROLLBACKERROR = "an internal exception occured, object Rollback";
     
     public static final String MULTIFOOTER = "More than one Footer exist";
     
