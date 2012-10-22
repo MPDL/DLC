@@ -50,8 +50,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	private Connection conn; 
 	
-	private VolumeServiceBean volumeService = new VolumeServiceBean();
-	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 
@@ -68,7 +66,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		{
 			FacesContext fc = FacesContext.getCurrentInstance();
 			try {
-				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
+				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") + "/";
 				fc.getExternalContext().redirect(dlc_URL);
 			} catch (Exception e) {
 				e.printStackTrace();
