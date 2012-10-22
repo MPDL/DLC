@@ -333,22 +333,25 @@ public class UserAccountServiceBean {
 					client.revokeGrant(ua.getObjid(), g.getObjid(), taskParam);
 				}
 				
-				for(String contextInfo : user.getDepositorContextIds())
+				for(String id : user.getDepositorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 				}				
-				for(String contextInfo : user.getModeratorContextIds())
+				for(String id : user.getModeratorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 
 				}
-				for(String contextInfo : user.getMdEditorContextIds())
+				for(String id : user.getMdEditorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), contextInfo);
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 				}
 				
@@ -397,27 +400,27 @@ public class UserAccountServiceBean {
 			}
 			if(user.getDepositorContextIds().size()>0)
 			{
-				for(String contextInfo : user.getDepositorContextIds())
+				for(Collection c : user.getDepositorCollections())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), c.getId(), c.getName());
 					client.createGrant(ua.getObjid(), grant);
 				}				
 			}
 			if(user.getModeratorContextIds().size()>0)
 			{
-				for(String contextInfo : user.getModeratorContextIds())
+				for(Collection c : user.getModeratorCollections())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), contextInfo);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), c.getId(), c.getName());
 					client.createGrant(ua.getObjid(), grant);
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), contextInfo);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), c.getId(), c.getName());
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
 			if(user.getMdEditorContextIds().size() >0)
 			{
-				for(String contextInfo : user.getMdEditorContextIds())
+				for(Collection c : user.getMdEditorCollections())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), contextInfo);
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), c.getId(), c.getName());
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
@@ -439,14 +442,13 @@ public class UserAccountServiceBean {
 	 	return grant;
 	}
 	
-	private Grant newGrant(Grant grant, String roleId, String contextInfo) throws Exception {
+	private Grant newGrant(Grant grant, String roleId, String contextId, String contextTitle) throws Exception {
 
 		GrantProperties grantProperties = new GrantProperties();
 	 	grantProperties.setGrantRemark("new context grant");
 	 	RoleRef roleRef = new RoleRef(roleId);
 	 	grantProperties.setRole(roleRef);
-	 	String[] info= contextInfo.split("\\|");
-	 	Reference ref = new ContextRef("/ir/context/"+info[0] , info[1]);
+	 	Reference ref = new ContextRef("/ir/context/"+contextId, contextTitle);
 	 	
 	 	grantProperties.setAssignedOn(ref);
 	 	grant.setGrantProperties(grantProperties);
