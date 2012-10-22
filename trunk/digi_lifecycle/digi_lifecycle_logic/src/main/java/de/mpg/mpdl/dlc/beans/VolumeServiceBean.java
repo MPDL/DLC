@@ -983,12 +983,15 @@ public class VolumeServiceBean {
 				metsMdRec.setContent(metsDoc.getDocumentElement());
 			}
 			
-			updateMd(volume, userHandle);
+			
 			
 			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);
 			Item updatedItem = client.update(volume.getItem());
 			logger.info("Item updated: " + updatedItem.getObjid());
+			
+			updatedItem = updateMd(createVolumeFromItem(updatedItem, userHandle), userHandle);
+			
 			String currentStatus = updatedItem.getProperties().getVersion().getStatus();
 			if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
 			{
@@ -1001,6 +1004,7 @@ public class VolumeServiceBean {
 			}
 			
 		
+			
 			
 			volume = retrieveVolume(updatedItem.getObjid(), userHandle);
 			
@@ -1016,10 +1020,10 @@ public class VolumeServiceBean {
 		}		
 	}
 	
-	public static void updateMd (Volume vol, String userHandle) throws Exception
+	public static Item updateMd (Volume vol, String userHandle) throws Exception
 	{
-		//ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		//client.setHandle(userHandle);
+		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+		client.setHandle(userHandle);
 		// Add MODS element 'relatedItem'
 		String teiSdUrl = "";
 		for (int i = 0; i< vol.getItem().getComponents().size(); i++)
@@ -1063,8 +1067,8 @@ public class VolumeServiceBean {
 		m.marshal(vol.getModsMetadata(), modsDoc);
 		eSciDocMdRec.setContent(modsDoc.getDocumentElement());
 		
-		//Item updatedItem = client.update(vol.getItem());
-		//return updatedItem;
+		Item updatedItem = client.update(vol.getItem());
+		return updatedItem;
 	}
 	
 	public static String getJPEGFilename(String filename)
