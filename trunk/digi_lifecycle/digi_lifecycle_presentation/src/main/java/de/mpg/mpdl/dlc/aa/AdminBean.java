@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -108,32 +109,45 @@ public class AdminBean{
 
 	@PostConstruct
 	public void init()
-	{           
-		this.ouSelectItems.clear();
-		this.contextSelectItems.clear();
-
-		for(Grant grant: loginBean.getUser().getGrants())
-		{ 
-			try
-			{   
-				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
-				{ 
-					for(Organization orga : loginBean.getUser().getCreatedOrgas())
-					{
-						this.ouSelectItems.add(new SelectItem(orga.getId(), orga.getEscidocMd().getTitle()));
+	{      
+		if(loginBean == null || loginBean.getUser() == null)
+		{
+			FacesContext fc = FacesContext.getCurrentInstance();
+			try {
+				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
+				fc.getExternalContext().redirect(dlc_URL);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}
+		else
+		{
+			this.ouSelectItems.clear();
+			this.contextSelectItems.clear();
+	
+			for(Grant grant: loginBean.getUser().getGrants())
+			{ 
+				try
+				{   
+					if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
+					{ 
+						for(Organization orga : loginBean.getUser().getCreatedOrgas())
+						{
+							this.ouSelectItems.add(new SelectItem(orga.getId(), orga.getEscidocMd().getTitle()));
+						}
+					}else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
+					{  
+						this.ouSelectItems.add(new SelectItem(loginBean.getUser().getOu().getObjid(),loginBean.getUser().getOu().getProperties().getName()));
+				  		
+						for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu().getObjid()))
+							this.contextSelectItems.add(new SelectItem(context.getObjid(), context.getProperties().getName()));
 					}
-				}else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
-				{  
-					this.ouSelectItems.add(new SelectItem(loginBean.getUser().getOu().getObjid(),loginBean.getUser().getOu().getProperties().getName()));
-			  		
-					for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu().getObjid()))
-						this.contextSelectItems.add(new SelectItem(context.getObjid(), context.getProperties().getName()));
+				}catch(Exception e)
+				{
+					logger.error("Error init seleteItem ", e);
 				}
-			}catch(Exception e)
-			{
-				logger.error("Error init seleteItem ", e);
-			}
-		}   
+			}   
+		}
 
 	}
  	

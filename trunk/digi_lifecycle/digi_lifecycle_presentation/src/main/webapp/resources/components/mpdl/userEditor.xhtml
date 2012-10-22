@@ -60,7 +60,7 @@
 				<h:outputText value="#{lbl.admin_user_dep}: "/>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:selectManyCheckbox>
+				<h:selectManyCheckbox value="#{cc.attrs.user.depositorContextIds}">
 			  		<f:selectItems value="#{adminBean.contextSelectItems}">
 			  		</f:selectItems>
 				</h:selectManyCheckbox>
