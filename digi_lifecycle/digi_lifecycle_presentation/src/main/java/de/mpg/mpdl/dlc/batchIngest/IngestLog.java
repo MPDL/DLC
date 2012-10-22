@@ -42,6 +42,7 @@ import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 
@@ -362,7 +363,7 @@ public class IngestLog
 			}
 		
 		} catch (Exception e) {
-			updateLog("errorlevel", ErrorLevel.ERROR.toString());
+			updateLog("errorlevel", ErrorLevel.FATAL.toString());
 			updateLog("step", Step.STOPPED.toString());
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
 		}
@@ -454,7 +455,7 @@ public class IngestLog
 	
 	public String updateDB()
 	{
-		updateLog("errorlevel", ErrorLevel.ERROR.toString());
+		updateLog("errorlevel", ErrorLevel.FATAL.toString());
 		updateLog("step", Step.STOPPED.toString());
 //		MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
 		return "";
@@ -977,27 +978,29 @@ public class IngestLog
 					updateLogItem(logItemId, "enddate", new Date().toString());
 					if(itemId == null)
 					{
-						updateLogItem(logItemId, "errorlevel", ErrorLevel.ERROR.toString());
+						updateLogItem(logItemId, "errorlevel", ErrorLevel.EXCEPTION.toString());
+						updateLogItem(logItemId, "message", Consts.VOLUMEROLLBACKERROR);
 						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 					}
 				}
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 				{
+					Volume mv;
 					try{
 						
 						for(BatchIngestItem v : bi.getVolumes())
 							downloadImages(v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
-						itemId = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata()).getItem().getObjid();
+						mv = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 				
 					}catch(Exception e)
-					{
-						itemId = null;
+					{ 
+						mv = null;
 					}
 					Date eDate;
-					if(itemId == null)
+					if(mv == null)
 					{
-						updateLogItem(logItemId, "errorlevel", ErrorLevel.ERROR.toString());
-
+						updateLogItem(logItemId, "errorlevel", ErrorLevel.EXCEPTION.toString());
+						updateLogItem(logItemId, "message", Consts.MULTIVOLUMEROLLBACKERROR);
 						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
@@ -1006,32 +1009,37 @@ public class IngestLog
 					}
 					else
 					{
+						String mvId = mv.getItem().getObjid();
 						ArrayList<String> volIds = new ArrayList<String>();
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() !=null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
+							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() !=null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 							eDate = new Date();
-							System.out.println(volId);
-							if(volId != null)
-								updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
+
 							if(volId == null)
 							{
-								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.ERROR.toString());
-
-								updateLogItem(logItemId, "message", Consts.VOLUMEROLLBACKERROR);
+								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.EXCEPTION.toString());
+								updateLogItemVolume(logItemId, vol.getName(), "message", Consts.VOLUMEROLLBACKERROR);
 								updateLogItem(logItemId, "errorlevel", ErrorLevel.PROBLEM.toString());
-
 								updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 							}
 							else
+							{
+								updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
 								volIds.add(volId);
+							}
 						}
-						
-						itemId = volumeService.updateMultiVolumeFromId(itemId, volIds, userHandle);
-						System.out.println(itemId);
-						if(itemId != null)
-							updateLogItem(logItemId, "item_id", itemId);
-						if(status.toString().equalsIgnoreCase("release"))
+						if(volIds.size()==0)
+						{
+							volumeService.rollbackCreation(mv, userHandle);
+							updateLogItem(logItemId, "message", Consts.MULTIVOLUMEROLLBACKERROR);
+						}
+						else
+						{
+							mvId = volumeService.updateMultiVolumeFromId(mvId, volIds, userHandle);
+							updateLogItem(logItemId, "item_id", mvId);
+						}
+						if(status.toString().equalsIgnoreCase("public"))
 							volumeService.releaseVolume(itemId, userHandle);
 						eDate = new Date();
 						updateLogItem(logItemId, "enddate", eDate.toString());
@@ -1039,8 +1047,8 @@ public class IngestLog
 					
 				}
 			} catch (Exception e) {
-				updateLogItem(logItemId, "errorlevel", ErrorLevel.ERROR.toString());
-				updateLog("errorlevel", ErrorLevel.ERROR.toString());
+				updateLogItem(logItemId, "errorlevel", ErrorLevel.FATAL.toString());
+				updateLog("errorlevel", ErrorLevel.FATAL.toString());
 			} 
 			finishedItems++;
 			updateLog("finished_items", Integer.toString(finishedItems));

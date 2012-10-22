@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,9 +15,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
 
+import com.ocpsoft.pretty.PrettyContext;
+import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
@@ -32,11 +36,12 @@ import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 @ManagedBean
 @SessionScoped
-@URLMapping(id="myItemsBatch", pattern="/myItemsBatch/#{ingestLogBean.userId}", viewId="/myItemsBatch.xhtml", onPostback = false)
+@URLMapping(id="myItemsBatch", pattern="/myItemsBatch", viewId="/myItemsBatch.xhtml", onPostback = false)
 public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	private static Logger logger = Logger.getLogger(IngestLogBean.class);
 	
+	private String oldUserId;
 	private String userId;
 	
 	private List<IngestLog> logs = new ArrayList<IngestLog>();
@@ -56,7 +61,27 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		super();
 	}
 	
-	public List<IngestLog> retrieveList(int offset, int limit) throws Exception {
+	@URLAction(onPostback=false)	
+	public void init()
+	{
+		if(loginBean == null || loginBean.getUser() == null)
+		{
+			FacesContext fc = FacesContext.getCurrentInstance();
+			try {
+				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") ;
+				fc.getExternalContext().redirect(dlc_URL);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}
+		else
+		{
+			this.userId = loginBean.getUser().getId();
+		}
+	}
+	
+	public List<IngestLog> retrieveList(int offset, int limit) throws Exception 
+	{
 		logs.clear();    
 		this.conn = IngestLog.getConnection();
 		List<IngestLog> allLogs = new ArrayList<IngestLog>();
@@ -93,6 +118,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		{
 			
 		}
+
 		return logs;
 	}
 	
@@ -123,9 +149,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		
 		try
 		{
-			query = "select * from dlc_batch_ingest_log where id = ?";
+			query = "select * from dlc_batch_ingest_log where id = " + id;
 			statement = conn.prepareStatement(query);
-			statement.setInt(1, id);
+
 			resultSet = statement.executeQuery();
 			if(resultSet.next())
 			{

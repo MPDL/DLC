@@ -25,6 +25,7 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.UserAccountServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -50,11 +51,10 @@ public class AdminBean{
 	
 	
 	private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
-	
+
 	
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
-	
-	
+
 	private UserAccountServiceBean uaServiceBean = new UserAccountServiceBean();
 
 	
@@ -74,6 +74,7 @@ public class AdminBean{
 	private String editUserId="";
 	
 	private String editCollectionId="";
+
 
 	
 	public AdminBean() throws Exception
@@ -126,7 +127,7 @@ public class AdminBean{
 					this.ouSelectItems.add(new SelectItem(loginBean.getUser().getOu().getObjid(),loginBean.getUser().getOu().getProperties().getName()));
 			  		
 					for(Context context : contextServiceBean.retrieveOUContexts(loginBean.getUser().getOu().getObjid()))
-						this.contextSelectItems.add(new SelectItem(context.getObjid()+"|"+context.getProperties().getName(), context.getProperties().getName()));
+						this.contextSelectItems.add(new SelectItem(context.getObjid(), context.getProperties().getName()));
 				}
 			}catch(Exception e)
 			{
@@ -261,25 +262,13 @@ public class AdminBean{
 	}
    
 	public User getUser() {  
-		if(user!=null && user.getOu()!=null)
-			user.setOuId(user.getOu().getObjid());
-//		if(user!=null && user.getDepositorCollections().size()>0)
-//		{
-//			System.out.println(user.getDepositorCollections().size());
-//			user.getDepositorContextIds().clear();
-//			for(Collection c : user.getDepositorCollections())
-//			{
-//				
-//				user.getDepositorContextIds().add(c.getId());
-//			}
-//			System.out.println("after = "+user.getDepositorContextIds().size());
-//		}
-//		if(user!=null && user.getModeratorCollections().size()>0)
-//		{
-//			user.getModeratorContextIds().clear();
-//			for(Collection c : user.getModeratorCollections())
-//				user.getModeratorContextIds().add(c.getId());
-//		}
+		System.out.println(this.user.getDepositorCollections().size());
+		System.out.println(this.user.getDepositorContextIds().size());
+		System.out.println(this.user.getMdEditorCollections().size());
+		System.out.println(this.user.getMdEditorContextIds().size());
+		System.out.println(this.user.getModeratorCollections().size());
+		System.out.println(this.user.getModeratorContextIds().size());
+		
 		return user;
 	}
 
@@ -356,6 +345,7 @@ public class AdminBean{
 	}  
 
 	public void setEditUserId(String editUserId) {
+		this.user = uaServiceBean.retrieveUserById(editUserId, loginBean.getUserHandle());
 		this.editUserId = editUserId;
 	}
 
@@ -366,5 +356,10 @@ public class AdminBean{
 	public void setEditCollectionId(String editCollectionId) {
 		this.editCollectionId = editCollectionId;
 	}
+
+
+
+	
+	
 
 }

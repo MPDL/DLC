@@ -22,7 +22,7 @@
 
 
 
-	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popupUser')}.hide()" width="400">
+	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popupUser')}.hide()" width="800" height="800">
         <f:facet name="header">
             <h:outputText value="#{cc.attrs.title}" />
         </f:facet>
@@ -45,44 +45,48 @@
             <h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}" />
 
             
-            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
-				<h:outputText value="#{lbl.admin_user_grants} *: "/>
-			</h:panelGroup>
-           <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
-				<h:selectOneMenu value="#{cc.attrs.user.ouId}">
-					<f:selectItems value="#{adminBean.ouSelectItems}" />
-				</h:selectOneMenu>
-			</h:panelGroup>
+            <ui:remove>
+	           <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+					<h:outputText value="#{lbl.admin_user_grants} *: "/>
+				</h:panelGroup>
+		        <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+					<h:selectOneMenu value="#{cc.attrs.user.ouId}">
+						<f:selectItems value="#{adminBean.ouSelectItems}" />
+					</h:selectOneMenu>
+				</h:panelGroup>
+			</ui:remove>
 			
-			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+ 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:outputText value="#{lbl.admin_user_dep}: "/>
 			</h:panelGroup>
-            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:selectManyListbox  value="#{cc.attrs.user.depositorContextIds}">
-					<f:selectItems  value="#{adminBean.contextSelectItems}" />
-				</h:selectManyListbox>
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyCheckbox>
+			  		<f:selectItems value="#{adminBean.contextSelectItems}">
+			  		</f:selectItems>
+				</h:selectManyCheckbox>
 			</h:panelGroup>	
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:outputText value="#{lbl.admin_user_mod} : "/>
 			</h:panelGroup>
-            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:selectManyListbox value="#{cc.attrs.user.moderatorContextIds}">
-					<f:selectItems value="#{adminBean.contextSelectItems}" />
-				</h:selectManyListbox>
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyCheckbox value="#{cc.attrs.user.depositorContextIds}">
+			  		<f:selectItems value="#{adminBean.contextSelectItems}">
+			  		</f:selectItems>
+				</h:selectManyCheckbox>
 			</h:panelGroup>	
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:outputText value="#{lbl.admin_user_md_editor} : "/>
 			</h:panelGroup>
-            <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:selectManyListbox value="#{cc.attrs.user.mdEditorContextIds}">
-					<f:selectItems value="#{adminBean.contextSelectItems}" />
-				</h:selectManyListbox>
-			</h:panelGroup>	
-
-
-
+			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
+				<h:selectManyCheckbox value="#{cc.attrs.user.depositorContextIds}">
+			  		<f:selectItems value="#{adminBean.contextSelectItems}">
+			  		</f:selectItems>
+				</h:selectManyCheckbox>
+			</h:panelGroup>		
+			
+			
 			<a4j:commandButton value="#{lbl.button_command_save}" action="#{adminBean.editUser}" execute="@form"/>
 
 
