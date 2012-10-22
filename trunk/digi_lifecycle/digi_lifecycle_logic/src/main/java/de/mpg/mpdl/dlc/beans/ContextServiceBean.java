@@ -98,6 +98,15 @@ public class ContextServiceBean {
 		return collections;
 	}
 	
+	public List<Collection> retrieveOUCollections(String userHandle, String ouId)
+	{  
+		logger.info("Retrieving OU Collections" + ouId);
+		List<Collection> collections = new ArrayList<Collection>();
+		for(Context c : retrieveOUContexts(ouId))
+			collections.add(retrieveCollection(c.getObjid(), userHandle));
+		return collections;
+	}
+	
 	public List<Context> retrieveContextsCreatedBy(String userHandle, String id)
 	{
 		logger.info("Retrieving OU contexts created by" + id);
