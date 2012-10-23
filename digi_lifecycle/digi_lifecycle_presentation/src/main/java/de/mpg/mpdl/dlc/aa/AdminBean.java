@@ -211,7 +211,7 @@ public class AdminBean{
 		}
 		return "pretty:admin";
 	}
-	
+	 
 	public String closeCollection() throws Exception
 	{
 		Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
