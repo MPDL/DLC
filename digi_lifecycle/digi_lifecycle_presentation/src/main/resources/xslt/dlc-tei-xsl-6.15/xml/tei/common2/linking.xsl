@@ -249,10 +249,12 @@ of this software, even if advised of the possibility of such damage.
 	      <xsl:value-of select="substring(tei:term,1,10)"/>
 	      <xsl:text>…</xsl:text>
 	    </xsl:when>
+<!-- AW: 19.10.2012 auskommentiert - verkürzte Wiederholung der ersten Zeile            
 	    <xsl:when test="not(tei:head)">
 	      <xsl:value-of select="substring(normalize-space(.),1,10)"/>
 	      <xsl:text>…</xsl:text>
 	    </xsl:when>
+-->	    
             <xsl:otherwise>
                <xsl:apply-templates select="tei:head" mode="makeheading"/>
             </xsl:otherwise>
