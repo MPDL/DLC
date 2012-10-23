@@ -86,9 +86,10 @@
 							
 							<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
 				    			<h:outputText value="#{msg.admin_confirmCloseCollection}"/>
-				    			<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
-				    			<a4j:commandButton value="#{lbl.button_command_delete}" action="#{adminBean.closeCollection}"/>
+				    			<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmCollectionPane')}.hide(); return false;"/>
+				    			<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeCollection}"/>
 				    		</rich:popupPanel>
+				   
 				    		
 				    		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
 					    		<a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" styleClass="eg3_borderradius_5" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
