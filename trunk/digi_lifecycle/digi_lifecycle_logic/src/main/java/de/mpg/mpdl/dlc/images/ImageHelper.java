@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.images;
 
 import java.awt.Graphics2D;
+
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -20,8 +21,6 @@ import javax.media.jai.PlanarImage;
 
 import org.apache.log4j.Logger;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
 import com.sun.media.jai.codec.ImageDecoder;
