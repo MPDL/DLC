@@ -2379,6 +2379,10 @@ of this software, even if advised of the possibility of such damage.
       <desc>[html] </desc>
    </doc>
   <xsl:template name="stdfooter">
+     <xsl:if test="normalize-space($copyrightStatement) != ''">
+     
+     
+     <!-- AW: 19.10.2012 auskommentiert  
       <xsl:param name="style" select="'plain'"/>
       <xsl:param name="file"/>
       <xsl:variable name="date">
@@ -2387,7 +2391,11 @@ of this software, even if advised of the possibility of such damage.
       <xsl:variable name="author">
          <xsl:call-template name="generateAuthor"/>
       </xsl:variable>
-      <div class="stdfooter">
+      -->
+     
+     <div class="stdfooter">
+     
+     <!--
          <xsl:if test="$linkPanel='true'">
             <div class="footer">
                <xsl:if test="not($parentURL='')">
@@ -2425,7 +2433,12 @@ of this software, even if advised of the possibility of such damage.
             <xsl:text>: </xsl:text>
             <xsl:value-of select="$date"/>
             <br/>
-            <xsl:call-template name="copyrightStatement"/>
+            -->
+
+            <!-- AW: 19.10.2012 Copyright Param auskommentiert -->
+            <xsl:call-template name="copyrightStatement"/> 
+            
+            <!-- 
             <xsl:comment>
                <xsl:text>
 	  Generated </xsl:text>
@@ -2438,8 +2451,10 @@ of this software, even if advised of the possibility of such damage.
 	  based on <xsl:value-of select="$teixslHome"/>
 	  on <xsl:call-template name="whatsTheDate"/>
             </xsl:comment>
-         </address>
-      </div>
+         </address> 
+      -->
+     </div> 
+     </xsl:if>
   </xsl:template>
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>[html] <param name="title">title</param>
@@ -2449,6 +2464,7 @@ of this software, even if advised of the possibility of such damage.
       <xsl:param name="title">(no title)</xsl:param>
       <xsl:choose>
          <xsl:when test="$pageLayout='Simple'">
+      <!-- AW: 19.10.2012 auskommentiert             
 	   <xsl:if test="not($institution='')">
             <h2 class="institution">
                <xsl:value-of select="$institution"/>
@@ -2459,7 +2475,7 @@ of this software, even if advised of the possibility of such damage.
                <xsl:value-of select="$department"/>
             </h2>
 	   </xsl:if>
-	   
+	   -->
 	   <xsl:call-template name="makeHTMLHeading">
 	     <xsl:with-param name="class">maintitle</xsl:with-param>
 	     <xsl:with-param name="text">

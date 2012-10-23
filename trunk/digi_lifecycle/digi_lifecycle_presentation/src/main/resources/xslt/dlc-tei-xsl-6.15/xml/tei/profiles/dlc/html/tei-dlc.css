@@ -110,7 +110,8 @@ body.pagetable {
 
 /* the main title */
 div.stdheader {
-      border-bottom: 1pt solid black;
+      /* AW: 19.10.2012
+	  border-bottom: 1pt solid black;*/
 }
 
 #hdr{
