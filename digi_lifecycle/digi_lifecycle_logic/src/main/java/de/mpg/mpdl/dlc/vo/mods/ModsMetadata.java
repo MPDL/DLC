@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.stream.StreamSource;
 
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
@@ -364,7 +365,7 @@ public class ModsMetadata {
 		
 		File example = new File("/home/frank/data/digitization_lifecycle/tei_samples/ernstcurtius_v02.xml");
 		//File teiFileWithIds = VolumeServiceBean.addIdsToTei(new FileInputStream(example));
-		String mets = VolumeServiceBean.transformTeiToMets(new FileInputStream(example));
+		String mets = VolumeServiceBean.transformTeiToMets(new StreamSource(example));
 		Unmarshaller unmarshaller = ctx.createUnmarshaller();
 		Volume vol = (Volume)unmarshaller.unmarshal(new ByteArrayInputStream(mets.getBytes("UTF-8")));
 		

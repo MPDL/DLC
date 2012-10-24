@@ -653,7 +653,7 @@ public class VolumeServiceBean {
 					
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
 					
-					
+					jpegFooter.delete();
 						
 				}
 				
@@ -671,7 +671,10 @@ public class VolumeServiceBean {
 				File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
 				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
 				
-				
+				jpegImage.delete();
+				thumbnailFile.delete();
+				webFile.delete();
+				originalFile.delete();
 			}
 			
 				int pos = images.indexOf(imageItem);
@@ -787,19 +790,19 @@ public class VolumeServiceBean {
 		if(teiFile!=null)	
 			{
 				logger.info("TEI file found");
-				System.out.println(teiFile.getStoreLocation());
-				File teiFileWithPbConvention = applyPbConventionToTei(new FileInputStream(teiFile.getStoreLocation()));
-				File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
+				File teiFileWithPbConvention = applyPbConventionToTei(new StreamSource(teiFile.getStoreLocation()));
+				File teiFileWithIds = addIdsToTei(new StreamSource(teiFileWithPbConvention));
 
 				//Transform TEI to Tei-SD and add to volume
-				String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
+				String teiSdString = transformTeiToTeiSd(new StreamSource(teiFileWithIds));
 				IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
 				TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
 				volume.setTeiSd(teiSd);				
 
 				//Add paged TEI as component
-				String pagedTei = transformTeiToPagedTei(new FileInputStream(teiFileWithIds));
+				String pagedTei = transformTeiToPagedTei(new StreamSource(teiFileWithIds));
 				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
+				
 				
 				
 				if(pagedTeiComponent!=null)
@@ -841,6 +844,10 @@ public class VolumeServiceBean {
 				teiComponent.getContent().setStorage(StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(teiComponent);
 				teiComponent.getContent().setXLinkHref(uploadedTei.toExternalForm());
+				
+				
+				teiFileWithPbConvention.delete();
+				teiFileWithIds.delete();
 			}
 
 			//if vol has a teiSd and it should be updated
@@ -852,7 +859,7 @@ public class VolumeServiceBean {
 				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
 
 				//Add Ids to teiSd, if none are there
-				File teiSdWithIds = addIdsToTei(new ByteArrayInputStream(sw.toString().getBytes("UTF-8")));
+				File teiSdWithIds = addIdsToTei(new StreamSource(new StringReader(sw.toString())));
 				
 				//Set ids in mets
 				List<XdmNode> pbs = getAllPbs(new StreamSource(teiSdWithIds));
@@ -905,7 +912,7 @@ public class VolumeServiceBean {
 				if(teiComponent == null)
 				{
 					//Add paged TEI as component
-					String pagedTei = transformTeiToPagedTei(new FileInputStream(teiSdWithIds));
+					String pagedTei = transformTeiToPagedTei(new StreamSource(teiSdWithIds));
 					URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
 					
 					if(pagedTeiComponent!=null)
@@ -928,6 +935,8 @@ public class VolumeServiceBean {
 									
 					pagedTeiComponent.getContent().setXLinkHref(uploadedPagedTei.toExternalForm());
 				}
+				
+				teiSdWithIds.delete();
 			}
 			
 			//Add codicological metadata as component
@@ -1489,11 +1498,11 @@ public class VolumeServiceBean {
 		
 		
 		File tei = new File("R:/dlc Ingest Daten/test_KHI/tei/L_1122_a-tei.xml");
-		File teiFileWithPbConvention = applyPbConventionToTei(new FileInputStream(tei));
-		File teiFileWithIds = addIdsToTei(new FileInputStream(teiFileWithPbConvention));
+		File teiFileWithPbConvention = applyPbConventionToTei(new StreamSource(tei));
+		File teiFileWithIds = addIdsToTei(new StreamSource(teiFileWithPbConvention));
 
 		//Transform TEI to Tei-SD and add to volume
-		String teiSdString = transformTeiToTeiSd(new FileInputStream(teiFileWithIds));
+		String teiSdString = transformTeiToTeiSd(new StreamSource(teiFileWithIds));
 		System.out.println(teiSdString);
 		IUnmarshallingContext unmCtx = bfactTei.createUnmarshallingContext();
 		TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
@@ -1884,7 +1893,7 @@ public class VolumeServiceBean {
 		return sb.toString();
 	}
 	
-	public static File addIdsToTei(InputStream teiXml)throws Exception
+	public static File addIdsToTei(Source teiXmlSource)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_add_ids.xslt");
@@ -1892,7 +1901,7 @@ public class VolumeServiceBean {
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
 			
 			
-			Source teiXmlSource = new StreamSource(teiXml);
+			//Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
 			File temp = File.createTempFile("tei_with_ids", "xml");
@@ -1903,11 +1912,12 @@ public class VolumeServiceBean {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(teiXmlSource, result);
 			
+			
 			return temp;
 		
 	}
 	
-	public static File applyPbConventionToTei(InputStream teiXml)throws Exception
+	public static File applyPbConventionToTei(Source teiXmlSource)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_apply_pb_convention.xslt");
@@ -1915,7 +1925,7 @@ public class VolumeServiceBean {
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
 			
 			
-			Source teiXmlSource = new StreamSource(teiXml);
+			//Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
 			File temp = File.createTempFile("tei_with_pb_convention", "xml");
@@ -1930,7 +1940,7 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public static String transformTeiToMets(InputStream teiXml)throws Exception
+	public static String transformTeiToMets(Source teiXmlSource)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToMets/tei_to_mets.xslt");
@@ -1939,7 +1949,7 @@ public class VolumeServiceBean {
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
 			
 			
-			Source teiXmlSource = new StreamSource(teiXml);
+			//Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
 			javax.xml.transform.Result result = new StreamResult(wr);
@@ -1956,14 +1966,14 @@ public class VolumeServiceBean {
 	
 	
 	
-	public String transformTeiToPagedTei(InputStream teiXml)throws Exception
+	public String transformTeiToPagedTei(Source teiXmlSource)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToPagedTei/teiToPagedTei.xsl");
 			System.setProperty("javax.xml.transform.TransformerFactory",
 					"net.sf.saxon.TransformerFactoryImpl");
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
-			Source teiXmlSource = new StreamSource(teiXml);
+			//Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
 			javax.xml.transform.Result result = new StreamResult(wr);
@@ -1976,14 +1986,14 @@ public class VolumeServiceBean {
 		
 	}
 	
-	public static String transformTeiToTeiSd(InputStream teiXml)throws Exception
+	public static String transformTeiToTeiSd(Source teiXmlSource)throws Exception
 	{
 		
 			URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/teiToTeiSd.xsl");
 			System.setProperty("javax.xml.transform.TransformerFactory",
 					"net.sf.saxon.TransformerFactoryImpl");
 			SAXSource xsltSource = new SAXSource(new InputSource(url.openStream()));
-			Source teiXmlSource = new StreamSource(teiXml);
+			//Source teiXmlSource = new StreamSource(teiXml);
 
 			StringWriter wr = new StringWriter();
 			javax.xml.transform.Result result = new StreamResult(wr);
@@ -1996,6 +2006,7 @@ public class VolumeServiceBean {
 		
 	}
 	
+	/*
 	public static int validateTei(InputStream teiXml) throws Exception
 	{
 		
@@ -2011,7 +2022,7 @@ public class VolumeServiceBean {
          System.out.println("Found " + pbNumber + " <pb> elements");
          return pbNumber;
 		
-		
+		/*
 		
 		
 		
@@ -2076,10 +2087,10 @@ public class VolumeServiceBean {
         System.out.println(res);
         */
 
-		
+		/*
 	}
 	
-	
+	*/
 	
 	
 	public static  XdmNode getPb(Source tei, String id) throws Exception

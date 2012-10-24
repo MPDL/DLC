@@ -124,6 +124,38 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = vsb.releaseVolume(volume.getItem().getObjid(), userHandle);
+				
+				
+				//Delete temp files
+				try
+				{
+					if(images!=null)
+					{
+						for(IngestImage image : images)
+						{
+							image.getDiskFileItem().getStoreLocation().delete();
+						}
+					}
+					
+					if(codicologicalFile!=null)
+					{
+						codicologicalFile.getStoreLocation().delete();
+					}
+					if(footer!=null)
+					{
+						footer.getStoreLocation().delete();
+					}
+					if(teiFile!=null)
+					{
+						teiFile.getStoreLocation().delete();
+					}
+				}
+				catch(Exception e)
+				{
+					logger.error("Error while deleting temp files", e);
+				}
+				
+				
 			}
 		
 			catch (Exception e) 
