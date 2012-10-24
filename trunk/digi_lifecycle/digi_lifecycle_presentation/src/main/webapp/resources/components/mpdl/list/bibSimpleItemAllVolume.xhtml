@@ -24,7 +24,7 @@
 	
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
-		
+	<h:panelGroup id="bibSimpleItemAllVolumes">
 		<h:panelGroup id="simpleAllVolume" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and not empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
@@ -272,6 +272,12 @@
 		
 		<!-- volumes which are in ingest process -->
 		<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+			<!-- update items which are in upload automatically every 30 seconds -->
+			
+			<a4j:region>
+				
+				 <a4j:poll id="poll" interval="30000" render="poll bibSimpleItemAllVolumes" action="#{allVolumesBean.checkUploadComplete(cc.attrs.volume)}"/>
+			</a4j:region>
 			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
 				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
 					<h:panelGroup styleClass="eg3_itemStatusTitle">
@@ -555,6 +561,6 @@
 			</h:panelGroup> <!-- END mulitItemContent -->
 			
 		</h:panelGroup> <!-- END for MULTIVOLUMES -->
-
+		</h:panelGroup>
 </cc:implementation>
 </html>

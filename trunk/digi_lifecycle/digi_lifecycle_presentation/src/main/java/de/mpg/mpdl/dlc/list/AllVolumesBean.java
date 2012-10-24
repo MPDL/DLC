@@ -382,6 +382,22 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	}
 	
+	
+	public void checkUploadComplete(Volume vol)
+	{ 
+		String userHandle = loginBean.getUserHandle();
+	
+			try {
+				Volume newVol = volServiceBean.retrieveVolume(vol.getItem().getOriginObjid(), userHandle);
+				VolumeServiceBean.importVolumeIntoVolume(newVol, vol, userHandle);
+			} catch (Exception e) {
+				logger.error("Error while updating volume in myItems " + vol.getObjidAndVersion(), e);
+			}
+
+		
+
+	}
+	
 	/**
 	 * Retrieve the 5 last works of all collections
 	 * TODO: check multivolume, what can be displayed here?
