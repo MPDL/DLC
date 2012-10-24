@@ -350,7 +350,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	}
 	
-	public void delete(Volume vol)
+	public String delete(Volume vol)
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
@@ -363,10 +363,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_deleteVolume"));
 			logger.error("Error while deleting volume " + vol.getObjidAndVersion(), e);
 		}
-
+		return "";
 	}
 	
-	public void withdraw(Volume vol)
+	public String withdraw(Volume vol)
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
@@ -379,6 +379,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_withdrawVolume"));
 			logger.error("Error while withdrawing volume " + vol.getObjidAndVersion(), e);
 		}
+		return "";
 
 	}
 	
