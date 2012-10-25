@@ -3,6 +3,8 @@ package de.mpg.mpdl.dlc.beans;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,10 @@ import org.apache.log4j.Logger;
 import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.UserAccountHandlerClient;
 import de.escidoc.core.client.UserGroupHandlerClient;
+import de.escidoc.core.client.exceptions.EscidocException;
+import de.escidoc.core.client.exceptions.InternalClientException;
+import de.escidoc.core.client.exceptions.TransportException;
+import de.escidoc.core.client.exceptions.application.violated.UniqueConstraintViolationException;
 import de.escidoc.core.resources.aa.useraccount.Attribute;
 import de.escidoc.core.resources.aa.useraccount.Attributes;
 import de.escidoc.core.resources.aa.useraccount.Grant;
@@ -280,7 +286,7 @@ public class UserAccountServiceBean {
 		return uas;		
 	}
 	
-	public UserAccount updateUserAccount(User user, String userHandle)
+	public UserAccount updateUserAccount(User user, String userHandle) throws UniqueConstraintViolationException
 	{  
 		logger.info("updating user account " + user.getId());
 		UserAccount ua = new UserAccount();
@@ -358,15 +364,34 @@ public class UserAccountServiceBean {
 				ua = client.retrieve(ua.getObjid());
 			}
 			
-		}catch(Exception e)
+		}catch(UniqueConstraintViolationException e)
 		{
-			logger.error("Error while Updating ua", e);
+			logger.error("Error while Updating new user", e);
+			throw new UniqueConstraintViolationException(e.getMessage(), e.getCause());
+		} catch (EscidocException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InternalClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return ua;
 	}
 	
 	
-	public UserAccount createNewUserAccount(User user, String userHandle) 
+	public UserAccount createNewUserAccount(User user, String userHandle) throws UniqueConstraintViolationException 
 	{
 		logger.info("Creating new user Account");
 		UserAccount ua = new UserAccount();
@@ -400,34 +425,58 @@ public class UserAccountServiceBean {
 			}
 			if(user.getDepositorContextIds().size()>0)
 			{
-				for(Collection c : user.getDepositorCollections())
+				for(String id : user.getDepositorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), c.getId(), c.getName());
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 				}				
 			}
 			if(user.getModeratorContextIds().size()>0)
 			{
-				for(Collection c : user.getModeratorCollections())
+				for(String id: user.getModeratorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), c.getId(), c.getName());
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), c.getId(), c.getName());
+					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
 			if(user.getMdEditorContextIds().size() >0)
 			{
-				for(Collection c : user.getMdEditorCollections())
+				for(String id : user.getMdEditorContextIds())
 				{
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), c.getId(), c.getName());
+					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
+				
+						grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.md-editor"), id, contextTitle);
+					
 					client.createGrant(ua.getObjid(), grant);
 				}
 			}
 			
-		}catch(Exception e)
+		}catch(UniqueConstraintViolationException e)
 		{
 			logger.error("Error while creating new user", e);
+			throw new UniqueConstraintViolationException(e.getMessage(), e.getCause());
+		} catch (EscidocException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InternalClientException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return ua;
 	}
@@ -508,28 +557,40 @@ public class UserAccountServiceBean {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String userAccountID = "escidoc:15006";
-        String roleId = "escidoc:role-ou-administrator";
+		String userAccountID = "escidoc:5003";
+//        String roleId = "escidoc:role-ou-administrator";
         //String roleId = "escidoc:role-context-administrator";
         //String roleId = "escidoc:role-user-account-administrator";
 //		addOUAdminRole(userAccountID, roleId);
         
         
-		String url = "http://latest-coreservice.mpdl.mpg.de";
-		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlc");
+		String url = "http://dev-dlc.mpdl.mpg.de:8080";
+		Authentication auth = new Authentication(new URL(url), "sysadmin", "dlcadmin");
 		UserAccountHandlerClient client = new UserAccountHandlerClient(auth.getServiceAddress());
 
 		client.setHandle(auth.getHandle());
+		
+		client.delete(userAccountID);
+/*		
+		TaskParam taskParam = new TaskParam();
+		taskParam.setComment("deactivate user account");
+		UserAccount ua = client.retrieve(userAccountID);
+		taskParam.setLastModificationDate(ua.getLastModificationDate());
+		
+		client.deactivate(userAccountID, taskParam);
+*/
+		
+		/*
 		Grants grants = client.retrieveCurrentGrants(userAccountID);
-
 		for(Grant grant : grants)
 			{
 			System.out.println(grant.getProperties().getRole().getObjid());
-//			System.out.println(grant.getProperties().getAssignedOn().getObjid());
+			System.out.println(grant.getProperties().getAssignedOn().getObjid());
 
 			}
 		Attributes attributes = client.retrieveAttributes(userAccountID);
 		System.out.println(attributes.get(0).getValue());
+		*/
 	}
 	
 	
