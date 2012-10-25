@@ -255,7 +255,7 @@
   			<classifier>escidoc_13_REST_final</classifier>
 		</dependency>
 		-->
-		
+		<!-- 
 		<dependency>
   			<groupId>de.ddb.application</groupId>
   			<artifactId>dnbConversionTools</artifactId>
@@ -263,7 +263,7 @@
   			<classifier>tomcat</classifier>
   			<scope>compile</scope>
 		</dependency>
-		
+		 -->
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
