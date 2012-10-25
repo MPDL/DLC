@@ -1,11 +1,11 @@
 package de.mpg.mpdl.dlc.mods;
 
+import gov.loc.mods.v3.ModsDocument;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import gov.loc.mods.v3.ModsDocument;
 
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -21,9 +21,6 @@ import org.apache.xmlbeans.XmlException;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
-import de.ddb.application.MabToMabxml;
-import de.ddb.application.XMabToUtf8;
-import de.ddb.conversion.ConverterException;
 import de.ddb.professionell.mabxml.mabxml1.DateiDocument;
 import de.ddb.professionell.mabxml.mabxml1.DatensatzType;
 import de.ddb.professionell.mabxml.mabxml1.FeldType;
@@ -160,6 +157,7 @@ public class MabXmlTransformation {
 		return null;
 	}
 
+	/*
 	public File mabFileToUtf8(File mabFile) {
 		File mabUtf8;
 		try {
@@ -191,4 +189,5 @@ public class MabXmlTransformation {
 		}
 		return null;
 	}
+	*/
 }

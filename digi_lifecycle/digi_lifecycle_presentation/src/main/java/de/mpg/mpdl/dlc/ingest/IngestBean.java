@@ -2,41 +2,29 @@ package de.mpg.mpdl.dlc.ingest;
 
 
 import java.io.File;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.xml.transform.Source;
-import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
-import org.apache.bcel.generic.CPInstruction;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
-import org.apache.tika.mime.MimeTypes;
 import org.richfaces.event.DropEvent;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
@@ -44,7 +32,6 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.om.item.component.Component;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeThread;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -53,11 +40,8 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.list.AllVolumesBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
-
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
-import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
-
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -65,7 +49,6 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.viewer.ViewPages;
 import de.mpg.mpdl.dlc.vo.IngestImage;
-import de.mpg.mpdl.dlc.vo.IngestImage.Type;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
@@ -80,8 +63,6 @@ import de.mpg.mpdl.dlc.vo.mods.ModsPart;
 import de.mpg.mpdl.dlc.vo.mods.ModsPhysicalDescription;
 import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
-
-
 import de.mpg.mpdl.dlc.vo.mods.ModsTitle;
 import de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent;
 
