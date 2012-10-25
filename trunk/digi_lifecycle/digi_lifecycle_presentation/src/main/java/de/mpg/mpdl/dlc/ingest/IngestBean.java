@@ -650,7 +650,7 @@ public class IngestBean{
 	
 		checkSortImagesByTei();
 		
-		return null;
+		return "";
 	}
 	
 	public void checkSortImagesByTei()

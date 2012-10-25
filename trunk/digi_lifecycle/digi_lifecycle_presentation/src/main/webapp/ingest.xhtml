@@ -132,11 +132,11 @@
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
 						
 						<ui:fragment rendered="#{not empty ingestBean.volume or not empty ingestBean.mabFile}">
-							<h:panelGroup layout="block" rendered="#{ingestBean.modsMetadata.catalogueId_001.length() >0}">
+							<h:panelGroup layout="block" rendered="#{not empty ingestBean.modsMetadata.catalogueId_001   or ingestBean.modsMetadata.catalogueId_001== ''}">
 								<modsEditor:mabUserEditor modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
 							
-							<ui:fragment rendered="#{ingestBean.modsMetadata.catalogueId_001 == '' or empty ingestBean.modsMetadata.catalogueId_001}"> 
+							<ui:fragment rendered="#{empty ingestBean.modsMetadata.catalogueId_001}"> 
 								<h:panelGroup layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMultiVol}">
 									<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
 								</h:panelGroup>
@@ -162,6 +162,8 @@
 								<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
 							</h:panelGroup>
 						</ui:fragment>
+						
+
 						
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
