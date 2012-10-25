@@ -214,7 +214,7 @@ public class ImageHelper{
     
 	    private static BufferedImage resizeImage(BufferedImage image, int width, int height)  
 	    { long time = System.currentTimeMillis();
-	    	BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, width, height);
+	    	BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.QUALITY, width, height);
 	    	
 	    	
 	    	long neededTime = System.currentTimeMillis() - time;
