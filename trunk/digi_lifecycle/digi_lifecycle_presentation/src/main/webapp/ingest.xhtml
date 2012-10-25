@@ -200,7 +200,7 @@
 					</rich:panel>
 					
 					
-					<rich:panel id="cdcInfo" header="#{lbl.ingest_cdcInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
+					<rich:panel id="cdcInfo" header="#{lbl.ingest_codicologicalInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}">
 							<h:outputText value="#{lbl.ingest_noCodicologicalAvailable}" rendered="#{empty ingestBean.codicologicalFile}"/>
 							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
