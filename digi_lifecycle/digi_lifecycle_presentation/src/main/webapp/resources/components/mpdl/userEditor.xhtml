@@ -46,14 +46,14 @@
 
             
             
-	           <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
-					<h:outputText value="#{lbl.admin_user_grants} *: "/>
-				</h:panelGroup>
-		        <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
-					<h:selectOneMenu value="#{cc.attrs.user.ouId}">
-						<f:selectItems value="#{adminBean.ouSelectItems}" />
-					</h:selectOneMenu>
-				</h:panelGroup>
+           <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+				<h:outputText value="#{lbl.admin_user_grants} *: "/>
+			</h:panelGroup>
+	        <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">			
+				<h:selectOneMenu value="#{cc.attrs.user.ouId}">
+					<f:selectItems value="#{adminBean.ouSelectItems}" />
+				</h:selectOneMenu>
+			</h:panelGroup>
 			
  			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:outputText value="#{lbl.admin_user_dep}: "/>
