@@ -233,13 +233,13 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			VolumeStatus[] volPublicStatus = new VolumeStatus[]{};
 			if("all".equals(filterItemState))
 			{
-				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
+				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
 			}
 			else if("submitted".equals(filterItemState))
 			{
-				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending};
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.pending, VolumeStatus.released};
+				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted,};
+				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
 			}
 			else if("released".equals(filterItemState))
 			{
@@ -252,6 +252,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			}
 			
 			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			
+			VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			
+			res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
+			res.setNumberOfRecords(res.getNumberOfRecords() + resultVolumesInProgress.getNumberOfRecords());
 			
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 			

@@ -46,6 +46,9 @@
     </view-handler>
   -->
   </application>
+  <lifecycle>
+		<phase-listener id="facesMessagesListener">de.mpg.mpdl.dlc.util.FacesMessagesPhaseListener</phase-listener>
+	</lifecycle>
   
   
 </faces-config>
