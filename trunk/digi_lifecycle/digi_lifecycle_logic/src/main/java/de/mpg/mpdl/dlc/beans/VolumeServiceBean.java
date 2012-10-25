@@ -302,7 +302,7 @@ public class VolumeServiceBean {
 			MetadataRecord mdRec = new MetadataRecord("escidoc");
 			mdRecs.add(mdRec);
 			item.setMetadataRecords(mdRecs);
-				
+				 
 			Document d = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });		
 			Marshaller marshaller = ctx.createMarshaller();
@@ -312,7 +312,7 @@ public class VolumeServiceBean {
 			logger.info("Empty item created: " + item.getObjid());
 
 		} catch (Exception e) {
-			logger.error("Error while creating Item", e);
+			logger.error("Error while creating Item" + e.getMessage());
 
 		} 
 

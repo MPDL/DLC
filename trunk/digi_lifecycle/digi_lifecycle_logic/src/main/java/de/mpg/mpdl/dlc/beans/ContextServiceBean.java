@@ -2,36 +2,35 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
-import java.io.StringWriter;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.ContextHandlerClient;
+import de.escidoc.core.client.exceptions.EscidocException;
+import de.escidoc.core.client.exceptions.InternalClientException;
+import de.escidoc.core.client.exceptions.TransportException;
+import de.escidoc.core.client.exceptions.application.violated.ContextNameNotUniqueException;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.OrganizationalUnitRef;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.context.ContextProperties;
 import de.escidoc.core.resources.om.context.OrganizationalUnitRefs;
-import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
-import de.mpg.mpdl.dlc.vo.collection.DLCAdminDescriptor;
-import de.mpg.mpdl.dlc.vo.collection.PageDescriptor;
-import de.mpg.mpdl.dlc.vo.mets.MetsFile;
-import de.mpg.mpdl.dlc.vo.mets.Page;
 
 
 public class ContextServiceBean {
 	private static Logger logger = Logger.getLogger(ContextServiceBean.class);
 	
+
 
 	
 	public Collection retrieveCollection(String id, String userHandle)
@@ -157,7 +156,7 @@ public class ContextServiceBean {
 	}
 	
 	
-	public Context updateContext(Collection collection, String userHandle) 
+	public Context updateContext(Collection collection, String userHandle) throws ContextNameNotUniqueException 
 	{
 		logger.info("Updating context " + collection.getId() );
 		Context context = new Context();
@@ -171,15 +170,31 @@ public class ContextServiceBean {
 	    	
 	    	context = client.update(context);
 			
-		}catch(Exception e)
-		{
-			logger.error("Error while updating context", e);
+		}catch(ContextNameNotUniqueException e)
+		{	
+			logger.error("Error while updating new context",e);
+			throw new ContextNameNotUniqueException(e.getMessage(), e.getCause());
+			
+		} catch (EscidocException e) {
+			e.printStackTrace();
+		} catch (InternalClientException e) {
+
+			e.printStackTrace();
+		} catch (TransportException e) {
+			
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
 		return context;
 	}
 
 	
-	public Context createNewContext(Collection c, String userHandle)
+	public Context createNewContext(Collection c, String userHandle) throws ContextNameNotUniqueException
 	{ 
 		logger.info("Creating new context");
 		Context context = new Context();
@@ -197,9 +212,25 @@ public class ContextServiceBean {
 		    
 		    client.open(context, taskParam);
 	    	
-		}catch(Exception e)
+		}catch(ContextNameNotUniqueException e)
 		{	
 			logger.error("Error while creating new context",e);
+			throw new ContextNameNotUniqueException(e.getMessage(), e.getCause());
+			
+		} catch (EscidocException e) {
+			e.printStackTrace();
+		} catch (InternalClientException e) {
+
+			e.printStackTrace();
+		} catch (TransportException e) {
+			
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
       
 		return context;
