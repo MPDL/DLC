@@ -1016,7 +1016,7 @@ public class IngestBean{
 					//Wait 3 seconds until the empty item was created
 					Thread.sleep(3000);
 					
-					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadInProgress"));
+					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadStarted"));
 		    		
 		    		/*
 		    		FacesContext context = FacesContext.getCurrentInstance();
