@@ -42,7 +42,7 @@
             <h:inputText id="loginName" value="#{cc.attrs.user.loginName}" />
 			
             <h:outputText value="#{lbl.admin_user_pwd} *"/>
-            <h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}" />
+            <h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}"/>
 
             
             
@@ -86,7 +86,7 @@
 			</h:panelGroup>		
 			
 			
-			<a4j:commandButton value="#{lbl.button_command_save}" action="#{adminBean.editUser}" execute="@form"/>
+			<h:commandButton id="uaEditButton" value="#{lbl.button_command_save}" action="#{adminBean.editUser}" render="messages" execute="@form"/>
 
 
         </h:panelGrid>

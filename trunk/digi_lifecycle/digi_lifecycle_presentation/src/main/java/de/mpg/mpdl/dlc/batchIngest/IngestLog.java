@@ -1015,7 +1015,8 @@ public class IngestLog
 						{
 							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() !=null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 							eDate = new Date();
-
+							
+							updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
 							if(volId == null)
 							{
 								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.EXCEPTION.toString());
@@ -1025,7 +1026,7 @@ public class IngestLog
 							}
 							else
 							{
-								updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
+								
 								volIds.add(volId);
 							}
 						}

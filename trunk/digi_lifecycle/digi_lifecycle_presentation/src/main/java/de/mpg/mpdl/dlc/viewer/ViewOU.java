@@ -77,6 +77,7 @@ public class ViewOU {
 	@URLAction(onPostback=false)
 	public void loadOu()
 	{    
+		System.out.println("test");
 		try{
 			
 //			if(orga==null || !id.equals(orga.getId()))

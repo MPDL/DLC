@@ -73,7 +73,6 @@ public class SessionBean implements Serializable
 	    			|| viewId.equals("/ingest.xhtml")
 	    			|| viewId.equals("/advancedSearch.xhtml")
 	    			||viewId.equals("/admin.xhtml"))
-//	    			||viewId.equals("/ou.xhtml"))
 	    		{logoUrl = "";
 	    		setLogoTlt("DLC");} 
 	    	if (logoUrl == null || logoUrl.equals("")) 
@@ -95,8 +94,7 @@ public class SessionBean implements Serializable
 	    			|| viewId.equals("/volumes.xhtml")
 	    			|| viewId.equals("/ingest.xhtml")
 	    			|| viewId.equals("/advancedSearch.xhtml")
-	    			||viewId.equals("/admin.xhtml")
-	    			||viewId.equals("/ou.xhtml"))
+	    			||viewId.equals("/admin.xhtml"))
 	    		{logoLink = "";} 
 	    	if (logoLink == null || logoLink.equals("")) 
 	    		{return getAppBean().getDomain()+"/"+getAppBean().getContextPath()+"/";}
@@ -118,8 +116,7 @@ public class SessionBean implements Serializable
 	    			|| viewId.equals("/volumes.xhtml")
 	    			|| viewId.equals("/ingest.xhtml")
 	    			|| viewId.equals("/advancedSearch.xhtml")
-	    			||viewId.equals("/admin.xhtml")
-	    			||viewId.equals("/ou.xhtml"))
+	    			||viewId.equals("/admin.xhtml"))
 	    		{logoTlt = "";} 
 	    	if (logoTlt == null || logoTlt.equals("")) 
 	    		{logoTlt = InternationalizationHelper.getTooltip("main_home").replace("$1", "DLC");}

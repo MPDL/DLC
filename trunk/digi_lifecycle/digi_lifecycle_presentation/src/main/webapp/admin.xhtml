@@ -26,7 +26,7 @@
 			</style>
 			<h:form>
 				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter eg3_adminPage">
-					
+				
 					<rich:tabPanel switchType="ajax">
 						<rich:tab label="createdOUs" id="createdOUs" header="#{lbl.admin_ou_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
 							<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
@@ -63,6 +63,8 @@
 							
 							<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
 						</rich:tab>
+
+
 						
 						<rich:tab label="createdContexts" id="createdContexts" header="#{lbl.admin_context_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
 							<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
@@ -100,14 +102,15 @@
 				    		<mpdl:contextEditor target="popupContext" title="#{lbl.admin_context_createNew}" collection="#{adminBean.collection}"/>
 						</rich:tab>
 						
-						<rich:tab label="createdUAs" id="createdUAs" header="#{lbl.admin_user_header}:" rendered="#{loginBean.login}">
+						
+						<rich:tab label="createdUAs" id="createdUAs" header="#{lbl.admin_user_header}:" rendered="true">
 							<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
 								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
 									<h:outputText value=" #{lbl.admin_user_loginname}: #{user.loginName} "/>
 									<h:outputText value=" (#{lbl.admin_user_name}: #{user.name}) "/>
 									
 									<h:panelGroup styleClass="eg3_floatRight">
-										<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+										<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
 											<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
 										</a4j:commandButton>
 										<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
@@ -120,9 +123,9 @@
 							
 							<rich:popupPanel id="confirmUserPane" autosized="true">
 								<h:outputText value="#{msg.admin_confirmCloseUser}"/>
-								<a4j:commandButton title="#{lbl.button_command_cancel}" value=" " styleClass="" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
-								<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-								<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+								<a4j:commandButton title="#{lbl.button_command_cancel}" value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
+								<a4j:commandButton title="#{lbl.button_command_delete}" value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+								<a4j:commandButton title="#{lbl.button_command_deactivate}" value="#{lbl.button_command_deactivate}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
 							</rich:popupPanel>
 							
 							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
@@ -133,6 +136,7 @@
 							
 							<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}"/>
 						</rich:tab>
+
 					</rich:tabPanel>
 					
 				</h:panelGroup>
