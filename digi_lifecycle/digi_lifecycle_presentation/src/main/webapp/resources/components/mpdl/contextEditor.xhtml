@@ -34,11 +34,12 @@
         <h:panelGrid columns="2" id="editCollection">
 
             <h:outputText value="#{lbl.admin_context_name} *"/>
-            <h:inputText id="contextName" value="#{cc.attrs.collection.name}">
-            </h:inputText>
+            <h:inputText id="contextName" value="#{cc.attrs.collection.name}" />
 			
             <h:outputText value="#{lbl.admin_context_description} *"/>
-            <h:inputText id="contextDes" value="#{cc.attrs.collection.description}">
+            <h:inputText id="contextDes" value="#{cc.attrs.collection.description}" >
+
+  				<f:validator validatorId="requiredValidator" /> 
              </h:inputText>
  
          
@@ -60,7 +61,7 @@
 				</h:selectOneMenu>
 			</h:panelGroup> 
 			
-			<a4j:commandButton value="#{lbl.button_command_save}" action="#{adminBean.editContext}" execute="@form"/>
+			<h:commandButton id="contextEditButton" value="#{lbl.button_command_save}" action="#{adminBean.editContext}"  render="messages" execute="@form"/>
 
 
         </h:panelGrid>

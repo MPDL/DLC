@@ -66,14 +66,13 @@ public class ViewCollection {
 	@URLAction(onPostback=false)
 	public void loadCollection()
 	{
-		
 		try
 		{
 			if(col==null || !col.getId().equals(id))
 			{
 				this.col = contextServiceBean.retrieveCollection(id, null);
 				
-				Organization orga = orgaServiceBean.retrieveOrganization(col.getId());
+				Organization orga = orgaServiceBean.retrieveOrganization(col.getOuId());
 				
 				if(!"".equals(orga.getDlcMd().getFoafOrganization().getImgURL()))
 				{

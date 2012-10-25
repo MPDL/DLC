@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
@@ -14,9 +13,10 @@ import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
 
-
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.client.exceptions.application.violated.ContextNameNotUniqueException;
+import de.escidoc.core.client.exceptions.application.violated.UniqueConstraintViolationException;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.aa.useraccount.UserAccount;
 import de.escidoc.core.resources.om.context.Context;
@@ -26,7 +26,6 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.UserAccountServiceBean;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -191,23 +190,37 @@ public class AdminBean{
 		return "pretty:admin";
 	}
 	
-	public String editContext() throws Exception
+	public String editContext()
 	{
-			
 		if(collection.getName().equals("") || collection.getDescription().equals(""))
 		{
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_newCollection"));
-			return "pretty:admin";
+			return "";
 		}
 		if(editCollectionId != null && editCollectionId.equals(collection.getId()))
 		{
-			contextServiceBean.updateContext(collection, loginBean.getUserHandle());
-		}
+			Context c = null;
+			try {
+				c= contextServiceBean.updateContext(collection, loginBean.getUserHandle());
+			} catch (ContextNameNotUniqueException e) {
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_context_name_existed"));
+				return "";
+			}
+		} 
 		else
 		{
-		Context c = contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
-		loginBean.getUser().getCreatedCollections().add(contextServiceBean.retrieveCollection(c.getObjid(), loginBean.getUserHandle()));
-		init();
+			Context c = null;
+			try { 
+				c = contextServiceBean.createNewContext(collection, loginBean.getUserHandle());
+			} catch (ContextNameNotUniqueException e) {
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_context_name_existed"));
+				return "";
+			}
+			if(c != null )
+			{
+				loginBean.getUser().getCreatedCollections().add(contextServiceBean.retrieveCollection(c.getObjid(), loginBean.getUserHandle()));		
+				init();
+			}
 		}
 		return "pretty:admin";
 	}
@@ -233,14 +246,42 @@ public class AdminBean{
 	{           
 		if(editUserId !=null && editUserId.equals(user.getId()))
 		{          
+			if(user.getName().equals("") || user.getLoginName().equals(""))
+			{
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_newUser"));
+				return "";
+			}
 			loginBean.getUser().getCreatedUsers().remove(user);
-			UserAccount ua = uaServiceBean.updateUserAccount(user, loginBean.getUserHandle());
-			loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(), loginBean.getUserHandle()));
+			UserAccount ua = null;
+			try
+			{
+				ua = uaServiceBean.updateUserAccount(user, loginBean.getUserHandle());
+			}
+			catch(UniqueConstraintViolationException e)
+			{
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_user_loginname_existed"));
+				return "";
+			}
+			if(ua != null)
+				loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(), loginBean.getUserHandle()));
 		}
 		else
 		{
-		UserAccount ua = uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
-		loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(),loginBean.getUserHandle()));
+			if(user.getName().equals("") || user.getLoginName().equals("") || user.getPassword().equals(""))
+			{
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_newUser_No_password"));
+				return "";
+			}
+			UserAccount ua = null;
+			try{
+				ua = uaServiceBean.createNewUserAccount(user, loginBean.getUserHandle());
+			}catch(UniqueConstraintViolationException e)
+			{
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_user_loginname_existed"));
+				return "";
+			}
+			if(ua != null)
+				loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(),loginBean.getUserHandle()));
 		}
 		return "pretty:admin";
 	}
