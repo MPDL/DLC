@@ -940,7 +940,8 @@ public class IngestBean{
 		try {
 			if(volumeId.equalsIgnoreCase("new"))
 			{
-
+				FacesContext context = FacesContext.getCurrentInstance();
+				AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
 				if(getSelectedContentModel().equals(VolumeServiceBean.multivolumeContentModelId))
 				{
 					
@@ -955,9 +956,11 @@ public class IngestBean{
 		    		clearAllData();
 		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
-		    		this.setVolumeId(volume.getItem().getObjid());
+		    		this.setVolumeId("new");
 		    		this.volume = null;
-		    		return "pretty:upload";
+		    		allVolBean.setColId("my");
+		    		allVolBean.setCurrentPageNumber(1);
+		    		return "pretty:volumes";
 				}
 				
 				else
@@ -1014,7 +1017,7 @@ public class IngestBean{
 					Thread.sleep(3000);
 					
 					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadInProgress"));
-		    		FacesContext context = FacesContext.getCurrentInstance();
+		    		
 		    		/*
 		    		FacesContext context = FacesContext.getCurrentInstance();
 					ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
@@ -1022,7 +1025,7 @@ public class IngestBean{
 		    		
 		    		return "pretty:viewPagesWithoutNumber";
 		    		*/
-		    		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+		    		
 		    		
 		    		allVolBean.setColId("my");
 		    		allVolBean.setCurrentPageNumber(1);
