@@ -281,6 +281,7 @@ public class ImageHelper{
 		        
 		        FileOutputStream fos = new FileOutputStream(tmpFile);
 		        JPEGEncodeParam jParam = new JPEGEncodeParam();
+		        jParam.setQuality(1.0f);
 		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
 		        imageEncoder.encode(ri);
 		        
@@ -362,6 +363,7 @@ public class ImageHelper{
 		        
 		        FileOutputStream fos = new FileOutputStream(tmpFile);
 		        JPEGEncodeParam jParam = new JPEGEncodeParam();
+		        jParam.setQuality(1.0f);
 		        ImageEncoder imageEncoder = ImageCodec.createImageEncoder("JPEG", fos, jParam);
 		        imageEncoder.encode(ri);
 		        fos.flush();
