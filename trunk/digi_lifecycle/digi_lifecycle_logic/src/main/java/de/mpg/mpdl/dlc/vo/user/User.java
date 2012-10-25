@@ -152,9 +152,14 @@ public class User {
 	}
 
 	
-	public boolean isModerator(String contextId)
+	public boolean isModerator()
 	{
-		return moderatorContextIds.contains(contextId);
+		return moderatorContextIds.size()>0;
+	}
+	
+	public boolean isDepositor()
+	{	
+		return depositorContextIds.size() >0;
 	}
 	
 	public boolean releasable(Volume vol)
