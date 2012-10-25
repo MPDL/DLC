@@ -108,7 +108,7 @@
 				
 				
 				<!-- START PAGE IMAGE -->
-				<h:panelGroup id="view" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
+				<h:panelGroup id="editPage" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
 					<h:panelGroup id="paginator" layout="block" styleClass="eg3_viewPageMenu">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 							<h:outputText value="#{lbl.edit_page_sum_scans} #{structuralEditorBean.volume.pages.size()}"/>
@@ -264,7 +264,10 @@
 								{
 									scrollThumbsContainer();
 									scrollTreeContainer();
-									initWindowResizeListener('.eg3_editPage');
+									console.log("ready");
+									eg3_initSidebar();
+									console.log("after");
+									eg3_initWindowResizeListener();
 								});
 										
 								jsf.ajax.addOnEvent(function(e)
@@ -273,7 +276,7 @@
 									//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
 									if(e.status=="success")
 									{
-										checkSidebarHeight('.eg3_editPage', "ajax");
+										eg3_initSidebar();
 										scrollThumbsContainer();
 										scrollTreeContainer();
 										resizeSelectBox();

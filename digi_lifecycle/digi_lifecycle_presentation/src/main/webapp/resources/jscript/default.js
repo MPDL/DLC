@@ -130,9 +130,7 @@ function resizeSelectBox() {
 	}); //end of each
 	updateCustomSelectBox();
 	
-	//check if the current page for editing or for viewing, the eg3_editPage class is only in use for editing
-	var curPage = ($('.eg3_editPage_imgContainer').length > 0) ? '.eg3_editPage' : '.eg3_viewPage';
-	initWindowResizeListener(curPage);
+	eg3_initWindowResizeListener();
 }
 
 
@@ -545,6 +543,8 @@ function rerenderJSFForms() {
 }
 
 
+var EG3_PAGE = null;
+var EG3_PAGE_IMG_OBJ = null;
 
 function checkIconbar(icoBar) {
 	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible');
@@ -569,114 +569,64 @@ function checkIconbar(icoBar) {
  * @used by viewPages.xhtml & co.
  */
 
-function resizeSidebar(reference, availableHeight) {
-	var refHeight = $(reference).height();
-	var sdbHeight = 0;
-	switch (reference) {
-		case '.eg3_viewPage':
-			//eg3_iconBar
-			var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
-			checkIconbar(icoBar);
-			//sidebar left
-			var sdbLeft = $('.eg3_id_sidebarLeft');
-			//sidebar padding bottom
-			var sdbPadBot = sdbLeft.css("padding-bottom");
-			
-			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
-				sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
-			}
-			
-			sdbPadBot = Math.round(Number(sdbPadBot));
-			sdbHeight = Math.ceil(refHeight - sdbPadBot);
-			
-			
-			//iconBar height
-			var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
-			//tab header height
-			var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
-			
-			//set height for tab content details
-			$('.eg3_contentDetails').css('height', Math.ceil(sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
-			//set padding bottom in tab content
-			$('.rf-tab-cnt').css('padding-bottom', sdbLeft.css('padding-bottom'));
-			
-			//sidebar left gets the height of calculated height
-			sdbLeft.css('height', sdbHeight);
-			break;
-		case '.eg3_editPage':
-			if (availableHeight && availableHeight > 0) {
-				$('.eg3_id_sidebarLeft .eg3_editSidebarContent').css("height", availableHeight);
-			} else {
-				//eg3_iconBar
-				var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+function eg3_initSidebar(evt) {
+	if ($('#viewPage').length > 0) {
+		EG3_PAGE = '#viewPage';
+		EG3_PAGE_IMG_OBJ = $('#viewPage img');
+	} else {
+		EG3_PAGE = '#editPage';
+		EG3_PAGE_IMG_OBJ = $('#editPage img');
+	}
+	if (!evt) { //if the function was called without an event
+		EG3_PAGE_IMG_OBJ.load(eg3_initSidebar); //add the img load event to the current image container
+	}
+	eg3_resizeSidebar();
+}
+
+/* 
+ * these function will be called with every complete loading event of an image 
+ * @reference by eg3_initSidebar
+ */
+function eg3_resizeSidebar() {
+	var maxImgHeight = 0; //init a param for the greates height value of all available images
+	//check every image of them height and safe the greates value
+	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
+		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
+		if (tmpHeight > maxImgHeight) {
+			maxImgHeight = tmpHeight;
+		}
+	}
+	
+	//safe the sidebar as jQuery object
+	var sdb = $(".eg3_id_sidebarLeft");
+	if (sdb.length > 0) {
+		//eg3_iconBar
+		var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+		var icbHeight = (icoBar.length > 0) ? icoBar.height() : 0;
+		
+		//sidebar padding bottom
+		var sdbPadBot = sdb.css("padding-bottom");
+		while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
+			sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
+		}
+		sdbPadBot = Math.round(Number(sdbPadBot));
+		
+		var curTabCnt = sdb.find(".rf-tab-cnt:visible");
+		
+		switch (EG3_PAGE) {
+			case '#editPage':
+				sdb.find('.eg3_editSidebarContent').css("height", (maxImgHeight - sdbPadBot));
+				break;
+			case '#viewPage':
+			default:
 				checkIconbar(icoBar);
-				//sidebar left
-				var sdbLeft = $('.eg3_id_sidebarLeft');
-				//sidebar padding bottom
-				var sdbPadBot = sdbLeft.css("padding-bottom");
-				
-				while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
-					sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
-				}
-				
-				sdbPadBot = Math.round(Number(sdbPadBot));
-				sdbHeight = Math.ceil(refHeight - sdbPadBot);
-				
-				
-				//iconBar height
-				var ibHeight = (icoBar.length > 0) ? icoBar.height() : 0;
-				//tab header height
-				var tabHdrHeight = $('.rf-tab-hdr-tabline-top').height();
-				
-				//set height for tab content details
-				$('.eg3_contentDetails').css('height', Math.ceil(sdbHeight - ibHeight - tabHdrHeight - sdbPadBot));
-				//set padding bottom in tab content
-				$('.rf-tab-cnt').css('padding-bottom', sdbLeft.css('padding-bottom'));
-				
-				//sidebar left gets the height of calculated height
-				sdbLeft.css('height', sdbHeight);
-			}
-			break;
+				curTabCnt.css("height", (maxImgHeight - sdbPadBot));
+				curTabCnt.find(".eg3_contentDetails").css("height", (maxImgHeight - icbHeight - sdbPadBot));
+				break;
+		}
 	}
 }
 
-/*
- * function to check if the reference has a defined height
- */
-function checkSidebarHeight(reference, call) {
-	switch (reference) {
-		case '.eg3_viewPage': //the defined height is given by one of the contained images
-			//if minimum one image ready get the height of viewPage container and define the height of sidebar
-			//otherwise setTimeout for checkSidebarHeight
-			var reloadDone = false;
-			var imgContainer = $('.eg3_viewPageContainer .eg3_viewPage_imgContainer');
-			imgContainer.each(function(i) 
-			{
-				if ($(this).height() > 0) //if the first image has finish loading, set reloadDone on true
-				{
-					reloadDone = true;
-				}
-			});
-			(reloadDone) ? resizeSidebar(reference) : setTimeout("checkSidebarHeight('"+reference+"')", 25); 
-			break;
-		case '.eg3_editPage': //the defined height is given by one of the contained images
-			//if minimum one image ready get the height of viewPage container and define the height of sidebar
-			//otherwise setTimeout for checkSidebarHeight
-			var reloadDone = false;
-			var image = $('.eg3_viewPageContainer .eg3_editPage_imgContainer img');
-			
-			
-			var height = image.css("height");
-			height = Number(height.substr(0, height.length - 2));
-			
-			if (height > 0) //if the first image has finish loading, set reloadDone on true
-			{
-				reloadDone = true;
-			}
-			(reloadDone) ? resizeSidebar(reference, height) : setTimeout("checkSidebarHeight('"+reference+"')", 25); 
-			break;
-	}
-}
 
 function eg3_copyToClipboard(infoText, obj) {
 	//infoText: e.g. "Copy to clipboard: Ctrl+C, Enter"
@@ -702,16 +652,14 @@ function checkMessageContent() {
 /**
  * function to resize all dynamic selectboxes and specific page moduls on the window resize event
  */
-function initWindowResizeListener(page) {
+function eg3_initWindowResizeListener() {
 	$(window).unbind("resize"); //if the browser will be resize, unbind at first before a new bind will be done
-	$(window).bind("resize", function() 
-		{ 
-			resizeSelectBox();
-			if ($('.eg3_id_sidebarLeft').length > 0) {
-				checkSidebarHeight(page, "window");
-			}
-		} 
-	);
+	$(window).bind("resize", function() { 
+		resizeSelectBox();
+		if ($('.eg3_id_sidebarLeft').length > 0) {
+			eg3_initSidebar();
+		}
+	});
 }
 
 var modalPopup;
