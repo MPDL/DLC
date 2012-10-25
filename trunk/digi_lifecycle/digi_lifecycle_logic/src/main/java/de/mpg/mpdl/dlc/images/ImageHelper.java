@@ -14,12 +14,15 @@ import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageInputStream;
 import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
 import org.apache.log4j.Logger;
+import org.imgscalr.Scalr;
 
 import com.sun.media.jai.codec.FileSeekableStream;
 import com.sun.media.jai.codec.ImageCodec;
@@ -27,6 +30,7 @@ import com.sun.media.jai.codec.ImageDecoder;
 import com.sun.media.jai.codec.ImageEncoder;
 import com.sun.media.jai.codec.JPEGEncodeParam;
 import com.sun.media.jai.codec.PNGDecodeParam;
+import com.sun.media.jai.codec.PNGEncodeParam;
 import com.sun.media.jai.codec.SeekableStream;
 import com.sun.media.jai.codec.TIFFDecodeParam;
 
@@ -149,8 +153,14 @@ public class ImageHelper{
 
     	BufferedImage scaledImage = scaleImage(inputImage, width, height);
 
+    	Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+    	ImageWriter writer = (ImageWriter)iter.next();
+    	ImageWriteParam param = writer.getDefaultWriteParam();
+    	param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+    	param.setCompressionQuality(0.9f);
+    	
         FileOutputStream output = new FileOutputStream(tmpFile);
-    	ImageIO.write(scaledImage, "jpg", output);
+    	ImageIO.write(scaledImage, "JPG", output);
     	output.flush();
     	output.close();
     	return tmpFile;
@@ -160,6 +170,9 @@ public class ImageHelper{
     
 
     public static BufferedImage scaleImage(BufferedImage image, int width, int height) throws Exception{
+    	
+    	
+    	
     	
     	float originalWidth = image.getWidth();
     	float originalHeight = image.getHeight();
@@ -176,36 +189,46 @@ public class ImageHelper{
     		return image;
     	}
     	
-    	BufferedImage resizeImageJpg = null;  
+    	BufferedImage resizeImage = null;  
     	  
     	if (widthRatio > heightRatio)  
     	{  
     	  
     	float newHeight = (float)originalHeight/(float)originalWidth * width;  
     	  
-    	resizeImageJpg = resizeImage(image, width, (int) newHeight);  
+    	resizeImage = resizeImage(image, width, (int) newHeight);  
     	}  
     	else  
     	{  
     	  
     	float newWidth = (float)originalWidth/(float)originalHeight * height;  
     	  
-    	resizeImageJpg = resizeImage(image, (int) newWidth, height);  
+    	resizeImage = resizeImage(image, (int) newWidth, height);  
     	}  
 
-        return resizeImageJpg;
+        return resizeImage;
+        
     }
     
     
     
 	    private static BufferedImage resizeImage(BufferedImage image, int width, int height)  
-	    {  
+	    { long time = System.currentTimeMillis();
+	    	BufferedImage scaledImage = Scalr.resize(image, Scalr.Method.AUTOMATIC, width, height);
+	    	
+	    	
+	    	long neededTime = System.currentTimeMillis() - time;
+	    	System.err.println("Conversion time: " + neededTime);
+	    	return scaledImage;
+	    	/*
 		    BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);  
 		    Graphics2D g = resizedImage.createGraphics();  
 		    g.drawImage(image, 0, 0, width, height, null);  
 		    g.dispose();  
-		    return resizedImage;  
-	    }  
+		    return resizedImage;
+		    */  
+	    }
+	    
 	    
 		public static File mergeImages(File inputFile, File footer){
 				try {
@@ -226,7 +249,7 @@ public class ImageHelper{
 		            BufferedImage finalImg  = new BufferedImage(scanWidth, scanHeight+ footerHeight, scanBI.getType());
 		        	finalImg.createGraphics().drawImage(scanBI,0,0, null);
 		        	finalImg.createGraphics().drawImage(footerBI,0, scanHeight, null);
-		            ImageIO.write(finalImg, "jpg", inputFile);
+		            ImageIO.write(finalImg, "JPG", inputFile);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -267,6 +290,62 @@ public class ImageHelper{
 	    	{
 	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
 	    	}
+	        return tmpFile;
+	    } 
+	    
+	    
+	    public static File tiffToPng(File tiffFile, String name) 
+	    {  
+	    	long startTime = System.currentTimeMillis();
+	    	File tmpFile = null;
+	    	try
+	    	{
+	    		tmpFile =File.createTempFile(name,"png.tmp");
+	    		logger.info("tmpFile Name = " + tmpFile.getName() + " | Path = " + tmpFile.getAbsolutePath());
+	    		logger.info("Name = " + tiffFile.getName() + " | Path = " + tiffFile.getAbsolutePath() + " | Size = " + tiffFile.length());
+		        SeekableStream s = new FileSeekableStream(tiffFile);
+		        TIFFDecodeParam param = new TIFFDecodeParam();
+		        ImageDecoder dec = ImageCodec.createImageDecoder("tiff", s, param);
+		        RenderedImage ri = dec.decodeAsRenderedImage(0);
+		        
+		        FileOutputStream fos = new FileOutputStream(tmpFile);
+		      
+		        //ImageEncoder imageEncoder = ImageCodec.createImageEncoder(name, dst, param)("PNG", fos);
+		        //imageEncoder.encode(ri);
+		        ImageIO.write(ri, "png", fos);
+		        
+		        fos.flush();
+		        fos.close();
+	    	}catch(Exception e)
+	    	{
+	    		logger.error("cann not convert tiff to png. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
+	    	}
+	    	long time = System.currentTimeMillis() - startTime;
+	    	System.err.println("Conversion time tiffToPng: "  + time);
+	        return tmpFile;
+	    } 
+	    
+	    public static File jpegToPng(File jpegFile, String name) 
+	    {  
+	    	long startTime = System.currentTimeMillis();
+	    	File tmpFile = null;
+	    	try
+	    	{
+	    		tmpFile =File.createTempFile(name,"png.tmp");
+	    		BufferedImage bufferedImage = ImageIO.read(jpegFile);
+		      
+		        //ImageEncoder imageEncoder = ImageCodec.createImageEncoder(name, dst, param)("PNG", fos);
+		        //imageEncoder.encode(ri);
+		        ImageIO.write(bufferedImage, "png", tmpFile);
+		        
+		        
+	    	}catch(Exception e)
+	    	{
+	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
+	    	}
+	    	
+	    	long time = System.currentTimeMillis() - startTime;
+	    	System.err.println("Conversion time jpegToPng: "  + time);
 	        return tmpFile;
 	    } 
 	    
@@ -343,6 +422,21 @@ public class ImageHelper{
 			else
 			{
 				return filename + ".jpg";
+			}
+		}
+		
+		public static String getPNGFilename(String filename)
+		{
+			
+//			if(filename.matches("\\.(jpg|JPEG|jpeg|JPG|Jpeg)$"))
+			// if(filename.matches(".+?(\\.jpg|\\.JPEG|\\.jpeg|\\.JPG|\\.Jpeg)"))
+			if(filename.matches("^.*?(png|PNG)$"))
+			{
+				return filename;
+			}
+			else
+			{
+				return filename + ".png";
 			}
 		}
 
