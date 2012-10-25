@@ -38,9 +38,7 @@
 			
             <h:outputText value="#{lbl.admin_context_description} *"/>
             <h:inputText id="contextDes" value="#{cc.attrs.collection.description}" >
-
-  				<f:validator validatorId="requiredValidator" /> 
-             </h:inputText>
+            </h:inputText>
  
          
             <h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
