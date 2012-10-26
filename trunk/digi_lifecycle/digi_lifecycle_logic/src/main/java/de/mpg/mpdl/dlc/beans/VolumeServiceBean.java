@@ -1573,7 +1573,7 @@ public class VolumeServiceBean {
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 //		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 //		client.setHandle(userHandle); 
-		System.err.println("item id = " + item.getObjid());
+		//System.err.println("item id = " + item.getObjid());
 		TeiSd teiSd = null;
 		Document teiSdXml = null;
 		Volume vol = null;
@@ -1599,7 +1599,7 @@ public class VolumeServiceBean {
 		vol.setModsMetadata(md);
 		
 		long timeMods = System.currentTimeMillis()-startMods;
-		System.out.println("Time MODS: " + timeMods);
+		//System.out.println("Time MODS: " + timeMods);
 		
 		if(item.getMetadataRecords().get("mets")!=null)
 		{
@@ -1623,7 +1623,7 @@ public class VolumeServiceBean {
 			*/
 			
 			long time = System.currentTimeMillis()-start;
-			System.out.println("Time METS: " + time);
+			//System.out.println("Time METS: " + time);
 		}
 		
 		
