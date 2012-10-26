@@ -1054,7 +1054,7 @@ public class VolumeUtilBean {
 			output += publisher.getPlace() + " : ";
 		if(publisher.getPublisher() != null)
 			output += publisher.getPublisher() + ", ";
-		if(publisher.getDateIssued_425().getDate() != null)
+		if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
 			output += publisher.getDateIssued_425().getDate();
 		return output;
 	}
