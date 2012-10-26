@@ -917,12 +917,14 @@ public class IngestBean{
 	
 	public String save(String operation) 
 	{            
-		logger.info("SAVE!!");
+		logger.info("Reingest/update!!");
+		FacesContext context = FacesContext.getCurrentInstance();
+		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+		
 		try {
 			if(volumeId.equalsIgnoreCase("new"))
 			{
-				FacesContext context = FacesContext.getCurrentInstance();
-				AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+				
 				if(getSelectedContentModel().equals(VolumeServiceBean.multivolumeContentModelId))
 				{
 					
@@ -1044,21 +1046,26 @@ public class IngestBean{
 					modsMetadata = updateModsMetadata(modsMetadata);
 				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 				
+				allVolBean.setColId("my");
+	    		allVolBean.setCurrentPageNumber(1);
+	    		return "pretty:volumes";
+				
 			}
-			
+			/*
 			FacesContext context = FacesContext.getCurrentInstance();
+			
 			ViewPages viewPagesBean = (ViewPages) context.getApplication().evaluateExpressionGet(context, "#{viewPages}", ViewPages.class);
 			viewPagesBean.setVolumeId(volume.getObjidAndVersion());
     		
     		return "pretty:viewPagesWithoutNumber";
-			/*
-			AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
-    		allVolBean.setColId("my");
-    		allVolBean.setCurrentPageNumber(1);
-    		return "pretty:volumes";
     		*/
 			
+			
+    		
+    		
+			
 		} catch (Exception e) {
+			logger.error("Error while creating/updating volume", e);
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_internal")+ ":" + e.getMessage());
 		}
 //		ModsMetadata md = new ModsMetadata();
