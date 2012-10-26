@@ -88,7 +88,8 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			{
 				parent = vsb.retrieveVolume(multiVolumeId, userHandle);
 				parent = vsb.updateMultiVolume(parent, item.getObjid(), userHandle);
-				parent = vsb.releaseVolume(parent.getItem().getObjid(), userHandle);
+				if(operation.equalsIgnoreCase("release"))
+					parent = vsb.releaseVolume(parent.getItem().getObjid(), userHandle);
 				
 				//Also add the md record of the multivolume to each volume for indexing etc.
 				MetadataRecord mdRecMv = new MetadataRecord("multivolume");
