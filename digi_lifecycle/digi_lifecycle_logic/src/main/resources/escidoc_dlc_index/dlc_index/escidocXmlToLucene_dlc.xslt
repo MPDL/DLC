@@ -26,7 +26,8 @@
 		xmlns:sortfield-helper="xalan://de.escidoc.sb.gsearch.xslt.SortFieldHelper"
 		xmlns:escidoc-core-accessor="xalan://de.escidoc.sb.gsearch.xslt.EscidocCoreAccessor" 
 		xmlns:ntei="http://www.tei-c.org/ns/notTEI"
-	       	xmlns:fn="http://www.w3.org/2005/xpath-functions"
+	    xmlns:fn="http://www.w3.org/2005/xpath-functions"
+	    xmlns:str="http://exslt.org/strings"
 		extension-element-prefixes="lastdate-helper string-helper sortfield-helper escidoc-core-accessor">
 	<xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 	
@@ -551,7 +552,54 @@
                 <xsl:attribute name="IFname">
                     <xsl:value-of select="concat($SORTCONTEXTPREFIX,'.',$context,'.',$fieldname)"/>
                 </xsl:attribute>
-                <xsl:value-of select="string-helper:getNormalizedString($fieldvalue)"/>
+                <!-- DLC specific sort characters -->
+                <!-- Do not sort if string starts with  -->
+                <xsl:variable name="normalizedFieldValue" select="string-helper:getNormalizedString($fieldvalue)"/>
+                
+                  <!-- Remove all words that start with a ¬ sign -->
+                <xsl:variable name="result">
+                	<xsl:for-each select="str:tokenize($normalizedFieldValue,' ')">
+						<xsl:choose>
+							<xsl:when test="starts-with(., '¬')">
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="."/>
+								<xsl:if test="position()!=last()">
+									<xsl:value-of select="' '"/>
+								</xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
+						</xsl:for-each>
+					</xsl:variable>
+					
+					<xsl:choose>
+						 <xsl:when test="contains($result, '^') and contains($result, '‰')">
+							<xsl:variable name="splittedByCircumflex" select="str:tokenize($normalizedFieldValue, '^')"/>
+							<xsl:variable name="splittedByPromille" select="str:tokenize($normalizedFieldValue, '‰')"/>
+							<xsl:choose>
+								<!-- if sort string starts with circumflex, do nothing, else add all content before circumflex -->
+								<xsl:when test="starts-with($result, '^')">
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$splittedByCircumflex[1]"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							
+							<xsl:choose>
+								<!-- if sort string starts with promile, do nothing, else add all content after promile -->
+								<xsl:when test="substring($result, string-length($result)) = '‰'">
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$splittedByPromille[count($splittedByPromille)]"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$result"/>
+						</xsl:otherwise>
+		                
+                </xsl:choose>
             </IndexField>
         </xsl:if>
     </xsl:template>

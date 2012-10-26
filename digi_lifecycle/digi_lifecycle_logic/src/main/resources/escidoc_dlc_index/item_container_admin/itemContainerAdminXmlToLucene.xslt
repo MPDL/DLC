@@ -49,6 +49,7 @@ Notes:
         xmlns:string-helper="xalan://de.escidoc.sb.gsearch.xslt.StringHelper"
         xmlns:sortfield-helper="xalan://de.escidoc.sb.gsearch.xslt.SortFieldHelper"
         xmlns:escidoc-core-accessor="xalan://de.escidoc.sb.gsearch.xslt.EscidocCoreAccessor" 
+        xmlns:str="http://exslt.org/strings"
         extension-element-prefixes="lastdate-helper string-helper sortfield-helper escidoc-core-accessor">
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
     
@@ -493,7 +494,57 @@ Notes:
                 <xsl:attribute name="IFname">
                     <xsl:value-of select="concat($SORTCONTEXTPREFIX,$context,$FIELDSEPARATOR,$fieldname)"/>
                 </xsl:attribute>
-                <xsl:value-of select="string-helper:getNormalizedString($fieldvalue)"/>
+
+
+
+                <!-- DLC specific sort characters -->
+                <!-- Do not sort if string starts with  -->
+                <xsl:variable name="normalizedFieldValue" select="string-helper:getNormalizedString($fieldvalue)"/>
+                
+                  <!-- Remove all words that start with a ¬ sign -->
+                <xsl:variable name="result">
+                	<xsl:for-each select="str:tokenize($normalizedFieldValue,' ')">
+						<xsl:choose>
+							<xsl:when test="starts-with(., '¬')">
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="."/>
+								<xsl:if test="position()!=last()">
+									<xsl:value-of select="' '"/>
+								</xsl:if>
+							</xsl:otherwise>
+						</xsl:choose>
+						</xsl:for-each>
+					</xsl:variable>
+					
+					<xsl:choose>
+						 <xsl:when test="contains($result, '^') and contains($result, '‰')">
+							<xsl:variable name="splittedByCircumflex" select="str:tokenize($normalizedFieldValue, '^')"/>
+							<xsl:variable name="splittedByPromille" select="str:tokenize($normalizedFieldValue, '‰')"/>
+							<xsl:choose>
+								<!-- if sort string starts with circumflex, do nothing, else add all content before circumflex -->
+								<xsl:when test="starts-with($result, '^')">
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$splittedByCircumflex[1]"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							
+							<xsl:choose>
+								<!-- if sort string starts with promile, do nothing, else add all content after promile -->
+								<xsl:when test="substring($result, string-length($result)) = '‰'">
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="$splittedByPromille[count($splittedByPromille)]"/>
+								</xsl:otherwise>
+							</xsl:choose>
+							
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$result"/>
+						</xsl:otherwise>
+		                
+                </xsl:choose>
             </IndexField>
         </xsl:if>
     </xsl:template>
@@ -555,99 +606,121 @@ Notes:
         </xsl:if>
 
 
-<userdefined-index name="author" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:name[@type='personal']/mods:namePart"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='statementOfResponsibility']"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='responisibilitywholeitem']"/>
-			</element>
+		<userdefined-index name="author" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:name[@type='personal']/mods:namePart">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='statementOfResponsibility']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='responisibilitywholeitem']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 		
 		<userdefined-index name="corporate" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:name[@type='corporate']/mods:namePart"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:location/mods:physicalLocation"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='digital master']"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:name[@type='corporate']/mods:namePart">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:location/mods:physicalLocation">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='digital master']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 		
 		<userdefined-index name="title" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:titleInfo/mods:title"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:titleInfo/mods:subTitle"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='subseries']"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='remainderofwhole']"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:part[@type='constituent']/mods:detail/mods:title"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:titleInfo/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:titleInfo/mods:subTitle">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:relatedItem[@type='series']/mods:titleInfo/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='subseries']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:note[@type='remainderofwhole']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:part[@type='constituent']/mods:detail/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 
 		<userdefined-index name="place" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/*[local-name()='mods']/*[local-name()='originInfo']/*[local-name()='place']/*[local-name()='placeTerm']"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/*[local-name()='mods']/*[local-name()='originInfo']/*[local-name()='place']/*[local-name()='placeTerm']">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 
 
 		<userdefined-index name="publisher" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-		<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:publisher"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:publisher">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 
 		<userdefined-index name="year" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:dateIssued"/>
-			</element>
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:dateCaptured"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:dateIssued">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:originInfo/mods:dateCaptured">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
+		
 		<userdefined-index name="subject" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-			<element index="TOKENIZED">
-				<xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:subject/mods:topic"/>
-			</element>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:subject/mods:topic">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 		
 		  <userdefined-index name="identifier" context="/dlc" xmlns:mods="http://www.loc.gov/mods/v3">
-                        <element index="TOKENIZED">
-                                <xsl:value-of select="$ITEM_METADATAPATH/mods:mods/mods:identifier"/>
-                        </element>
-                </userdefined-index>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+             <xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:identifier">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+         </userdefined-index>
 
 
     </xsl:variable>
