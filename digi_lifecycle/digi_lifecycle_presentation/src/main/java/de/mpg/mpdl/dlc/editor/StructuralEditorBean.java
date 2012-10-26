@@ -213,9 +213,9 @@ public class StructuralEditorBean implements Observer {
 			if(volume==null || !volumeId.equals(volume.getItem().getObjid()))
 			{   logger.info("Load new volume for structural editing " + volumeId);
 				try {
-					this.volume = volServiceBean.retrieveVolume(volumeId, loginBean.getUserHandle());
+					this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
 					init();
-					volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+					//volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 					
 				} catch (Exception e) {
 					logger.error("Could not load volume " + volumeId, e );
