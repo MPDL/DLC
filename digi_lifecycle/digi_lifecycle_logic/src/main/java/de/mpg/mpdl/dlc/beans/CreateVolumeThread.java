@@ -1,9 +1,12 @@
 package de.mpg.mpdl.dlc.beans;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
+
+import sun.tools.tree.ArrayAccessExpression;
 
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
@@ -87,7 +90,10 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			if(multiVolumeId != null)
 			{
 				parent = vsb.retrieveVolume(multiVolumeId, userHandle);
-				parent = vsb.updateMultiVolume(parent, item.getObjid(), userHandle);
+				List<String> volumeList = new ArrayList<String>();
+				volumeList.add(item.getObjid());
+				vsb.updateMultiVolumeFromId(parent.getItem().getObjid(), volumeList, userHandle);
+				parent = vsb.retrieveVolume(multiVolumeId, userHandle);
 				if(operation.equalsIgnoreCase("release"))
 					parent = vsb.releaseVolume(parent.getItem().getObjid(), userHandle);
 				
