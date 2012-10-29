@@ -90,6 +90,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		{
 			oldColId = colId;
 			filterString = null;
+			setCurrentPageNumber(1);
 			
 			if("my".equals(colId))
 			{
