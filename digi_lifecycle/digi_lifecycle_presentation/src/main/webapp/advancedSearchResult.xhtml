@@ -66,7 +66,7 @@
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
 				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
-					<h:outputLabel styleClass="eg3_selectLabel" value="#{cc.attrs.paginatorBean.totalNumberOfRecords} #{lbl.list_totalNumberOfHits}"/>
+					<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_totalNumberOfHits} #{cc.attrs.paginatorBean.totalNumberOfRecords}"/>
 				</h:panelGroup>
 				<list:bibList_shortDLC rendered="#{advancedSearchResultBean.currentPartList.size() > 0}">
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
