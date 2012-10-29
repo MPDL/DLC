@@ -427,12 +427,13 @@ public class VolumeUtilBean {
 			if(mn.getType() == null || mn.getType().isEmpty())
 				return mn;
 		return new ModsNote();
-	}
+	} 
 	
 	
 	
 	public static String getFullTitleView(Volume vol)
 	{
+		System.out.println(vol.getItem().getObjid());
 		String shortTitle = getShortTitleView(vol);
 		String subTitle = getSubTitleView(vol);
 		

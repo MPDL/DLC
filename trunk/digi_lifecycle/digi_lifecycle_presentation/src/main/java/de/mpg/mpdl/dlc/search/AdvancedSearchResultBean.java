@@ -72,10 +72,10 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	@Override
 	public List<SelectItem> getSortIndicesMenu() {
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_ASC.name(), internationalizationHelper.getLabel("sort_criterion_author")));
-		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_ASC.name(), internationalizationHelper.getLabel("sort_criterion_title")));
-		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC.name(), internationalizationHelper.getLabel("sort_criterion_year")));
-		scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_author")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_title")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_year")));
+		//scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), internationalizationHelper.getLabel("sort_criterion_newest")));
 		return scMenuList;
 	}
 	
