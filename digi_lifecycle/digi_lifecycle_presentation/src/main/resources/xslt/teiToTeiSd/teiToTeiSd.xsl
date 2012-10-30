@@ -17,7 +17,7 @@
 		
 		
 		<!--for head and title tags: copy tag with all attributes, copy the inner text content, replace <lb/> with a blank -->
-		<xsl:template match="tei:head|tei:titlePart|tei:figDesc">
+		<xsl:template match="tei:head|tei:titlePart|tei:figDesc|tei:caption">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates mode="textContent"/>
