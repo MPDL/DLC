@@ -2266,6 +2266,16 @@ public class VolumeServiceBean {
 	
 	public static void validateTei(Source tei) throws Exception
 	{
+		String teiSd = transformTeiToTeiSd(tei);
+		
+		List<XdmNode> pbsInTei = getAllPbs(tei);
+		List<XdmNode> pbsInTeiSd = getAllPbs(new StreamSource(new StringReader(teiSd)));
+		
+		if(pbsInTei.size()!=pbsInTeiSd.size())
+		{
+			throw new Exception("Could not correctly convert TEI to TEI SD! (" + pbsInTei.size() + " pagebreaks vs. " + pbsInTeiSd.size() + " pagebreaks)");
+		}
+		
         SchemaFactory factory = SchemaFactory.newInstance("http://relaxng.org/ns/structure/1.0", "com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);       
         URL url = VolumeServiceBean.class.getClassLoader().getResource("schemas/DLC-TEI.rng");        
         Schema schema = factory.newSchema(new File(url.toURI()));      
