@@ -23,6 +23,7 @@ public class SortCriterion {
 				new SortCriterion(SortIndices.TITLE, SortOrders.DESCENDING),
 				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
 		YEAR_DESC(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)),
+		YEAR_ASC(new SortCriterion(SortIndices.YEAR, SortOrders.ASCENDING)),
 		LAST_MODIFIED_DESC(new SortCriterion(SortIndices.LAST_MODIFIED, SortOrders.DESCENDING)),
 		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING));
 		
