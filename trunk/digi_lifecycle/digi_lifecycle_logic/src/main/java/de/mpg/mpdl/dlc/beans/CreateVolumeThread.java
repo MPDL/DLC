@@ -85,6 +85,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 		
 		try{
 
+			
 			Volume parent = null;
 
 			if(multiVolumeId != null)
@@ -122,6 +123,8 @@ public class CreateVolumeThread extends Thread implements Runnable{
 				logger.info("Time to upload images: " + time);
 			
 			
+				//new ArrayList<String>().get(5);
+				
 				/*
 				InputStream teiInputStream = null;
 				if(teiFile != null)
@@ -133,6 +136,19 @@ public class CreateVolumeThread extends Thread implements Runnable{
 					volume = vsb.releaseVolume(volume.getItem().getObjid(), userHandle);
 				
 				
+				
+				
+				
+			}
+		
+			catch (Exception e) 
+			{
+				logger.error("Error while creating Volume. Trying to rollback", e);
+				vsb.rollbackCreation(volume, userHandle);
+				//throw new Exception(e);
+			}
+			finally
+			{
 				//Delete temp files
 				try
 				{
@@ -159,20 +175,12 @@ public class CreateVolumeThread extends Thread implements Runnable{
 				}
 				catch(Exception e)
 				{
+					
 					logger.error("Error while deleting temp files", e);
 				}
-				
-				
-			}
-		
-			catch (Exception e) 
-			{
-				logger.error("Error while creating Volume. Trying to rollback", e);
-				vsb.rollbackCreation(volume, userHandle);
-				//throw new Exception(e);
 			}
 			
-			//return volume;
+			
 	}
 
 }
