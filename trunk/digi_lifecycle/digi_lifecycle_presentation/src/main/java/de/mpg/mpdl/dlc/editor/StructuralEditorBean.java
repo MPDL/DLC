@@ -61,6 +61,8 @@ public class StructuralEditorBean implements Observer {
 	
 	private Volume volume;
 	
+	private boolean digilibActivated = false;
+	
 	//Flat list of Treee
 	private List<TeiElementWrapper> flatTeiElementList;
 	
@@ -1865,6 +1867,8 @@ public class StructuralEditorBean implements Observer {
 	
 	public void selectPb(TeiElementWrapper pb)
 	{
+		this.digilibActivated = false;
+		
 		TeiElementWrapper oldSelectedPb = selectedPb;
 		this.setSelectedPb(pb);
 		this.selectedPbType = pb.getTeiElement().getType();
@@ -2329,6 +2333,14 @@ public class StructuralEditorBean implements Observer {
 		initPageListMenu();
 		structureTypeSelectItems = internationalizationHelper.getStructureTypeSelectItems();
 		
+	}
+
+	public boolean isDigilibActivated() {
+		return digilibActivated;
+	}
+
+	public void setDigilibActivated(boolean digilibActivated) {
+		this.digilibActivated = digilibActivated;
 	}
 
 	
