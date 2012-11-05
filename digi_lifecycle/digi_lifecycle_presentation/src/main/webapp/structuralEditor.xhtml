@@ -113,8 +113,21 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 							<h:outputText value="#{lbl.edit_page_sum_scans} #{structuralEditorBean.volume.pages.size()}"/>
 						</h:panelGroup>
+						
+						
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
+								
+								
+								
+								<h:panelGroup style="margin-left:2%;" styleClass="eg3_floatRight">
+										<h:commandButton action="#{structuralEditorBean.setDigilibActivated(true)}" styleClass="eg3_icon_viewer_16_16" title="Activate zoom functionality" rendered="#{!structuralEditorBean.digilibActivated}">
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandButton>
+										<h:commandButton action="#{structuralEditorBean.setDigilibActivated(false)}" styleClass="eg3_icon_viewer_16_16 eg3_active" title="Deactivate zoom functionality" rendered="#{structuralEditorBean.digilibActivated}">
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandButton>
+								</h:panelGroup>
 								
 								<h:panelGroup styleClass="eg3_defaultPagination">
 									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight eg3_pagePaginationLabel">
@@ -286,49 +299,54 @@
 								 /* ]]> */
 							</script>
 							
-							<h:panelGroup id="pageScan" layout="block" styleClass="digilib eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1">
+							<h:panelGroup id="pageScan" layout="block" styleClass="digilib eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1" >
+								
+									<ui:fragment rendered="#{structuralEditorBean.digilibActivated}">
+										<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
+										<script type="text/javascript">
+									 /* <![CDATA[ */
+									 		
+							                var opts = {
+									            'citationLinkIds' : ['citationLink','permaLink'],    
+							                	'interactionMode' : 'embedded',
+							                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
+							                    'showRegionNumbers' : true,
+							                    'logoUrl' : '',
+							                    'buttonSettings' : {
+							                        'embedded' : {
+							                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
+							                            'buttonSetWidth' : 18,
+							                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","rot","brgt","cont","reset"],
+							                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+							                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+							                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+							                            'arrowSet' : ["up", "down", "left", "right"],
+							                            'buttonSets' : ['standardSet', 'specialSet']
+						                            
+							                            }
+							                    }
+							                    //, scalerInset : -10
+											}; //end opts
+											var digilibObject = $('.digilib').digilib(opts);
+											$('.digilib .keep.buttons').draggable({containment : "parent"});
+										    /* ]]> */
+						       		 	</script>
+					       		 	</ui:fragment>
 								
 								
-									<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
-									
-								
-									<script type="text/javascript">
-								 /* <![CDATA[ */
-								 		
-						                var opts = {
-								            'citationLinkIds' : ['citationLink','permaLink'],    
-						                	'interactionMode' : 'embedded',
-						                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
-						                    'showRegionNumbers' : true,
-						                    'logoUrl' : '',
-						                    'buttonSettings' : {
-						                        'embedded' : {
-						                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/img/embedded/16/',
-						                            'buttonSetWidth' : 18,
-						                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","rot","brgt","cont","reset"],
-						                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-						                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-						                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-						                            'arrowSet' : ["up", "down", "left", "right"],
-						                            'buttonSets' : ['standardSet', 'specialSet']
-					                            
-						                            }
-						                    }
-						                    //, scalerInset : -10
-										}; //end opts
-										var digilibObject = $('.digilib').digilib(opts);
-										$('.digilib .keep.buttons').draggable({containment : "parent"});
-									    /* ]]> */
-					       		 </script>
-								
-								
-								
+								<ui:fragment rendered="#{!structuralEditorBean.digilibActivated}">
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds,'WEB')}"/>
+								</ui:fragment>
 								
 								
 								<script type="text/javascript">
 									$('.eg3_editSidebarContent').css("height", $('.eg3_editPage_imgContainer').height());
 								</script>
+								
 							</h:panelGroup>
+							
+							
+							
 							<!-- END PAGE IMAGE -->
 							
 							<h:panelGroup id="editingTab" layout="block" styleClass="eg3_container_1_2 eg3_editContent">
