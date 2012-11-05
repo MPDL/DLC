@@ -545,6 +545,7 @@ function rerenderJSFForms() {
 
 var EG3_PAGE = null;
 var EG3_PAGE_IMG_OBJ = null;
+var EG3_CALLBACK = new Array(); //an variable for global callback functions as array, e.g. used for sidebar resize and scrolling into sidebar
 
 function checkIconbar(icoBar) {
 	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible');
@@ -570,6 +571,7 @@ function checkIconbar(icoBar) {
  */
 
 function eg3_initSidebar(evt) {
+	
 	if ($('#viewPage').length > 0) {
 		EG3_PAGE = '#viewPage';
 		EG3_PAGE_IMG_OBJ = $('#viewPage img');
@@ -579,8 +581,9 @@ function eg3_initSidebar(evt) {
 	}
 	if (!evt) { //if the function was called without an event
 		EG3_PAGE_IMG_OBJ.load(eg3_initSidebar); //add the img load event to the current image container
+	} else { // if the load event is given, call the resize function
+		eg3_resizeSidebar(); 
 	}
-	eg3_resizeSidebar();
 }
 
 /* 
@@ -589,6 +592,7 @@ function eg3_initSidebar(evt) {
  */
 function eg3_resizeSidebar() {
 	var maxImgHeight = 0; //init a param for the greates height value of all available images
+	
 	//check every image of them height and safe the greates value
 	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
 		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
@@ -623,6 +627,12 @@ function eg3_resizeSidebar() {
 				curTabCnt.css("height", (maxImgHeight - sdbPadBot));
 				curTabCnt.find(".eg3_contentDetails").css("height", (maxImgHeight - icbHeight - sdbPadBot));
 				break;
+		}
+	}
+	if (EG3_CALLBACK.length > 0) {
+		for (var func in EG3_CALLBACK) {
+			console.log("callback: " + EG3_CALLBACK[func]);
+			setTimeout(EG3_CALLBACK[func], 20);
 		}
 	}
 }
