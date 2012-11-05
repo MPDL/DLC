@@ -1867,7 +1867,7 @@ public class StructuralEditorBean implements Observer {
 	
 	public void selectPb(TeiElementWrapper pb)
 	{
-		this.digilibActivated = false;
+		//this.digilibActivated = false;
 		
 		TeiElementWrapper oldSelectedPb = selectedPb;
 		this.setSelectedPb(pb);
