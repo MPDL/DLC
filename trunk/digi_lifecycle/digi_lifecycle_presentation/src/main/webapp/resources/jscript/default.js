@@ -631,7 +631,6 @@ function eg3_resizeSidebar() {
 	}
 	if (EG3_CALLBACK.length > 0) {
 		for (var func in EG3_CALLBACK) {
-			console.log("callback: " + EG3_CALLBACK[func]);
 			setTimeout(EG3_CALLBACK[func], 20);
 		}
 	}
