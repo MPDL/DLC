@@ -973,12 +973,12 @@ public class StructuralEditorBean implements Observer {
 				{
 					if(recto)
 					{
-						pagination = String.valueOf(currentValue) + "r.";
+						pagination = String.valueOf(currentValue) + "r";
 						recto = false;
 					}
 					else
 					{
-						pagination = String.valueOf(currentValue) + "v.";
+						pagination = String.valueOf(currentValue) + "v";
 						recto = true;
 						currentValue++;
 					}
