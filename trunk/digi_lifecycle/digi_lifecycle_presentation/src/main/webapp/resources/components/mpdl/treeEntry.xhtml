@@ -47,7 +47,16 @@
 		</h:panelGroup>
 		
 		
+		<!-- WARNING/ TODO: a4j:repeat using the list with head strings doesnt work here when moving structural elements up and down. It doesn't seem to be rerendered correctly -->
+		<ui:remove>
+			<a4j:repeat var="head" value="#{cc.attrs.teiElement.head}" >
+				<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(head)}" />
+			</a4j:repeat>
+		</ui:remove>
+		
+		
 		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.head[0])}" rendered="#{not empty cc.attrs.teiElement.head}" />
+		
 		<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(cc.attrs.teiElement.docTitles[0].title)}" rendered="#{cc.attrs.teiElement.elementType == 'TITLE_PAGE'}"/>
 	
 		<f:ajax render="#{cc.attrs.render}"/>
