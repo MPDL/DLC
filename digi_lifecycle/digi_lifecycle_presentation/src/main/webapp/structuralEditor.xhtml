@@ -240,62 +240,33 @@
 							<!-- Add script here, because it has to be updated with every ajax request -->
 							<script type="text/javascript">
 							 /* <![CDATA[ */
-								function scrollThumbsContainer()
-								{
+								function scrollThumbsContainer() {
 									var selectedPb = '#{structuralEditorBean.selectedPb.teiElement.id}';
 									scrollDiv("thumbsContainer", selectedPb);
 								}
 								
-								function scrollTreeContainer()
-								{
+								function scrollTreeContainer() {
 									var selectedPbId = '#{structuralEditorBean.treeScrollPositionPagebreak.teiElement.id}';
 									var treeContainerId = "#{rich:clientId('tree')}";
 									scrollDiv(treeContainerId, "struct_" + selectedPbId)
 								}
 								
-								function scrollDiv(containerId, scrollToClassId)
-								{
-									if(containerId && scrollToClassId)
-									{
-										//add an backslahs before all colons					
+								function scrollDiv(containerId, scrollToClassId) {
+									if(containerId && scrollToClassId) {
+										//add an backslahs before all colons
 										containerId = containerId.replace(/:/g, "\\:");
 										var containerDiv = $('#' + containerId);
 										var scrollToElement = $('.' + scrollToClassId);
 
 										var pos = scrollToElement.offset();
-										if(pos!=null)
-										{
-											var containerPos = containerDiv.offset();				
-											var currentScroll = containerDiv.scrollTop();				
-											var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
+										if(pos!=null) {
+											var containerPos = containerDiv.offset();
+											var currentScroll = containerDiv.scrollTop();
+											var newScrollPos = pos.top - containerPos.top + currentScroll - 50;
 											containerDiv.scrollTop(newScrollPos);
-										}		
+										}
 									}
 								}
-								
-								$(document).ready(function(e)
-								{
-									scrollThumbsContainer();
-									scrollTreeContainer();
-									console.log("ready");
-									eg3_initSidebar();
-									console.log("after");
-									eg3_initWindowResizeListener();
-								});
-										
-								jsf.ajax.addOnEvent(function(e)
-								{	
-									//if the ajax request is success
-									//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-									if(e.status=="success")
-									{
-										eg3_initSidebar();
-										scrollThumbsContainer();
-										scrollTreeContainer();
-										resizeSelectBox();
-									}
-								});
-								
 								 /* ]]> */
 							</script>
 							
@@ -305,7 +276,6 @@
 										<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
 										<script type="text/javascript">
 									 /* <![CDATA[ */
-									 		
 							                var opts = {
 									            'citationLinkIds' : ['citationLink','permaLink'],    
 							                	'interactionMode' : 'embedded',
@@ -344,7 +314,6 @@
 								</script>
 								
 							</h:panelGroup>
-							
 							
 							
 							<!-- END PAGE IMAGE -->
@@ -835,6 +804,21 @@
 					</h:panelGroup>	
 				</h:panelGroup>
 			</h:panelGroup>
+			<script type="text/javascript">
+				$(document).ready(function(e) {
+					EG3_CALLBACK = new Array("scrollThumbsContainer()", "scrollTreeContainer()");
+					eg3_initSidebar(); //calls the defined EG3_CALLBACK functions at function end
+					eg3_initWindowResizeListener();
+				});
+				
+				jsf.ajax.addOnEvent(function(e) {
+					//if the ajax request is success
+					if(e.status=="success") {
+						eg3_initSidebar(); //calls the defined EG3_CALLBACK functions at function end
+						resizeSelectBox();
+					}
+				});
+			</script>
 		</ui:define>
 	</ui:composition>
 </html>
