@@ -401,16 +401,9 @@ function eg3_openOverlay(listButton, cnt) {
 	
 	switch (cnt) {
 		case 'toc':
-			if (curTabPanel && curTabPanel.length > 0) {
-				curTabPanel.addClass("eg3_noWrapTrn");
-				curTabPanel.addClass("eg3_widthAuto");
-			}
 			if (curTabPanelContent && curTabPanelContent.length > 0) {
 				curTabPanelContent.addClass("eg3_expand");
 				curTabPanelContent.addClass("eg3_widthAuto");
-			}
-			if (curControlPanel && curControlPanel.length > 0) {
-				curControlPanel.addClass("eg3_expand");
 			}
 			break;
 		case 'thumbs':
@@ -419,20 +412,26 @@ function eg3_openOverlay(listButton, cnt) {
 				thumbs.addClass("eg3_container_1_6");
 				thumbs.removeClass("eg3_container_1_2");
 			}
-			if (curTabPanel && curTabPanel.length > 0) {
-				curTabPanel.addClass("eg3_noWrapTrn");
-				curTabPanel.addClass("eg3_widthAuto");
-			}
 			if (curTabPanelContent && curTabPanelContent.length > 0) {
 				curTabPanelContent.addClass("eg3_expand");
-				curTabPanelContent.css("width", ($(window).width() * 0.8));
+				curTabPanelContent.css("width", Math.floor($(window).width() * 0.8));
 			}
-			if (curControlPanel && curControlPanel.length > 0) {
-				curControlPanel.addClass("eg3_expand");
-			}
-			
-			var staticThumbs = $('.eg3_thumbnail.eg3_floatNone').attr("data-static", "eg3_floatNone").removeClass("eg3_floatNone");
+			$('.eg3_thumbnail.eg3_floatNone').attr("data-static", "eg3_floatNone").removeClass("eg3_floatNone");
 			break;
+		default:
+			if (curTabPanelContent && curTabPanelContent.length > 0) {
+				curTabPanelContent.addClass("eg3_expand");
+				curTabPanelContent.css("width", Math.floor($(window).width() * 0.8));
+			}
+			break;
+	}
+	//global settings for all modus
+	if (curTabPanel && curTabPanel.length > 0) {
+		curTabPanel.addClass("eg3_noWrapTrn");
+		curTabPanel.addClass("eg3_widthAuto");
+	}
+	if (curControlPanel && curControlPanel.length > 0) {
+		curControlPanel.addClass("eg3_expand");
 	}
 	if (($(window).width() * 0.8) < curTabPanelContent.width()) {
 		curTabPanelContent.removeClass("eg3_widthAuto");
@@ -458,40 +457,27 @@ function eg3_closeOverlay(listButton, cnt) {
 	
 	eg3_removeAttributeValue(curTabPanelContent, "style", "width");
 	switch (cnt) {
-		case 'toc':
-			if (curTabPanel) {
-				curTabPanel.removeClass("eg3_noWrapTrn");
-				curTabPanel.removeClass("eg3_widthAuto");
-			}
-			if (curTabPanelContent) {
-				curTabPanelContent.removeClass("eg3_expand");
-				curTabPanelContent.removeClass("eg3_widthAuto");
-			}
-			if (curControlPanel) {
-				curControlPanel.removeClass("eg3_expand");
-			}
-			break;
 		case 'thumbs':
 			var thumbs = $('.eg3_thumbnail');
 			if (thumbs && thumbs.length > 0) {
 				thumbs.addClass("eg3_container_1_2");
 				thumbs.removeClass("eg3_container_1_6");
 			}
-			if (curTabPanel) {
-				curTabPanel.removeClass("eg3_noWrapTrn");
-				curTabPanel.removeClass("eg3_widthAuto");
-			}
-			if (curTabPanelContent) {
-				curTabPanelContent.removeClass("eg3_expand");
-				curTabPanelContent.css("width", "100%");
-			}
-			if (curControlPanel) {
-				curControlPanel.removeClass("eg3_expand");
-			}
-			var staticThumbs = $('.eg3_thumbnail[data-static="eg3_floatNone"]').removeAttr("data-static").addClass("eg3_floatNone");
+			$('.eg3_thumbnail[data-static="eg3_floatNone"]').removeAttr("data-static").addClass("eg3_floatNone");
 			break;
 	}
-	
+	//global settings for all modus
+	if (curTabPanel) {
+		curTabPanel.removeClass("eg3_noWrapTrn");
+		curTabPanel.removeClass("eg3_widthAuto");
+	}
+	if (curTabPanelContent) {
+		curTabPanelContent.removeClass("eg3_expand");
+		eg3_removeAttributeValue(curTabPanelContent, "style", "width");
+	}
+	if (curControlPanel) {
+		curControlPanel.removeClass("eg3_expand");
+	}
 	sidebarLeft.removeClass("eg3_expand");
 	/*$(listButton).attr('disabled', 'disabled');
 	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');*/

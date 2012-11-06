@@ -322,7 +322,11 @@ body .eg3_id_siteTitle {
 	height:2.166666667em;
 	border-bottom:0.08333333em solid #F0F0F0;
 }
-
+.eg3_id_sidebarLeft .eg3_metadataInformation {
+	width:95%;
+	padding-left:2.5%;
+	padding-right:2.5%;
+}
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
@@ -2837,11 +2841,6 @@ button:hover .eg3_icon_close_16_16 {
 	max-height:100%;
 }
 
-/*
-.eg3_id_sidebarLeft .rf-tab, .eg3_id_sidebarLeft .rf-tab div {
-	float:none; 
-}
-*/
 .rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
 	text-align:center;
 }
@@ -2860,10 +2859,8 @@ button:hover .eg3_icon_close_16_16 {
 }
 
 .rf-tbp .rf-tab-cnt.eg3_expand {
-/*	border:0.0833333em inset transparent; */
 	border:0;
 	background-color:#F0F0F0;
-/*	padding-right:1%; */
 }
 
 .eg3_id_sidebarLeft .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top { /* scan view */
