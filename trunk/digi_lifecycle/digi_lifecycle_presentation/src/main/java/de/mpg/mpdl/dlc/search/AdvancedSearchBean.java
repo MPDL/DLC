@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
 
@@ -27,7 +28,7 @@ import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 
 
 @ManagedBean
-@ViewScoped
+@SessionScoped
 @URLMapping(id = "advancedSearch", pattern = "/search", viewId = "/advancedSearch.xhtml")
 public class AdvancedSearchBean {
 
@@ -128,34 +129,37 @@ public class AdvancedSearchBean {
 	public String startSearch()
 	{		
 		try {
+			List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 
-			this.setCollectionSearch();
-			this.setYearSearch();
+			scList.addAll(this.searchCriterionList);
+			
+			this.setCollectionSearch(scList);
+			this.setYearSearch(scList);
 			
 			if (!this.freeSearch.trim().equals(""))
 			{
 				//Set free search
 				SearchCriterion scFree = new SearchCriterion(SearchType.FREE, this.freeSearch);
-				this.searchCriterionList.add(scFree);
+				scList.add(scFree);
 			}
 			
 			//Set fulltext search
 			if(!this.fulltextSearch.getValue().trim().isEmpty())
 			{
 				
-				this.searchCriterionList.add(this.fulltextSearch);
+				scList.add(this.fulltextSearch);
 			}
 			
 			//Set cdc search
 			if(!this.cdcSearch.getValue().trim().isEmpty())
 			{
 				
-				this.searchCriterionList.add(this.cdcSearch);
+				scList.add(this.cdcSearch);
 			}
 			
 		
-			advancedSearchResultBean.setSearchCriterionList(searchCriterionList);
-			String cql = searchBean.getAdvancedSearchCQL(searchCriterionList);
+			advancedSearchResultBean.setSearchCriterionList(scList);
+			String cql = searchBean.getAdvancedSearchCQL(scList);
 			advancedSearchResultBean.setCqlQuery(cql);
 			return "pretty:searchResult";
 		} catch (Exception e) {
@@ -167,7 +171,7 @@ public class AdvancedSearchBean {
 	/**
 	 * Set the collection search criterion
 	 */
-	private void setCollectionSearch()
+	private void setCollectionSearch(List<SearchCriterion> scList)
 	{		
 		//Set context id
 		boolean start = false;
@@ -185,23 +189,23 @@ public class AdvancedSearchBean {
 				if(contextScElements.size()==1)
 				{
 					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,1);
-					this.searchCriterionList.add(scCon);
+					scList.add(scCon);
 				}
 				else if (i==0 && !start)
 				{
 					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,0);
-					this.searchCriterionList.add(scCon);
+					scList.add(scCon);
 					start = true;
 				}
 				else if (i == contextScElements.size()-1 && end)
 				{
 					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId(),0,1);
-					this.searchCriterionList.add(scCon);
+					scList.add(scCon);
 				}
 				else
 				{
 					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId());
-					this.searchCriterionList.add(scCon);
+					scList.add(scCon);
 				}
 			}
 
@@ -220,7 +224,7 @@ public class AdvancedSearchBean {
 						if (y == 1 && !start)
 						{
 							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,0);
-							this.searchCriterionList.add(scCon);
+							scList.add(scCon);
 							start = true;
 						}
 						else
@@ -229,12 +233,12 @@ public class AdvancedSearchBean {
 							if (y == contextSearch.getContextList().size()-1 && end)
 							{
 								scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, currentContextId,0,1);
-								this.searchCriterionList.add(scCon);
+								scList.add(scCon);
 							}
 							else
 							{
 								scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, currentContextId);
-								this.searchCriterionList.add(scCon);
+								scList.add(scCon);
 							}
 						}
 					}			
@@ -247,13 +251,13 @@ public class AdvancedSearchBean {
 	/**
 	 * Set the year search criterion
 	 */
-	private void setYearSearch() throws RuntimeException
+	private void setYearSearch(List<SearchCriterion> scList) throws RuntimeException
 	{
 		if (!this.yearFrom.getValue().trim().isEmpty())
 		{
 			if (this.yearTo.getValue().trim().isEmpty())
 			{
-				this.searchCriterionList.add(this.yearFrom);
+				scList.add(this.yearFrom);
 			}
 			
 			else
@@ -261,11 +265,11 @@ public class AdvancedSearchBean {
 				this.yearFrom.setConnector(">=");
 				this.yearFrom.setOpenBracket(1);
 				this.yearFrom.setCloseBracket(0);
-				this.searchCriterionList.add(this.yearFrom);
+				scList.add(this.yearFrom);
 				this.yearTo.setConnector("<=");
 				this.yearTo.setOpenBracket(0);
 				this.yearTo.setCloseBracket(1);
-				this.searchCriterionList.add(yearTo);
+				scList.add(yearTo);
 			}
 		}
 		else
