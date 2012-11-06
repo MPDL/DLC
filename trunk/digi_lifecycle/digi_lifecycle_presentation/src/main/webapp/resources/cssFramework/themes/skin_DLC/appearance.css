@@ -2616,6 +2616,20 @@ button:hover .eg3_icon_close_16_16 {
 	background-image:url(image/ico_close_hover_16_16.png);
 	text-decoration:none;
 }
+.eg3_icon_resizeSmall_24_24 {
+	width:2em;
+	height:2em;
+	margin-left:0.33333em;
+	background-image:url(image/icon_resize_small_static_24_24.png);
+	background-color:transparent;
+}
+.eg3_icon_resizeMedium_24_24 {
+	width:2em;
+	height:2em;
+	margin-left:0.33333em;
+	background-image:url(image/icon_resize_full_static_24_24.png);
+	background-color:transparent;
+}
 .eg3_icon_resizeSmall_16_16 {
 	width:1.3333em;
 	height:1.3333em;

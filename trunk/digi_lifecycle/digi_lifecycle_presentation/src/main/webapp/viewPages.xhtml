@@ -120,23 +120,16 @@
 		<ui:define name="mainContent">
 			
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-				<script type="text/javascript">
-					var curContent = "toc";
-				</script>
 			<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
 					<h:form styleClass="eg3_overflow_z50">
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax">
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree(); curContent='toc';">
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'toc');" value=" " disabled="true"/>
-				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
-				     				<ui:remove>
-										<input type="button" class="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_openOverlay(this, 'toc');" value="+"/>
-										<input type="button" class="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5" style="width:1.333333em;" onclick="eg3_closeOverlay(this, 'toc');" disabled="disabled" value="-"/>
-									</ui:remove>
+				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'toc');" value=" "/>
+				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
 								</h:panelGroup>
 								
 								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto eg3_toc" style="min-height:500px;" id="tocTreeContainer">
@@ -151,22 +144,22 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs(); curContent='thumbs';">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs();">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
-									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_16_16" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" " disabled="true"/>
-				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_16_16" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
+									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
+				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 								</h:panelGroup>
 								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="min-height:500px;">
 									<h:panelGroup  layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										
 										<a4j:repeat var="var" value="#{viewPages.pageList}" rowKeyVar="rowKey">
 											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail #{ (viewPages.viewTypeMap[var] == 'single' ||viewPages.viewTypeMap[var]=='right' || ((viewPages.viewTypeMap[var] != 'single' and viewPages.viewTypeMap[var] != 'left' and viewPages.viewTypeMap[var] != 'right') and (rowKey+1) % 2 == 1)) ? 'eg3_floatNone' : '' }" >
-												<h:commandLink  action="#{viewPages.goToPage(var)}">
+												<h:commandLink action="#{viewPages.goToPage(var)}" onclick="eg3_closeOverlay('.eg3_collapseOverlay', 'thumbs');">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}"/>
 													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
 												</h:commandLink>
+												
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
-													
 													<h:outputText value="#{lbl.list_Page} #{var.orderLabel} / " rendered="#{not empty var.orderLabel}"/>
 													<h:outputText value="#{lbl.list_Scan} #{var.order +1} "/>
 												</h:panelGroup>
@@ -269,23 +262,6 @@
 								return false;
 							}
 						}
-						 
-						jsf.ajax.addOnEvent(function(e) {	
-							//notice the container height for setting a min-height while ajax reloading
-							//without a height value the page jump to top because of to slowly image loading
-							if (e.status == "begin") {
-								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-								eg3_closeOverlay('.eg3_collapseOverlay', curContent);
-							}
-							//if the ajax request is success
-							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-							if (e.status=="success") {
-								scrollTree();
-								scrollThumbs();
-  								eg3_initSidebar(); 
-								setTimeout("resizeFulltext()", 200);
-							}
-						});
 						
 						function scrollTree() {
 							var selectedDivId= '#{viewPages.selectedDiv.id}';
@@ -304,7 +280,6 @@
 							
 							var containerId = "#{rich:clientId('thumbnailContainer')}";
 							
-
 							if (selectedPageId) {
 								scrollDiv(containerId, selectedPageId);
 								$('.' + selectedPageId).addClass("eg3_active");
@@ -316,53 +291,87 @@
 								scrollDiv(containerId, selectedRightPageId);
 								$('.' + selectedRightPageId).addClass("eg3_active");
 							}
-							
 						}
 						
 						function scrollDiv(containerId, scrollToClassId) {
 						
 							if (containerId && scrollToClassId) {
-								//add an backslahs before all colons					
+								//add an backslahs before all colons
 								containerId = containerId.replace(/:/g, "\\:");
 								var containerDiv = $('#' + containerId);
 								var scrollToElement = $('.' + scrollToClassId);
-						
+								
 								var pos = scrollToElement.offset();
 								if(pos!=null) {
-									var containerPos = containerDiv.offset();				
-									var currentScroll = containerDiv.scrollTop();				
-									var newScrollPos = pos.top - containerPos.top + currentScroll - 50;		
+									var containerPos = containerDiv.offset();
+									var currentScroll = containerDiv.scrollTop();
+									var newScrollPos = pos.top - containerPos.top + currentScroll - 50;
 									containerDiv.scrollTop(newScrollPos);
-								}		
+								}
 							}
 						
 						}
 						
 						//function to remove the style value min-height in case of ajax functions, e.g. for pagination
-						function resetViewPageContainer() 
-						{
+						function resetViewPageContainer() {
 							var reloadDone = false;
 							
 							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) {
-								if ($(this).height() > 0) 
-								{
+								if ($(this).height() > 0) {
 									reloadDone = true;
 								}
 							});
-							(reloadDone) ? removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
+							(reloadDone) ? eg3_removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
 						}
 						
-						
+						function checkActiveSidebarTab() {
+							
+							var tmpCntContainerId = $('.eg3_id_sidebarLeft .rf-tab:visible').attr("id");
+							if (tmpCntContainerId.match(/thumbs/gi)) {
+								return 'thumbs';
+							} else if (tmpCntContainerId.match(/toc/gi)) {
+								return 'toc';
+							} else if (tmpCntContainerId.match(/bibmd/gi)) {
+								return 'bibmd';
+							} else if (tmpCntContainerId.match(/desc/gi)) {
+								return 'desc';
+							} else {
+								return null;
+							}
+						}
+						var startContent = '';
 						$(document).ready(function(e) {
-							scrollTree();
-							scrollThumbs();
+							startContent = checkActiveSidebarTab();
+							
+							checkActiveSidebarTab();
+							
+							EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()");
 							
 							$("#viewPage img").load(eg3_initSidebar);
 							eg3_initWindowResizeListener();
-							
-							resizeFulltext();
 						});
-		
+						
+						jsf.ajax.addOnEvent(function(e) {
+							//notice the container height for setting a min-height while ajax reloading
+							//without a height value the page jump to top because of to slowly image loading
+							if (e.status == "begin") {
+								startContent = checkActiveSidebarTab();
+								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
+							//	eg3_closeOverlay('.eg3_collapseOverlay', startContent);
+							}
+							//if the ajax request is success
+							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
+							if (e.status=="success") {
+								if (startContent != checkActiveSidebarTab()) {
+									
+									eg3_resizeSidebarAfterTabChange();
+								} else {
+									
+									eg3_initSidebar();
+								}
+  								
+							}
+						});
 						 /* ]]> */
 					</script>
 					
