@@ -33,11 +33,17 @@
 			<h:form>
 					<h3 class="eg3_volumeTitle">
 					<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
-						<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
-						<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
-							<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
-						</a4j:commandLink>
+						<h:panelGroup rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
+							<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
+							<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
+								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
+							</a4j:commandLink>
+						</h:panelGroup>
+						<h:panelGroup rendered="#{empty cc.attrs.volume.relatedParentVolume}">
+							<h:outputText value="ERROR! No multivolume found" />
+						</h:panelGroup>
 					</h:panelGroup>
+					
 						
 						
 						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}" />
