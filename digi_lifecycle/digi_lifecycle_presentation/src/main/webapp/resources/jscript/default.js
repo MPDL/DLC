@@ -4,13 +4,13 @@
  */
 
 //global function to combine all functions to stop immediately default actions
-function stopDefaultAction(e) {
+function eg3_stopDefaultAction(e) {
 	e.preventDefault();
 	e.stopImmediatePropagation();
 }
 
 /* this function search for the parent node */
-function searchParentTag(source_obj, searchTagString) {
+function eg3_searchParentTag(source_obj, searchTagString) {
 	for (var i=0; i < $(source_obj).parents().length; i++) {
 		if ($($(source_obj).parents()[i]).hasClass(searchTagString)) {
 			return $($(source_obj).parents()[i]);
@@ -23,7 +23,7 @@ function searchParentTag(source_obj, searchTagString) {
 /*
  * these function delete the searched value in an attribute
  */
-function removeAttributeValue(reference, attribute, value) {
+function eg3_removeAttributeValue(reference, attribute, value) {
 	var refObj = (typeof(reference) == "object") ? reference : $(reference);
 	var attr = $.trim(refObj.attr(attribute));
 	
@@ -53,11 +53,11 @@ function removeAttributeValue(reference, attribute, value) {
 }
 
 /* this function updates the selectText container with the selected item of selectbox */
-function updateCustomSelectBox(obj) {
+function eg3_updateCustomSelectBox(obj) {
 	if (!obj) {
 		$("select").each(function(i){
 			var parent = null;
-			if (parent = searchParentTag(this, "eg3_dynamicSelectBox_js")) {
+			if (parent = eg3_searchParentTag(this, "eg3_dynamicSelectBox_js")) {
 				var val = $(this).val();
 				$(this).find("option").each(function(i, opt){
 					if ($(opt).val() == val) {
@@ -97,8 +97,8 @@ function resizeSelectBox() {
 			
 			//if a ajax reload given or the browser had been resized
 			slctTag.css("width", "auto"); //the select tag width must be reset to auto for the further right width
-			removeAttributeValue(dynSB, "style", "width"); //delete the earlier definition of width
-			removeAttributeValue(selCont, "style", "width"); //delete the earlier definition of width
+			eg3_removeAttributeValue(dynSB, "style", "width"); //delete the earlier definition of width
+			eg3_removeAttributeValue(selCont, "style", "width"); //delete the earlier definition of width
 			
 			//calculate the new width values
 			var newDynSBWidth = 0;
@@ -124,11 +124,11 @@ function resizeSelectBox() {
 			}
 			
 			/* add behaviour for change and focus */
-			//slctTag.bind("focus", function(evt) { updateCustomSelectBox(this); } );
-			slctTag.bind("change", function(evt) { updateCustomSelectBox(this); } );
+			//slctTag.bind("focus", function(evt) { eg3_updateCustomSelectBox(this); } );
+			slctTag.bind("change", function(evt) { eg3_updateCustomSelectBox(this); } );
 		}
 	}); //end of each
-	updateCustomSelectBox();
+	eg3_updateCustomSelectBox();
 	
 	eg3_initWindowResizeListener();
 }
@@ -241,11 +241,11 @@ function eg3_bibListToggleItemMediumView(obj) {
 }
 
 
-function addShowHideAction() {
+function eg3_addShowHideAction() {
 	/*append listener to the .showHideAll_js-Tag for opening and closing all details in the current list*/
 	$('.eg3_showHideAll_js').click(function(e){
 		$(this).toggleClass("eg3_icon_collapse_16_16 eg3_icon_expand_16_16");
-		stopDefaultAction(e);
+		eg3_stopDefaultAction(e);
 		var listBody = null;
 		
 		for (var i=0; i < $(this).parents().length; i++) {
@@ -278,12 +278,12 @@ function addShowHideAction() {
 }
 
 
-function addDisplayControl(target) {
+function eg3_addDisplayControl(target) {
 	switch (target) {
 		case ".eg3_listItemMediaAcc":
 		case ".eg3_listItem":
 			$(target+" .eg3_itemDetailAction_js").click(function(e){
-				stopDefaultAction(e);
+				eg3_stopDefaultAction(e);
 				
 				$(this).find("div").toggleClass("eg3_icon_expand_16_16, eg3_icon_collapse_16_16");
 					
@@ -291,7 +291,7 @@ function addDisplayControl(target) {
 				
 				var allDetails = null;
 				//read the parents array to itemContent and stop, take the itemContent as parent and starting point for selection
-				if (allDetails = searchParentTag(this, 'eg3_itemContent').find('.eg3_mediumView_js')) {
+				if (allDetails = eg3_searchParentTag(this, 'eg3_itemContent').find('.eg3_mediumView_js')) {
 					allDetails.toggle();
 				};
 			});
@@ -305,7 +305,7 @@ function addDisplayControl(target) {
 					eg3_toggleVolumeMediabarActionLabel(actionArea.parents(".eg3_listItemMultiVolume"), "hidden");
 				}
 				
-				var volume = searchParentTag(this, "eg3_listItemMultiVolume").next();
+				var volume = eg3_searchParentTag(this, "eg3_listItemMultiVolume").next();
 				
 				if (volume.hasClass("eg3_listItemVolume")) {
 					while (volume.hasClass("eg3_listItemVolume")) {
@@ -344,7 +344,7 @@ function eg3_toggleVolumeMediabarActionLabel(volume, to_status) {
 /*
  * function to add function for show or hide all wished elements (e.g. child-elements)
  */
-function addShowHideAll(element, child_elements, component) {
+function eg3_addShowHideAll(element, child_elements, component) {
 	var showHideAllBtn = null;
 	
 	//if the caller has a component, component will be formatted to an jquery object and the showHideAll button will be search into component
@@ -439,13 +439,16 @@ function eg3_openOverlay(listButton, cnt) {
 		curTabPanelContent.css("width", Math.round($(window).width() * 0.8));
 	}
 	sidebarLeft.addClass("eg3_expand");
-	$(listButton).attr('disabled', 'disabled');
-	curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');
+	/*$(listButton).attr('disabled', 'disabled');
+	curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');*/
+	$(listButton).hide();
+	curControlPanel.find('.eg3_collapseOverlay').show();
 }
 /**
  * function eg3_openOverlay
  * close the current content to see the content in a minimized container
  * listButton: object whose be clicked
+ * @used: in viewPages for sidebar
  */
 function eg3_closeOverlay(listButton, cnt) {
 	var curTabPanel = $(listButton).parents(".rf-tbp");
@@ -453,7 +456,7 @@ function eg3_closeOverlay(listButton, cnt) {
 	var curControlPanel = $(listButton).parents('.eg3_iconBar');
 	var sidebarLeft = $('.eg3_id_sidebarLeft');
 	
-	removeAttributeValue(curTabPanelContent, "style", "width");
+	eg3_removeAttributeValue(curTabPanelContent, "style", "width");
 	switch (cnt) {
 		case 'toc':
 			if (curTabPanel) {
@@ -490,8 +493,10 @@ function eg3_closeOverlay(listButton, cnt) {
 	}
 	
 	sidebarLeft.removeClass("eg3_expand");
-	$(listButton).attr('disabled', 'disabled');
-	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');
+	/*$(listButton).attr('disabled', 'disabled');
+	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');*/
+	$(listButton).hide();
+	curControlPanel.find('.eg3_expandOverlay').show();
 }
 
 /**
@@ -521,7 +526,7 @@ function eg3_switchInputType(hide_element, show_element, escListener, callbackFu
 
 
 /* Workaround: Make rerendered forms work. See http://java.net/jira/browse/JAVASERVERFACES_SPEC_PUBLIC-790 */
-function rerenderJSFForms() {
+function eg3_rerenderJSFForms() {
 	jsf.ajax.addOnEvent(function (e) {
 		if (e.status === 'success') 
 		{
@@ -547,23 +552,6 @@ var EG3_PAGE = null;
 var EG3_PAGE_IMG_OBJ = null;
 var EG3_CALLBACK = new Array(); //an variable for global callback functions as array, e.g. used for sidebar resize and scrolling into sidebar
 
-function checkIconbar(icoBar) {
-	var activeTab = $('.eg3_id_sidebarLeft .rf-tab:visible');
-	
-	if (activeTab.length > 0 && activeTab.attr("id")) {
-		activeTab = activeTab.attr("id").split(":")[1];
-	} else {
-		return false;
-	}
-	
-	switch(activeTab) {
-		case 'toc':
-			if ($('.eg3_contentDetails .rf-tr').width() < $('.eg3_contentDetails').width()) {
-				$('.eg3_collapseOverlay, .eg3_expandOverlay').attr('disabled', 'disabled');
-			}
-			break;
-	}
-}
 
 /**
  * sidebar functions
@@ -571,7 +559,6 @@ function checkIconbar(icoBar) {
  */
 
 function eg3_initSidebar(evt) {
-	
 	if ($('#viewPage').length > 0) {
 		EG3_PAGE = '#viewPage';
 		EG3_PAGE_IMG_OBJ = $('#viewPage img');
@@ -579,10 +566,22 @@ function eg3_initSidebar(evt) {
 		EG3_PAGE = '#editPage';
 		EG3_PAGE_IMG_OBJ = $('#editPage img');
 	}
-	if (!evt) { //if the function was called without an event
+	if (!evt) { //if the function was called without an event, e.g. a tab was changed in viewPages
 		EG3_PAGE_IMG_OBJ.load(eg3_initSidebar); //add the img load event to the current image container
 	} else { // if the load event is given, call the resize function
 		eg3_resizeSidebar(); 
+	}
+}
+
+function eg3_resizeSidebarAfterTabChange() {
+	var curTabCntImg = $('.eg3_id_sidebarLeft .rf-tab-cnt:visible img');
+	var sidebarCnt = $('.eg3_id_sidebarLeft .rf-tab-cnt:visible');
+	if (curTabCntImg.length > 0) {
+		sidebarCnt.ready(function(){
+			eg3_resizeSidebar();
+		});
+	} else {
+		eg3_resizeSidebar();
 	}
 }
 
@@ -591,16 +590,15 @@ function eg3_initSidebar(evt) {
  * @reference by eg3_initSidebar
  */
 function eg3_resizeSidebar() {
-	var maxImgHeight = 0; //init a param for the greates height value of all available images
+	var maxHeight = 0; //init a param for the greates height value of all available images
 	
 	//check every image of them height and safe the greates value
 	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
 		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
-		if (tmpHeight > maxImgHeight) {
-			maxImgHeight = tmpHeight;
+		if (tmpHeight > maxHeight) {
+			maxHeight = tmpHeight;
 		}
 	}
-	
 	//safe the sidebar as jQuery object
 	var sdb = $(".eg3_id_sidebarLeft");
 	if (sdb.length > 0) {
@@ -615,17 +613,27 @@ function eg3_resizeSidebar() {
 		}
 		sdbPadBot = Math.round(Number(sdbPadBot));
 		
+		maxHeight = (maxHeight - sdbPadBot);	//use the maxHeight variable for the new height of the sidebar
+		
 		var curTabCnt = sdb.find(".rf-tab-cnt:visible");
 		
 		switch (EG3_PAGE) {
 			case '#editPage':
-				sdb.find('.eg3_editSidebarContent').css("height", (maxImgHeight - sdbPadBot));
+				sdb.find('.eg3_editSidebarContent').css("max-height", maxHeight);
 				break;
 			case '#viewPage':
 			default:
-				checkIconbar(icoBar);
-				curTabCnt.css("height", (maxImgHeight - sdbPadBot));
-				curTabCnt.find(".eg3_contentDetails").css("height", (maxImgHeight - icbHeight - sdbPadBot));
+			//	curTabCnt.css("height", (maxHeight - sdbPadBot)).css("max-height", (maxHeight - sdbPadBot));
+				
+				curTabCnt.css({
+					"height":maxHeight, 
+					"max-height":maxHeight
+					});
+				curTabCnt.find(".eg3_contentDetails").css({
+					"height": (maxHeight - icbHeight),
+					"max-height": (maxHeight - icbHeight)
+				});
+				
 				break;
 		}
 	}
@@ -644,7 +652,7 @@ function eg3_copyToClipboard(infoText, obj) {
 }
 
 //used by messaging, in template_v3.xhtml
-function checkMessageContent() {
+function eg3_checkMessageContent() {
 	var msgCo = $('.eg3_id_contentDescription .eg3_messageArea');
 	if (msgCo && msgCo.length > 0) {
 		msgCo.draggable();
@@ -671,27 +679,27 @@ function eg3_initWindowResizeListener() {
 	});
 }
 
-var modalPopup;
+var EG3_MODALPOPUP;
 
-function loadPopup(listItem) {
+function eg3_loadPopup(listItem) {
 	var popContent = jQuery(listItem).parents(".eg3_itemContent").find('.modalDialog').html();
-	modalPopup = jQuery("#modalPopup");
+	EG3_MODALPOPUP = jQuery("#EG3_MODALPOPUP");
 	var wrapper = jQuery(".eg3_id_wrapper");
-	if (!modalPopup || modalPopup.length === 0 || typeof modalPopup == undefined) {
-		modalPopup = jQuery('<div id="modalPopup" class="modalDialog"></div>').insertBefore(wrapper);
+	if (!EG3_MODALPOPUP || EG3_MODALPOPUP.length === 0 || typeof EG3_MODALPOPUP == undefined) {
+		EG3_MODALPOPUP = jQuery('<div id="EG3_MODALPOPUP" class="modalDialog"></div>').insertBefore(wrapper);
 	}
-	modalPopup.html(popContent);
-	modalPopup.show();
+	EG3_MODALPOPUP.html(popContent);
+	EG3_MODALPOPUP.show();
 }
-function unloadPopup() {
-	modalPopup.html("");
-	modalPopup.hide();
+function eg3_unloadPopup() {
+	EG3_MODALPOPUP.html("");
+	EG3_MODALPOPUP.hide();
 }
-function listenMultiVolume() {
+function eg3_listenMultiVolume() {
 	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemHeadline .eg3_itemTitle");
 	multiVolumeLink.click(function(e) {
-		stopDefaultAction(e);
-		loadPopup(this);
+		eg3_stopDefaultAction(e);
+		eg3_loadPopup(this);
 	});
 }
 
@@ -700,13 +708,13 @@ $(document).ready(function(e) {
 	 * use the setTimeout method only if you load the content via ajax 
 	 * alternative: create an ajax handler to refer the function after successed loading with dynamic time
 	 */
-	addDisplayControl('.eg3_listItem');
-	addDisplayControl('.eg3_listItemMediaAcc');
-	addDisplayControl('.eg3_listItemMultiVolume');
+	eg3_addDisplayControl('.eg3_listItem');
+	eg3_addDisplayControl('.eg3_listItemMediaAcc');
+	eg3_addDisplayControl('.eg3_listItemMultiVolume');
 	
 	resizeSelectBox();
 	
-	addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
+	eg3_addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
-	rerenderJSFForms();
+	eg3_rerenderJSFForms();
 });
