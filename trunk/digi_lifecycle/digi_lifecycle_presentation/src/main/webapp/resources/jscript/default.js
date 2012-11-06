@@ -573,25 +573,13 @@ function eg3_initSidebar(evt) {
 	}
 }
 
-function eg3_resizeSidebarAfterTabChange() {
-	var curTabCntImg = $('.eg3_id_sidebarLeft .rf-tab-cnt:visible img');
-	var sidebarCnt = $('.eg3_id_sidebarLeft .rf-tab-cnt:visible');
-	if (curTabCntImg.length > 0) {
-		sidebarCnt.ready(function(){
-			eg3_resizeSidebar();
-		});
-	} else {
-		eg3_resizeSidebar();
-	}
-}
-
 /* 
  * these function will be called with every complete loading event of an image 
  * @reference by eg3_initSidebar
  */
 function eg3_resizeSidebar() {
 	var maxHeight = 0; //init a param for the greates height value of all available images
-	
+	console.log("eg3_resizeSidebar");
 	//check every image of them height and safe the greates value
 	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
 		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
@@ -623,8 +611,6 @@ function eg3_resizeSidebar() {
 				break;
 			case '#viewPage':
 			default:
-			//	curTabCnt.css("height", (maxHeight - sdbPadBot)).css("max-height", (maxHeight - sdbPadBot));
-				
 				curTabCnt.css({
 					"height":maxHeight, 
 					"max-height":maxHeight
@@ -633,7 +619,6 @@ function eg3_resizeSidebar() {
 					"height": (maxHeight - icbHeight),
 					"max-height": (maxHeight - icbHeight)
 				});
-				
 				break;
 		}
 	}
@@ -674,7 +659,7 @@ function eg3_initWindowResizeListener() {
 	$(window).bind("resize", function() { 
 		resizeSelectBox();
 		if ($('.eg3_id_sidebarLeft').length > 0) {
-			eg3_initSidebar();
+			eg3_resizeSidebar();
 		}
 	});
 }

@@ -126,7 +126,7 @@
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax">
 			     			
-			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="scrollTree();">
+			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSd != null}" id="toc" onenter="eg3_resizeSidebar();">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 				     				<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'toc');" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
@@ -144,7 +144,7 @@
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="scrollThumbs();">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="eg3_resizeSidebar();">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
@@ -165,7 +165,6 @@
 												</h:panelGroup>
 											</h:panelGroup>
 										</a4j:repeat>
-										
 									</h:panelGroup>
 								</h:panelGroup>
 							</rich:tab>
@@ -268,8 +267,6 @@
 							var containerId = "#{rich:clientId('tocTreeContainer')}";
 							
 							scrollDiv(containerId, 'struct_' + selectedDivId);
-							
-							resetViewPageContainer();
 						}
 						
 						function scrollThumbs() {
@@ -312,20 +309,48 @@
 						
 						}
 						
-						//function to remove the style value min-height in case of ajax functions, e.g. for pagination
-						function resetViewPageContainer() {
-							var reloadDone = false;
+						function getGreatesValueOf(elements, type) {
+							var greatest = 0;
+							switch (type) {
+								case 'height':
+								default:
+									for (var el = 0; el < elements.length; el++) {
+										if ($(elements.get(el)).height() > greatest) {
+											greatest = $(elements.get(el)).height();
+										}
+									}
+									break;
+							}
+							return greatest;
+						}
+						
+						function setViewPortHeight(set, obj) {
+							var VPC;
+							if (obj) {
+								VPC = (typeof(obj) == "object") ? obj : $(obj);
+							} else {
+								VPC = $('.eg3_viewPageContainer');
+							}
 							
-							$('.eg3_viewPageContainer .eg3_viewPage_imgContainer').each(function(i) {
-								if ($(this).height() > 0) {
-									reloadDone = true;
-								}
-							});
-							(reloadDone) ? eg3_removeAttributeValue('.eg3_viewPageContainer', "style", "min-height") : setTimeout("resetViewPageContainer()", 25);
+							var max = getGreatesValueOf($('.eg3_viewPageContainer .eg3_viewPage'));
+							switch(set) {
+								case 'false':
+									eg3_removeAttributeValue(VPC, "style", "min-height");
+									eg3_removeAttributeValue(VPC, "style", "height");
+									eg3_removeAttributeValue(VPC, "style", "max-height");
+									break;
+								case 'true':
+								default:
+									VPC.css({
+										"min-height": max,
+										"height":max,
+										"max-height":max
+									});
+									break;
+							}
 						}
 						
 						function checkActiveSidebarTab() {
-							
 							var tmpCntContainerId = $('.eg3_id_sidebarLeft .rf-tab:visible').attr("id");
 							if (tmpCntContainerId.match(/thumbs/gi)) {
 								return 'thumbs';
@@ -339,13 +364,12 @@
 								return null;
 							}
 						}
-						var startContent = '';
+						
+						var startSidebarContent = '';
 						$(document).ready(function(e) {
-							startContent = checkActiveSidebarTab();
+							EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()", "setViewPortHeight('false')");
 							
-							checkActiveSidebarTab();
-							
-							EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()");
+//							startSidebarContent = checkActiveSidebarTab(); //save the value of the first sidebar content container
 							
 							$("#viewPage img").load(eg3_initSidebar);
 							eg3_initWindowResizeListener();
@@ -354,22 +378,22 @@
 						jsf.ajax.addOnEvent(function(e) {
 							//notice the container height for setting a min-height while ajax reloading
 							//without a height value the page jump to top because of to slowly image loading
-							if (e.status == "begin") {
-								startContent = checkActiveSidebarTab();
-								$('.eg3_viewPageContainer').css("min-height", $('.eg3_viewPageContainer').height());
-							//	eg3_closeOverlay('.eg3_collapseOverlay', startContent);
-							}
-							//if the ajax request is success
-							//scroll to the right position in sidebar and delete the min-height value of the global parent container for dynamical browser behaviour
-							if (e.status=="success") {
-								if (startContent != checkActiveSidebarTab()) {
-									
-									eg3_resizeSidebarAfterTabChange();
-								} else {
-									
-									eg3_initSidebar();
-								}
-  								
+							switch(e.status) {
+								case 'begin':
+									startSidebarContent = checkActiveSidebarTab(); //save the start sidebar content to compare on success status
+									setViewPortHeight(); //set height values for the current view port to reduce vertical page jumping while image loading
+									break;
+								case 'success':
+									if (startSidebarContent != checkActiveSidebarTab()) {
+										//if a new sidebar tab content was loading, it's only necessary to resize the sidebar, but no img-listener is required
+										eg3_resizeSidebar();
+									} else {
+										//eg3_initSidebar calls all EG3_CALLBACK functions after finishing
+										eg3_initSidebar();
+									}
+									break;
+								default:
+									break;
 							}
 						});
 						 /* ]]> */
