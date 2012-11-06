@@ -291,9 +291,11 @@ public class AdvancedSearchBean {
 		this.searchCriterionList.add(new SearchCriterion(SearchType.TITLE, ""));
 		
 		this.freeSearch = "";
+
 		this.fulltextSearch = new SearchCriterion(SearchType.FULLTEXT, "");
 		this.yearFrom = new SearchCriterion(SearchType.YEAR, "");
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
+		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		
 		//Reset context
 		this.contextScElements.clear();
@@ -309,6 +311,7 @@ public class AdvancedSearchBean {
 			ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
 		}
 		this.setAllLibItems(ouSelectItems);
+		
 		
 		return"";
 	}
