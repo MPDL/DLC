@@ -85,14 +85,6 @@
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-					<h:outputLabel for="citLeftPage">
-						<h:outputText value="#{lbl.citation_handle_recto}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_recto_mark}"/>
-					</h:panelGroup>
-					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
-				
 					<h:outputLabel for="citRightPage">
 						<h:outputText value="#{lbl.citation_handle_verso}"/>
 					</h:outputLabel>
@@ -100,6 +92,14 @@
 						<h:outputText value="#{lbl.citation_handle_verso_mark}"/>
 					</h:panelGroup>
 					<h:inputText id="citRightPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" styleClass="eg3_container_1"/>
+					
+					<h:outputLabel for="citLeftPage">
+						<h:outputText value="#{lbl.citation_handle_recto}"/>
+					</h:outputLabel>
+					<h:panelGroup styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_handle_recto_mark}"/>
+					</h:panelGroup>
+					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
 				</ui:fragment>
 				<ui:remove>
 					<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
