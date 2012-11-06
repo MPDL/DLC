@@ -383,12 +383,16 @@
 								case 'begin':
 									startSidebarContent = checkActiveSidebarTab(); //save the start sidebar content to compare on success status
 									setViewPortHeight(); //set height values for the current view port to reduce vertical page jumping while image loading
-									eg3_closeOverlay(".eg3_collapseOverlay");
 									break;
 								case 'success':
-									if (startSidebarContent != checkActiveSidebarTab()) {
+									//always collapse/minimize the sidebar
+									eg3_closeOverlay(".eg3_collapseOverlay");
+									//check if the e.source is part of the sidebar tab
+									if (e.source.name.match(/thumbs/gi) || e.source.name.match(/toc/gi) || e.source.name.match(/bibmd/gi) || e.source.name.match(/desc/gi)) {
 										//if a new sidebar tab content was loading, it's only necessary to resize the sidebar, but no img-listener is required
-										eg3_resizeSidebar();
+										if (startSidebarContent != checkActiveSidebarTab()) {
+											eg3_resizeSidebar();
+										}
 									} else {
 										//eg3_initSidebar calls all EG3_CALLBACK functions after finishing
 										eg3_initSidebar();

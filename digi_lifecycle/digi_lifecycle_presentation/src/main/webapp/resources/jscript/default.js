@@ -474,7 +474,10 @@ function eg3_closeOverlay(listButton, cnt) {
 	if (curTabPanelContent) {
 		curTabPanelContent.removeClass("eg3_expand");
 		curTabPanelContent.removeClass("eg3_widthAuto");
-		eg3_removeAttributeValue(curTabPanelContent, "style", "width");
+		//finaly delete all inline width values in every rf-tab-cnt
+		for (var ctpc = 0; ctpc < curTabPanelContent.length; ctpc++) {
+			eg3_removeAttributeValue($(curTabPanelContent.get(ctpc)), "style", "width");
+		}
 	}
 	if (curControlPanel) {
 		curControlPanel.removeClass("eg3_expand");
