@@ -451,7 +451,7 @@ function eg3_openOverlay(listButton, cnt) {
  */
 function eg3_closeOverlay(listButton, cnt) {
 	var curTabPanel = $(listButton).parents(".rf-tbp");
-	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt:visible");
+	var curTabPanelContent = curTabPanel.find(".rf-tab-cnt");
 	var curControlPanel = $(listButton).parents('.eg3_iconBar');
 	var sidebarLeft = $('.eg3_id_sidebarLeft');
 	
@@ -473,6 +473,7 @@ function eg3_closeOverlay(listButton, cnt) {
 	}
 	if (curTabPanelContent) {
 		curTabPanelContent.removeClass("eg3_expand");
+		curTabPanelContent.removeClass("eg3_widthAuto");
 		eg3_removeAttributeValue(curTabPanelContent, "style", "width");
 	}
 	if (curControlPanel) {
@@ -565,7 +566,7 @@ function eg3_initSidebar(evt) {
  */
 function eg3_resizeSidebar() {
 	var maxHeight = 0; //init a param for the greates height value of all available images
-	console.log("eg3_resizeSidebar");
+	
 	//check every image of them height and safe the greates value
 	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
 		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();

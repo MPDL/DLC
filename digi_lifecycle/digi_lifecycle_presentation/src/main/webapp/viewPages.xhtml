@@ -383,6 +383,7 @@
 								case 'begin':
 									startSidebarContent = checkActiveSidebarTab(); //save the start sidebar content to compare on success status
 									setViewPortHeight(); //set height values for the current view port to reduce vertical page jumping while image loading
+									eg3_closeOverlay(".eg3_collapseOverlay");
 									break;
 								case 'success':
 									if (startSidebarContent != checkActiveSidebarTab()) {
