@@ -89,17 +89,19 @@
 					</h:panelGroup>
 					
 				<!-- freeSearch -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" style="margin: 2.5em 0 4.5em 0;">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow" style="margin: 2.5em 0 4.5em 0;">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_all}"/></h2>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_9_16">
+						<h:panelGroup layout="block" styleClass="eg3_container_9_16 eg3_overflow">
 							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1 eg3_quickSearchInput"/>
+							<h:panelGroup styleClass="eg3_searchTooltip">
+								<h:outputText value="Suche in Titeln, Inhaltsverzeichnis/Volltext und kodikologischen Daten"/><!-- TODO tooltip labeling -->
+							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
-					
 		<ui:remove>
 		<!-- NEW 
 		CONNECTOR PLEASE MODIFY the selectOneMenu -->
@@ -288,15 +290,18 @@
 					</h:panelGroup>
 					
 					<!-- fullText -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"/></h2>
 							</h:panelGroup> 
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-							<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow eg3_cdcSearch">
 								<h:inputText type="text" id="cdcSearchString" value="#{advancedSearchBean.cdcSearch.value}" styleClass="eg3_container_1"/>
+								<h:panelGroup styleClass="eg3_searchTooltip">
+									<h:outputText value="#{lbl.sc_codicological}"/><!-- TODO tooltip labeling -->
+								</h:panelGroup>
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
