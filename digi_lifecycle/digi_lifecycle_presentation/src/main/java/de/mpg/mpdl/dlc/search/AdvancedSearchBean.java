@@ -2,7 +2,11 @@ package de.mpg.mpdl.dlc.search;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -30,7 +34,7 @@ import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 @ManagedBean
 @SessionScoped
 @URLMapping(id = "advancedSearch", pattern = "/search", viewId = "/advancedSearch.xhtml")
-public class AdvancedSearchBean {
+public class AdvancedSearchBean implements Observer {
 
 	private static Logger logger = Logger.getLogger(AdvancedSearchBean.class);
 	
@@ -58,6 +62,33 @@ public class AdvancedSearchBean {
 	//private ContextSearch contextSearchItem;
 	private List<ContextSearch> contextScElements = new ArrayList<ContextSearch>();
 	
+	@ManagedProperty("#{internationalizationHelper}")
+	private InternationalizationHelper internationalizationHelper;
+	
+	@PostConstruct
+	public void postConstruct()
+	{
+		internationalizationHelper.addObserver(this);
+	}
+	
+	@PreDestroy
+	public void preDestroy()
+	{
+		internationalizationHelper.deleteObserver(this);
+	}
+	
+	/**
+	 * Update menu lists when changin languages
+	 */
+	@Override
+	public void update(Observable o, Object arg) {
+		initOUList();
+		for(ContextSearch cs : contextScElements)
+		{
+			refreshContextList(cs);
+		}
+		
+	}
 	
 	public AdvancedSearchBean()
 	{
@@ -77,9 +108,9 @@ public class AdvancedSearchBean {
 		this.init();
 	}
 	
-	public void init()
+	
+	public void initOUList()
 	{
-		//Set the libraries list
 		List<SelectItem> ouSelectItems = new ArrayList<SelectItem>();
 		ouSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allLib")));
 		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
@@ -91,6 +122,12 @@ public class AdvancedSearchBean {
 			}
 		}
 		this.setAllLibItems(ouSelectItems);
+	}
+	
+	public void init()
+	{
+		//Set the libraries list
+		initOUList();
 		
 		//Set the contexts list
 		List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
@@ -404,5 +441,15 @@ public class AdvancedSearchBean {
 	public void setCdcSearch(SearchCriterion cdcSearch) {
 		this.cdcSearch = cdcSearch;
 	}
+
+	public InternationalizationHelper getInternationalizationHelper() {
+		return internationalizationHelper;
+	}
+
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+		this.internationalizationHelper = internationalizationHelper;
+	}
+
+	
 	
 }
