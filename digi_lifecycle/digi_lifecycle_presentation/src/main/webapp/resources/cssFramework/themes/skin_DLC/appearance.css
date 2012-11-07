@@ -1722,75 +1722,6 @@ body .eg3_id_siteTitle {
 
 
 
-
-/*********************************************************************************************************
- ******************************				grid list						******************************
- ******************************		list with different dynamic width		****************************** 
- *********************************************************************************************************/
- /* not in use a.t.m. but maybe for batch ingest
-.eg3_gridList {
-	border-spacing:0;
-}
-.eg3_gridList th {
-	text-align: left;
-}
-.eg3_gridList td {
-	vertical-align: top;
-}
-.eg3_gridList .eg3_itemHeadline {
-	padding: 0.1666em 1.6%;
-	background-color:#EBF7EC;
-}
-/* eg3_gridList eg3_listHeader *//*
-.eg3_gridList .eg3_creatorHeadline {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_genreHeadline {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_dateHeadline {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_fileHeadline {
-	padding: 0.1666em 1.6%;
-}
-/* eg3_gridList eg3_listBody *//*
-.eg3_gridList .eg3_itemCreatorArea {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_itemGenreArea {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_itemDateArea {
-	padding: 0.1666em 1.6%;
-}
-.eg3_gridList .eg3_itemFileArea {
-	padding: 0.1666em 1.6%;
-}
-
-
-.eg3_gridList .eg3_listItem td {
-	padding-top:0.5em;
-	padding-bottom:0.25em;
-	border-top:0.09em solid #ff00ff;
-}
-.eg3_gridList .eg3_listItem:hover td {
-	background-color:#CCCCCC;
-	
-}
-
-
-.eg3_gridList .eg3_itemTitle {
-	max-width:50em;
-	width:92%;
-	max-width:50em;
-	margin-left:0.5em;
-}
-*/
-
-
-
-
 /*****************************************************************************************************
  ******************************				tiled list						******************************
  ******************************			list with dynamic width				****************************** 
@@ -2364,6 +2295,15 @@ body .eg3_id_siteTitle {
 	border-bottom:0.0833333em solid #2F2F2F;
 }
 .eg3_searchPage .eg3_submitPanel input[type=reset]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_searchPage .eg3_submitPanel input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=button]:hover {
 	text-decoration:none;
 	border-bottom:0.0833333em solid #EA7125;
 }

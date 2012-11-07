@@ -46,10 +46,10 @@
 		
 		<ui:define name="citationLinkContent">
 			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea"  rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-				<button class="eg3_container_1" onclick="$(this).parent().hide('slow');">
-					<h:panelGroup styleClass="eg3_icon_close_16_16" style="display:inline-block;"/>
+				<button class="eg3_icon_close_16_16 eg3_floatRight" onclick="$(this).parent().hide('slow');">
+					<h:outputText value="&#160;"/>
 				</button>
-				
+				<br/>
 				<h:outputLabel for="bookmarkLink">
 					<h:outputText value="#{lbl.citation_link_bookmark}"/>
 				</h:outputLabel>
