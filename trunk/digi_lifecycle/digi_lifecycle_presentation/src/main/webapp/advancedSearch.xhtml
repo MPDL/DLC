@@ -135,16 +135,21 @@
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
-										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
-												<span class="eg3_selectionText"></span>
+										<ui:fragment rendered="#{rowKey > 0}">
+											<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+												<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+													<span class="eg3_selectionText"></span>
+												</h:panelGroup>
+												<h:selectOneMenu value="#{sc.operator}">						
+													<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
+													<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
+													<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
+												</h:selectOneMenu>
 											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.operator}"  rendered="#{rowKey > 0}">						
-												<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-												<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-											</h:selectOneMenu>
-										</h:panelGroup>
+										</ui:fragment>
+										<ui:fragment rendered="#{rowKey lt 1}">
+											<h:outputText value="&#160;"/>
+										</ui:fragment>
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">

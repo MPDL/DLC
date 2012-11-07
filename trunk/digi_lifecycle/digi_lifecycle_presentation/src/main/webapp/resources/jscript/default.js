@@ -20,11 +20,16 @@ function eg3_searchParentTag(source_obj, searchTagString) {
 	return false;
 }
 
+/* this function returns an jQuery object, if the given obj (e.g. a class-string as '.eg3_id_wrapper')  is no object */
+function eg3_returnJQueryObject(obj) {
+	return (typeof(obj) == "object") ? obj : $(obj);
+}
+
 /*
  * these function delete the searched value in an attribute
  */
 function eg3_removeAttributeValue(reference, attribute, value) {
-	var refObj = (typeof(reference) == "object") ? reference : $(reference);
+	var refObj = eg3_returnJQueryObject(reference);
 	var attr = $.trim(refObj.attr(attribute));
 	
 	if (attr) {
@@ -84,14 +89,12 @@ function resizeSelectBox() {
 		var selCont = null; //variable for the selectionContent div
 		var dynSB = $(dynBox); // object of the dynamicSelectBox_js
 		var slctTag = null; //object of the selectOneMenu or select tag
-		var drpDwnIconWidth = 16; //pixel value of the icon with for the drop down arrow
+		var sbPadR = Math.round(Number(dynSB.css("padding-right").replace("px", "")));
 		
 		if (typeof(selCont = dynSB.find(".eg3_selectionContent")) != "undefined") {
 			//save all margin and padding definitions of the selectionContent class
 			var padL = Number(selCont.css("padding-left").replace("px", ""));
 			var padR = Number(selCont.css("padding-right").replace("px", ""));
-			var marL = Number(selCont.css("margin-left").replace("px", ""));
-			var marR = Number(selCont.css("margin-right").replace("px", ""));
 			
 			slctTag = dynSB.find('select'); //save the select tag in the object variable
 			
@@ -104,23 +107,23 @@ function resizeSelectBox() {
 			var newDynSBWidth = 0;
 			
 			if (dynSB.attr("class").match(/eg3_container_/)) { //at first: check if the dynamicSelectBox_js has a given width
-				newDynSBWidth = Math.floor( (dynSB.width()) ); //calculate the new width for the dynamicSelectBox_js
+				newDynSBWidth = Math.floor( (dynSB.width()) ) - sbPadR; //calculate the new width for the dynamicSelectBox_js
 			} else if (slctTag.width() > dynSB.parent().width()) { //at second: check if the select tag larger than the parent container - e.g. used by ingest process - volume
-				newDynSBWidth = Math.floor( (dynSB.parent().width()) ); //calculate the new width for the dynamicSelectBox_js with base of the parent container width
+				newDynSBWidth = Math.floor( (dynSB.parent().width()) - sbPadR); //calculate the new width for the dynamicSelectBox_js with base of the parent container width
 			} else { //otherwise 
-				newDynSBWidth = Math.floor( (slctTag.width()) ); //calculate the new width for the dynamicSelectBox_js
+				newDynSBWidth = Math.floor( (slctTag.width()) - sbPadR); //calculate the new width for the dynamicSelectBox_js
 			}
 			if (dynSB.hasClass("eg3_border_1")) {
 				newDynSBWidth -= 2;
 			} 
-			var newSelContWidth = Math.floor(newDynSBWidth - drpDwnIconWidth - padL - padR) - 1; //calculate the new width for the selectContent container with 1px less for a better optical border
+			var newSelContWidth = Math.floor(newDynSBWidth - padL - padR) - 1; //calculate the new width for the selectContent container with 1px less for a better optical border
 			
 			//declare the new values to the objects
 			dynSB.css("width", newDynSBWidth);
 			selCont.css("width", newSelContWidth);
 			
-			if (slctTag.width() < newDynSBWidth) { // if the select tag smaller than the given width for the container
-				slctTag.css("width", newDynSBWidth); //resize the select tag
+			if (slctTag.width() < (newDynSBWidth + sbPadR)) { // if the select tag smaller than the given width for the container
+				slctTag.css("width", newDynSBWidth + sbPadR); //resize the select tag
 			}
 			
 			/* add behaviour for change and focus */
@@ -404,6 +407,11 @@ function eg3_openOverlay(listButton, cnt) {
 			if (curTabPanelContent && curTabPanelContent.length > 0) {
 				curTabPanelContent.addClass("eg3_expand");
 				curTabPanelContent.addClass("eg3_widthAuto");
+				if (curTabPanelContent.width() < sidebarLeft.width()) {
+					eg3_closeOverlay(curControlPanel.find(".eg3_collapseOverlay"));
+					eg3_disableExpand(curControlPanel.find(".eg3_expandOverlay"), "true");
+					eg3_disableExpand(curControlPanel.find(".eg3_collapseOverlay"), "true");
+				};
 			}
 			break;
 		case 'thumbs':
@@ -487,6 +495,24 @@ function eg3_closeOverlay(listButton, cnt) {
 	curControlPanel.find('.eg3_expandOverlay').removeAttr('disabled');*/
 	$(listButton).hide();
 	curControlPanel.find('.eg3_expandOverlay').show();
+}
+
+function eg3_disableExpand(button, status) {
+	var handle = eg3_returnJQueryObject(button);
+	if (button) {
+		switch(status) {
+			case 'true':
+			case true:
+			case 'on':
+				handle.attr("disabled", "disabled");
+				break;
+			case 'false':
+			case false:
+			case 'off':
+				handle.removeAttr("disabled");
+				break;
+		}
+	}
 }
 
 /**
@@ -612,6 +638,7 @@ function eg3_resizeSidebar() {
 				break;
 		}
 	}
+	
 	if (EG3_CALLBACK.length > 0) {
 		for (var func in EG3_CALLBACK) {
 			setTimeout(EG3_CALLBACK[func], 20);

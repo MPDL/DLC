@@ -365,12 +365,9 @@ body .eg3_id_siteTitle {
 }
 
 
-
-
 .eg3_fiveRows {  /* 1row = 0,166666667em */
 	height:6em;
 }
-
 
 
 /*****************************************************************************************************************
@@ -378,15 +375,14 @@ body .eg3_id_siteTitle {
  */
 
 
-
-
 /*****************************************************************************************************************
  ******************************				dynamic selectbox with JS functions		******************************
  ******************************					with no maximum width				******************************
  *****************************************************************************************************************/
 .eg3_dynamicSelectBox_js {
-	height:1.333333em;
+	height:1.41833333em;
 	padding:0;
+	padding-right:1.5em;
 	font-size:95%;
 	background-image:url('image/btn_descending_deactivated_16_16.png'); 
 	background-position:right top;
@@ -403,11 +399,10 @@ body .eg3_id_siteTitle {
 	cursor: default;
 }
 .eg3_dynamicSelectBox_js .eg3_selectionContent {
-	margin-right:1.6666em;
-	padding:0 0.6666em 0.16666em 0.6666em;
-	font-size: 97%;
+	padding:0.1666666em 0 0 0.6666em;
+	font-size: 95.5%;
 	height: 1.16666em;
-/*	border: solid 0.09em #B2B2B2;	/* because of webkit engine, the border must be up-rounded for 1px */
+	width:97%;
 	border:0 none;
 }
 .eg3_dynamicSelectBox_js .eg3_selectionText {
@@ -415,19 +410,18 @@ body .eg3_id_siteTitle {
 	overflow:hidden;
 	white-space:nowrap;
 	text-align: left;
+	
 }
 .eg3_dynamicSelectBox_js select {
 	float:left;
 	clear:left;
-	margin-top:-1.5em;
+	margin-top:-1em;
 	
 	/* set the selectbox invisible to show the selectionContent container */
 	opacity: 0;
 	-moz-opacity: 0;
 	filter: alpha(opacity=0); /* for IE 7 & IE 8 necessary */
 }
-
-
 
 
 
@@ -471,7 +465,6 @@ body .eg3_id_siteTitle {
 	float:none;
 }
 .eg3_id_headerMetaMenu .eg3_icon_quickSearch_16_16 {
-/*	background-image: url("image/_default_16_16.png"); */
 	background-image: url("image/ico_search_static_16_16.png");
 	width:1.3333333em;
 	height:1.3333333em;
@@ -496,14 +489,10 @@ body .eg3_id_siteTitle {
 	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
 }
 .eg3_metaMenu .eg3_dynamicSelectBox_js {
-	padding:0;
-	background-position:right top;
-}
-.eg3_metaMenu .eg3_dynamicSelectBox_js * {
-	padding:0;
+	height:1.33333em;
 }
 .eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
-	padding:0.0833333em 0.6666em 0 0.6666em;
+	padding-top:0.0833333em;
 }
 
 /*************************************************************************************************************
