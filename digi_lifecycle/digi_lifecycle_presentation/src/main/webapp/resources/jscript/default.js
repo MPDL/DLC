@@ -719,4 +719,21 @@ $(document).ready(function(e) {
 	eg3_addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
 	eg3_rerenderJSFForms();
+	
+	if ($.browser.msie && $.browser.version < 9) {
+		eg3_ie8_checkHeaderLogoHeight();
+	}
 });
+
+
+
+/**
+ * following functions are only for IE8
+ */
+function eg3_ie8_checkHeaderLogoHeight() {
+	var logo = $('.eg3_solutionLogo img');
+	var tmpImg = new Image(); 
+	tmpImg.src = logo.attr('src');
+	var rel = tmpImg.width / tmpImg.height;
+	logo.css("height", Math.round(logo.width() / rel));
+}
