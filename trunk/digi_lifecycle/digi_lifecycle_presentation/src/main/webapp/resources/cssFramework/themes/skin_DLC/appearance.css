@@ -1954,9 +1954,12 @@ body .eg3_id_siteTitle {
 	display:none; 
 	padding-top:0.25em;
 }
-.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionText{
-	padding-top:0.0833333em;
+.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionContent {
+	padding-top:0;
+}
+.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionText {
 	color:#2F2F2F;
+	font-size:108%;
 }
 .eg3_viewPage .eg3_viewPageMenu .eg3_quickPagination input {
 	text-align:center;
@@ -2047,7 +2050,11 @@ body .eg3_id_siteTitle {
 	clear:both;
 	width:100%;
 }
-			                     
+
+.eg3_viewPage_fulltext h3 {
+	margin-right:0.25em;
+}
+
 .eg3_viewPage .eg3_singleEdit {
 	width:100%;
 }
