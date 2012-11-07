@@ -682,7 +682,7 @@ function eg3_initWindowResizeListener() {
 }
 
 var EG3_MODALPOPUP;
-
+/* used for multiVolumes */
 function eg3_loadPopup(listItem) {
 	var popContent = jQuery(listItem).parents(".eg3_itemContent").find('.modalDialog').html();
 	EG3_MODALPOPUP = jQuery("#EG3_MODALPOPUP");
@@ -693,6 +693,7 @@ function eg3_loadPopup(listItem) {
 	EG3_MODALPOPUP.html(popContent);
 	EG3_MODALPOPUP.show();
 }
+/* used for multiVolumes */
 function eg3_unloadPopup() {
 	EG3_MODALPOPUP.html("");
 	EG3_MODALPOPUP.hide();
