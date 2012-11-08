@@ -181,15 +181,15 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
-		if(loginBean.getUser() == null)
-		{
-			return null;
-		}
+
 		VolumeSearchResult res = null;
 		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
 		if(colId.equalsIgnoreCase("my") )
 		{
-			
+			if(loginBean.getUser() == null)
+			{
+				return null;
+			}
 			SearchCriterion fc;
 //			for(Grant grant: loginBean.getUser().getGrants())
 //			{
