@@ -159,7 +159,8 @@ public abstract class BasePaginatorBean<ListElementType>
             }   
             // logger.info("No List update: "+noListUpdate);
             previousPartList = new ArrayList<ListElementType>();
-            previousPartList.addAll(currentPartList);
+            if(currentPartList != null)
+            	previousPartList.addAll(currentPartList);
             currentPartList = retrieveList(getOffset(), elementsPerPage);
             totalNumberOfElements = getTotalNumberOfRecords();
             // reset current page and reload list if list is shorter than the given current page number allows

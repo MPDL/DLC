@@ -162,6 +162,7 @@ public class ViewPages implements Observer{
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, getLoginBean().getUserHandle());
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 
+
 				//Set the logo of application to collection logo
 				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))

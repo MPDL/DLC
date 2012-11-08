@@ -28,32 +28,21 @@
  */
 package de.mpg.mpdl.dlc.beans;
 
-import gov.loc.www.zing.srw.SearchRetrieveRequestType;
-
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-
-import javax.faces.application.Application;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ValueChangeEvent;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
-import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
-import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @ManagedBean
@@ -65,7 +54,7 @@ public class ApplicationBean
     private String domain;
     private String appTitle;
     private String contextPath;
-   
+    
     private String dfgUrl = null;
 
 
@@ -85,6 +74,7 @@ public class ApplicationBean
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
+    private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
     
     /**
      * Public constructor.
@@ -279,6 +269,14 @@ public class ApplicationBean
 			} 
     	}
 		return dfgUrl;
+	}
+
+	public HashMap<String, Integer> getUploadThreads() {
+		return uploadThreads;
+	}
+
+	public void setUploadThreads(HashMap<String, Integer> uploadThreads) {
+		this.uploadThreads = uploadThreads;
 	}
 
     

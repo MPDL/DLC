@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS dlc_batch_ingest_log(
     step character varying NOT NULL,
     status character varying NOT NULL,
     errorlevel character varying NOT NULL,
+    message character varying,
     startdate timestamp NOT NULL,
     enddate timestamp,
     user_id character varying NOT NULL,

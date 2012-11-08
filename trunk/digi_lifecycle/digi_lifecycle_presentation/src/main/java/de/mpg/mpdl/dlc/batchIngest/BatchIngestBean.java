@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -111,22 +112,14 @@ public class BatchIngestBean {
 		if("".equals(mab) || "".equals(images))
 		{
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest"));	
-			return "";
+			return "pretty:batchIngest";
 		}
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
-		try
-		{
-			ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, user, password, mab, tei, images);
-			ingestProcess.start();
-		}catch(Exception e)
-		{
-			MessageHelper.infoMessage("login failed");
-		}
-	   
-	    clear();
-//	    logger.info("batch ingest finished");
+		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, user, password, mab, tei, images);
+		ingestProcess.start();
+		clear();
 
-		return "";
+		return "pretty:batchIngest";
 	}
 	
 	public String clear()
@@ -135,7 +128,7 @@ public class BatchIngestBean {
 		this.images = "";
 		this.mab = "";
 		this.tei = "";
-		return "";
+		return "pretty:batchIngest";
 	}
 	
 

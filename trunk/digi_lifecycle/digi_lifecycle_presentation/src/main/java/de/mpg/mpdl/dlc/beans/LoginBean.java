@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,9 @@ public class LoginBean
     private String userHandle;
     private User user;
     private String tab = "toc";
+    
+	@ManagedProperty("#{applicationBean}")
+	private ApplicationBean appBean;
     
     private UserAccountServiceBean userAccountServiceBean = new UserAccountServiceBean();
     
@@ -146,6 +150,7 @@ public class LoginBean
 //		String requestURL = request.getRequestURL().toString();
         try 
         {
+        	
     		String requestURL = PropertyReader.getProperty("dlc.instance.url") + pc.getContextPath()+pc.getRequestURL().toString();
 			fc.getExternalContext().redirect(getLoginUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
             
@@ -169,11 +174,14 @@ public class LoginBean
 				this.user = null;
 			
 				FacesContext fc = FacesContext.getCurrentInstance();
-				PrettyContext pc = PrettyContext.getCurrentInstance();
 				
-				//logout from escidoc
-	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
-				fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
+				if(!appBean.getUploadThreads().containsKey(userHandle))
+				{
+					//logout from escidoc
+		    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
+					fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
+				}
+
 
 				//delete session
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -206,5 +214,15 @@ public class LoginBean
     {
     	return PropertyReader.getProperty("escidoc.common.login.url") + LOGOUT_URL;
     }
+
+	public ApplicationBean getAppBean() {
+		return appBean;
+	}
+
+	public void setAppBean(ApplicationBean appBean) {
+		this.appBean = appBean;
+	}
+    
+    
 
 }

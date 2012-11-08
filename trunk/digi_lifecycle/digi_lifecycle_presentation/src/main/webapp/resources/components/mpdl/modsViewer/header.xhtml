@@ -14,6 +14,7 @@
 	<!-- INTERFACE -->
 	<cc:interface>
 		<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="context" />
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -24,7 +25,7 @@
 		<h3 class="eg3_multiVolumeTitle">
 			<pretty:link mappingId="volumes">
 				<f:param value="#{cc.attrs.volume.item.properties.context.objid}"/>
-				<h:outputText value="#{cc.attrs.volume.item.properties.context.getXLinkTitle()}"/>
+				<h:outputText value="#{cc.attrs.context.properties.name}"/>
 			</pretty:link>
 		</h3>
 

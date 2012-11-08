@@ -167,7 +167,8 @@ public class IngestLog_NFS_Backup
 			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 			Class.forName("org.postgresql.Driver");
-			url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
+//			url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
+			url = PropertyReader.getProperty("dlc.database.connection.url");
 			connection = DriverManager.getConnection(url, props);
 
 			URL sqlURL = IngestLog_NFS_Backup.class.getClassLoader().getResource("batch_ingest_init.sql");
