@@ -94,15 +94,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		//update();
 		if(oldColId==null || (!oldColId.equals(colId)))
 		{
-			if (oldColId == null) 
-			{
-				this.loadContext();
-				this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
-				sessionBean.setLogoLink(orga.getId());
-				sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
-				sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home")
-						.replace("$1", orga.getEscidocMd().getTitle())); 
-			}
+			this.loadContext();
+			this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
+			sessionBean.setLogoLink(orga.getId());
+			sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
+			sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home").replace("$1", orga.getEscidocMd().getTitle())); 
 			
 			oldColId = colId;
 			filterString = null;
