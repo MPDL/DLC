@@ -35,14 +35,18 @@ public class ContextServiceBean {
 	
 	public Collection retrieveCollection(String id, String userHandle)
 	{
-		Collection collection = new Collection();
-		collection.setId(id);
+		Collection collection = null;
 		Context context = retrieveContext(id, userHandle);
-		collection.setName(context.getProperties().getName());
-		collection.setDescription(context.getProperties().getDescription());
-		collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
-		collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
-		collection.setType(context.getProperties().getType());
+		if(context != null)
+		{
+			collection = new Collection();
+			collection.setId(id);
+			collection.setName(context.getProperties().getName());
+			collection.setDescription(context.getProperties().getDescription());
+			collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
+			collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
+			collection.setType(context.getProperties().getType());
+		}
 		return collection;
 	}
 	
@@ -56,6 +60,8 @@ public class ContextServiceBean {
 			if(userHandle!=null)
 				contextClient.setHandle(userHandle);
 			context = contextClient.retrieve(contextId);
+			if("CLOSED".equals(context.getProperties().getPublicStatus().name()))
+				return null;
         }catch(Exception e)
         {
         	logger.error("Error while retrieving Context", e);
