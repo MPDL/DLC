@@ -226,7 +226,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 				for(int i = 0; i < loginBean.getUser().getMdEditorCollections().size(); i++)
 				{
 					Collection c = loginBean.getUser().getMdEditorCollections().get(i);
-					if(i == 0)
+					if(fcList.size() == 0)
 						fc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
 					else
 						fc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
