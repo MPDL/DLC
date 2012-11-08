@@ -202,9 +202,11 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			}
 			if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
 			{
+				/*
 				for(int i=0; i<loginBean.getUser().getDepositorCollections().size(); i++)
 				{
 					Collection c = loginBean.getUser().getDepositorCollections().get(i);
+					*/
 					if(fcList.size()==0)
 					{
 						fc = new SearchCriterion(SearchType.CREATED_BY,loginBean.getUser().getId());
@@ -215,7 +217,8 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 						fc = new SearchCriterion(Operator.OR, SearchType.CREATED_BY,loginBean.getUser().getId());
 						fcList.add(fc);
 					}
-				}
+					/*
+				}*/
 			}
 			
 			if(loginBean.getUser().getMdEditorCollections() != null && loginBean.getUser().getMdEditorCollections().size() >0)
