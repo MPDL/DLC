@@ -123,7 +123,7 @@ public class OrganizationalUnitServiceBean {
 			o.setId(id);
 		  	
 			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-	   
+			
 			OrganizationalUnit ou = client.retrieve(id);
 			MetadataRecord escidocMD = client.retrieveMdRecord(id, "escidoc");
 			MetadataRecord dlcMD = client.retrieveMdRecord(id, "dlc");
