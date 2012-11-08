@@ -1103,13 +1103,13 @@ body .eg3_id_siteTitle {
 	font-size:115%;
 	line-height: 145%;
 	font-weight:normal;
-	max-width:50em;
+	max-width:60em;
 }
 .eg3_bibList .eg3_itemPublishingInformation {
 	clear:left;
 }
 .eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
-	max-width: 50em;
+	max-width: 60em;
 	font-size: 166%;
 	line-height: 145%;
 }
@@ -1718,6 +1718,14 @@ body .eg3_id_siteTitle {
 
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem {
 	padding-top:0.1666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem img{
+	float: left;
+	height: 4em;
+	max-height: 4em;
+	margin-left:0.166666666em;
+	margin-right: 1.25em;
+	margin-bottom:0.16666666666em;
 }
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem.eg3_itemInclusiveAction {
 	margin-bottom:2em;
