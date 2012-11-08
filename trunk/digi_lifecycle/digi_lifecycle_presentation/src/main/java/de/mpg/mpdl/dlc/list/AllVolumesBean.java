@@ -17,6 +17,8 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.common.Relation;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
@@ -37,6 +39,7 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.VolumeSearchResult;
 import de.mpg.mpdl.dlc.vo.collection.Collection;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @SessionScoped
@@ -73,21 +76,34 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private String filterString;
 	
 	private String filterItemState = "all";
-
+	
+	private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
+	private Organization orga;
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
+	
 	public AllVolumesBean()
 	{		
 		super();
-		
 	}
 
 	
 	@URLAction(onPostback=false)
 	public void init()
 	{ 
-		
 		//update();
 		if(oldColId==null || (!oldColId.equals(colId)))
 		{
+			if (oldColId == null) 
+			{
+				this.loadContext();
+				this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
+				sessionBean.setLogoLink(orga.getId());
+				sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
+				sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home")
+						.replace("$1", orga.getEscidocMd().getTitle())); 
+			}
+			
 			oldColId = colId;
 			filterString = null;
 			setCurrentPageNumber(1);
@@ -303,35 +319,42 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 	@Override
-	public String getNavigationString() {
+	public String getNavigationString() 
+	{
 		return "pretty:volumes";
 	}
-	public LoginBean getLoginBean() {
+	public LoginBean getLoginBean() 
+	{
 		return loginBean;
 	}
 
-	public void setLoginBean(LoginBean loginBean) {
+	public void setLoginBean(LoginBean loginBean) 
+	{
 		this.loginBean = loginBean;
 	}
 	
 	
 	
-	public Collection getCollection() {
+	public Collection getCollection() 
+	{
 		return collection;
 	}
 
 
-	public void setCollection(Collection collection) {
+	public void setCollection(Collection collection) 
+	{
 		this.collection = collection;
 	}
 
 
-	public String getColId() {
+	public String getColId() 
+	{
 		return colId;
 	}
 
 
-	public void setColId(String colId) {
+	public void setColId(String colId) 
+	{
 		this.colId = colId;
 	}
 
@@ -457,12 +480,14 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 
-	public InternationalizationHelper getInternationalizationHelper() {
+	public InternationalizationHelper getInternationalizationHelper() 
+	{
 		return internationalizationHelper;
 	}
 
 
-	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
+	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) 
+	{
 		this.internationalizationHelper = internationalizationHelper;
 	}
 
@@ -480,22 +505,26 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 
-	public CombinedSortCriterion getSelectedSortCriterion() {
+	public CombinedSortCriterion getSelectedSortCriterion() 
+	{
 		return selectedSortCriterion;
 	}
 
 
-	public void setSelectedSortCriterion(CombinedSortCriterion selectedSortCriterion) {
+	public void setSelectedSortCriterion(CombinedSortCriterion selectedSortCriterion) 
+	{
 		this.selectedSortCriterion = selectedSortCriterion;
 	}
 
 
-	public String getFilterString() {
+	public String getFilterString() 
+	{
 		return filterString;
 	}
 
 
-	public void setFilterString(String filterString) {
+	public void setFilterString(String filterString) 
+	{
 		this.filterString = filterString;
 	}
 
@@ -514,15 +543,25 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 
-	public String getFilterItemState() {
+	public String getFilterItemState() 
+	{
 		return filterItemState;
 	}
 
 
-	public void setFilterItemState(String filterItemState) {
+	public void setFilterItemState(String filterItemState) 
+	{
 		this.filterItemState = filterItemState;
 	}
 	
-	
+	public SessionBean getSessionBean() 
+	{
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) 
+	{
+		this.sessionBean = sessionBean;
+	}
 	
 }
