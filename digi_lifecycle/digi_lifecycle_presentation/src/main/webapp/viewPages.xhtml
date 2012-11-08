@@ -213,6 +213,7 @@
 										width:95.95%;
 										padding-top:1%;
 										padding-left:2%;
+										padding-right:2%;
 									}
 									
 									.cdcAttr {
@@ -226,7 +227,10 @@
 										font-size: 150%;
 										margin-top: 5%;
 									}
-									
+									.cdcLabelHeader.eg3_container_1 {
+										padding-left:1%;
+										width:99%;
+									}
 									.cdcLabel {
 										margin-right:2%;
 										font-weight: bold;
@@ -249,7 +253,7 @@
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this); scrollThumbs();" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this); scrollThumbs();" value=" "/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails cdc eg3_overflowAuto">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto">
 									<h:outputText value="#{viewPages.codicologicalXhtml}" escape="false"/>
 								</h:panelGroup>
 							</rich:tab>
