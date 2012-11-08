@@ -78,7 +78,7 @@ public class AdvancedSearchBean implements Observer {
 	}
 	
 	/**
-	 * Update menu lists when changin languages
+	 * Update menu lists when changing language
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
