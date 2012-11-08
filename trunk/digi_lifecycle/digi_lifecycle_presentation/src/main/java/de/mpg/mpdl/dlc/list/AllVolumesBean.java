@@ -15,6 +15,7 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.common.Relation;
+import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
@@ -90,16 +91,26 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 	@URLAction(onPostback=false)
 	public void init()
-	{ 
+	{
 		//update();
 		if(oldColId==null || (!oldColId.equals(colId)))
 		{
-			this.loadContext();
-			this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
-			sessionBean.setLogoLink(orga.getId());
-			sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
-			sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home").replace("$1", orga.getEscidocMd().getTitle())); 
-			
+			this.loadContext(); 
+			if (collection != null) 
+			{
+				this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
+			}
+			else
+			{  
+				this.orga = ouServiceBean.retrieveOrganization(loginBean.getUser().getOuId());
+			}
+			if(orga != null)
+			{
+				sessionBean.setLogoLink(orga.getId());
+				sessionBean.setLogoUrl(orga.getDlcMd().getFoafOrganization().getImgURL());
+				sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home").replace("$1", orga.getEscidocMd().getTitle())); 
+			}
+				
 			oldColId = colId;
 			filterString = null;
 			setCurrentPageNumber(1);
@@ -108,7 +119,6 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			{
 				selectedSortCriterion = CombinedSortCriterion.LAST_MODIFIED_DESC;
 				//sortCriterionList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.ASCENDING));
-				
 			}
 			else
 			{
@@ -118,7 +128,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		}
 		
 	} 
-
+	
 	@URLAction(onPostback=false)
 	public void loadContext()
 	{ 
@@ -140,15 +150,16 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 
 	@Override
-	public List<SortCriterion> getSortCriterionList() {
+	public List<SortCriterion> getSortCriterionList() 
+	{
 		return selectedSortCriterion.getScList();
 	}
 
 
 	@Override
-	public List<SelectItem> getSortIndicesMenu() {
+	public List<SelectItem> getSortIndicesMenu() 
+	{
 		List<SelectItem> scMenuList = new ArrayList<SelectItem>();
-		
 		
 		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_author")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.AUTHOR_TITLE_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_author_desc")));
