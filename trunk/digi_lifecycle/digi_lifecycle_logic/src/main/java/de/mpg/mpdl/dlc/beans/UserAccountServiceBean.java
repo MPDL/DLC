@@ -121,24 +121,33 @@ public class UserAccountServiceBean {
 	        	{
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getDepositorCollections().add(c);
-					user.getDepositorContextIds().add(c.getId());
+					if(c!= null)
+					{
+						user.getDepositorCollections().add(c);
+						user.getDepositorContextIds().add(c.getId());
+					}
 	        	}			
 				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
 	        	{
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getModeratorCollections().add(c);
-					user.getModeratorContextIds().add(c.getId());
+					if(c!= null)
+					{
+						user.getModeratorCollections().add(c);
+						user.getModeratorContextIds().add(c.getId());
+					}
 	        	}
 				  
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
 	        	{
 					user.getGrants().add(grant);
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getMdEditorCollections().add(c);
-					user.getMdEditorContextIds().add(c.getId());
+					if(c!= null)
+					{
+						user.getMdEditorCollections().add(c);
+						user.getMdEditorContextIds().add(c.getId());
+					}
 	        	}
 			}
 		}catch(Exception e)
@@ -191,24 +200,35 @@ public class UserAccountServiceBean {
 	        	}
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
 	        	{
-					user.getGrants().add(grant);
+					
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getModeratorCollections().add(c);
-					user.getModeratorContextIds().add(c.getId());
+					if(c != null)
+					{
+						user.getGrants().add(grant);
+						user.getModeratorCollections().add(c);
+						user.getModeratorContextIds().add(c.getId());
+					}
 	        	}				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
 	        	{
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getGrants().add(grant);
-					user.getDepositorCollections().add(c);
-					user.getDepositorContextIds().add(c.getId());
+					if(c != null)
+					{
+						user.getGrants().add(grant);
+						user.getDepositorCollections().add(c);
+						user.getDepositorContextIds().add(c.getId());
+					}
 	        	}		
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
 	        	{   
-					user.getGrants().add(grant);
+					
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					user.getMdEditorCollections().add(c);
-					user.getMdEditorContextIds().add(c.getId());
+					if(c != null)
+					{
+						user.getGrants().add(grant);
+						user.getMdEditorCollections().add(c);
+						user.getMdEditorContextIds().add(c.getId());
+					}
 	        	}
 			}			
 
@@ -348,8 +368,6 @@ public class UserAccountServiceBean {
 				for(String id : user.getModeratorContextIds())
 				{
 					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
-					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 
@@ -437,8 +455,6 @@ public class UserAccountServiceBean {
 				for(String id: user.getModeratorContextIds())
 				{
 					String contextTitle = contextServiceBean.retrieveContext(id, null).getXLinkTitle();
-					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.depositor"), id, contextTitle);
-					client.createGrant(ua.getObjid(), grant);
 					grant = newGrant(grant, PropertyReader.getProperty("escidoc.role.user.moderator"), id, contextTitle);
 					client.createGrant(ua.getObjid(), grant);
 				}

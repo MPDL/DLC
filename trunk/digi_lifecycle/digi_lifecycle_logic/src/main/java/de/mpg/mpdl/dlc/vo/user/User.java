@@ -101,7 +101,7 @@ public class User {
 
 	public void setCreatedOrgas(List<Organization> createdOrgas) {
 		this.createdOrgas = createdOrgas;
-	}
+	} 
 
 	public List<Collection> getCreatedCollections() {
 		return createdCollections;
