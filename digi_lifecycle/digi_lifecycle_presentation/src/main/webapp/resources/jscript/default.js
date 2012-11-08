@@ -585,7 +585,7 @@ function eg3_initSidebar(evt) {
 	if (!evt) { //if the function was called without an event, e.g. a tab was changed in viewPages
 		EG3_PAGE_IMG_OBJ.load(eg3_initSidebar); //add the img load event to the current image container
 	} else { // if the load event is given, call the resize function
-		eg3_resizeSidebar(); 
+		eg3_resizeSidebar();
 	}
 }
 
