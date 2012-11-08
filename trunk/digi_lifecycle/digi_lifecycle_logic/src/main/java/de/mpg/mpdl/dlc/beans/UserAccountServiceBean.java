@@ -204,6 +204,8 @@ public class UserAccountServiceBean {
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					if(c != null)
 					{
+	
+						user.setOuId(c.getOuId());
 						user.getGrants().add(grant);
 						user.getModeratorCollections().add(c);
 						user.getModeratorContextIds().add(c.getId());
@@ -214,6 +216,8 @@ public class UserAccountServiceBean {
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					if(c != null)
 					{
+						if(user.getOuId() == null)
+							user.setOuId(c.getOuId());
 						user.getGrants().add(grant);
 						user.getDepositorCollections().add(c);
 						user.getDepositorContextIds().add(c.getId());
@@ -225,6 +229,8 @@ public class UserAccountServiceBean {
 					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
 					if(c != null)
 					{
+						if(user.getOuId() == null)
+							user.setOuId(c.getOuId());
 						user.getGrants().add(grant);
 						user.getMdEditorCollections().add(c);
 						user.getMdEditorContextIds().add(c.getId());
