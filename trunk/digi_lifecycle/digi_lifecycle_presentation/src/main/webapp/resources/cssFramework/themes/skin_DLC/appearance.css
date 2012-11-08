@@ -1015,9 +1015,7 @@ body .eg3_id_siteTitle {
  *****************************************************************************************************/
 .eg3_bibList {
 	width:99.8%;
-/*	background-color:#EEF2F0; */
-/*	background-color:#33F2F0; */
-/*	border:solid 0.09em #B2B2B2;*/ /* because of webkit-engine, the border-value must be up-rounded */
+	min-height:30em;
 }
 .eg3_bibList .eg3_iconActionLabel {
 	margin-left:0.8333em;
@@ -1058,7 +1056,6 @@ body .eg3_id_siteTitle {
  *****************************************************************************************************/
 .eg3_bibList .eg3_listHeader {
 	width:100%;
-/*	border: solid 0.08333em #B2B2B2; */
 	height:2.08333em;
 }
 .eg3_bibList .eg3_listHeader .eg3_selectArea {
@@ -1076,11 +1073,9 @@ body .eg3_id_siteTitle {
 }
 
 .eg3_bibList .eg3_listHeader .eg3_mediabarActionArea {
-/*	width:23.95%; */
 	width:25%;
 	padding-left:0.1%;
 	padding-top:0.3%;
-/*	padding:0.3% 0.58333% 0 0.58333%; */
 	background-color:#EEEEEE;
 	height:100%;
 }

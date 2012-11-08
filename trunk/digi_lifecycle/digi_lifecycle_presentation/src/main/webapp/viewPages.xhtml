@@ -28,9 +28,6 @@
 				<!-- TODO labels -->
 				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
 			</h:panelGroup>
-			
-			
-			
 		</ui:define>
 		
 		<ui:define name="citationLink">
@@ -50,13 +47,6 @@
 					<h:outputText value="&#160;"/>
 				</button>
 				<br/>
-				<h:outputLabel for="bookmarkLink">
-					<h:outputText value="#{lbl.citation_link_bookmark}"/>
-				</h:outputLabel>
-				<h:panelGroup styleClass="eg3_markTextButton">
-					<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
-				</h:panelGroup>
-				<h:inputText id="bookmarkLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				
 				<h:outputLabel for="volumeLink">
 					<h:outputText value="#{lbl.citation_handle_title}"/>
@@ -75,6 +65,14 @@
 					</h:panelGroup>
 					<h:inputText id="citSinglePage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
 					
+					<h:outputLabel for="bookmarkLinkSingle">
+						<h:outputText value="#{lbl.citation_link_bookmark}"/>
+					</h:outputLabel>
+					<h:panelGroup styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
+					</h:panelGroup>
+					<h:inputText id="bookmarkLinkSingle" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
+					
 					<h:outputLabel for="citDigiView">
 						<h:outputText value="#{lbl.citation_link_digilib}"/>
 					</h:outputLabel>
@@ -85,22 +83,33 @@
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-					<h:outputLabel for="citRightPage">
-						<h:outputText value="#{lbl.citation_handle_verso}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_verso_mark}"/>
-					</h:panelGroup>
-					<h:inputText id="citRightPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" styleClass="eg3_container_1"/>
-					
 					<h:outputLabel for="citLeftPage">
 						<h:outputText value="#{lbl.citation_handle_recto}"/>
 					</h:outputLabel>
 					<h:panelGroup styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_handle_recto_mark}"/>
 					</h:panelGroup>
-					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
+					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage!=null}"/>
+					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage==null}"/>
+					
+					<h:outputLabel for="citRightPage">
+						<h:outputText value="#{lbl.citation_handle_verso}"/>
+					</h:outputLabel>
+					<h:panelGroup styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_handle_verso_mark}"/>
+					</h:panelGroup>
+					<h:inputText id="citRightPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage!=null}"/>
+					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage==null}"/>
+					
+					<h:outputLabel for="bookmarkLink">
+						<h:outputText value="#{lbl.citation_link_bookmark}"/>
+					</h:outputLabel>
+					<h:panelGroup styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
+					</h:panelGroup>
+					<h:inputText id="bookmarkLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				</ui:fragment>
+				
 				<ui:remove>
 					<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
 						<h:outputLabel for="citFulltextPage">
@@ -307,7 +316,6 @@
 									containerDiv.scrollTop(newScrollPos);
 								}
 							}
-						
 						}
 						
 						function getGreatesValueOf(elements, type) {
@@ -366,11 +374,12 @@
 							}
 						}
 						
+						/**
+						 * following functions for page handling after page init and every ajax call 
+						 */
 						var startSidebarContent = '';
 						$(document).ready(function(e) {
 							EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()", "setViewPortHeight('false')");
-							
-//							startSidebarContent = checkActiveSidebarTab(); //save the value of the first sidebar content container
 							
 							$("#viewPage img").load(eg3_initSidebar);
 							eg3_initWindowResizeListener();
