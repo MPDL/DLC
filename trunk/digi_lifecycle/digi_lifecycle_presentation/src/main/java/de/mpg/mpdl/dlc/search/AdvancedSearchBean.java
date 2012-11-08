@@ -158,6 +158,13 @@ public class AdvancedSearchBean implements Observer {
 				contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
 			}
 		}
+		else
+		{
+			for(Context c : contextServiceBean.retrieveAllcontexts())
+			{
+				contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
+			}
+		}
 		
 		cs.setContextList(contextSelectItems);
 		cs.setOuId(ouId);
