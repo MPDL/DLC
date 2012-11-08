@@ -1,10 +1,16 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import javax.faces.bean.ManagedProperty;
+
 import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
+import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.util.InternationalizationHelper;
+import de.mpg.mpdl.dlc.util.MessageHelper;
 
 public class IngestProcess extends Thread{
 	
@@ -30,6 +36,12 @@ public class IngestProcess extends Thread{
 	private long lastBeat = 0;
 	
 	private ContextServiceBean contectServiceBean = new ContextServiceBean();
+	
+	@ManagedProperty("#{applicationBean}")
+	private ApplicationBean applicationBean;
+	
+	@ManagedProperty("#{loginBean}")
+	private LoginBean loginBean;
 
 	
 	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, String userName, String password, String mab, String tei, String images) 
@@ -47,6 +59,7 @@ public class IngestProcess extends Thread{
 		this.mab = mab;
 		this.tei = tei;
 		this.images = images;
+
 	}
 
 	public void run()
@@ -54,6 +67,14 @@ public class IngestProcess extends Thread{
 		/*
 		log = new IngestLog_NFS_Backup(logName, step, action, errorLevel, userId, contextId, images, mab, tei,  userHandle);
 		*/
+
+//		if(applicationBean != null && applicationBean.getUploadThreads().containsKey(loginBean.getUserHandle()))
+//		{
+//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())+1);
+//		}
+//		else
+//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
+		
 		log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, userName, password, images, mab, tei);
 		try {
 
@@ -65,10 +86,15 @@ public class IngestProcess extends Thread{
 //			log.clear();
 		} catch (Exception e) {
 			logger.error("Error while checking ingest data", e);
+			MessageHelper.errorMessage("login error");
+
 //			log.clear();
 		}
 		finally
 		{
+//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())-1);
+//			if(applicationBean.getUploadThreads().get(loginBean.getUserHandle()) == 0)
+//				applicationBean.getUploadThreads().remove(loginBean.getUserHandle());
 			log.clear();
 		}
 	}
@@ -170,6 +196,23 @@ public class IngestProcess extends Thread{
 	void setPassword(String password) {
 		this.password = password;
 	}
+
+	public ApplicationBean getApplicationBean() {
+		return applicationBean;
+	}
+
+	public void setApplicationBean(ApplicationBean applicationBean) {
+		this.applicationBean = applicationBean;
+	}
+
+	public LoginBean getLoginBean() {
+		return loginBean;
+	}
+
+	public void setLoginBean(LoginBean loginBean) {
+		this.loginBean = loginBean;
+	}
+	
 	
 	
 	

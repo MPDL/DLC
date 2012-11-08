@@ -81,9 +81,7 @@
 					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
 						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
 					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
-						<h:outputText value="(#{cc.attrs.volume.item.properties.context.getXLinkTitle()})"/>
-					</h:panelGroup>
+
 				</h:panelGroup>
 				
 				
@@ -294,9 +292,6 @@
 					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
 						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
 					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
-						<h:outputText value="(#{cc.attrs.volume.item.properties.context.getXLinkTitle()})"/>
-					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
@@ -347,9 +342,6 @@
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemPublishingInformation">
 						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
-						<h:outputText value="(#{cc.attrs.volume.item.properties.context.getXLinkTitle()})"/>
 					</h:panelGroup>
 				</h:panelGroup> <!-- END eg3_itemHeadline -->
 				

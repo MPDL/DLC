@@ -96,6 +96,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			{
 				selectedSortCriterion = CombinedSortCriterion.LAST_MODIFIED_DESC;
 				//sortCriterionList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.ASCENDING));
+				
 			}
 			else
 			{
@@ -157,6 +158,10 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	//TODO
 	public List<Volume> retrieveList(int offset, int limit)throws Exception 
 	{  
+		if(loginBean.getUser() == null)
+		{
+			return null;
+		}
 		VolumeSearchResult res = null;
 		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
 		if(colId.equalsIgnoreCase("my") )

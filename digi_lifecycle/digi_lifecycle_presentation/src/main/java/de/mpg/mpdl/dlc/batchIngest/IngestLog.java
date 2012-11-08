@@ -34,6 +34,7 @@ import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
+import org.eclipse.persistence.internal.jpa.deployment.xml.parser.XMLException;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
@@ -132,13 +133,6 @@ public class IngestLog
     
     private SessionExtenderTask seTask;
 
-
-    /**
-     * The data format that is used to display start- and end-date.
-     * Example: 2009-12-31 23:59
-     */
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-    
     public IngestLog()
     {
     	
@@ -147,63 +141,65 @@ public class IngestLog
 
 	public IngestLog(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, String username, String password, String images, String mab, String tei) 
 	{
-		this.name = name;
-    	this.step = step;
-    	try {
+
+		try{
+			
+
+			this.name = name;
+	    	this.step = step;
+	    	
 			if(action.equalsIgnoreCase("save"))
 				this.status = Status.PRIVATE;
 			else
 				this.status = Status.PUBLIC;
-		} catch (Exception e) {
-			// TODO Auto-generat
-			e.printStackTrace();
-
+			
+	    	this.errorLevel = errorLevel;
+			this.startDate = new Date();
+			this.userId = userId;
+			this.contextId = contextId;
+			this.userHandle = userHandle;
+			this.server = server;
+			this.username = username;
+			this.password = password;
+			this.images = images;
+			this.mab = mab;
+			this.tei = tei;
+			
+			this.connection = getConnection();
+			this.ftp = ftpLogin(server, username, password);
+			
+			saveLog();
+			if(this.ftp.getReplyCode() == 230)
+				this.seTask = new SessionExtenderTask(userHandle, userId);
+			else
+				updateLog("message", "ftp server login error");
+		}catch(IOException e)
+		{
+			
 		}
-    	this.errorLevel = errorLevel;
-		this.startDate = new Date();
-		this.userId = userId;
-		this.contextId = contextId;
-		this.userHandle = userHandle;
-		this.server = server;
-		this.username = username;
-		this.password = password;
-		this.images = images;
-		this.mab = mab;
-		this.tei = tei;
-		
-		this.connection = getConnection();
-		this.ftp = ftpLogin(server, username, password);
-		
-		this.seTask = new SessionExtenderTask(userHandle, userId);
-		
-		saveLog();
+
 	}
 	
-	public static FTPClient ftpLogin(String server, String username, String password)
+	public static FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
-		FTPClient ftp = new FTPClient();
-		try{
-			int reply;
-			ftp.connect(server);
-			
-	        ftp.setDataTimeout(600000); // 10 minutes
-	        ftp.setConnectTimeout(600000); // 10 minutes
-	        ftp.setControlEncoding("UTF-8");
 
-			ftp.login(username, password);
-			
-	        System.out.println("Connected to " + server + ".");
-	        System.out.print(ftp.getReplyString());
-	        // After connection attempt, you should check the reply code to verify  success.
-	        reply = ftp.getReplyCode();
-	        if(!FTPReply.isPositiveCompletion(reply)) {
-		          ftp.disconnect();
-		          System.err.println("FTP server refused connection.");
-		          }
-		}catch(Exception e)
-		{
-			logger.error("ftpLogin error" + e.getMessage());
-		}
+		FTPClient ftp = new FTPClient();
+
+		int reply;
+		ftp.connect(server);
+		
+        ftp.setDataTimeout(600000); // 10 minutes
+        ftp.setConnectTimeout(600000); // 10 minutes
+        ftp.setControlEncoding("UTF-8");
+
+		if(ftp.login(username, password));
+        // After connection attempt, you should check the reply code to verify  success.
+        reply = ftp.getReplyCode();
+        if(!FTPReply.isPositiveCompletion(reply)) {
+	          ftp.disconnect();
+	          System.err.println("FTP server refused connection.");
+	          }
+
 		return ftp;
 	}
 	
@@ -721,8 +717,8 @@ public class IngestLog
 
 				
 				MabXmlTransformation transform = new MabXmlTransformation();
-				File modsFile = transform.mabToMods(null, mFile);
 				try {
+					File modsFile = transform.mabToMods(null, mFile);
 					ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
 					item.setModsMetadata(md);
 					logger.info("read mab for " + name);
@@ -741,7 +737,7 @@ public class IngestLog
 						items.remove(name);
 						volumes.put(name, item);
 						}
-					} catch (Exception e) {
+					} catch (XMLException e) {
 					String errorMessage = Consts.MABTRANSFORMERROR;
 					logger.error(errorMessage , e);
 					item.getErrorMessage().add(errorMessage);
@@ -919,7 +915,13 @@ public class IngestLog
 	
 	private void downloadImages(String imagesDirectory, String dlcDirectory, List<File> images, File footer)
 	{
-		FTPClient ftp = ftpLogin(server, username, password);
+		FTPClient ftp = null;
+		try {
+			ftp = ftpLogin(server, username, password);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		for(File i : images)
 		{
 			try{
