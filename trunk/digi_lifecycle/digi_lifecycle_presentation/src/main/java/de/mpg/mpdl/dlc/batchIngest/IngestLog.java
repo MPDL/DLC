@@ -1130,7 +1130,7 @@ public class IngestLog
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
 					downloadImages(logItemId, null, bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
-					updateLogItem(logItemId, "message", "images downloaded");
+					updateLogItem(logItemId, "message", "Uploading");
 					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 					
 					System.out.println(itemId);
@@ -1155,7 +1155,7 @@ public class IngestLog
 						for(BatchIngestItem v : bi.getVolumes())
 						{
 							downloadImages(logItemId, v.getName(), v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
-							updateLogItemVolume(logItemId, v.getName(), "message", "images downloaded");
+							updateLogItemVolume(logItemId, v.getName(), "message", "Uploading");
 						}
 						mv = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 				
