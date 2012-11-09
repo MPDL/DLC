@@ -183,7 +183,7 @@ public class IngestLog
 		{
 			updateLog("errorLevel", ErrorLevel.FATAL.toString());
 			updateLog("step", Step.STOPPED.toString());
-			updateLog("message", "cannot connect to ftp server");
+			updateLog("message", "cannot connect to ftp/ftps server");
 			updateLog("enddate", new Date().toString());
 		}
 		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
@@ -398,6 +398,7 @@ public class IngestLog
 	
 	public boolean ftpCheck()
 	{ 
+		logger.info("Check batchingest Data");
 		this.itemsForBatchIngest.clear();
 		this.errorItems.clear();
 
@@ -405,7 +406,6 @@ public class IngestLog
 //		{
 //			seTask.start();
 			
-			System.err.println("ftpCheck result " + (errorItems.size() == 0));
 			
 			try {
 		//			if(ftp.getReplyCode() != 230)
@@ -1032,49 +1032,82 @@ public class IngestLog
 //        
 //	}
 	
-	private void downloadImages(String imagesDirectory, String dlcDirectory, List<File> images, File footer)
+	private void downloadImages(String logItemId, String logItemVolumeName, String imagesDirectory, String dlcDirectory, List<File> images, File footer)
 	{
-		try {
 
 
+		if(logItemVolumeName == null)
+			updateLogItem(logItemId, "message", "Downloading images from the server");
+		else
+			updateLogItemVolume(logItemId, logItemVolumeName, "message", "Downloading images from the server");
+		
+		String fileName = null;
+		try{
 			for(File i : images)
 			{
-				if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
-				{
-					ftpLogout(ftp);
-					if(protocol)
-						this.ftp = ftpLogin(server, username, password);
-					else
-						this.ftp = ftpsLogin(server, username, password);
+				fileName = i.getName();
+				FileOutputStream out = new FileOutputStream(i);
+				try {
+					if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+					{
+						ftpLogout(ftp);
+						if(protocol)
+							this.ftp = ftpLogin(server, username, password);
+						else
+							this.ftp = ftpsLogin(server, username, password);
+					}
+				}catch (IOException e1) {
+					updateLog("errorLevel", ErrorLevel.FATAL.toString());
+					updateLog("step", Step.STOPPED.toString());
+					updateLog("message", "FTP server refused connection.");
 				}
-				try{
-					FileOutputStream out = new FileOutputStream(i);
-					ftp.setFileType(FTP.BINARY_FILE_TYPE);
-					ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
-					out.flush();
-					out.close();
-					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
-	
-				}catch(Exception e)
-				{
-					logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
-				}
+				ftp.setFileType(FTP.BINARY_FILE_TYPE);
+				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+				out.flush();
+				out.close();
+				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
 			}
-			FileOutputStream out;
+			}catch(Exception e)
+			{
+				if(logItemVolumeName == null)
+					updateLogItem(logItemId, "message", "Error while copying Image from FTP Server: " + fileName + " .(Message): " + e.getMessage());
+				else
+					updateLogItemVolume(logItemId, logItemVolumeName, "message", "Error while copying Image from FTP Server: " + fileName + " .(Message): " + e.getMessage());
+				logger.error("Error while copying Image from FTP Server: " + fileName + " .(Message): " + e.getMessage());
+			}
+		
+		if(footer != null)
+		{
 			try {
-				out = new FileOutputStream(footer);
+				FileOutputStream out = new FileOutputStream(footer);
+				try {
+					if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+					{
+						ftpLogout(ftp);
+						if(protocol)
+							this.ftp = ftpLogin(server, username, password);
+						else
+							this.ftp = ftpsLogin(server, username, password);
+					}
+				}catch (IOException e1) {
+					updateLog("errorLevel", ErrorLevel.FATAL.toString());
+					updateLog("step", Step.STOPPED.toString());
+					updateLog("message", "FTP server refused connection.");
+				}
 				ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 				out.flush();
 				out.close();
 				logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
-			} catch (Exception e) {
+			} catch (Exception e) 
+			{
+				if(logItemVolumeName == null)
+					updateLogItem(logItemId, "message", "Cannot download footer " + footer.getName());
+				else
+					updateLogItemVolume(logItemId, logItemVolumeName, "message", "Cannot download footer " + footer.getName());
 				logger.error("Error while copying Image from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 			}
-		} catch (IOException e1) {
-			updateLog("errorLevel", ErrorLevel.FATAL.toString());
-			updateLog("step", Step.STOPPED.toString());
-			updateLog("message", "FTP server refused connection.");
 		}
+
 
 	}
 	
@@ -1096,15 +1129,16 @@ public class IngestLog
 				String itemId = null;
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
-					
-					
-					downloadImages(bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
-					DiskFileItem teiFile = null;
-
+					downloadImages(logItemId, null, bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
+					updateLogItem(logItemId, "message", "images downloaded");
 					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
+					
 					System.out.println(itemId);
 					if(itemId != null)
+					{
 						updateLogItem(logItemId, "item_id", itemId);
+						updateLogItem(logItemId, "message", "ingest finished");
+					}
 					updateLogItem(logItemId, "enddate", new Date().toString());
 					if(itemId == null)
 					{
@@ -1119,7 +1153,10 @@ public class IngestLog
 					try{
 						
 						for(BatchIngestItem v : bi.getVolumes())
-							downloadImages(v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
+						{
+							downloadImages(logItemId, v.getName(), v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
+							updateLogItemVolume(logItemId, v.getName(), "message", "images downloaded");
+						}
 						mv = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 				
 					}catch(Exception e)
@@ -1156,7 +1193,8 @@ public class IngestLog
 							}
 							else
 							{
-								
+								updateLogItemVolume(logItemId, vol.getName(), "message", "ingest finished");
+								updateLogItemVolume(logItemId, vol.getName(), "item_id", volId);
 								volIds.add(volId);
 							}
 						}

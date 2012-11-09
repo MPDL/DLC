@@ -106,9 +106,7 @@ public class IngestProcess extends Thread{
 				log.clear();
 			}
 		} catch (Exception e) {
-			
-			logger.error("cannot conntect with postgres");
-
+			logger.error("Exception while batchingest");
 		} 
 
 	}
