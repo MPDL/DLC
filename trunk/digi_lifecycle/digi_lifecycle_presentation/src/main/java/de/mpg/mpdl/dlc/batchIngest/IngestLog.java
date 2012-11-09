@@ -592,7 +592,7 @@ public class IngestLog
 			}
 			FTPFile[] ds = ftp.listFiles(directory);
 			if(ds.length == 0)
-				updateLog("message", "Error: check images directory");
+				updateLog("message", "Error: check images/mab/tei directory");
 			for(FTPFile d : ds)
 			{
 				if(d.isDirectory() && !".".equals(d.getName()) && !"..".equals(d.getName()))
@@ -660,7 +660,7 @@ public class IngestLog
 			}
 			FTPFile[] filesList = ftp.listFiles(directory);
 			if(filesList.length == 0)
-				updateLog("message", "Error: check tei directory");
+				updateLog("message", "Error: check images/mab/tei directory");
 			for(FTPFile tmpFile : filesList)
 			{
 				if(tmpFile.isDirectory())
@@ -804,7 +804,7 @@ public class IngestLog
 			}
 			FTPFile[] filesList = ftp.listFiles(directory);
 			if(filesList.length == 0)
-				updateLog("message", "Error: check mab directory");
+				updateLog("message", "Error: check images/mab/tei directory");
 			for(FTPFile tmpFile : filesList)
 			{
 				if(tmpFile.isDirectory())

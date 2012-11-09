@@ -1,7 +1,5 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,11 +11,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPConnectionClosedException;
-import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
+import org.postgresql.util.PSQLException;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
@@ -56,9 +51,12 @@ public class BatchIngestBean {
 	
 	private IngestProcess ingestProcess;
 	
+	private boolean protocol;
+	
 	@PostConstruct
 	public void init()
 	{
+		this.protocol = true;
 		this.contextSelectItems.clear();
 		SelectItem item;
 		List<String> ids = new ArrayList();
@@ -114,9 +112,17 @@ public class BatchIngestBean {
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest"));	
 			return "pretty:batchIngest";
 		}
-		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
-		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, user, password, mab, tei, images);
+
+		if(images.startsWith("/"))
+			images = images.substring(1);
+		if(mab.startsWith("/"))
+			mab = mab.substring(1);
+		if(tei != "" && tei.startsWith("/"))
+			tei = tei.substring(1);
+		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
 		ingestProcess.start();
+		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
+
 		clear();
 
 		return "pretty:batchIngest";
@@ -224,6 +230,18 @@ public class BatchIngestBean {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public boolean isProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(boolean protocol) {
+		this.protocol = protocol;
+	}
+
+
+
+
 
 
 	
