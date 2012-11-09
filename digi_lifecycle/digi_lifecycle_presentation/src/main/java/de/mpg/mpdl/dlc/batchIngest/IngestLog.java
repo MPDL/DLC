@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +14,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,10 +30,12 @@ import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
+import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.internal.jpa.deployment.xml.parser.XMLException;
 
@@ -64,7 +67,7 @@ public class IngestLog
      */
 	public enum Step
 	{
-		CHECK, STOPPED, STARTED, FINISHED 
+		CHECK, STOPPED, STARTED, FINISHED
 	}
 	
     /**
@@ -112,6 +115,7 @@ public class IngestLog
 	private String images;
 	
 	private String server;
+	private boolean protocol;
 	private String username;
 	private String password;
 	
@@ -131,7 +135,7 @@ public class IngestLog
 
     private List<BatchIngestItem> items = new ArrayList<BatchIngestItem>();
     
-    private SessionExtenderTask seTask;
+//    private SessionExtenderTask seTask;
 
     public IngestLog()
     {
@@ -139,76 +143,123 @@ public class IngestLog
     }
 
 
-	public IngestLog(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, String username, String password, String images, String mab, String tei) 
+	public IngestLog(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String username, String password, String images, String mab, String tei)throws Exception
 	{
 
-		try{
-			
+		this.name = name;
+    	this.step = step;
+    	
+		if(action.equalsIgnoreCase("save"))
+			this.status = Status.PRIVATE;
+		else
+			this.status = Status.PUBLIC;
+		
+    	this.errorLevel = errorLevel;
+		this.startDate = new Date();
+		this.userId = userId;
+		this.contextId = contextId;
+		this.userHandle = userHandle;
+		this.server = server;
+		this.protocol = protocol;
+		this.username = username;
+		this.password = password;
+		this.images = images;
+		this.mab = mab;
+		this.tei = tei;
 
-			this.name = name;
-	    	this.step = step;
-	    	
-			if(action.equalsIgnoreCase("save"))
-				this.status = Status.PRIVATE;
-			else
-				this.status = Status.PUBLIC;
-			
-	    	this.errorLevel = errorLevel;
-			this.startDate = new Date();
-			this.userId = userId;
-			this.contextId = contextId;
-			this.userHandle = userHandle;
-			this.server = server;
-			this.username = username;
-			this.password = password;
-			this.images = images;
-			this.mab = mab;
-			this.tei = tei;
-			
-			this.connection = getConnection();
-			this.ftp = ftpLogin(server, username, password);
-			
-			saveLog();
-			if(this.ftp.getReplyCode() == 230)
-				this.seTask = new SessionExtenderTask(userHandle, userId);
-			else
-				updateLog("message", "ftp server login error");
-		}catch(IOException e)
+		this.connection = getConnection();
+		saveLog();
+
+		try
 		{
-			
+			if(protocol)
+				this.ftp = ftpLogin(server, username, password);
+			else
+			{
+				this.ftp = ftpsLogin(server, username, password);
+				System.err.println("ftp1 = " + ftp.getReplyCode());
+			}
+		}catch(Exception e)
+		{
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "cannot connect to ftp server");
+			updateLog("enddate", new Date().toString());
 		}
-
+		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+		{
+			System.err.println("ftp2 = " + ftp.getReplyCode());
+//			this.seTask = new SessionExtenderTask(userHandle, userId);
+		}
+		else
+		{
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "FTP server refused connection.");
+		}
+		
 	}
 	
 	public static FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
-
+	
+		System.err.println("ftpLogin");
 		FTPClient ftp = new FTPClient();
-
-		int reply;
 		ftp.connect(server);
-		
         ftp.setDataTimeout(600000); // 10 minutes
         ftp.setConnectTimeout(600000); // 10 minutes
         ftp.setControlEncoding("UTF-8");
-
-		if(ftp.login(username, password));
-        // After connection attempt, you should check the reply code to verify  success.
-        reply = ftp.getReplyCode();
-        if(!FTPReply.isPositiveCompletion(reply)) {
-	          ftp.disconnect();
-	          System.err.println("FTP server refused connection.");
-	          }
-
+		ftp.login(username, password);
+        if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+        	ftp.disconnect();
+	        logger.error("FTP server refused connection.");
+	    }
 		return ftp;
 	}
 	
-	public static Connection getConnection()
+	public static FTPSClient ftpsLogin(String server, String username, String password) throws IOException
+	{
+		
+
+		boolean isImpicit = false;
+		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
+		
+		ftps.setDataTimeout(10000);
+		logger.info("Connecting to FTPS Server");
+        int reply;
+        System.err.println("Connect FTPS");
+        ftps.connect(server, 21000);
+        ftps.login(username, password);
+        System.err.println("Login FTPS Success");
+
+        //client.setFileType(FTP.BINARY_FILE_TYPE);
+        ftps.setFileType(FTP.NON_PRINT_TEXT_FORMAT);
+        ftps.execPBSZ(0);  // Set protection buffer size
+        ftps.execPROT("P"); // Set data channel protection to private
+        ftps.enterLocalPassiveMode();
+
+        reply = ftps.getReplyCode();
+
+        if (!FTPReply.isPositiveCompletion(reply))
+        {
+        	ftps.disconnect();
+            System.err.println("FTP server refused connection.");
+
+        }
+        System.err.println("ftps = " + ftps.getReplyCode());
+
+		return ftps;
+	}
+	
+
+
+
+	public static Connection getConnection() throws Exception
 	{
 		String url;
 
 		Connection connection = null;
-		try{
+		
 			Properties props = new Properties();
 			props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 			props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
@@ -241,11 +292,8 @@ public class IngestLog
                 stmt.executeUpdate(query);
                 stmt.close();
             }
-		}
-		catch(Exception e)
-		{
-			logger.error("cannot set up Batch Ingest Databae"+e.getMessage());
-		}
+		
+
 		return connection;
 	}
 	
@@ -323,88 +371,125 @@ public class IngestLog
 		}
 	}
 	
+	public String getLogData(String name)
+	{
+		String data = null;
+		try
+		{
+            if(connection == null)
+            {
+            	connection = getConnection();
+            }
+
+			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log where id = " + logId);
+			ResultSet resultSet = statement.executeQuery();
+			if(resultSet.next())
+			{
+				data = resultSet.getString(name);
+			}
+
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException("Error while uploading log", e);
+		}
+		return data;
+	}
+	
 	public boolean ftpCheck()
 	{ 
 		this.itemsForBatchIngest.clear();
 		this.errorItems.clear();
 
-		seTask.start();
-		
-		System.err.println("ftpCheck result " + (errorItems.size() == 0));
-		
-		try {
-			if(!"230".equals(ftp.getReplyString()))
-				ftp = ftpLogin(this.server, this.username, this.password);
+//		if(seTask != null)
+//		{
+//			seTask.start();
+			
+			System.err.println("ftpCheck result " + (errorItems.size() == 0));
+			
+			try {
+		//			if(ftp.getReplyCode() != 230)
+		//				ftp = ftpLogin(this.server, this.username, this.password);
+						
+				ftpCheckImages(itemsForBatchIngest, ftp, this.images);
+			
+				if(!"".equals(tei))
+					{
+						ftpReadTeiFiles(itemsForBatchIngest, errorItems, ftp, this.tei);
+					}
 					
-			ftpCheckImages(itemsForBatchIngest, ftp, this.images);
+		 
+					ftpReadMabFiles(itemsForBatchIngest, errorItems, ftp, this.mab);
 		
-			if(!"".equals(tei))
-			{
-				ftpReadTeiFiles(itemsForBatchIngest, errorItems, ftp, this.tei);
-			}
+					int totalItems = itemsForBatchIngest.size() + errorItems.size();
+					updateLog("total_items", Integer.toString(totalItems));
+				
+				if(itemsForBatchIngest.size() >0 )
+				{
+					itemsForBatchIngest = saveLogItems(itemsForBatchIngest, ErrorLevel.FINE);
+				}
+				if(errorItems.size() > 0)
+				{
+					errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
+				}
 			
- 
-			ftpReadMabFiles(itemsForBatchIngest, errorItems, ftp, this.mab);
-
-			int totalItems = itemsForBatchIngest.size() + errorItems.size();
-			updateLog("total_items", Integer.toString(totalItems));
-			
-			if(itemsForBatchIngest.size() >0 )
-			{
-				itemsForBatchIngest = saveLogItems(itemsForBatchIngest, ErrorLevel.FINE);
+			} catch (Exception e) {
+				updateLog("errorlevel", ErrorLevel.FATAL.toString());
+				updateLog("step", Step.STOPPED.toString());
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
 			}
-			if(errorItems.size() > 0)
-			{
-				errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
-			}
-		
-		} catch (Exception e) {
-			updateLog("errorlevel", ErrorLevel.FATAL.toString());
-			updateLog("step", Step.STOPPED.toString());
-			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
-		}
-//		finally
-//		{  
-//			seTask.stop();
-//			ftpLogout(ftp);
-//			List<String> dirs = new ArrayList<String>();
-//			
-//			if(itemsForBatchIngest.size()>0)
-//			{
-//				for(BatchIngestItem item : itemsForBatchIngest.values())
-//				
-//					dirs.add(item.getDlcDirectory());
-//			
-//			}
-//			if(errorItems.size()>0)
-//			{
-//				for(BatchIngestItem item : errorItems.values())
-//				{
-//					dirs.add(item.getDlcDirectory());
-//				}
-//			}   
-//			itemsForBatchIngest.clear();
-//			System.gc();
-//			for(String d : dirs)
-//			{
-//				File dir = new File(d);
-//				try {
-//					deleteDir(dir);
-//				} catch (Exception e) {
-//					logger.error("Error while deleting local Batch Ingest Data " + e.getMessage());
-//					e.printStackTrace();
-//				}
-//			}
-//		}    
-		System.err.println("ftpCheck result " + (errorItems.size() == 0));
-		return errorItems.size()==0;
+		//		finally
+		//		{  
+		//			seTask.stop();
+		//			ftpLogout(ftp);
+		//			List<String> dirs = new ArrayList<String>();
+		//			
+		//			if(itemsForBatchIngest.size()>0)
+		//			{
+		//				for(BatchIngestItem item : itemsForBatchIngest.values())
+		//				
+		//					dirs.add(item.getDlcDirectory());
+		//			
+		//			}
+		//			if(errorItems.size()>0)
+		//			{
+		//				for(BatchIngestItem item : errorItems.values())
+		//				{
+		//					dirs.add(item.getDlcDirectory());
+		//				}
+		//			}   
+		//			itemsForBatchIngest.clear();
+		//			System.gc();
+		//			for(String d : dirs)
+		//			{
+		//				File dir = new File(d);
+		//				try {
+		//					deleteDir(dir);
+		//				} catch (Exception e) {
+		//					logger.error("Error while deleting local Batch Ingest Data " + e.getMessage());
+		//					e.printStackTrace();
+		//				}
+		//			}
+		//		}    
+			System.err.println("ftpCheck result " + (errorItems.size() == 0));
+			return errorItems.size()==0;
+//		}
+//		return false;
 	}
 	
 	public String clear()
 	{
 		updateLog("enddate", new Date().toString());
-		seTask.stop();
-		if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+		System.err.println("STARTED".equals(getLogData("step")));
+		System.err.println(getLogData("message").length() > 0);
+		if("STARTED".equals(getLogData("step"))&& getLogData("message").length() > 0)
+		{
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+		}
+		
+//		seTask.stop();
+		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
 			ftpLogout(ftp);
 		List<String> dirs = new ArrayList<String>();
 		
@@ -462,7 +547,7 @@ public class IngestLog
 		updateLog("step", Step.STARTED.toString());
 		updateLog("startdate", new Date().toString());
 		saveItems(itemsForBatchIngest);
-		updateLog("step", Step.FINISHED.toString());
+
 		return "";
 	}
 	
@@ -495,11 +580,19 @@ public class IngestLog
 	{
    
 		try {
+	
 			// Poll for files.
-			if(!"230".equals(ftp.getReplyString()))
-				ftp = ftpLogin(this.server, this.username, this.password);
-				
+			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			{
+				ftpLogout(ftp);
+				if(protocol)
+					this.ftp = ftpLogin(server, username, password);
+				else
+					this.ftp = ftpsLogin(server, username, password);
+			}
 			FTPFile[] ds = ftp.listFiles(directory);
+			if(ds.length == 0)
+				updateLog("message", "Error: check images directory");
 			for(FTPFile d : ds)
 			{
 				if(d.isDirectory() && !".".equals(d.getName()) && !"..".equals(d.getName()))
@@ -547,7 +640,9 @@ public class IngestLog
 				}
 			}
 		}catch (IOException e) {
-			e.printStackTrace();
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "FTP server refused connection.");
 		}
 	}
 	
@@ -555,9 +650,17 @@ public class IngestLog
 	{
 		
 		try{
-			if(!"230".equals(ftp.getReplyString()))
-				ftp = ftpLogin(this.server, this.username, this.password);
+			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			{
+				ftpLogout(ftp);
+				if(protocol)
+					this.ftp = ftpLogin(server, username, password);
+				else
+					this.ftp = ftpsLogin(server, username, password);
+			}
 			FTPFile[] filesList = ftp.listFiles(directory);
+			if(filesList.length == 0)
+				updateLog("message", "Error: check tei directory");
 			for(FTPFile tmpFile : filesList)
 			{
 				if(tmpFile.isDirectory())
@@ -629,7 +732,9 @@ public class IngestLog
 				}
 			}
 		}catch (IOException e) {
-			e.printStackTrace();
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "FTP server refused connection.");
 		}
 		
 	}
@@ -685,127 +790,135 @@ public class IngestLog
 	{
 		
 //		ftp.changeWorkingDirectory(directory);
+		try{
+			HashMap<String, BatchIngestItem> multiVolumes = new HashMap<String, BatchIngestItem>();
+			HashMap<String, BatchIngestItem> volumes = new HashMap<String, BatchIngestItem>();
 
-		HashMap<String, BatchIngestItem> multiVolumes = new HashMap<String, BatchIngestItem>();
-		HashMap<String, BatchIngestItem> volumes = new HashMap<String, BatchIngestItem>();
+			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			{
+				ftpLogout(ftp);
+				if(protocol)
+					this.ftp = ftpLogin(server, username, password);
+				else
+					this.ftp = ftpsLogin(server, username, password);
+			}
+			FTPFile[] filesList = ftp.listFiles(directory);
+			if(filesList.length == 0)
+				updateLog("message", "Error: check mab directory");
+			for(FTPFile tmpFile : filesList)
+			{
+				if(tmpFile.isDirectory())
+					continue;
 
-		if(!"230".equals(ftp.getReplyString()))
-			ftp = ftpLogin(this.server, this.username, this.password);
-		FTPFile[] filesList = ftp.listFiles(directory);
-		for(FTPFile tmpFile : filesList)
-		{
-			if(tmpFile.isDirectory())
-				continue;
-
-			String name = splitSuffix(tmpFile.getName());
-			BatchIngestItem item;
-			//has images -> volume or monograph
-			if((item = items.get(name)) != null)
-			{	
-				String dlcDirectory = item.getDlcDirectory();
+				String name = splitSuffix(tmpFile.getName());
+				BatchIngestItem item;
+				//has images -> volume or monograph
+				if((item = items.get(name)) != null)
+				{	
+					String dlcDirectory = item.getDlcDirectory();
 				
-//				File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-//				FileOutputStream out = new FileOutputStream(tFile);
-//				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
+	//				File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+	//				FileOutputStream out = new FileOutputStream(tFile);
+	//				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
 				
 				
-				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream out = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);		
-				out.flush();
-				out.close();
+					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(mFile);
+					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);		
+					out.flush();
+					out.close();
 
 				
-				MabXmlTransformation transform = new MabXmlTransformation();
-				try {
-					File modsFile = transform.mabToMods(null, mFile);
-					ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
-					item.setModsMetadata(md);
-					logger.info("read mab for " + name);
-					
-					String parentId = getParentId(md);
-					if(parentId.equals(""))
-					{
-						item.setContentModel(PropertyReader.getProperty("dlc.content-model.monograph.id"));
-						logger.info("set content Model "+ " for Monograph "+ name);
-
-					}
-					else{
-						item.setContentModel(PropertyReader.getProperty("dlc.content-model.volume.id"));
-						logger.info("set content Model "+ " for Volume "+ name);
-						item.setParentId(parentId);
-						items.remove(name);
-						volumes.put(name, item);
+					MabXmlTransformation transform = new MabXmlTransformation();
+					try {
+						File modsFile = transform.mabToMods(null, mFile);
+						ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
+						item.setModsMetadata(md);
+						logger.info("read mab for " + name);
+						
+						String parentId = getParentId(md);
+						if(parentId.equals(""))
+						{
+							item.setContentModel(PropertyReader.getProperty("dlc.content-model.monograph.id"));
+							logger.info("set content Model "+ " for Monograph "+ name);
+	
 						}
-					} catch (XMLException e) {
-					String errorMessage = Consts.MABTRANSFORMERROR;
-					logger.error(errorMessage , e);
-					item.getErrorMessage().add(errorMessage);
-					items.remove(name);
-					errorItems.put(name, item);
-				}
-			}
-			else if((item = errorItems.get(name))!= null)
-			{
-				String dlcDirectory = item.getDlcDirectory();
-				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream out = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
-				out.flush();
-				out.close();
-				MabXmlTransformation transform = new MabXmlTransformation();
-
-				File modsFile = transform.mabToMods(null, mFile);
-				try {
-					ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
-			
-					
-					item.setModsMetadata(md);
-					logger.info("read mab for " + name);
-					
-					String parentId = getParentId(md);
-					if(parentId.equals(""))
-					{
-						item.setContentModel(PropertyReader.getProperty("dlc.content-model.monograph.id"));
-						logger.info("set content Model "+ " for Monograph "+ name);
-
+						else{
+							item.setContentModel(PropertyReader.getProperty("dlc.content-model.volume.id"));
+							logger.info("set content Model "+ " for Volume "+ name);
+							item.setParentId(parentId);
+							items.remove(name);
+							volumes.put(name, item);
+							}
+						} catch (XMLException e) {
+						String errorMessage = Consts.MABTRANSFORMERROR;
+						logger.error(errorMessage , e);
+						item.getErrorMessage().add(errorMessage);
+						items.remove(name);
+						errorItems.put(name, item);
 					}
-					else{
-						item.setContentModel(PropertyReader.getProperty("dlc.content-model.volume.id"));
-						logger.info("set content Model "+ " for Volume "+ name);
-						item.setParentId(parentId);
-					}
-					} catch (Exception e) {
-					String errorMessage = Consts.MABTRANSFORMERROR;
-					logger.error(errorMessage , e);
-					item.getErrorMessage().add(errorMessage);
-
 				}
-			}
-			else
-			{
-				item = new BatchIngestItem();
+				else if((item = errorItems.get(name))!= null)
+				{
+					String dlcDirectory = item.getDlcDirectory();
+					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(mFile);
+					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+					out.flush();
+					out.close();
+					MabXmlTransformation transform = new MabXmlTransformation();
+	
+					File modsFile = transform.mabToMods(null, mFile);
+					try {
+						ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
 				
-				String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
-				new File(dlcDirectory).mkdir();
-				item.setName(name);
-				item.setDlcDirectory(dlcDirectory);
-				
-				File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-				FileOutputStream out = new FileOutputStream(mFile);
-				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
-				out.flush();
-				out.close();
-				MabXmlTransformation transform = new MabXmlTransformation();
-				File modsFile = transform.mabToMods(null, mFile);
-				try {
-					ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
-					item.setModsMetadata(md);
-					item.setContentModel(PropertyReader.getProperty("dlc.content-model.multivolume.id"));
-					//item.setModsMetadata(md);
-					logger.info("read mab for Multivolume" + name);
-					//item.setContentModel(PropertyReader.getProperty("dlc.content-model.multivolume.id"));
-					logger.info("set content Model "+ " for Multivolume "+ name);
+						
+						item.setModsMetadata(md);
+						logger.info("read mab for " + name);
+						
+						String parentId = getParentId(md);
+						if(parentId.equals(""))
+						{
+							item.setContentModel(PropertyReader.getProperty("dlc.content-model.monograph.id"));
+							logger.info("set content Model "+ " for Monograph "+ name);
+	
+						}
+						else{
+							item.setContentModel(PropertyReader.getProperty("dlc.content-model.volume.id"));
+							logger.info("set content Model "+ " for Volume "+ name);
+							item.setParentId(parentId);
+						}
+						} catch (Exception e) {
+						String errorMessage = Consts.MABTRANSFORMERROR;
+						logger.error(errorMessage , e);
+						item.getErrorMessage().add(errorMessage);
+	
+					}
+				}
+				else
+				{
+					item = new BatchIngestItem();
+					
+					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					new File(dlcDirectory).mkdir();
+					item.setName(name);
+					item.setDlcDirectory(dlcDirectory);
+					
+					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(mFile);
+					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+					out.flush();
+					out.close();
+					MabXmlTransformation transform = new MabXmlTransformation();
+					File modsFile = transform.mabToMods(null, mFile);
+					try {
+						ModsMetadata md =  VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
+						item.setModsMetadata(md);
+						item.setContentModel(PropertyReader.getProperty("dlc.content-model.multivolume.id"));
+						//item.setModsMetadata(md);
+						logger.info("read mab for Multivolume" + name);
+						//item.setContentModel(PropertyReader.getProperty("dlc.content-model.multivolume.id"));
+						logger.info("set content Model "+ " for Multivolume "+ name);
 
 				
 					multiVolumes.put(name, item);
@@ -820,11 +933,17 @@ public class IngestLog
 			}
 		
 		
-		try {
-			if(multiVolumes.size() >0 || volumes.size() >0 )
-				updateItemsForBatchIngest(items, errorItems, multiVolumes, volumes);
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				if(multiVolumes.size() >0 || volumes.size() >0 )
+					updateItemsForBatchIngest(items, errorItems, multiVolumes, volumes);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		} catch (IOException e1) {
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "FTP server refused connection.");
 		}
 		
 		
@@ -915,37 +1034,46 @@ public class IngestLog
 	
 	private void downloadImages(String imagesDirectory, String dlcDirectory, List<File> images, File footer)
 	{
-		FTPClient ftp = null;
 		try {
-			ftp = ftpLogin(server, username, password);
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		for(File i : images)
-		{
-			try{
-				FileOutputStream out = new FileOutputStream(i);
-				ftp.setFileType(FTP.BINARY_FILE_TYPE);
-				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+
+
+			for(File i : images)
+			{
+				if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+				{
+					ftpLogout(ftp);
+					if(protocol)
+						this.ftp = ftpLogin(server, username, password);
+					else
+						this.ftp = ftpsLogin(server, username, password);
+				}
+				try{
+					FileOutputStream out = new FileOutputStream(i);
+					ftp.setFileType(FTP.BINARY_FILE_TYPE);
+					ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+					out.flush();
+					out.close();
+					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+	
+				}catch(Exception e)
+				{
+					logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
+				}
+			}
+			FileOutputStream out;
+			try {
+				out = new FileOutputStream(footer);
+				ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 				out.flush();
 				out.close();
-				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
-
-			}catch(Exception e)
-			{
-				logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
+				logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
+			} catch (Exception e) {
+				logger.error("Error while copying Image from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 			}
-		}
-		FileOutputStream out;
-		try {
-			out = new FileOutputStream(footer);
-			ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
-			out.flush();
-			out.close();
-			logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
-		} catch (Exception e) {
-			logger.error("Error while copying Image from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
+		} catch (IOException e1) {
+			updateLog("errorLevel", ErrorLevel.FATAL.toString());
+			updateLog("step", Step.STOPPED.toString());
+			updateLog("message", "FTP server refused connection.");
 		}
 
 	}
@@ -1049,6 +1177,7 @@ public class IngestLog
 					}
 					
 				}
+				updateLog("step", Step.FINISHED.toString());
 			} catch (Exception e) {
 				updateLogItem(logItemId, "errorlevel", ErrorLevel.FATAL.toString());
 				updateLog("errorlevel", ErrorLevel.FATAL.toString());
@@ -1441,7 +1570,6 @@ public class IngestLog
 		this.message = message;
 	}
 
-
 	public HashMap<String, BatchIngestItem> getItemsForBatchIngest() {
 		return itemsForBatchIngest;
 	}
@@ -1497,8 +1625,19 @@ public class IngestLog
 
 	public void setId(int id) {
 		this.id = id;
-	} 
-    
+	}
+
+
+	public boolean isProtocol() {
+		return protocol;
+	}
+
+
+	public void setProtocol(boolean protocol) {
+		this.protocol = protocol;
+	}
+
+
 	
 	
 	

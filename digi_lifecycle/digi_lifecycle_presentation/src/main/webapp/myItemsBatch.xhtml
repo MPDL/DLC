@@ -31,6 +31,9 @@
 		                <rich:column >
 		                    <h:outputText value="Errorlevel" />
 		                </rich:column>
+		                <rich:column >
+		                    <h:outputText value="message" />
+		                </rich:column>
 		                <rich:column>
 		                    <h:outputText value="Startdate" />
 		                </rich:column>
@@ -46,9 +49,7 @@
 		                <rich:column>
 		                    <h:outputText value="Finished Items" />
 		                </rich:column>
-		                <rich:column>
-		                    <h:outputText value="message" />
-		                </rich:column>
+
 		                <rich:column>
 		                    <h:outputText value="escidoc ID" />
 		                </rich:column>		                
@@ -78,8 +79,11 @@
             		<h:outputText value="#{log.status}" />
        			</rich:column>
 		        <rich:column>
-            		<h:outputText value="#{log.errorLevel}" />
+            		<h:outputText value="#{log.errorLevel}" />           		
        			</rich:column>
+ 		        <rich:column>
+            		<h:outputText value="#{log.message}" />           		
+       			</rich:column>      			
        			<rich:column>
             		<h:outputText value="#{log.startDate}" />
        			</rich:column>
@@ -111,6 +115,9 @@
 	            		<h:outputText value="#{logItem.errorLevel}" />
 	       			</rich:column>
 	       			<rich:column>
+	            		<h:outputText value="#{logItem.message}" />
+	       			</rich:column>
+	       			<rich:column>
 	            		<h:outputText value="#{logItem.startDate}" />
 	       			</rich:column>
 			        <rich:column>
@@ -125,9 +132,7 @@
 	       			<rich:column>
 	            		<h:outputText value="" />
 	       			</rich:column>	       				       			
-	       			<rich:column>
-	            		<h:outputText value="#{logItem.message}" />
-	       			</rich:column>
+
 	       			<rich:column rendered="#{not empty logItem.escidocId and logItem.contentModel != applicationBean.cmMultiVol}">
 	       				<pretty:link mappingId = "viewPages">
 	       					<f:param value="#{logItem.escidocId}"/>
@@ -172,6 +177,9 @@
 		            		<h:outputText value="#{logItemVolume.errorLevel}" />
 		       			</rich:column>
 		       			<rich:column>
+		            		<h:outputText value="#{logItemVolume.message}" />
+		       			</rich:column>		       			
+		       			<rich:column>
 		            		<h:outputText value="#{logItemVolume.startDate}" />
 		       			</rich:column>
 				        <rich:column>
@@ -186,9 +194,7 @@
 		       			<rich:column>
 		            		<h:outputText value="" />
 		       			</rich:column>	       				       			
-		       			<rich:column>
-		            		<h:outputText value="#{logItemVolume.message}" />
-		       			</rich:column>
+
 		       			<rich:column rendered="#{not empty logItemVolume.escidocId}">
 		       				<pretty:link mappingId = "viewPages">
 		       					<f:param value="#{logItemVolume.escidocId}"/>

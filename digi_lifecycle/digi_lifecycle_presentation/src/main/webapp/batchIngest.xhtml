@@ -19,9 +19,13 @@
 					<h:outputText value="#{lbl.batchIngest_name}: "/>
 					<h:inputText value ="#{batchIngestBean.name}" />
 					
+					<h:outputText value="#{lbl.batchIngest_protocol}: "/>
+					<h:selectOneRadio value="#{batchIngestBean.protocol}">
+   						<f:selectItem itemValue="true" itemLabel="FTP" />
+   						<f:selectItem itemValue="false" itemLabel="FTPS" />
+					</h:selectOneRadio>
+					
 					<h:outputText value="#{lbl.admin_upload_collection}: "/>
-
-				
 					<h:selectOneMenu id="contextId" value="#{batchIngestBean.selectedContextId}">
 						<f:selectItems value="#{batchIngestBean.contextSelectItems}" />
 					</h:selectOneMenu>
