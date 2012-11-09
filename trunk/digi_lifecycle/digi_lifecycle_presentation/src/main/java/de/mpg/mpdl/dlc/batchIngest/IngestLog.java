@@ -396,6 +396,55 @@ public class IngestLog
 		return data;
 	}
 	
+	public String getLogItemData(String logItemId, String name)
+	{
+		String data = null;
+		try
+		{
+            if(connection == null)
+            {
+            	connection = getConnection();
+            }
+
+			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item where id = " + logItemId);
+			ResultSet resultSet = statement.executeQuery();
+			if(resultSet.next())
+			{
+				data = resultSet.getString(name);
+			}
+
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException("Error while uploading log", e);
+		}
+		return data;
+	}
+	
+	public String getLogItemVolumeData(int logItemId, String logItemVolumeName, String name)
+	{
+		String data = null;
+		try
+		{
+            if(connection == null)
+            {
+            	connection = getConnection();
+            }
+			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId + " AND name = '" + logItemVolumeName + "'");
+			ResultSet resultSet = statement.executeQuery();
+			if(resultSet.next())
+			{
+				data = resultSet.getString(name);
+			}
+
+		}
+		catch(Exception e)
+		{
+			throw new RuntimeException("Error while uploading log", e);
+		}
+		return data;
+	}
+	
 	public boolean ftpCheck()
 	{ 
 		logger.info("Check batchingest Data");
@@ -1143,6 +1192,8 @@ public class IngestLog
 					if(itemId == null)
 					{
 						updateLogItem(logItemId, "errorlevel", ErrorLevel.EXCEPTION.toString());
+//						String message = getLogItemData(logItemId,"message");
+//						message = message + " | " + Consts.VOLUMEROLLBACKERROR;
 						updateLogItem(logItemId, "message", Consts.VOLUMEROLLBACKERROR);
 						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 					}
@@ -1187,6 +1238,8 @@ public class IngestLog
 							if(volId == null)
 							{
 								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.EXCEPTION.toString());
+//								String message = getLogItemVolumeData(logItemId, vol.getName(), "message");
+//								message = message + Consts.VOLUMEROLLBACKERROR;
 								updateLogItemVolume(logItemId, vol.getName(), "message", Consts.VOLUMEROLLBACKERROR);
 								updateLogItem(logItemId, "errorlevel", ErrorLevel.PROBLEM.toString());
 								updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
