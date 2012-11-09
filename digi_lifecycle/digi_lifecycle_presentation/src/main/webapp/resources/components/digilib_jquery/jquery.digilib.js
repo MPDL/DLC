@@ -720,7 +720,7 @@ if (typeof console === 'undefined') {
                     nx = true;
                 }
                 // add parm=val
-                paramString += key + '=' + settings[key];
+                paramString += key + '=' + encodeURIComponent(settings[key]);
             }
         }
         return paramString;
