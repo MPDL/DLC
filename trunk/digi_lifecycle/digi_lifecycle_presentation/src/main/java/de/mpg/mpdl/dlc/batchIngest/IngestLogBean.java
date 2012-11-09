@@ -18,6 +18,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
+import org.postgresql.util.PSQLException;
 
 import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
@@ -27,7 +28,6 @@ import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Status;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
 import de.mpg.mpdl.dlc.beans.LoginBean;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
@@ -140,7 +140,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	{
 		IngestLog log = null;
 		if(conn == null)
-			conn = IngestLog.getConnection();
+			try {
+				conn = IngestLog.getConnection();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = null;
@@ -172,6 +177,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
         log.setStep(Step.valueOf(resultSet.getString("step").toUpperCase()));
         log.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
         log.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
+        log.setMessage(resultSet.getString("message"));
         log.setStartDate(resultSet.getTimestamp("startdate"));
         log.setEndDate(resultSet.getTimestamp("enddate"));
         log.setContextId(resultSet.getString("context_id"));
@@ -186,7 +192,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	
 		List<IngestLogItem> logItems = new ArrayList<IngestLogItem>();
 		if(conn == null)
-			conn = IngestLog.getConnection();
+			try {
+				conn = IngestLog.getConnection();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = null;
@@ -220,7 +231,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	{
 		IngestLogItem logItem = null;
 		if(conn == null)
-			conn = IngestLog.getConnection();
+			try {
+				conn = IngestLog.getConnection();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = null;
@@ -278,7 +294,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	
 		List<IngestLogItemVolume> logItemVolumes = new ArrayList<IngestLogItemVolume>();
 		if(conn == null)
-			conn = IngestLog.getConnection();
+			try {
+				conn = IngestLog.getConnection();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = null;
@@ -312,7 +333,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	{
 		IngestLogItemVolume logItemVolume = null;
 		if(conn == null)
-			conn = IngestLog.getConnection();
+			try {
+				conn = IngestLog.getConnection();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = null;

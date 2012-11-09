@@ -1,8 +1,11 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.io.IOException;
+
 import javax.faces.bean.ManagedProperty;
 
 import org.apache.log4j.Logger;
+import org.postgresql.util.PSQLException;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
@@ -25,6 +28,12 @@ public class IngestProcess extends Thread{
 	private String userHandle;
 
 	private String server;
+	
+	/*
+	 * true for FTP, and false for FTPS
+	 */
+	private boolean protocol;
+	
 	private String images;
 	private String mab;
 	private String tei;
@@ -44,7 +53,7 @@ public class IngestProcess extends Thread{
 	private LoginBean loginBean;
 
 	
-	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, String userName, String password, String mab, String tei, String images) 
+	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
 	{
 		this.logName = name;
 		this.step = step;
@@ -54,6 +63,8 @@ public class IngestProcess extends Thread{
 		this.contextId = contextId;
 		this.userHandle = userHandle;
 		this.server = server;
+		System.out.println(protocol);
+		this.protocol = protocol;
 		this.userName = userName;
 		this.password = password;
 		this.mab = mab;
@@ -75,35 +86,32 @@ public class IngestProcess extends Thread{
 //		else
 //			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
 		
-		log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, userName, password, images, mab, tei);
 		try {
-
-			//log.checkAndSaveItems();
-			if(log.ftpCheck())
-				log.ftpSaveItems();
-			else
-				log.updateDB();
-//			log.clear();
+			log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
+			try {
+				if(log.ftpCheck())
+					log.ftpSaveItems();
+				else
+					log.updateDB();
+			} catch (Exception e) {
+				logger.error("Error while checking ingest data", e);
+				MessageHelper.errorMessage("login error");
+			}
+			finally
+			{
+//				applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())-1);
+//				if(applicationBean.getUploadThreads().get(loginBean.getUserHandle()) == 0)
+//					applicationBean.getUploadThreads().remove(loginBean.getUserHandle());
+				
+				log.clear();
+			}
 		} catch (Exception e) {
-			logger.error("Error while checking ingest data", e);
-			MessageHelper.errorMessage("login error");
+			
+			logger.error("cannot conntect with postgres");
 
-//			log.clear();
-		}
-		finally
-		{
-//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())-1);
-//			if(applicationBean.getUploadThreads().get(loginBean.getUserHandle()) == 0)
-//				applicationBean.getUploadThreads().remove(loginBean.getUserHandle());
-			log.clear();
-		}
+		} 
+
 	}
-
-
-
-
-
-	
 	String getLogName() {
 		return logName;
 	}
@@ -212,6 +220,16 @@ public class IngestProcess extends Thread{
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
 	}
+
+	public boolean isProtocol() {
+		return protocol;
+	}
+
+	public void setProtocol(boolean protocol) {
+		this.protocol = protocol;
+	}
+	
+	
 	
 	
 	
