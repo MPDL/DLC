@@ -27,7 +27,9 @@ import org.jibx.runtime.JiBXException;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
@@ -56,6 +58,7 @@ public class StructuralEditorBean implements Observer {
 	private static Logger logger = Logger.getLogger(StructuralEditorBean.class);
 
 	protected VolumeServiceBean volServiceBean = new VolumeServiceBean();
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private String volumeId;
 	
@@ -147,6 +150,8 @@ public class StructuralEditorBean implements Observer {
 	private List<SelectItem> pageListMenu;
 	
 	private String selectedGoToBoxPageId;
+
+	private Context context;
 	
 	public enum PaginationType
 	{
@@ -216,6 +221,7 @@ public class StructuralEditorBean implements Observer {
 			{   logger.info("Load new volume for structural editing " + volumeId);
 				try {
 					this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
+					this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 					init();
 					//volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 					
@@ -2341,6 +2347,14 @@ public class StructuralEditorBean implements Observer {
 
 	public void setDigilibActivated(boolean digilibActivated) {
 		this.digilibActivated = digilibActivated;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 
 	
