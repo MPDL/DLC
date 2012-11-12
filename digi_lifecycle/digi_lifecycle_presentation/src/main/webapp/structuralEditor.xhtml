@@ -680,8 +680,6 @@
 												
 												<rich:treeNode styleClass="struct_#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.id}" expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}" >
 													
-													
-												
 													<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
 														
 														<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
@@ -696,43 +694,40 @@
 															<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
 														</h:panelGroup>
 														
-														
-														
 														<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
 															<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
 															<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
 														</h:selectOneMenu>
 														
 														<h:outputText value=")"/>
-													
 													</h:panelGroup>
 													
-													<h:commandButton value="&lt;&lt;" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
+													<h:commandButton value=" " title="&lt;&lt;" styleClass="eg3_ico_moveLeft_16_16" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
-													<h:commandButton value="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
+													<h:commandButton value=" " styleClass="eg3_ico_moveRight_16_16" title="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
-													<h:commandButton value="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
+													<h:commandButton value=" " styleClass="eg3_ico_moveUp_16_16" title="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
-													<h:commandButton value="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
+													<h:commandButton value=" " styleClass="eg3_ico_moveDown_16_16" title="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 												
-													<h:commandButton action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" value="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+													<h:commandButton value=" " styleClass="eg3_icon_delete_16_16" action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													
 													<ui:remove>
-													<h:commandButton action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" >
+													<h:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" >
 														<f:ajax render=":messages :edit :paginator" execute="@form"/>
 													</h:commandButton>
 													</ui:remove>
-													<a4j:commandButton render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}"  oncomplete="#{rich:component('editPopup')}.show()" value="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+													<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 													
 												</rich:treeNode>
 												

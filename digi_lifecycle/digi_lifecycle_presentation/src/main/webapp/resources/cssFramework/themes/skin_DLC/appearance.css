@@ -2687,6 +2687,47 @@ button:hover .eg3_icon_close_16_16 {
 	background-image:url(image/ico_bottom_hover_16_16.png);
 	text-decoration:none;
 }
+
+.eg3_ico_moveUp_16_16 {
+	background-image:url(image/btn_ascending_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveUp_16_16:hover {
+	background-image:url(image/btn_ascending_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveDown_16_16 {
+	background-image:url(image/btn_descending_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveDown_16_16:hover {
+	background-image:url(image/btn_descending_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveLeft_16_16 {
+	background-image:url(image/btn_previous_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveLeft_16_16:hover {
+	background-image:url(image/btn_previous_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveRight_16_16 {
+	background-image:url(image/btn_next_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveRight_16_16:hover {
+	background-image:url(image/btn_next_active_16_16.png);
+	text-decoration:none;
+}
 /*****************************************************************************************************
  ******************************				image background color			**************************
  *****************************************************************************************************/
