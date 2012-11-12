@@ -155,7 +155,7 @@ public class StructuralEditorBean implements Observer {
 	
 	public enum PaginationType
 	{
-		ARABIC, ROMAN, ROMAN_MINUSCULE, RECTO_VERSO, FREE
+		ARABIC, ROMAN, ROMAN_MINUSCULE, RECTO_VERSO, RECTO_VERSO_ARABIC, RECTO_VERSO_ROMAN, FREE
 	}
 	
 	
@@ -846,7 +846,19 @@ public class StructuralEditorBean implements Observer {
 			case RECTO_VERSO : 
 			{
 				
+				selectedPaginationStartValue = "r";
+				break;
+			}
+			case RECTO_VERSO_ARABIC : 
+			{
+				
 				selectedPaginationStartValue = "1r";
+				break;
+			}
+			case RECTO_VERSO_ROMAN : 
+			{
+				
+				selectedPaginationStartValue = "Ir";
 				break;
 			}
 			case FREE : 
@@ -915,14 +927,31 @@ public class StructuralEditorBean implements Observer {
 					return;
 				}
 			}
-			else if (PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+			else if (PaginationType.RECTO_VERSO_ARABIC.equals(selectedPaginationType) ||
+					PaginationType.RECTO_VERSO_ROMAN.equals(selectedPaginationType) ||
+					PaginationType.RECTO_VERSO.equals(selectedPaginationType))
 			{
 				
 				try {
+					String rectoVerso = "r";
+					if(PaginationType.RECTO_VERSO_ARABIC.equals(selectedPaginationType))
+					{
+						currentValue = Integer.parseInt(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
+						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+					}
+					else if(PaginationType.RECTO_VERSO_ROMAN.equals(selectedPaginationType))
+					{
+						currentValue =  RomanNumberConverter.convert(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
+						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+					}
+					else
+					{
+						currentValue = 0;
+					}
 					
-					currentValue = Integer.parseInt(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
+					
 
-					String rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+					
 					if("r".equals(rectoVerso))
 					{
 						recto = true;
@@ -977,21 +1006,70 @@ public class StructuralEditorBean implements Observer {
 					currentValue = currentValue + selectedPaginationColumns;
 				}
 				
-				else if(PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+				
+				else if (PaginationType.RECTO_VERSO_ARABIC.equals(selectedPaginationType)||
+						PaginationType.RECTO_VERSO_ROMAN.equals(selectedPaginationType) ||
+						PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+					
 				{
+					if(PaginationType.RECTO_VERSO_ARABIC.equals(selectedPaginationType))
+					{
+						if(recto)
+						{
+							pagination = String.valueOf(currentValue);
+							
+						}
+						else
+						{
+							pagination = String.valueOf(currentValue);
+
+						}
+						
+						
+					}
+					else if(PaginationType.RECTO_VERSO_ROMAN.equals(selectedPaginationType))
+					{
+						if(recto)
+						{
+							pagination = RomanNumberConverter.convert(currentValue, false);
+						}
+						else
+						{
+							pagination = RomanNumberConverter.convert(currentValue, false);
+						}
+						
+						
+					}
+					else if(PaginationType.RECTO_VERSO.equals(selectedPaginationType))
+					{
+						pagination = "";
+					}
+					
+					
+					
 					if(recto)
 					{
-						pagination = String.valueOf(currentValue) + "r";
-						recto = false;
+						pagination = pagination + "r";
 					}
 					else
 					{
-						pagination = String.valueOf(currentValue) + "v";
-						recto = true;
-						currentValue++;
+						pagination = pagination + "v";
+						
 					}
 					
-					
+					if(!paginateEverySecondPage)
+					{ 
+						if(!recto)
+						{
+							currentValue++;
+						}
+						recto = !recto;
+						
+					}
+					else
+					{
+						currentValue++;
+					}
 				}
 				
 				else if(PaginationType.FREE.equals(selectedPaginationType))
