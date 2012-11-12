@@ -116,7 +116,7 @@ public class AdvancedSearchBean implements Observer {
 		for(OrganizationalUnit ou : ouServiceBean.retrieveOUs())
 		{
 			//Only add an ou if it has a context otherwise there is no collection which we can search in
-			if (contextServiceBean.retrieveOUContexts(ou.getObjid()).size() > 0)
+			if (contextServiceBean.retrieveOUContexts(ou.getObjid(), true).size() > 0)
 			{
 				ouSelectItems.add(new SelectItem(ou.getObjid(),ou.getProperties().getName()));
 			}
@@ -153,7 +153,7 @@ public class AdvancedSearchBean implements Observer {
 		contextSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allCon")));			
 		if (ouId != null && !ouId.equals(""))
 		{
-			for(Context c : contextServiceBean.retrieveOUContexts(ouId))
+			for(Context c : contextServiceBean.retrieveOUContexts(ouId, true))
 			{
 				contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
 			}

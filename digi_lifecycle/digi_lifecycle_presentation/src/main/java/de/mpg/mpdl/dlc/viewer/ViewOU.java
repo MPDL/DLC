@@ -97,7 +97,7 @@ public class ViewOU {
 				
 				SearchCriterion sc = null;
 
-				collections = contextServiceBean.retrieveOUContexts(id);
+				collections = contextServiceBean.retrieveOUContexts(id, false);
 				collectionSearchStrings = new ArrayList<String>(collections.size());
 				for(int i=0; i<collections.size(); i++)
 				{
