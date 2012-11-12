@@ -69,7 +69,7 @@ public class ContextServiceBean {
 		return context;
 	}
 	
-	public List<Context> retrieveOUContexts(String id) 
+	public List<Context> retrieveOUContexts(String id, boolean sortByName) 
 	{
 		logger.info("Retrieving OU contexts " + id);
         List<Context> contextList = new ArrayList<Context>();
@@ -79,7 +79,11 @@ public class ContextServiceBean {
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
-			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+id + " sortby \"/sort/properties/name\"");
+			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+id);
+			if(sortByName)
+			{
+				req.setQuery(req.getQuery() + " sortby \"/sort/properties/name\"");
+			}
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
@@ -107,7 +111,7 @@ public class ContextServiceBean {
 	{  
 		logger.info("Retrieving OU Collections" + ouId);
 		List<Collection> collections = new ArrayList<Collection>();
-		for(Context c : retrieveOUContexts(ouId))
+		for(Context c : retrieveOUContexts(ouId, false))
 			collections.add(retrieveCollection(c.getObjid(), userHandle));
 		return collections;
 	}
