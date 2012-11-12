@@ -153,7 +153,7 @@ public class ApplicationBean
 	public List<Context> getContext(String ouId)
 	{
 		try {
-			return contextServiceBean.retrieveOUContexts(ouId);
+			return contextServiceBean.retrieveOUContexts(ouId, false);
 		} catch (Exception e) {
 			return null;
 		}
