@@ -751,50 +751,52 @@
 								</script>
 								
 								
-								
-								
-								
-								
-								
-								
-								
-								
-								
-								
 						
 								<!-- START EDIT STRUCTURE POPUP -->
-							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400" >
-								<f:facet name="header">
-									<h:outputText value="#{lbl.edit_structureHeader}"/>
-								</f:facet>
-								<f:facet name="controls">
-									<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">X</h:outputLink>	
-								</f:facet>
-								<h:form>
-								
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
-									<h3><h:outputText value="#{lbl.edit_structureHeader}"/></h3>
+								<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400" >
+									<f:facet name="header">
+										<h:outputText value="#{lbl.edit_structureHeader}"/>
+									</f:facet>
+									<f:facet name="controls">
+										<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">X</h:outputLink>	
+									</f:facet>
+									<style type="text/css">
+										.rf-pp-hdr {
+											width:100%;
+										}
+										.rf-pp-cnt-scrlr {
+											width:100%;
+										}
+										.rf-pp-cnt input[type=submit],
+										.rf-pp-cnt input[type=button],
+										.rf-pp-cnt input[type=reset] {
+											color:#000000;
+										}
+										.rf-pp-cnt .eg3_editInputArea input[type=text] {
+											border-top:0;
+											border-bottom:0.0909em solid #000000;
+										}
+									</style>
 									
-									
-									
-									<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-										structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-										teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-									<br/>
-									<br/>
-									<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-										<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
-									</h:commandButton>
-									<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
-									<h:outputText value="#{lbl.edit_cancelBtn}"/>
-									</h:outputLink>									
-								</h:panelGroup>
-
-								</h:form>
-							</rich:popupPanel>
+									<h:form>
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
+											<h3><h:outputText value="#{lbl.edit_structureHeader}"/></h3>
+											
+											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+											<br/>
+											<br/>
+											<h:commandButton type="submit" styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+												<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
+											</h:commandButton>
+											<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
+											<h:outputText value="#{lbl.edit_cancelBtn}"/>
+											</h:outputLink>									
+										</h:panelGroup>
+									</h:form>
+								</rich:popupPanel>
 							<!-- END EDIT STRUCTURE POPUP -->
-						
-								
 							</h:panelGroup>
 
 					</h:panelGroup>	
