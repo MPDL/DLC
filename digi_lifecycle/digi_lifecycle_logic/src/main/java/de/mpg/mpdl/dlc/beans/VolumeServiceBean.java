@@ -612,7 +612,7 @@ public class VolumeServiceBean {
 	*/
 	public void uploadImagesAndCreateMets(List<IngestImage> images, IngestImage footer, String itemId, Volume vol) throws Exception
 	{ 
-		File brokenFile = null;
+	
 		Mets metsData = new Mets();
 		vol.setMets(metsData);
 		String itemIdWithoutColon = itemId.replaceAll(":", "_");
@@ -645,59 +645,49 @@ public class VolumeServiceBean {
 			if(IngestImage.Type.DISK.equals(imageItem.getType()))	
 			{   
 
-				File jpegImage = null;
-				try
-				{	
-					String mimetype = tika.detect(imageItem.getFile());
-					logger.info("Detected image " + imageItem.getName() + " as " + mimetype);
-					if("image/tiff".equals(mimetype))
-					{
-						jpegImage = ImageHelper.tiffToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
-					}
-					else if("image/png".equals(mimetype))
-					{
-						jpegImage = ImageHelper.pngToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
-					}
-					else if("image/jpeg".equals(mimetype))
-						jpegImage = imageItem.getFile();
-					else
-					{
-						throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
-					}
-				}catch(Exception e)
+				File jpegImage;
+	
+				String mimetype = tika.detect(imageItem.getFile());
+				logger.info("Detected image " + imageItem.getName() + " as " + mimetype);
+				if("image/tiff".equals(mimetype))
 				{
-					brokenFile = imageItem.getFile();
-//					return brokenFile;
+					jpegImage = ImageHelper.tiffToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
 				}
+				else if("image/png".equals(mimetype))
+				{
+					jpegImage = ImageHelper.pngToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
+				}
+				else if("image/jpeg".equals(mimetype))
+					jpegImage = imageItem.getFile();
+				else
+				{
+					throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
+				}
+
 				
 				if(jpegFooter!=null)
 				{
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
 				}
 				
-				try
-				{
-					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
-					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
-					
-					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
-					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
 
-					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
-					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-					
-					jpegImage.delete();
-					thumbnailFile.delete();
-					webFile.delete();
-					originalFile.delete();
-				}catch(Exception e)
-				{
-					brokenFile = imageItem.getFile();
-//					return brokenFile;
-				}
+				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+				File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
+				String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+				
+				String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+				File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
+				String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+
+				String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+				File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
+				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+				
+				jpegImage.delete();
+				thumbnailFile.delete();
+				webFile.delete();
+				originalFile.delete();
+
 				
 			}
 				int pos = images.indexOf(imageItem);
