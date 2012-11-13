@@ -1,6 +1,8 @@
 package de.mpg.mpdl.dlc.viewer;
 
+import java.io.IOException;
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,22 +17,16 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.PostRemove;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.ExtensionFunction;
 import net.sf.saxon.s9api.ItemType;
 import net.sf.saxon.s9api.OccurrenceIndicator;
-import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.SequenceType;
-import net.sf.saxon.s9api.XPathCompiler;
-import net.sf.saxon.s9api.XPathExecutable;
-import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmAtomicValue;
-import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 
@@ -42,18 +38,15 @@ import com.ocpsoft.pretty.faces.annotation.URLMappings;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.export.Export;
-import de.mpg.mpdl.dlc.export.Export.ExportTypes;
-import de.mpg.mpdl.dlc.export.ExportBean;
-import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
@@ -138,6 +131,10 @@ public class ViewPages implements Observer{
 	
 	private String codicologicalXhtml;
 	
+	private String exportTeiStructLink = "";
+
+	private String exportTeiFtLink = "";
+
 	@PostConstruct
 	public void postConstruct()
 	{
@@ -223,6 +220,7 @@ public class ViewPages implements Observer{
 			}
 		}
 		volumeLoaded();
+		setExportLinks();
 	}
 	
 	private void initPageListMenu()
@@ -779,27 +777,38 @@ public class ViewPages implements Observer{
 		this.volumeOu = volumeOu;
 	}
 
-	public String export(String type)
-	{
-		byte[] pdf = null;
+	/**
+	 * Set the links for the tei exports
+	 * @throws URISyntaxException 
+	 * @throws IOException 
+	 */
+	private void setExportLinks ()
+	{	
 		try
 		{
-			if (type.equals(Export.ExportTypes.PDF.toString()))
+			String frameworkUrl = PropertyReader.getProperty("escidoc.common.framework.url");
+			if (frameworkUrl.endsWith("/"))
 			{
-				pdf = ExportBean.doExport(this.volume, ExportTypes.PDF);
-				ExportServlet servlet = new ExportServlet();
-				servlet.createPdfResponse(pdf, this.volumeId);	
+				frameworkUrl = frameworkUrl.substring(0, frameworkUrl.length() -1);
 			}
-			if (type.equals(Export.ExportTypes.PRINT.toString()))
+			
+			for (int i = 0; i< this.volume.getItem().getComponents().size(); i++)
 			{
-				//TODO
+				Component comp = this.volume.getItem().getComponents().get(i);
+				if (comp.getProperties().getContentCategory().equals("tei-sd"))
+				{
+					this.setExportTeiStructLink(frameworkUrl + comp.getXLinkHref()+"/content");
+				}
+				if (comp.getProperties().getContentCategory().equals("tei"))
+				{
+					this.setExportTeiFtLink(frameworkUrl + comp.getXLinkHref()+"/content");
+				}
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
-			MessageHelper.errorMessage("The export could not be created due to an internal error.", e.getMessage());
+			logger.error("Links for tei export could not be set." , e);
 		}
-		return "";
 	}
 
 	public String getDigilibQueryString() {
@@ -907,6 +916,21 @@ public class ViewPages implements Observer{
 	public void setCodicologicalXhtml(String codicologicalXhtml) {
 		this.codicologicalXhtml = codicologicalXhtml;
 	}
+	
+	public String getExportTeiStructLink() {
+		return exportTeiStructLink;
+	}
 
+	public void setExportTeiStructLink(String exportTeiStructLink) {
+		this.exportTeiStructLink = exportTeiStructLink;
+	}
+
+	public String getExportTeiFtLink() {
+		return exportTeiFtLink;
+	}
+
+	public void setExportTeiFtLink(String exportTeiFtLink) {
+		this.exportTeiFtLink = exportTeiFtLink;
+	}
 
 }

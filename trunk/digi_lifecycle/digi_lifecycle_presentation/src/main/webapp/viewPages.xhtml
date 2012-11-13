@@ -615,21 +615,24 @@
 										<h:panelGroup styleClass="eg3_selectionText"><h:outputText value="#{lbl.export_headline}"/></h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_overlayBody eg3_posBottom eg3_posRight eg3_overflow_z50">
-										<ul>
-											<!--  <li><h:outputLink title="#{tlt.export_page_print}" styleClass="eg3_selectionText" 
-															  value=""><h:outputText value="#{lbl.export_page_print}"/></h:outputLink></li>
-											-->
-											<li><h:commandLink title="#{tlt.export_as_pdf}" styleClass="eg3_selectionText" 
-															  action="#{viewPages.export('PDF')}"><h:outputText value="#{lbl.export_as_pdf}"/></h:commandLink></li>
-											<li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText"	
-															  value="#{applicationBean.dfgUrl}#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord%26identifier=#{viewPages.volumeIdWithoutObjId}%26metadataPrefix=zvddmets" target="_blank"><h:outputText value="#{lbl.export_dfg_viewer}"/></h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" 
-															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=dlc" target="_blank"><h:outputText value="#{lbl.export_mets_mods}"/></h:outputLink></li>															  
-											<!--  <li><h:outputLink title="#{tlt.export_oai_dc}" styleClass="eg3_selectionText" 
-															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeId}&amp;metadataPrefix=oai_dc" target="_blank"><h:outputText value="#{lbl.export_oai_dc}"/></h:outputLink></li>
-											-->				  
-											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" 
-															  value="#{applicationBean.domain}/fledgeddata/oai/?verb=GetRecord&amp;identifier=#{viewPages.volumeIdWithoutObjId}&amp;metadataPrefix=tei" target="_blank"><h:outputText value="#{lbl.export_as_tei}"/></h:outputLink></li>
+										<ul>											
+											<li><h:outputLink styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=PDF" target="_blank">
+													<h:outputText value="#{lbl.export_as_pdf}"/>
+												</h:outputLink></li>										
+
+											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=MODS" target="_blank">
+															  <h:outputText value="#{lbl.export_mets_mods}"/>
+												</h:outputLink></li>															  			  
+											<li><h:outputLink title="#{tlt.export_as_tei_struct}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiStructLink}" target="_blank" rendered="#{viewPages.exportTeiStructLink != ''}">
+													<h:outputText value="#{lbl.export_as_teistruct}"/>
+												</h:outputLink></li>
+											<li><h:outputLink title="#{tlt.export_as_tei_ft}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiFtLink}" target="_blank" rendered="#{viewPages.exportTeiFtLink != ''}">
+													<h:outputText value="#{lbl.export_as_teift}"/>
+												</h:outputLink></li>	
+										    <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=MODS" target="_blank">
+													<h:outputText value="#{lbl.export_dfg_viewer}"/>
+												</h:outputLink></li>
+											 					
 										</ul>
 									</h:panelGroup>
 								</h:panelGroup>

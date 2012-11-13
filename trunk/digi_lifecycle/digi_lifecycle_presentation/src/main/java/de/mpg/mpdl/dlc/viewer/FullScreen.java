@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.viewer;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,18 +20,17 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
-import de.mpg.mpdl.dlc.export.Export;
-import de.mpg.mpdl.dlc.export.ExportBean;
-import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.export.Export.ExportTypes;
+import de.mpg.mpdl.dlc.export.ExportServlet;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
+import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -102,7 +103,7 @@ public class FullScreen {
 				
 				initPageListMenu();
 			} catch (Exception e) {
-				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
+				//MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
 				logger.error("Error while loading volume", e);
 			}
 		}
@@ -317,29 +318,6 @@ public class FullScreen {
 		this.volumeOu = volumeOu;
 	}
 
-	public String export(String type)
-	{
-		byte[] pdf = null;
-		try
-		{
-			if (type.equals(Export.ExportTypes.PDF.toString()))
-			{
-				pdf = ExportBean.doExport(this.volume, ExportTypes.PDF);
-				ExportServlet servlet = new ExportServlet();
-				servlet.createPdfResponse(pdf, this.volumeId);	
-			}
-			if (type.equals(Export.ExportTypes.PRINT.toString()))
-			{
-				//TODO
-			}
-		}
-		catch (Exception e)
-		{
-			MessageHelper.errorMessage("The export could not be created due to an internal error.", e.getMessage());
-		}
-		return "";
-	}
-
 	public String getDigilibQueryString() {
 		return digilibQueryString;
 		/*
@@ -368,4 +346,5 @@ public class FullScreen {
 	public void setSessionBean(SessionBean sessionBean) {
 		this.sessionBean = sessionBean;
 	}
+
 }

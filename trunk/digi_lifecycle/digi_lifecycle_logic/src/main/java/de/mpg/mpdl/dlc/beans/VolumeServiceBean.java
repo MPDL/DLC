@@ -1000,7 +1000,8 @@ public class VolumeServiceBean {
 			Item updatedItem = client.update(volume.getItem());
 			logger.info("Item updated: " + updatedItem.getObjid());
 			
-			updatedItem = updateMd(createVolumeFromItem(updatedItem, userHandle), userHandle);
+			//Commented out as tei info is no longer needed in md-record
+			//updatedItem = updateMd(createVolumeFromItem(updatedItem, userHandle), userHandle);
 			
 			String currentStatus = updatedItem.getProperties().getVersion().getStatus();
 			if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
@@ -1030,6 +1031,13 @@ public class VolumeServiceBean {
 		}		
 	}
 	
+	/**
+	 * Writes the tei-sd link to the mods relatedItem element and updates the item.
+	 * @param vol
+	 * @param userHandle
+	 * @return
+	 * @throws Exception
+	 */
 	public static Item updateMd (Volume vol, String userHandle) throws Exception
 	{
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1060,7 +1068,6 @@ public class VolumeServiceBean {
 			}
 			
 			mri.setDisplayLabel("tei-sd");
-			//TODO
 			ModsURLSEC url = new ModsURLSEC();
 			url.setValue("http://dlc.mpdl.mpg.de:8080" + teiSdUrl + "/content");
 			ModsLocationSEC loc = new ModsLocationSEC();
