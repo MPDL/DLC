@@ -621,6 +621,25 @@ public class VolumeServiceBean {
 		vol.setMets(metsData);
 		String itemIdWithoutColon = itemId.replaceAll(":", "_");
 		
+		File jpegFooter = null;
+		if(footer != null)
+		{
+			String footerMimetype = tika.detect(footer.getDiskFileItem().getStoreLocation());
+	
+			if("image/tiff".equals(footerMimetype))
+			{
+				jpegFooter = ImageHelper.tiffToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
+			}
+			else if("image/png".equals(footerMimetype))
+				jpegFooter = ImageHelper.pngToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
+			else if("image/jpeg".equals(footerMimetype))
+				jpegFooter = footer.getDiskFileItem().getStoreLocation();
+			else
+			{
+				throw new Exception("Invalid image mimetype " + footerMimetype + " for image " + footer.getName());
+			}	
+		}
+		
 		
 		for(IngestImage imageItem : images)
 		{
@@ -648,28 +667,9 @@ public class VolumeServiceBean {
 					throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
 				}
 				
-				
-				if(footer != null)
+				if(jpegFooter!=null)
 				{
-					String footerMimetype = tika.detect(footer.getDiskFileItem().getStoreLocation());
-					File jpegFooter;
-					if("image/tiff".equals(footerMimetype))
-					{
-						jpegFooter = ImageHelper.tiffToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
-					}
-					else if("image/png".equals(footerMimetype))
-						jpegFooter = ImageHelper.pngToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
-					else if("image/jpeg".equals(footerMimetype))
-						jpegFooter = footer.getDiskFileItem().getStoreLocation();
-					else
-					{
-						throw new Exception("Invalid image mimetype " + mimetype + " for image " + footer.getName());
-					}
-					
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
-					
-					jpegFooter.delete();
-						
 				}
 				
 				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
@@ -704,7 +704,9 @@ public class VolumeServiceBean {
 				metsData.getPages().add(p);
 			
 			
-		}				
+		}	
+		
+		jpegFooter.delete();
 	}
 	
 	public Volume update(Volume volume, String userHandle, String operation,  DiskFileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem cdcFile)
