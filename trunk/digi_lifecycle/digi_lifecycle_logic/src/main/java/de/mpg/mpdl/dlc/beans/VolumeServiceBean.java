@@ -1047,6 +1047,7 @@ public class VolumeServiceBean {
 	 * @return
 	 * @throws Exception
 	 */
+	/*
 	public static Item updateMd (Volume vol, String userHandle) throws Exception
 	{
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1096,7 +1097,7 @@ public class VolumeServiceBean {
 		Item updatedItem = client.update(vol.getItem());
 		return updatedItem;
 	}
-	
+	*/
 	public static String getJPEGFilename(String filename)
 	{
 		
@@ -2715,7 +2716,12 @@ public class VolumeServiceBean {
 				{
 					ingestImageList.add(new IngestImage(img));
 				}
-				uploadImagesAndCreateMets(ingestImageList, new IngestImage(footer), item.getOriginObjid(), volume);
+				IngestImage iifooter = null;
+				if(footer!=null)
+				{
+					iifooter = new IngestImage(footer);
+				}
+				uploadImagesAndCreateMets(ingestImageList, iifooter, item.getOriginObjid(), volume);
 			
 				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			
