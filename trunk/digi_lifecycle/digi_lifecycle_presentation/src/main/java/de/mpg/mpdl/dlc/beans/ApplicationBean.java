@@ -28,21 +28,30 @@
  */
 package de.mpg.mpdl.dlc.beans;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.batchIngest.IngestLog;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 @ManagedBean
@@ -76,6 +85,8 @@ public class ApplicationBean
 
     private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
     
+    private DataSource dataSource = new BasicDataSource();
+    
     /**
      * Public constructor.
      */
@@ -96,8 +107,15 @@ public class ApplicationBean
 			InitialContext context = new InitialContext();
 			this.contextServiceBean = new ContextServiceBean();
 			this.ouServiceBean =  new OrganizationalUnitServiceBean();
+			this.dataSource = setupDataSource();
+	
     	} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
+		}catch (IOException e) {
+			logger.error("Error setting datasource: " + e.getMessage());
+		} catch (URISyntaxException e) {
+			logger.error("Error setting datasource: " + e.getMessage());
+			e.printStackTrace();
 		}
     	
     	/*
@@ -278,6 +296,69 @@ public class ApplicationBean
 	public void setUploadThreads(HashMap<String, Integer> uploadThreads) {
 		this.uploadThreads = uploadThreads;
 	}
+	
+    public static DataSource setupDataSource() throws IOException, URISyntaxException {
+        BasicDataSource ds = new BasicDataSource();
+        ds.setDriverClassName("org.postgresql.Driver");
+        ds.setUsername(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
+        ds.setPassword(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
+        ds.setUrl(PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
+        return ds;
+    }
+    
+    public void setupDBTable()
+    {
+		Connection connection = null;
+        Statement stmt = null;
+		try{
+			this.dataSource.getConnection();
+	
+			URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
+	
+		    //File file = new File(sqlURL.toURI());
+		    StringBuilder fileContents = new StringBuilder();
+		    Scanner scanner = new Scanner(sqlURL.openStream());
+			
+		    String lineSeparator = System.getProperty("line.separator");
+		    String dbScript;
+	
+		    try {
+		        while(scanner.hasNextLine())        
+		            fileContents.append(scanner.nextLine() + lineSeparator);
+		       
+		        dbScript = fileContents.toString();
+		    } finally {
+		        scanner.close();
+		    }
+	
+	        String[] queries = dbScript.split(";");
+	        for (String query : queries)
+	        {
+	            logger.debug("Executing statement: " + query);
+	            stmt = connection.createStatement();
+	            stmt.executeUpdate(query);
+	            stmt.close();
+	        }
+		}catch(SQLException e) {
+            e.printStackTrace();
+        }catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (connection != null) connection.close(); } catch(Exception e) { }
+        }
+    }
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+    
+    
 
     
 //    /**

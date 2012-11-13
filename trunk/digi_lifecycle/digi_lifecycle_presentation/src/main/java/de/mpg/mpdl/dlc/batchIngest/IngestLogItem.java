@@ -1,11 +1,14 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class IngestLogItem extends IngestLog{
 	
 	
 	private String escidocId;
 
-	private String message;
+	private List<String> logs = new ArrayList<String>();
 	private String contentModel;
 	private Integer imagesNr;
 	private boolean hasFooter;
@@ -18,11 +21,11 @@ public class IngestLogItem extends IngestLog{
 		this.escidocId = escidocId;
 	}
 
-	public String getMessage() {
-		return message;
+	public List<String> getLogs() {
+		return logs;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setLogs(List<String> logs) {
+		this.logs = logs;
 	}
 	public String getContentModel() {
 		return contentModel;

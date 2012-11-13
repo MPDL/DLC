@@ -1,18 +1,14 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
-import java.io.IOException;
-
 import javax.faces.bean.ManagedProperty;
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.postgresql.util.PSQLException;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
-import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
-import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 
 public class IngestProcess extends Thread{
@@ -42,19 +38,19 @@ public class IngestProcess extends Thread{
 	private String password;
 	
 	private IngestLog log;
-	private long lastBeat = 0;
 	
-	private ContextServiceBean contectServiceBean = new ContextServiceBean();
+//	@ManagedProperty("#{applicationBean}")
+//	private ApplicationBean applicationBean;
+//	
+//	@ManagedProperty("#{loginBean}")
+//	private LoginBean loginBean;
 	
-	@ManagedProperty("#{applicationBean}")
-	private ApplicationBean applicationBean;
-	
-	@ManagedProperty("#{loginBean}")
-	private LoginBean loginBean;
+	private DataSource ds;
 
 	
-	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
+	public IngestProcess(DataSource ds, String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
 	{
+		this.ds = ds;
 		this.logName = name;
 		this.step = step;
 		this.action = action;
@@ -63,7 +59,6 @@ public class IngestProcess extends Thread{
 		this.contextId = contextId;
 		this.userHandle = userHandle;
 		this.server = server;
-		System.out.println(protocol);
 		this.protocol = protocol;
 		this.userName = userName;
 		this.password = password;
@@ -87,7 +82,7 @@ public class IngestProcess extends Thread{
 //			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
 		
 		try {
-			log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
+			log = new IngestLog(ds, logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
 			try {
 				if(log.ftpCheck())
 					log.ftpSaveItems();
@@ -203,21 +198,7 @@ public class IngestProcess extends Thread{
 		this.password = password;
 	}
 
-	public ApplicationBean getApplicationBean() {
-		return applicationBean;
-	}
 
-	public void setApplicationBean(ApplicationBean applicationBean) {
-		this.applicationBean = applicationBean;
-	}
-
-	public LoginBean getLoginBean() {
-		return loginBean;
-	}
-
-	public void setLoginBean(LoginBean loginBean) {
-		this.loginBean = loginBean;
-	}
 
 	public boolean isProtocol() {
 		return protocol;

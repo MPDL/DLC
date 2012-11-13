@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.batchIngest;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,10 +24,12 @@ import org.postgresql.util.PSQLException;
 import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
+import com.sun.xacml.ctx.Result;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Status;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
@@ -41,7 +44,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	private static Logger logger = Logger.getLogger(IngestLogBean.class);
 	
-	private String oldUserId;
 	private String userId;
 	
 	private List<IngestLog> logs = new ArrayList<IngestLog>();
@@ -52,6 +54,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
+	
+	@ManagedProperty("#{applicationBean}")
+	private ApplicationBean appBean;
 
 	
 	public IngestLogBean()
@@ -80,8 +85,11 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	public List<IngestLog> retrieveList(int offset, int limit) throws Exception 
 	{
-		logs.clear();    
-		this.conn = IngestLog.getConnection();
+		logs.clear();   
+		if(this.conn == null)
+		{
+			this.conn = appBean.getDataSource().getConnection();
+		}
 		List<IngestLog> allLogs = new ArrayList<IngestLog>();
 		try
 		{
@@ -141,7 +149,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		IngestLog log = null;
 		if(conn == null)
 			try {
-				conn = IngestLog.getConnection();
+				conn = appBean.getDataSource().getConnection();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -177,7 +185,16 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
         log.setStep(Step.valueOf(resultSet.getString("step").toUpperCase()));
         log.setStatus(Status.valueOf(resultSet.getString("status").toUpperCase()));
         log.setErrorLevel(ErrorLevel.valueOf(resultSet.getString("errorlevel").toUpperCase()));
-        log.setMessage(resultSet.getString("message"));
+    	Array a = resultSet.getArray("logs");
+    	if(a != null)
+    	{
+	    	String[] logs = (String[]) a.getArray();
+	    	if(logs.length > 0)
+	    	{
+		    	for(int i = 1; i<=logs.length; i++)
+		    		log.getLogs().add(logs[i-1]);
+	    	}
+    	}
         log.setStartDate(resultSet.getTimestamp("startdate"));
         log.setEndDate(resultSet.getTimestamp("enddate"));
         log.setContextId(resultSet.getString("context_id"));
@@ -193,7 +210,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		List<IngestLogItem> logItems = new ArrayList<IngestLogItem>();
 		if(conn == null)
 			try {
-				conn = IngestLog.getConnection();
+				conn = appBean.getDataSource().getConnection();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -206,7 +223,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		{
 			query = "select * from dlc_batch_ingest_log_item where log_id = " + logId;
 	        if(conn == null)
-	        	conn = IngestLog.getConnection();
+	        {
+	        	conn = appBean.getDataSource().getConnection();
+	        }
 	        statement = conn.prepareStatement(query);
 	        resultSet = statement.executeQuery();
 	        
@@ -232,7 +251,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		IngestLogItem logItem = null;
 		if(conn == null)
 			try {
-				conn = IngestLog.getConnection();
+				conn = appBean.getDataSource().getConnection();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -254,7 +273,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 			
 		}catch(Exception e)
 		{
-			
+			logger.error(e.getMessage());
 		}
 		return logItem;
 	}
@@ -278,7 +297,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	logItem.setStartDate(resultSet.getTimestamp("startdate"));
     	logItem.setEndDate(resultSet.getTimestamp("enddate"));
     	logItem.setLogId(resultSet.getInt("log_id"));
-    	logItem.setMessage(resultSet.getString("message"));
+    	Array a = resultSet.getArray("logs");
+    	String[] logs = (String[]) a.getArray();
+    	for(int i = 1; i<=logs.length; i++)
+    	{
+    		logItem.getLogs().add(logs[i-1]);
+    	}
     	logItem.setEscidocId(resultSet.getString("item_id"));
     	logItem.setContentModel(resultSet.getString("content_model"));
     	logItem.setImagesNr(resultSet.getInt("images_nr"));
@@ -295,7 +319,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		List<IngestLogItemVolume> logItemVolumes = new ArrayList<IngestLogItemVolume>();
 		if(conn == null)
 			try {
-				conn = IngestLog.getConnection();
+				conn = appBean.getDataSource().getConnection();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -308,7 +332,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		{
 			query = "select * from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId;
 	        if(conn == null)
-	        	conn = IngestLog.getConnection();
+	        {
+	        	conn = appBean.getDataSource().getConnection();
+	        }
 	        statement = conn.prepareStatement(query);
 	        resultSet = statement.executeQuery();
 	        
@@ -334,7 +360,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		IngestLogItemVolume logItemVolume = null;
 		if(conn == null)
 			try {
-				conn = IngestLog.getConnection();
+				conn = appBean.getDataSource().getConnection();
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -378,7 +404,11 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	logItemVolume.setStartDate(resultSet.getTimestamp("startdate"));
     	logItemVolume.setEndDate(resultSet.getTimestamp("enddate"));
     	logItemVolume.setLogItemId(resultSet.getInt("log_item_id"));
-    	logItemVolume.setMessage(resultSet.getString("message"));
+    	
+    	Array a = resultSet.getArray("logs");
+    	String[] logs = (String[]) a.getArray();
+    	for(int i = 1; i<=logs.length; i++)
+    		logItemVolume.getLogs().add(logs[i-1]);
     	logItemVolume.setEscidocId(resultSet.getString("item_id"));
     	logItemVolume.setContentModel(resultSet.getString("content_model"));
     	
@@ -389,6 +419,14 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
         return logItemVolume;
     }
 
+
+	public ApplicationBean getAppBean() {
+		return appBean;
+	}
+
+	public void setAppBean(ApplicationBean appBean) {
+		this.appBean = appBean;
+	}
 
 	public List<IngestLog> getLogs() {
 		return logs;

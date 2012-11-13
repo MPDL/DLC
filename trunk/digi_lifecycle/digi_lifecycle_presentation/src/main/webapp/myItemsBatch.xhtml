@@ -32,7 +32,7 @@
 		                    <h:outputText value="Errorlevel" />
 		                </rich:column>
 		                <rich:column >
-		                    <h:outputText value="message" />
+		                    <h:outputText value="logs" />
 		                </rich:column>
 		                <rich:column>
 		                    <h:outputText value="Startdate" />
@@ -82,7 +82,11 @@
             		<h:outputText value="#{log.errorLevel}" />           		
        			</rich:column>
  		        <rich:column>
-            		<h:outputText value="#{log.message}" />           		
+ 		        	<a4j:repeat value= "#{log.logs}" var="logLog" >
+            			<h:outputText value="#{logLog}&lt;br /&gt;" escape="false" >
+            				<br/>
+            			</h:outputText>  
+            		</a4j:repeat>         		
        			</rich:column>      			
        			<rich:column>
             		<h:outputText value="#{log.startDate}" />
@@ -115,7 +119,12 @@
 	            		<h:outputText value="#{logItem.errorLevel}" />
 	       			</rich:column>
 	       			<rich:column>
-	            		<h:outputText value="#{logItem.message}" />
+		 		        <rich:column>
+		 		        	<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
+		            			<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false" >
+		            			</h:outputText>  
+		            		</a4j:repeat>         		
+		       			</rich:column>
 	       			</rich:column>
 	       			<rich:column>
 	            		<h:outputText value="#{logItem.startDate}" />
@@ -177,7 +186,11 @@
 		            		<h:outputText value="#{logItemVolume.errorLevel}" />
 		       			</rich:column>
 		       			<rich:column>
-		            		<h:outputText value="#{logItemVolume.message}" />
+			 		        <rich:column>
+			 		        	<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
+			            			<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>  
+			            		</a4j:repeat>         		
+			       			</rich:column>
 		       			</rich:column>		       			
 		       			<rich:column>
 		            		<h:outputText value="#{logItemVolume.startDate}" />
