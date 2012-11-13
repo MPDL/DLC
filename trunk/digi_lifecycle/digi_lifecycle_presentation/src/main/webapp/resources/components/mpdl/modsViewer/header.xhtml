@@ -32,31 +32,49 @@
 		<br/>
 		<h:panelGroup styleClass="eg3_floatLeft">
 			<h:form>
-					<h3 class="eg3_volumeTitle">
+					
 					<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
-						<h:panelGroup rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
-							<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
-							<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
-								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
-							</a4j:commandLink>
-						</h:panelGroup>
-						<h:panelGroup rendered="#{empty cc.attrs.volume.relatedParentVolume}">
-							<h:outputText value="ERROR! No multivolume found" />
-						</h:panelGroup>
+						<!-- Multivolume title -->
+						<h3 class="eg3_volumeTitle">
+							<h:panelGroup rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
+								<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
+								<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
+									<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
+								</a4j:commandLink>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{empty cc.attrs.volume.relatedParentVolume}">
+								<h:outputText value="ERROR! No multivolume found" />
+							</h:panelGroup>
+						</h3>
+						<br/>
+						<!-- Volume title -->
+						<h4 class="eg3_volumeDetails" >
+							<pretty:link mappingId="viewPagesWithoutNumber">
+								<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+								<f:param value="recto-verso"/>
+								<h:outputText value="#{volumeUtilBean.getVolumeFullTitleView(cc.attrs.volume)}"/>
+							</pretty:link>
+						</h4>	
 					</h:panelGroup>
 					
+					<!-- Monograph -->	
+					<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}">
+						<h3 class="eg3_volumeTitle">
+							<pretty:link mappingId="viewPagesWithoutNumber">
+								<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+								<f:param value="recto-verso"/>
+								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}"  />
+							</pretty:link>
+						</h3>
+					</h:panelGroup>
 						
-						
-						<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}" />
-						
-					</h3>
+					
+					
+					
 			</h:form>
 			
 			
-			<h4 class="eg3_volumeDetails" >
-				<br/>
-				<h:outputText value="#{volumeUtilBean.getVolumeFullTitleView(cc.attrs.volume)}"  rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
-			</h4>
+			
 		</h:panelGroup>
 	</h:panelGroup>
 		
