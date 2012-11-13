@@ -64,6 +64,7 @@ import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.log4j.Logger;
+import org.apache.tika.Tika;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
@@ -137,6 +138,8 @@ public class VolumeServiceBean {
 	
 
 	private static TransformerFactory transfFact;
+	
+	private Tika tika = new Tika();
 	
 	
 	
@@ -611,7 +614,7 @@ public class VolumeServiceBean {
 	}
 	
 	*/
-	public void uploadImagesAndCreateMets(List<IngestImage> images, DiskFileItem footer, String itemId, Volume vol) throws Exception
+	public void uploadImagesAndCreateMets(List<IngestImage> images, IngestImage footer, String itemId, Volume vol) throws Exception
 	{
 		
 		Mets metsData = new Mets();
@@ -628,29 +631,40 @@ public class VolumeServiceBean {
 			{
 
 				File jpegImage;
-				if(imageItem.getName().endsWith("tif") || imageItem.getName().endsWith("tiff"))
+				String mimetype = tika.detect(imageItem.getDiskFileItem().getStoreLocation());
+				logger.info("Detected image " + imageItem.getName() + " as " + mimetype);
+				if("image/tiff".equals(mimetype))
 				{
 					jpegImage = ImageHelper.tiffToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
 				}
-				else if(imageItem.getName().endsWith("png"))
+				else if("image/png".equals(mimetype))
 				{
 					jpegImage = ImageHelper.pngToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
 				}
-				else
+				else if("image/jpeg".equals(mimetype))
 					jpegImage = imageItem.getDiskFileItem().getStoreLocation();
+				else
+				{
+					throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
+				}
 				
 				
 				if(footer != null)
 				{
+					String footerMimetype = tika.detect(footer.getDiskFileItem().getStoreLocation());
 					File jpegFooter;
-					if(footer.getName().endsWith("tif"))
+					if("image/tiff".equals(footerMimetype))
 					{
-						jpegFooter = ImageHelper.tiffToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
+						jpegFooter = ImageHelper.tiffToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
 					}
-					else if(imageItem.getName().endsWith("png"))
-						jpegFooter = ImageHelper.pngToJpeg(footer.getStoreLocation(), getJPEGFilename(footer.getName()));
+					else if("image/png".equals(footerMimetype))
+						jpegFooter = ImageHelper.pngToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
+					else if("image/jpeg".equals(footerMimetype))
+						jpegFooter = footer.getDiskFileItem().getStoreLocation();
 					else
-						jpegFooter = footer.getStoreLocation();
+					{
+						throw new Exception("Invalid image mimetype " + mimetype + " for image " + footer.getName());
+					}
 					
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
 					
@@ -702,12 +716,7 @@ public class VolumeServiceBean {
 			
 			client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);				
-			
-			
-			
-			
-			
-			
+
 			if(images.size() >0)
 			{
 				uploadImagesAndCreateMets(images, null, volume.getItem().getObjid(), volume);
@@ -1113,11 +1122,11 @@ public class VolumeServiceBean {
 			//client.setHandle(userHandle);
 			//client.delete(vol.getItem().getObjid());
 			deleteVolume(vol, userHandle);
-			logger.info("Item successfully deleted");
+			logger.info("Item and images successfully deleted");
 		} 
 		catch (Exception e) 
 		{
-			logger.error("Could not delete item" + vol.getItem().getObjid(), e);
+			logger.error("Could not delete item or images" + vol.getItem().getObjid(), e);
 			
 		}
 		
@@ -2644,7 +2653,8 @@ public class VolumeServiceBean {
 			}
 
 				//Convert and upload images 
-				long start = System.currentTimeMillis();		
+			/*	
+			long start = System.currentTimeMillis();		
 				for(File image : images)
 				{
 					String filename = getJPEGFilename(image.getName());
@@ -2698,7 +2708,14 @@ public class VolumeServiceBean {
 				}				
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
+			*/
 			
+			 	List<IngestImage> ingestImageList = new ArrayList<IngestImage>();
+				for(File img : images)
+				{
+					ingestImageList.add(new IngestImage(img));
+				}
+				uploadImagesAndCreateMets(ingestImageList, new IngestImage(footer), item.getOriginObjid(), volume);
 			
 				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			

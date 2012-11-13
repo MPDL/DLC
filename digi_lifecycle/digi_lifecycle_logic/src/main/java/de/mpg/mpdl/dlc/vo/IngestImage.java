@@ -1,5 +1,7 @@
 package de.mpg.mpdl.dlc.vo;
 
+import java.io.File;
+
 import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -8,11 +10,12 @@ public class IngestImage implements Comparable<IngestImage> {
 
 	
 	public enum Type {
-		DISK, ONLINE
+		DISK, ONLINE;
 	}
 	
 	private Type type;
 	private DiskFileItem diskFileItem;
+	
 	
 	private Page page;
 	private String url;
@@ -24,6 +27,13 @@ public class IngestImage implements Comparable<IngestImage> {
 	{
 		this.diskFileItem = diskFileItem;
 		this.name = diskFileItem.getName();
+		this.type = Type.DISK;
+	}
+	
+	public IngestImage(File f)
+	{
+		this.name = f.getName();
+		new DiskFileItem(f.getName(), "image", true, f.getName(), 0, f);
 		this.type = Type.DISK;
 	}
 	
@@ -106,6 +116,8 @@ public class IngestImage implements Comparable<IngestImage> {
 	{
 		return getName().equals(((IngestImage)o).getName());
 	}
+
+
 	
 	
 }
