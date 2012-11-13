@@ -17,16 +17,11 @@
 		<ui:define name="separateContentHeader">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
 			
-			
 			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="head"/>
-			
-			
-		
-			
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
@@ -42,29 +37,23 @@
 				
 				<!-- BEGIN THUMBNAIL LIST -->
 				<h:panelGroup  layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
-				
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sidebarEmptyContentHeader">
 						<h:outputText value="&#160;"/>
 					</h:panelGroup>
-					
-					
 					<h:panelGroup id="thumbsContainer" layout="block" styleClass="eg3_container_1 eg3_editSidebarContent" style="min-height:800px;">
 						<a4j:repeat id="thumbsRepeater" var="element" value="#{structuralEditorBean.pbList}">
-							
 							<h:panelGroup id="thumbsContent" layout="block" styleClass="#{element.teiElement.id} eg3_container_1 eg3_editSidebarContentItem #{element.teiElement.id == structuralEditorBean.selectedPb.teiElement.id ? 'eg3_active' : ''}" rendered="#{element.teiElement.elementType=='PB'}">
 								<h:outputText value="#{structuralEditorBean.addToClientIdMap(element.teiElement.id, component.parent.clientId)}"/>
 								<h:form id="thumbsForm">
-									<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_sidebarThumbnail" >
-										<h:commandLink action="#{structuralEditorBean.selectPb(element)}" >
-											<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}"/>
-											<f:ajax render=":messages :edit :paginator" execute="@this"/>
-										</h:commandLink>
-									</h:panelGroup>
-									</h:form>
-									<h:panelGroup id="thumbsDescription" layout="block" styleClass="eg3_container_1_2" >
+									<h:commandLink action="#{structuralEditorBean.selectPb(element)}">
+										<img src="#{volumeUtilBean.getImageServerUrl(element.page.contentIds, 'THUMBNAIL')}" class="eg3_sidebarThumbnail"/>
+										<f:ajax render=":messages :edit :paginator" execute="@this"/>
+									</h:commandLink>
+								</h:form>
+								<h:panelGroup id="thumbsDescription" styleClass="eg3_thumbnailDescription">
 										<b>
-										<h:outputText value="#{lbl.edit_scan} #{element.page.order + 1}"/>
-										<h:outputText value=" / #{lbl.edit_page} #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}"/>
+											<h:outputText value="#{lbl.edit_scan} #{element.page.order + 1}"/>
+											<h:outputText value=" / #{lbl.edit_page} #{element.teiElement.numeration}" rendered="#{not empty element.teiElement.numeration}"/>
 										</b>
 										<h:outputText value=" (#{internationalizationHelper.getLabelForEnum('pageType_', element.teiElement.type)})" rendered="#{not empty element.teiElement.type}"/>
 										<h:panelGroup rendered="#{not empty element.teiElement.rend}">
@@ -97,9 +86,7 @@
 										</a4j:repeat>
 										
 									</h:panelGroup>	
-									
 							</h:panelGroup>
-							
 						</a4j:repeat>
 					</h:panelGroup>
 				
@@ -114,19 +101,16 @@
 							<h:outputText value="#{lbl.edit_page_sum_scans} #{structuralEditorBean.volume.pages.size()}"/>
 						</h:panelGroup>
 						
-						
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_1_2 eg3_textCenter">
 							<h:form styleClass="eg3_pageBrowser">
 								
-								
-								
 								<h:panelGroup style="margin-left:2%;" styleClass="eg3_floatLeft">
-										<h:commandButton action="#{structuralEditorBean.setDigilibActivated(true)}" styleClass="eg3_icon_viewer_16_16" title="Activate zoom functionality" rendered="#{!structuralEditorBean.digilibActivated}">
-											<f:ajax render=":messages :edit :paginator"/>
-										</h:commandButton>
-										<h:commandButton action="#{structuralEditorBean.setDigilibActivated(false)}" styleClass="eg3_icon_viewer_16_16 eg3_active" title="Deactivate zoom functionality" rendered="#{structuralEditorBean.digilibActivated}">
-											<f:ajax render=":messages :edit :paginator"/>
-										</h:commandButton>
+									<h:commandButton action="#{structuralEditorBean.setDigilibActivated(true)}" styleClass="eg3_icon_viewer_16_16" title="Activate zoom functionality" rendered="#{!structuralEditorBean.digilibActivated}">
+										<f:ajax render=":messages :edit :paginator"/>
+									</h:commandButton>
+									<h:commandButton action="#{structuralEditorBean.setDigilibActivated(false)}" styleClass="eg3_icon_viewer_16_16 eg3_active" title="Deactivate zoom functionality" rendered="#{structuralEditorBean.digilibActivated}">
+										<f:ajax render=":messages :edit :paginator"/>
+									</h:commandButton>
 								</h:panelGroup>
 								
 								<h:panelGroup styleClass="eg3_defaultPagination">
@@ -156,7 +140,7 @@
 										</ui:fragment>
 										
 										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
-											<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+											<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
 												<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 												<f:ajax render=":messages :edit :paginator"/>
 											</h:commandLink>
@@ -170,28 +154,24 @@
 											<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
 										</ui:fragment>
 									</h:panelGroup>
-								
 								</h:panelGroup>
-								
-								
 								
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_quickPagination eg3_textCenter" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
 									<!-- pagination buttons for previous -->
-									
-										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
-											<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
-												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":messages :edit :paginator"/>
-											</h:commandLink>
-											<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
-												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":messages :edit :paginator"/>
-											</h:commandLink>
-										</ui:fragment>
-										<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order lt 1}">
-											<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
-											<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
-										</ui:fragment>
+									<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
+										<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+											<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandLink>
+										<h:commandLink action="#{structuralEditorBean.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+											<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+											<f:ajax render=":messages :edit :paginator"/>
+										</h:commandLink>
+									</ui:fragment>
+									<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order lt 1}">
+										<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+										<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+									</ui:fragment>
 									
 									<h:panelGroup styleClass="eg3_dynamicSelectBox_js eg3_container_1_3" style="display:inline-block;">
 										<h:panelGroup layout="block" styleClass="eg3_selectionContent">
@@ -200,14 +180,14 @@
 												<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
 											</span>
 										</h:panelGroup>
-										<h:selectOneMenu value="#{structuralEditorBean.selectedGoToBoxPageId}" >
+										<h:selectOneMenu value="#{structuralEditorBean.selectedGoToBoxPageId}">
 								   			<f:ajax event="change" listener="#{structuralEditorBean.pageNumberChanged}" render=":messages :edit :paginator"/>
 								   			<f:selectItems value="#{structuralEditorBean.pageListMenu}"/>
 								   		</h:selectOneMenu>
 								   	</h:panelGroup>
 							   		
 							   		<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order + 1 lt structuralEditorBean.volume.pages.size()}">
-										<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+										<h:commandLink action="#{structuralEditorBean.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
 											<h:panelGroup styleClass="eg3_icon_forward_16_16"/>
 											<f:ajax render=":messages :edit :paginator"/>
 										</h:commandLink>
@@ -221,223 +201,393 @@
 										<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
 									</ui:fragment>
 						   		</h:panelGroup>
-								
-								
 							</h:form>
-						
 						</h:panelGroup>
 					</h:panelGroup> <!-- END VIEWPAGEMENU -->
+					
+					<style type="text/css">
+						.rf-tbp.eg3_container_1 .rf-tab-cnt {
+							width:95.5%;
+							padding:2%;
+						}
+					</style>
+					
+					<h:panelGroup id="edit" layout="block" styleClass="eg3_singleEdit">
 						
-						<style type="text/css">
-							.rf-tbp.eg3_container_1 .rf-tab-cnt {
-								width:95.5%;
-								padding:2%;
+						<!-- Add script here, because it has to be updated with every ajax request -->
+						<script type="text/javascript">
+						 /* <![CDATA[ */
+							function scrollThumbsContainer() {
+								var selectedPb = '#{structuralEditorBean.selectedPb.teiElement.id}';
+								scrollDiv("thumbsContainer", selectedPb);
 							}
-						</style>
-						
-						<h:panelGroup id="edit" layout="block" styleClass="eg3_singleEdit">
 							
-							<!-- Add script here, because it has to be updated with every ajax request -->
-							<script type="text/javascript">
-							 /* <![CDATA[ */
-								function scrollThumbsContainer() {
-									var selectedPb = '#{structuralEditorBean.selectedPb.teiElement.id}';
-									scrollDiv("thumbsContainer", selectedPb);
-								}
-								
-								function scrollTreeContainer() {
-									var selectedPbId = '#{structuralEditorBean.treeScrollPositionPagebreak.teiElement.id}';
-									var treeContainerId = "#{rich:clientId('tree')}";
-									scrollDiv(treeContainerId, "struct_" + selectedPbId)
-								}
-								
-								function scrollDiv(containerId, scrollToClassId) {
-									if(containerId && scrollToClassId) {
-										//add an backslahs before all colons
-										containerId = containerId.replace(/:/g, "\\:");
-										var containerDiv = $('#' + containerId);
-										var scrollToElement = $('.' + scrollToClassId);
+							function scrollTreeContainer() {
+								var selectedPbId = '#{structuralEditorBean.treeScrollPositionPagebreak.teiElement.id}';
+								var treeContainerId = "#{rich:clientId('tree')}";
+								scrollDiv(treeContainerId, "struct_" + selectedPbId)
+							}
+							
+							function scrollDiv(containerId, scrollToClassId) {
+								if(containerId && scrollToClassId) {
+									//add an backslahs before all colons
+									containerId = containerId.replace(/:/g, "\\:");
+									var containerDiv = $('#' + containerId);
+									var scrollToElement = $('.' + scrollToClassId);
 
-										var pos = scrollToElement.offset();
-										if(pos!=null) {
-											var containerPos = containerDiv.offset();
-											var currentScroll = containerDiv.scrollTop();
-											var newScrollPos = pos.top - containerPos.top + currentScroll - 50;
-											containerDiv.scrollTop(newScrollPos);
-										}
+									var pos = scrollToElement.offset();
+									if(pos!=null) {
+										var containerPos = containerDiv.offset();
+										var currentScroll = containerDiv.scrollTop();
+										var newScrollPos = pos.top - containerPos.top + currentScroll - 50;
+										containerDiv.scrollTop(newScrollPos);
 									}
 								}
-								 /* ]]> */
-							</script>
+							}
+							 /* ]]> */
+						</script>
+						
+						<h:panelGroup id="pageScan" layout="block" styleClass="digilib eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1">
 							
-							<h:panelGroup id="pageScan" layout="block" styleClass="digilib eg3_container_1_2 eg3_editPage_imgContainer eg3_image_bgColor_1" >
-								
-									<ui:fragment rendered="#{structuralEditorBean.digilibActivated}">
-										<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
-										<script type="text/javascript">
-									 /* <![CDATA[ */
-							                var opts = {
-									            'citationLinkIds' : ['citationLink','permaLink'],    
-							                	'interactionMode' : 'embedded',
-							                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
-							                    'showRegionNumbers' : true,
-							                    'logoUrl' : '',
-							                    'buttonSettings' : {
-							                        'embedded' : {
-							                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery_2/img/fullscreen/32/',
-							                            'buttonSetWidth' : 18,
-							                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","rot","brgt","cont","reset"],
-							                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-							                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
-							                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
-							                            'arrowSet' : ["up", "down", "left", "right"],
-							                            'buttonSets' : ['standardSet', 'specialSet']
-						                            
-							                            }
-							                    }
-							                    //, scalerInset : -10
-											}; //end opts
-											var digilibObject = $('.digilib').digilib(opts);
-											$('.digilib .keep.buttons').draggable({containment : "parent"});
-										    /* ]]> */
-						       		 	</script>
-					       		 	</ui:fragment>
-								
-								
-								<ui:fragment rendered="#{!structuralEditorBean.digilibActivated}">
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds,'WEB')}"/>
-								</ui:fragment>
-								
+							<ui:fragment rendered="#{structuralEditorBean.digilibActivated}">
+								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(structuralEditorBean.selectedPb.page,600,1400)}"/>
 								
 								<script type="text/javascript">
-									$('.eg3_editSidebarContent').css("height", $('.eg3_editPage_imgContainer').height());
-								</script>
-								
-							</h:panelGroup>
+							 /* <![CDATA[ */
+					                var opts = {
+							            'citationLinkIds' : ['citationLink','permaLink'],    
+					                	'interactionMode' : 'embedded',
+					                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
+					                    'showRegionNumbers' : true,
+					                    'logoUrl' : '',
+					                    'buttonSettings' : {
+					                        'embedded' : {
+					                            'imagePath' : '#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery_2/img/fullscreen/32/',
+					                            'buttonSetWidth' : 18,
+					                            'standardSet' : ["zoomin","zoomout","zoomarea","zoomfull","bird","rot","brgt","cont","reset"],
+					                            'specialSet' : ["hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+					                            //'standardSet' : ["reference","zoomin","zoomout","zoomarea","zoomfull","reset","bird","toggleoptions"],
+					                            //'specialSet' : ["mark","delmark","hmir","vmir","rot","brgt","cont","rgb","quality","scale","lessoptions"],
+					                            'arrowSet' : ["up", "down", "left", "right"],
+					                            'buttonSets' : ['standardSet', 'specialSet']
+				                            
+					                            }
+					                    }
+					                    //, scalerInset : -10
+									}; //end opts
+									var digilibObject = $('.digilib').digilib(opts);
+									$('.digilib .keep.buttons').draggable({containment : "parent"});
+								    /* ]]> */
+				       		 	</script>
+				       		 	
+			       		 	</ui:fragment>
 							
+							<ui:fragment rendered="#{!structuralEditorBean.digilibActivated}">
+								<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(structuralEditorBean.selectedPb.page.contentIds,'WEB')}"/>
+							</ui:fragment>
 							
-							<!-- END PAGE IMAGE -->
+							<script type="text/javascript">
+								$('.eg3_editSidebarContent').css("height", $('.eg3_editPage_imgContainer').height());
+							</script>
+						</h:panelGroup>
+						
+						
+						<!-- END PAGE IMAGE -->
+						
+						<h:panelGroup id="editingTab" layout="block" styleClass="eg3_container_1_2 eg3_editContent">
+							<h:form>
+							<!-- START SAVE BUTTONS -->
+								<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
+									<h:commandButton  value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
+									<h:outputText value="&#160;"/>
+									<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5" rendered="#{loginBean.user.releasable(structuralEditorBean.volume)}"/>
+									<h:outputText value="&#160;"/>
+									<h:commandButton  value="#{lbl.button_command_revert}" action="#{structuralEditorBean.revert}" styleClass="eg3_borderradius_5"/>
+								</h:panelGroup>
+							</h:form>
+							<!-- END SAVE BUTTONS -->
 							
-							<h:panelGroup id="editingTab" layout="block" styleClass="eg3_container_1_2 eg3_editContent">
-								<h:form>
-								<!-- START SAVE BUTTONS -->
-									<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_editActionButtonbar">
-										<h:commandButton  value="#{lbl.button_command_save}" action="#{structuralEditorBean.save}" styleClass="eg3_borderradius_5"/>
-										<h:outputText value="&#160;"/>
-										<h:commandButton  value="#{lbl.button_command_save_and_release}" action="#{structuralEditorBean.saveAndRelease}" styleClass="eg3_borderradius_5" rendered="#{loginBean.user.releasable(structuralEditorBean.volume)}"/>
-										<h:outputText value="&#160;"/>
-										<h:commandButton  value="#{lbl.button_command_revert}" action="#{structuralEditorBean.revert}" styleClass="eg3_borderradius_5"/>
-									</h:panelGroup>
-								</h:form>
-								<!-- END SAVE BUTTONS -->
-								
-								<h:form>
-								<!-- START TAB-PANEL -->
-									<rich:tabPanel styleClass="eg3_container_1" switchType="ajax">
-										
-										<rich:tab header="#{lbl.edit_tab_structure_head}" label="structure" id="structure">
-											<!-- START CREATE STRUCTURE ELEMENT -->
-											<a4j:region>
-												<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
-													<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
-													
-													<h:panelGroup layout="block" styleClass="eg3_currentPageNumbers eg3_container_1">
-														<h:outputText value="#{lbl.edit_on} #{lbl.edit_scan} "/>
-														<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}"/>
-														<h:outputText value=" / #{lbl.edit_page} #{structuralEditorBean.selectedPb.teiElement.numeration}" rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
-														<h:outputText value=" / #{lbl.edit_page} -" rendered="#{empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
-													</h:panelGroup>
-													
-													<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
-														<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
-															teiWrapper="#{structuralEditorBean.currentNewElement}"/>
-													</h:panelGroup>
-													
-													<h:commandButton type="submit" styleClass="eg3_borderradius_5" value="#{lbl.edit_createStructuralElementBtn}" title="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-												</h:panelGroup>
-											</a4j:region>
-											<!-- END CREATE STRUCTURE ELEMENT -->
-										</rich:tab>
-										
-									<ui:remove>
-										<rich:tab header="#{lbl.edit_tab_editStructure}" label="edit_structure" id="edit_structure" rendered="#{structuralEditorBean.currentEditElementWrapper!=null}">
-											<!-- START EDIT STRUCTURE ELEMENT -->
-											<a4j:region>
-											<style type="text/css"> .xxx input { background-color:#990099;}</style>
-											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer xxx">
-												<h3><h:outputText value="#{lbl.edit_tab_editStructure_head}"/></h3>
+							<h:form>
+							<!-- START TAB-PANEL -->
+								<rich:tabPanel styleClass="eg3_container_1" switchType="ajax">
+									
+									<rich:tab header="#{lbl.edit_tab_structure_head}" label="structure" id="structure">
+										<!-- START CREATE STRUCTURE ELEMENT -->
+										<a4j:region>
+											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
+												<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
 												
-												<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-													structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-													teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-												<br/>
-												<br/>
-												<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-													<f:ajax render=":messages :edit :paginator" execute="@form"/>
-												</h:commandButton>
-												<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_cancelBtn}" action="#{structuralEditorBean.cancelEditStructuralElement}">
+												<h:panelGroup layout="block" styleClass="eg3_currentPageNumbers eg3_container_1">
+													<h:outputText value="#{lbl.edit_on} #{lbl.edit_scan} "/>
+													<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}"/>
+													<h:outputText value=" / #{lbl.edit_page} #{structuralEditorBean.selectedPb.teiElement.numeration}" rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+													<h:outputText value=" / #{lbl.edit_page} -" rendered="#{empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
+													<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+														teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+												</h:panelGroup>
+												
+												<h:commandButton type="submit" styleClass="eg3_borderradius_5" value="#{lbl.edit_createStructuralElementBtn}" title="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
 													<f:ajax render=":messages :edit :paginator" execute="@form"/>
 												</h:commandButton>
 											</h:panelGroup>
-											</a4j:region>
+										</a4j:region>
+										<!-- END CREATE STRUCTURE ELEMENT -->
+									</rich:tab>
+									
+								<ui:remove>
+									<rich:tab header="#{lbl.edit_tab_editStructure}" label="edit_structure" id="edit_structure" rendered="#{structuralEditorBean.currentEditElementWrapper!=null}">
+										<!-- START EDIT STRUCTURE ELEMENT -->
+										<a4j:region>
+										<style type="text/css"> .xxx input { background-color:#990099;}</style>
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer xxx">
+											<h3><h:outputText value="#{lbl.edit_tab_editStructure_head}"/></h3>
 											
-											<!-- END EDIT STRUCTURE ELEMENT -->
-										</rich:tab>
-									</ui:remove>
+											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+											<br/>
+											<br/>
+											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+												<f:ajax render=":messages :edit :paginator" execute="@form"/>
+											</h:commandButton>
+											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_cancelBtn}" action="#{structuralEditorBean.cancelEditStructuralElement}">
+												<f:ajax render=":messages :edit :paginator" execute="@form"/>
+											</h:commandButton>
+										</h:panelGroup>
+										</a4j:region>
 										
-										<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
-											<!-- START PAGE EDITING -->
-											
-											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
-												<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
+										<!-- END EDIT STRUCTURE ELEMENT -->
+									</rich:tab>
+								</ui:remove>
+									
+									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
+										<!-- START PAGE EDITING -->
+										
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
+											<h3><h:outputText value="#{lbl.edit_tab_pagination_head}"/></h3>
+												
+											<h:panelGroup layout="block" id="currentPageValues" styleClass="eg3_currentPageNumbers eg3_container_9_10 eg3_containerCenter">
+												<a4j:region>
+													<h:panelGroup layout="block" styleClass="eg3_container_1">
+														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+															<h:outputText value="#{lbl.edit_physicalPageNumber}: "/>
+														</h:panelGroup>
+														<h:outputText value="&#160;#{structuralEditorBean.selectedPb.page.order + 1}"/>
+													</h:panelGroup>
 													
-												<h:panelGroup layout="block" id="currentPageValues" styleClass="eg3_currentPageNumbers eg3_container_9_10 eg3_containerCenter">
-													<a4j:region>
-														<h:panelGroup layout="block" styleClass="eg3_container_1">
-															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_physicalPageNumber}: "/>
-															</h:panelGroup>
-															<h:outputText value="&#160;#{structuralEditorBean.selectedPb.page.order + 1}"/>
+													<h:panelGroup layout="block" styleClass="eg3_container_1">
+														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+															<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: "/>
 														</h:panelGroup>
-														
-														<h:panelGroup layout="block" styleClass="eg3_container_1">
-															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: "/>
-															</h:panelGroup>
-															<h:inputText value="#{structuralEditorBean.selectedPbNumeration}" styleClass="eg3_container_21_50"/>
+														<h:inputText value="#{structuralEditorBean.selectedPbNumeration}" styleClass="eg3_container_21_50"/>
+													</h:panelGroup>
+													
+													
+													<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+															<h:outputText value="#{lbl.edit_pageDisplayType}: "/>
 														</h:panelGroup>
-														
-														
+														<h:outputText value="&#160;"/>
+														<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+															<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																<span class="eg3_selectionText"></span>
+															</h:panelGroup>
+															<h:selectOneMenu value="#{structuralEditorBean.selectedPbRend}">
+																<f:selectItem itemValue="#{null}" itemLabel="-"/>
+																<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
+																<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
+																<f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
+															</h:selectOneMenu>
+														</h:panelGroup>
+										            </h:panelGroup>
+										            
+										            <h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+										            	<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+															<h:outputText value="#{lbl.edit_pageType}: "/>
+														</h:panelGroup>
+														<h:outputText value="&#160;"/>
+														<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+															<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																<span class="eg3_selectionText"></span>
+															</h:panelGroup>
+															<h:selectOneMenu value="#{structuralEditorBean.selectedPbType}">
+																<f:selectItem itemValue="#{null}" itemLabel="-"/>
+																<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
+																<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
+																<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
+																<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
+																<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
+																<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
+																<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
+															</h:selectOneMenu>
+														</h:panelGroup>
+													</h:panelGroup>
+										            
+										            <h:commandButton action="#{structuralEditorBean.applyPageValues}" value="#{lbl.edit_apply}" styleClass="eg3_borderradius_5">
+														<f:ajax render=":messages :edit :paginator" execute="currentPageValues"/>
+													</h:commandButton>
+												</a4j:region>
+											</h:panelGroup>
+												
+											
+											<h:panelGroup layout="block" id="currentPagination" styleClass="eg3_currentPagination eg3_container_1">
+												<a4j:region>
+													<h3><h:outputText value="#{lbl.edit_batchPagination}"/></h3>
+													<h:panelGroup layout="block" styleClass="eg3_paginationInputArea eg3_container_9_10 eg3_containerCenter">
 														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_pageDisplayType}: "/>
+																<h:outputText value="#{lbl.edit_paginationType}"/>
 															</h:panelGroup>
-															<h:outputText value="&#160;"/>
 															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
 																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																	<span class="eg3_selectionText"></span>
 																</h:panelGroup>
-																<h:selectOneMenu value="#{structuralEditorBean.selectedPbRend}">
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
+																	<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
+																	<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
+																	<f:selectItem itemValue="ROMAN_MINUSCULE" itemLabel="#{lbl.edit_paginationTypeRomanMinuscule}"/>
+																	<f:selectItem itemValue="RECTO_VERSO_ARABIC" itemLabel="#{lbl.edit_paginationTypeRectoVersoArabic}"/>
+																	<f:selectItem itemValue="RECTO_VERSO_ROMAN" itemLabel="#{lbl.edit_paginationTypeRectoVersoRoman}"/>
+																	<f:selectItem itemValue="RECTO_VERSO" itemLabel="#{lbl.edit_paginationTypeRectoVerso}"/>
+																	<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
+																	<f:ajax render=":messages @form" listener="#{structuralEditorBean.selectedPaginationTypeChanged}"/>
+																</h:selectOneMenu>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationStartValue}"/>
+															</h:panelGroup>
+															<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}" styleClass="eg3_container_21_50"/>
+														</h:panelGroup>
+													<ui:remove>
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationPattern}"/>
+															</h:panelGroup>
+															<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}" styleClass="eg3_container_21_50"/>
+														</h:panelGroup>
+													</ui:remove>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1" rendered="#{structuralEditorBean.selectedPaginationType=='ARABIC' or structuralEditorBean.selectedPaginationType =='ROMAN' or structuralEditorBean.selectedPaginationType =='ROMAN_MINUSCULE'}">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationColumns}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																	<span class="eg3_selectionText"></span>
+																</h:panelGroup>
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationColumns}">
+																	<f:selectItem itemValue="1" itemLabel="#{lbl.edit_pagination1Columns}"/>
+																	<f:selectItem itemValue="2" itemLabel="#{lbl.edit_pagination2Columns}"/>
+																	<f:selectItem itemValue="3" itemLabel="#{lbl.edit_pagination3Columns}"/>
+																</h:selectOneMenu>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationInBrackets}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+																<h:selectBooleanCheckbox value="#{structuralEditorBean.paginationInBrackets}"/>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginateEverySecondPage}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_container_21_50">
+																<h:selectBooleanCheckbox value="#{structuralEditorBean.paginateEverySecondPage}"/>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																	<span class="eg3_selectionText"></span>
+																</h:panelGroup>
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
+																	<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+																</h:selectOneMenu>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														
+														<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" styleClass="eg3_borderradius_5">
+															<f:ajax render=":messages :edit :paginator" execute="@form"/>
+														</h:commandButton>
+													</h:panelGroup>
+												</a4j:region>
+											</h:panelGroup>
+											
+											<hr class="eg3_clearBoth eg3_container_3_4 eg3_containerCenter"/>
+											
+											<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+												<a4j:region>
+													<h:panelGroup layout="block" styleClass="eg3_pageDisplayTypeInputArea eg3_container_1">
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_pageDisplayType}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																	<span class="eg3_selectionText"></span>
+																</h:panelGroup>
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.rend}">
 																	<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																	<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
 																	<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
 																	<f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
 																</h:selectOneMenu>
 															</h:panelGroup>
-											            </h:panelGroup>
-											            
-											            <h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-											            	<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_pageType}: "/>
+														</h:panelGroup>
+														
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
 															</h:panelGroup>
-															<h:outputText value="&#160;"/>
 															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
 																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
 																	<span class="eg3_selectionText"></span>
 																</h:panelGroup>
-																<h:selectOneMenu value="#{structuralEditorBean.selectedPbType}">
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
+																	<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+																</h:selectOneMenu>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														
+														
+														<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" styleClass="eg3_borderradius_5">
+															<f:ajax render=":messages :edit :paginator" execute="@form"/>
+														</h:commandButton>
+													</h:panelGroup>
+												</a4j:region>
+											</h:panelGroup>
+											
+											<hr class="eg3_clearBoth eg3_container_3_4 eg3_containerCenter"/>
+											
+											<h:panelGroup layout="block" styleClass=" eg3_container_9_10 eg3_containerCenter">
+												<a4j:region>
+													<h:panelGroup layout="block" styleClass="eg3_pageDisplayTypeInputArea eg3_container_1">
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_pageType}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																	<span class="eg3_selectionText"></span>
+																</h:panelGroup>
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
 																	<f:selectItem itemValue="#{null}" itemLabel="-"/>
 																	<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
 																	<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
@@ -449,356 +599,181 @@
 																</h:selectOneMenu>
 															</h:panelGroup>
 														</h:panelGroup>
-											            
-											            <h:commandButton action="#{structuralEditorBean.applyPageValues}" value="#{lbl.edit_apply}" styleClass="eg3_borderradius_5">
-															<f:ajax render=":messages :edit :paginator" execute="currentPageValues"/>
+														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+																<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
+															</h:panelGroup>
+															<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
+																<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+																	<span class="eg3_selectionText"></span>
+																</h:panelGroup>
+																<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
+																	<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
+																</h:selectOneMenu>
+															</h:panelGroup>
+														</h:panelGroup>
+														
+														
+														
+														<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" styleClass="eg3_borderradius_5">
+															<f:ajax render=":messages :edit :paginator" execute="@form"/>
 														</h:commandButton>
-													</a4j:region>
-												</h:panelGroup>
-													
-												
-												<h:panelGroup layout="block" id="currentPagination" styleClass="eg3_currentPagination eg3_container_1">
-													<a4j:region>
-														<h3><h:outputText value="#{lbl.edit_batchPagination}"/></h3>
-														<h:panelGroup layout="block" styleClass="eg3_paginationInputArea eg3_container_9_10 eg3_containerCenter">
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationType}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationType}">
-																		<f:selectItem itemValue="ARABIC" itemLabel="#{lbl.edit_paginationTypeArabic}"/>
-																		<f:selectItem itemValue="ROMAN" itemLabel="#{lbl.edit_paginationTypeRoman}"/>
-																		<f:selectItem itemValue="ROMAN_MINUSCULE" itemLabel="#{lbl.edit_paginationTypeRomanMinuscule}"/>
-																		<f:selectItem itemValue="RECTO_VERSO_ARABIC" itemLabel="#{lbl.edit_paginationTypeRectoVersoArabic}"/>
-																		<f:selectItem itemValue="RECTO_VERSO_ROMAN" itemLabel="#{lbl.edit_paginationTypeRectoVersoRoman}"/>
-																		<f:selectItem itemValue="RECTO_VERSO" itemLabel="#{lbl.edit_paginationTypeRectoVerso}"/>
-																		<f:selectItem itemValue="FREE" itemLabel="#{lbl.edit_paginationTypeFree}"/>
-																		<f:ajax render=":messages @form" listener="#{structuralEditorBean.selectedPaginationTypeChanged}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationStartValue}"/>
-																</h:panelGroup>
-																<h:inputText value="#{structuralEditorBean.selectedPaginationStartValue}" styleClass="eg3_container_21_50"/>
-															</h:panelGroup>
-														<ui:remove>
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationPattern}"/>
-																</h:panelGroup>
-																<h:inputText value="#{structuralEditorBean.selectedPaginationPattern}" styleClass="eg3_container_21_50"/>
-															</h:panelGroup>
-														</ui:remove>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1" rendered="#{structuralEditorBean.selectedPaginationType=='ARABIC' or structuralEditorBean.selectedPaginationType =='ROMAN' or structuralEditorBean.selectedPaginationType =='ROMAN_MINUSCULE'}">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationColumns}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationColumns}">
-																		<f:selectItem itemValue="1" itemLabel="#{lbl.edit_pagination1Columns}"/>
-																		<f:selectItem itemValue="2" itemLabel="#{lbl.edit_pagination2Columns}"/>
-																		<f:selectItem itemValue="3" itemLabel="#{lbl.edit_pagination3Columns}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationInBrackets}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_container_21_50">
-																	<h:selectBooleanCheckbox value="#{structuralEditorBean.paginationInBrackets}"/>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginateEverySecondPage}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_container_21_50">
-																	<h:selectBooleanCheckbox value="#{structuralEditorBean.paginateEverySecondPage}"/>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPaginationEndPbId}">
-																		<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															
-															<h:commandButton action="#{structuralEditorBean.applyPagination}" value="#{lbl.edit_applyPaginationBtn}" styleClass="eg3_borderradius_5">
-																<f:ajax render=":messages :edit :paginator" execute="@form"/>
-															</h:commandButton>
-														</h:panelGroup>
-													</a4j:region>
-												</h:panelGroup>
-												
-												<hr class="eg3_clearBoth eg3_container_3_4 eg3_containerCenter"/>
-												
-												<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-													<a4j:region>
-														<h:panelGroup layout="block" styleClass="eg3_pageDisplayTypeInputArea eg3_container_1">
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_pageDisplayType}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.rend}">
-																		<f:selectItem itemValue="#{null}" itemLabel="-"/>
-																		<f:selectItem itemValue="single" itemLabel="#{lbl.displayType_single}"/>
-																		<f:selectItem itemValue="left" itemLabel="#{lbl.displayType_recto}"/>
-																		<f:selectItem itemValue="right" itemLabel="#{lbl.displayType_verso}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPageDisplayTypeEndPbId}">
-																		<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															
-															
-															<h:commandButton action="#{structuralEditorBean.applyPageDisplayType}" value="#{lbl.edit_applyPaginationDisplayTypeBtn}" styleClass="eg3_borderradius_5">
-																<f:ajax render=":messages :edit :paginator" execute="@form"/>
-															</h:commandButton>
-														</h:panelGroup>
-													</a4j:region>
-												</h:panelGroup>
-												
-												<hr class="eg3_clearBoth eg3_container_3_4 eg3_containerCenter"/>
-												
-												<h:panelGroup layout="block" styleClass=" eg3_container_9_10 eg3_containerCenter">
-													<a4j:region>
-														<h:panelGroup layout="block" styleClass="eg3_pageDisplayTypeInputArea eg3_container_1">
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_pageType}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPb.teiElement.type}">
-																		<f:selectItem itemValue="#{null}" itemLabel="-"/>
-																		<f:selectItem itemValue="blank" itemLabel="#{lbl.pageType_blank}"/>
-																		<f:selectItem itemValue="cover" itemLabel="#{lbl.pageType_cover}"/>
-																		<f:selectItem itemValue="colorchart" itemLabel="#{lbl.pageType_colorchart}"/>
-																		<f:selectItem itemValue="edge" itemLabel="#{lbl.pageType_edge}"/>
-																		<f:selectItem itemValue="boardpaper" itemLabel="#{lbl.pageType_boardpaper}"/>
-																		<f:selectItem itemValue="endsheet" itemLabel="#{lbl.pageType_endsheet}"/>
-																		<f:selectItem itemValue="spine" itemLabel="#{lbl.pageType_spine}"/>	 
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-																<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																	<h:outputText value="#{lbl.edit_paginationEndPoint}"/>
-																</h:panelGroup>
-																<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
-																	<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
-																		<span class="eg3_selectionText"></span>
-																	</h:panelGroup>
-																	<h:selectOneMenu value="#{structuralEditorBean.selectedPageTypeEndPbId}">
-																		<f:selectItems value="#{structuralEditorBean.paginationEndPbSelectItems}"/>
-																	</h:selectOneMenu>
-																</h:panelGroup>
-															</h:panelGroup>
-															
-															
-															
-															<h:commandButton action="#{structuralEditorBean.applyPageType}" value="#{lbl.edit_applyPageTypeBtn}" styleClass="eg3_borderradius_5">
-																<f:ajax render=":messages :edit :paginator" execute="@form"/>
-															</h:commandButton>
-														</h:panelGroup>
-													</a4j:region>
-												</h:panelGroup>
-											</h:panelGroup>
-											
-											<!-- END PAGE EDITING -->
-										</rich:tab>
-									</rich:tabPanel>
-								</h:form>
-									
-							
-								<!-- END TAB-PANEL -->
-								
-								<!-- START VALIDATION ERRORS -->
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer" style="border: 1px solid red;">
-									<h:outputText value="#{lbl.edit_validationErrors}"/>
-									<br/>
-									<ul style="color:red;">
-									<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
-										<li>
-										<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}"/>
-										<h:outputText value=" cannot be placed under "/>
-										<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}"/>
-										</li>
-									</a4j:repeat>
-									</ul>
-						        </h:panelGroup>
-						        <!-- END VALIDATION ERRORS -->
-								
-								
-								<!-- START TREE -->
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_editorStructureTree" id="tree">
-									<h:form id="structuralEditorForm">
-										<rich:tree toggleType="ajax" var="divItem" >
-											<rich:treeModelRecursiveAdaptor roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
-												
-												<rich:treeNode styleClass="struct_#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.id}" expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}" >
-													
-													<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
-														
-														<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
-																render=":messages :edit :paginator"/>							
-	
-														<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
-														<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
-														<h:outputText value=" - "/>
-														
-														<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
-															<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}"/>
-															<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
-														</h:panelGroup>
-														
-														<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
-															<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
-															<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
-														</h:selectOneMenu>
-														
-														<h:outputText value=")"/>
 													</h:panelGroup>
-													
-													<h:commandButton value=" " title="&lt;&lt;" styleClass="eg3_ico_moveLeft_16_16" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
-													<h:commandButton value=" " styleClass="eg3_ico_moveRight_16_16" title="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
-													<h:commandButton value=" " styleClass="eg3_ico_moveUp_16_16" title="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
-													<h:commandButton value=" " styleClass="eg3_ico_moveDown_16_16" title="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-												
-													<h:commandButton value=" " styleClass="eg3_icon_delete_16_16" action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													
-													<ui:remove>
-													<h:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}" >
-														<f:ajax render=":messages :edit :paginator" execute="@form"/>
-													</h:commandButton>
-													</ui:remove>
-													<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
-													
-												</rich:treeNode>
-												
-											</rich:treeModelRecursiveAdaptor>
-										</rich:tree>
-									</h:form>
-									
-								</h:panelGroup>
-								<!-- END TREE -->
-								
-
-								<script type="text/javascript">
-									var structTree = $('.eg3_editorStructureTree');
-									function resizeTreeContainer() {
-										structTree.css("height", ($('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top)));
-									}
-									resizeTreeContainer();
-									$('.rf-tab-hdr').change(function(){
-										resizeTreeContainer();
-									});
-								</script>
-								
+												</a4j:region>
+											</h:panelGroup>
+										</h:panelGroup>
+										
+										<!-- END PAGE EDITING -->
+									</rich:tab>
+								</rich:tabPanel>
+							</h:form>
 								
 						
-								<!-- START EDIT STRUCTURE POPUP -->
-								<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400" >
-									<f:facet name="header">
-										<h:outputText value="#{lbl.edit_structureHeader}"/>
-									</f:facet>
-									<f:facet name="controls">
-										<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">X</h:outputLink>	
-									</f:facet>
-									<style type="text/css">
-										.rf-pp-hdr {
-											width:100%;
-										}
-										.rf-pp-cnt-scrlr {
-											width:100%;
-										}
-										.rf-pp-cnt input[type=submit],
-										.rf-pp-cnt input[type=button],
-										.rf-pp-cnt input[type=reset] {
-											color:#000000;
-										}
-										.rf-pp-cnt .eg3_editInputArea input[type=text] {
-											border-top:0;
-											border-bottom:0.0909em solid #000000;
-										}
-									</style>
-									
-									<h:form>
-										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
-											<h3><h:outputText value="#{lbl.edit_structureHeader}"/></h3>
+							<!-- END TAB-PANEL -->
+							
+							<!-- START VALIDATION ERRORS -->
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer" style="border: 1px solid red;">
+								<h:outputText value="#{lbl.edit_validationErrors}"/>
+								<br/>
+								<ul style="color:red;">
+								<a4j:repeat var="validation" value="#{structuralEditorBean.validationList}">
+									<li>
+									<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.teiElementWrapper.teiElement.elementType)}"/>
+									<h:outputText value=" cannot be placed under "/>
+									<h:outputText value="#{internationalizationHelper.getLabelForEnum('edit_elementType_', validation.affectedNode.parent.teiElementWrapper.teiElement.elementType)}"/>
+									</li>
+								</a4j:repeat>
+								</ul>
+					        </h:panelGroup>
+					        <!-- END VALIDATION ERRORS -->
+							
+							
+							<!-- START TREE -->
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_editorStructureTree" id="tree">
+								<h:form id="structuralEditorForm">
+									<rich:tree toggleType="ajax" var="divItem">
+										<rich:treeModelRecursiveAdaptor roots="#{structuralEditorBean.treeWrapperNodes}" nodes="#{divItem.children}">
 											
-											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-											<br/>
-											<br/>
-											<h:commandButton type="submit" styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-												<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
-											</h:commandButton>
-											<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
-											<h:outputText value="#{lbl.edit_cancelBtn}"/>
-											</h:outputLink>									
-										</h:panelGroup>
-									</h:form>
-								</rich:popupPanel>
-							<!-- END EDIT STRUCTURE POPUP -->
-							</h:panelGroup>
+											<rich:treeNode styleClass="struct_#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.id}" expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
+												
+												<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
+													
+													<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
+															render=":messages :edit :paginator"/>							
 
+													<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
+													<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
+													<h:outputText value=" - "/>
+													
+													<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+														<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}"/>
+														<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
+													</h:panelGroup>
+													
+													<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+														<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+														<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
+													</h:selectOneMenu>
+													
+													<h:outputText value=")"/>
+												</h:panelGroup>
+												
+												<h:commandButton value=" " title="&lt;&lt;" styleClass="eg3_ico_moveLeft_16_16" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+												
+												<h:commandButton value=" " styleClass="eg3_ico_moveRight_16_16" title="&gt;&gt;" action="#{structuralEditorBean.moveElementToRight(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToRight}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+												
+												<h:commandButton value=" " styleClass="eg3_ico_moveUp_16_16" title="Up" action="#{structuralEditorBean.moveElementUp(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableUp}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+												
+												<h:commandButton value=" " styleClass="eg3_ico_moveDown_16_16" title="Down" action="#{structuralEditorBean.moveElementDown(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableDown}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+											
+												<h:commandButton value=" " styleClass="eg3_icon_delete_16_16" action="#{structuralEditorBean.deleteStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_deleteStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+												
+												<ui:remove>
+												<h:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+												</ui:remove>
+												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+												
+											</rich:treeNode>
+											
+										</rich:treeModelRecursiveAdaptor>
+									</rich:tree>
+								</h:form>
+								
+							</h:panelGroup>
+							<!-- END TREE -->
+							
+
+							<script type="text/javascript">
+								var structTree = $('.eg3_editorStructureTree');
+								function resizeTreeContainer() {
+									structTree.css("height", ($('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top)));
+								}
+								resizeTreeContainer();
+								$('.rf-tab-hdr').change(function(){
+									resizeTreeContainer();
+								});
+							</script>
+							
+							
+					
+							<!-- START EDIT STRUCTURE POPUP -->
+							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400">
+								<f:facet name="header">
+									<h:outputText value="#{lbl.edit_structureHeader}"/>
+								</f:facet>
+								<f:facet name="controls">
+									<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">X</h:outputLink>	
+								</f:facet>
+								<style type="text/css">
+									.rf-pp-hdr {
+										width:100%;
+									}
+									.rf-pp-cnt-scrlr {
+										width:100%;
+									}
+									.rf-pp-cnt input[type=submit],
+									.rf-pp-cnt input[type=button],
+									.rf-pp-cnt input[type=reset] {
+										color:#000000;
+									}
+									.rf-pp-cnt .eg3_editInputArea input[type=text] {
+										border-top:0;
+										border-bottom:0.0909em solid #000000;
+									}
+								</style>
+								
+								<h:form>
+									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
+										<h3><h:outputText value="#{lbl.edit_structureHeader}"/></h3>
+										
+										<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+											structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+											teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+										<br/>
+										<br/>
+										<h:commandButton type="submit" styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
+										</h:commandButton>
+										<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
+										<h:outputText value="#{lbl.edit_cancelBtn}"/>
+										</h:outputLink>									
+									</h:panelGroup>
+								</h:form>
+							</rich:popupPanel>
+						<!-- END EDIT STRUCTURE POPUP -->
+						</h:panelGroup>
 					</h:panelGroup>	
 				</h:panelGroup>
 			</h:panelGroup>

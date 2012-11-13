@@ -305,10 +305,19 @@ body .eg3_id_siteTitle {
 	padding-right:0.25em;
 }
 
-.eg3_id_sidebarLeft .eg3_sidebarThumbnail img {
-	width:100%;
+.eg3_id_sidebarLeft .eg3_sidebarThumbnail {
+	display:inline-block;
+	width:48%;
+	margin-right:1%;
 }
-
+.eg3_id_sidebarLeft .eg3_thumbnailDescription {
+	float:none;
+	display:inline-block;
+	clear:right;
+	vertical-align: top;
+	width:49%;
+	padding-top:0.166666em;
+}
 .eg3_id_sidebarLeft .eg3_editSidebarContent {
 	overflow:auto;
 }
@@ -2009,6 +2018,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer {
 	min-height:66.5em;
+	zoom:1;
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer .scaler { /* digilib container */
 	min-height:66.5em !important;
@@ -2016,7 +2026,7 @@ body .eg3_id_siteTitle {
 	background-color:transparent;
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer img {
-	width:100%; 
+	width:100%;
 }
 .eg3_viewPage .eg3_singleEdit .eg3_editActionButtonbar {
 	margin-top:0.333333em;
