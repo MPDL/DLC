@@ -948,17 +948,23 @@ public class IngestBean{
 				
 				else
 				{
-		     		if(getImageFiles().size()==0 || (teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size()) || (mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals("")))
-		    		{
-		     			
-		     			if(getImageFiles().size()==0 )
-		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
-		     			if(teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size())
-		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-		     			if(mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
-		     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
-		     			return "";
-		    		}
+		     				     			
+	     			if(getImageFiles().size()==0 )
+	     			{
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
+	     				return "";
+	     			}
+	     			if(teiFile!=null && teiPbFacsValues.size()!=getImageFiles().size())
+	     			{
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+	     				return "";
+	     			}
+	     			if(!getSelectedContentModel().equals(VolumeServiceBean.volumeContentModelId) && mabFile == null && modsMetadata.getTitles().get(0).getTitle().equals(""))
+	     			{
+	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
+	     				return "";
+	     			}
+
 					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
 					//Volume volume = null;
@@ -1030,17 +1036,27 @@ public class IngestBean{
 				}
 				*/
 				
-				if(getImageFiles().size()==0 || (teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size()) || (modsMetadata.getTitles().get(0).getTitle().equals("")))
-	    		{
+				
 	     			
-	     			if(getImageFiles().size()==0 )
-	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
-	     			if(teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size())
-	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-	     			if(modsMetadata.getTitles().get(0).getTitle().equals(""))
-	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
-	     			return "";
-	    		}
+				if(getImageFiles().size()==0 )
+				{
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
+					return "";
+				}
+				
+				if(teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size())
+				{
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+					return "";
+				}
+					
+				if(!getSelectedContentModel().equals(VolumeServiceBean.volumeContentModelId) && (modsMetadata.getTitles()==null || modsMetadata.getTitles().size() == 0 || modsMetadata.getTitles().get(0).getTitle().equals("")))
+				{
+					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
+					return "";
+				}
+	     			
+	    		
 				
 				if(mabFile == null)
 					modsMetadata = updateModsMetadata(modsMetadata);
