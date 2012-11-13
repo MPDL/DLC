@@ -19,6 +19,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
@@ -43,6 +44,9 @@ public class BatchIngestBean {
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
+	
+	@ManagedProperty("#{applicationBean}")
+	private ApplicationBean appBean;
 	
 	private String selectedContextId;
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
@@ -119,7 +123,7 @@ public class BatchIngestBean {
 			mab = mab.substring(1);
 		if(tei != "" && tei.startsWith("/"))
 			tei = tei.substring(1);
-		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
+		ingestProcess = new IngestProcess(appBean.getDataSource(), name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
 		ingestProcess.start();
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
 
@@ -199,6 +203,14 @@ public class BatchIngestBean {
 	
 	
 	
+	public ApplicationBean getAppBean() {
+		return appBean;
+	}
+
+	public void setAppBean(ApplicationBean appBean) {
+		this.appBean = appBean;
+	}
+
 	public String getServer() {
 		return server;
 	}

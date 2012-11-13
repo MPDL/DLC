@@ -390,7 +390,7 @@ public class IngestLog_NFS_Backup
 					item.setTeiFile(tFile);
 					String errorMessage = Consts.TEIWITHOUTIMAGESERROR;
 					logger.error(errorMessage + name);
-					item.getErrorMessage().add(errorMessage);
+					item.getLogs().add(errorMessage);
 					errorItems.put(tFile.getName(), item);
 				}
 				else 
@@ -407,14 +407,14 @@ public class IngestLog_NFS_Backup
 						{
 							String errorMessage = Consts.PBSNOTEQUALTOIMAGESERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
 							logger.error(errorMessage + name);
-							item.getErrorMessage().add(errorMessage);
+							item.getLogs().add(errorMessage);
 							items.remove(name);
 							errorItems.put(name, item);
 						}
 					} catch (Exception e) {
 						String errorMessage = Consts.TEISYNTAXERROR;
 						logger.error(errorMessage + name);
-						item.getErrorMessage().add(errorMessage);
+						item.getLogs().add(errorMessage);
 						items.remove(name);
 						errorItems.put(name, item);
 					} 
@@ -514,7 +514,7 @@ public class IngestLog_NFS_Backup
 						} catch (Exception e) {
 						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
-						item.getErrorMessage().add(errorMessage);
+						item.getLogs().add(errorMessage);
 						items.remove(name);
 						errorItems.put(name, item);
 					}
@@ -545,7 +545,7 @@ public class IngestLog_NFS_Backup
 						} catch (Exception e) {
 						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
-						item.getErrorMessage().add(errorMessage);
+						item.getLogs().add(errorMessage);
 
 					}
 				}
@@ -570,7 +570,7 @@ public class IngestLog_NFS_Backup
 					} catch (Exception e) {
 						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
-						item.getErrorMessage().add(errorMessage);
+						item.getLogs().add(errorMessage);
 						errorItems.put(name, item);
 					}
 				}
@@ -626,7 +626,7 @@ public class IngestLog_NFS_Backup
 					String errorMessage = Consts.MULTIVOLUMEWITHOUTVOLUMEWRROR;
 					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null, null, null, null);
 					logger.error(errorMessage);
-					newItem.getErrorMessage().add(errorMessage);
+					newItem.getLogs().add(errorMessage);
 					errorItems.put(name, newItem);
 				}
 			}
@@ -639,7 +639,7 @@ public class IngestLog_NFS_Backup
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
 				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
 				logger.error(errorMessage);
-				item.getErrorMessage().add(errorMessage);
+				item.getLogs().add(errorMessage);
 				errorItems.put(name, item);
 			}
 		}
@@ -653,7 +653,7 @@ public class IngestLog_NFS_Backup
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
 				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
 				logger.error(errorMessage);
-				item.getErrorMessage().add(errorMessage);
+				item.getLogs().add(errorMessage);
 				errorItems.put(name, item);
 			}
 		}
@@ -884,9 +884,9 @@ public class IngestLog_NFS_Backup
 	            statement.setString(3, errorLevel.toString());
 	            statement.setInt(4, logId);
 	            String message = "";
-	            if(item.getErrorMessage()!=null)
+	            if(item.getLogs()!=null)
 	            {
-		            for(String s: item.getErrorMessage())
+		            for(String s: item.getLogs())
 		            	message += s;
 	            }
 	            statement.setString(5, message);
@@ -940,9 +940,9 @@ public class IngestLog_NFS_Backup
 	            statement.setString(3, errorLevel.toString());
 	            statement.setInt(4, logItemId);
 	            String message = "";
-	            if(item.getErrorMessage()!=null)
+	            if(item.getLogs()!=null)
 	            {
-		            for(String s: item.getErrorMessage())
+		            for(String s: item.getLogs())
 		            	message += s;
 	            }
 	            statement.setString(5, message);
