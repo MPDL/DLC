@@ -140,10 +140,6 @@ public class VolumeServiceBean {
 	private static TransformerFactory transfFact;
 	
 	private Tika tika = new Tika();
-	
-	
-	
-	
 
 	static
 	{
@@ -611,12 +607,12 @@ public class VolumeServiceBean {
 			}
 			
 			return volume;
-	}
+	}  
 	
 	*/
 	public void uploadImagesAndCreateMets(List<IngestImage> images, IngestImage footer, String itemId, Volume vol) throws Exception
-	{
-		
+	{ 
+		File brokenFile = null;
 		Mets metsData = new Mets();
 		vol.setMets(metsData);
 		String itemIdWithoutColon = itemId.replaceAll(":", "_");
@@ -624,16 +620,16 @@ public class VolumeServiceBean {
 		File jpegFooter = null;
 		if(footer != null)
 		{
-			String footerMimetype = tika.detect(footer.getDiskFileItem().getStoreLocation());
+			String footerMimetype = tika.detect(footer.getFile());
 	
 			if("image/tiff".equals(footerMimetype))
 			{
-				jpegFooter = ImageHelper.tiffToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
+				jpegFooter = ImageHelper.tiffToJpeg(footer.getFile(), getJPEGFilename(footer.getName()));
 			}
 			else if("image/png".equals(footerMimetype))
-				jpegFooter = ImageHelper.pngToJpeg(footer.getDiskFileItem().getStoreLocation(), getJPEGFilename(footer.getName()));
+				jpegFooter = ImageHelper.pngToJpeg(footer.getFile(), getJPEGFilename(footer.getName()));
 			else if("image/jpeg".equals(footerMimetype))
-				jpegFooter = footer.getDiskFileItem().getStoreLocation();
+				jpegFooter = footer.getFile();
 			else
 			{
 				throw new Exception("Invalid image mimetype " + footerMimetype + " for image " + footer.getName());
@@ -645,26 +641,33 @@ public class VolumeServiceBean {
 		{
 			String filename = getJPEGFilename(imageItem.getName());
 			
-			//If image is added on disk, uplaod it
+			//If image is added on disk, upload it
 			if(IngestImage.Type.DISK.equals(imageItem.getType()))	
-			{
+			{   
 
-				File jpegImage;
-				String mimetype = tika.detect(imageItem.getDiskFileItem().getStoreLocation());
-				logger.info("Detected image " + imageItem.getName() + " as " + mimetype);
-				if("image/tiff".equals(mimetype))
+				File jpegImage = null;
+				try
+				{	
+					String mimetype = tika.detect(imageItem.getFile());
+					logger.info("Detected image " + imageItem.getName() + " as " + mimetype);
+					if("image/tiff".equals(mimetype))
+					{
+						jpegImage = ImageHelper.tiffToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
+					}
+					else if("image/png".equals(mimetype))
+					{
+						jpegImage = ImageHelper.pngToJpeg(imageItem.getFile(), getJPEGFilename(imageItem.getName()));
+					}
+					else if("image/jpeg".equals(mimetype))
+						jpegImage = imageItem.getFile();
+					else
+					{
+						throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
+					}
+				}catch(Exception e)
 				{
-					jpegImage = ImageHelper.tiffToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
-				}
-				else if("image/png".equals(mimetype))
-				{
-					jpegImage = ImageHelper.pngToJpeg(imageItem.getDiskFileItem().getStoreLocation(), getJPEGFilename(imageItem.getName()));
-				}
-				else if("image/jpeg".equals(mimetype))
-					jpegImage = imageItem.getDiskFileItem().getStoreLocation();
-				else
-				{
-					throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
+					brokenFile = imageItem.getFile();
+//					return brokenFile;
 				}
 				
 				if(jpegFooter!=null)
@@ -672,26 +675,31 @@ public class VolumeServiceBean {
 					jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
 				}
 				
-				String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
-				File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
-				String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+				try
+				{
+					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
+					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
+					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+					
+					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
+					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
+					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+
+					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
+					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
+					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+					
+					jpegImage.delete();
+					thumbnailFile.delete();
+					webFile.delete();
+					originalFile.delete();
+				}catch(Exception e)
+				{
+					brokenFile = imageItem.getFile();
+//					return brokenFile;
+				}
 				
-								
-				String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
-				File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
-				String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
-				
-				
-				String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
-				File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
-				String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
-				
-				jpegImage.delete();
-				thumbnailFile.delete();
-				webFile.delete();
-				originalFile.delete();
 			}
-			
 				int pos = images.indexOf(imageItem);
 				Page p = new Page();
 				p.setId("page_" + pos);
@@ -704,9 +712,10 @@ public class VolumeServiceBean {
 				metsData.getPages().add(p);
 			
 			
-		}	
+		}		
 		
 		jpegFooter.delete();
+
 	}
 	
 	public Volume update(Volume volume, String userHandle, String operation,  DiskFileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem cdcFile)
@@ -2630,6 +2639,7 @@ public class VolumeServiceBean {
 		
 		Mets metsData = new Mets();
 		volume.setMets(metsData);
+
 		
 		try{
 
@@ -2712,7 +2722,7 @@ public class VolumeServiceBean {
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
 			*/
-			
+			  
 			 	List<IngestImage> ingestImageList = new ArrayList<IngestImage>();
 				for(File img : images)
 				{
@@ -2729,8 +2739,10 @@ public class VolumeServiceBean {
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
+					
 				
 				return volume.getItem().getObjid();
+
 			}
 		
 			catch (Exception e) 
