@@ -1066,7 +1066,7 @@ public class IngestBean{
 					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 					
 				
-				
+				Thread.sleep(3000);
 				allVolBean.setColId("my");
 	    		allVolBean.setCurrentPageNumber(1);
 	    		return "pretty:volumes";
