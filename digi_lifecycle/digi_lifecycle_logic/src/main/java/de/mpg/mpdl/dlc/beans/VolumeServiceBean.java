@@ -69,6 +69,7 @@ import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
+import org.joda.time.DateTime;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -1179,44 +1180,68 @@ public class VolumeServiceBean {
 	}
 	
 	*/
-	/*
-	public Volume removeRelationFromMultiVolume(Volume vol, String relationId, String userHandle) throws Exception
+	
+	public Volume removeRelationFromMultiVolume(Volume multiVol, String relationId, String userHandle) throws Exception
 	{
-		logger.info("Trying to remove relation from Multivolume item" + vol.getProperties().getVersion().getObjid());
+		logger.info("Trying to remove relation from Multivolume item" + multiVol.getProperties().getVersion().getObjid());
+		
+		String oldStatus = multiVol.getItem().getProperties().getVersion().getStatus();
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		
+		for(Relation rel : multiVol.getItem().getRelations())
+		{
+			if(rel.getObjid().equals(relationId))
+			{
+				multiVol.getItem().getRelations().remove(rel);
+				break;
+			}
+		}
 		
-		String param = "<param last-modification-date=\" " + vol.getItem().getLastModificationDate() + "\">"
+		/*
+		String param = "<param last-modification-date=\"" + multiVol.getItem().getLastModificationDate() + "\">"
 		 + "<relation>"
 		 + "<targetId>" + relationId + "</targetId>"
 		 + "<predicate>http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart</predicate>"
 		 + "</relation>"
 		 + "</param>";
 		
-		Result res = client.removeContentRelations(vol.getItem().getOriginObjid(), param);
-		logger.info("Removed relation from item");
-		
-		Volume updatedVol = retrieveVolume(vol.getItem().getOriginObjid(), userHandle);
-		
+		*/
+		Item updatedItem = client.update(multiVol.getItem().getOriginObjid(), multiVol.getItem());
+		logger.info("Removed relation from multivolume " + multiVol.getItem().getOriginObjid());
 		
 		
+		
+		Volume updatedVol = createVolumeFromItem(updatedItem, userHandle);
 		String currentStatus = updatedVol.getItem().getProperties().getVersion().getStatus();
-		
-		if(currentStatus.equals("pending") || currentStatus.equals("in-revision"))
+
+		DateTime lmd = updatedItem.getLastModificationDate();
+		if("pending".equals(currentStatus) || "in-revision".equals(currentStatus))
 		{
 			TaskParam taskParam=new TaskParam(); 
 		    taskParam.setComment("Submit Volume");
 			taskParam.setLastModificationDate(updatedVol.getItem().getLastModificationDate());
-			Result res2 = client.submit(updatedVol.getItem().getObjid(), taskParam);
+			Result res2 = client.submit(updatedVol.getItem().getOriginObjid(), taskParam);
+			lmd = res2.getLastModificationDate();
+			logger.info("Multivolume submitted: " + updatedVol.getItem().getObjid());
 		}
 		
+		
+		if(oldStatus.equals("released"))
+		{
+			
+			TaskParam taskParam=new TaskParam(); 
+		    taskParam.setComment("Release Volume");
+			taskParam.setLastModificationDate(lmd);
+			Result res3 = client.release(updatedVol.getItem().getOriginObjid(), taskParam);
+			logger.info("Multivolume released: " + updatedVol.getItem().getObjid());
+		}
 
-		logger.info("Item updated and submitted: " + updatedVol.getItem().getObjid());
-		return retrieveVolume(updatedItem.getObjid(), userHandle);
+		
+		return retrieveVolume(multiVol.getItem().getOriginObjid(), userHandle);
 	}
-	*/
+	
 	
 	public String updateMultiVolumeFromId(String multiId, List<String> volIds, String userHandle) throws Exception
 	{
@@ -2517,6 +2542,7 @@ public class VolumeServiceBean {
 							mv.setRelatedChildVolumes(new ArrayList<Volume>());
 						}
 						mv.getRelatedChildVolumes().add(v);
+						v.setRelatedParentVolume(mv);
 					}
 					else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
 					{
@@ -2743,6 +2769,15 @@ public class VolumeServiceBean {
 		itemHandler.setHandle(userHandle);
 		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
 		
+		
+		
+		if(volumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
+		{
+			removeRelationFromMultiVolume(vol.getRelatedParentVolume(), vol.getItem().getOriginObjid(), userHandle);
+		}
+		
+		
+		
 		//if already submitted, revise first
 		if("submitted".equals(versionStatus))
 		{
@@ -2769,11 +2804,18 @@ public class VolumeServiceBean {
 		itemHandler.setHandle(userHandle);
 		String versionStatus = vol.getItem().getProperties().getVersion().getStatus();
 		
+		if(volumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
+		{
+			removeRelationFromMultiVolume(vol.getRelatedParentVolume(), vol.getItem().getOriginObjid(), userHandle);
+		}
+		
+		
+
 		TaskParam taskParam=new TaskParam(); 
 	    taskParam.setComment("Withdraw Volume");
 		taskParam.setLastModificationDate(vol.getItem().getLastModificationDate());
-		
 		itemHandler.withdraw(vol.getItem().getObjid(), taskParam);
+		
 		
 		if(!multivolumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
 		{
