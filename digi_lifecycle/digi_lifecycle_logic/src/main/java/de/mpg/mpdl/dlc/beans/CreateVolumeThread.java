@@ -115,9 +115,14 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			}
 
 				//Convert and upload images 
-				long start = System.currentTimeMillis();		
+				long start = System.currentTimeMillis();
+				IngestImage ingestImageFooter = new IngestImage(footer);
+				if(footer!=null)
+				{
+					ingestImageFooter = new IngestImage(footer);
+				}
 				
-				vsb.uploadImagesAndCreateMets(images, new IngestImage(footer), item.getObjid(), volume);
+				vsb.uploadImagesAndCreateMets(images, ingestImageFooter, item.getObjid(), volume);
 				
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
