@@ -161,7 +161,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 					{
 						for(IngestImage image : images)
 						{
-							image.getDiskFileItem().getStoreLocation().delete();
+							image.getFile().delete();
 						}
 					}
 					

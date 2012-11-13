@@ -195,8 +195,8 @@
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>8.1-407.jdbc3</version>
-		</dependency>
+			<version>9.1-901.jdbc4</version>
+		</dependency> 	
 		<!-- 
 		<dependency>
 			<groupId>net.sf.saxon</groupId>

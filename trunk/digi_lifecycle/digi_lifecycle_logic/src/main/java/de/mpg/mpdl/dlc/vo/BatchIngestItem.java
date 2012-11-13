@@ -1,44 +1,29 @@
 package de.mpg.mpdl.dlc.vo;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 
 public class BatchIngestItem {
+	private int dbID;
 	private String contentModel;
-	
 	private String name;
-	
 	private String dlcDirectory;
-	
-
-	
 	private ModsMetadata modsMetadata;
-	
 	private File teiFile;
-	
 	private int teiPbs;
-	
 	private List<File> imageFiles = new ArrayList<File>();
-	
 	private int imageNr;
-	
 	private String imagesDirectory;
-	
 	private File footer;
-	
 	private int footerNr;
-	
 	private String parentId;
-	
 	private List<BatchIngestItem> volumes = new ArrayList<BatchIngestItem>();
-	
-	private List<String> errorMessage = new ArrayList<String>();
+	private List<String> logs = new ArrayList<String>();
 	
 	public BatchIngestItem()
 	{
@@ -46,7 +31,7 @@ public class BatchIngestItem {
 	}
 	
 	
-	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, File teiFile, ArrayList<File> imagesFiles, File footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> errorMessage)
+	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, File teiFile, ArrayList<File> imageFiles, File footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
 	{
 		
 		this.contentModel = contentModel;
@@ -57,7 +42,7 @@ public class BatchIngestItem {
 		this.footer = footer;
 		this.parentId = parentId;
 		this.volumes = volumes;
-		this.errorMessage = errorMessage;
+		this.logs = logs;
 	}
 
 	public String getName() {
@@ -118,8 +103,6 @@ public class BatchIngestItem {
 		this.volumes = volumes;
 	}
 
-
-
 	public String getParentId() {
 		return parentId;
 	}
@@ -127,14 +110,15 @@ public class BatchIngestItem {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
-
-	public void setErrorMessage(ArrayList<String> errorMessage) {
-		this.errorMessage = errorMessage;
-	}
-	public List<String> getErrorMessage() {
-		return errorMessage;
+	
+	public List<String> getLogs() {
+		return logs;
 	}
 
+
+	public void setLogs(List<String> logs) {
+		this.logs = logs;
+	}
 
 	public String getDlcDirectory() {
 		return dlcDirectory;
@@ -145,27 +129,17 @@ public class BatchIngestItem {
 		this.dlcDirectory = dlcDirectory;
 	}
 
-
-
-
-
-
-
-
 	public int getTeiPbs() {
 		return teiPbs;
 	}
-
 
 	public void setTeiPbs(int teiPbs) {
 		this.teiPbs = teiPbs;
 	}
 
-
 	public int getImageNr() {
 		return imageNr;
 	}
-
 
 	public void setImageNr(int imageNr) {
 		this.imageNr = imageNr;
@@ -192,9 +166,17 @@ public class BatchIngestItem {
 	}
 
 
-	public void setErrorMessage(List<String> errorMessage) {
-		this.errorMessage = errorMessage;
+	public int getDbID() {
+		return dbID;
 	}
+
+
+	public void setDbID(int dbID) {
+		this.dbID = dbID;
+	}
+
+
+
 
 
 

@@ -176,10 +176,7 @@ public class ImageHelper{
     	
     	float originalWidth = image.getWidth();
     	float originalHeight = image.getHeight();
-    	
     	//if()
-    	
-    	
     	float widthRatio = originalWidth/width;  
     	float heightRatio = originalHeight/height;  
     	

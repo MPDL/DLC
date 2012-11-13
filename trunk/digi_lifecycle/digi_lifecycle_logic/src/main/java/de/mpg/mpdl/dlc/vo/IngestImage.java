@@ -1,7 +1,6 @@
 package de.mpg.mpdl.dlc.vo;
 
 import java.io.File;
-
 import org.apache.commons.fileupload.disk.DiskFileItem;
 
 import de.mpg.mpdl.dlc.vo.mets.Page;
@@ -14,8 +13,8 @@ public class IngestImage implements Comparable<IngestImage> {
 	}
 	
 	private Type type;
-	private DiskFileItem diskFileItem;
-	
+	//private DiskFileItem diskFileItem;
+	private File file;
 	
 	private Page page;
 	private String url;
@@ -25,15 +24,17 @@ public class IngestImage implements Comparable<IngestImage> {
 
 	public IngestImage(DiskFileItem diskFileItem)
 	{
-		this.diskFileItem = diskFileItem;
+		this.file =diskFileItem.getStoreLocation();
+		//this.diskFileItem = diskFileItem;
 		this.name = diskFileItem.getName();
 		this.type = Type.DISK;
 	}
-	
+	  
 	public IngestImage(File f)
-	{
+	{    
 		this.name = f.getName();
-		new DiskFileItem(f.getName(), "image", true, f.getName(), 0, f);
+		this.file = f;
+		
 		this.type = Type.DISK;
 	}
 	
@@ -97,6 +98,7 @@ public class IngestImage implements Comparable<IngestImage> {
 		this.page = page;
 	}
 
+	/*
 	public DiskFileItem getDiskFileItem() {
 		return diskFileItem;
 	}
@@ -104,6 +106,17 @@ public class IngestImage implements Comparable<IngestImage> {
 	public void setDiskFileItem(DiskFileItem diskFileItem) {
 		this.diskFileItem = diskFileItem;
 	}
+	*/
+	
+	
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+	
 
 	@Override
 	public int compareTo(IngestImage o) {
@@ -119,5 +132,11 @@ public class IngestImage implements Comparable<IngestImage> {
 
 
 	
-	
+	public static void main(String[] args) {
+		File f = new File("C:/Users/yu/Desktop/Neuer Ordner/Dg450-2004-0000a~D3GV7612.jpg");
+		DiskFileItem diskFileItem = new DiskFileItem(f.getName(), "image", true, f.getName(), 0, f);
+		File newFile = diskFileItem.getStoreLocation();
+		System.out.println(newFile);
+		
+	}
 }
