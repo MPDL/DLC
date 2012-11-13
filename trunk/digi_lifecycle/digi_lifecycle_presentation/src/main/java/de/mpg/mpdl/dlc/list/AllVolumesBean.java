@@ -267,6 +267,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			
 			VolumeStatus[] volVersionStatus = new VolumeStatus[]{};
 			VolumeStatus[] volPublicStatus = new VolumeStatus[]{};
+			VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
 			if("all".equals(filterItemState))
 			{
 				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
@@ -285,10 +286,13 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			else if("withdrawn".equals(filterItemState))
 			{
 				volPublicStatus = new VolumeStatus[]{VolumeStatus.withdrawn};
+				volTypes = new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
 			}
 			
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			res = filterBean.itemFilter(volTypes, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
+			
+			//Add items which are currently uploading
 			VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
 			res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
