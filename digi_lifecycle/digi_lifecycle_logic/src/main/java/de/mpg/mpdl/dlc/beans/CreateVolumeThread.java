@@ -116,7 +116,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 
 				//Convert and upload images 
 				long start = System.currentTimeMillis();
-				IngestImage ingestImageFooter = new IngestImage(footer);
+				IngestImage ingestImageFooter = null;
 				if(footer!=null)
 				{
 					ingestImageFooter = new IngestImage(footer);
