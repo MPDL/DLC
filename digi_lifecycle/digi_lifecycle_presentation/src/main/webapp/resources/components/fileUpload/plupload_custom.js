@@ -7,7 +7,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 		preinit: attachCallbacks,
 		runtimes : 'html5,flash,html4',
 		url : url + ';jsessionid=' + sessionId,
-		max_file_size : '200mb',
+		max_file_size : '20mb',
 		flash_swf_url : flashUrl,
 		silverlight_xap_url : silverlightUrl,
 		multi_selection : true,
