@@ -1,10 +1,28 @@
 package de.mpg.mpdl.dlc.export;
 
 import java.awt.Color;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import net.sf.saxon.TransformerFactoryImpl;
 
 import org.apache.log4j.Logger;
 
@@ -16,20 +34,20 @@ import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
-import com.lowagie.text.Chapter;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 
+import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.om.context.Context;
+import de.escidoc.core.resources.om.item.component.Component;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
-import de.mpg.mpdl.dlc.vo.mods.ModsNote;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
@@ -40,13 +58,14 @@ import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
 public class Export {
 
+	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	private static Logger logger = Logger.getLogger(Export.class);
 	public ExportTypes exportType;
 	public String level = "";
-
+	
 	public enum ExportTypes
 	{
-		PDF, PRINT, DFG;
+		PDF, MODS;
 	}
 	
 	public Export()
@@ -54,39 +73,61 @@ public class Export {
 		
 	}
 	
-	/**
-	 * convert a page in pdf format for export.
-	 * @param page
-	 * @return pdf
-	 * @throws DocumentException 
-	 * @throws IOException 
-	 * @throws MalformedURLException 
-	 */
-	public byte[] pdfExport(Page page)
-	{	
+	public byte[] metsModsExport(String itemId) throws Exception
+	{
+        String xsltUri ="export/dlczvddmets.xsl";
+        String itemXml;
+		try {
+			itemXml = this.getEscidocItem(itemId);
+		} catch (URISyntaxException e1) {
+			throw new RuntimeException("Item could not be retrieved from coreservice for export.");
+		}
+		
+		Volume vol = volServiceBean.loadCompleteVolume(itemId, null);
+        String teiUrl = this.getTeiSdUrl(vol);
+        String metsUrl = this.getMetsUrl(vol);
+        
+        TransformerFactory factory = new TransformerFactoryImpl();
+        StringWriter writer = new StringWriter();
+        
+        try
+        {
+            ClassLoader cl = this.getClass().getClassLoader();
+            InputStream in = cl.getResourceAsStream(xsltUri);
+            Transformer transformer = factory.newTransformer(new StreamSource(in));
+                              
+            transformer.setParameter("itemId", itemId);  
+            transformer.setParameter("teiUrl",PropertyReader.getProperty("escidoc.common.framework.url")+teiUrl); 
+            transformer.setParameter("metsUrl",PropertyReader.getProperty("escidoc.common.framework.url")+metsUrl);
+            transformer.setParameter("imageUrl", PropertyReader.getProperty("image-upload.url.download")); 
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		Document document = new Document();
-		
-		//TODO: check if necessary
-		
-		document.close();				
-		
-		return out.toByteArray();
+            StringReader xmlSource = (new StringReader(itemXml));
+            transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
+        }
+        catch (TransformerException e)
+        {
+            logger.error("An error occurred during the export format transformation.", e);
+            throw new RuntimeException("An error occurred during the export format transformation.", e);
+        }
+        
+        return writer.toString().getBytes("UTF-8");
 	}
+	
 	
 	/**
 	 * convert a volume in pdf format for export.
 	 * Additionally a metadata page (title, collection name, provenance info) will be created.
 	 * @param volume
 	 * @return pdf
-	 * @throws DocumentException 
+	 * @throws Exception 
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
-	public byte[] pdfExport(Volume vol) throws RuntimeException, DocumentException
+	public byte[] pdfExport(String itemId) throws Exception
 	{
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		Volume vol = volServiceBean.loadCompleteVolume(itemId, null);
 		Document document = new Document();
 		String imageurl = "";
 		PdfWriter.getInstance(document, out);
@@ -145,7 +186,7 @@ public class Export {
 		}
 		catch (DocumentException e) {
 			e.printStackTrace();
-			throw new RuntimeException("An error occurred during the pdf creation for item " + vol.getObjidAndVersion() + ": " + e.getMessage());
+			throw new RuntimeException("An error occurred during the pdf creation for item " + itemId + ": " + e.getMessage());
 			}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -184,7 +225,7 @@ public class Export {
 			document.add(ou);
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.logger.warn("An organization could not be load for pdf export. " + e.getMessage());
+			logger.warn("An organization could not be load for pdf export. " + e.getMessage());
 		} 
 
 		document.add(plain);
@@ -275,7 +316,7 @@ public class Export {
 			para.add(phrase2);
 			document.add(para);
 		}
-		if (md.getPublishers() != null && md.getPublishers().get(0).getPlace() != null)
+		if (md.getPublishers() != null && md.getPublishers().size() >0 && md.getPublishers().get(0).getPlace() != null)
 		{
 			phrase1 = new Phrase("Publishing Place: ", fontbold);
 			phrase2 = new Phrase(md.getPublishers().get(0).getPlace());
@@ -284,7 +325,7 @@ public class Export {
 			para.add(phrase2);
 			document.add(para);
 		}
-		if (md.getPublishers() != null && md.getPublishers().get(0).getPublisher() != null)
+		if (md.getPublishers() != null && md.getPublishers().size() >0 && md.getPublishers().get(0).getPublisher() != null)
 		{
 			phrase1 = new Phrase("Publisher: ", fontbold);
 			phrase2 = new Phrase(md.getPublishers().get(0).getPublisher());
@@ -442,27 +483,6 @@ public class Export {
 		return doc;
 	}
 	
-	/**
-	 * send a page to printer.
-	 * @param page
-	 * @return 
-	 */
-	public String print(Page page)
-	{
-		return null;
-	}
-	
-	/**
-	 * send a volume to printer.
-	 * Additionally a metadata page will be created.
-	 * @param volume
-	 * @return 
-	 */
-	public String print(Volume vol)
-	{
-		return null;
-	}
-	
 	public ExportTypes getExportType() {
 		return exportType;
 	}
@@ -471,12 +491,90 @@ public class Export {
 		this.exportType = type;
 	}
 	
+	public void setExportType(String type) {
+		if (type.equalsIgnoreCase("PDF")) 
+			this.exportType = ExportTypes.PDF;
+		if (type.equalsIgnoreCase("MODS")) 
+			this.exportType = ExportTypes.MODS;		
+	}
+	
 	public String replaceLineBreaksWithBlanks(String teiText)
 	{
 		
 		String replacedText = teiText.replaceAll("<lb\\s*/>", " ");
 		return replacedText;
 		
+	}
+	
+	public String getEscidocItem(String identifier) throws MalformedURLException, IOException, URISyntaxException 
+	{
+
+		//Variables
+		String resultXml = "";
+		InputStreamReader isReader;
+		BufferedReader bReader;
+        URLConnection conn = null;
+
+    	URL url = new URL(PropertyReader.getProperty("escidoc.common.framework.url") + "ir/item/"+identifier+"/md-records/md-record/escidoc");
+        conn = url.openConnection();
+
+        HttpURLConnection httpConn = (HttpURLConnection) conn;
+        int responseCode = httpConn.getResponseCode();
+        switch (responseCode)
+        {
+        	case 200:
+            // Get XML
+            isReader = new InputStreamReader(httpConn.getInputStream(),"UTF-8");
+            bReader = new BufferedReader(isReader);
+            String line = "";
+            while ((line = bReader.readLine()) != null)
+            {
+            	resultXml += line + "\n";
+            }
+            httpConn.disconnect();  
+            break;
+        }    
+		return resultXml;
+	}
+	
+	private String getTeiSdUrl(Volume vol )
+	{
+		String teiSdUrl = "";
+		for (int i = 0; i< vol.getItem().getComponents().size(); i++)
+			{
+				Component comp = vol.getItem().getComponents().get(i);
+				if (comp.getProperties().getContentCategory().equals("tei-sd"))
+				{
+					teiSdUrl = comp.getXLinkHref();
+				}
+			}
+		
+		if (teiSdUrl.startsWith("/"))
+		{
+			teiSdUrl = teiSdUrl.substring(1);
+		}
+		
+		return teiSdUrl+"/content";
+	}
+	
+	private String getMetsUrl(Volume vol )
+	{
+		String metsUrl = "";
+		for (int i = 0; i< vol.getItem().getMetadataRecords().size(); i++)
+			{
+				MetadataRecord md = vol.getItem().getMetadataRecords().get(i);
+				if (md.getName().equalsIgnoreCase("mets"))
+				{
+					metsUrl = md.getXLinkHref();
+				}
+			}
+		
+		if (metsUrl.startsWith("/"))
+		{
+			metsUrl = metsUrl.substring(1);
+		}
+		
+		return metsUrl;
 	}
 	
 }

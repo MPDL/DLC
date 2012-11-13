@@ -530,12 +530,14 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 	public String getFilterString() 
 	{
+		System.out.println("SET FILTER:" + filterString);
 		return filterString;
 	}
 
 
 	public void setFilterString(String filterString) 
 	{
+		System.out.println("GET FILTER:" + filterString);
 		this.filterString = filterString;
 	}
 
