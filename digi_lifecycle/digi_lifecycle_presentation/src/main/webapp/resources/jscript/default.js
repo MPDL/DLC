@@ -623,7 +623,10 @@ function eg3_resizeSidebar() {
 		
 		switch (EG3_PAGE) {
 			case '#editPage':
-				sdb.find('.eg3_editSidebarContent').css("max-height", maxHeight);
+				sdb.find('.eg3_editSidebarContent').css({
+					"height": maxHeight,
+					"max-height": maxHeight
+				});
 				break;
 			case '#viewPage':
 			default:
