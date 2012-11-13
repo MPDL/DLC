@@ -1037,30 +1037,35 @@ public class IngestBean{
 				*/
 				
 				
-	     			
-				if(getImageFiles().size()==0 )
-				{
-					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
-					return "";
-				}
+	     		
 				
-				if(teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size())
-				{
-					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
-					return "";
-				}
+				
+				
+					if(!getSelectedContentModel().equals(VolumeServiceBean.multivolumeContentModelId) && getImageFiles().size()==0 )
+					{
+						MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_imageUpload"));
+						return "";
+					}
 					
-				if(!getSelectedContentModel().equals(VolumeServiceBean.volumeContentModelId) && (modsMetadata.getTitles()==null || modsMetadata.getTitles().size() == 0 || modsMetadata.getTitles().get(0).getTitle().equals("")))
-				{
-					MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
-					return "";
-				}
-	     			
-	    		
+					if(teiPbFacsValues != null && teiPbFacsValues.size()!=getImageFiles().size())
+					{
+						MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_wrongNumberOfImages")); //getNumberOfTeiPbs()
+						return "";
+					}
+						
+					if(!getSelectedContentModel().equals(VolumeServiceBean.volumeContentModelId) && (modsMetadata.getTitles()==null || modsMetadata.getTitles().size() == 0 || modsMetadata.getTitles().get(0).getTitle().equals("")))
+					{
+						MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));
+						return "";
+					}
+		     			
+		    		
+					
+					if(mabFile == null)
+						modsMetadata = updateModsMetadata(modsMetadata);
+					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
+					
 				
-				if(mabFile == null)
-					modsMetadata = updateModsMetadata(modsMetadata);
-				this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 				
 				allVolBean.setColId("my");
 	    		allVolBean.setCurrentPageNumber(1);
