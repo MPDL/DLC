@@ -2807,7 +2807,11 @@ public class VolumeServiceBean {
 		
 		if(volumeContentModelId.equals(vol.getItem().getProperties().getContentModel().getObjid()))
 		{
-			removeRelationFromMultiVolume(vol.getRelatedParentVolume(), vol.getItem().getOriginObjid(), userHandle);
+			try {
+				removeRelationFromMultiVolume(vol.getRelatedParentVolume(), vol.getItem().getOriginObjid(), userHandle);
+			} catch (Exception e) {
+				logger.error("Could not remove relation from multivolume or submit/release multivolume "+ vol.getRelatedParentVolume().getItem().getObjid() +"while deleting volume " + vol.getItem().getObjid() + ". Go on with deleting volume.", e);
+			}
 		}
 		
 		
