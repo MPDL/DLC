@@ -620,7 +620,7 @@ public class IngestBean{
 			
 			try {
 
-				String mimetype = tika.detect(ingestImage.getDiskFileItem().getStoreLocation());
+				String mimetype = tika.detect(ingestImage.getFile());
 				
 				if(!mimetype.startsWith("image/"))
 				{	
@@ -969,13 +969,14 @@ public class IngestBean{
 						modsMetadata = updateModsMetadata(modsMetadata);
 					//Volume volume = null;
 					
+					/*
 					List<DiskFileItem> diskFileItems = new ArrayList<DiskFileItem>();
 					for(IngestImage img : imageFiles)
 					{
 						diskFileItems.add(img.getDiskFileItem());
 					}
 					
-					
+*/					
 					
 					
 					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
