@@ -786,7 +786,7 @@ public class ViewPages implements Observer{
 	{	
 		try
 		{
-			String frameworkUrl = PropertyReader.getProperty("dlc.instance.url");
+			String frameworkUrl = PropertyReader.getProperty("escidoc.common.login.url");
 			if (frameworkUrl.endsWith("/"))
 			{
 				frameworkUrl = frameworkUrl.substring(0, frameworkUrl.length() -1);
