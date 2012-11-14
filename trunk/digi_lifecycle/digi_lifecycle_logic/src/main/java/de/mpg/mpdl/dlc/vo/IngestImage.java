@@ -13,8 +13,12 @@ public class IngestImage implements Comparable<IngestImage> {
 	}
 	
 	private Type type;
-	//private DiskFileItem diskFileItem;
+	
+	//keep disk file item, otherwise it is deleted from temp
+	private DiskFileItem diskFileItem;
 	private File file;
+	
+	
 	
 	private Page page;
 	private String url;
@@ -24,6 +28,7 @@ public class IngestImage implements Comparable<IngestImage> {
 
 	public IngestImage(DiskFileItem diskFileItem)
 	{
+		this.diskFileItem = diskFileItem;
 		this.file =diskFileItem.getStoreLocation();
 		//this.diskFileItem = diskFileItem;
 		this.name = diskFileItem.getName();
