@@ -629,7 +629,7 @@
 											<li><h:outputLink title="#{tlt.export_as_tei_ft}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiFtLink}" target="_blank" rendered="#{viewPages.exportTeiFtLink != ''}">
 													<h:outputText value="#{lbl.export_as_teift}"/>
 												</h:outputLink></li>	
-										    <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&format=MODS" target="_blank">
+										    <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
 													<h:outputText value="#{lbl.export_dfg_viewer}"/>
 												</h:outputLink></li>
 											 					
