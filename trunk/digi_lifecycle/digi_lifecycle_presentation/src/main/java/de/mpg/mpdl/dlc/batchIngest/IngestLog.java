@@ -135,7 +135,10 @@ public class IngestLog
 	private Object currentItemVolume = new Object();
 
 	
-    private Connection connection = null;
+    private Connection connection;
+    
+    private PreparedStatement statement;
+    private ResultSet resultSet;
     
     private FTPClient ftp;
 
@@ -304,7 +307,7 @@ public class IngestLog
         for (String query : queries)
         {
             logger.debug("Executing statement: " + query);
-            Statement stmt = connection.createStatement();
+            Statement stmt= connection.createStatement();
             stmt.executeUpdate(query);
             stmt.close();
         }
@@ -312,11 +315,11 @@ public class IngestLog
 		return connection;
 	}
 	
-	public static void closeConnection(Connection connection)
+	public void closeConnection()
 	{
 		try {
-			if(connection != null)
-				connection.close();
+			if(this.connection != null)
+				this.connection.close();
 		} catch (SQLException e) {
 			logger.error("cannot close database connection", e);
 		}
@@ -327,7 +330,7 @@ public class IngestLog
 		synchronized(currentLog){
 			try
 	        {
-	            PreparedStatement statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log "
+	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log "
 	                    + "(name, step, status, errorlevel, startdate, user_id, context_id) "
 	                    + "values (?, ?, ?, ?, ?, ?, ?)");
 	            
@@ -342,7 +345,7 @@ public class IngestLog
 	            //statement.close();
 	            
 	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log");
-	            ResultSet resultSet = statement.executeQuery();
+	            resultSet = statement.executeQuery();
 	            if (resultSet.next())
 	            {
 	                this.logId = resultSet.getInt("maxid");
@@ -378,7 +381,7 @@ public class IngestLog
             }
             String[] array = logs.toArray(new String[logs.size()]);
             Array aArray = connection.createArrayOf("text", (Object[])array);
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET logs = ? WHERE id = "+ logId);
+			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET logs = ? WHERE id = "+ logId);
 			statement.setArray(1, aArray);
             statement.executeUpdate();
             statement.close();
@@ -402,7 +405,7 @@ public class IngestLog
             {
             	connection = getConnection();
             }
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET " + name +" = '" + value + "' WHERE id = "+ logId);
+			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET " + name +" = '" + value + "' WHERE id = "+ logId);
             statement.executeUpdate();
             statement.close();
 		}
@@ -422,8 +425,8 @@ public class IngestLog
             	connection = getConnection();
             }
 
-			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log where id = " + logId);
-			ResultSet resultSet = statement.executeQuery();
+			statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log where id = " + logId);
+			resultSet = statement.executeQuery();
 			if(resultSet.next())
 			{
 				data = resultSet.getString(name);
@@ -447,8 +450,8 @@ public class IngestLog
             	connection = getConnection();
             }
 
-			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item where id = " + logItemId);
-			ResultSet resultSet = statement.executeQuery();
+			statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item where id = " + logItemId);
+			resultSet = statement.executeQuery();
 			if(resultSet.next())
 			{
 				data = resultSet.getString(name);
@@ -471,8 +474,8 @@ public class IngestLog
             {
             	connection = getConnection();
             }
-			PreparedStatement statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId + " AND name = '" + logItemVolumeName + "'");
-			ResultSet resultSet = statement.executeQuery();
+			 statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId + " AND name = '" + logItemVolumeName + "'");
+			resultSet = statement.executeQuery();
 			if(resultSet.next())
 			{
 				data = resultSet.getString(name);
@@ -576,8 +579,11 @@ public class IngestLog
 //		seTask.stop();
 		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
 			ftpLogout(ftp);
-		if(this.connection != null)
-			closeConnection(connection);
+		
+        try { if (resultSet != null) resultSet.close(); } catch(Exception e) { }
+        try { if (statement != null) statement.close(); } catch(Exception e) { }
+        try { if (connection != null) connection.close(); } catch(Exception e) { }
+        
 		List<String> dirs = new ArrayList<String>();
 		
 		if(itemsForBatchIngest.size()>0)
@@ -1418,7 +1424,7 @@ public class IngestLog
             {
             	connection = getConnection();
             }
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET startdate = '" + startDateValue + "', item_id = '"+ itemId+ "', enddate = '" + endDateValue + "' WHERE id = "+ logItemVolumeId);
+			 statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET startdate = '" + startDateValue + "', item_id = '"+ itemId+ "', enddate = '" + endDateValue + "' WHERE id = "+ logItemVolumeId);
             statement.executeUpdate();
             statement.close();
 		}
@@ -1443,7 +1449,7 @@ public class IngestLog
             {
             	connection = getConnection();
             }
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET " + name +" = '" + value + "' WHERE id = "+ logItemVolumeId);
+			 statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET " + name +" = '" + value + "' WHERE id = "+ logItemVolumeId);
             statement.executeUpdate();
             statement.close();
 		}
@@ -1467,7 +1473,7 @@ public class IngestLog
             }
             String[] array = logs.toArray(new String[logs.size()]);
             Array aArray = connection.createArrayOf("text", (Object[])array);
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET logs = ? WHERE id = "+ logItemVolumeId );
+			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET logs = ? WHERE id = "+ logItemVolumeId );
 			statement.setArray(1, aArray);
             statement.executeUpdate();
             statement.close();
@@ -1493,7 +1499,7 @@ public class IngestLog
             {
             	connection = getConnection();
             }
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET " + name +" = '" + value + "' WHERE id = "+ logItemId);
+			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET " + name +" = '" + value + "' WHERE id = "+ logItemId);
             statement.executeUpdate();
             statement.close();
 		}
@@ -1517,7 +1523,7 @@ public class IngestLog
             }
             String[] array = logs.toArray(new String[logs.size()]);
             Array aArray = connection.createArrayOf("text", (Object[])array);
-			PreparedStatement statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET logs = ? WHERE id = "+ logItemId);
+			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET logs = ? WHERE id = "+ logItemId);
 			statement.setArray(1, aArray);
 
             statement.executeUpdate();
@@ -1568,7 +1574,7 @@ public class IngestLog
 			int logItemId;
 			try
 	        {
-	            PreparedStatement statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item"
+	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item"
 	            		+ " (name, errorLevel, log_id, logs, content_model, images_nr, tei, footer) "
 	                    + "values (?, ?, ?, ?, ?, ?, ?, ?)");
 	            
@@ -1595,7 +1601,7 @@ public class IngestLog
 	            	this.connection = getConnection();
 	            }
 	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log_item");
-	            ResultSet resultSet = statement.executeQuery();
+	            resultSet = statement.executeQuery();
 	            if (resultSet.next())
 	            {
 	            	logItemId = resultSet.getInt("maxid");
@@ -1625,7 +1631,7 @@ public class IngestLog
 			int logItemIdVolume;
 			try
 	        {
-	            PreparedStatement statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item_volume"
+	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item_volume"
 	            		+ " (name, errorLevel, log_item_id, logs, content_model, images_nr, tei, footer) "
 	                    + "values (?,?, ?, ?, ?, ?, ?, ?)");
 	            
@@ -1654,7 +1660,7 @@ public class IngestLog
 	            	this.connection = getConnection();
 	            }
 	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log_item_volume");
-	            ResultSet resultSet = statement.executeQuery();
+	            resultSet = statement.executeQuery();
 	            if (resultSet.next())
 	            {
 	            	logItemIdVolume = resultSet.getInt("maxid");

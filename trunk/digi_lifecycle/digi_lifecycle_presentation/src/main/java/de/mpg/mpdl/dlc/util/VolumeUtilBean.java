@@ -1060,6 +1060,18 @@ public class VolumeUtilBean {
 		return output;
 	}
 	
+	public static String getSecPublisherForTitle(ModsPublisher publisher)
+	{
+		String output = "";
+		if(publisher.getPlace() != null)
+			output += publisher.getPlace() + " : ";
+		if(publisher.getPublisher() != null)
+			output += publisher.getPublisher() + ", ";
+		if(publisher.getDateCaptured()!=null )
+			output += publisher.getDateCaptured();
+		return output;
+	}
+	
 	public static String getCollationsForTitle(List<ModsPhysicalDescription> physicalDescriptions)
 	{
 		String output = "";
