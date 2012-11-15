@@ -703,8 +703,8 @@ public class VolumeServiceBean {
 			
 			
 		}		
-		
-		jpegFooter.delete();
+		if(jpegFooter != null)
+			jpegFooter.delete();
 
 	}
 	
