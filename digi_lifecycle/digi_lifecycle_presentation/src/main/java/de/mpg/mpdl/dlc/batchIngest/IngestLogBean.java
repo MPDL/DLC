@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,8 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	private int totalNumberOfRecords;
 	
-	private Connection conn; 
+	private Connection conn = null; 
+    private PreparedStatement stmt = null;
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
@@ -86,19 +88,15 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	public List<IngestLog> retrieveList(int offset, int limit) throws Exception 
 	{
 		logs.clear();   
-		if(this.conn == null)
-		{
-			this.conn = appBean.getDataSource().getConnection();
-		}
 		List<IngestLog> allLogs = new ArrayList<IngestLog>();
+		ResultSet rset = null;
 		try
 		{
 			String q = "select * from dlc_batch_ingest_log where user_id = ? ORDER BY id DESC";
-			ResultSet resultSet;
-			PreparedStatement statement;
-			statement = conn.prepareStatement(q);
-			statement.setString(1, userId);
-			resultSet = statement.executeQuery();
+			conn = getConn();
+			stmt = conn.prepareStatement(q);
+			stmt.setString(1, userId);
+			rset = stmt.executeQuery();
 
 			
 //			String query = "select * from dlc_batch_ingest_log where user_id = ? and id between ? and ? ";
@@ -108,9 +106,9 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 //			statement.setInt(3, limit);
 //			resultSet = statement.executeQuery();
 
-            while (resultSet.next())
+            while (rset.next())
             {
-            	int id = resultSet.getInt("id");
+            	int id = rset.getInt("id");
             	IngestLog log = getIngestLog(id);
             	allLogs.add(log);
             }
@@ -122,7 +120,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
             
   		}catch(Exception e)
 		{
-			
+  			logger.error("Error while retrieving batch ingest logs: " + e.getMessage());
+		}
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
 		}
 
 		return logs;
@@ -147,32 +150,30 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	public IngestLog getIngestLog(Integer id)
 	{
 		IngestLog log = null;
-		if(conn == null)
-			try {
-				conn = appBean.getDataSource().getConnection();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
 		String query = null;
-		
+		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log where id = " + id;
-			statement = conn.prepareStatement(query);
+			conn = getConn();
+			stmt = conn.prepareStatement(query);
 
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
+			rset = stmt.executeQuery();
+			if(rset.next())
 			{
-				log = fillLog(resultSet);
+				log = fillLog(rset);
 			}
 			
 		}catch(Exception e)
 		{
-			
+  			logger.error("Error while retrieving one ingest log: " + e.getMessage());
 		}
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
+		}
+		
 		return log;
 	}
 	
@@ -208,30 +209,21 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     {
     	
 		List<IngestLogItem> logItems = new ArrayList<IngestLogItem>();
-		if(conn == null)
-			try {
-				conn = appBean.getDataSource().getConnection();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
+		ResultSet rset = null;
 		String query = null;
 		
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item where log_id = " + logId;
-	        if(conn == null)
-	        {
-	        	conn = appBean.getDataSource().getConnection();
-	        }
-	        statement = conn.prepareStatement(query);
-	        resultSet = statement.executeQuery();
+
+	        conn = getConn();
+	       
+	        stmt = conn.prepareStatement(query);
+	        rset = stmt.executeQuery();
 	        
-	        while (resultSet.next())
+	        while (rset.next())
 	        {
-	        	int id = resultSet.getInt("id");
+	        	int id = rset.getInt("id");
 	        	IngestLogItem logItem = getIngestLogItem(id);
 	            logItems.add(logItem);
 	        }
@@ -239,9 +231,13 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		
 		}catch(Exception e)
 		{
-			
+  			logger.error("Error while retrieving batch ingest log Items: " + e.getMessage());
 		}
-    	
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
+		}
     	return logItems;
     	
     }
@@ -249,31 +245,29 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	public IngestLogItem getIngestLogItem(Integer id)
 	{
 		IngestLogItem logItem = null;
-		if(conn == null)
-			try {
-				conn = appBean.getDataSource().getConnection();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
+
 		String query = null;
-		
+		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item where id = ?";
-			statement = conn.prepareStatement(query);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
+			conn = getConn();
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, id);
+			rset = stmt.executeQuery();
+			if(rset.next())
 			{
-				logItem = fillLogItem(resultSet);
+				logItem = fillLogItem(rset);
 			}
 			
 		}catch(Exception e)
 		{
-			logger.error(e.getMessage());
+  			logger.error("Error while retrieving one ingestlogitem: " + e.getMessage());
+		}
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
 		}
 		return logItem;
 	}
@@ -317,30 +311,21 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     {
     	
 		List<IngestLogItemVolume> logItemVolumes = new ArrayList<IngestLogItemVolume>();
-		if(conn == null)
-			try {
-				conn = appBean.getDataSource().getConnection();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
+
+
 		String query = null;
-		
+		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId;
-	        if(conn == null)
-	        {
-	        	conn = appBean.getDataSource().getConnection();
-	        }
-	        statement = conn.prepareStatement(query);
-	        resultSet = statement.executeQuery();
+        	conn = getConn();
+	       
+	        stmt = conn.prepareStatement(query);
+	        rset = stmt.executeQuery();
 	        
-	        while (resultSet.next())
+	        while (rset.next())
 	        {
-	        	int id = resultSet.getInt("id");
+	        	int id = rset.getInt("id");
 	        	IngestLogItemVolume logItemVolume = getIngestLogItemVolume(id);
 	        	logItemVolumes.add(logItemVolume);
 	        }
@@ -348,9 +333,13 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		
 		}catch(Exception e)
 		{
-			
+  			logger.error("Error while retrieving logItemVolumes " + e.getMessage());
 		}
-    	
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
+		}
     	return logItemVolumes;
     	
     }
@@ -358,31 +347,28 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	public IngestLogItemVolume getIngestLogItemVolume(Integer id)
 	{
 		IngestLogItemVolume logItemVolume = null;
-		if(conn == null)
-			try {
-				conn = appBean.getDataSource().getConnection();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
 		String query = null;
-		
+		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item_volume where id = ?";
-			statement = conn.prepareStatement(query);
-			statement.setInt(1, id);
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
+			conn = getConn();
+			stmt = conn.prepareStatement(query);
+			stmt.setInt(1, id);
+			rset = stmt.executeQuery();
+			if(rset.next())
 			{
-				logItemVolume = fillLogItemVolume(resultSet);
+				logItemVolume = fillLogItemVolume(rset);
 			}
 			
 		}catch(Exception e)
 		{
-			
+  			logger.error("Error while retrieving one ingestLogItemVolume: " + e.getMessage());
+		}
+		finally{
+            try { if (rset != null) rset.close(); } catch(Exception e) { }
+            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
+            try { if (conn != null) conn.close(); } catch(Exception e) { }
 		}
 		return logItemVolume;
 	}
@@ -446,6 +432,11 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	}
 
 	public Connection getConn() {
+		try {
+			conn = appBean.getDataSource().getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return conn;
 	}
 
@@ -461,6 +452,13 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		this.loginBean = loginBean;
 	}
 
+	public PreparedStatement getStmt() {
+		return stmt;
+	}
+
+	public void setStmt(PreparedStatement stmt) {
+		this.stmt = stmt;
+	}
 
 
 	

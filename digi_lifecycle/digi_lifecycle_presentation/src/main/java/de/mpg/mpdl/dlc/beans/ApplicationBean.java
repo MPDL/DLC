@@ -303,6 +303,8 @@ public class ApplicationBean
         ds.setUsername(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
         ds.setPassword(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
         ds.setUrl(PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
+        ds.setMaxWait(30000);
+        ds.setInitialSize(50);
         return ds;
     }
     
