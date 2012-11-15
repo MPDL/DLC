@@ -152,28 +152,35 @@
 				<xsl:attribute name="TYPE"><xsl:value-of select="'physSequence'"/></xsl:attribute>
 				<xsl:attribute name="DMDID"><xsl:value-of select="'dmd0'"/></xsl:attribute>
 				<xsl:attribute name="ADMID"><xsl:value-of select="'amd0'"/></xsl:attribute>
-				<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
-					<xsl:element name="mets:div">
-						<xsl:variable name="vID"><xsl:value-of select="@xml:id"/></xsl:variable>
-					    <xsl:attribute name="ID"><xsl:value-of select="$vID"/></xsl:attribute>
-						<xsl:attribute name="CONTENTIDS"><xsl:value-of select="@facs"/></xsl:attribute>
-						<!--  <xsl:attribute name="ORDERLABEL"><xsl:value-of select="'???'"/></xsl:attribute> -->
-						<xsl:attribute name="ORDER">
-							<xsl:choose>
-								<xsl:when test="@n">
-									<xsl:value-of select="@n"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div[@ID=$vID]/@ORDER"/>
-								</xsl:otherwise>
-							</xsl:choose>						
-						</xsl:attribute>
-						<xsl:attribute name="TYPE"><xsl:value-of select="'page'"/></xsl:attribute>  
-						<xsl:element name="mets:fptr">
-							<xsl:attribute name="FILEID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
-						</xsl:element> 
-					</xsl:element>			
-      			</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="$teiXml">
+						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
+							<xsl:element name="mets:div">
+								<xsl:variable name="vID"><xsl:value-of select="@xml:id"/></xsl:variable>
+							    <xsl:attribute name="ID"><xsl:value-of select="$vID"/></xsl:attribute>
+								<xsl:attribute name="CONTENTIDS"><xsl:value-of select="@facs"/></xsl:attribute>
+								<!--  <xsl:attribute name="ORDERLABEL"><xsl:value-of select="'???'"/></xsl:attribute> -->
+								<xsl:attribute name="ORDER">
+									<xsl:choose>
+										<xsl:when test="@n">
+											<xsl:value-of select="@n"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div[@ID=$vID]/@ORDER"/>
+										</xsl:otherwise>
+									</xsl:choose>						
+								</xsl:attribute>
+								<xsl:attribute name="TYPE"><xsl:value-of select="'page'"/></xsl:attribute>  
+								<xsl:element name="mets:fptr">
+									<xsl:attribute name="FILEID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								</xsl:element> 
+							</xsl:element>			
+		      			</xsl:for-each>
+    				</xsl:when>
+      				<xsl:otherwise>
+						<xsl:copy-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap"/>
+					</xsl:otherwise>
+				</xsl:choose>     			
       		</xsl:element>
 		</xsl:element>					
 	</xsl:template>		
