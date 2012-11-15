@@ -30,29 +30,25 @@ package de.mpg.mpdl.dlc.beans;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.apache.log4j.Logger;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
-import de.mpg.mpdl.dlc.batchIngest.IngestLog;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+
+
 
 @ManagedBean
 @ApplicationScoped
@@ -85,7 +81,7 @@ public class ApplicationBean
 
     private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
     
-    private DataSource dataSource = new BasicDataSource();
+    private DataSource dataSource = new DataSource();
     
     /**
      * Public constructor.
@@ -108,6 +104,7 @@ public class ApplicationBean
 			this.contextServiceBean = new ContextServiceBean();
 			this.ouServiceBean =  new OrganizationalUnitServiceBean();
 			this.dataSource = setupDataSource();
+
 	
     	} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
@@ -297,59 +294,32 @@ public class ApplicationBean
 		this.uploadThreads = uploadThreads;
 	}
 	
-    public static DataSource setupDataSource() throws IOException, URISyntaxException {
-        BasicDataSource ds = new BasicDataSource();
-        ds.setDriverClassName("org.postgresql.Driver");
-        ds.setUsername(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-        ds.setPassword(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
-        ds.setUrl(PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
-        ds.setMaxWait(30000);
-        ds.setInitialSize(50);
+    public static DataSource setupDataSource() throws URISyntaxException, IOException {
+        PoolProperties p = new PoolProperties();
+        p.setUrl(PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
+        p.setDriverClassName("org.postgresql.Driver");
+        p.setUsername(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
+        p.setPassword(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
+        p.setJmxEnabled(true);
+        p.setTestWhileIdle(false);
+        p.setTestOnBorrow(true);
+        p.setValidationQuery("SELECT 1");
+        p.setTestOnReturn(false);
+        p.setValidationInterval(30000);
+        p.setTimeBetweenEvictionRunsMillis(30000);
+        p.setMaxActive(1000);
+        p.setInitialSize(10);
+        p.setMaxWait(30000);
+        p.setRemoveAbandonedTimeout(60);
+        p.setMinEvictableIdleTimeMillis(30000);
+        p.setMinIdle(10);
+        p.setLogAbandoned(true);
+        p.setRemoveAbandoned(true);
+        p.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
+          "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+        DataSource ds = new DataSource();
+        
         return ds;
-    }
-    
-    public void setupDBTable()
-    {
-		Connection connection = null;
-        Statement stmt = null;
-		try{
-			this.dataSource.getConnection();
-	
-			URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
-	
-		    //File file = new File(sqlURL.toURI());
-		    StringBuilder fileContents = new StringBuilder();
-		    Scanner scanner = new Scanner(sqlURL.openStream());
-			
-		    String lineSeparator = System.getProperty("line.separator");
-		    String dbScript;
-	
-		    try {
-		        while(scanner.hasNextLine())        
-		            fileContents.append(scanner.nextLine() + lineSeparator);
-		       
-		        dbScript = fileContents.toString();
-		    } finally {
-		        scanner.close();
-		    }
-	
-	        String[] queries = dbScript.split(";");
-	        for (String query : queries)
-	        {
-	            logger.debug("Executing statement: " + query);
-	            stmt = connection.createStatement();
-	            stmt.executeUpdate(query);
-	            stmt.close();
-	        }
-		}catch(SQLException e) {
-            e.printStackTrace();
-        }catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally {
-            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
-            try { if (connection != null) connection.close(); } catch(Exception e) { }
-        }
     }
 
 	public DataSource getDataSource() {
@@ -359,6 +329,10 @@ public class ApplicationBean
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+    
+
+
+
     
     
 
