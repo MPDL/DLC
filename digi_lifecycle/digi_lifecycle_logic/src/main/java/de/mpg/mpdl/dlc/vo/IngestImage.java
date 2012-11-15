@@ -39,7 +39,6 @@ public class IngestImage implements Comparable<IngestImage> {
 	{    
 		this.name = f.getName();
 		this.file = f;
-		
 		this.type = Type.DISK;
 	}
 	
