@@ -28,24 +28,30 @@
  */
 package de.mpg.mpdl.dlc.beans;
 
+
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
-import org.apache.tomcat.jdbc.pool.DataSource;
-import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
+import de.mpg.mpdl.dlc.batchIngest.IngestLog;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 
@@ -80,9 +86,7 @@ public class ApplicationBean
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
     private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
-    
-    private DataSource dataSource = new DataSource();
-    
+
     /**
      * Public constructor.
      */
@@ -103,16 +107,11 @@ public class ApplicationBean
 			InitialContext context = new InitialContext();
 			this.contextServiceBean = new ContextServiceBean();
 			this.ouServiceBean =  new OrganizationalUnitServiceBean();
-			this.dataSource = setupDataSource();
+
 
 	
     	} catch (NamingException ex) {
 			logger.error("Error retriving VolumeSrviceBean: " + ex.getMessage());
-		}catch (IOException e) {
-			logger.error("Error setting datasource: " + e.getMessage());
-		} catch (URISyntaxException e) {
-			logger.error("Error setting datasource: " + e.getMessage());
-			e.printStackTrace();
 		}
     	
     	/*
@@ -293,42 +292,9 @@ public class ApplicationBean
 	public void setUploadThreads(HashMap<String, Integer> uploadThreads) {
 		this.uploadThreads = uploadThreads;
 	}
-	
-    public static DataSource setupDataSource() throws URISyntaxException, IOException {
-        PoolProperties p = new PoolProperties();
-        p.setUrl(PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
-        p.setDriverClassName("org.postgresql.Driver");
-        p.setUsername(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-        p.setPassword(PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
-        p.setJmxEnabled(true);
-        p.setTestWhileIdle(false);
-        p.setTestOnBorrow(true);
-        p.setTestOnReturn(false);
-        p.setValidationInterval(30000);
-        p.setTimeBetweenEvictionRunsMillis(30000);
-        p.setMaxActive(1000);
-        p.setInitialSize(10);
-        p.setMaxWait(30000);
-        p.setRemoveAbandonedTimeout(60);
-        p.setMinEvictableIdleTimeMillis(30000);
-        p.setMinIdle(10);
-        p.setLogAbandoned(true);
-        p.setRemoveAbandoned(true);
-        p.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"+
-          "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
-        DataSource ds = new DataSource();
-        
-        return ds;
-    }
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
     
+
 
 
 

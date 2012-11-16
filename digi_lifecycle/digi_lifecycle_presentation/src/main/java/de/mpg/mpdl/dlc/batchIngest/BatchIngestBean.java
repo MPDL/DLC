@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +13,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
-import org.postgresql.util.PSQLException;
 
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
@@ -44,9 +44,7 @@ public class BatchIngestBean {
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
-	
-	@ManagedProperty("#{applicationBean}")
-	private ApplicationBean appBean;
+
 	
 	private String selectedContextId;
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
@@ -123,7 +121,7 @@ public class BatchIngestBean {
 			mab = mab.substring(1);
 		if(tei != "" && tei.startsWith("/"))
 			tei = tei.substring(1);
-		ingestProcess = new IngestProcess(appBean.getDataSource(), name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
+		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
 		ingestProcess.start();
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
 
@@ -201,15 +199,6 @@ public class BatchIngestBean {
 		this.loginBean = loginBean;
 	}
 	
-	
-	
-	public ApplicationBean getAppBean() {
-		return appBean;
-	}
-
-	public void setAppBean(ApplicationBean appBean) {
-		this.appBean = appBean;
-	}
 
 	public String getServer() {
 		return server;

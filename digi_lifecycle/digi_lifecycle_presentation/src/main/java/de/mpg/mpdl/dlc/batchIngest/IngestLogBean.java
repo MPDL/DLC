@@ -1,31 +1,27 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
+import java.beans.PropertyVetoException;
 import java.io.IOException;
+
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.sql.Array;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import org.apache.log4j.Logger;
-import org.postgresql.util.PSQLException;
 
-import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
-import com.sun.xacml.ctx.Result;
 
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
 import de.mpg.mpdl.dlc.batchIngest.IngestLog.Status;
@@ -33,7 +29,6 @@ import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
-
 import de.mpg.mpdl.jsf.components.paginator.BasePaginatorBean;
 
 
@@ -56,9 +51,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
-	
-	@ManagedProperty("#{applicationBean}")
-	private ApplicationBean appBean;
+
 
 	
 	public IngestLogBean()
@@ -88,12 +81,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	public List<IngestLog> retrieveList(int offset, int limit) throws Exception 
 	{
 		logs.clear();   
+		this.conn = IngestLog.getConnection();
 		List<IngestLog> allLogs = new ArrayList<IngestLog>();
 		ResultSet rset = null;
 		try
 		{
 			String q = "select * from dlc_batch_ingest_log where user_id = ? ORDER BY id DESC";
-			conn = getConn();
 			stmt = conn.prepareStatement(q);
 			stmt.setString(1, userId);
 			rset = stmt.executeQuery();
@@ -113,14 +106,16 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
             	allLogs.add(log);
             }
             this.totalNumberOfRecords = allLogs.size();
-            for(int i = offset; i< offset+limit; i++)
+
+            for(int i = offset-1; i< ((totalNumberOfRecords > offset + limit)?(offset+limit):totalNumberOfRecords); i++)
             {
-            	logs.add(allLogs.get(i-1));
+            	logs.add(allLogs.get(i));
             }
             
   		}catch(Exception e)
 		{
   			logger.error("Error while retrieving batch ingest logs: " + e.getMessage());
+  			System.err.println("Error while retrieving batch ingest logs: " + e.getMessage());
 		}
 		finally{
             try { if (rset != null) rset.close(); } catch(Exception e) { }
@@ -152,12 +147,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		IngestLog log = null;
 		String query = null;
 		ResultSet rset = null;
+		
+
 		try
 		{
 			query = "select * from dlc_batch_ingest_log where id = " + id;
-			conn = getConn();
 			stmt = conn.prepareStatement(query);
-
 			rset = stmt.executeQuery();
 			if(rset.next())
 			{
@@ -168,11 +163,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		{
   			logger.error("Error while retrieving one ingest log: " + e.getMessage());
 		}
-		finally{
-            try { if (rset != null) rset.close(); } catch(Exception e) { }
-            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
-            try { if (conn != null) conn.close(); } catch(Exception e) { }
-		}
+
 		
 		return log;
 	}
@@ -211,13 +202,10 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		List<IngestLogItem> logItems = new ArrayList<IngestLogItem>();
 		ResultSet rset = null;
 		String query = null;
-		
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item where log_id = " + logId;
-
-	        conn = getConn();
-	       
+			conn = IngestLog.getConnection();
 	        stmt = conn.prepareStatement(query);
 	        rset = stmt.executeQuery();
 	        
@@ -232,6 +220,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving batch ingest log Items: " + e.getMessage());
+  			System.err.println("Error while retrieving batch ingest log Items: " + e.getMessage());
 		}
 		finally{
             try { if (rset != null) rset.close(); } catch(Exception e) { }
@@ -246,12 +235,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 	{
 		IngestLogItem logItem = null;
 
+
 		String query = null;
 		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item where id = ?";
-			conn = getConn();
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			rset = stmt.executeQuery();
@@ -263,11 +252,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving one ingestlogitem: " + e.getMessage());
-		}
-		finally{
-            try { if (rset != null) rset.close(); } catch(Exception e) { }
-            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
-            try { if (conn != null) conn.close(); } catch(Exception e) { }
 		}
 		return logItem;
 	}
@@ -312,13 +296,12 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     	
 		List<IngestLogItemVolume> logItemVolumes = new ArrayList<IngestLogItemVolume>();
 
-
 		String query = null;
 		ResultSet rset = null;
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId;
-        	conn = getConn();
+			conn = IngestLog.getConnection();
 	       
 	        stmt = conn.prepareStatement(query);
 	        rset = stmt.executeQuery();
@@ -334,6 +317,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving logItemVolumes " + e.getMessage());
+  			System.err.print("Error while retrieving logItemVolumes " + e.getMessage());
 		}
 		finally{
             try { if (rset != null) rset.close(); } catch(Exception e) { }
@@ -352,7 +336,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		try
 		{
 			query = "select * from dlc_batch_ingest_log_item_volume where id = ?";
-			conn = getConn();
 			stmt = conn.prepareStatement(query);
 			stmt.setInt(1, id);
 			rset = stmt.executeQuery();
@@ -364,11 +347,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving one ingestLogItemVolume: " + e.getMessage());
-		}
-		finally{
-            try { if (rset != null) rset.close(); } catch(Exception e) { }
-            try { if (stmt != null) stmt.close(); } catch(Exception e) { }
-            try { if (conn != null) conn.close(); } catch(Exception e) { }
 		}
 		return logItemVolume;
 	}
@@ -406,13 +384,6 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
     }
 
 
-	public ApplicationBean getAppBean() {
-		return appBean;
-	}
-
-	public void setAppBean(ApplicationBean appBean) {
-		this.appBean = appBean;
-	}
 
 	public List<IngestLog> getLogs() {
 		return logs;
@@ -431,18 +402,7 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		this.userId = userId;
 	}
 
-	public Connection getConn() {
-		try {
-			conn = appBean.getDataSource().getConnection();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return conn;
-	}
 
-	public void setConn(Connection conn) {
-		this.conn = conn;
-	}
 
 	public LoginBean getLoginBean() {
 		return loginBean;
@@ -460,17 +420,5 @@ public class IngestLogBean extends BasePaginatorBean<IngestLog>{
 		this.stmt = stmt;
 	}
 
-
-	
-
-
-    
-
-	
-	
-
-	
-	
-	
 
 }

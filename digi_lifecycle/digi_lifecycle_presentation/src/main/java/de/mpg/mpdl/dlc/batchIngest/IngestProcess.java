@@ -44,13 +44,12 @@ public class IngestProcess extends Thread{
 //	
 //	@ManagedProperty("#{loginBean}")
 //	private LoginBean loginBean;
-	
-	private DataSource ds;
+
 
 	
-	public IngestProcess(DataSource ds, String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
+	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
 	{
-		this.ds = ds;
+
 		this.logName = name;
 		this.step = step;
 		this.action = action;
@@ -82,7 +81,7 @@ public class IngestProcess extends Thread{
 //			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
 		
 		try {
-			log = new IngestLog(ds, logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
+			log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
 			try {
 				if(log.ftpCheck())
 					log.ftpSaveItems();
