@@ -143,8 +143,7 @@ public class IngestLog
     private FTPClient ftp;
 
     private List<BatchIngestItem> items = new ArrayList<BatchIngestItem>();
-    
-	private DataSource ds;
+
     
 //    private SessionExtenderTask seTask;
 
@@ -154,10 +153,10 @@ public class IngestLog
     }
 
 
-	public IngestLog(DataSource ds, String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String username, String password, String images, String mab, String tei)throws Exception
+	public IngestLog(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String username, String password, String images, String mab, String tei)throws Exception
 	{
 
-		this.ds = ds;
+
 		this.name = name;
     	this.step = step;
     	
@@ -272,20 +271,20 @@ public class IngestLog
 
 
 
-	public Connection getConnection() throws Exception
+	public static Connection getConnection() throws Exception
 	{
-		/*
+		
+		String url;
+
+		Connection connection = null;
+	
 		Properties props = new Properties();
 		props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 		props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
 		Class.forName("org.postgresql.Driver");
 		url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
-		
 		connection = DriverManager.getConnection(url, props);
-		*/  
-		logger.info("Creating connection.");
-		connection = ds.getConnection();
-		
+
 		URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
 
 	    //File file = new File(sqlURL.toURI());
@@ -307,11 +306,12 @@ public class IngestLog
         for (String query : queries)
         {
             logger.debug("Executing statement: " + query);
-            Statement stmt= connection.createStatement();
+            Statement stmt = connection.createStatement();
             stmt.executeUpdate(query);
             stmt.close();
         }
-        
+		
+
 		return connection;
 	}
 	
