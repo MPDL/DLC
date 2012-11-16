@@ -95,7 +95,7 @@
 				
 				
 				<!-- START PAGE IMAGE -->
-				<h:panelGroup id="editPage" layout="block" styleClass="eg3_container_3_4 eg3_viewPage">
+				<h:panelGroup id="editPage" layout="block" styleClass="eg3_container_3_4 eg3_editPage">
 					<h:panelGroup id="paginator" layout="block" styleClass="eg3_viewPageMenu">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 							<h:outputText value="#{lbl.edit_page_sum_scans} #{structuralEditorBean.volume.pages.size()}"/>
@@ -156,7 +156,7 @@
 									</h:panelGroup>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_quickPagination eg3_textCenter" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_quickPagination eg3_textCenter" rendered="#{structuralEditorBean.volume.pages.size() > 1}">
 									<!-- pagination buttons for previous -->
 									<ui:fragment rendered="#{structuralEditorBean.selectedPb.page.order > 0}">
 										<h:commandLink action="#{structuralEditorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">

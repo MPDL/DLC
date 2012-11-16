@@ -1897,7 +1897,8 @@ body .eg3_id_siteTitle {
 }
 
 
-.eg3_viewPage .eg3_viewPageMenu {
+.eg3_viewPage .eg3_viewPageMenu,
+.eg3_editPage .eg3_viewPageMenu {
 	width:99%;
 	padding:0.5em 0.5%;
 	margin-bottom:0.083333333em;
@@ -1905,7 +1906,8 @@ body .eg3_id_siteTitle {
 	color:#F0F0F0;
 	font-size:0.9090em;
 }
-.eg3_viewPage .eg3_viewPageMenu *:hover {
+.eg3_viewPage .eg3_viewPageMenu *:hover,
+.eg3_editPage .eg3_viewPageMenu *:hover {
 	text-decoration:none;
 }
 .eg3_viewPageMenu .eg3_quickPagination {
@@ -1918,9 +1920,6 @@ body .eg3_id_siteTitle {
 .eg3_viewPageMenu .eg3_quickPagination .eg3_selectionText {
 	color:#2F2F2F;
 	font-size:108%;
-}
-.eg3_viewPage .eg3_viewPageMenu .eg3_quickPagination input {
-	text-align:center;
 }
 .eg3_viewPageMenu form {
 	display:inline;
@@ -2013,58 +2012,58 @@ body .eg3_id_siteTitle {
 	margin-right:0.25em;
 }
 
-.eg3_viewPage .eg3_singleEdit {
+.eg3_editPage .eg3_singleEdit {
 	width:100%;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer {
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer {
 	min-height:66.5em;
 	zoom:1;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer .scaler { /* digilib container */
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer .scaler { /* digilib container */
 	min-height:66.5em !important;
 	width:100% !important;
 	background-color:transparent;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editPage_imgContainer img {
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer img {
 	width:100%;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editActionButtonbar {
+.eg3_editPage .eg3_singleEdit .eg3_editActionButtonbar {
 	margin-top:0.333333em;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree {
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree {
 	height:33.33333333em;
 	overflow:auto;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
 	/* color:#F2F2F2; */
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel {
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel {
 	color:#000000;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel a, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel *[onclick] {
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel a, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel *[onclick] {
 	color:#000000;
 }
 
-.eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_viewPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
 	color:#EA7125;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_editInputArea {
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_editInputArea {
 	margin-right:0.5em;
 	margin-top:0.5em;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPageNumbers {
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPageNumbers {
 	margin-top:1em;
 	margin-bottom:1em;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPagination {
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPagination {
 	margin-top:1em;
 	margin-bottom:1em;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
 	margin-right:3em;
 	margin-bottom:1em;
 }
-.eg3_viewPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
 	margin-bottom:1em;
 }
 .eg3_pageEditingContainer input[type=submit] {
