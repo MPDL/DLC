@@ -21,7 +21,7 @@
 					
 					<h:outputLink id="lnkDlc" title="#{tlt.meta_dlc}"
 						value="#{applicationBean.domain}/#{applicationBean.contextPath}/">
-						<h:outputText value="#{lbl.header_lnk_dlc}" />
+						<h:outputText value="#{lbl.header_lnk_dlc}"/>
 					</h:outputLink> 
 										
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
@@ -29,7 +29,7 @@
 					
 					<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{sessionBean.latestCql!= null}"
 						value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{sessionBean.latestCql}">
-						<h:outputText value="#{lbl.header_lastSearchResult}" />
+						<h:outputText value="#{lbl.header_lastSearchResult}"/>
 					</h:outputLink> 
 					
 					<h:form>
@@ -52,11 +52,11 @@
 					<ui:remove>
 					<h:outputLink id="lnkHelp" title="#{tlt.meta_help}"
 						value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
-						<h:outputText value="#{lbl.header_lnk_help}" />
+						<h:outputText value="#{lbl.header_lnk_help}"/>
 					</h:outputLink> 
 					</ui:remove>
 					<h:outputLink id="lnkHelp" title="Sorry! Help is not available now!" value="#">
-						<h:outputText value="#{lbl.header_lnk_help}" />
+						<h:outputText value="#{lbl.header_lnk_help}"/>
 					</h:outputLink>
 					
 					
@@ -67,11 +67,11 @@
 							</h:panelGroup>
 							<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}" immediate="true" onchange="submit();"
 								valueChangeListener="#{internationalizationHelper.changeLanguage}" title="#{tlt.meta_language}">
-								<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}" />
-								<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}" />
-								<f:selectItem itemValue="it" itemLabel="#{lbl.ENUM_LANGUAGE_IT}" />
-								<f:selectItem itemValue="fr" itemLabel="#{lbl.ENUM_LANGUAGE_FR}" />
-								<f:selectItem itemValue="es" itemLabel="#{lbl.ENUM_LANGUAGE_ES}" />
+								<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}"/>
+								<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}"/>
+								<f:selectItem itemValue="es" itemLabel="#{lbl.ENUM_LANGUAGE_ES}"/>
+								<f:selectItem itemValue="fr" itemLabel="#{lbl.ENUM_LANGUAGE_FR}"/>
+								<f:selectItem itemValue="it" itemLabel="#{lbl.ENUM_LANGUAGE_IT}"/>
 							</h:selectOneMenu> 
 						</h:panelGroup>
 					</h:form>
@@ -93,7 +93,7 @@
 		
 		<ui:fragment rendered="#{loginBean.login}">
 			<div class="eg3_container_1_2 eg3_id_mainMenu" rel="section">
-				<ui:include src="../menu/mainMenu.xhtml" />
+				<ui:include src="../menu/mainMenu.xhtml"/>
 			</div>
 		</ui:fragment>
 		
