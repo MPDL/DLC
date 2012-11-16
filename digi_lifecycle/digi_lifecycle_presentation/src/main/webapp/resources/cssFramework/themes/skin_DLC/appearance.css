@@ -2000,6 +2000,11 @@ body .eg3_id_siteTitle {
 .eg3_viewPage .eg3_dualView .eg3_viewPage_imgContainer img {
 	width:100%;
 }
+.eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .eg3_viewPage_fulltextContent {
+	width:95%;
+	padding:0 2.49%;
+	overflow:auto;
+}
 .eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .stdheader {
 	width:100%;
 }
@@ -2027,9 +2032,25 @@ body .eg3_id_siteTitle {
 .eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer img {
 	width:100%;
 }
-.eg3_editPage .eg3_singleEdit .eg3_editActionButtonbar {
-	margin-top:0.333333em;
+
+.eg3_editPage .eg3_submitPanel {
+	background-color:#CACA86;
+	border:none;
+	padding:0.25em 0;
 }
+.eg3_editPage .eg3_submitPanel input[type=submit] {
+	float:left;
+	margin:0 0.25em 0 0;
+	padding:0.25em 0.75em;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_editPage .eg3_submitPanel input[type=submit]:hover {
+	color:#EA7125;
+	text-decoration:none;
+}
+
+
 .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree {
 	height:33.33333333em;
 	overflow:auto;
@@ -2842,7 +2863,8 @@ button:hover .eg3_icon_close_16_16 {
 	width:100%;
 	margin:0;
 	background-color:transparent;
-	min-height:100%;
+	min-height:33.333333%;
+	height:100%;
 	max-height:100%;
 }
 
