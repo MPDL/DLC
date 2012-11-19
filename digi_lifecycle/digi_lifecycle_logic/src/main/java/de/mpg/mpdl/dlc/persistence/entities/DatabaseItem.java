@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -48,9 +50,9 @@ public class DatabaseItem {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(insertable = false, updatable = false)
+	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date startTime;
+	private Date dateCreated;
 	
 	@Enumerated(EnumType.STRING)
 	private IngestStatus ingestStatus = IngestStatus.RUNNING;
@@ -82,6 +84,16 @@ public class DatabaseItem {
 	private List<IngestLogMessage> messages = new ArrayList<IngestLogMessage>();
 	
 	
+	
+	
+	@PrePersist
+	@PreUpdate
+	public void updateTimeStamps() {
+	    //startTime = new Date();
+	    if (dateCreated==null) {
+	    	dateCreated = new Date();
+	    }
+	}
 	
 	public Long getId() {
 		return id;
@@ -158,14 +170,6 @@ public class DatabaseItem {
 		
 	}
 
-	public Date getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
-
 	
 
 	public String getSubTitle() {
@@ -214,6 +218,14 @@ public class DatabaseItem {
 
 	public void setNumberOfImages(int numberOfImages) {
 		this.numberOfImages = numberOfImages;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 	
 }

@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -49,9 +51,9 @@ public class IngestLogMessage {
 	private DatabaseItem ingestProcess;
 	
 	
-	@Column(name = "timestamp", insertable = false, updatable = false)
+	@Column(name = "dateCreated", updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date timestamp;
+	private Date dateCreated;
 	
 	
 	private String message;
@@ -65,6 +67,16 @@ public class IngestLogMessage {
 	
 	private String error;
 	
+	
+	@PrePersist
+	@PreUpdate
+	public void updateTimeStamps() {
+	    //startTime = new Date();
+	    if (getDateCreated()==null) {
+	    	setDateCreated(new Date());
+	    }
+	}
+	
 	public IngestLogMessage()
 	{
 		
@@ -73,22 +85,15 @@ public class IngestLogMessage {
 	public IngestLogMessage(ActivityType type, String msg)
 	{
 		this.message = msg;
-		this.type = type;
+		this.setType(type);
 	}
 
 	public IngestLogMessage(ActivityType type)
 	{
-		this.type = type;
+		this.setType(type);
 	}
 	
-	public Date getTimestamp() {
-		return timestamp;
-	}
-
-
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}
+	
 
 
 	public String getMessage() {
@@ -139,6 +144,22 @@ public class IngestLogMessage {
 		PrintWriter pw = new PrintWriter(sw);
 		e.printStackTrace(pw);
 		this.error = sw.toString(); // 
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+	public ActivityType getType() {
+		return type;
+	}
+
+	public void setType(ActivityType type) {
+		this.type = type;
 	}
 
 	
