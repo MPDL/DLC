@@ -51,18 +51,25 @@
 								 <a4j:poll id="poll" interval="5000" render="poll volumeUpload messages" enabled="#{dbItem.ingestStatus == 'RUNNING'}" action="#{manualIngestLogBean.checkUploadComplete(dbItem, rowKey)}"/>
 							</a4j:region>
 							
-
+							 
 							<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
 								<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
 									<h:panelGroup styleClass="eg3_itemStatusTitle">
+									<!--
 										<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
 										<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
 										<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
+									-->
 									</h:panelGroup>
+									
 								</h:panelGroup>
+								
 							</h:panelGroup>
+							
 
 							<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
+								
+								
 								<h:panelGroup layout="block" styleClass="eg3_itemHeadline"  rendered="#{dbItem.ingestStatus != 'READY'}">
 									<h:panelGroup layout="block" styleClass="eg3_itemTitle">
 										<h:outputText value="#{dbItem.shortTitle}"/>
@@ -87,8 +94,15 @@
 										<h:outputText value="#{dbItem.subTitle}"/>
 									</h:panelGroup>
 									
+									
+									
 								</h:panelGroup>
 								
+								<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+									<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+									<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
+									<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
+								</h:panelGroup>
 								
 								
 								
@@ -104,6 +118,11 @@
 											<label class="eg3_iconActionLabel eg3_noMarginLeft">
 												<h:outputText value="#{lbl.ingestLog_btn_showLogEntries}"/>
 											</label>
+											<script>
+											$(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js").click(function(ev){
+												eg3_bibListToggleItemMediumView(this);
+											})
+											</script>
 										</h:panelGroup>
 									</h:panelGroup>
 								</h:panelGroup>
