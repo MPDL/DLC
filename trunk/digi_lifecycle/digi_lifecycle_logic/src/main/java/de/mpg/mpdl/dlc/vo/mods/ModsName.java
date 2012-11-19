@@ -21,13 +21,13 @@ public class ModsName {
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
-	@XmlPath("mods:role/mods:roleTerm[@type='code']/@authority")
+	@XmlPath("role/roleTerm[@type='code']/@authority")
 	private String roleTermAuthority="marcrelator";
 	
-	@XmlPath("mods:role/mods:roleTerm[@type='code']/text()")
+	@XmlPath("role/roleTerm[@type='code']/text()")
 	private String role;
 	
-	@XmlPath("mods:namePart/text()")
+	@XmlPath("namePart/text()")
 	private String name;
 	
 	public String getRole() {

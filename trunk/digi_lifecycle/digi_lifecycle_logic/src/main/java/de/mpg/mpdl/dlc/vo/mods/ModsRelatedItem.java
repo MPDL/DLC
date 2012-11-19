@@ -20,31 +20,31 @@ public class ModsRelatedItem {
 	@XmlAttribute(name = "displayLabel")
 	private String displayLabel;
 	
-	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='local']/text()")
+	@XmlPath("recordInfo/recordIdentifier[@source='local']/text()")
 	private String parentId_010;
 	
-	@XmlPath("mods:titleInfo/mods:title/text()")
+	@XmlPath("titleInfo/title/text()")
 	private String title;
 	
-	@XmlElement(name = "mods:originInfo", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsPublisher> sec_Publisher = new ArrayList<ModsPublisher>();
 	
-	@XmlElement(name = "mods:identifier", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> sec_identifiers = new ArrayList<ModsIdentifier>();
 
-	@XmlElement(name = "mods:location", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "location", namespace="http://www.loc.gov/mods/v3")
 	private ModsLocationSEC sec_location;
 	
-	@XmlElement(name = "mods:note", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private ModsNote sec_notes;
 	
-	@XmlElement(name = "mods:relatedItem", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
 	private ModsRelatedItem sec_relatedItems;
 	
-	@XmlPath("mods:accessCondition/text()")
+	@XmlPath("accessCondition/text()")
 	private String sec_copyright;
 	
-	@XmlElement(name = "mods:physicalDescription", namespace ="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "physicalDescription", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPhysicalDescription> sec_physicalDescriptions = new ArrayList<ModsPhysicalDescription>();
 
 

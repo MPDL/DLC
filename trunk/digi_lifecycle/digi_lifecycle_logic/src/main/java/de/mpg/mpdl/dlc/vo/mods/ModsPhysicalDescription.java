@@ -3,13 +3,13 @@ package de.mpg.mpdl.dlc.vo.mods;
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 public class ModsPhysicalDescription {
-	@XmlPath("mods:form[@type='material']/text()")
+	@XmlPath("form[@type='material']/text()")
 	private String materialDesignation_334;
 	
-	@XmlPath("mods:form/text()")
+	@XmlPath("form/text()")
 	private String sec_technicalIndication;
 	
-	@XmlPath("mods:extent/text()")
+	@XmlPath("extent/text()")
 	private String extent;
 
 	public String getMaterialDesignation_334() {

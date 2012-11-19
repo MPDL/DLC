@@ -6,10 +6,10 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 public class ModsLocationSEC {
 	
-	@XmlPath("mods:physicalLocation/text()")
+	@XmlPath("physicalLocation/text()")
 	private String sec_signature_646;
 	
-	@XmlElement(name = "mods:url", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "url", namespace="http://www.loc.gov/mods/v3")
 	private ModsURLSEC sec_url;
 
 	public String getSec_signature_646() {

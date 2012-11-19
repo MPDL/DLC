@@ -18,10 +18,10 @@ public class ModsTitle {
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
-	@XmlPath("mods:title/text()")
+	@XmlPath("title/text()")
 	private String title;
 	
-	@XmlPath("mods:subTitle/text()")
+	@XmlPath("subTitle/text()")
 	private String subTitle;
 
 	public String getType() {

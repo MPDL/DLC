@@ -2,17 +2,14 @@ package de.mpg.mpdl.dlc.beans;
 
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.naming.InitialContext;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.Authentication;
@@ -35,7 +32,6 @@ import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.common.reference.Reference;
 import de.escidoc.core.resources.common.reference.RoleRef;
-import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.sb.search.SearchResultRecord;
 import de.escidoc.core.resources.sb.search.SearchRetrieveResponse;
 import de.mpg.mpdl.dlc.util.PropertyReader;

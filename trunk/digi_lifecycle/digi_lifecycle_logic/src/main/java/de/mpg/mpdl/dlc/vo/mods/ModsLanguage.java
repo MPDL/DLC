@@ -4,13 +4,13 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 
 public class ModsLanguage {
 
-	@XmlPath("mods:languageTerm[@type='code']/text()")
+	@XmlPath("languageTerm[@type='code']/text()")
 	private String language;
 	
 	/**
 	 * Workaround
 	 */
-	@XmlPath("mods:languageTerm[@type='code']/@authority")
+	@XmlPath("languageTerm[@type='code']/@authority")
 	private String languageAuthority = "rfc4646";
 
 	
