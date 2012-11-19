@@ -3,10 +3,11 @@ package de.mpg.mpdl.dlc.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.log4j.Logger;
-
-import sun.tools.tree.ArrayAccessExpression;
 
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
@@ -15,6 +16,8 @@ import de.escidoc.core.resources.common.Relations;
 import de.escidoc.core.resources.common.reference.ItemRef;
 import de.escidoc.core.resources.common.reference.Reference;
 import de.escidoc.core.resources.om.item.Item;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
@@ -24,6 +27,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 	
 	private static Logger logger = Logger.getLogger(CreateVolumeThread.class);
 	private VolumeServiceBean vsb = new VolumeServiceBean();
+	
 	
 	
 	
@@ -38,11 +42,15 @@ public class CreateVolumeThread extends Thread implements Runnable{
 	private DiskFileItem codicologicalFile;
 	private String operation;
 	
+	private DatabaseItem ingestMainProcess;
+	
+	
+
 	
 	public CreateVolumeThread(String operation, String contentModel, String contextId, String multiVolumeId,
 			String userHandle, ModsMetadata modsMetadata,
 			List<IngestImage> images, DiskFileItem footer,
-			DiskFileItem teiFile, DiskFileItem codicologicalFile) 
+			DiskFileItem teiFile, DiskFileItem codicologicalFile, DatabaseItem dbItem) 
 	{
 		super();
 		this.operation = operation;
@@ -55,16 +63,29 @@ public class CreateVolumeThread extends Thread implements Runnable{
 		this.footer = footer;
 		this.teiFile = teiFile;
 		this.codicologicalFile = codicologicalFile;
+		this.ingestMainProcess = dbItem;
 	}
 	
 	
 	
 	public void run()
 	{
+		
+		EntityManagerFactory emf = VolumeServiceBean.getEmf();
+		EntityManager em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+		em.persist(ingestMainProcess);
+		em.getTransaction().commit();
+		CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(ingestMainProcess, em);
+		
 		logger.info("Creating new volume/monograph");
+
+		
 		
 		Volume volume = new Volume();
-		Item item = vsb.createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
+		
+		Item item = cvsb.createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
 		
 		this.setName(item.getObjid());
 		
@@ -96,7 +117,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 				vsb.updateMultiVolumeFromId(parent.getItem().getObjid(), volumeList, userHandle);
 				parent = vsb.retrieveVolume(multiVolumeId, userHandle);
 				if(operation.equalsIgnoreCase("release"))
-					parent = vsb.releaseVolume(parent.getItem().getObjid(), userHandle);
+					parent = cvsb.releaseVolume(parent.getItem().getObjid(), userHandle);
 				
 				//Also add the md record of the multivolume to each volume for indexing etc.
 				MetadataRecord mdRecMv = new MetadataRecord("multivolume");
@@ -122,7 +143,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 					ingestImageFooter = new IngestImage(footer);
 				}
 				
-				vsb.uploadImagesAndCreateMets(images, ingestImageFooter, item.getObjid(), volume);
+				cvsb.uploadImagesAndCreateMets(images, ingestImageFooter, item.getObjid(), volume);
 				
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
@@ -135,25 +156,30 @@ public class CreateVolumeThread extends Thread implements Runnable{
 				if(teiFile != null)
 					teiInputStream = teiFile.getInputStream();
 					*/
-				volume = vsb.updateVolume(volume, userHandle, teiFile, codicologicalFile, true);
+				volume = cvsb.updateVolume(volume, userHandle, teiFile, codicologicalFile, true);
 			
 				if(operation.equalsIgnoreCase("release"))
-					volume = vsb.releaseVolume(volume.getItem().getObjid(), userHandle);
+					volume = cvsb.releaseVolume(volume.getItem().getObjid(), userHandle);
 				
 				
 				
+				ingestMainProcess.setIngestStatus(IngestStatus.READY);
 				
 				
 			}
 		
 			catch (Exception e) 
 			{
+				ingestMainProcess.setIngestStatus(IngestStatus.ERROR);
 				logger.error("Error while creating Volume. Trying to rollback", e);
-				vsb.rollbackCreation(volume, userHandle);
+				cvsb.rollbackCreation(volume, userHandle);
 				//throw new Exception(e);
 			}
 			finally
 			{
+				em.getTransaction().begin();
+				em.persist(ingestMainProcess);
+				em.getTransaction().commit();
 				//Delete temp files
 				try
 				{
@@ -187,5 +213,6 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			
 			
 	}
+	
 
 }

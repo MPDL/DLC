@@ -14,19 +14,19 @@ import org.eclipse.persistence.oxm.annotations.XmlPath;
 public class ModsPublisher {
 
 
-	@XmlPath("mods:place/mods:placeTerm[@type='text']/text()")
+	@XmlPath("place/placeTerm[@type='text']/text()")
 	private String place;
 	
-	@XmlPath("mods:publisher/text()")
+	@XmlPath("publisher/text()")
 	private String publisher;
 	
 	@XmlElement(name = "edition", namespace="http://www.loc.gov/mods/v3")
 	private String edition;
 	
-	@XmlPath("mods:dateIssued")
+	@XmlPath("dateIssued")
 	private ModsDate dateIssued_425;
 	
-	@XmlPath("mods:dateCaptured[@encoding='w3cdtf']/text()")
+	@XmlPath("dateCaptured[@encoding='w3cdtf']/text()")
 	private String dateCaptured;
 	
 	@XmlAttribute(name="displayLabel")

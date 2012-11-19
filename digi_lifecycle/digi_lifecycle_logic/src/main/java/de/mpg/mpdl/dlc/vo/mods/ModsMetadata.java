@@ -23,72 +23,72 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 
 
-@XmlRootElement(name="mods:mods", namespace="http://www.loc.gov/mods/v3")
+@XmlRootElement(name="mods", namespace="http://www.loc.gov/mods/v3")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
-	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='mab001']/text()")
+	@XmlPath("recordInfo/recordIdentifier[@source='mab001']/text()")
 	private String catalogueId_001;
 	
 	/**
 	 * for 010, 590, 451, 451a,621
 	 */
-	@XmlElement(name = "mods:relatedItem", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsRelatedItem> relatedItems = new ArrayList<ModsRelatedItem>();
 	
-	@XmlElement(name = "mods:language", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "language", namespace="http://www.loc.gov/mods/v3")
 	private ModsLanguage language_037;
 	
 	/**
 	 * for 089, 090, 361
 	 */
-	@XmlElement(name = "mods:part", namespace ="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "part", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPart> parts = new ArrayList<ModsPart>();
 	
 
-//	@XmlPath("mods:part[@type='host']/text()")
+//	@XmlPath("part[@type='host']/text()")
 //	private String sortField_090;
 //	
-//	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
+//	@XmlPath("part[@type='host']/detail/number/text()")
 //	private String volumeDescriptive_089;
 //	
-//	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
+//	@XmlPath("part[@type='constituent']/detail/title/text()")
 //	private String subseries_361;
 		
 
 
-	@XmlElement(name="mods:titleInfo", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name="titleInfo", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsTitle> titles = new ArrayList<ModsTitle>();
 	
 	/**
 	 * for 334, 433, 434, 435
 	 */
-	@XmlElement(name = "mods:physicalDescription", namespace ="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "physicalDescription", namespace ="http://www.loc.gov/mods/v3")
 	private List<ModsPhysicalDescription> physicalDescriptions = new ArrayList<ModsPhysicalDescription>();
 
 	
 	
-	@XmlElement(name="mods:name", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name="name", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsName> names = new ArrayList<ModsName>();	
 	
-	@XmlElement(name = "mods:note", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsNote> notes = new ArrayList<ModsNote>();
 
-	@XmlElement(name = "mods:originInfo", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
 	List<ModsPublisher> publishers = new ArrayList<ModsPublisher>();
 	
-	@XmlElement(name = "mods:identifier", namespace="http://www.loc.gov/mods/v3")
+	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
 	
-	@XmlPath("mods:location/mods:physicalLocation/text()")
+	@XmlPath("location/physicalLocation/text()")
 	private String signature_544;
 	
 	
 	
-	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
+	@XmlPath("subject[@authority='rswk']/topic/text()")
 	private List<String> keywords = new ArrayList<String>();
 	
-	@XmlPath("mods:abstract/text()")
+	@XmlPath("abstract/text()")
 	private String freeText;
 
 
