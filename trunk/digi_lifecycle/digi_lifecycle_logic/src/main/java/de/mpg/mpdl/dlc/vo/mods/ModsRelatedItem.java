@@ -20,10 +20,10 @@ public class ModsRelatedItem {
 	@XmlAttribute(name = "displayLabel")
 	private String displayLabel;
 	
-	@XmlPath("recordInfo/recordIdentifier[@source='local']/text()")
+	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='local']/text()")
 	private String parentId_010;
 	
-	@XmlPath("titleInfo/title/text()")
+	@XmlPath("mods:titleInfo/mods:title/text()")
 	private String title;
 	
 	@XmlElement(name = "originInfo", namespace="http://www.loc.gov/mods/v3")
@@ -41,7 +41,7 @@ public class ModsRelatedItem {
 	@XmlElement(name = "relatedItem", namespace="http://www.loc.gov/mods/v3")
 	private ModsRelatedItem sec_relatedItems;
 	
-	@XmlPath("accessCondition/text()")
+	@XmlPath("mods:accessCondition/text()")
 	private String sec_copyright;
 	
 	@XmlElement(name = "physicalDescription", namespace ="http://www.loc.gov/mods/v3")

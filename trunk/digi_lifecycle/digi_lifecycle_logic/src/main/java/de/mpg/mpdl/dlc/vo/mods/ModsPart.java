@@ -19,10 +19,10 @@ public class ModsPart {
 	@XmlPath("text()")
 	private String value;
 	
-	@XmlPath("detail/number/text()")
+	@XmlPath("mods:detail/mods:number/text()")
 	private String volumeDescriptive_089;
 	
-	@XmlPath("detail/title/text()")
+	@XmlPath("mods:detail/mods:title/text()")
 	private String subseries_361;
 
 	public String getType() {
