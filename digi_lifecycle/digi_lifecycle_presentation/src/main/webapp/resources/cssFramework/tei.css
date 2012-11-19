@@ -288,7 +288,7 @@ div.breadcrumb {
 
 a:hover
 {
-   text-decoration: underline;
+ /*  text-decoration: underline; */
 }
 
 a.navbar:link
@@ -305,7 +305,7 @@ a.navbar:visited
 
 a.navbar:hover {
    color: #FFFFFF;
-   text-decoration: underline;
+/*   text-decoration: underline; */
 }
 
 
