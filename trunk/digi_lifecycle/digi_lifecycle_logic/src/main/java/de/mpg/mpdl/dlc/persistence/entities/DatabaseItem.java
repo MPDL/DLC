@@ -28,7 +28,7 @@ import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 @Entity
 @Table(name="item")
 @NamedQueries({
-    @NamedQuery(name="DatabaseItem.itemsByUser", query="SELECT i FROM DatabaseItem i WHERE i.userId = :userId"),
+    @NamedQuery(name="DatabaseItem.itemsByUser", query="SELECT i FROM DatabaseItem i WHERE i.userId = :userId ORDER BY i.dateCreated DESC"),
     @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id")
 })
 public class DatabaseItem {
@@ -64,6 +64,7 @@ public class DatabaseItem {
 	
 	private String contextId;
 	
+	@Column(columnDefinition="TEXT")
 	private String contextName;
 	
 	private String userId;
@@ -72,8 +73,10 @@ public class DatabaseItem {
 	
 	private String itemId;
 	
+	@Column(columnDefinition="TEXT")
 	private String shortTitle;
 	
+	@Column(columnDefinition="TEXT")
 	private String subTitle;
 	
 	private String multivolumeId;
