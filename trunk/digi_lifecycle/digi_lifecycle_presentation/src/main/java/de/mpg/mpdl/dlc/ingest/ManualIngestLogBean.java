@@ -109,6 +109,17 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 		return false;
 
 	}
+	
+	public synchronized void checkUploadComplete(DatabaseItem dbItem, int rowKey)
+	{ 
+		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+		DatabaseItem dbItemInDb = em.find(DatabaseItem.class, dbItem.getId());	
+		dbItem = dbItemInDb;
+		getCurrentPartList().set(rowKey, dbItemInDb);
+		em.close();
+
+	}
+
 
 
 
