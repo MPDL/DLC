@@ -55,7 +55,7 @@ public class IngestLogMessage {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dateCreated;
 	
-	
+	@Column(columnDefinition="TEXT")
 	private String message;
 
 
@@ -65,6 +65,7 @@ public class IngestLogMessage {
 	@Enumerated(EnumType.STRING)
 	private IngestStatus ingestStatus = IngestStatus.RUNNING;
 	
+	@Column(columnDefinition="TEXT")
 	private String error;
 	
 	
