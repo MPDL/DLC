@@ -735,6 +735,8 @@ $(document).ready(function(e) {
 	
 	if ($.browser.msie && $.browser.version < 9) {
 		eg3_ie8_checkHeaderLogoHeight();
+	} else if ($.browser.msie && Number($.browser.version) === 9) {
+		eg3_ie9_addHoverColor();
 	}
 });
 
@@ -750,3 +752,17 @@ function eg3_ie8_checkHeaderLogoHeight() {
 	var rel = tmpImg.width / tmpImg.height;
 	logo.css("height", Math.round(logo.width() / rel));
 }
+
+/**
+ * following functions are only for IE9
+ */
+/*
+ * because of a bug in IE9, all input elements must get a js-listener for hover events/handlings
+ */
+function eg3_ie9_addHoverColor() {
+	$('input').mouseover(function(e){
+		$(this).css("color", "#EA7125");
+	}).mouseout(function(e){
+		eg3_removeAttributeValue($(this), "style", "color");
+	});
+} 

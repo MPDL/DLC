@@ -123,7 +123,7 @@ a[disabled] {
 }
 *[type="submit"]:hover {
 	color:#EA7125;
-	text-decoration:underline;
+/*	text-decoration:underline; */
 }
 *[type="submit"]:disabled {
 	color:#EA7125;
@@ -1832,9 +1832,12 @@ body .eg3_id_siteTitle {
 	margin-top:3.5em;
 	width:17%;
 }
-.eg3_standardHeader .eg3_citationLinkArea input[type="button"]{
+.eg3_standardHeader .eg3_citationLinkArea input[type="button"] {
 	margin-left:2%; 
 	background-color:transparent;
+}
+.eg3_standardHeader .eg3_citationLinkArea input:hover {
+	color:#EA7125;
 }
 .eg3_standardHeader .eg3_citationLink {
 	display:none;
