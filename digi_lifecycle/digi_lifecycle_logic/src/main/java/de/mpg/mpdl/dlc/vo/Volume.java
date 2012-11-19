@@ -159,7 +159,7 @@ public class Volume {
 	public void setModsMetadata(ModsMetadata modsMetadata) {
 		this.modsMetadata = modsMetadata;
 	}
-
+   
 	public ModsMetadata getModsMetadata() {
 		return modsMetadata;
 	}
