@@ -33,7 +33,7 @@ public class ModsRelatedItem {
 	private List<ModsIdentifier> sec_identifiers = new ArrayList<ModsIdentifier>();
 
 	@XmlElement(name = "location", namespace="http://www.loc.gov/mods/v3")
-	private ModsLocationSEC sec_location;
+	private List<ModsLocationSEC> sec_location = new ArrayList<ModsLocationSEC>();
 	
 	@XmlElement(name = "note", namespace="http://www.loc.gov/mods/v3")
 	private ModsNote sec_notes;
@@ -139,13 +139,12 @@ public class ModsRelatedItem {
 		this.sec_identifiers = sec_identifiers;
 	}
 
-
-	public ModsLocationSEC getSec_location() {
+	public List<ModsLocationSEC> getSec_location() {
 		return sec_location;
 	}
 
 
-	public void setSec_location(ModsLocationSEC sec_location) {
+	public void setSec_location(List<ModsLocationSEC> sec_location) {
 		this.sec_location = sec_location;
 	}
 

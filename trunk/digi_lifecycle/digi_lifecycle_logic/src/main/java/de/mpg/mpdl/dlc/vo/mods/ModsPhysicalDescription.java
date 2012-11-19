@@ -1,24 +1,28 @@
 package de.mpg.mpdl.dlc.vo.mods;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+
 import org.eclipse.persistence.oxm.annotations.XmlPath;
 
+
 public class ModsPhysicalDescription {
-	@XmlPath("mods:form[@type='material']/text()")
-	private String materialDesignation_334;
+
+//	@XmlPath("mods:form[@type='material']/text()")
+//	private String materialDesignation_334;
+//	
+//	@XmlPath("mods:form/text()")
+//	private String sec_technicalIndication;
 	
-	@XmlPath("mods:form/text()")
-	private String sec_technicalIndication;
+	@XmlElement(name = "form", namespace="http://www.loc.gov/mods/v3")	
+	private ModsPhysicalDescriptionForm pdForm;
 	
 	@XmlPath("mods:extent/text()")
 	private String extent;
 
-	public String getMaterialDesignation_334() {
-		return materialDesignation_334;
-	}
 
-	public void setMaterialDesignation_334(String materialDesignation_334) {
-		this.materialDesignation_334 = materialDesignation_334;
-	}
 
 	public String getExtent() {
 		return extent;
@@ -28,13 +32,14 @@ public class ModsPhysicalDescription {
 		this.extent = extent;
 	}
 
-	public String getSec_technicalIndication() {
-		return sec_technicalIndication;
+	public ModsPhysicalDescriptionForm getPdForm() {
+		return pdForm;
 	}
 
-	public void setSec_technicalIndication(String sec_technicalIndication) {
-		this.sec_technicalIndication = sec_technicalIndication;
+	public void setPdForm(ModsPhysicalDescriptionForm pdForm) {
+		this.pdForm = pdForm;
 	}
-	
+
+
 	
 }
