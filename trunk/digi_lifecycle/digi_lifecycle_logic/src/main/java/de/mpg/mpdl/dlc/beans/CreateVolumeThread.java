@@ -43,6 +43,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 	private String operation;
 	
 	private DatabaseItem ingestMainProcess;
+	private EntityManager em;
 	
 	
 
@@ -64,6 +65,14 @@ public class CreateVolumeThread extends Thread implements Runnable{
 		this.teiFile = teiFile;
 		this.codicologicalFile = codicologicalFile;
 		this.ingestMainProcess = dbItem;
+		
+		
+		EntityManagerFactory emf = VolumeServiceBean.getEmf();
+		this.em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(ingestMainProcess);
+		em.getTransaction().commit();
+		this.setUncaughtExceptionHandler(new IngestExceptionHandler(em, ingestMainProcess));
 	}
 	
 	
@@ -71,12 +80,9 @@ public class CreateVolumeThread extends Thread implements Runnable{
 	public void run()
 	{
 		
-		EntityManagerFactory emf = VolumeServiceBean.getEmf();
-		EntityManager em = emf.createEntityManager();
 		
-		em.getTransaction().begin();
-		em.persist(ingestMainProcess);
-		em.getTransaction().commit();
+		
+		
 		CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(ingestMainProcess, em);
 		
 		logger.info("Creating new volume/monograph");
@@ -212,6 +218,32 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			}
 			
 			
+	}
+	
+	
+	public class IngestExceptionHandler implements Thread.UncaughtExceptionHandler
+	{
+		
+		private EntityManager em;
+		private DatabaseItem dbItem;
+
+		public IngestExceptionHandler(EntityManager em, DatabaseItem dbItem)
+		{
+			this.em = em;
+			this.dbItem = dbItem; 
+		}
+
+		@Override
+		public void uncaughtException(Thread t, Throwable e) {
+			dbItem.setIngestStatus(IngestStatus.ERROR);
+			em.getTransaction().begin();
+			em.persist(dbItem);
+			em.getTransaction().commit();
+			em.close();
+			
+			
+		}
+		
 	}
 	
 

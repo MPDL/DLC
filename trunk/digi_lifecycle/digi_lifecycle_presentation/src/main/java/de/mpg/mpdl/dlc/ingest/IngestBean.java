@@ -936,8 +936,7 @@ public class IngestBean{
 		imp.setUserName(loginBean.getUser().getName());
 		Volume dummy = new Volume();
 		dummy.setModsMetadata(modsMetadata);
-		imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
-		imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
+		
 		imp.setNumberOfImages(imageFiles.size());
 		
 		try {
@@ -954,6 +953,8 @@ public class IngestBean{
 	     			}
 					if(mabFile == null  && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
+					imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
+					imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
 		    		volume = createVolumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 		    		clearAllData();
 		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
@@ -986,7 +987,9 @@ public class IngestBean{
 	     			
 					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
-						
+					
+					imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
+					imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
 					//Volume volume = null;
 					
 					/*
