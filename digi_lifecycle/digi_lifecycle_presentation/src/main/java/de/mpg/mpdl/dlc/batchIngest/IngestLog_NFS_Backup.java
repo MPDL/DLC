@@ -29,6 +29,7 @@ import net.sf.saxon.s9api.XdmNode;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 import de.mpg.mpdl.dlc.util.Consts;
@@ -104,6 +105,7 @@ public class IngestLog_NFS_Backup
 	HashMap<String, BatchIngestItem> errorItems = new HashMap<String, BatchIngestItem>();
 	
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
+	private CreateVolumeServiceBean createVolumeService = new CreateVolumeServiceBean();
 	
 	private Object currentLog = new Object();
 	private Object currentItem = new Object();
@@ -692,7 +694,7 @@ public class IngestLog_NFS_Backup
 				{
 					
 					
-					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
+					itemId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
 					
 					updateLogItem(logItemId, "item_id", itemId);
 					Date eDate = new Date();
@@ -707,7 +709,7 @@ public class IngestLog_NFS_Backup
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 				{
 					try{
-						itemId = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata()).getItem().getObjid();
+						itemId = createVolumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata()).getItem().getObjid();
 					}catch(Exception e)
 					{
 						itemId = null;
@@ -728,7 +730,7 @@ public class IngestLog_NFS_Backup
 						ArrayList<String> volIds = new ArrayList<String>();
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, VolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
+							String volId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
 							eDate = new Date();
 							updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
 							if(volId == null)
@@ -747,7 +749,7 @@ public class IngestLog_NFS_Backup
 						itemId = volumeService.updateMultiVolumeFromId(itemId, volIds, userHandle);
 						updateLogItem(logItemId, "item_id", itemId);
 						if(status.toString().equalsIgnoreCase("release"))
-							volumeService.releaseVolume(itemId, userHandle);
+							createVolumeService.releaseVolume(itemId, userHandle);
 						eDate = new Date();
 						updateLogItem(logItemId, "enddate", eDate.toString());
 					}

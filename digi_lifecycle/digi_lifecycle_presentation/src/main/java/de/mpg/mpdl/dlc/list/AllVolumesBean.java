@@ -8,6 +8,12 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.apache.log4j.Logger;
 
@@ -17,6 +23,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
+import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
@@ -25,6 +32,8 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.editor.StructuralEditorBean;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
@@ -55,6 +64,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	
 
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
+	private CreateVolumeServiceBean createVolServiceBean = new CreateVolumeServiceBean();
 	
 
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
@@ -82,6 +92,8 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private Organization orga;
 	@ManagedProperty("#{sessionBean}")
 	private SessionBean sessionBean;
+	
+	private List<DatabaseItem> uploadedItems = new ArrayList<DatabaseItem>();
 	
 	public AllVolumesBean()
 	{		
@@ -292,11 +304,21 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			res = filterBean.itemFilter(volTypes, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
 			
 			
+			/*
 			//Add items which are currently uploading
 			VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
-			
 			res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
 			res.setNumberOfRecords(res.getNumberOfRecords() + resultVolumesInProgress.getNumberOfRecords());
+			*/
+			
+			/*
+			EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+			TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
+			query.setParameter("userId", loginBean.getUser().getId());
+			List<DatabaseItem> resList = query.getResultList();
+			this.uploadedItems = resList;
+			em.close();
+			*/
 			
 			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
 			
@@ -390,7 +412,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
-			Volume newVol = volServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);
+			Volume newVol = createVolServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);
 			VolumeServiceBean.importVolumeIntoVolume(newVol, vol, userHandle);
 
 			
@@ -406,7 +428,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
-			volServiceBean.deleteVolume(vol, userHandle);
+			createVolServiceBean.deleteVolume(vol, userHandle);
 		
 
 			
@@ -422,7 +444,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{ 
 		String userHandle = loginBean.getUserHandle();
 		try {
-			volServiceBean.withdrawVolume(vol, userHandle);
+			createVolServiceBean.withdrawVolume(vol, userHandle);
 		
 
 			
@@ -450,6 +472,30 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 
 	}
+	
+	
+	public boolean checkUploadComplete()
+	{ 
+		
+		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+		TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
+		query.setParameter("userId", loginBean.getUser().getId());
+		List<DatabaseItem> resList = query.getResultList();
+		this.uploadedItems = resList;
+		em.close();
+		
+		for(DatabaseItem item : uploadedItems)
+		{
+			if(IngestStatus.RUNNING.equals(item.getIngestStatus()))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+
+	}
+	
 	
 	/**
 	 * Retrieve the 5 last works of all collections
@@ -575,6 +621,16 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	public void setSessionBean(SessionBean sessionBean) 
 	{
 		this.sessionBean = sessionBean;
+	}
+
+
+	public List<DatabaseItem> getUploadedItems() {
+		return uploadedItems;
+	}
+
+
+	public void setUploadedItems(List<DatabaseItem> uploadedItems) {
+		this.uploadedItems = uploadedItems;
 	}
 	
 }

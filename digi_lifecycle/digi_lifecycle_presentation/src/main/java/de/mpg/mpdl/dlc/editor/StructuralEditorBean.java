@@ -30,6 +30,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
+import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
@@ -58,6 +59,7 @@ public class StructuralEditorBean implements Observer {
 	private static Logger logger = Logger.getLogger(StructuralEditorBean.class);
 
 	protected VolumeServiceBean volServiceBean = new VolumeServiceBean();
+	protected CreateVolumeServiceBean createVolServiceBean = new CreateVolumeServiceBean();
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private String volumeId;
@@ -581,7 +583,7 @@ public class StructuralEditorBean implements Observer {
 		{
 			try {
 				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
+				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
@@ -623,8 +625,8 @@ public class StructuralEditorBean implements Observer {
 		{
 			try {
 				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
-				this.volume = volServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
-				this.volume = volServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
+				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
+				this.volume = createVolServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();

@@ -32,6 +32,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.escidoc.core.resources.om.item.component.Component;
+import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeThread;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
@@ -39,6 +40,7 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
 import de.mpg.mpdl.dlc.list.AllVolumesBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
@@ -103,6 +105,7 @@ public class IngestBean{
 	private boolean hasMab = true;
 
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
+	private CreateVolumeServiceBean createVolumeService = new CreateVolumeServiceBean();
 	
 
 //	private SearchBean searchBeans = new SearchBean();
@@ -564,7 +567,7 @@ public class IngestBean{
 		{
 			try {
 				
-				VolumeServiceBean.validateTei(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
+				CreateVolumeServiceBean.validateTei(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
 				teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
 				this.teiFile = recentlyUpladedTeiFile;
 			} catch (Exception e) {
@@ -580,7 +583,7 @@ public class IngestBean{
 		{
 			try {
 				
-				VolumeServiceBean.validateCodicologicalMd(new StreamSource(recentlyUpladedCodicologigalFile.getStoreLocation()));
+				CreateVolumeServiceBean.validateCodicologicalMd(new StreamSource(recentlyUpladedCodicologigalFile.getStoreLocation()));
 				this.codicologicalFile = recentlyUpladedCodicologigalFile;
 			} catch (Exception e) {
 				logger.error("Error while validating TEI", e);
@@ -920,6 +923,22 @@ public class IngestBean{
 		logger.info("Reingest/update!!");
 		FacesContext context = FacesContext.getCurrentInstance();
 		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
+		ManualIngestLogBean ingestLogBean = (ManualIngestLogBean) context.getApplication().evaluateExpressionGet(context, "#{manualIngestLogBean}", ManualIngestLogBean.class);
+		
+		/*
+		if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
+			modsMetadata = updateModsMetadata(modsMetadata);
+		*/
+		DatabaseItem imp = new DatabaseItem();
+		imp.setContentModelId(selectedContentModel);
+		imp.setContextId(selectedContextId);
+		imp.setUserId(loginBean.getUser().getId());
+		imp.setUserName(loginBean.getUser().getName());
+		Volume dummy = new Volume();
+		dummy.setModsMetadata(modsMetadata);
+		imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
+		imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
+		imp.setNumberOfImages(imageFiles.size());
 		
 		try {
 			if(volumeId.equalsIgnoreCase("new"))
@@ -933,11 +952,10 @@ public class IngestBean{
 	     				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_nullTitle"));	
 	     				return "";
 	     			}
-					if(mabFile == null)
+					if(mabFile == null  && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
-		    		volume = volumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
+		    		volume = createVolumeService.createNewMultiVolume(operation,PropertyReader.getProperty("dlc.content-model.multivolume.id"),getSelectedContextId(), loginBean.getUserHandle(), modsMetadata);
 		    		clearAllData();
-		    		String title = VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
 		    		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_newMultivolume") + "[" + volume.getItem().getObjid()+"]");
 		    		this.setVolumeId("new");
 		    		this.volume = null;
@@ -965,8 +983,10 @@ public class IngestBean{
 	     				return "";
 	     			}
 
+	     			
 					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
+						
 					//Volume volume = null;
 					
 					/*
@@ -981,14 +1001,14 @@ public class IngestBean{
 					
 					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
 					{
-						CreateVolumeThread cvt = new CreateVolumeThread(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+						CreateVolumeThread cvt = new CreateVolumeThread(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile, imp);
 						cvt.start();
 						//volume = volumeService.createNewVolume(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"),getSelectedContextId(),null,loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
 					}
 		    			
 					else
 					{
-						CreateVolumeThread cvt = new CreateVolumeThread (operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
+						CreateVolumeThread cvt = new CreateVolumeThread (operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile, imp);
 						cvt.start();
 						//volume = volumeService.createNewVolume(operation,PropertyReader.getProperty("dlc.content-model.volume.id"),getSelectedContextId(), getSelectedMultiVolumeId(), loginBean.getUserHandle(), modsMetadata, imageFiles, footer, teiFile, codicologicalFile);
 					}
@@ -1004,7 +1024,7 @@ public class IngestBean{
 		    		*/
 					
 					//Wait 3 seconds until the empty item was created
-					Thread.sleep(3000);
+					//Thread.sleep(3000);
 					
 					MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_uploadStarted"));
 		    		
@@ -1017,9 +1037,9 @@ public class IngestBean{
 		    		*/
 		    		
 		    		
-		    		allVolBean.setColId("my");
-		    		allVolBean.setCurrentPageNumber(1);
-		    		return "pretty:volumes";
+		    		//allVolBean.setColId("my");
+		    		//allVolBean.setCurrentPageNumber(1);
+		    		return "pretty:ingestLog";
 		    		
 				}
 			}
@@ -1062,9 +1082,10 @@ public class IngestBean{
 		     			
 		    		
 					
-					if(mabFile == null)
+					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
-					this.volume = volumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
+						
+					this.volume = createVolumeService.update(volume, loginBean.getUserHandle(),operation, teiFile, modsMetadata, imageFiles, codicologicalFile);
 					
 				
 				Thread.sleep(3000);

@@ -1,0 +1,73 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+	
+	<ui:define name="mainContent">
+		<mpdl:paginator paginatorBean="#{manualIngestLogBean}">
+			
+		
+		
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
+					<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_totalNumberOfHits} #{cc.attrs.paginatorBean.totalNumberOfRecords}"/>
+				</h:panelGroup>
+				<h:form id="volumes">
+					<list:bibList_shortDLC>
+						<h:panelGroup id="uploadedItems">
+						
+						<a4j:region>
+							 <a4j:poll id="poll" interval="5000" render="poll @all messages" enabled="#{manualIngestLogBean.checkUploadComplete()}"/>
+						</a4j:region>
+						
+						<a4j:repeat var="dbItem" value="#{manualIngestLogBean.currentPartList}">
+							<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color:#{dbItem.ingestStatus == 'ERROR' ? 'red;' : dbItem.ingestStatus == 'READY' ? 'green;' : '#EA7125;'}" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+							<!-- update items which are in upload automatically every 30 seconds -->
+			
+							
+							<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+								<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+									<h:panelGroup styleClass="eg3_itemStatusTitle">
+										<h:outputText value="#{lbl.list_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+										
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+
+							<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
+								<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
+									<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+										<h:outputText value="#{dbItem.shortTitle}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+										<h:outputText value="#{dbItem.subTitle}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+										<rich:progressBar mode="client" value="#{dbItem.messages.size()}" id="progrs" maxValue="#{dbItem.numberOfImages}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
+							
+						</a4j:repeat>
+						</h:panelGroup>
+					</list:bibList_shortDLC>
+				</h:form>
+				<script type="text/javascript">
+					$(document).ready(function(){addDisplayControl('.listItemMultiVolume'); listenMultiVolume();});
+				</script>
+			</h:panelGroup>
+		</mpdl:paginator>
+	</ui:define>
+</ui:composition>
+
+</html>
