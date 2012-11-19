@@ -687,7 +687,15 @@ function eg3_initWindowResizeListener() {
 var EG3_MODALPOPUP;
 /* used for multiVolumes */
 function eg3_loadPopup(listItem) {
-	var popContent = jQuery(listItem).parents(".eg3_itemContent").find('.modalDialog').html();
+	var popContent;
+	if (listItem) {
+		popContent = jQuery(listItem).parents(".eg3_itemContent").find('.modalDialog').html();
+	} else {
+		//these condition will be use in viewPages, for loading the content via ajax and show them in the popup
+		//in these case it's important, that only one element with class "modalDialog" exists on the page
+		popContent = $('.modalDialog').html();
+	}
+	
 	EG3_MODALPOPUP = jQuery("#EG3_MODALPOPUP");
 	var wrapper = jQuery(".eg3_id_wrapper");
 	if (!EG3_MODALPOPUP || EG3_MODALPOPUP.length === 0 || typeof EG3_MODALPOPUP == undefined) {
@@ -699,7 +707,7 @@ function eg3_loadPopup(listItem) {
 /* used for multiVolumes */
 function eg3_unloadPopup() {
 	EG3_MODALPOPUP.html("");
-	EG3_MODALPOPUP.hide();
+	EG3_MODALPOPUP.remove();
 }
 function eg3_listenMultiVolume() {
 	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemHeadline .eg3_itemTitle");
@@ -708,6 +716,7 @@ function eg3_listenMultiVolume() {
 		eg3_loadPopup(this);
 	});
 }
+
 
 $(document).ready(function(e) {
 	/*
