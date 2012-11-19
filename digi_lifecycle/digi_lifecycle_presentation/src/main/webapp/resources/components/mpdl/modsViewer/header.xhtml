@@ -38,7 +38,7 @@
 						<h3 class="eg3_volumeTitle">
 							<h:panelGroup rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
 								<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
-								<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()">
+								<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="eg3_loadPopup();">
 									<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
 								</a4j:commandLink>
 							</h:panelGroup>
@@ -67,14 +67,7 @@
 							</pretty:link>
 						</h3>
 					</h:panelGroup>
-						
-					
-					
-					
 			</h:form>
-			
-			
-			
 		</h:panelGroup>
 	</h:panelGroup>
 		
