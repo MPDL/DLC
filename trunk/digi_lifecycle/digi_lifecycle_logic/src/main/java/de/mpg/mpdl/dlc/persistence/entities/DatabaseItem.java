@@ -29,7 +29,7 @@ import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 @Table(name="item")
 @NamedQueries({
     @NamedQuery(name="DatabaseItem.itemsByUser", query="SELECT i FROM DatabaseItem i WHERE i.userId = :userId"),
-    @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id"),
+    @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id")
 })
 public class DatabaseItem {
 
