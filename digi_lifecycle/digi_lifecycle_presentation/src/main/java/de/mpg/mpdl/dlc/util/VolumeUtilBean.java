@@ -79,6 +79,8 @@ public class VolumeUtilBean {
 		}
 	}
 	
+	
+	
 
 	public static String getDigilibScalerUrlForPage(Page p, int width, int height)
 	{
@@ -1093,7 +1095,6 @@ public class VolumeUtilBean {
 	}
 	
 
-	
 
 	
 	

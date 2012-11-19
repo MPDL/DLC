@@ -74,7 +74,7 @@
 										<h:outputText value="#{collection.name}"/>
 										
 										<h:panelGroup styleClass="eg3_floatRight">
-											<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
+											<a4j:commandButton title="#{lbl.button_command_close}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
 												<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}"/>
 											</a4j:commandButton>
 											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
@@ -89,7 +89,7 @@
 							<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
 				    			<h:outputText value="#{msg.admin_confirmCloseCollection}"/>
 				    			<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmCollectionPane')}.hide(); return false;"/>
-				    			<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeCollection}"/>
+				    			<a4j:commandButton value="#{lbl.button_command_close}" execute="@this" action="#{adminBean.closeCollection}"/>
 				    		</rich:popupPanel>
 				   
 				    		
@@ -110,7 +110,7 @@
 									<h:outputText value=" (#{lbl.admin_user_name}: #{user.name}) "/>
 									
 									<h:panelGroup styleClass="eg3_floatRight">
-										<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
+										<a4j:commandButton title="#{lbl.button_command_deactivate}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
 											<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
 										</a4j:commandButton>
 										<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
