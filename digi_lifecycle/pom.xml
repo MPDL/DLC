@@ -176,6 +176,11 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+    		<id>eclipse</id>
+    		<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
+		</repository>
+        
         <!-- 
          <repository>
 	        <id>escidoc.org</id>
