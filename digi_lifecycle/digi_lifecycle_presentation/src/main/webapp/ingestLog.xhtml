@@ -30,7 +30,7 @@
 						</a4j:region>
 						
 						<a4j:repeat var="dbItem" value="#{manualIngestLogBean.currentPartList}">
-							<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color:#{dbItem.ingestStatus == 'ERROR' ? 'red;' : dbItem.ingestStatus == 'READY' ? 'green;' : '#EA7125;'}" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+							<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color:#{dbItem.ingestStatus == 'ERROR' ? 'red;' : dbItem.ingestStatus == 'READY' ? '#CACA86;' : '#EA7125;'}" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
 							<!-- update items which are in upload automatically every 30 seconds -->
 			
 							
@@ -69,7 +69,11 @@
 									
 								</h:panelGroup>
 								
-								
+								<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
+									<h:commandButton action="#{manualIngestLogBean.deleteDbItem(dbItem)}" value="#{lbl.button_command_deleteLogEntry}" styleClass="eg3_borderradius_5">
+										<f:ajax render="@all"/>
+									</h:commandButton>
+								</h:panelGroup>
 								
 								
 								<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">

@@ -160,7 +160,16 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 
 
 
-
+	public void deleteDbItem(DatabaseItem dbItem)
+	{
+		
+		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+		DatabaseItem dbItemInDb = em.find(DatabaseItem.class, dbItem.getId());
+		em.getTransaction().begin();
+		em.remove(dbItemInDb);
+		em.getTransaction().commit();
+		em.close();
+	}
 
 	
 	
