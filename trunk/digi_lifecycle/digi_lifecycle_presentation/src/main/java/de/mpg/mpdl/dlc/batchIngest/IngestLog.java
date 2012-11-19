@@ -41,9 +41,9 @@ import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
-import org.eclipse.persistence.internal.jpa.deployment.xml.parser.XMLException;
 
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
@@ -129,6 +129,7 @@ public class IngestLog
 	HashMap<String, BatchIngestItem> errorItems = new HashMap<String, BatchIngestItem>();
 	
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
+	private CreateVolumeServiceBean createVolumeService = new CreateVolumeServiceBean();
 	
 	private Object currentLog = new Object();
 	private Object currentItem = new Object();
@@ -814,7 +815,7 @@ public class IngestLog
 					logger.info("read tei for " + name);
 					try {
 						//InputStream teiIs = new FileInputStream(tFile);
-						VolumeServiceBean.validateTei(new StreamSource(tFile));
+						CreateVolumeServiceBean.validateTei(new StreamSource(tFile));
 						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new StreamSource(tFile));
 						item.setImageFiles(sortImagesByTeiFile(item.getImageFiles(), pbList));
 						int numberOfTeiPbs = pbList.size();
@@ -961,7 +962,7 @@ public class IngestLog
 							items.remove(name);
 							volumes.put(name, item);
 							}
-						} catch (XMLException e) {
+						} catch (Exception e) {
 						String errorMessage = Consts.MABTRANSFORMERROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
@@ -1304,7 +1305,7 @@ public class IngestLog
 					downloadImages(true, bi.getDbID(), bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter(), bi.getLogs());
 					bi.getLogs().add("Uploading");
 					updateLogItemLogs(bi.getDbID(), bi.getLogs());
-					itemId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? VolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
+					itemId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 					System.err.println("batchingest new Monograph" +itemId);
 					if(itemId != null)
 					{
@@ -1332,7 +1333,7 @@ public class IngestLog
 							downloadImages(false, v.getDbID(), v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter(), v.getLogs());
 
 						}
-						mv = volumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
+						mv = createVolumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 				
 					}catch(Exception e)
 					{ 
@@ -1359,7 +1360,7 @@ public class IngestLog
 						{
 							vol.getLogs().add("Uploading");
 							updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
-							String volId = volumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? VolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
+							String volId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
 							eDate = new Date();
 							
 							updateLogItemVolume(vol.getDbID(), sDate.toString(), volId, eDate.toString());
@@ -1381,7 +1382,7 @@ public class IngestLog
 						}
 						if(volIds.size()==0)
 						{
-							volumeService.rollbackCreation(mv, userHandle);
+							createVolumeService.rollbackCreation(mv, userHandle);
 							bi.getLogs().add(Consts.MULTIVOLUMEROLLBACKERROR);
 							updateLogItemLogs(bi.getDbID(), bi.getLogs());
 						}
@@ -1391,7 +1392,7 @@ public class IngestLog
 							updateLogItem(bi.getDbID(), "item_id", mvId);
 						}
 						if(status.toString().equalsIgnoreCase("public"))
-							volumeService.releaseVolume(itemId, userHandle);
+							createVolumeService.releaseVolume(itemId, userHandle);
 						eDate = new Date();
 						updateLogItem(bi.getDbID(), "enddate", eDate.toString());
 					}

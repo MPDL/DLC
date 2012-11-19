@@ -31,7 +31,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
+      		<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.1.1</version>
@@ -42,6 +42,7 @@
 					<warName>${project.warName}</warName>
 				</configuration>
 			</plugin>
+      		
 
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
 				<version>2.4</version> <executions> <execution> <id>unpack</id> <phase>package</phase> 

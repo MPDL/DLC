@@ -176,13 +176,17 @@ public class VolumeUtilBean {
 	
 	public static ModsPublisher getPublisher(ModsMetadata md)
 	{ 
-		for(ModsPublisher mp : md.getPublishers())
+		if(md.getPublishers()!=null)
 		{
-			if("publisher1".equalsIgnoreCase(mp.getDisplayLabel()))
-				return mp;
-			else if("printer1".equalsIgnoreCase(mp.getDisplayLabel()))
-				return mp;
+			for(ModsPublisher mp : md.getPublishers())
+			{
+				if("publisher1".equalsIgnoreCase(mp.getDisplayLabel()))
+					return mp;
+				else if("printer1".equalsIgnoreCase(mp.getDisplayLabel()))
+					return mp;
+			}
 		}
+		
 		return null;
 	}
 
