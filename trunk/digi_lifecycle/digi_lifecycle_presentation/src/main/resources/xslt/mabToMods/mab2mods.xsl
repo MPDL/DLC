@@ -855,7 +855,7 @@
 		</xsl:element>
 	</xsl:template>
 	<xsl:template name="mab647ToRelatedItem">
-		<xsl:element name="mods:node">
+		<xsl:element name="mods:note">
 			<xsl:attribute name="type"><xsl:value-of select="'digital master'"/></xsl:attribute>
 			<xsl:value-of select="."/>
 		</xsl:element>
