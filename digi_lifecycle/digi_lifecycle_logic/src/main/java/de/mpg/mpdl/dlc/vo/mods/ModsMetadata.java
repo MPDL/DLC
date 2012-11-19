@@ -27,7 +27,7 @@ import de.mpg.mpdl.dlc.vo.Volume;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModsMetadata {
 	
-	@XmlPath("recordInfo/recordIdentifier[@source='mab001']/text()")
+	@XmlPath("mods:recordInfo/mods:recordIdentifier[@source='mab001']/text()")
 	private String catalogueId_001;
 	
 	/**
@@ -46,13 +46,13 @@ public class ModsMetadata {
 	private List<ModsPart> parts = new ArrayList<ModsPart>();
 	
 
-//	@XmlPath("part[@type='host']/text()")
+//	@XmlPath("mods:part[@type='host']/text()")
 //	private String sortField_090;
 //	
-//	@XmlPath("part[@type='host']/detail/number/text()")
+//	@XmlPath("mods:part[@type='host']/mods:detail/mods:number/text()")
 //	private String volumeDescriptive_089;
 //	
-//	@XmlPath("part[@type='constituent']/detail/title/text()")
+//	@XmlPath("mods:part[@type='constituent']/mods:detail/mods:title/text()")
 //	private String subseries_361;
 		
 
@@ -80,15 +80,15 @@ public class ModsMetadata {
 	@XmlElement(name = "identifier", namespace="http://www.loc.gov/mods/v3")
 	private List<ModsIdentifier> identifiers = new ArrayList<ModsIdentifier>();
 	
-	@XmlPath("location/physicalLocation/text()")
+	@XmlPath("mods:location/mods:physicalLocation/text()")
 	private String signature_544;
 	
 	
 	
-	@XmlPath("subject[@authority='rswk']/topic/text()")
+	@XmlPath("mods:subject[@authority='rswk']/mods:topic/text()")
 	private List<String> keywords = new ArrayList<String>();
 	
-	@XmlPath("abstract/text()")
+	@XmlPath("mods:abstract/text()")
 	private String freeText;
 
 
