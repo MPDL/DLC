@@ -1710,7 +1710,7 @@ public class VolumeServiceBean {
        
         
         return div;
-	}
+	}  
 	
 	public Volume loadCompleteVolume(String volumeId, String userHandle) throws Exception
 	{
@@ -1722,7 +1722,7 @@ public class VolumeServiceBean {
 				logger.info("Load new book " + volumeId);
 				Volume volume = retrieveVolume(volumeId, userHandle);
 				if(volume.getItem().getProperties().getContentModel().getObjid().equals(monographContentModelId))
-				{
+				{  
 					loadTeiSd(volume, userHandle);
 					loadTei(volume, userHandle);
 					loadPagedTei(volume, userHandle);
@@ -1783,7 +1783,7 @@ public class VolumeServiceBean {
 		{
 			ihc.setHandle(userHandle);
 		}
-		
+		  
 		SearchHandlerClient shc = new SearchHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		if(userHandle!=null)
 		{
@@ -1883,12 +1883,22 @@ public class VolumeServiceBean {
 					}
 					else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
 					{
+						if (v.getRelatedChildVolumes() == null)
+						{
+							v.setRelatedChildVolumes(new ArrayList<Volume>());
+						}
 						for(String subVolId: v.getRelatedVolumes())
 						{
 							Volume subVol = mvMap.get(subVolId);
-							if(subVol!=null)
-							{
+							if(subVol !=null)
+							{ 
 								subVol.setRelatedParentVolume(v);
+								v.getRelatedChildVolumes().add(subVol);
+							}
+							else
+							{
+								Volume otherSubVol = retrieveVolume(subVolId, userHandle);
+								v.getRelatedChildVolumes().add(otherSubVol);
 							}
 							
 							
