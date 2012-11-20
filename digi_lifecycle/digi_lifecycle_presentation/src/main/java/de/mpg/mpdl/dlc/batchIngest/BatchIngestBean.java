@@ -133,9 +133,9 @@ public class BatchIngestBean {
 	public String clear()
 	{
 		this.name ="";
-		this.images = "";
-		this.mab = "";
-		this.tei = "";
+//		this.images = "";
+//		this.mab = "";
+//		this.tei = "";
 		return "pretty:batchIngest";
 	}
 	
