@@ -5,13 +5,14 @@
 ########### KHI Proposal für kodikologische Metadaten ################
             _________________________________________ 
  
-  Format:		RelaxNG
-  InitDate:		06/2011
-  Last Update:	10/2011 by Zieger
-  Project:		MPDL Digitalization Lifecycle
-  Hint:			Best viewed with TAB Width of 4!
-  Authors:		Wolfram Zieger, Dr. Annette Creutzburg
-  Revisors:		Klaus Werner (Hertziana) and others
+  Format:			RelaxNG
+  InitDate:			06/2011
+  earlier Updates:	10/2011 by Zieger
+  Last Update:		09/2012 by Zieger and Dr. Creutzburg
+  Project:			MPDL Digitalization Lifecycle
+  Hint:				Best viewed with TAB Width of 4!
+  Authors:			Wolfram Zieger, Dr. Annette Creutzburg
+  Revisors:			Klaus Werner (Hertziana) and others
 
 ######################################################################
 
@@ -33,32 +34,32 @@ Sonstige Hinweise:
 
 
 	<start>
-		<ref name="CodologDesc"/>
+		<ref name="objectDesc"/>
 	</start>
-	<define name="CodologDesc">
-		<element name="CodologDesc">
+	<define name="objectDesc">
+		<element name="objectDesc">
 			<zeroOrMore>
-				<ref name="Exemplarbeschreibung_Main"/>
+				<ref name="objectDescMain"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="Provenienz"/>
+				<ref name="provenance"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="Portraits"/>
+				<ref name="portrait"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="FileSystemLinks"/>
+				<ref name="fileSystemLinks"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="Pnd_Personen"/>
+				<ref name="personNameAuthorityFile"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="Ort"/>
+				<ref name="placeFile"/>
 			</zeroOrMore>
 
 			<optional>
@@ -69,13 +70,13 @@ Sonstige Hinweise:
 
 		</element>
 	</define>
-	<define name="Exemplarbeschreibung_Main">
-		<element name="Exemplarbeschreibung_Main">
+	<define name="objectDescMain">
+		<element name="objectDescMain">
 
 			<zeroOrMore>
-				<element name="ExemplarDataset">
+				<element name="objectDataset">
 					
-					<attribute name="SuperIdentnummer">
+					<attribute name="superIdentificationNumber">
 						<data type="ID" />
 					</attribute>
 					
@@ -89,8 +90,8 @@ Sonstige Hinweise:
 					-->
 					
 					<oneOrMore>
-						<element name="Identnummer">
-							<attribute name="Typ">
+						<element name="identificatonNumber">
+							<attribute name="type">
 								<choice>
 									<value>Allegro</value>
 									<value>AlephSys</value>
@@ -106,14 +107,14 @@ Sonstige Hinweise:
 					
 					
 					<optional>
-						<element name="Signatur">
+						<element name="bookMark">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<zeroOrMore>
 						<!-- zeroOrMore in RelaxNG heißt, dass dieses Element wiederholt werden kann -->
-						<element name="Objekttyp">
+						<element name="objectType">
 							<choice>
 								<value>gedrucktes Buch</value>
 								<value>Handschrift</value>
@@ -136,7 +137,7 @@ Sonstige Hinweise:
 					</zeroOrMore>
 					
 					<optional>
-						<element name="Erscheinungszeitraum">
+						<element name="origDate">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -157,7 +158,7 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Bearbeitungsstand">
+						<element name="levelOfProcessing">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -181,7 +182,7 @@ Sonstige Hinweise:
 					<!-- 
 					######### 	not necessary, because this is not a part of the exemplaric description  #########
 					<optional>
-						<element name="Sprache">
+						<element name="textLang">
 							<choice>
 								<value>Dummy for predefined term 1</value>
 								<value>Dummy for predefined term 2</value>
@@ -191,7 +192,7 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Druckort">
+						<element name="origPlace">
 							<choice>
 								<value>Dummy for predefined term 1</value>
 								<value>Dummy for predefined term 2</value>
@@ -204,31 +205,31 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Band_Anzahl">
+						<element name="volumeNumber">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Fehlende_Teile">
+						<element name="lacuna">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Fehlbindung">
+						<element name="leavesMisbound">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Einzelblaetter_eingebunden">
+						<element name="leavesRebound">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Bedruckte_Blaetter_lose">
+						<element name="leavesLoosePrinted">
 							<optional>
 								<attribute name="available">
 									<data type="boolean"/>
@@ -241,7 +242,7 @@ Sonstige Hinweise:
 								
 
 					<optional>
-						<element name="Handschriftliche_Blaetter_lose">
+						<element name="leavesLooseHandwritten">
 							<optional>
 								<attribute name="available">
 									<data type="boolean"/>
@@ -253,7 +254,7 @@ Sonstige Hinweise:
 					</optional>
 
 					<zeroOrMore>
-						<element name="Beigabe">
+						<element name="tippedIn">
 								<choice>
 								<!-- 	
 									It's possible to use an additional scheme overwriting those values
@@ -271,13 +272,13 @@ Sonstige Hinweise:
 					</zeroOrMore>
 
 					<optional>
-						<element name="Beigabe_lose_Details">
+						<element name="tippedInLooseDesc">
 							<data type="token" />
 						</element>
 					</optional>
 					
 					<optional>
-						<element name="Beigabe_eingeklebt_Details">
+						<element name="tippedInPastedDesc">
 							<data type="token" />
 						</element>
 					</optional>
@@ -285,7 +286,7 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Vorsatz">
+						<element name="endpaper">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -327,26 +328,32 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Vorsatz_Details">
+						<element name="endpaperDesc">
 							<data type="token" />
 						</element>
 					</optional>
 					
 					<optional>
-						<element name="Beschreibstoff_Details">
-							<data type="token" />
-						</element>
-					</optional>
-
-
-					<optional>
-						<element name="Paginierung_Details">
+						<element name="supportDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Schnitt">
+						<element name="collationDesc">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					
+					<optional>
+						<element name="paginationDesc">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="edge">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -382,14 +389,14 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Schnitt_Details">
+						<element name="edgeDesc">
 							<data type="token" />
 						</element>
 					</optional>
 					
 
 					<optional>
-						<element name="Blattweiser">
+						<element name="leafMarker">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -410,74 +417,74 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Blattweiser_Details">
+						<element name="leafMarkerDesc">
 							<data type="token" />
 						</element>
 					</optional>
 					
 
 					<optional>
-						<element name="Beschnittene_Blaetter">
+						<element name="pagesTrimmed">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Wasserzeichen">
+						<element name="watermark">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Siegel">
+						<element name="seal">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Siegel_Details">
+						<element name="sealDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Wappen">
+						<element name="heraldry">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Randverzierungen">
+						<element name="marginalDecoration">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Randillustrationen">
+						<element name="decoratedBorders">
 							<data type="token" />
 						</element>
 					</optional>
 					
 					<optional>
-						<element name="Sonstige_Illustrationen">
+						<element name="illustrationsMiscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Initialen">
+						<element name="initials">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Initialen_Details">
+						<element name="initialsDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Rubrizierung">
+						<element name="rubrics">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -494,26 +501,26 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Rubrizierung_Details">
+						<element name="rubricsDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Druckgraphik_Bildzyklus">
+						<element name="graphic">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Druckgraphik">
+						<element name="graphicDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<!--                 *** Not Used at the KHI ***
 					<optional>
-						<element name="Musiknotation">
+						<element name="musicNotation">
 							<data type="token" />
 						</element>
 					</optional>
@@ -522,7 +529,7 @@ Sonstige Hinweise:
 					<!-- ################## Portraits-Link hier ################ -->
 
 					<zeroOrMore>
-						<element name="PortraitsRef">
+						<element name="portraitReference">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -536,14 +543,14 @@ Sonstige Hinweise:
 					
 
 					<optional>
-						<element name="Portraits_Notizen">
+						<element name="portraitDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 
 					<zeroOrMore>
-						<element name="Marginalien"> 
+						<element name="marginalia"> 
 							<choice>
 								<value>Interlinearglossen</value>
 								<value>Marginalglossen</value>
@@ -563,19 +570,19 @@ Sonstige Hinweise:
 					</zeroOrMore>
 
 					<optional>
-						<element name="Marginalien_Details">
+						<element name="marginaliaDesc">
 							<data type="token"/>
 						</element>
 					</optional>
 					
 					<optional>
-						<element name="Sonstige_Eintragungen_handschriftlich">
+						<element name="notesHandwrittenMiscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 					
 					<optional>
-						<element name="Beibaende">
+						<element name="addedWork">
 							<optional>
 								<attribute name="available">
 									<data type="boolean"/>
@@ -589,61 +596,61 @@ Sonstige Hinweise:
 					<!-- ............................................................................ -->
 
 					<optional>
-						<element name="Handschriftlicher_Besitzeintrag">
+						<element name="exLibrisRemarkHandwritten">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Unidentifizierter_Vorbesitzer">
+						<element name="exLibrisRemarkUnidentified">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Stiftungsnotiz">
+						<element name="donationText">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Widmung">
+						<element name="dedicationText">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Autorensignatur">
+						<element name="signatureAuthor">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Exlibris">
+						<element name="bookPlate">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Exlibris_Details">
+						<element name="bookPlateDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Besitzstempel">
+						<element name="ownerStamp">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Sonstige_Stempel">
+						<element name="stampMiscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Etiketten">
+						<element name="label">
 							<data type="token" />
 						</element>
 					</optional>
@@ -652,7 +659,7 @@ Sonstige Hinweise:
 					<!-- ############### Provenience Link hier ############# -->
 
 					<zeroOrMore>
-						<element name="provenienceRef">
+						<element name="provenanceReference">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -666,25 +673,25 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Kaufvermerke">
+						<element name="notesBookseller">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Alte_Signaturen">
+						<element name="shelfMarkMiscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Erwerbungsjahr_Besitzer_aktuell">
+						<element name="acquisitionDateInstitution">
 							<data type="short"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Erwerbungsmodalitaeten">
+						<element name="acquisitionMode">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -705,13 +712,13 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Erwerbungsmodalitaeten_Details">
+						<element name="acquisitionModeDetails">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Bezahlter_Buchpreis">
+						<element name="pricePaid">
 							<data type="token" />
 						</element>
 					</optional>
@@ -719,7 +726,7 @@ Sonstige Hinweise:
 					<!-- ............................................................................ -->
 
 					<optional>
-						<element name="Einband">
+						<element name="binding">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -784,19 +791,31 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Einband_Details">
+						<element name="bindingMaterial">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Aelterer_Einband_integriert">
+						<element name="headbandDesc">
+							<data type="token" />
+						</element>
+					</optional>
+
+					<optional>
+						<element name="sewingDesc">
+							<data type="token" />
+						</element>
+					</optional>
+					
+					<optional>
+						<element name="bookCoverRebound">
 							<data type="boolean"/>
 						</element>
 					</optional>
 					
 					<zeroOrMore>
-						<element name="Einbanddekor">
+						<element name="bookCoverDecoration">
 							<choice>
 
 								<value>Flacher Rücken</value>
@@ -834,38 +853,38 @@ Sonstige Hinweise:
 						</element>
 					</zeroOrMore>
 					<optional>
-						<element name="Einbanddekor_Details">
+						<element name="bookCoverDecorationDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Lesebaendchen">
+						<element name="ribbonMarker">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Klebepappe">
+						<element name="papersPastedCover">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Eingepraegte_Datierung">
+						<element name="dateCoined">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Besitzerinitialien">
+						<element name="initialsCoined">
 							<data type="token" />
 						</element>
 					</optional>
 
 
 					<zeroOrMore>
-						<element name="Makulatur">
+						<element name="wastePaper">
 							<choice>
 
 								<value>Einbandbezug</value>
@@ -881,31 +900,31 @@ Sonstige Hinweise:
 					</zeroOrMore>
 
 					<optional>
-						<element name="Makulatur_Beschreibung">
+						<element name="wastePaperDesc">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Spiegel_Marmorpapier">
+						<element name="pasteDownMarbeledPaper">
 							<data type="boolean"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Rueckenbreite">
+						<element name="width">
 							<data type="float"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Hoehe">
+						<element name="height">
 							<data type="float"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Standort">
+						<element name="retention">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -925,13 +944,13 @@ Sonstige Hinweise:
 					</optional>
 
 					<optional>
-						<element name="Zustand">
+						<element name="condition">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Restaurierungsbedarf">
+						<element name="conservation">
 							<choice>
 							<!-- 	
 								It's possible to use an additional scheme overwriting those values
@@ -950,7 +969,7 @@ Sonstige Hinweise:
 
 
 					<zeroOrMore>
-						<element name="Restaurierungs-Art">
+						<element name="conservationMethod">
 							<choice>
 								<value>Einbandrestaurierung</value>
 								<value>Papierrestaurierung</value>
@@ -961,7 +980,7 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Restaurierungsmassnahmen_Details">
+						<element name="conservationMethodDetails">
 							<data type="token" />
 						</element>
 					</optional>
@@ -970,7 +989,7 @@ Sonstige Hinweise:
 					<!-- ################## Media Links hier ################### -->
 					<!-- Medialinks eventuell für Lifecycle nicht sinnvoll? -->
 					<zeroOrMore>
-						<element name="mediaRef">
+						<element name="mediaReference">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -984,7 +1003,7 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Konservatorische_Massnahmen">
+						<element name="preservationMethod">
 							<data type="token" />
 						</element>
 					</optional>
@@ -1001,49 +1020,49 @@ Sonstige Hinweise:
 
 
 					<optional>
-						<element name="Nummerierte_Ausgabe">
+						<element name="numberedCopy">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Sonstige_Bemerkungen">
+						<element name="miscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="VD-Nr">
+						<element name="vdNumber">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="EDIT16-Id">
+						<element name="edit16Number">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="ICCU-Id">
+						<element name="iccuNumber">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="ISTC-Nr">
+						<element name="istcNumber">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Sonstige-Id">
+						<element name="identificationNumberMiscellaneous">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Aktueller_Marktwert">
+						<element name="value">
 							<data type="token" />
 						</element>
 					</optional>
@@ -1061,18 +1080,18 @@ Sonstige Hinweise:
 
 	<!-- ############################ Provenience Modul ab hier ################# -->
 
-	<define name="Provenienz">
-		<element name="Provenienz">
+	<define name="provenance">
+		<element name="provenance">
 
 			<zeroOrMore>
-				<element name="ProvenienzDataset">
+				<element name="provenanceDataset">
 					
 					<attribute name="provID">
 						<data type="ID" />
 					</attribute>
 
 					<optional>
-						<element name="Institution">
+						<element name="institution">
 							<data type="token"/>
 						</element>
 					</optional>
@@ -1080,7 +1099,7 @@ Sonstige Hinweise:
 
 					<!-- ....................... Personen Links hier ..............  -->
 					<zeroOrMore>
-						<element name="ProvPerson">
+						<element name="provenancePerson">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -1092,7 +1111,7 @@ Sonstige Hinweise:
 					<!-- ............................................................ -->
 
 					<optional>
-						<element name="Personschreibw">
+						<element name="personNameVariation">
 							<data type="token"/>
 						</element>
 					</optional>
@@ -1100,7 +1119,7 @@ Sonstige Hinweise:
 
 					<!-- ................. Orts Links hier .......................... -->
 					<zeroOrMore>
-						<element name="Ort">
+						<element name="provenancePlace">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -1112,13 +1131,13 @@ Sonstige Hinweise:
 					<!-- ........................................................... -->
 
 					<optional>
-						<element name="Ortschreibw">
+						<element name="provenancePlaceNameVariation">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Jahr">
+						<element name="date">
 							<data type="token"/>
 						</element>
 					</optional>
@@ -1136,19 +1155,19 @@ Sonstige Hinweise:
 
 	<!-- ############################ Portraits Modul ab hier ################# -->
 
-	<define name="Portraits">
-		<element name="Portraits">
+	<define name="portrait">
+		<element name="portrait">
 
 			<zeroOrMore>
-				<element name="PortraitDataset">
+				<element name="portraitDataset">
 					
-					<attribute name="PortrID">
+					<attribute name="portrID">
 						<data type="ID" />
 					</attribute>
 
 					<!-- ################## Personen Links hier ################### -->
 					<zeroOrMore>
-						<element name="PortrPerson">
+						<element name="portraitPerson">
 							<optional>
 								<attribute name="ref">
 									<data type="IDREF"/>
@@ -1160,13 +1179,13 @@ Sonstige Hinweise:
 					<!-- ####################################################### -->
 
 					<optional>
-						<element name="Personenschreibweise">
+						<element name="personNameVariation">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Notizen">
+						<element name="notes">
 							<data type="token"/>
 						</element>
 					</optional>
@@ -1182,34 +1201,34 @@ Sonstige Hinweise:
 
 	<!-- ############################ Filesystem Links Modul ab hier ################# -->
 
-	<define name="FileSystemLinks">
-		<element name="FileSystemLinks">
+	<define name="fileSystemLinks">
+		<element name="fileSystemLinks">
 
 			<zeroOrMore>
-				<element name="FileSystemLinkDataset">
+				<element name="fileSystemLinkDataset">
 					
-					<attribute name="FileSysID">
+					<attribute name="fileSysID">
 						<data type="ID" />
 					</attribute>
 
-					<element name="FileSystemLink">
+					<element name="fileSystemLink">
 						<data type="anyURI"/>
 					</element>
 
 					<optional>
-						<element name="Kategorie">
+						<element name="category">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Ausgabe">
+						<element name="edition">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Beschreibung">
+						<element name="description">
 							<data type="string"/>
 						</element>
 					</optional>
@@ -1226,11 +1245,11 @@ Sonstige Hinweise:
 
 	<!-- ############################ PND_Personen Modul ab hier ################# -->
 
-	<define name="Pnd_Personen">
-		<element name="Pnd_Personen">
+	<define name="personNameAuthorityFile">
+		<element name="personNameAuthorityFile">
 
 			<zeroOrMore>
-				<element name="PersonenDataset">
+				<element name="personDataset">
 
 					<oneOrMore> <!-- eine der IDs *muss* aber da stehen! -->
 						<attribute name="PND">
@@ -1246,19 +1265,19 @@ Sonstige Hinweise:
 					
 
 					<optional>
-						<element name="Vorname">
+						<element name="foreName">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Nachname">
+						<element name="name">
 							<data type="token" />
 						</element>
 					</optional>
 
 					<zeroOrMore>
-						<element name="PersonenEigenschaften">
+						<element name="personFeature">
 							<choice>
 								<value>Künstler</value>
 								<value>Autor</value>
@@ -1270,13 +1289,13 @@ Sonstige Hinweise:
 					</zeroOrMore>
 
 					<optional>
-						<element name="SonstEigenschaft">
+						<element name="featureOther">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Notizen">
+						<element name="notes">
 							<data type="string" />
 						</element>
 					</optional>
@@ -1292,24 +1311,24 @@ Sonstige Hinweise:
 
 	<!-- ############################ Ort Modul ab hier ################# -->
 
-	<define name="Ort">
-		<element name="Ort">
+	<define name="placeFile">
+		<element name="placeFile">
 
 			<zeroOrMore>
-				<element name="OrtDataset">
+				<element name="placeDataset">
 					
-					<attribute name="Ortsschlagwort">
+					<attribute name="placeIdentificationNumber">
 						<data type="ID"/>
 					</attribute>
 
 					<optional>
-						<element name="Ortsname">
+						<element name="placeName">
 							<data type="token"/>
 						</element>
 					</optional>
 
 					<optional>
-						<element name="Land">
+						<element name="placeCountry">
 							<data type="token"/>
 						</element>
 					</optional>
