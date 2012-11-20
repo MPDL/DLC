@@ -118,12 +118,9 @@
 											<label class="eg3_iconActionLabel eg3_noMarginLeft">
 												<h:outputText value="#{lbl.ingestLog_btn_showLogEntries}"/>
 											</label>
-											<script>
-											$(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js").click(function(ev){
-												eg3_bibListToggleItemMediumView(this);
-											})
-											</script>
+											
 										</h:panelGroup>
+										
 									</h:panelGroup>
 								</h:panelGroup>
 								
@@ -131,7 +128,7 @@
 								<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
 									
 									
-									<rich:dataTable value="#{dbItem.messages}" var="logMessage" rows="5">
+									<rich:dataTable value="#{dbItem.messages}" var="logMessage" rows="0">
 										<rich:column>
 											<h:outputText value="#{internationalizationHelper.getLabelForEnum('ingest_activityType', logMessage.type)}" />
 										</rich:column>
