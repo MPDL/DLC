@@ -104,8 +104,14 @@ import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+import de.mpg.mpdl.dlc.searchLogic.FilterBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.CombinedSortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.SortCriterion.SortIndices;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
+import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -1726,7 +1732,7 @@ public class VolumeServiceBean {
 				{
 					List<Volume> volList = new ArrayList<Volume>();
 					volList.add(volume);
-					loadVolumesForMultivolume(volList, userHandle, true);
+					loadVolumesForMultivolume(volList, userHandle, true, null, null);
 					
 					/*
 					volume.setRelatedChildVolumes(new ArrayList<Volume>());
@@ -1769,7 +1775,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public void loadVolumesForMultivolume(List<Volume> volumeList, String userHandle, boolean filter) throws Exception
+	public void loadVolumesForMultivolume(List<Volume> volumeList, String userHandle, boolean filter, VolumeStatus[] versionStatus, VolumeStatus[] publicStatus) throws Exception
 	{
 		
 		ItemHandlerClient ihc = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1789,6 +1795,9 @@ public class VolumeServiceBean {
 		List<String> volumeIds= new ArrayList<String>();
 		Map<String, Volume> mvMap = new HashMap<String, Volume>();
 		StringBuffer volumeQuery = new StringBuffer();
+		
+		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+		
 		for(Volume v : volumeList)
 		{
 			if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId) ||
@@ -1809,6 +1818,8 @@ public class VolumeServiceBean {
 		for(int i=0; i<volumeIds.size(); i++)
 		{
 			
+			scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, volumeIds.get(i)));
+				/*
 				if(filter)
 				{
 					volumeQuery.append("\"/id\"=" + volumeIds.get(i));
@@ -1823,27 +1834,36 @@ public class VolumeServiceBean {
 					volumeQuery.append(" or ");
 				}
 				
-			
+			*/
 			
 		}
 		
-		if(!volumeIds.isEmpty())
+		if(!scList.isEmpty())
 		{
+			SearchBean sb = new SearchBean();
+			FilterBean fb = new FilterBean();
+			
+		
+			
+			
+			/*
 			SearchRetrieveRequestType sr= new SearchRetrieveRequestType();
 			sr.setQuery(volumeQuery.toString());
 			sr.setMaximumRecords(new NonNegativeInteger(String.valueOf(1000)));
 			
-			SearchRetrieveResponse result = ihc.retrieveItems(sr);
+			SearchRetrieveResponse result;
+			*/
+			VolumeSearchResult volumeResult;
 			if(filter)
 			{
-				result = ihc.retrieveItems(sr);
+				volumeResult = fb.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME}, versionStatus, publicStatus, scList, CombinedSortCriterion.VOLUME.getScList(), 500, 0, userHandle);
 			}
 			else
 			{
-				result = shc.search(sr, SearchBean.dlcIndexName);
+				volumeResult = sb.search(new VolumeTypes[]{VolumeTypes.VOLUME}, scList, CombinedSortCriterion.VOLUME.getScList(), 500, 0);
 			}
 
-			VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(result);
+			//VolumeSearchResult volumeResult = srwResponseToVolumeSearchResult(result);
 			for(Volume v : volumeResult.getVolumes())
 			{
 				

@@ -85,6 +85,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
+		System.out.println("Retrieve List!!!!");
 		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, getSortCriterionList(), limit, offset);
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 		return res.getVolumes();

@@ -12,7 +12,8 @@ public class SortCriterion {
 	{
 		AUTHOR_TITLE_ASC(new SortCriterion[]{
 				new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING),
-				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING)}),
+				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
 		AUTHOR_TITLE_DESC(new SortCriterion[]{
 				new SortCriterion(SortIndices.AUTHOR, SortOrders.DESCENDING),
 				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING)}),
@@ -25,7 +26,13 @@ public class SortCriterion {
 		YEAR_DESC(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)),
 		YEAR_ASC(new SortCriterion(SortIndices.YEAR, SortOrders.ASCENDING)),
 		LAST_MODIFIED_DESC(new SortCriterion(SortIndices.LAST_MODIFIED, SortOrders.DESCENDING)),
-		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING));
+		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING)),
+		VOLUME(new SortCriterion[]{
+				new SortCriterion(SortIndices.VOLUME_ORDER, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)
+				});
 		
 		private List<SortCriterion> scList;
 		
@@ -60,7 +67,9 @@ public class SortCriterion {
 		YEAR("sort.dlc.year", "/sort/dlc/year"),
 		NEWEST("sort.escidoc.creation-date", "/sort/properties/creation-date"),
 		STATUS("", "/properties/public-status"),
-		LAST_MODIFIED("", "/sort/last-modification-date");
+		LAST_MODIFIED("", "/sort/last-modification-date"),
+		
+		VOLUME_ORDER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/order");
 		
 		private String searchIndexName;
 		private String filterIndexName;
