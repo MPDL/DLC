@@ -72,6 +72,13 @@ public class SearchCriterion extends Criterion{
 
 
 	
+	public SearchCriterion(SearchCriterion toBeCloned)
+	{
+		super(toBeCloned);
+		this.searchType = toBeCloned.getSearchType();
+		
+	}
+	
 	public SearchCriterion(Operator op, SearchType searchType, String value) 
 	{
 		this.operator = op;

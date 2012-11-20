@@ -869,6 +869,20 @@ public class VolumeUtilBean {
 		
 	}
 	
+	public Page getPageForPageId(Volume v, String pageId)
+	{
+		for(Page p : v.getPages())
+		{
+			if(p.getId().equals(pageId))
+			{
+				return p;
+			}
+		}
+		
+		return null;
+		
+	}
+	
 	
 	/**
 	 * Creates a HTML <span> Element with the given styleClass around every case-insensitive occurrence of the given words in the text.

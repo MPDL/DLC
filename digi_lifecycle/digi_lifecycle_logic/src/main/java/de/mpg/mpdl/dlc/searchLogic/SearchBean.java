@@ -134,11 +134,20 @@ public class SearchBean {
 	
 	private List<SearchCriterion> getCompleteSearchCriterions(VolumeTypes[] volTypes, List<SearchCriterion> scList)
 	{
+		
+		//Clone list, so original objects are not touched
+		List<SearchCriterion> clonedScList = new ArrayList<SearchCriterion>();
+		for(SearchCriterion sc : scList)
+		{
+			clonedScList.add(new SearchCriterion(sc));
+		}
+		
+		
 		List<SearchCriterion> scListStandard = getStandardFilterCriterions(volTypes);
 		
 		//throw out empty entries
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
-		for(SearchCriterion sc : scList)
+		for(SearchCriterion sc : clonedScList)
 		{
 			if(sc.getValue()!=null && !sc.getValue().isEmpty() && sc.getSearchType()!=null)
 			{
