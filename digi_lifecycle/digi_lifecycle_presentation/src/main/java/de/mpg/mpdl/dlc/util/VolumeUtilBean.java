@@ -35,6 +35,7 @@ import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsIdentifier;
+import de.mpg.mpdl.dlc.vo.mods.ModsLocationSEC;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.mods.ModsNote;
@@ -222,11 +223,6 @@ public class VolumeUtilBean {
 		return new ModsTitle();
 	}	
 	
-
-	
-
-	
-	
 	public static ModsTitle getAlternativeTitle(ModsMetadata md)
 	{  
 		for(ModsTitle mt : md.getTitles())
@@ -236,9 +232,7 @@ public class VolumeUtilBean {
 		}
 		return new ModsTitle();
 	}
-	
-
-	
+		
 	public static ModsTitle getUniformTitle(ModsMetadata md)
 	{
 		for(ModsTitle mt : md.getTitles())
@@ -251,7 +245,7 @@ public class VolumeUtilBean {
 	{
 		for(ModsTitle mt : md.getTitles())
 		{
-			if(mt.getSubTitle() != "" )
+			if(mt.getSubTitle() != null && mt.getSubTitle() != "" )
 				return mt;
 		}
 		return new ModsTitle();
@@ -293,6 +287,62 @@ public class VolumeUtilBean {
 		return new ModsNote();
 	}
 	
+	public static ModsNote getNoteSOV(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if("summary of volumes".equalsIgnoreCase(mn.getType()))
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsNote getNoteSC(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if("subject completeness".equalsIgnoreCase(mn.getType()))
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsNote getNoteIndexes(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if("indexes".equalsIgnoreCase(mn.getType()))
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsIdentifier getIdentifierZDB(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("zdb-id".equalsIgnoreCase(mi.getType()))
+				return mi;
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getIdentifierOtherID(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("local".equalsIgnoreCase(mi.getType()))
+				return mi;
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getIdentifierDOI(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("doi".equalsIgnoreCase(mi.getType()))
+				return mi;
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getIdentifierURN(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("urn".equalsIgnoreCase(mi.getType()))
+				return mi;
+		return new ModsIdentifier();
+	}
+	
 	public static List<ModsNote> getFootNotes(ModsMetadata md)
 	{ 
 		List<ModsNote> mns = new ArrayList<ModsNote>();
@@ -306,7 +356,51 @@ public class VolumeUtilBean {
 	public static ModsIdentifier getISBN(ModsMetadata md)
 	{
 		for(ModsIdentifier mi : md.getIdentifiers())
-			if(mi.getType().equals("isbn") && mi.getInvalid()!="yes")
+			if("isbn".equalsIgnoreCase(mi.getType()) &&  mi.getInvalid()==null)
+				return mi;
+		return new ModsIdentifier();
+	}
+	
+	public static ModsLocationSEC getSec_signature_646(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsLocationSEC sec_location : ri.getSec_location())
+			{
+				if(sec_location.getSec_signature_646() != null)
+					return sec_location;
+			}
+		}
+		return new ModsLocationSEC();
+	}
+	
+	
+	public static ModsIdentifier getDigitalISBN(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsIdentifier mi : ri.getSec_identifiers())
+				if("issn".equalsIgnoreCase(mi.getType()))
+					return mi;
+		}
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getDigitalISSN(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsIdentifier mi : ri.getSec_identifiers())
+				if("isbn".equalsIgnoreCase(mi.getType()))
+					return mi;
+		}
+		return new ModsIdentifier();
+	}
+	
+	public static ModsIdentifier getISBN2(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("isbn".equalsIgnoreCase(mi.getType()) && "yes".equalsIgnoreCase(mi.getInvalid()))
 				return mi;
 		return new ModsIdentifier();
 	}
@@ -314,11 +408,18 @@ public class VolumeUtilBean {
 	public static ModsIdentifier getISSN(ModsMetadata md)
 	{
 		for(ModsIdentifier mi : md.getIdentifiers())
-			if(mi.getType().equals("issn") && mi.getInvalid()!="yes")
+			if("issn".equalsIgnoreCase(mi.getType()) && mi.getInvalid()==null)
 				return mi;
 		return new ModsIdentifier();
 	}	
 	
+	public static ModsIdentifier getISSN2(ModsMetadata md)
+	{
+		for(ModsIdentifier mi : md.getIdentifiers())
+			if("issn".equalsIgnoreCase(mi.getType()) && "yes".equalsIgnoreCase(mi.getInvalid()))
+				return mi;
+		return new ModsIdentifier();
+	}	
 	
 
 //	
@@ -417,6 +518,22 @@ public class VolumeUtilBean {
 			if("constituent".equalsIgnoreCase(mp.getType()))
 				return mp;
 		return new ModsPart();
+	}
+	
+	public static ModsNote getNote_365(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if("remainder of title for whole item".equalsIgnoreCase(mn.getType()))
+				return mn;
+		return new ModsNote();
+	}
+	
+	public static ModsNote getNote_369(ModsMetadata md)
+	{
+		for(ModsNote mn : md.getNotes())
+			if("reponsibility for whole item".equalsIgnoreCase(mn.getType()))
+				return mn;
+		return new ModsNote();
 	}
 	
 	public static String getPart_089(ModsMetadata md)
@@ -1020,99 +1137,327 @@ public class VolumeUtilBean {
 		
 	}
 	
-	public static String getAuthorsForTitle(List<ModsName> names)
+	public static String getAuthorsForTitle(ModsMetadata md)
 	{
 		String output = "";
-		for(ModsName name : names)
-		{
-			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("author"))
+		if(md.getNames().size() > 0)
+			for(ModsName name : md.getNames())
 			{
-				if(output == "")
-					output = name.getName();
-				else
-					output = output + " ; " + name.getName(); 
+				if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("author"))
+				{
+					if(output == "")
+						output = name.getName();
+					else
+						output = output + " ; " + name.getName(); 
+				}
+			}
+		return output;
+	}
+	
+	public static String getEditorsForTitle(ModsMetadata md)
+	{
+		String output = "";
+		if(md.getNames().size() > 0)
+			for(ModsName name : md.getNames())
+			{
+				if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("editor"))
+				{
+					if(output == "")
+						output = name.getName();
+					else
+						output = output + " ; " + name.getName(); 
+				}
+			}
+		return output;
+	}
+	
+	public static String getBodiesForTitle(ModsMetadata md)
+	{
+		String output = "";
+		if(md.getNames().size() > 0)
+			for(ModsName name : md.getNames())
+			{
+				if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("body"))
+				{
+					if(output == "")
+						output = name.getName();
+					else
+						output = output + " ; " + name.getName(); 
+				}
+			}
+		return output;
+	}
+	
+	public static String getGefeiertePerson(ModsMetadata md)
+	{
+		String output = "";
+		if(md.getNames().size() > 0)
+			for(ModsName name : md.getNames())
+			{
+				if(name.getDisplayLabel() == null)
+				{
+						output = name.getName(); 
+				}
+			}
+		return output;
+	}
+	
+	public static String getPublisherForTitle(ModsMetadata md)
+	{
+		String output = "";
+		if(md.getPublishers().size() >0)
+		{
+			for(ModsPublisher publisher : md.getPublishers())
+			{
+				if(publisher.getDisplayLabel().startsWith("publisher"))
+				{
+					if(publisher.getPlace() != null)
+						output += publisher.getPlace() + " : ";
+					if(publisher.getPublisher() != null)
+						output += publisher.getPublisher() + ", ";
+					if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
+						output += publisher.getDateIssued_425().getDate();
+				}
 			}
 		}
 		return output;
 	}
 	
-	public static String getEditorsForTitle(List<ModsName> names)
+	public static String getPrinterForTitle(ModsMetadata md)
 	{
 		String output = "";
-		for(ModsName name : names)
+		if(md.getPublishers().size() >0)
 		{
-			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("editor"))
+			for(ModsPublisher publisher : md.getPublishers())
 			{
-				if(output == "")
-					output = name.getName();
-				else
-					output = output + " ; " + name.getName(); 
+				if(publisher.getDisplayLabel().startsWith("printer"))
+				{
+					if(publisher.getPlace() != null)
+						output += publisher.getPlace() + " : ";
+					if(publisher.getPublisher() != null)
+						output += publisher.getPublisher() + ", ";
+					if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
+						output += publisher.getDateIssued_425().getDate();
+				}
 			}
 		}
 		return output;
 	}
 	
-	public static String getBodiesForTitle(List<ModsName> names)
+	public static String getPublisherEdition(ModsMetadata md)
 	{
 		String output = "";
-		for(ModsName name : names)
+		if(md.getPublishers().size() >0)
 		{
-			if(name.getDisplayLabel() != null && name.getDisplayLabel().startsWith("body"))
+			for(ModsPublisher publisher : md.getPublishers())
 			{
-				if(output == "")
-					output = name.getName();
-				else
-					output = output + " ; " + name.getName(); 
+				if(publisher.getEdition() != null)
+				{
+					output = publisher.getEdition();
+				}
 			}
 		}
 		return output;
 	}
 	
-	public static String getPublisherOrPrinterForTitle(ModsPublisher publisher)
+	public static String getSecPublisherForTitle(ModsMetadata md)
 	{
 		String output = "";
-		if(publisher.getPlace() != null)
-			output += publisher.getPlace() + " : ";
-		if(publisher.getPublisher() != null)
-			output += publisher.getPublisher() + ", ";
-		if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
-			output += publisher.getDateIssued_425().getDate();
-		return output;
-	}
-	
-	public static String getSecPublisherForTitle(ModsPublisher publisher)
-	{
-		String output = "";
-		if(publisher.getPlace() != null)
-			output += publisher.getPlace() + " : ";
-		if(publisher.getPublisher() != null)
-			output += publisher.getPublisher() + ", ";
-		if(publisher.getDateCaptured()!=null )
-			output += publisher.getDateCaptured();
-		return output;
-	}
-	
-	public static String getCollationsForTitle(List<ModsPhysicalDescription> physicalDescriptions)
-	{
-		String output = "";
-		for(ModsPhysicalDescription pd : physicalDescriptions)
+		for(ModsRelatedItem ri : md.getRelatedItems())
 		{
-			if(pd.getExtent() != null)
+			for(ModsPublisher publisher : ri.getSec_Publisher())
 			{
-				if(output == "")
-					output = pd.getExtent();
-				else
-					output = output + " ; " + pd.getExtent(); 
+				if("publisher3".equalsIgnoreCase(publisher.getDisplayLabel()))
+				{
+					if(publisher.getPlace() != null)
+						output += publisher.getPlace() + " : ";
+					if(publisher.getPublisher() != null)
+						output += publisher.getPublisher() + ", ";
+					if(publisher.getDateCaptured()!=null )
+						output += publisher.getDateCaptured();
+				}
 			}
 		}
 		return output;
 	}
 	
-
-
+	public static String getSecPublisherEdition(ModsMetadata md)
+	{
+		String output = "";
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsPublisher publisher : ri.getSec_Publisher())
+			{
+				if(publisher.getEdition() != null)
+				{
+					output = publisher.getEdition();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public static String getSecManufacturerForTitle(ModsMetadata md)
+	{
+		String output = "";
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsPublisher publisher : ri.getSec_Publisher())
+			{
+				if("manufacturer".equalsIgnoreCase(publisher.getDisplayLabel()))
+				{
+					if(publisher.getPlace() != null)
+						output += publisher.getPlace() + " : ";
+					if(publisher.getPublisher() != null)
+						output += publisher.getPublisher() + ", ";
+					if(publisher.getDateCaptured()!=null )
+						output += publisher.getDateCaptured();
+				}
+			}
+		}
+		return output;
+	}
+	
+	public static String getSecCreatorForTitle(ModsMetadata md)
+	{
+		String output = "";
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsPublisher publisher : ri.getSec_Publisher())
+			{
+				if("creator".equalsIgnoreCase(publisher.getDisplayLabel()))
+				{
+					if(publisher.getPlace() != null)
+						output += publisher.getPlace() + " : ";
+					if(publisher.getPublisher() != null)
+						output += publisher.getPublisher() + ", ";
+					if(publisher.getDateCaptured()!=null )
+						output += publisher.getDateCaptured();
+				}
+			}
+		}
+		return output;
+	}
 	
 	
+	public static String getCollationsForTitle(ModsMetadata md)
+	{
+		String output = "";
+		if(md.getPhysicalDescriptions().size()>0)
+		{
+			for(ModsPhysicalDescription pd : md.getPhysicalDescriptions())
+			{
+				if(pd.getExtent() != null)
+				{
+					if(output == "")
+						output = pd.getExtent();
+					else
+						output = output + " ; " + pd.getExtent(); 
+				}
+			}
+		}
+		return output;
+	}
 	
-
-		
+	public static ModsPhysicalDescription getMaterialDesignation_334(ModsMetadata md)
+	{
+		for(ModsPhysicalDescription pd : md.getPhysicalDescriptions())
+			if(pd.getPdForm() != null && "material".equalsIgnoreCase(pd.getPdForm().getType()))
+				return pd;
+		return new ModsPhysicalDescription();
+	}
+	
+	public static ModsRelatedItem getRelatedItemSource(ModsMetadata md)
+	{
+		if(md.getRelatedItems().size()>0)
+		{
+			for(ModsRelatedItem ri : md.getRelatedItems())
+			{
+				if("host".equalsIgnoreCase(ri.getType()) && ri.getDisplayLabel()== null && ri.getTitle() != null)
+					return ri;
+			}
+		}
+		return new ModsRelatedItem();
+	}
+	
+	public static List<ModsRelatedItem> getRelatedItemSeries(ModsMetadata md)
+	{
+		List<ModsRelatedItem> series = new ArrayList<ModsRelatedItem>();
+		if(md.getRelatedItems().size() >0 )
+		{
+			for(ModsRelatedItem ri : md.getRelatedItems())
+			{
+				if("series".equalsIgnoreCase(ri.getType()))
+					series.add(ri);
+			}
+		}
+		return series;
+	}
+	
+	public static ModsNote getSecNote(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			if(ri.getSec_notes() != null)
+				return ri.getSec_notes();
+		}
+		return new ModsNote();
+	}
+	
+	public static ModsRelatedItem getSec_relatedItems(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			if(ri.getSec_relatedItems() != null)
+				return ri.getSec_relatedItems();
+		}
+		return new ModsRelatedItem();
+	}
+	
+	public static String getSec_copyright(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+			if(ri.getSec_copyright() != null)
+				return ri.getSec_copyright();
+		return "";
+	}
+	
+	public static ModsPhysicalDescription getSec_technicalInput(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsPhysicalDescription sec_pd : ri.getSec_physicalDescriptions())
+			{
+				if(sec_pd.getPdForm()!=null && sec_pd.getPdForm().getType()==null)
+					return sec_pd;
+			}
+		}
+		return new ModsPhysicalDescription();
+	}
+	public static ModsPhysicalDescription getSec_coverage(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsPhysicalDescription sec_pd : ri.getSec_physicalDescriptions())
+			{
+				if(sec_pd.getExtent()!=null)
+					return sec_pd;
+			}
+		}
+		return new ModsPhysicalDescription();
+	}
+	
+	public static ModsLocationSEC getSec_url(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri : md.getRelatedItems())
+		{
+			for(ModsLocationSEC sec_location : ri.getSec_location())
+			{
+				if(sec_location.getSec_url() != null)
+					return sec_location;
+			}
+		}
+		return new ModsLocationSEC();
+	}
+	
 }
