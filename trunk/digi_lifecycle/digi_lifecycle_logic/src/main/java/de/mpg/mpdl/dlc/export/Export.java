@@ -160,6 +160,8 @@ public class Export {
 				document.newPage();
 				//Set toc link for outline
 				document.add(new Chunk("Table of contents").setLocalDestination("toc"));
+				document.add(Chunk.NEWLINE);
+				document.add(Chunk.NEWLINE);
 				PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("toc", false), "Table of contents");
 			
 				for (int i = 0; i< vol.getTeiSd().getPbOrDiv().size(); i++)			
@@ -175,7 +177,7 @@ public class Export {
 							if (currentElem.getElementType().name().equals("FRONT") || currentElem.getElementType().name().equals("BACK") 
 									|| currentElem.getElementType().name().equals("BODY"))
 							{
-								document.add(new Paragraph(currentElem.getElementType().name().toString()));
+								//document.add(new Paragraph(currentElem.getElementType().name().toString()));
 								level += "  ";
 								document = this.createTree(currentElem.getPbOrDiv(), document, root);
 							}
@@ -415,30 +417,32 @@ public class Export {
 		Font fontitalic = FontFactory.getFont("Verdana", 12, Font.ITALIC);
 		PdfOutline oline = root;
 		String titleStr = "";
+		String type = "";
 		
 		for (int i = 0; i < elems.size(); i++)
 		{
 
 				if (elems.get(i).getElementType().name().equals("DIV") || elems.get(i).getElementType().name().equals("TITLE_PAGE"))
 				{
+					para.add(level);
 					Div elem = (Div) elems.get(i);
 					if (elem.getType() != null)
 					{
-						para.add(level + "[" + elem.getType() + "] ");
+						type = "[" + elem.getType() + "] ";
 					}
 					else
 					{
-						para.add(level + "[section] ");
+						type = "[section] ";
 					}
-					if (elem.getNumeration() != null)
+					if (elem.getNumeration() != null && elem.getNumeration() != "")
 					{
-						para.add(elem.getNumeration());
+						Phrase num = new Phrase(elem.getNumeration(), fontbold);
+						para.add(num);
+						para.add(": ");
 					}
 					
 					if(elem.getDocAuthors()!=null && elem.getDocAuthors().size()>0)
 					{
-						para.add(": ");
-						
 						int n=0;
 						for(DocAuthor docAuthor : elem.getDocAuthors())
 						{
@@ -451,13 +455,9 @@ public class Export {
 							n++;
 							
 						}
-							para.add(": ");
+							//para.add(": ");
 					}
-					else
-					{
-						para.add(": ");
-					}
-					
+
 					/*
 					if (elem.getAuthor1inv() != null)
 					{
@@ -478,13 +478,18 @@ public class Export {
 					}
 					*/
 					//Element title
-					if (elem.getHead().size() > 0)
+					if (elem.getHead().size() > 0 && elem.getHead().get(0) != "")
 					{
-						Phrase title = new Phrase(" " + elem.getHead().get(0) + " ", fontbold);
-						para.add(title);
-						titleStr = title.getContent();
-
+						titleStr = elem.getHead().get(0);
+						para.add(titleStr);						
 					}
+					else
+					{
+						para.add(type);
+						titleStr = type;
+						type = "";
+					}
+					
 					if (elem.getElementType().name().equals("TITLE_PAGE"))
 					{
 						TitlePage tp = (TitlePage) elem;
