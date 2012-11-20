@@ -130,7 +130,6 @@ public abstract class BasePaginatorBean<ListElementType>
     {
         //if(FacesContext.getCurrentInstance().getRenderResponse())
     	//{
-    		System.out.println("Get Init!!!! ");
         	update(); 
     	//}
         return "";
@@ -144,7 +143,6 @@ public abstract class BasePaginatorBean<ListElementType>
      */ 
     public void update()
     {  
-    	System.out.println("Update!!!! ");
         try 
         {  
             if (elementsPerPage == 0)
