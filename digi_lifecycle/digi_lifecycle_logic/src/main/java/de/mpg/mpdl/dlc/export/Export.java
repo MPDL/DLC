@@ -26,6 +26,7 @@ import net.sf.saxon.TransformerFactoryImpl;
 
 import org.apache.log4j.Logger;
 
+import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -35,6 +36,11 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
+import com.lowagie.text.Section;
+import com.lowagie.text.pdf.PdfAction;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfDestination;
+import com.lowagie.text.pdf.PdfOutline;
 import com.lowagie.text.pdf.PdfWriter;
 
 import de.escidoc.core.resources.common.MetadataRecord;
@@ -51,7 +57,9 @@ import de.mpg.mpdl.dlc.vo.mods.ModsName;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
+import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
 
@@ -101,7 +109,7 @@ public class Export {
             transformer.setParameter("metsUrl",PropertyReader.getProperty("escidoc.common.framework.url")+metsUrl);
             transformer.setParameter("imageUrl", PropertyReader.getProperty("image-upload.url.download")); 
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
+            
             StringReader xmlSource = (new StringReader(itemXml));
             transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
         }
@@ -130,9 +138,13 @@ public class Export {
 		Volume vol = volServiceBean.loadCompleteVolume(itemId, null);
 		Document document = new Document();
 		String imageurl = "";
-		PdfWriter.getInstance(document, out);
+		PdfWriter writer = PdfWriter.getInstance(document, out);
 		
 		document.open();
+		
+		PdfContentByte cb = writer.getDirectContent();
+		PdfOutline root = cb.getRootOutline();
+		writer.setViewerPreferences(PdfWriter.PageModeUseOutlines);
 		document.setPageSize(PageSize.A4);
 		document.addCreator("Digitization Lifecycle");
 		
@@ -146,6 +158,9 @@ public class Export {
 			{
 				//write structure to pdf
 				document.newPage();
+				//Set toc link for outline
+				document.add(new Chunk("Table of contents").setLocalDestination("toc"));
+				PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("toc", false), "Table of contents");
 			
 				for (int i = 0; i< vol.getTeiSd().getPbOrDiv().size(); i++)			
 				{
@@ -154,7 +169,7 @@ public class Export {
 					{
 						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))
 						{
-								document = this.createTree(currentElem.getPbOrDiv(), document);
+								document = this.createTree(currentElem.getPbOrDiv(), document, root);
 						}
 						else 
 							if (currentElem.getElementType().name().equals("FRONT") || currentElem.getElementType().name().equals("BACK") 
@@ -162,10 +177,10 @@ public class Export {
 							{
 								document.add(new Paragraph(currentElem.getElementType().name().toString()));
 								level += "  ";
-								document = this.createTree(currentElem.getPbOrDiv(), document);
+								document = this.createTree(currentElem.getPbOrDiv(), document, root);
 							}
 					}
-				}
+				}	
 			}
 			//write images to pdf
 			for (int i = 0; i< vol.getPages().size(); i++)
@@ -175,7 +190,10 @@ public class Export {
 				
 				imageurl = PropertyReader.getProperty("image-upload.url.download") + "web/" + page.getContentIds();
 				image = Image.getInstance (imageurl);
-					
+	
+				//Set image link for outline
+				document.add(new Chunk("   ").setLocalDestination(page.getContentIds()));
+				
 				document.newPage();
 					
 				image.setAlignment(Image.MIDDLE);
@@ -196,7 +214,8 @@ public class Export {
 		document.close();						
 		return out.toByteArray();
 	}
-	
+
+
 	/**
 	 * Generates the bibliografic metadata for pdf export
 	 * @param doc
@@ -240,10 +259,13 @@ public class Export {
 		//write metadata to pdf
 		if (md.getTitles() != null && md.getTitles().size() > 0)
 		{
-			document.addTitle(md.getTitles().get(0).getTitle());
-			para = new Paragraph(md.getTitles().get(0).getTitle(),FontFactory.getFont("Verdana", 16, Font.BOLD));
-			para.setAlignment(Element.ALIGN_CENTER);
-			document.add(para);
+			if (md.getTitles().get(0) != null && md.getTitles().get(0).getTitle() != null)
+			{
+				document.addTitle(md.getTitles().get(0).getTitle());
+				para = new Paragraph(md.getTitles().get(0).getTitle(),FontFactory.getFont("Verdana", 16, Font.BOLD));
+				para.setAlignment(Element.ALIGN_CENTER);
+				document.add(para);
+			}
 		}
 		para = new Paragraph("Collection: " + context.getProperties().getName(), fontColor);
 		para.setAlignment(Element.ALIGN_CENTER);
@@ -345,15 +367,18 @@ public class Export {
 		}
 		if (md.getPhysicalDescriptions() != null && md.getPhysicalDescriptions().size()>0 && md.getPhysicalDescriptions().get(0) != null)
 		{
-			phrase1 = new Phrase("Extents: ", fontbold);
-			phrase2 = new Phrase(md.getPhysicalDescriptions().get(0).getExtent());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
+			if (md.getPhysicalDescriptions().get(0).getExtent() != null)
+			{
+				phrase1 = new Phrase("Extents: ", fontbold);
+				phrase2 = new Phrase("" + md.getPhysicalDescriptions().get(0).getExtent());
+				para = new Paragraph();
+				para.add(phrase1);
+				para.add(phrase2);
+				document.add(para);
+			}
 		}
 		phrase1 = new Phrase("Number of Scans: ", fontbold);
-		phrase2 = new Phrase(vol.getPages().size());
+		phrase2 = new Phrase("" + vol.getMets().getPages().size());
 		para = new Paragraph();
 		para.add(phrase1);
 		para.add(phrase2);
@@ -382,16 +407,18 @@ public class Export {
 	 * @return
 	 * @throws DocumentException
 	 */
-	private Document createTree(List <PbOrDiv> elems, Document doc) throws DocumentException
+	private Document createTree(List <PbOrDiv> elems, Document doc, PdfOutline root) throws DocumentException
 	{
 		Paragraph para = new Paragraph();
 		Font font = FontFactory.getFont("Verdana");
 		Font fontbold = FontFactory.getFont("Verdana", 12, Font.BOLD);
 		Font fontitalic = FontFactory.getFont("Verdana", 12, Font.ITALIC);
+		PdfOutline oline = root;
+		String titleStr = "";
 		
 		for (int i = 0; i < elems.size(); i++)
 		{
-				
+
 				if (elems.get(i).getElementType().name().equals("DIV") || elems.get(i).getElementType().name().equals("TITLE_PAGE"))
 				{
 					Div elem = (Div) elems.get(i);
@@ -424,7 +451,7 @@ public class Export {
 							n++;
 							
 						}
-						para.add(": ");
+							para.add(": ");
 					}
 					else
 					{
@@ -455,13 +482,46 @@ public class Export {
 					{
 						Phrase title = new Phrase(" " + elem.getHead().get(0) + " ", fontbold);
 						para.add(title);
+						titleStr = title.getContent();
+
 					}
 					if (elem.getElementType().name().equals("TITLE_PAGE"))
 					{
 						TitlePage tp = (TitlePage) elem;
-						para.add(this.replaceLineBreaksWithBlanks(tp.getDocTitles().get(0).getTitle()));
+						titleStr = this.replaceLineBreaksWithBlanks(tp.getDocTitles().get(0).getTitle());
+						para.add(titleStr);
 					}
-					
+
+					//************* START CREATE OUTLINE ******************************************************************************
+					List<PbOrDiv> pd = elem.getPbOrDiv();
+					if (pd!= null && pd.size() > 0)
+					{
+						//Outline to a Page
+						if (pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
+						{
+							Pagebreak pb = (Pagebreak) pd.get(0);
+							PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(pb.getFacs(), false), titleStr);	
+							oline = out;
+						}
+					}
+
+					//Outline to a titlepage
+					if (elem.getElementType().name().equalsIgnoreCase("TITLE_PAGE"))
+					{
+						TitlePage tp = (TitlePage) elem;
+						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(tp.getId(), false), titleStr);	
+						oline = out;
+					}
+					//Outline to a section
+					else if (elem.getElementType().name().equalsIgnoreCase("div") && elem.getType().equalsIgnoreCase("section"))
+					{								
+						Div sec = (Div) elem;
+						titleStr = sec.getHead().get(0);
+						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(sec.getId(), false), titleStr);	
+						oline = out;
+					}
+					//*************END CREATE OUTLINE ******************************************************************************
+
 					doc.add(para);
 					para = new Paragraph();
 				}
@@ -474,7 +534,8 @@ public class Export {
 			if (elems.get(i).getPbOrDiv().size() > 0)
 			{
 				level+="  ";
-				this.createTree(elems.get(i).getPbOrDiv(), doc);
+				this.createTree(elems.get(i).getPbOrDiv(), doc, oline);
+				oline = oline.parent();
 				level = level.substring(0, level.length() - 2);
 			}	
 			
