@@ -149,7 +149,7 @@ public class VolumeServiceBean {
 			
 			Map<String, String> persistenceProps = new HashMap<String, String>();
 			persistenceProps.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
-			persistenceProps.put("javax.persistence.jdbc.url", "jdbc:postgresql://dlc.mpdl.mpg.de:5432/dlc");//PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
+			persistenceProps.put("javax.persistence.jdbc.url", PropertyReader.getProperty("dlc.batch_ingest.database.connection.url"));
 			persistenceProps.put("javax.persistence.jdbc.user", PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
 			persistenceProps.put("javax.persistence.jdbc.password", PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
 			
