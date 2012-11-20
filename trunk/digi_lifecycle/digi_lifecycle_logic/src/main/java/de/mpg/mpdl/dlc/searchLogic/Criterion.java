@@ -17,6 +17,21 @@ public abstract class Criterion {
 	
 	protected String connector = "=";
 
+	
+	public Criterion()
+	{
+		
+	}
+	
+	public Criterion(Criterion toBeCloned)
+	{
+		this.operator = toBeCloned.operator;
+		this.value = toBeCloned.value;
+		this.openBracket = toBeCloned.openBracket;
+		this.closeBracket = toBeCloned.closeBracket;
+		this.connector = toBeCloned.connector;
+	}
+	
 	public Operator getOperator() {
 		return operator;
 	}
