@@ -145,6 +145,7 @@ public class Export {
 		PdfContentByte cb = writer.getDirectContent();
 		PdfOutline root = cb.getRootOutline();
 		writer.setViewerPreferences(PdfWriter.PageModeUseOutlines);
+		writer.setViewerPreferences(PdfWriter.PageLayoutTwoPageRight);
 		document.setPageSize(PageSize.A4);
 		document.addCreator("Digitization Lifecycle");
 		
@@ -152,7 +153,7 @@ public class Export {
 		{		
 			//write organizational logo to pdf
 			document.newPage();
-			document = this.generateBiblMd(vol, document);
+			document = this.generateBiblMd(vol, document, root);
 		
 			if (vol.getTeiSd() != null)
 			{
@@ -226,7 +227,7 @@ public class Export {
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
-	private Document generateBiblMd (Volume vol, Document document) throws DocumentException
+	private Document generateBiblMd (Volume vol, Document document, PdfOutline root) throws DocumentException
 	{	
 		ModsMetadata md = vol.getModsMetadata();
 		OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
@@ -238,6 +239,12 @@ public class Export {
 		Paragraph para = new Paragraph();
 		Phrase phrase1 = new Phrase();
 		Phrase phrase2 = new Phrase();
+		
+		//Set md link for outline
+		document.add(new Chunk("Title information").setLocalDestination("md"));
+		document.add(Chunk.NEWLINE);
+		document.add(Chunk.NEWLINE);
+		PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("md", false), "Title information");
 		
 		try {
 			Image ou;
