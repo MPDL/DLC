@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 
 @Entity
-@Table(name="logMessages")
+@Table(name="manualingest_logmessages")
 public class IngestLogMessage {
 
 	

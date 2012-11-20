@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
 import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 
 @Entity
-@Table(name="item")
+@Table(name="manualingest_items")
 @NamedQueries({
     @NamedQuery(name="DatabaseItem.itemsByUser", query="SELECT i FROM DatabaseItem i WHERE i.userId = :userId ORDER BY i.dateCreated DESC"),
     @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id")
