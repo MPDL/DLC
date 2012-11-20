@@ -10,6 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.apache.log4j.helpers.Loader;
 
 import de.escidoc.core.client.SearchHandlerClient;
 import de.escidoc.core.resources.common.Relation;
@@ -179,28 +180,37 @@ public class SearchBean {
 	 */
 	public VolumeSearchResult search(VolumeTypes[] volTypes, List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
+		boolean loadVolumeIntoMultivolumes = false;
+		for(VolumeTypes volType : volTypes)
+		{
+			if(VolumeTypes.MULTIVOLUME.equals(volType))
+			{
+				loadVolumeIntoMultivolumes = true;
+				break;
+			}
+		}
 		
-		return search(getCompleteSearchCriterions(volTypes, scList), sortList, limit, offset, dlcIndexName, null);
+		return search(getCompleteSearchCriterions(volTypes, scList), sortList, limit, offset, dlcIndexName, loadVolumeIntoMultivolumes, null);
 	}
 	
-	private VolumeSearchResult search(List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset, String index, String userHandle) throws Exception
+	private VolumeSearchResult search(List<SearchCriterion> scList, List<SortCriterion> sortList, int limit, int offset, String index, boolean loadVolumesIntoMultivolumes, String userHandle) throws Exception
 	{  
 		
 		//SearchCriterion itemCriterion = new SearchCriterion(SearchType.OBJECTTYPE, "item");
 		//scList.add(0, itemCriterion);
 		String cqlQuery = SearchCriterion.toCql(scList, false);
 		
-		return searchByCql(cqlQuery, sortList, limit, offset, index, userHandle);
+		return searchByCql(cqlQuery, sortList, limit, offset, index, loadVolumesIntoMultivolumes, userHandle);
 	}
 	
 	
 	
 	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset) throws Exception
 	{
-		return searchByCql(cql, sortList, limit, offset, dlcIndexName, null);
+		return searchByCql(cql, sortList, limit, offset, dlcIndexName, true, null);
 	}
 	
-	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset, String index, String userHandle) throws Exception
+	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset, String index, boolean loadVolumesIntoMultivolumes, String userHandle) throws Exception
 	{
 		long start = System.currentTimeMillis();
 		
@@ -234,7 +244,11 @@ public class SearchBean {
 		} 
 		
 		//Add volumes to multivolume
-		volServiceBean.loadVolumesForMultivolume(volumeResult, null, false);
+		if(loadVolumesIntoMultivolumes)
+		{
+			volServiceBean.loadVolumesForMultivolume(volumeResult, null, false, null, null);
+		}
+		
 		
 		long time = System.currentTimeMillis() - start;
 		System.out.println("Time search: " + time );

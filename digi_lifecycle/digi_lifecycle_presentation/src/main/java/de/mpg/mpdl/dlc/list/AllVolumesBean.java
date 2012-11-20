@@ -320,7 +320,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			em.close();
 			*/
 			
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus);
 			
 			
 		}
@@ -335,7 +335,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			
 			
 			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true);
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released});
 			//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		}
 		this.totalNumberOfRecords = res.getNumberOfRecords();

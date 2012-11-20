@@ -70,10 +70,18 @@ public class FilterBean {
 	
 	private String getCompleteFilterQueries(VolumeTypes[] volTypes, VolumeStatus[] volStatus, VolumeStatus[] publicStatus, List<SearchCriterion> fcList)
 	{
+		
+		//Clone list, so original objects are not touched
+		List<SearchCriterion> clonedFcList = new ArrayList<SearchCriterion>();
+		for(SearchCriterion sc : fcList)
+		{
+			clonedFcList.add(new SearchCriterion(sc));
+		}
+		
 		List<SearchCriterion> fcStandard = getStandardFilterCriterions(volTypes, volStatus, publicStatus);
 		//throw out empty entries
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
-		for(SearchCriterion fc : fcList)
+		for(SearchCriterion fc : clonedFcList)
 		{
 			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getSearchType()!=null)
 			{
@@ -86,6 +94,7 @@ public class FilterBean {
 		{
 			listWithoutEmptyEntries.get(0).setOpenBracket(listWithoutEmptyEntries.get(0).getOpenBracket()+1);
 			listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).setCloseBracket(listWithoutEmptyEntries.get(listWithoutEmptyEntries.size()-1).getCloseBracket()+1);
+			listWithoutEmptyEntries.get(0).setOperator(Operator.AND);
 		}
 		
 		fcStandard.addAll(listWithoutEmptyEntries);
@@ -129,58 +138,66 @@ public class FilterBean {
 			}
 		}
 		
-		
-		for(int i = 0; i<volVersionStatus.length; i++)
+
+		if(volVersionStatus!=null)
 		{
-			VolumeStatus status = volVersionStatus[i];
-			if(i==0)
+			for(int i = 0; i<volVersionStatus.length; i++)
 			{
-				SearchCriterion fcStatus;
-				if(volVersionStatus.length >1)
-					fcStatus = new SearchCriterion(Operator.AND, SearchType.VERSION_STATUS,status.getStatus(), 1, 0);
+				VolumeStatus status = volVersionStatus[i];
+				if(i==0)
+				{
+					SearchCriterion fcStatus;
+					if(volVersionStatus.length >1)
+						fcStatus = new SearchCriterion(Operator.AND, SearchType.VERSION_STATUS,status.getStatus(), 1, 0);
+					else
+						fcStatus = new SearchCriterion(Operator.AND, SearchType.VERSION_STATUS,status.getStatus(), 0, 0);
+					
+					fcList.add(fcStatus);
+				}
+				else if( i == volVersionStatus.length -1)
+				{
+					SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.VERSION_STATUS,status.getStatus(), 0, 1);
+					fcList.add(fcStatus);
+				}
 				else
-					fcStatus = new SearchCriterion(Operator.AND, SearchType.VERSION_STATUS,status.getStatus(), 0, 0);
-				
-				fcList.add(fcStatus);
+				{
+					SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.VERSION_STATUS,status.getStatus(), 0, 0);
+					fcList.add(fcStatus);
+				}
+					
 			}
-			else if( i == volVersionStatus.length -1)
-			{
-				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.VERSION_STATUS,status.getStatus(), 0, 1);
-				fcList.add(fcStatus);
-			}
-			else
-			{
-				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.VERSION_STATUS,status.getStatus(), 0, 0);
-				fcList.add(fcStatus);
-			}
-				
 		}
 		
-		for(int i = 0; i<publicStatus.length; i++)
+		
+		if(publicStatus!=null)
 		{
-			VolumeStatus status = publicStatus[i];
-			if(i==0)
+			for(int i = 0; i<publicStatus.length; i++)
 			{
-				SearchCriterion fcStatus;
-				if(publicStatus.length >1)
-					fcStatus = new SearchCriterion(Operator.AND, SearchType.PUBLIC_STATUS,status.getStatus(), 1, 0);
+				VolumeStatus status = publicStatus[i];
+				if(i==0)
+				{
+					SearchCriterion fcStatus;
+					if(publicStatus.length >1)
+						fcStatus = new SearchCriterion(Operator.AND, SearchType.PUBLIC_STATUS,status.getStatus(), 1, 0);
+					else
+						fcStatus = new SearchCriterion(Operator.AND, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 0);
+					
+					fcList.add(fcStatus);
+				}
+				else if( i == publicStatus.length -1)
+				{
+					SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 1);
+					fcList.add(fcStatus);
+				}
 				else
-					fcStatus = new SearchCriterion(Operator.AND, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 0);
-				
-				fcList.add(fcStatus);
+				{
+					SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 0);
+					fcList.add(fcStatus);
+				}
+					
 			}
-			else if( i == publicStatus.length -1)
-			{
-				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 1);
-				fcList.add(fcStatus);
-			}
-			else
-			{
-				SearchCriterion fcStatus = new SearchCriterion(Operator.OR, SearchType.PUBLIC_STATUS,status.getStatus(), 0, 0);
-				fcList.add(fcStatus);
-			}
-				
 		}
+		
 		
 		return fcList;
 	}

@@ -31,6 +31,7 @@ public class SearchCriterion extends Criterion{
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}, new String[]{"/properties/context/id"}),
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}, new String[]{"/properties/content-model/id"}),
 		OBJECTTYPE(new String[]{"escidoc.objecttype"}, null),
+		OBJECT_ID(new String[]{"escidoc.objid"}, new String[]{"/id"}),
 	
 		CREATED_BY(new String[]{"escidoc.created-by.name"}, new String[]{"/properties/created-by/id"}),
 		
