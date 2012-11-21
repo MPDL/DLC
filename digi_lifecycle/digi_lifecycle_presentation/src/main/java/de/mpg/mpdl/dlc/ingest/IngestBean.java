@@ -503,6 +503,7 @@ public class IngestBean{
 		logger.info("File uploaded" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		
+		
 		if(fue.getFileItem()!=null)
 		{
 			if (fue.getFileItem().getName().endsWith(".mab.xml"))
