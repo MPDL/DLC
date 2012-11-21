@@ -41,6 +41,9 @@ public class SearchCriterion extends Criterion{
 		CDC_BINDING(new String[]{"dlc.cdc.binding"}, null),
 		CDC_BOOK_COVER_DECORATION(new String[]{"dlc.cdc.bookCoverDecoration"}, null),
 		CDC_TIPPED_IN(new String[]{"dlc.cdc.tippedIn"}, null),
+		CDC_ENDPAPER(new String[]{"dlc.cdc.endpaper"}, null),
+		CDC_MARGINALIA(new String[]{"dlc.cdc.marginalia"}, null),
+		CDC_EDGE(new String[]{"dlc.cdc.edge"}, null),
 		
 		
 		

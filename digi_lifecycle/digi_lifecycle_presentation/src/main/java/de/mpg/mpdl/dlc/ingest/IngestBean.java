@@ -988,8 +988,17 @@ public class IngestBean{
 					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
 					
-					imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
-					imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
+					if(getSelectedContentModel().equals(VolumeServiceBean.volumeContentModelId))
+					{
+						imp.setShortTitle(VolumeUtilBean.getVolumeShortTitleView(dummy));
+						imp.setSubTitle(VolumeUtilBean.getVolumeSubTitleView(dummy));
+					}
+					else
+					{
+						imp.setShortTitle(VolumeUtilBean.getShortTitleView(dummy));
+						imp.setSubTitle(VolumeUtilBean.getSubTitleView(dummy));
+					}
+					
 					//Volume volume = null;
 					
 					/*
