@@ -184,7 +184,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 			finally
 			{
 				em.getTransaction().begin();
-				em.persist(ingestMainProcess);
+				em.merge(ingestMainProcess);
 				em.getTransaction().commit();
 				//Delete temp files
 				try
