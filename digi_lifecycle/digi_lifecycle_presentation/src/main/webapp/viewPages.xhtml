@@ -127,7 +127,47 @@
 		</ui:define>
 		
 		<ui:define name="mainContent">
-			
+			<style type="text/css">
+				.cdc {
+					width:95.95%;
+					padding-top:1%;
+					padding-left:2%;
+					padding-right:2%;
+				}
+				
+				.cdcAttr {
+					width:95.95%;
+					padding-top:0%;
+					padding-left:5%;
+				}
+				
+				.cdcLabelHeader {
+					font-weight: bold;
+					font-size: 150%;
+					margin-top: 5%;
+				}
+				.cdcLabelHeader.eg3_container_1 {
+					padding-left:1%;
+					width:99%;
+				}
+				.cdcLabel {
+					margin-right:2%;
+					font-weight: bold;
+				}
+				
+				.cdcValue {
+					
+				}
+				
+				.cdcLabelAttr {
+					margin-right:2%;
+					font-weight: bold;
+				}
+				
+				.cdcValueAttr {
+					
+				}
+			</style>
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 			<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
@@ -208,47 +248,6 @@
 							</rich:tab>
 							
 							<rich:tab header="#{lbl.view_tab_description}" id="desc" rendered="#{not empty viewPages.volume.codicological}">  
-								<style>
-									.cdc {
-										width:95.95%;
-										padding-top:1%;
-										padding-left:2%;
-										padding-right:2%;
-									}
-									
-									.cdcAttr {
-										width:95.95%;
-										padding-top:0%;
-										padding-left:5%;
-									}
-									
-									.cdcLabelHeader {
-										font-weight: bold;
-										font-size: 150%;
-										margin-top: 5%;
-									}
-									.cdcLabelHeader.eg3_container_1 {
-										padding-left:1%;
-										width:99%;
-									}
-									.cdcLabel {
-										margin-right:2%;
-										font-weight: bold;
-									}
-									
-									.cdcValue {
-										
-									}
-									
-									.cdcLabelAttr {
-										margin-right:2%;
-										font-weight: bold;
-									}
-									
-									.cdcValueAttr {
-										
-									}
-								</style>
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor eg3_iconBar eg3_textRight">
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this); scrollThumbs();" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this); scrollThumbs();" value=" "/>
