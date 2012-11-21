@@ -142,7 +142,13 @@ public class CreateVolumeServiceBean {
 			item = client.create(item);
 			logger.info("Empty item created: " + item.getObjid());
 			
-			dbItem.setItemId(item.getOriginObjid());
+			
+			if(dbItem!=null)
+			{
+				dbItem.setItemId(item.getOriginObjid());
+			}
+				
+			
 			msg.setIngestStatus(IngestStatus.READY);
 			msg.setMessage("Empty item created: " + item.getObjid());
 			
