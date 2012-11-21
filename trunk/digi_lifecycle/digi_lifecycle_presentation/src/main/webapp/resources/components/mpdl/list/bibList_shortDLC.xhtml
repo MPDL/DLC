@@ -35,10 +35,11 @@
 			</h:panelGroup>
 		</h:panelGroup>
 		<script type="text/javascript">
-		$(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js").click(function(ev){
-			eg3_bibListToggleItemMediumView(this);
-		})
-			
+			var toggleAll = $(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js");
+			toggleAll.unbind("click");
+			toggleAll.click(function(ev){
+				eg3_bibListToggleItemMediumView(this);
+			})
 		</script>
 	</cc:implementation>
 </html>

@@ -38,130 +38,106 @@
 						
 						<h:panelGroup id="uploadedItems">
 						
-						
-						
-						<a4j:repeat var="dbItem" value="#{manualIngestLogBean.currentPartList}" rowKeyVar="rowKey" >
-							
-							
-							
-							
-							<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color:#{dbItem.ingestStatus == 'ERROR' ? 'red;' : dbItem.ingestStatus == 'READY' ? '#CACA86;' : '#EA7125;'}" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
-							<!-- update items which are in upload automatically every 30 seconds -->
-							<a4j:region>
-								 <a4j:poll id="poll" interval="5000" render="poll volumeUpload messages" enabled="#{dbItem.ingestStatus == 'RUNNING'}" action="#{manualIngestLogBean.checkUploadComplete(dbItem, rowKey)}"/>
-							</a4j:region>
-							
-							 
-							<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
-								<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
-									<h:panelGroup styleClass="eg3_itemStatusTitle">
-									<!--
-										<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
-										<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
-										<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
-									-->
+							<a4j:repeat var="dbItem" value="#{manualIngestLogBean.currentPartList}" rowKeyVar="rowKey" >
+								
+								<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color:#{dbItem.ingestStatus == 'ERROR' ? 'red;' : dbItem.ingestStatus == 'READY' ? '#CACA86;' : '#EA7125;'}" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+									<!-- update items which are in upload automatically every 30 seconds -->
+									<a4j:region>
+										 <a4j:poll id="poll" interval="5000" render="poll volumeUpload messages" enabled="#{dbItem.ingestStatus == 'RUNNING'}" action="#{manualIngestLogBean.checkUploadComplete(dbItem, rowKey)}"/>
+									</a4j:region>
+									
+									<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+										<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+											<h:panelGroup styleClass="eg3_itemStatusTitle">
+											<!--
+												<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+												<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
+												<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
+											-->
+											</h:panelGroup>
+										</h:panelGroup>
 									</h:panelGroup>
 									
-								</h:panelGroup>
-								
-							</h:panelGroup>
-							
-
-							<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
-								
-								
-								<h:panelGroup layout="block" styleClass="eg3_itemHeadline"  rendered="#{dbItem.ingestStatus != 'READY'}">
-									<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-										<h:outputText value="#{dbItem.shortTitle}"/>
-									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
-										<h:outputText value="#{dbItem.subTitle}"/>
-									</h:panelGroup>
-									
-								</h:panelGroup>
-								
-								<h:panelGroup layout="block" styleClass="eg3_itemHeadline"  rendered="#{dbItem.ingestStatus == 'READY'}">
-									<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-										<pretty:link mappingId="viewPagesWithoutNumber">
-											<f:param value="#{dbItem.itemId}"/>
-											<f:param value="recto-verso"/>
-											<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
-											<h:outputText value="#{dbItem.shortTitle}"/>
-										</pretty:link>
-									</h:panelGroup>
-									
-									<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
-										<h:outputText value="#{dbItem.subTitle}"/>
-									</h:panelGroup>
-									
-									
-									
-								</h:panelGroup>
-								
-								<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
-									<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
-									<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
-									<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
-								</h:panelGroup>
-								
-								
-								
-								<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
-										<rich:progressBar mode="client" value="#{dbItem.messages.size()}" id="progrs" maxValue="#{dbItem.numberOfImages}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
-								</h:panelGroup>
-								
-								
-								
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
-									<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
-										<h:panelGroup layout="block">
-											<label class="eg3_iconActionLabel eg3_noMarginLeft">
-												<h:outputText value="#{lbl.ingestLog_btn_showLogEntries}"/>
-											</label>
-											
+		
+									<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
+										<h:panelGroup layout="block" styleClass="eg3_itemHeadline"  rendered="#{dbItem.ingestStatus != 'READY'}">
+											<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+												<h:outputText value="#{dbItem.shortTitle}"/>
+											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+												<h:outputText value="#{dbItem.subTitle}"/>
+											</h:panelGroup>
 										</h:panelGroup>
 										
-									</h:panelGroup>
-								</h:panelGroup>
-								
-								
-								<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
-									
-									
-									<rich:dataTable value="#{dbItem.messages}" var="logMessage" rows="0">
-										<rich:column>
-											<h:outputText value="#{internationalizationHelper.getLabelForEnum('ingest_activityType', logMessage.type)}" />
-										</rich:column>
-
-										<rich:column>
-											<h:outputText value="#{logMessage.message}" />
-										</rich:column>
+										<h:panelGroup layout="block" styleClass="eg3_itemHeadline"  rendered="#{dbItem.ingestStatus == 'READY'}">
+											<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+												<pretty:link mappingId="viewPagesWithoutNumber">
+													<f:param value="#{dbItem.itemId}"/>
+													<f:param value="recto-verso"/>
+													<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
+													<h:outputText value="#{dbItem.shortTitle}"/>
+												</pretty:link>
+											</h:panelGroup>
+											
+											<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+												<h:outputText value="#{dbItem.subTitle}"/>
+											</h:panelGroup>
+										</h:panelGroup>
 										
-										<rich:column>
-											<b><h:outputText value="#{internationalizationHelper.getLabelForEnum('ingest_ingestStatus',logMessage.ingestStatus)}" style="color:#{logMessage.ingestStatus == 'ERROR' ? 'red;' : logMessage.ingestStatus == 'READY' ? 'green;' : '#EA7125;'}"/></b>
-										</rich:column>
-									
-									</rich:dataTable>					
-									
+										<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+											<h:outputText value="#{lbl.ingestLog_uploadInProgress}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+											<h:outputText value="#{lbl.ingestLog_uploadReady}" rendered="#{dbItem.ingestStatus == 'READY'}"/>
+											<h:outputText value="#{lbl.ingestLog_uploadError}" rendered="#{dbItem.ingestStatus == 'ERROR'}"/>
+										</h:panelGroup>
+										
+										<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+												<rich:progressBar mode="client" value="#{dbItem.messages.size()}" id="progrs" maxValue="#{dbItem.numberOfImages}" rendered="#{dbItem.ingestStatus == 'RUNNING'}"/>
+										</h:panelGroup>
+										
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
+											<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
+												<h:panelGroup layout="block">
+													<label class="eg3_iconActionLabel eg3_noMarginLeft">
+														<h:outputText value="#{lbl.ingestLog_btn_showLogEntries}"/>
+													</label>
+													<script type="text/javascript">
+														var toggle = $(".eg3_itemDetailAction_js");
+														toggle.unbind("click");
+														toggle.click(function(e){
+															eg3_bibListToggleItemMediumView(this);
+														});
+													</script>
+												</h:panelGroup>
+											</h:panelGroup>
+										</h:panelGroup>
+										
+										
+										<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
+											<rich:dataTable value="#{dbItem.messages}" var="logMessage" rows="0">
+												<rich:column>
+													<h:outputText value="#{internationalizationHelper.getLabelForEnum('ingest_activityType', logMessage.type)}" />
+												</rich:column>
+		
+												<rich:column>
+													<h:outputText value="#{logMessage.message}" />
+												</rich:column>
+												
+												<rich:column>
+													<b><h:outputText value="#{internationalizationHelper.getLabelForEnum('ingest_ingestStatus',logMessage.ingestStatus)}" style="color:#{logMessage.ingestStatus == 'ERROR' ? 'red;' : logMessage.ingestStatus == 'READY' ? 'green;' : '#EA7125;'}"/></b>
+												</rich:column>
+											
+											</rich:dataTable>					
+										</h:panelGroup>
+										
+										
+										<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
+											<h:commandButton action="#{manualIngestLogBean.deleteDbItem(dbItem)}" value="#{lbl.ingestLog_btn_deleteLogEntry}" styleClass="eg3_borderradius_5">
+												<f:ajax render="@all"/>
+											</h:commandButton>
+										</h:panelGroup>
 									</h:panelGroup>
-								
-								
-								<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{dbItem.ingestStatus != 'RUNNING'}">
-									<h:commandButton action="#{manualIngestLogBean.deleteDbItem(dbItem)}" value="#{lbl.ingestLog_btn_deleteLogEntry}" styleClass="eg3_borderradius_5">
-										<f:ajax render="@all"/>
-									</h:commandButton>
 								</h:panelGroup>
-								
-							</h:panelGroup>
-							
-							
-							
-						</h:panelGroup>
-							
-						</a4j:repeat>
-						
-						
-						
+							</a4j:repeat>
 						
 						</h:panelGroup>
 					</list:bibList_shortDLC>
