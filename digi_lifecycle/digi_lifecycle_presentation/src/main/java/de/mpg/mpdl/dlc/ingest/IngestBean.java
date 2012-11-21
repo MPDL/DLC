@@ -545,7 +545,7 @@ public class IngestBean{
 	
 	public String uploadComplete()
 	{
-		
+		MessageHelper.infoMessage(InternationalizationHelper.getMessage("ingest_uploadComplete"));
 		
 		//process mab
 		if(recentlyUpladedMabFile!=null)
@@ -653,6 +653,8 @@ public class IngestBean{
 		
 	
 		checkSortImagesByTei();
+		
+		
 		
 		return "";
 	}
