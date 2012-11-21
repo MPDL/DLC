@@ -71,9 +71,18 @@ public class AdvancedSearchBean implements Observer {
 	private List<SelectItem> cdcTippedInSelectItems;
 	private List<SelectItem> cdcBindingSelectItems;
 	private List<SelectItem> cdcBookCoverDecorationSelectItems;
+	private List<SelectItem> cdcEndPaperSelectItems;
+	private List<SelectItem> cdcMarginaliaSelectItems;
+	private List<SelectItem> cdcEdgeSelectItems;
 	
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
+
+	
+
+	
+
+	
 	
 	@PostConstruct
 	public void postConstruct()
@@ -207,10 +216,78 @@ public class AdvancedSearchBean implements Observer {
 		cdcObjectTypeSelectItems.add(new SelectItem("Zeichnung", "Zeichnung"));
 		cdcObjectTypeSelectItems.add(new SelectItem("Malerei", "Malerei"));
 		
-		SelectItemGroup objectTypeGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_objectType"));
-		objectTypeGroup.setSelectItems(cdcObjectTypeSelectItems.toArray(new SelectItem[]{}));
+		//SelectItemGroup objectTypeGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_objectType"));
+		//objectTypeGroup.setSelectItems(cdcObjectTypeSelectItems.toArray(new SelectItem[]{}));
 		
 		//cdcSelectItems.add(objectTypeGroup);
+		
+		
+		
+		this.cdcTippedInSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> tippedInSelectItems = new ArrayList<SelectItem>();
+		cdcTippedInSelectItems.add(new SelectItem("Brief", "Brief"));
+		cdcTippedInSelectItems.add(new SelectItem("Foto", "Foto"));
+		cdcTippedInSelectItems.add(new SelectItem("Devotionalie", "Devotionalie"));
+		cdcTippedInSelectItems.add(new SelectItem("Notizblatt", "Notizblatt"));
+		SelectItemGroup tippedInGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_tippedIn"));
+		tippedInGroup.setSelectItems(cdcTippedInSelectItems.toArray(new SelectItem[]{}));
+		//cdcSelectItems.add(tippedInGroup);
+	
+		
+		this.cdcEndPaperSelectItems = new ArrayList<SelectItem>();
+		cdcEndPaperSelectItems.add(new SelectItem("Band ohne Vorsatzblätter", "Band ohne Vorsatzblätter"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Wasserzeichen", "Vorsatzblatt mit Wasserzeichen"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblätter bei Neubindung", "Vorsatzblätter bei Neubindung"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblätter bei Neubindung", "Vorsatzblätter bei Neubindung"));
+		cdcEndPaperSelectItems.add(new SelectItem("alte Bindung ohne Vorsatzblätter", "alte Bindung ohne Vorsatzblätter"));
+		cdcEndPaperSelectItems.add(new SelectItem("Originalbindung ohne Vorsatzblätter", "Originalbindung ohne Vorsatzblätter"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatz als Umschlagpapier", "Vorsatz als Umschlagpapier"));
+		cdcEndPaperSelectItems.add(new SelectItem("alte Bindung mit neuem Vorsatz", "alte Bindung mit neuem Vorsatz"));
+		cdcEndPaperSelectItems.add(new SelectItem("altes Vorsatzblatt mit neuem Vorsatzblatt verbunden", "altes Vorsatzblatt mit neuem Vorsatzblatt verbunden"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt entfernt", "Vorsatzblatt entfernt"));
+		cdcEndPaperSelectItems.add(new SelectItem("vorderes Vorsatzblatt handschriftlich beschrieben", "vorderes Vorsatzblatt handschriftlich beschrieben"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Widmungseintrag", "Vorsatzblatt mit Widmungseintrag"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Stiftungsnotiz", "Vorsatzblatt mit Stiftungsnotiz"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Besitzeintrag", "Vorsatzblatt mit Besitzeintrag"));
+		cdcEndPaperSelectItems.add(new SelectItem("alte Vorsatzblätter zum Spiegel verklebt", "alte Vorsatzblätter zum Spiegel verklebt"));
+		cdcEndPaperSelectItems.add(new SelectItem("neue Vorsatzblätter bei Restaurierung", "neue Vorsatzblätter bei Restaurierung"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatz aus Buntpapier", "Vorsatz aus Buntpapier"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatz aus Marmorpapier", "Vorsatz aus Marmorpapier"));
+		cdcEndPaperSelectItems.add(new SelectItem("vorderes Vorsatzblatt mit alter Signatur", "vorderes Vorsatzblatt mit alter Signatur"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Handzeichnung", "Vorsatzblatt mit Handzeichnung"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatz aus Goldbrokatpapier", "Vorsatz aus Goldbrokatpapier"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatz aus gefärbtem Papier", "Vorsatz aus gefärbtem Papier"));
+		cdcEndPaperSelectItems.add(new SelectItem("altes Vorsatzblatt mit Interimsumschlag verklebt", "altes Vorsatzblatt mit Interimsumschlag verklebt"));
+		cdcEndPaperSelectItems.add(new SelectItem("Vorsatzblatt mit Signatur", "Vorsatzblatt mit Signatur"));
+		cdcEndPaperSelectItems.add(new SelectItem("Neubindung ohne Vorsatz", "Neubindung ohne Vorsatz"));
+		cdcEndPaperSelectItems.add(new SelectItem("Pergament", "Pergament"));
+		cdcEndPaperSelectItems.add(new SelectItem("Andere Variante – siehe Details", "Andere Variante – siehe Details"));
+		
+		
+		
+		this.cdcEdgeSelectItems = new ArrayList<SelectItem>();
+		cdcEdgeSelectItems.add(new SelectItem("Goldschnitt", "Goldschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Farbschnitt", "Farbschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Schnitt bemalt", "Schnitt bemalt"));
+		cdcEdgeSelectItems.add(new SelectItem("Schnitt mit Titel beschriftet", "Schnitt mit Titel beschriftet"));
+		cdcEdgeSelectItems.add(new SelectItem("ohne Schnittverzierung", "ohne Schnittverzierung"));
+		cdcEdgeSelectItems.add(new SelectItem("Sprenkelschnitt", "Sprenkelschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Marmorschnitt", "Marmorschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Schnitt eingeritzt", "Schnitt eingeritzt"));
+		cdcEdgeSelectItems.add(new SelectItem("Tupfschnitt", "Tupfschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Schnittpunzierung", "Schnittpunzierung"));
+		cdcEdgeSelectItems.add(new SelectItem("Abziehschnitt", "Abziehschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Kreideschnitt", "Kreideschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("verschobener Schnitt", "verschobener Schnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Silberschnitt", "Silberschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Goldschnitt punziert", "Goldschnitt punziert"));
+		cdcEdgeSelectItems.add(new SelectItem("bei Neubindung beschnitten", "bei Neubindung beschnitten"));
+		cdcEdgeSelectItems.add(new SelectItem("Blätter unbeschnitten", "Blätter unbeschnitten"));
+		cdcEdgeSelectItems.add(new SelectItem("Kopfgoldschnitt", "Kopfgoldschnitt"));
+		cdcEdgeSelectItems.add(new SelectItem("Fore-edge-painting", "Fore-edge-painting"));
+		cdcEdgeSelectItems.add(new SelectItem("Bögen teilweise unaufgeschnitten", "Bögen teilweise unaufgeschnitten"));
+		cdcEdgeSelectItems.add(new SelectItem("aufgeschnitten", "aufgeschnitten"));
+		cdcEdgeSelectItems.add(new SelectItem("Blätter teilweise unbeschnitten", "Blätter teilweise unbeschnitten"));
 		
 		
 		this.cdcLeafMarkerSelectItems = new ArrayList<SelectItem>();
@@ -222,19 +299,26 @@ public class AdvancedSearchBean implements Observer {
 		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen lose, mit Tinte beschrieben", "Lesezeichen lose, mit Tinte beschrieben"));
 		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen, ausgeschnitten und bedruckt", "Lesezeichen, ausgeschnitten und bedruckt"));
 		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen bemalt", "Lesezeichen bemalt"));
-		SelectItemGroup leafMarkerGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_leafMarker"));
-		leafMarkerGroup.setSelectItems(cdcLeafMarkerSelectItems.toArray(new SelectItem[]{}));
+		//SelectItemGroup leafMarkerGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_leafMarker"));
+		//leafMarkerGroup.setSelectItems(cdcLeafMarkerSelectItems.toArray(new SelectItem[]{}));
 		//cdcSelectItems.add(leafMarkerGroup);
 		
-		this.cdcTippedInSelectItems = new ArrayList<SelectItem>();
-		//List<SelectItem> tippedInSelectItems = new ArrayList<SelectItem>();
-		cdcTippedInSelectItems.add(new SelectItem("Brief", "Brief"));
-		cdcTippedInSelectItems.add(new SelectItem("Foto", "Foto"));
-		cdcTippedInSelectItems.add(new SelectItem("Devotionalie", "Devotionalie"));
-		cdcTippedInSelectItems.add(new SelectItem("Notizblatt", "Notizblatt"));
-		SelectItemGroup tippedInGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_tippedIn"));
-		tippedInGroup.setSelectItems(cdcTippedInSelectItems.toArray(new SelectItem[]{}));
-		//cdcSelectItems.add(tippedInGroup);
+		
+		cdcMarginaliaSelectItems = new ArrayList<SelectItem>();
+		cdcMarginaliaSelectItems.add(new SelectItem("Interlinearglossen", "Interlinearglossen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Marginalglossen", "Marginalglossen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Korrekturen", "Korrekturen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Randnotizen", "Randnotizen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Zeigehand", "Zeigehand"));
+		cdcMarginaliaSelectItems.add(new SelectItem("autonome Randzeichnungen", "autonome Randzeichnungen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Schemata", "Schemata"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Stammbaum", "Stammbaum"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Federproben", "Federproben"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Anstreichungen", "Anstreichungen"));
+		cdcMarginaliaSelectItems.add(new SelectItem("Unterstreichungen", "Unterstreichungen"));
+		
+		
+	
 		
 		
 		this.cdcBindingSelectItems = new ArrayList<SelectItem>();
@@ -359,6 +443,18 @@ public class AdvancedSearchBean implements Observer {
 			case CDC_TIPPED_IN:
 			
 				return cdcTippedInSelectItems;
+			
+			case CDC_ENDPAPER:
+				
+				return cdcEndPaperSelectItems;
+			
+			case CDC_MARGINALIA:
+				
+				return cdcMarginaliaSelectItems;
+			
+			case CDC_EDGE:
+				
+				return cdcEdgeSelectItems;
 			
 		}
 		

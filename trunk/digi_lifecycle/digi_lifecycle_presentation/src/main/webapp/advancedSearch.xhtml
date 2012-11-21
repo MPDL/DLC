@@ -345,6 +345,10 @@
 												<h:selectOneMenu value="#{sc.searchType}">						
 												<f:selectItem itemLabel="#{lbl.cdc_objectType}" itemValue="CDC_OBJECT_TYPE"/>
 												<f:selectItem itemLabel="#{lbl.cdc_tippedIn}" itemValue="CDC_TIPPED_IN"/>
+												<f:selectItem itemLabel="#{lbl.cdc_endpaper}" itemValue="CDC_ENDPAPER"/>
+												<f:selectItem itemLabel="#{lbl.cdc_edge}" itemValue="CDC_EDGE"/>
+												<f:selectItem itemLabel="#{lbl.cdc_leafMarker}" itemValue="CDC_LEAF_MARKER"/>
+												<f:selectItem itemLabel="#{lbl.cdc_marginalia}" itemValue="CDC_MARGINALIA"/>
 												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="CDC_BINDING"/>
 												<f:selectItem itemLabel="#{lbl.cdc_bookCoverDecoration}" itemValue="CDC_BOOK_COVER_DECORATION"/>
 												<f:ajax event="change" execute="@form" render=":#{rich:clientId('cdc')}"/>
