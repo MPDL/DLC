@@ -101,9 +101,13 @@ public class CreateVolumeServiceBean {
 	{
 		if(dbItem!=null)
 		{
-			dbItem.addMessage(msg);
+			
 			em.getTransaction().begin();
-			em.persist(msg);
+			em.merge(dbItem);
+			dbItem.addMessage(msg);
+			//em.persist(msg);
+			//em.flush();
+			
 			em.getTransaction().commit();
 		}
 		
