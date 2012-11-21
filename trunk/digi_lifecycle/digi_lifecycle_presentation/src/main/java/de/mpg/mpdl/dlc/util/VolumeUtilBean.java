@@ -928,6 +928,11 @@ public class VolumeUtilBean {
 			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.FREE, ""));		
 	}
 	
+	public void addNewCdcSearchCriterion(SearchCriterion sc, List<SearchCriterion> scList)
+	{		
+			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));		
+	}
+	
 	public void addNewContextList(List<SearchCriterion> contextList)
 	{		
 			contextList.add(new SearchCriterion(SearchType.CONTEXT_ID, ""));		

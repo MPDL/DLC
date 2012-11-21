@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.search;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,6 +13,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 
 import org.apache.log4j.Logger;
 
@@ -40,6 +42,8 @@ public class AdvancedSearchBean implements Observer {
 	
 	private List<SearchCriterion> searchCriterionList;	
 	
+	private List<SearchCriterion> cdcSearchCriterionList;	
+	
 	private String freeSearch ="";
 	
 	private SearchCriterion yearFrom = null;
@@ -61,6 +65,12 @@ public class AdvancedSearchBean implements Observer {
 	private List<SelectItem> allConItems;
 	//private ContextSearch contextSearchItem;
 	private List<ContextSearch> contextScElements = new ArrayList<ContextSearch>();
+	
+	private List<SelectItem> cdcObjectTypeSelectItems;
+	private List<SelectItem> cdcLeafMarkerSelectItems;
+	private List<SelectItem> cdcTippedInSelectItems;
+	private List<SelectItem> cdcBindingSelectItems;
+	private List<SelectItem> cdcBookCoverDecorationSelectItems;
 	
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
@@ -104,6 +114,8 @@ public class AdvancedSearchBean implements Observer {
 		
 		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		//this.contextSearchItem = new ContextSearch();
+		this.cdcSearchCriterionList = new ArrayList<SearchCriterion>();
+		this.cdcSearchCriterionList.add(new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));
 		
 		this.init();
 	}
@@ -124,8 +136,12 @@ public class AdvancedSearchBean implements Observer {
 		this.setAllLibItems(ouSelectItems);
 	}
 	
+	
+	
+	
 	public void init()
 	{
+		initCdcSelectItems();
 		//Set the libraries list
 		initOUList();
 		
@@ -170,6 +186,185 @@ public class AdvancedSearchBean implements Observer {
 		cs.setOuId(ouId);
 	}
 	
+	private void initCdcSelectItems()
+	{
+		this.cdcObjectTypeSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> objectTypeSelectItems = new ArrayList<SelectItem>();
+		cdcObjectTypeSelectItems.add(new SelectItem("", "Alle"));
+		cdcObjectTypeSelectItems.add(new SelectItem("gedrucktes Buch", "gedrucktes Buch"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Handschrift", "Handschrift"));
+		cdcObjectTypeSelectItems.add(new SelectItem("handschriftliches Dokument", "handschriftliches Dokument"));
+		cdcObjectTypeSelectItems.add(new SelectItem("maschinenschriftliches Manuskript", "maschinenschriftliches Manuskript"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Tafelband gebunden", "Tafelband gebunden"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Tafelband ungebunden", "Tafelband ungebunden"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Zeitschrift", "Zeitschrift"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Druckgraphik Einzelblatt", "Druckgraphik Einzelblatt"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Photographie", "Photographie"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Zeitungsartikel", "Zeitungsartikel"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Photokopie", "Photokopie"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Einzelblatt handschriftlich", "Einzelblatt handschriftlich"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Einzelblatt gedruckt", "Einzelblatt gedruckt"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Zeichnung", "Zeichnung"));
+		cdcObjectTypeSelectItems.add(new SelectItem("Malerei", "Malerei"));
+		
+		SelectItemGroup objectTypeGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_objectType"));
+		objectTypeGroup.setSelectItems(cdcObjectTypeSelectItems.toArray(new SelectItem[]{}));
+		
+		//cdcSelectItems.add(objectTypeGroup);
+		
+		
+		this.cdcLeafMarkerSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> leafMarkerSelectItems = new ArrayList<SelectItem>();
+		cdcLeafMarkerSelectItems.add(new SelectItem("Blattweiser Pergament", "Blattweiser Pergament"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Blattweiser Leder", "Blattweiser Leder"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Blattweiser Papier", "Blattweiser Papier"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen, unbeschriebenes Papier", "Lesezeichen, unbeschriebenes Papier"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen lose, mit Tinte beschrieben", "Lesezeichen lose, mit Tinte beschrieben"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen, ausgeschnitten und bedruckt", "Lesezeichen, ausgeschnitten und bedruckt"));
+		cdcLeafMarkerSelectItems.add(new SelectItem("Lesezeichen bemalt", "Lesezeichen bemalt"));
+		SelectItemGroup leafMarkerGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_leafMarker"));
+		leafMarkerGroup.setSelectItems(cdcLeafMarkerSelectItems.toArray(new SelectItem[]{}));
+		//cdcSelectItems.add(leafMarkerGroup);
+		
+		this.cdcTippedInSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> tippedInSelectItems = new ArrayList<SelectItem>();
+		cdcTippedInSelectItems.add(new SelectItem("Brief", "Brief"));
+		cdcTippedInSelectItems.add(new SelectItem("Foto", "Foto"));
+		cdcTippedInSelectItems.add(new SelectItem("Devotionalie", "Devotionalie"));
+		cdcTippedInSelectItems.add(new SelectItem("Notizblatt", "Notizblatt"));
+		SelectItemGroup tippedInGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_tippedIn"));
+		tippedInGroup.setSelectItems(cdcTippedInSelectItems.toArray(new SelectItem[]{}));
+		//cdcSelectItems.add(tippedInGroup);
+		
+		
+		this.cdcBindingSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> bindingSelectItems = new ArrayList<SelectItem>();
+		cdcBindingSelectItems.add(new SelectItem("Pergamenteinband", "Pergamenteinband"));
+		cdcBindingSelectItems.add(new SelectItem("Pergament auf Holz", "Pergament auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Pergament auf Pappe", "Pergament auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Halbpergamenteinband", "Halbpergamenteinband"));
+		cdcBindingSelectItems.add(new SelectItem("Viertelpergamenteinband", "Viertelpergamenteinband"));
+		cdcBindingSelectItems.add(new SelectItem("flexibler Pergamenteinband", "flexibler Pergamenteinband"));
+		cdcBindingSelectItems.add(new SelectItem("Schweinsledereinband", "Schweinsledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Schweinsleder auf Holz", "Schweinsleder auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Schweinsleder auf Pappe", "Schweinsleder auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Wildschweinledereinband", "Wildschweinledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Wildschweinleder auf Holz", "Wildschweinleder auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Wildschweinleder auf Pappe", "Wildschweinleder auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Kalbsledereinband", "Kalbsledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Kalbsleder auf Holz", "Kalbsleder auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Kalbsleder auf Pappe", "Kalbsleder auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Ziegenledereinband", "Ziegenledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Ziegenleder auf Holz", "Ziegenleder auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Ziegenleder auf Pappe", "Ziegenleder auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Schafsledereinband", "Schafsledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Schafsleder auf Holz", "Schafsleder auf Holz"));
+		cdcBindingSelectItems.add(new SelectItem("Schafsleder auf Pappe", "Schafsleder auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Halbledereinband", "Halbledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Viertelledereinband", "Viertelledereinband"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband", "Pappeinband"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Flexibler Pappeinband", "Pappeinband - Flexibler Pappeinband"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Marmorpapier auf Pappe", "Pappeinband - Marmorpapier auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Buntpapier auf Pappe", "Pappeinband - Buntpapier auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Brokatpapier auf Pappe", "Pappeinband - Brokatpapier auf Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Büttenpapier", "Pappeinband - Büttenpapier"));
+		cdcBindingSelectItems.add(new SelectItem("Interimsumschlag - Papier", "Interimsumschlag - Papier"));
+		cdcBindingSelectItems.add(new SelectItem("Interimseinband - Pappe", "Interimseinband - Pappe"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebeband", "Ganzgewebeband"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebeband - Baumwolle", "Ganzgewebeband - Baumwolle"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebeband - Leinenband", "Ganzgewebeband - Leinenband"));
+		cdcBindingSelectItems.add(new SelectItem("Gewebeband - Efalin Feinleinen", "Gewebeband - Efalin Feinleinen"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebeband - Samtband", "Ganzgewebeband - Samtband"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebeband - Seide", "Ganzgewebeband - Seide"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband", "Halbgewebeband"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband - Baumwolle", "Halbgewebeband - Baumwolle"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband - Leinen", "Halbgewebeband - Leinen"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband - Efalin Feinleinen", "Halbgewebeband - Efalin Feinleinen"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband - Samt", "Halbgewebeband - Samt"));
+		cdcBindingSelectItems.add(new SelectItem("Halbgewebeband - Seide", "Halbgewebeband - Seide"));
+		cdcBindingSelectItems.add(new SelectItem("Ganzgewebe - Mappe", "Ganzgewebe - Mappe"));
+		cdcBindingSelectItems.add(new SelectItem("Viertelgewebeband", "Viertelgewebeband"));
+		cdcBindingSelectItems.add(new SelectItem("Pamphlet-binding", "Pamphlet-binding"));
+		cdcBindingSelectItems.add(new SelectItem("ohne festen Einband", "ohne festen Einband"));
+		cdcBindingSelectItems.add(new SelectItem("Maroquineinband", "Maroquineinband"));
+		cdcBindingSelectItems.add(new SelectItem("Prachteinband", "Prachteinband"));
+		cdcBindingSelectItems.add(new SelectItem("Boxcalfband", "Boxcalfband"));
+		cdcBindingSelectItems.add(new SelectItem("Pappeinband - Pappmappe", "Pappeinband - Pappmappe"));
+		cdcBindingSelectItems.add(new SelectItem("Ledermappe", "Ledermappe"));
+		SelectItemGroup bindingGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_binding"));
+		bindingGroup.setSelectItems(cdcBindingSelectItems.toArray(new SelectItem[]{}));
+		//cdcSelectItems.add(bindingGroup);
+
+		this.cdcBookCoverDecorationSelectItems = new ArrayList<SelectItem>();
+		//List<SelectItem> bookCoverDecorationSelectItems = new ArrayList<SelectItem>();
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Flacher Rücken", "Flacher Rücken"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Bünde", "Bünde"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Doppelbünde", "Doppelbünde"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Querbänder", "Querbänder"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Blindstempelung", "Blindstempelung"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Blindstempelung - Einzelstempel", "Blindstempelung - Einzelstempel"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Blindstempelung - Rollenstempel", "Blindstempelung - Rollenstempel"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Blindstempelung - Plattenstempel", "Blindstempelung - Plattenstempel"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Goldprägung", "Goldprägung"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Streicheisenlinien", "Streicheisenlinien"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Lederschnitt", "Lederschnitt"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Goldschnitt punziert", "Goldschnitt punziert"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Goldschnitt bemalt", "Goldschnitt bemalt"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Intarsien", "Intarsien"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Einlegearbeit", "Einlegearbeit"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Wachsmalerei", "Wachsmalerei"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Lackmalerei", "Lackmalerei"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Silberbemalung", "Silberbemalung"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Schalblonierung farbig", "Schalblonierung farbig"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Stehkantenvergoldung", "Stehkantenvergoldung"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Innenkantenvergoldung", "Innenkantenvergoldung"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Wappensupralibros", "Wappensupralibros"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Portraitsupralibros", "Portraitsupralibros"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Cameo", "Cameo"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Motto", "Motto"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Buckel", "Buckel"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Eckbeschläge", "Eckbeschläge"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Schließbänder Leder oder Metall", "Schließbänder Leder oder Metall"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Schleifenschließen Leder", "Schleifenschließen Leder"));
+		cdcBookCoverDecorationSelectItems.add(new SelectItem("Schleifenschließen textil", "Schleifenschließen textil"));
+
+		SelectItemGroup bookCoverDecorationGroup = new SelectItemGroup(InternationalizationHelper.getLabel("cdc_bookCoverDecoration"));
+		bookCoverDecorationGroup.setSelectItems(cdcBookCoverDecorationSelectItems.toArray(new SelectItem[]{}));
+		//cdcSelectItems.add(bookCoverDecorationGroup);
+		
+	}
+	
+	public List<SelectItem> getCdcSelectItemsForSearchType(SearchType st)
+	{
+		
+		switch (SearchType.valueOf(st.name()))
+		{
+			case CDC_OBJECT_TYPE:
+			
+				
+				return cdcObjectTypeSelectItems;
+			
+			case CDC_LEAF_MARKER:
+			
+				return cdcLeafMarkerSelectItems;
+			
+			case CDC_BINDING:
+			
+				return cdcBindingSelectItems;
+			
+			case CDC_BOOK_COVER_DECORATION :
+			
+				return cdcBookCoverDecorationSelectItems;
+			
+			case CDC_TIPPED_IN:
+			
+				return cdcTippedInSelectItems;
+			
+		}
+		
+		return null;
+	}
+	
 	public String startSearch()
 	{		
 		try {
@@ -200,6 +395,8 @@ public class AdvancedSearchBean implements Observer {
 				
 				scList.add(this.cdcSearch);
 			}
+			
+			scList.addAll(cdcSearchCriterionList);
 			
 		
 			advancedSearchResultBean.setSearchCriterionList(scList);
@@ -341,6 +538,9 @@ public class AdvancedSearchBean implements Observer {
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		
+		this.cdcSearchCriterionList = new ArrayList<SearchCriterion>();
+		this.cdcSearchCriterionList.add(new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));
+		
 		//Reset context
 		this.contextScElements.clear();
 		ContextSearch cs = new ContextSearch();
@@ -455,6 +655,58 @@ public class AdvancedSearchBean implements Observer {
 
 	public void setInternationalizationHelper(InternationalizationHelper internationalizationHelper) {
 		this.internationalizationHelper = internationalizationHelper;
+	}
+
+
+	public List<SearchCriterion> getCdcSearchCriterionList() {
+		return cdcSearchCriterionList;
+	}
+
+	public void setCdcSearchCriterionList(List<SearchCriterion> cdcSearchCriterionList) {
+		this.cdcSearchCriterionList = cdcSearchCriterionList;
+	}
+
+	public List<SelectItem> getCdcObjectTypeSelectItems() {
+		return cdcObjectTypeSelectItems;
+	}
+
+	public void setCdcObjectTypeSelectItems(
+			List<SelectItem> cdcObjectTypeSelectItems) {
+		this.cdcObjectTypeSelectItems = cdcObjectTypeSelectItems;
+	}
+
+	public List<SelectItem> getCdcLeafMarkerSelectItems() {
+		return cdcLeafMarkerSelectItems;
+	}
+
+	public void setCdcLeafMarkerSelectItems(
+			List<SelectItem> cdcLeafMarkerSelectItems) {
+		this.cdcLeafMarkerSelectItems = cdcLeafMarkerSelectItems;
+	}
+
+	public List<SelectItem> getCdcTippedInSelectItems() {
+		return cdcTippedInSelectItems;
+	}
+
+	public void setCdcTippedInSelectItems(List<SelectItem> cdcTippedInSelectItems) {
+		this.cdcTippedInSelectItems = cdcTippedInSelectItems;
+	}
+
+	public List<SelectItem> getCdcBindingSelectItems() {
+		return cdcBindingSelectItems;
+	}
+
+	public void setCdcBindingSelectItems(List<SelectItem> cdcBindingSelectItems) {
+		this.cdcBindingSelectItems = cdcBindingSelectItems;
+	}
+
+	public List<SelectItem> getCdcBookCoverDecorationSelectItems() {
+		return cdcBookCoverDecorationSelectItems;
+	}
+
+	public void setCdcBookCoverDecorationSelectItems(
+			List<SelectItem> cdcBookCoverDecorationSelectItems) {
+		this.cdcBookCoverDecorationSelectItems = cdcBookCoverDecorationSelectItems;
 	}
 
 	

@@ -36,6 +36,13 @@ public class SearchCriterion extends Criterion{
 		CREATED_BY(new String[]{"escidoc.created-by.name"}, new String[]{"/properties/created-by/id"}),
 		
 		CODICOLOGICAL(new String[]{"dlc.cdc.metadata"}, null),
+		CDC_OBJECT_TYPE(new String[]{"dlc.cdc.objectType"}, null),
+		CDC_LEAF_MARKER(new String[]{"dlc.cdc.leafMarker"}, null),
+		CDC_BINDING(new String[]{"dlc.cdc.binding"}, null),
+		CDC_BOOK_COVER_DECORATION(new String[]{"dlc.cdc.bookCoverDecoration"}, null),
+		CDC_TIPPED_IN(new String[]{"dlc.cdc.tippedIn"}, null),
+		
+		
 		
 		PUBLIC_STATUS(null, new String[]{"/properties/public-status"}),
 		VERSION_STATUS(null, new String[]{"/properties/version/status"});
