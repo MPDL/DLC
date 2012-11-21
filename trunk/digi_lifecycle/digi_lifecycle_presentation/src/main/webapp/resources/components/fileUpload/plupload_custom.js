@@ -47,33 +47,43 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 	
 		uploader.bind('FileUploaded', function(up, file, response) {
 			//If last file was uploaded
+			$( "#progressBar" ).progressbar({
+	            value: ((uploader.total.uploaded + 1)/ uploader.files.length) * 100 
+	        });
+			
+			
+			/*
 			if ((uploader.total.uploaded + 1) == uploader.files.length)
 			{
-				//alert($('#'+clientId).find('.hiddenUploadCompleteButton'));
+
 				$('[id="'+clientId+'"]').find('.hiddenUploadCompleteButton').click();
-				//console.log('UploadComplete');
-				
-				
-				//var element = document.getElementById(clientId);
-				//jsf.ajax.request(element, null, {execute:this.id, render:rerender});
-				//RichFaces.ajax(this,event,{"parameters":{"javax.faces.behavior.event":"click","org.richfaces.ajax.component":"j_idt80:j_idt93:hiddenUploadCompleteButton"} ,"sourceId":this} );
-				
-				
-				// dragSource doesn't work after being rerendered via ajax. see: https://issues.jboss.org/browse/RF-10947
-				
-				/*
-				$.ajax({
-					url: url + ';jsessionid=' + sessionId,
-					success:function(){
-						location.reload();
-
-					}
-				});
-				*/
-
 			}
+			*/
+		});
+		
+		
+		
+		uploader.bind('BeforeUpload', function(up, file, response) {
+			
+			//console.log('BeforeUpload');
+			if (uploader.total.uploaded  == 0) {
+				//console.log('StartUpload');
+				$("#modalUploadDialog").dialog("open");   
+			}
+		});
+		
+		uploader.bind('UploadComplete', function(up, file, response) {
+			
+			//console.log('UploadComplete');
+			$("#modalUploadDialog").dialog("close");
+			
+			$('[id="'+clientId+'"]').find('.hiddenUploadCompleteButton').click();
+			
 			
 		});
+		
+		
+		
 	}
 	
 
