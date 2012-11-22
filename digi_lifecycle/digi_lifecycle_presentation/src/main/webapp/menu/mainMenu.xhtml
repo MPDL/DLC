@@ -27,6 +27,10 @@
 					<h:outputLink id="lnkUpload" title="#{tlt.main_upload}" value="/#{applicationBean.contextPath}/upload/new" >
 						<h:outputText value="#{lbl.navigation_lnk_Upload}" />
 					</h:outputLink>
+					<h:outputLink id="lnkManualIngestLog" title="#{tlt.main_upload}" value="/#{applicationBean.contextPath}/ingestlog" >
+						<h:outputText value=" (#{lbl.navigation_lnk_manualIngestLog})" />
+					</h:outputLink>
+					
 				</li>
 			</ui:fragment>			
 			<ui:fragment rendered="#{loginBean.user.isModerator() or loginBean.user.isDepositor()}">
@@ -50,6 +54,15 @@
 					</h:outputLink>
 				</li>
 			</ui:fragment>
+			
+			<ui:fragment rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' }">
+				<li class="eg3_menuEntry">
+					<h:outputLink id="lnkEditCarousel" title="#{tlt.main_admin}" value="/#{applicationBean.contextPath}/admin/carouseledit">
+						<h:outputText value="#{lbl.navigation_lnk_editCarousel}" />
+					</h:outputLink>
+				</li>
+			</ui:fragment>
+			
 
 			</ul>
 		</nav>
