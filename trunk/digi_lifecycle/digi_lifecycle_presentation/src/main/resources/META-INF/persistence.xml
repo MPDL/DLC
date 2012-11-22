@@ -10,6 +10,8 @@
     -->
     <class>de.mpg.mpdl.dlc.persistence.entities.DatabaseItem</class>
     <class>de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.CarouselItem</class>
+
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
