@@ -8,6 +8,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
@@ -76,7 +77,7 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 	@Override
 	public String getNavigationString() 
 	{
-		return "pretty:volumes";
+		return "pretty:ingestLog";
 	}
 	public LoginBean getLoginBean() 
 	{
@@ -134,12 +135,19 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 	public List<DatabaseItem> retrieveList(int offset, int limit)
 	{
 		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+		
+		Query countQuery =  em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID_COUNT);
+		countQuery.setParameter("userId", loginBean.getUser().getId());
+		this.totalNumberOfRecords = ((Number)countQuery.getSingleResult()).intValue();
+		
 		TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
 		query.setParameter("userId", loginBean.getUser().getId());
+		query.setFirstResult(offset-1);
+		query.setMaxResults(limit);
 		List<DatabaseItem> resList = query.getResultList();
 		this.uploadedItems = resList;
 		em.close();
-		this.totalNumberOfRecords = uploadedItems.size();
+		//this.totalNumberOfRecords = uploadedItems.size();
 		return uploadedItems;
 	}
 
@@ -181,7 +189,8 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 		em.getTransaction().commit();
 		em.close();
 	}
-
+	
+	
 	
 	
 	

@@ -29,12 +29,14 @@ import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 @Table(name="manualingest_items")
 @NamedQueries({
     @NamedQuery(name="DatabaseItem.itemsByUser", query="SELECT i FROM DatabaseItem i WHERE i.userId = :userId ORDER BY i.dateCreated DESC"),
-    @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id")
+    @NamedQuery(name="DatabaseItem.itemsById", query="SELECT i FROM DatabaseItem i WHERE i.id = :id"),
+    @NamedQuery(name=DatabaseItem.ALL_ITEMS_BY_USER_ID_COUNT, query="SELECT COUNT(i) FROM DatabaseItem i WHERE i.userId = :userId")
 })
 public class DatabaseItem {
 
-	public static String ALL_ITEMS_BY_USER_ID = "DatabaseItem.itemsByUser";
-	public static String ITEMS_BY_ID = "DatabaseItem.itemsById";
+	public final static String ALL_ITEMS_BY_USER_ID = "DatabaseItem.itemsByUser";
+	public final static String ALL_ITEMS_BY_USER_ID_COUNT = "DatabaseItem.itemsByUserCount";
+	public final static String ITEMS_BY_ID = "DatabaseItem.itemsById";
 	
 	public enum IngestStatus{
 		RUNNING, READY, ERROR
