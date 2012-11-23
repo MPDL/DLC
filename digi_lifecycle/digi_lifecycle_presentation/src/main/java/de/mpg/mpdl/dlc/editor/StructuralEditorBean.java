@@ -590,11 +590,12 @@ public class StructuralEditorBean implements Observer {
 				
 				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveStruct"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveStruct") + " " + e.toString() + e.getMessage());
 				logger.error("Error while saving created TEI-SD.", e);
 				
 			}
 			
+			/*
 			try {
 				TeiSd teiToSave = new TeiSd();
 				flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
@@ -610,6 +611,7 @@ public class StructuralEditorBean implements Observer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 		}
 		
 		
