@@ -634,11 +634,12 @@ public class StructuralEditorBean implements Observer {
 				volumeLoaded();
 				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedAndReleasedSuccessfully"));
 			} catch (Exception e) {
-				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveAndReleaseStruct"));
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveAndReleaseStruct") + " " + e.toString() + e.getMessage());
 				logger.error("Error while saving and releasing structure.", e);
 				
 			}
 			
+			/*
 			try {
 				TeiSd teiToSave = new TeiSd();
 				flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
@@ -654,6 +655,7 @@ public class StructuralEditorBean implements Observer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 		}
 		
 		
