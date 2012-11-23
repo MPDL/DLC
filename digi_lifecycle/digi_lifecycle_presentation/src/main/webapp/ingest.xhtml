@@ -24,7 +24,7 @@
 
 	<ui:define name="mainContent">
 		
-		
+		<link href="#{facesContext.externalContext.request.contextPath}/resources/cssFramework/jquery-ui/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet"/>
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_ingestPage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
 				<h:outputText value="&#160;"/>
@@ -58,25 +58,37 @@
 				
 					<rich:panel id="submit" styleClass="eg3_submitPanel">
 						<h:panelGroup styleClass="eg3_floatRight">
-							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="$('#popup').dialog('open');" oncomplete="$('#popup').dialog('close');">
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
-							<a4j:commandButton action="#{ingestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="#{rich:component('popup')}.show()" oncomplete="#{rich:component('popup')}.hide()">
+							<a4j:commandButton action="#{ingestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="$('#popup').dialog('open');" oncomplete="$('#popup').dialog('close');">
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
 							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
 								<a4j:ajax render="modsInfo teiInfo imageInfo" />
 							</h:commandButton>
 						</h:panelGroup>
-						<rich:popupPanel id="popup" modal="true" resizeable="false">
-							<f:facet name="header">
-								<h:outputText value="#{msg.upload_progress}" />
-							</f:facet>
-							<f:facet name="controls">
-							</f:facet>
-							<p><h:outputText value="#{msg.upload_progressMsg}" /></p>						
-						</rich:popupPanel>
-	
+						
+						<style type="text/css">
+						.ui-dialog div {
+							float: none;
+						}
+						</style>
+						
+						<div id="popup" title="#{msg.upload_progress}">
+							<p><h:outputText value="#{msg.upload_progressMsg}" /></p>
+						</div>
+						<script type="text/javascript">
+						   
+					        $( "#popup" ).dialog({
+					            modal: true,
+					            autoOpen:false,
+					            resizable:false,
+					            open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
+					        });
+						    
+						  
+		    			</script>
 					</rich:panel>
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
