@@ -38,7 +38,7 @@
 			</ui:fragment>
 			<ui:fragment rendered="#{not empty cc.attrs.descriptionTitleLink and not empty cc.attrs.descriptionTitleLinkID}">
 				<h2>
-					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}" title="#{tlt.collection_goToColletionStartPageLnk}">
+					<pretty:link mappingId="#{cc.attrs.descriptionTitleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
 						<f:param value="#{cc.attrs.descriptionTitleLink}" />
 						<h:outputText value="#{cc.attrs.descriptionTitle}"/>
 					</pretty:link>
