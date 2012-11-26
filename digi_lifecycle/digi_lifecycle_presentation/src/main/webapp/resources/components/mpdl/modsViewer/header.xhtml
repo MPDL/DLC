@@ -23,7 +23,7 @@
 	<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
 
 		<h3 class="eg3_multiVolumeTitle">
-			<pretty:link mappingId="volumes">
+			<pretty:link mappingId="volumes" title="#{lbl.view_page_goToCollectionOverview}">
 				<f:param value="#{cc.attrs.volume.item.properties.context.objid}"/>
 				<h:outputText value="#{cc.attrs.context.properties.name}"/>
 			</pretty:link>
