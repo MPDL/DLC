@@ -96,7 +96,7 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_9_16 eg3_overflow">
-							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" styleClass="eg3_container_1 eg3_quickSearchInput"/>
+							<h:inputText type="text" id="freeSearchString" value="#{advancedSearchBean.freeSearch}" title="#{tlt.advancedSearch_freeSearchInput}" styleClass="eg3_container_1 eg3_quickSearchInput"/>
 							<h:panelGroup styleClass="eg3_searchTooltip">
 								<h:outputText value="Suche in Titeln, Inhaltsverzeichnis/Volltext und kodikologischen Daten"/><!-- TODO tooltip labeling -->
 							</h:panelGroup>
@@ -394,11 +394,11 @@
 							<h:outputText value="&#160;"/>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
-								<h:commandButton type="button" value="#{lbl.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
+								<h:commandButton type="button" value="#{lbl.advancedSearch_resetSearchBtn}" title="#{tlt.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" 
 												   action="#{advancedSearchBean.resetSearch}" >
 												   <f:ajax render="@all"/>
 								</h:commandButton>			
-								<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
+								<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" title="#{tlt.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" action="#{advancedSearchBean.startSearch}"/>
 						</h:panelGroup>
 					</h:panelGroup>	
 								
