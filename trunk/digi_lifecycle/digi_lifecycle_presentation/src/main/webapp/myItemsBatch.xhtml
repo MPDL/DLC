@@ -114,12 +114,13 @@
        					<h:outputText value="hide show"/>
        				</rich:collapsibleSubTableToggler>
        			</rich:column>
-       			<rich:collapsibleSubTable var="logItem" id="logItem" value="#{ingestLogBean.getLogItems(log)}" expanded="false" expandMode="client" rendered="#{log.totalItems > 0}">
+       			
+       			<rich:collapsibleSubTable var="logItem" id="logItem" value="#{ingestLogBean.getLogItems(log)}" expanded="#{false}" expandMode="client" rendered="#{log.totalItems > 0}">
 	       			<rich:column style="vertical-align:top;">
 	            		<h:outputText value="#{logItem.name}"/>
 	       			</rich:column>
 	       			<rich:column style="vertical-align:top;">
-	            		<h:outputText value=""/>
+	            		<h:outputText value="#{logItem.step}"/>
 	       			</rich:column>
 
 	       			<rich:column style="vertical-align:top;">
@@ -130,15 +131,20 @@
 	            		<h:outputText value="#{logItem.errorLevel}"/>
 	       			</rich:column>
 
-	       			<rich:column style="vertical-align:top;" rendered="#{logItem.logs.size() >0 }">
+	       			<rich:column style="vertical-align:top;" rendered="#{not empty logItem.logs}">
 		       			<span onclick="$(this).next().toggle();">show hide logs</span>
 	 		        	<div style="display:none; width:100%; clear:both;">
 		 		        	<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
 		            			<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false" >
 		            			</h:outputText>  
 		            		</a4j:repeat> 
-	            		</div>         	        		
+	            		</div>         	
+	            	</rich:column>        		
+	       			<rich:column style="vertical-align:top;" rendered="#{empty logItem.logs}">
+	       				<h:outputText value="" />
 	       			</rich:column>
+	       			
+
 	       			<rich:column style="vertical-align:top;">
 	            		<h:outputText value="#{logItem.startDate}"/>
 	       			</rich:column>
@@ -192,6 +198,9 @@
 						                <rich:column>
 						                	<h:outputText value="Name"/>
 						                </rich:column>
+						                <rich:column>
+            								<h:outputText value="Step"/>
+       									</rich:column>
 						                <rich:column >
 						                    <h:outputText value="Errorlevel"/>
 						                </rich:column>
@@ -225,19 +234,26 @@
 								<rich:column breakRowBefore="true">
 									<h:outputText value="#{logItemVolume.name}"/>
 								</rich:column>
-
+								
+								<rich:column>
+									<h:outputText value="#{logItemVolume.step}"/>
+								</rich:column>
 								
 								<rich:column style="vertical-align:top;">
 									<h:outputText value="#{logItemVolume.errorLevel}"/>
 								</rich:column>
 								
-								<rich:column style="vertical-align:top; width:30%;" rendered="#{logItemVolume.logs.size() >0 }">
+								<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItemVolume.logs}">
 									<span onclick="$(this).next().toggle();">show hide logs</span>
 									<div style="display:none; width:100%; clear:both;">
 										<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
 											<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
 										</a4j:repeat>
 									</div>
+								</rich:column>
+								
+								<rich:column style="vertical-align:top; width:30%;" rendered="#{empty logItemVolume.logs}">
+									<h:outputText value=""/>
 								</rich:column>
 								
 								<rich:column style="vertical-align:top;">
