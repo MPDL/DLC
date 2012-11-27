@@ -2332,6 +2332,10 @@ body .eg3_id_siteTitle {
 	margin-bottom:1em;
 }
 
+.eg3_category .eg3_container_1 {
+	margin-bottom:0.1666666em;
+}
+
 .eg3_ingestPage .eg3_category:hover {
 	background-color:#434343;
 }
