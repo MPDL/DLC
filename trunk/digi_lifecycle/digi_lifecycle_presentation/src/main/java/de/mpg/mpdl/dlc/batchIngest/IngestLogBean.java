@@ -79,7 +79,7 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 	}
 	
 	public List<BatchLog> retrieveList(int offset, int limit)
-	{
+	{   
 		logs.clear();   
 		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
 		TypedQuery<BatchLog> query = em.createNamedQuery(BatchLog.ITEMS_BY_USER_ID, BatchLog.class);

@@ -40,6 +40,11 @@ public final class BatchIngestLogs {
     
     public static final String NEW_MONOGRAPH="Creating new monograph";
     
+    public static final String FTP_LOGIN ="ftp Logged in";
+    
+    public static final String FTPS_Login = "ftps logged in";
+    
+    
     private BatchIngestLogs()
     {
     	
