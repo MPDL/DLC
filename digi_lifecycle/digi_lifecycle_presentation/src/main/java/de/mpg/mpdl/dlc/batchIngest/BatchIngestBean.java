@@ -2,6 +2,8 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.IOException;
 
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,8 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 
 import org.apache.log4j.Logger;
@@ -17,10 +20,12 @@ import org.apache.log4j.Logger;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
-import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
-import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
+
+
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Status;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -29,7 +34,7 @@ import de.mpg.mpdl.dlc.vo.collection.Collection;
 
 
 @ManagedBean
-@SessionScoped
+@RequestScoped
 @URLMapping(id="batchIngest", viewId = "/batchIngest.xhtml", pattern = "/ingest/batch")
 public class BatchIngestBean {
 
@@ -63,6 +68,18 @@ public class BatchIngestBean {
 		SelectItem item;
 		List<String> ids = new ArrayList();
 		//init contexts 
+		if(loginBean == null || loginBean.getUser() == null)
+		{
+			FacesContext fc = FacesContext.getCurrentInstance();
+			try {
+				String dlc_URL = PropertyReader.getProperty("dlc.instance.url") + "/" + PropertyReader.getProperty("dlc.context.path") + "/";
+				fc.getExternalContext().redirect(dlc_URL);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+		}
+		else
+		{
 		for(Grant grant: loginBean.getUser().getGrants())
 		{ 
 			try  
@@ -99,6 +116,7 @@ public class BatchIngestBean {
 		}
 		if(contextSelectItems.size()>0)
 			this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
+		}
 	}
 	
 	public String save(String action)
@@ -121,7 +139,20 @@ public class BatchIngestBean {
 			mab = mab.substring(1);
 		if(tei != "" && tei.startsWith("/"))
 			tei = tei.substring(1);
-		ingestProcess = new IngestProcess(name, Step.CHECK, action, ErrorLevel.FINE, loginBean.getUser().getId(), selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images);
+		
+		BatchLog batchLog = new BatchLog();
+		batchLog.setName(name);
+		batchLog.setStep(Step.CHECK);
+		if(action.equalsIgnoreCase("save"))
+			batchLog.setStuatus(Status.SUBMITTED);
+		else
+			batchLog.setStuatus(Status.RELEASED);
+		batchLog.setUserId(loginBean.getUser().getId());
+		batchLog.setUserName(loginBean.getUser().getName());
+		
+		batchLog.setContextId(selectedContextId);	
+		
+		ingestProcess = new IngestProcess(name, action, selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images, batchLog);
 		ingestProcess.start();
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
 

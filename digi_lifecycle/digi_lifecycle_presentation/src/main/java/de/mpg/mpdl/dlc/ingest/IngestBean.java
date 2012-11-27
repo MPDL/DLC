@@ -503,7 +503,6 @@ public class IngestBean{
 		logger.info("File uploaded" + evt.getFileItem().getName() +" (" + evt.getFileItem().getSize()+")");
 		FileUploadEvent fue = (FileUploadEvent) evt;
 		
-		
 		if(fue.getFileItem()!=null)
 		{
 			if (fue.getFileItem().getName().endsWith(".mab.xml"))
@@ -545,7 +544,7 @@ public class IngestBean{
 	
 	public String uploadComplete()
 	{
-		MessageHelper.infoMessage(InternationalizationHelper.getMessage("ingest_uploadComplete"));
+		
 		
 		//process mab
 		if(recentlyUpladedMabFile!=null)
@@ -653,8 +652,6 @@ public class IngestBean{
 		
 	
 		checkSortImagesByTei();
-		
-		
 		
 		return "";
 	}
@@ -1012,7 +1009,6 @@ public class IngestBean{
 					}
 					
 */					
-					
 					
 					if(getSelectedContentModel().equals(VolumeServiceBean.monographContentModelId))
 					{

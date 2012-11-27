@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
-import de.mpg.mpdl.dlc.util.Consts;
+import de.mpg.mpdl.dlc.util.BatchIngestLogs;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
@@ -390,7 +390,7 @@ public class IngestLog_NFS_Backup
 					item = new BatchIngestItem();
 					item.setName(name);
 					item.setTeiFile(tFile);
-					String errorMessage = Consts.TEIWITHOUTIMAGESERROR;
+					String errorMessage = BatchIngestLogs.SINGLE_TEI_ERROR;
 					logger.error(errorMessage + name);
 					item.getLogs().add(errorMessage);
 					errorItems.put(tFile.getName(), item);
@@ -407,14 +407,14 @@ public class IngestLog_NFS_Backup
 						int numberOfImages = item.getImageFiles().size();
 						if(numberOfTeiPbs != numberOfImages)
 						{
-							String errorMessage = Consts.PBSNOTEQUALTOIMAGESERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
+							String errorMessage = BatchIngestLogs.PBS_NOTEQUAL_IMAGES_ERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
 							logger.error(errorMessage + name);
 							item.getLogs().add(errorMessage);
 							items.remove(name);
 							errorItems.put(name, item);
 						}
 					} catch (Exception e) {
-						String errorMessage = Consts.TEISYNTAXERROR;
+						String errorMessage = BatchIngestLogs.TEI_SYNTAX_ERROR;
 						logger.error(errorMessage + name);
 						item.getLogs().add(errorMessage);
 						items.remove(name);
@@ -514,7 +514,7 @@ public class IngestLog_NFS_Backup
 							volumes.put(name, item);
 							}
 						} catch (Exception e) {
-						String errorMessage = Consts.MABTRANSFORMERROR;
+						String errorMessage = BatchIngestLogs.MAB_TRANSFORM_ERROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
 						items.remove(name);
@@ -545,7 +545,7 @@ public class IngestLog_NFS_Backup
 							item.setParentId(parentId);
 						}
 						} catch (Exception e) {
-						String errorMessage = Consts.MABTRANSFORMERROR;
+						String errorMessage = BatchIngestLogs.MAB_TRANSFORM_ERROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
 
@@ -570,7 +570,7 @@ public class IngestLog_NFS_Backup
 
 						multiVolumes.put(md.getCatalogueId_001(), md);
 					} catch (Exception e) {
-						String errorMessage = Consts.MABTRANSFORMERROR;
+						String errorMessage = BatchIngestLogs.MAB_TRANSFORM_ERROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
 						errorItems.put(name, item);
@@ -625,7 +625,7 @@ public class IngestLog_NFS_Backup
 				}
 				else
 				{
-					String errorMessage = Consts.MULTIVOLUMEWITHOUTVOLUMEWRROR;
+					String errorMessage = BatchIngestLogs.SINGLE_MULTIVOLUME_ERROR;
 					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null, null, null, null);
 					logger.error(errorMessage);
 					newItem.getLogs().add(errorMessage);
@@ -639,7 +639,7 @@ public class IngestLog_NFS_Backup
 				Entry vol = (Entry) restVolumes.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
+				String errorMessage = BatchIngestLogs.SINGLE_VOLUME_ERROR;
 				logger.error(errorMessage);
 				item.getLogs().add(errorMessage);
 				errorItems.put(name, item);
@@ -653,7 +653,7 @@ public class IngestLog_NFS_Backup
 				Entry vol = (Entry)v.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
+				String errorMessage = BatchIngestLogs.SINGLE_MULTIVOLUME_ERROR;
 				logger.error(errorMessage);
 				item.getLogs().add(errorMessage);
 				errorItems.put(name, item);
@@ -722,7 +722,7 @@ public class IngestLog_NFS_Backup
 						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							updateLogItemVolume(logItemId, vol.getName(), "message", Consts.MULTIVOLUMEROLLBACKERROR);
+							updateLogItemVolume(logItemId, vol.getName(), "message", BatchIngestLogs.MULTIVOLUME_ROLLBACK);
 						}
 					}
 					else
@@ -737,7 +737,7 @@ public class IngestLog_NFS_Backup
 							{
 								updateLogItemVolume(logItemId, vol.getName(), "errorLevel", ErrorLevel.ERROR.toString());
 								updateLogItemVolume(logItemId, vol.getName(), "status", Status.ROLLBACK.toString());
-								updateLogItem(logItemId, "message", Consts.VOLUMEROLLBACKERROR);
+								updateLogItem(logItemId, "message", BatchIngestLogs.VOLUME_ROLLBACK);
 								updateLogItem(logItemId, "errorlevel", ErrorLevel.PROBLEM.toString());
 
 								updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
