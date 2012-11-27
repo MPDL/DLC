@@ -30,7 +30,7 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 @Entity
 @Table(name="batch_log_Item")
 @NamedQueries({
-    @NamedQuery(name="BatchLogItem.itemsByLogId", query="SELECT i FROM BatchLogItem i WHERE i.logId = :logId ORDER BY i.id DESC"),
+    @NamedQuery(name="BatchLogItem.itemsByLogId", query="SELECT i FROM BatchLogItem i WHERE i.logId = :logId ORDER BY i.startDate DESC, i.id DESC"),
     @NamedQuery(name="BatchLogItem.itemById", query="SELECT i FROM BatchLogItem i WHERE i.id = :id")
 })
 public class BatchLogItem {
@@ -78,14 +78,14 @@ public class BatchLogItem {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "logItemId",  orphanRemoval=true)
 	private List<BatchLogItemVolume> batchItemVolumes = new ArrayList<BatchLogItemVolume>();
 
-	@PrePersist
-	@PreUpdate
-	public void updateTimeStamps() {
-	    //startTime = new Date();
-	    if (startDate==null) {
-	    	startDate = new Date();
-	    }
-	}
+//	@PrePersist
+//	@PreUpdate
+//	public void updateTimeStamps() {
+//	    //startTime = new Date();
+//	    if (startDate==null) {
+//	    	startDate = new Date();
+//	    }
+//	}
 	
 	public BatchLogItemVolume addItemVolume(BatchLogItemVolume volume)
 	{

@@ -25,7 +25,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name="batch_log")
 @NamedQueries({
-    @NamedQuery(name="BatchLog.itemsByUserId", query="SELECT i FROM BatchLog i WHERE i.userId = :userId ORDER BY i.id DESC"),
+    @NamedQuery(name="BatchLog.itemsByUserId", query="SELECT i FROM BatchLog i WHERE i.userId = :userId ORDER BY i.startDate DESC, i.id DESC"),
     @NamedQuery(name="BatchLog.itemById", query="SELECT i FROM BatchLog i WHERE i.id = :id")
 })
 public class BatchLog {
