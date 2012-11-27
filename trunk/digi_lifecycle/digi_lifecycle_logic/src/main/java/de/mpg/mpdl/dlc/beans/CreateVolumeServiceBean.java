@@ -198,9 +198,8 @@ public class CreateVolumeServiceBean {
 	
 	public Volume createNewMultiVolume(String operation, String contentModel, String contextId, String userHandle, ModsMetadata modsMetadata) throws Exception
 	{  
+		logger.info("Creating new multivolume");
 		IngestLogMessage msg = new IngestLogMessage(ActivityType.CREATE_ITEM, "");
-		
-		
 		if(batchLogItem != null)
 		{
 			batchLogItem.getLogs().add("Creating new Multivoluem");
@@ -274,19 +273,49 @@ public class CreateVolumeServiceBean {
 		{
 			IngestLogMessage msg = new IngestLogMessage(ActivityType.PROCESS_IMAGE, "Footer: " + footer.getName());
 			try {
+
 				String footerMimetype = tika.detect(footer.getFile());
 
 				if("image/tiff".equals(footerMimetype))
 				{
 					jpegFooter = ImageHelper.tiffToJpeg(footer.getFile(), VolumeServiceBean.getJPEGFilename(footer.getName()));
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add("converting tiff to jpeg footer: " + footer.getName() + " .");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add("converting tiff to jpeg footer: " + footer.getName() + " .");
+					}
 				}
 				else if("image/png".equals(footerMimetype))
+				{
 					jpegFooter = ImageHelper.pngToJpeg(footer.getFile(), VolumeServiceBean.getJPEGFilename(footer.getName()));
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add("converting png to jpeg footer: " + footer.getName() + " .");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add("converting png to jpeg footer: " + footer.getName() + " .");
+					}
+				}
 				else if("image/jpeg".equals(footerMimetype))
+				{
 					jpegFooter = footer.getFile();
+				}
 				else
 				{
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add("Invalid footer mimetype: " + footer.getName() + " .");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add("Invalid footer mimetype: " + footer.getName() + " .");
+					}
 					throw new Exception("Invalid image mimetype " + footerMimetype + " for image " + footer.getName());
+					
 				}
 				msg.setIngestStatus(IngestStatus.READY);
 			} catch (Exception e) {
@@ -311,7 +340,6 @@ public class CreateVolumeServiceBean {
 			}
 		}
 		
-		
 		for(IngestImage imageItem : images)
 		{
 			IngestLogMessage msg = new IngestLogMessage(ActivityType.PROCESS_IMAGE, "Image: " + imageItem.getName());
@@ -329,15 +357,39 @@ public class CreateVolumeServiceBean {
 					if("image/tiff".equals(mimetype))
 					{
 						jpegImage = ImageHelper.tiffToJpeg(imageItem.getFile(), VolumeServiceBean.getJPEGFilename(imageItem.getName()));
+						if(batchLogItem != null)
+						{
+							batchLogItem.getLogs().add("converting tiff to jpeg image: " + imageItem.getName() + " .");
+						}
+						else if(batchLogItemVolume != null)
+						{
+							batchLogItemVolume.getLogs().add("converting tiff to jpeg image: " + imageItem.getName() + " .");
+						}
 					}
 					else if("image/png".equals(mimetype))
 					{
 						jpegImage = ImageHelper.pngToJpeg(imageItem.getFile(), VolumeServiceBean.getJPEGFilename(imageItem.getName()));
+						if(batchLogItem != null)
+						{
+							batchLogItem.getLogs().add("converting png to jpeg image: " + imageItem.getName() + " .");
+						}
+						else if(batchLogItemVolume != null)
+						{
+							batchLogItemVolume.getLogs().add("converting png to jpeg image: " + imageItem.getName() + " .");
+						}
 					}
 					else if("image/jpeg".equals(mimetype))
 						jpegImage = imageItem.getFile();
 					else
 					{
+						if(batchLogItem != null)
+						{
+							batchLogItem.getLogs().add("invalid image mimetype: " + imageItem.getName() + " .");
+						}
+						else if(batchLogItemVolume != null)
+						{
+							batchLogItemVolume.getLogs().add("invalid image mimetype: " + imageItem.getName() + " .");
+						}
 						throw new Exception("Invalid image mimetype " + mimetype + " for image " + imageItem.getName());
 					}
 
@@ -345,6 +397,15 @@ public class CreateVolumeServiceBean {
 					if(jpegFooter!=null)
 					{
 						jpegImage= ImageHelper.mergeImages(jpegImage, jpegFooter);
+						if(batchLogItem != null)
+						{
+							batchLogItem.getLogs().add("merge image with footer.");
+						}
+						else if(batchLogItemVolume != null)
+						{
+							batchLogItemVolume.getLogs().add("merge image with footer.");
+						}
+						
 					}
 					
 					msg.setIngestStatus(IngestStatus.READY);
@@ -353,15 +414,64 @@ public class CreateVolumeServiceBean {
 
 					String thumbnailsDir =  ImageHelper.THUMBNAILS_DIR + itemIdWithoutColon;
 					File thumbnailFile = ImageHelper.scaleImage(jpegImage, filename, Type.THUMBNAIL);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - thumbnail resolution scaled.");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - thumbnail resolution scaled.");
+					}
 					String thumbnailsResultDir = ImageController.uploadFileToImageServer(thumbnailFile, thumbnailsDir, filename);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - thumbnail resolution uploaded.");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - thumbnail resolution uploaded.");
+					}
+					
 					
 					String webDir = ImageHelper.WEB_DIR + itemIdWithoutColon;;
 					File webFile = ImageHelper.scaleImage(jpegImage, filename, Type.WEB);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - web resolution scaled");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - web resolution scaled");
+					}
 					String webResultDir = ImageController.uploadFileToImageServer(webFile, webDir, filename);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - web resolution uploaded");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - web resolution uploaded");
+					}
 
 					String originalDir = ImageHelper.ORIGINAL_DIR + itemIdWithoutColon;
 					File originalFile = ImageHelper.scaleImage(jpegImage, filename, Type.ORIGINAL);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - original resolution scaled.");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - original resolution scaled.");
+					}
 					String originalResultDir = ImageController.uploadFileToImageServer(originalFile, originalDir, filename);
+					if(batchLogItem != null)
+					{
+						batchLogItem.getLogs().add(imageItem.getName()+ " - original resolution uploaded.");
+					}
+					else if(batchLogItemVolume != null)
+					{
+						batchLogItemVolume.getLogs().add(imageItem.getName()+ " - original resolution uploaded.");
+					}
 					
 					jpegImage.delete();
 					thumbnailFile.delete();
@@ -401,8 +511,6 @@ public class CreateVolumeServiceBean {
 			finally{
 				addAndPersistMessage(msg);
 			}
-			
-			
 		}		
 		if(jpegFooter != null)
 			jpegFooter.delete();

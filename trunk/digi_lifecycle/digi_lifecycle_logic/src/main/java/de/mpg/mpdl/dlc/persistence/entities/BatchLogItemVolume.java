@@ -30,15 +30,13 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
 @Entity
 @Table(name="batch_log_Item_Volume")
 @NamedQueries({
-    @NamedQuery(name="BatchLogItemVolume.itemsByLogItemId", query="SELECT i FROM BatchLogItemVolume i WHERE i.logItemId = :logItemId ORDER BY i.id DESC"),
+    @NamedQuery(name="BatchLogItemVolume.itemsByLogItemId", query="SELECT i FROM BatchLogItemVolume i WHERE i.logItemId = :logItemId ORDER BY i.startDate DESC, i.id DESC"),
     @NamedQuery(name="BatchLogItemVolume.itemById", query="SELECT i FROM BatchLogItemVolume i WHERE i.id = :id")
 })
 public class BatchLogItemVolume {
 	
 	public static String ITEMS_BY_LOG_ITME_ID = "BatchLogItemVolume.itemsByLogItemId";
 	public static String ITEM_BY_ID = "BatchLogItemVolume.itemById";
-	
-
 	
 	@Id
 	@SequenceGenerator(name="LogItemIdGenerator")
@@ -75,14 +73,14 @@ public class BatchLogItemVolume {
 	
 	private String teiFileName;
 	
-	@PrePersist
-	@PreUpdate
-	public void updateTimeStamps() {
-	    //startTime = new Date();
-	    if (startDate==null) {
-	    	startDate = new Date();
-	    }
-	}
+//	@PrePersist
+//	@PreUpdate
+//	public void updateTimeStamps() {
+//	    //startTime = new Date();
+//	    if (startDate==null) {
+//	    	startDate = new Date();
+//	    }
+//	}
 	
 
 	public Long getId() {
@@ -201,6 +199,7 @@ public class BatchLogItemVolume {
 	public void setTeiFileName(String teiFileName) {
 		this.teiFileName = teiFileName;
 	}
+
 
 
 }
