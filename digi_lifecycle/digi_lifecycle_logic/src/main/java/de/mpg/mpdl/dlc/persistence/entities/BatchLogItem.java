@@ -60,6 +60,9 @@ public class BatchLogItem {
 	private Date endDate;
 	
 	@Enumerated(EnumType.STRING)
+	private Step step;
+	
+	@Enumerated(EnumType.STRING)
 	private ErrorLevel errorLevel;
 	
 	private List<String> logs  = new ArrayList<String>();
@@ -87,6 +90,18 @@ public class BatchLogItem {
 //	    }
 //	}
 	
+	public Step getStep() {
+		return step;
+	}
+
+	public void setStep(Step step) {
+		this.step = step;
+	}
+
+	public void setErrorLevel(ErrorLevel errorLevel) {
+		this.errorLevel = errorLevel;
+	}
+
 	public BatchLogItemVolume addItemVolume(BatchLogItemVolume volume)
 	{
 		batchItemVolumes.add(volume);

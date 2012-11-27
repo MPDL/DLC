@@ -26,6 +26,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 
 @Entity
 @Table(name="batch_log_Item_Volume")
@@ -57,7 +58,10 @@ public class BatchLogItemVolume {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
-		
+	
+	@Enumerated(EnumType.STRING)
+	private Step step;
+	
 	@Enumerated(EnumType.STRING)
 	private ErrorLevel errorLevel;
 	
@@ -65,6 +69,21 @@ public class BatchLogItemVolume {
 	
 	private String escidocId;
 	
+	public Step getStep() {
+		return step;
+	}
+
+
+	public void setStep(Step step) {
+		this.step = step;
+	}
+
+
+	public void setErrorLevel(ErrorLevel errorLevel) {
+		this.errorLevel = errorLevel;
+	}
+
+
 	private String content_model;
 	
 	private int images_nr;
