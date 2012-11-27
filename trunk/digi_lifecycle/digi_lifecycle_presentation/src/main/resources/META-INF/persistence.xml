@@ -11,6 +11,9 @@
     <class>de.mpg.mpdl.dlc.persistence.entities.DatabaseItem</class>
     <class>de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage</class>
     <class>de.mpg.mpdl.dlc.persistence.entities.CarouselItem</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLog</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLogItem</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume</class>
 
     
     <exclude-unlisted-classes>false</exclude-unlisted-classes>

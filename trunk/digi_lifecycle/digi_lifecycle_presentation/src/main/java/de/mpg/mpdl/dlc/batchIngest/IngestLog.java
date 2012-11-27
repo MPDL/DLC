@@ -1,33 +1,23 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.File;
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Struct;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.Scanner;
 import java.util.UUID;
 
-import javax.faces.bean.ManagedProperty;
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 import javax.xml.transform.stream.StreamSource;
 
 import net.sf.saxon.s9api.QName;
@@ -35,20 +25,20 @@ import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPConnectionClosedException;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.apache.log4j.Logger;
-import org.apache.tika.Tika;
 
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
-import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
-import de.mpg.mpdl.dlc.util.Consts;
-import de.mpg.mpdl.dlc.util.InternationalizationHelper;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLogItem;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
+import de.mpg.mpdl.dlc.util.BatchIngestLogs;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
@@ -60,68 +50,22 @@ import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 
 public class IngestLog 
 
-{
-
-    /**
-     * enum to describe if something went wrong with this element.
-     * 
-     * - CHECK:     check the batch ingest data
-     * - STOPPED:   ingest can not be started because validation failed
-     * - STARTED:   data correct, ingest started, in progress
-     * - FINISHED:  data correct, ingest completed
-
-     */
-	public enum Step
-	{
-		CHECK, STOPPED, STARTED, FINISHED
-	}
-	
-    /**
-     * enum to describe the general state of the log.
-     */
-    public enum Status
-    {
-        PRIVATE, PUBLIC, ROLLBACK, DELETED, WITHDRAW
-    }
-	
-    /**
-     * enum to describe if something went wrong with this element.
-     * 
-     * - FINE:      everything is alright
-     * - PROBLEM:   import worked, but something could have been done better
-     * - ERROR:   items can not be imported because of validation failure
-     * - Exception: item can not be ingested because of internal exception, ingest data correct
-     * - FATAL:     data correct, because of interruption due to system errors can not be completed
-     */
-    public enum ErrorLevel
-    {
-        FINE, PROBLEM, ERROR, EXCEPTION, FATAL
-    }
-    
+{    
     private static Logger logger = Logger.getLogger(IngestLog.class);
     
-	private String name;
-    private Step step;
-	private Status status;
-	private ErrorLevel errorLevel;
-	private Date startDate;
-	private Date endDate;
-	private String userId;
     private String contextId;
 	private int finishedItems;
 	private int totalItems;
 	
-    private int logId;
     private int id;
 	private String userHandle;
-    private List<String> logs = new ArrayList<String>();
-    
+
 	private String mab;
 	private String tei;
 	private String images;
 	
 	private String server;
-	private boolean protocol;
+	private boolean ftp;
 	private String username;
 	private String password;
 	
@@ -129,75 +73,62 @@ public class IngestLog
 	HashMap<String, BatchIngestItem> errorItems = new HashMap<String, BatchIngestItem>();
 	
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
-	private CreateVolumeServiceBean createVolumeService = new CreateVolumeServiceBean();
+
 	
-	private Object currentLog = new Object();
+
 	private Object currentItem = new Object();
 	private Object currentItemVolume = new Object();
 
-	
-    private Connection connection;
     
-    private PreparedStatement statement;
-    private ResultSet resultSet;
-    
-    private FTPClient ftp;
+    private FTPClient ftpClient;
 
     private List<BatchIngestItem> items = new ArrayList<BatchIngestItem>();
-
+    
+    private BatchLog batchLog;
+    private EntityManager em;
     
 //    private SessionExtenderTask seTask;
 
     public IngestLog()
     {
-    	
     }
 
 
-	public IngestLog(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String username, String password, String images, String mab, String tei)throws Exception
+	public IngestLog(String name, String action, String contextId, String userHandle, String server, boolean ftp, String username, String password, String images, String mab, String tei, BatchLog batchLog) throws Exception
 	{
-
-
-		this.name = name;
-    	this.step = step;
-    	
-		if(action.equalsIgnoreCase("save"))
-			this.status = Status.PRIVATE;
-		else
-			this.status = Status.PUBLIC;
-		
-    	this.errorLevel = errorLevel;
-		this.startDate = new Date();
-		this.userId = userId;
 		this.contextId = contextId;
 		this.userHandle = userHandle;
 		this.server = server;
-		this.protocol = protocol;
+		this.ftp = ftp;
 		this.username = username;
 		this.password = password;
 		this.images = images;
 		this.mab = mab;
 		this.tei = tei;  
-
-		if(this.connection == null)
-			this.connection = getConnection();
-		saveLog();
-
+		this.batchLog = batchLog;
 		try
 		{
-			if(protocol)
-				this.ftp = ftpLogin(server, username, password);
+			if(ftp)
+				this.ftpClient = ftpLogin(server, username, password);
 			else
 			{
-				this.ftp = ftpsLogin(server, username, password);
+				this.ftpClient = ftpsLogin(server, username, password);
 			}
 		}catch(Exception e)
 		{
-			updateLog("errorLevel", ErrorLevel.ERROR.toString());
-			updateLog("step", Step.STOPPED.toString());
-			logs.add("Error: cannot connect to ftp/ftps server");
-			updateLogLogs(logs);
-			updateLog("enddate", new Date().toString());
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			batchLog.setStep(Step.STOPPED);
+			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+
+			//updateLogLogs(logs);
+		}
+		finally
+		{
+			EntityManagerFactory emf = VolumeServiceBean.getEmf();
+			this.em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.merge(batchLog);
+			em.getTransaction().commit();
 		}
 		/*
 		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
@@ -236,8 +167,6 @@ public class IngestLog
 	
 	public static FTPSClient ftpsLogin(String server, String username, String password) throws IOException
 	{
-		
-
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
 		
@@ -269,226 +198,34 @@ public class IngestLog
 		return ftps;
 	}
 	
-
-
-
-	public static Connection getConnection() throws Exception
-	{
-		
-		String url;
-
-		Connection connection = null;
 	
-		Properties props = new Properties();
-		props.setProperty("user",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.name"));
-		props.setProperty("password",PropertyReader.getProperty("dlc.batch_ingest.database.admin_user.password"));
-		Class.forName("org.postgresql.Driver");
-		url = PropertyReader.getProperty("dlc.batch_ingest.database.connection.url");
-		connection = DriverManager.getConnection(url, props);
 
-		URL sqlURL = IngestLog.class.getClassLoader().getResource("batch_ingest_init.sql");
-
-	    //File file = new File(sqlURL.toURI());
-	    StringBuilder fileContents = new StringBuilder();
-	    Scanner scanner = new Scanner(sqlURL.openStream());
-	    String lineSeparator = System.getProperty("line.separator");
-	    String dbScript;
-
-	    try {
-	        while(scanner.hasNextLine())        
-	            fileContents.append(scanner.nextLine() + lineSeparator);
-	       
-	        dbScript = fileContents.toString();
-	    } finally {
-	        scanner.close();
-	    }
-
-        String[] queries = dbScript.split(";");
-        for (String query : queries)
-        {
-            logger.debug("Executing statement: " + query);
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(query);
-            stmt.close();
-        }
-		
-
-		return connection;
-	}
 	
-	public void closeConnection()
-	{
-		try {
-			if(this.connection != null)
-				this.connection.close();
-		} catch (SQLException e) {
-			logger.error("cannot close database connection", e);
-		}
-	}
-	
-	private int saveLog()
-	{
-		synchronized(currentLog){
-			try
-	        {
-	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log "
-	                    + "(name, step, status, errorlevel, startdate, user_id, context_id) "
-	                    + "values (?, ?, ?, ?, ?, ?, ?)");
-	            
-	            statement.setString(1, this.name);
-	            statement.setString(2, this.step.toString());
-	            statement.setString(3, this.status.toString());
-	            statement.setString(4, this.errorLevel.toString());
-	            statement.setTimestamp(5, new Timestamp(this.startDate.getTime()));
-	            statement.setString(6, this.userId);
-	            statement.setString(7, this.contextId);
-	            statement.executeUpdate();
-	            //statement.close();
-	            
-	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log");
-	            resultSet = statement.executeQuery();
-	            if (resultSet.next())
-	            {
-	                this.logId = resultSet.getInt("maxid");
-	                resultSet.close();
-	                statement.close();
-	            }
-	            else
-	            {
-	                resultSet.close();
-	                statement.close();
-	                throw new RuntimeException("Error saving log");
-	            }
-	        }
-	        catch (Exception e)
-	        {
-	            throw new RuntimeException("Error saving log", e);
-	        }
-		return logId;
-		}
-	}
-	
-	/**
-	 * Update logs in dlc_batch_ingest_log Table
-	 * @param value database key value
-	 */	
-	public void updateLogLogs(List<String> logs)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-            String[] array = logs.toArray(new String[logs.size()]);
-            Array aArray = connection.createArrayOf("text", (Object[])array);
-			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET logs = ? WHERE id = "+ logId);
-			statement.setArray(1, aArray);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
-	
-	/**
-	 * 
-	 * @param name database key name
-	 * @param value database key value
-	 */
-	public void updateLog(String name, String value)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET " + name +" = '" + value + "' WHERE id = "+ logId);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
-	
-	public String getLogData(String name)
-	{
-		String data = null;
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
+//	/**
+//	 * Update logs in dlc_batch_ingest_log Table
+//	 * @param value database key value
+//	 */	
+//	public void updateLogLogs(List<String> logs)
+//	{
+//		try
+//		{
+//            if(connection == null)
+//            {
+//            	connection = getConnection();
+//            }
+//            String[] array = logs.toArray(new String[logs.size()]);
+//            Array aArray = connection.createArrayOf("text", (Object[])array);
+//			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log SET logs = ? WHERE id = "+ logId);
+//			statement.setArray(1, aArray);
+//            statement.executeUpdate();
+//            statement.close();
+//		}
+//		catch(Exception e)
+//		{
+//			throw new RuntimeException("Error while uploading log", e);
+//		}
+//	}
 
-			statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log where id = " + logId);
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
-			{
-				data = resultSet.getString(name);
-			}
-
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-		return data;
-	}
-	
-	public String getLogItemData(String logItemId, String name)
-	{
-		String data = null;
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-
-			statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item where id = " + logItemId);
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
-			{
-				data = resultSet.getString(name);
-			}
-
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-		return data;
-	}
-	
-	public String getLogItemVolumeData(int logItemId, String logItemVolumeName, String name)
-	{
-		String data = null;
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			 statement = this.connection.prepareStatement("select "+ name + " from dlc_batch_ingest_log_item_volume where log_item_id = " + logItemId + " AND name = '" + logItemVolumeName + "'");
-			resultSet = statement.executeQuery();
-			if(resultSet.next())
-			{
-				data = resultSet.getString(name);
-			}
-
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-		return data;
-	}
 	
 	public boolean ftpCheck()
 	{ 
@@ -499,8 +236,6 @@ public class IngestLog
 //		if(seTask != null)
 //		{
 //			seTask.start();
-			
-			
 			try {
 		//			if(ftp.getReplyCode() != 230)
 		//				ftp = ftpLogin(this.server, this.username, this.password);
@@ -511,11 +246,10 @@ public class IngestLog
 					{
 						ftpReadTeiFiles(itemsForBatchIngest, errorItems, this.tei);
 					}
-					
-					ftpReadMabFiles(itemsForBatchIngest, errorItems, this.mab);
+				ftpReadMabFiles(itemsForBatchIngest, errorItems, this.mab);
 		
-					int totalItems = itemsForBatchIngest.size() + errorItems.size();
-					updateLog("total_items", Integer.toString(totalItems));
+				int totalItems = itemsForBatchIngest.size() + errorItems.size();
+				batchLog.setTotalItems(totalItems);
 				
 				if(itemsForBatchIngest.size() >0 )
 				{
@@ -527,63 +261,36 @@ public class IngestLog
 				}
 			
 			} catch (Exception e) {
-				updateLog("errorlevel", ErrorLevel.ERROR.toString());
-				updateLog("step", Step.STOPPED.toString());
-				logs.add("Error: cannot connect to ftp/ftps server");
-				updateLogLogs(logs);
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
+				batchLog.setStep(Step.STOPPED);
+				batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
 				MessageHelper.errorMessage("error stop");
 			}
-		//		finally
-		//		{  
-		//			seTask.stop();
-		//			ftpLogout(ftp);
-		//			List<String> dirs = new ArrayList<String>();
-		//			
-		//			if(itemsForBatchIngest.size()>0)
-		//			{
-		//				for(BatchIngestItem item : itemsForBatchIngest.values())
-		//				
-		//					dirs.add(item.getDlcDirectory());
-		//			
-		//			}
-		//			if(errorItems.size()>0)
-		//			{
-		//				for(BatchIngestItem item : errorItems.values())
-		//				{
-		//					dirs.add(item.getDlcDirectory());
-		//				}
-		//			}   
-		//			itemsForBatchIngest.clear();
-		//			System.gc();
-		//			for(String d : dirs)
-		//			{
-		//				File dir = new File(d);
-		//				try {
-		//					deleteDir(dir);
-		//				} catch (Exception e) {
-		//					logger.error("Error while deleting local Batch Ingest Data " + e.getMessage());
-		//					e.printStackTrace();
-		//				}
-		//			}
-		//		}    
+			finally
+			{  
+				em.getTransaction().begin();
+				em.merge(batchLog);
+				em.getTransaction().commit();
+			}    
 			return errorItems.size()==0;
-//		}
-//		return false;
 	}
 	
 	public String clear()
 	{
-		updateLog("enddate", new Date().toString());
-		if(ErrorLevel.FATAL.toString().equals(getLogData("errorlevel")))
-			updateLog("step", Step.STOPPED.toString());
+		batchLog.setEndDate(new Date());
+		if(ErrorLevel.FATAL.equals(batchLog.getErrorLevel()))
+		{
+			batchLog.setStep(Step.STOPPED);
+		}
+		
+		em.getTransaction().begin();
+		em.merge(batchLog);
+		em.getTransaction().commit();
+		em.close();
 		
 //		seTask.stop();
-		if(FTPReply.isPositiveCompletion(ftp.getReplyCode()))
-			ftpLogout(ftp);
-		
-        try { if (resultSet != null) resultSet.close(); } catch(Exception e) { }
-        try { if (statement != null) statement.close(); } catch(Exception e) { }
-        try { if (connection != null) connection.close(); } catch(Exception e) { }
+		if(FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
+			ftpLogout(ftpClient);
         
 		List<String> dirs = new ArrayList<String>();
 		
@@ -628,26 +335,20 @@ public class IngestLog
 		return "";
 	}
 	
-	public String updateDB()
-	{
-		updateLog("errorlevel", ErrorLevel.FATAL.toString());
-		updateLog("step", Step.STOPPED.toString());
-//		MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_batch_ingest_stop"));
-		return "";
-	}
-	
 	public String ftpSaveItems()
 	{
 		if(itemsForBatchIngest.size()>0)
 		{
-			updateLog("step", Step.STARTED.toString());
-			updateLog("startdate", new Date().toString());
+			batchLog.setStep(Step.STARTED);
 			saveItems(itemsForBatchIngest);
 		}
 		else
 		{
-			updateLog("step", Step.STOPPED.toString());
+			batchLog.setStep(Step.STOPPED);
 		}
+		em.getTransaction().begin();
+		em.merge(batchLog);
+		em.getTransaction().commit();
 
 		return "";
 	}
@@ -681,22 +382,20 @@ public class IngestLog
 	{
    
 		try {
-	
 			// Poll for files.
-			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				ftp.disconnect();
-				if(protocol)
-					this.ftp = ftpLogin(server, username, password);
+				ftpClient.disconnect();
+				if(ftp)
+					this.ftpClient = ftpLogin(server, username, password);
 				else
-					this.ftp = ftpsLogin(server, username, password);
+					this.ftpClient = ftpsLogin(server, username, password);
 			}
-			FTPFile[] ds = ftp.listFiles(directory);
+			FTPFile[] ds = ftpClient.listFiles(directory);
 			if(ds.length == 0)
 			{
-				logs.add("Error: check images directory");
-				updateLogLogs(logs);
-				updateLog("errorlevel", ErrorLevel.ERROR.toString());
+				batchLog.getLogs().add(BatchIngestLogs.IMAGE_DIRECTORY_ERROR);
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
 			}
 			for(FTPFile d : ds)
 			{
@@ -713,7 +412,7 @@ public class IngestLog
 					newItem.setName(name);
 					newItem.setImagesDirectory(imagesDirectory);
 					
-					FTPFile[] filesList = ftp.listFiles(imagesDirectory);
+					FTPFile[] filesList = ftpClient.listFiles(imagesDirectory);
 					int imageNr = 0;
 					int footerNr = 0;					
 					for(FTPFile tmpFile : filesList)
@@ -737,7 +436,7 @@ public class IngestLog
 					newItem.setFooterNr(footerNr);
 					if(footerNr > 1)
 					{
-						String e = Consts.MULTIFOOTER;
+						String e = BatchIngestLogs.MULTIFOOTER_ERROR;
 						newItem.getLogs().add(e);
 					}
 					newItem.setImageNr(imageNr);
@@ -745,9 +444,15 @@ public class IngestLog
 				}
 			}
 		}catch (IOException e) {
-			updateLog("errorLevel", ErrorLevel.FATAL.toString());
-			updateLog("step", Step.STOPPED.toString());
-			updateLog("message", "FTP server refused connection.");
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			batchLog.setStep(Step.STOPPED);
+			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+		}
+		finally
+		{
+			em.getTransaction().begin();
+			em.merge(batchLog);
+			em.getTransaction().commit();
 		}
 	}
 	
@@ -755,19 +460,18 @@ public class IngestLog
 	{
 		
 		try{
-			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				if(protocol)
-					this.ftp = ftpLogin(server, username, password);
+				if(ftp)
+					this.ftpClient = ftpLogin(server, username, password);
 				else
-					this.ftp = ftpsLogin(server, username, password);
+					this.ftpClient = ftpsLogin(server, username, password);
 			}
-			FTPFile[] filesList = ftp.listFiles(directory);
+			FTPFile[] filesList = ftpClient.listFiles(directory);
 			if(filesList.length == 0)
 			{
-				logs.add("Error: check tei directory");
-				updateLogLogs(logs);
-				updateLog("errorlevel", ErrorLevel.ERROR.toString());
+				batchLog.getLogs().add(BatchIngestLogs.TEI_DIRECTORY_ERROR);
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
 			}
 			for(FTPFile tmpFile : filesList)
 			{
@@ -793,11 +497,11 @@ public class IngestLog
 					
 					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
-					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
 					item.setTeiFile(tFile);
-					String errorMessage = Consts.TEIWITHOUTIMAGESERROR;
+					String errorMessage = BatchIngestLogs.SINGLE_TEI_ERROR;
 					logger.error(errorMessage + name);
 					item.getLogs().add(errorMessage);
 					errorItems.put(tFile.getName(), item);
@@ -807,7 +511,7 @@ public class IngestLog
 					String dlcDirectory = item.getDlcDirectory();
 					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFile);
-					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
 					item.setTeiFile(tFile);
@@ -822,14 +526,14 @@ public class IngestLog
 						int numberOfImages = item.getImageNr();
 						if(numberOfTeiPbs != numberOfImages)
 						{
-							String errorMessage = Consts.PBSNOTEQUALTOIMAGESERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
+							String errorMessage = BatchIngestLogs.PBS_NOTEQUAL_IMAGES_ERROR + "("+ numberOfTeiPbs + " != " + numberOfImages + ")";
 							logger.error(errorMessage + name);
 							item.getLogs().add(errorMessage);
 							items.remove(name);
 							errorItems.put(name, item);
 						}
 					} catch (Exception e) {
-						String errorMessage = Consts.TEISYNTAXERROR;
+						String errorMessage = BatchIngestLogs.TEI_SYNTAX_ERROR;
 						logger.error(errorMessage + name);
 						item.getLogs().add(errorMessage);
 						items.remove(name);
@@ -839,9 +543,15 @@ public class IngestLog
 				}
 			}
 		}catch (IOException e) {
-			updateLog("errorLevel", ErrorLevel.FATAL.toString());
-			updateLog("step", Step.STOPPED.toString());
-			updateLog("message", "FTP server refused connection.");
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			batchLog.setStep(Step.STOPPED);
+			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+		}
+		finally
+		{
+			em.getTransaction().begin();
+			em.merge(batchLog);
+			em.getTransaction().commit();
 		}
 		
 	}
@@ -901,21 +611,18 @@ public class IngestLog
 			HashMap<String, BatchIngestItem> multiVolumes = new HashMap<String, BatchIngestItem>();
 			HashMap<String, BatchIngestItem> volumes = new HashMap<String, BatchIngestItem>();
 
-			if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				if(protocol)
-					this.ftp = ftpLogin(server, username, password);
+				if(ftp)
+					this.ftpClient = ftpLogin(server, username, password);
 				else
-					this.ftp = ftpsLogin(server, username, password);
+					this.ftpClient = ftpsLogin(server, username, password);
 			}
-			FTPFile[] filesList = ftp.listFiles(directory);
+			FTPFile[] filesList = ftpClient.listFiles(directory);
 			if(filesList.length == 0)
 			{
-
-				logs.add("Error: check mab directory");
-				updateLogLogs(logs);
-				updateLog("errorlevel", ErrorLevel.ERROR.toString());
-				
+				batchLog.getLogs().add(BatchIngestLogs.MAB_DIRECTORYE_RROR);
+				batchLog.setErrorLevel(ErrorLevel.ERROR);				
 			}
 			for(FTPFile tmpFile : filesList)
 			{
@@ -936,7 +643,7 @@ public class IngestLog
 				
 					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
-					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);		
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);		
 					out.flush();
 					out.close();
 
@@ -963,7 +670,7 @@ public class IngestLog
 							volumes.put(name, item);
 							}
 						} catch (Exception e) {
-						String errorMessage = Consts.MABTRANSFORMERROR;
+						String errorMessage = BatchIngestLogs.MAB_DIRECTORYE_RROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
 						items.remove(name);
@@ -975,7 +682,7 @@ public class IngestLog
 					String dlcDirectory = item.getDlcDirectory();
 					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
-					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);	
 					out.flush();
 					out.close();
 					MabXmlTransformation transform = new MabXmlTransformation();
@@ -1001,7 +708,7 @@ public class IngestLog
 							item.setParentId(parentId);
 						}
 						} catch (Exception e) {
-						String errorMessage = Consts.MABTRANSFORMERROR;
+						String errorMessage = BatchIngestLogs.MAB_TRANSFORM_ERROR;
 						logger.error(errorMessage , e);
 						item.getLogs().add(errorMessage);
 	
@@ -1018,7 +725,7 @@ public class IngestLog
 					
 					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
-					ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);	
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);	
 					out.flush();
 					out.close();
 					MabXmlTransformation transform = new MabXmlTransformation();
@@ -1035,7 +742,7 @@ public class IngestLog
 				
 					multiVolumes.put(name, item);
 				} catch (Exception e) {
-					String errorMessage = Consts.MABTRANSFORMERROR;
+					String errorMessage = BatchIngestLogs.MAB_TRANSFORM_ERROR;
 					logger.error(errorMessage , e);
 					item.getLogs().add(errorMessage);
 					errorItems.put(name, item);
@@ -1044,18 +751,22 @@ public class IngestLog
 
 			}
 		
-		
 			try {
 				if(multiVolumes.size() >0 || volumes.size() >0 )
 					updateItemsForBatchIngest(items, errorItems, multiVolumes, volumes);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-		} catch (IOException e1) {
-			updateLog("errorLevel", ErrorLevel.FATAL.toString());
-			updateLog("step", Step.STOPPED.toString());
-			updateLog("message", "FTP server refused connection.");
+		}catch (IOException e) {
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			batchLog.setStep(Step.STOPPED);
+			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+		}
+		finally
+		{
+			em.getTransaction().begin();
+			em.merge(batchLog);
+			em.getTransaction().commit();
 		}
 		
 		
@@ -1097,9 +808,9 @@ public class IngestLog
 				}
 				else
 				{
-					String errorMessage = Consts.MULTIVOLUMEWITHOUTVOLUMEWRROR;
+					String errorMessage = BatchIngestLogs.SINGLE_MULTIVOLUME_ERROR;
 					multivolume.getLogs().add(errorMessage);
-					errorItems.put(name, multivolume);
+					errorItems.put(multivolume.getName(), multivolume);
 				}
 			}
 			
@@ -1109,9 +820,9 @@ public class IngestLog
 				Entry vol = (Entry) restVolumes.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
-				logger.error(errorMessage);
-				item.getLogs().add(errorMessage);
+				String error = BatchIngestLogs.SINGLE_VOLUME_ERROR;
+				logger.error(error);
+				item.getLogs().add(error);
 				errorItems.put(name, item);
 			}
 		}
@@ -1123,9 +834,9 @@ public class IngestLog
 				Entry vol = (Entry)v.next();
 				String name = (String) vol.getKey();
 				BatchIngestItem item = (BatchIngestItem) vol.getValue();
-				String errorMessage = Consts.VOLUMEWITHOUTMULTIVOLUMEERROR;
-				logger.error(errorMessage);
-				item.getLogs().add(errorMessage);
+				String error = BatchIngestLogs.SINGLE_VOLUME_ERROR;
+				logger.error(error);
+				item.getLogs().add(error);
 				errorItems.put(name, item);
 			}
 		}
@@ -1144,74 +855,95 @@ public class IngestLog
 //        
 //	}
 	
-	private void downloadImages(boolean isMono, int dbID, String imagesDirectory, String dlcDirectory, List<File> images, File footer, List<String> logs)
+	private void downloadImages(BatchLogItem logItem, BatchLogItemVolume logItemVolume, String imagesDirectory, String dlcDirectory, List<File> images, File footer)
 	{
 
-		logs.add("Downloading images from the server");
-		if(isMono)
+		if(logItem != null)
 		{
-			updateLogItemLogs(dbID, logs);
+			logItem.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES);
 		}
 		else
 		{
-			updateLogItemVolumeLogs(dbID, logs);
+			logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES);
 		}
 		for(File i : images)
 		{
 			FileOutputStream out = null;
 			try {
 				out = new FileOutputStream(i);
-			} catch (FileNotFoundException e2) {
-				e2.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 			try{
+				
 				try {
-					if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+					if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 					{
-						if(protocol)
-							this.ftp = ftpLogin(server, username, password);
+						if(ftp)
+							this.ftpClient = ftpLogin(server, username, password);
 						else
-							this.ftp = ftpsLogin(server, username, password);
+							this.ftpClient = ftpsLogin(server, username, password);
 					}
-				}catch (IOException e1) 
+				}catch (IOException e) 
 				{
-					updateLog("errorLevel", ErrorLevel.FATAL.toString());
-					updateLog("step", Step.STOPPED.toString());
-					logs.add("Error: FTP server refused connection.");
-					updateLogLogs(logs);
+					batchLog.setErrorLevel(ErrorLevel.ERROR);
+					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+
 				}
-				ftp.setFileType(FTP.BINARY_FILE_TYPE);
-				ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+				ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 				out.flush();
 				out.close();
+				if(logItem != null)
+				{
+					logItem.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.length());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.length());
+				}
 				logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
 			}catch(IOException e)
 			{
 				logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
-				try {
-					if(protocol)
-						this.ftp = ftpLogin(server, username, password);
+				if(logItem != null)
+				{
+					logItem.getLogs().add("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
+				}
+				try 
+				{
+					if(ftp)
+						this.ftpClient = ftpLogin(server, username, password);
 					else
-						this.ftp = ftpsLogin(server, username, password);
+						this.ftpClient = ftpsLogin(server, username, password);
 
-					ftp.setFileType(FTP.BINARY_FILE_TYPE);
-					ftp.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 					out.flush();
 					out.close();
-				} catch (IOException e1) {
-					updateLog("errorLevel", ErrorLevel.FATAL.toString());
-					updateLog("step", Step.STOPPED.toString());
-					logs.add("Error: FTP server refused connection.");
-					updateLogLogs(logs);
-					if(isMono)
+					if(logItem != null)
 					{
-						logs.add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
-						updateLogItemLogs(dbID, logs);
+						logItem.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.length());
 					}
 					else
 					{
-						logs.add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
-						updateLogItemVolumeLogs(dbID, logs);
+						logItemVolume.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.length());
+					}		
+					logger.info("Retry :downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+				} catch (IOException e1) {
+					batchLog.setErrorLevel(ErrorLevel.ERROR);
+					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+					if(logItem != null)
+					{
+						logItem.getLogs().add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
+					}
+					else
+					{
+						logItemVolume.getLogs().add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 					}
 					logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 				}
@@ -1230,50 +962,73 @@ public class IngestLog
 			try {
 				
 				try {
-					if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
+					if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 					{
-						if(protocol)
-							this.ftp = ftpLogin(server, username, password);
+						if(ftp)
+							this.ftpClient = ftpLogin(server, username, password);
 						else
-							this.ftp = ftpsLogin(server, username, password);
+							this.ftpClient = ftpsLogin(server, username, password);
 					}
-				}catch (IOException e1) {
-					updateLog("errorLevel", ErrorLevel.FATAL.toString());
-					updateLog("step", Step.STOPPED.toString());
-					logs.add("Error: FTP server refused connection.");
-					updateLogLogs(logs);
+				}catch (IOException e) {
+					
+					batchLog.setErrorLevel(ErrorLevel.ERROR);
+					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
 				}
-				ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
+				ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 				out.flush();
 				out.close();
+				if(logItem != null)
+				{
+					logItem.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+				}
 				logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
+				
 			} catch (IOException e) 
 			{
 				logger.info("Error while copying Footer from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
+				if(logItem != null)
+				{
+					logItem.getLogs().add("Error while copying Image from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("Error while copying Image from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
+				}
 				try {
-					if(protocol)
-						this.ftp = ftpLogin(server, username, password);
+					if(ftp)
+						this.ftpClient = ftpLogin(server, username, password);
 					else
-						this.ftp = ftpsLogin(server, username, password);
+						this.ftpClient = ftpsLogin(server, username, password);
 
-					ftp.setFileType(FTP.BINARY_FILE_TYPE);
-					ftp.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 					out.flush();
 					out.close();
-				} catch (IOException e1) {
-					updateLog("errorLevel", ErrorLevel.FATAL.toString());
-					updateLog("step", Step.STOPPED.toString());
-					logs.add("Error: FTP server refused connection.");
-					updateLogLogs(logs);
-					if(isMono)
+					if(logItem != null)
 					{
-						logs.add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
-						updateLogItemLogs(dbID, logs);
+						logItem.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
 					}
 					else
 					{
-						logs.add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
-						updateLogItemVolumeLogs(dbID, logs);
+						logItemVolume.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+					}
+					logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
+					
+				} catch (IOException e1) {
+					batchLog.setErrorLevel(ErrorLevel.ERROR);
+					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+
+					if(logItem != null)
+					{
+						logItem.getLogs().add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
+					}
+					else
+					{
+						logItemVolume.getLogs().add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 					}
 					logger.error("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 				}
@@ -1281,409 +1036,218 @@ public class IngestLog
 			}
 		}
 
+		if(logItem != null)
+		{
+			em.getTransaction().begin();
+			em.merge(logItem);
+			em.getTransaction().commit();
+		}
+		else
+		{
+			em.getTransaction().begin();
+			em.merge(logItemVolume);
+			em.getTransaction().commit();
+		}
+		em.getTransaction().begin();
+		em.merge(batchLog);
+		em.getTransaction().commit();
+
 
 	}
 	
 	private void saveItems(HashMap<String, BatchIngestItem> items)
 	{
 		Iterator i = items.entrySet().iterator();
+		String operation = batchLog.getStatus().toString().toLowerCase();
+		if(operation.startsWith("release"))
+			operation = "release";
 
 		while(i.hasNext())
 		{
 			Entry item = (Entry) i.next();
 			
-			String logItemId = (String)item.getKey();
+//			String logItemId = (String)item.getKey();
 			BatchIngestItem bi = (BatchIngestItem) item.getValue();
+
 			
 			try {
-			
-				Date sDate = new Date();
-				updateLogItem(bi.getDbID(), "startdate", sDate.toString());
 				String itemId = null;
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
-					downloadImages(true, bi.getDbID(), bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter(), bi.getLogs());
-					bi.getLogs().add("Uploading");
-					updateLogItemLogs(bi.getDbID(), bi.getLogs());
-					itemId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
+					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
+					query.setParameter("id", bi.getDbID());				
+					BatchLogItem logItem = query.getSingleResult();
+					
+					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
+	
+//					bi.getLogs().add("Uploading");
+//					updateLogItemLogs(bi.getDbID(), bi.getLogs());
+					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
+					
+					itemId = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 					System.err.println("batchingest new Monograph" +itemId);
-					if(itemId != null)
-					{
-						updateLogItem(bi.getDbID(), "item_id", itemId);
-						bi.getLogs().add("ingest finished");
-						updateLogItemLogs(bi.getDbID(), bi.getLogs());
-					}
-					updateLogItem(bi.getDbID(), "enddate", new Date().toString());
+
 					if(itemId == null)
 					{
-						updateLogItem(bi.getDbID(), "errorlevel", ErrorLevel.EXCEPTION.toString());
-						bi.getLogs().add(Consts.VOLUMEROLLBACKERROR);
-						updateLogItemLogs(bi.getDbID(), bi.getLogs());
-						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
+						batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 					}
+					em.getTransaction().begin();
+					em.merge(logItem);
+					em.getTransaction().commit();
+					
 				}
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 				{
 					
 					Volume mv;
-					try{
+					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
+					query.setParameter("id", bi.getDbID());				
+					BatchLogItem logItem_multivolume = query.getSingleResult();
+					
+					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
+					mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
+					
+					if(mv != null)
+					{
+						ArrayList<String> volIds = new ArrayList<String>();
 						
 						for(BatchIngestItem v : bi.getVolumes())
 						{
-							downloadImages(false, v.getDbID(), v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter(), v.getLogs());
+							TypedQuery<BatchLogItemVolume> q = em.createNamedQuery(BatchLogItemVolume.ITEM_BY_ID, BatchLogItemVolume.class);
+							query.setParameter("id", v.getDbID());
+							BatchLogItemVolume logItemVolume = q.getSingleResult();
 
-						}
-						mv = createVolumeService.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
-				
-					}catch(Exception e)
-					{ 
-						mv = null;
-					}
-					Date eDate;
-					if(mv == null)
-					{
-						updateLogItem(bi.getDbID(), "errorlevel", ErrorLevel.EXCEPTION.toString());
-						bi.getLogs().add(Consts.MULTIVOLUMEROLLBACKERROR);
-						updateLogItemLogs(bi.getDbID(), bi.getLogs());
-						updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
-						for(BatchIngestItem vol : bi.getVolumes())
-						{
-							vol.getLogs().add(Consts.MULTIVOLUMEROLLBACKERROR);
-							updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
-						}
-					}
-					else
-					{
-						String mvId = mv.getItem().getObjid();
-						ArrayList<String> volIds = new ArrayList<String>();
-						for(BatchIngestItem vol : bi.getVolumes())
-						{
-							vol.getLogs().add("Uploading");
-							updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
-							String volId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
-							eDate = new Date();
+							downloadImages(null, logItemVolume, v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
+							String mvId = mv.getItem().getObjid();
 							
-							updateLogItemVolume(vol.getDbID(), sDate.toString(), volId, eDate.toString());
-							if(volId == null)
+							
+							for(BatchIngestItem vol : bi.getVolumes())
 							{
-								updateLogItemVolume(vol.getDbID(), "errorLevel", ErrorLevel.EXCEPTION.toString());
-								vol.getLogs().add(Consts.VOLUMEROLLBACKERROR);
-								updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
-								updateLogItem(bi.getDbID(), "errorlevel", ErrorLevel.PROBLEM.toString());
-								updateLog("errorlevel", ErrorLevel.PROBLEM.toString());
-							}
-							else
-							{
-								vol.getLogs().add("ingest finished");
-								updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
-								updateLogItemVolume(vol.getDbID(), "item_id", volId);
-								volIds.add(volId);
-							}
+								CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
+								String volId = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
+
+								if(volId == null)
+								{
+									logItem_multivolume.setErrorlevel(ErrorLevel.PROBLEM);
+									batchLog.setErrorLevel(ErrorLevel.PROBLEM);
+								}
+								else
+								{
+									volIds.add(volId);
+								}
+							}							
 						}
 						if(volIds.size()==0)
 						{
-							createVolumeService.rollbackCreation(mv, userHandle);
-							bi.getLogs().add(Consts.MULTIVOLUMEROLLBACKERROR);
-							updateLogItemLogs(bi.getDbID(), bi.getLogs());
+							cvsb.rollbackCreation(mv, userHandle);
+
+							logItem_multivolume.getLogs().add("Multivolume Rollback");
+							logItem_multivolume.setEscidocId("");
 						}
 						else
 						{
-							mvId = volumeService.updateMultiVolumeFromId(mvId, volIds, userHandle);
-							updateLogItem(bi.getDbID(), "item_id", mvId);
+							volumeService.updateMultiVolumeFromId(mv.getItem().getObjid(), volIds, userHandle);
 						}
-						if(status.toString().equalsIgnoreCase("public"))
-							createVolumeService.releaseVolume(itemId, userHandle);
-						eDate = new Date();
-						updateLogItem(bi.getDbID(), "enddate", eDate.toString());
+						logItem_multivolume.setEndDate(new Date());
 					}
+					else
+					{
+						batchLog.setErrorLevel(ErrorLevel.PROBLEM);
+//						for(BatchIngestItem vol : bi.getVolumes())
+//						{
+//							vol.getLogs().add(BatchIngestLogs.MULTIVOLUMEROLLBACKERROR);
+//							updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
+//						}
+					}
+					em.getTransaction().begin();
+					em.merge(logItem_multivolume);
+					em.getTransaction().commit();
 					
-				}
-				updateLog("step", Step.FINISHED.toString());
-			} catch (Exception e) {
-				updateLogItem(bi.getDbID(), "errorlevel", ErrorLevel.FATAL.toString());
-				updateLog("errorlevel", ErrorLevel.FATAL.toString());
+				} 
+				batchLog.setStep(Step.FINISHED);
+				finishedItems++;
+				batchLog.setFinishedItems(finishedItems);
+			}catch (Exception e) {
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
 			} 
-			finishedItems++;
-			updateLog("finished_items", Integer.toString(finishedItems));
 
 		}
 	}
 	
-	/**
-	 * set startDate, escidocId, endDate in the database
-	 * @param logItemId Multivolume database ID
-	 * @param logItemVolumeName Volume name
-	 * @param startDateValue
-	 * @param itemId escidoc ID
-	 * @param endDateValue
-	 */
-	private void updateLogItemVolume(int logItemVolumeId, String startDateValue, String itemId, String endDateValue)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			 statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET startdate = '" + startDateValue + "', item_id = '"+ itemId+ "', enddate = '" + endDateValue + "' WHERE id = "+ logItemVolumeId);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
-	
-	/**
-	 * update database
-	 * @param logItemId Multivolume database ID
-	 * @param logItemVolumeName Volume name
-	 * @param name one key name 
-	 * @param value key value
-	 */
-	private void updateLogItemVolume(int logItemVolumeId, String name, String value)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			 statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET " + name +" = '" + value + "' WHERE id = "+ logItemVolumeId);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
-	
-	/**
-	 * Update logs in dlc_batch_ingest_log_item_volume Table
-	 * @param value database key value
-	 */	
-	private void updateLogItemVolumeLogs(int logItemVolumeId, List<String> logs)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-            String[] array = logs.toArray(new String[logs.size()]);
-            Array aArray = connection.createArrayOf("text", (Object[])array);
-			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item_volume SET logs = ? WHERE id = "+ logItemVolumeId );
-			statement.setArray(1, aArray);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
 
-	
-	/**
-	 * update database
-	 * @param logItemId
-	 * @param name one key name 
-	 * @param value key value
-	 */
-	private void updateLogItem(int logItemId, String name, String value)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET " + name +" = '" + value + "' WHERE id = "+ logItemId);
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
-	
-	/**
-	 * Update logs in dlc_batch_ingest_log_item Table
-	 * @param value database key value
-	 */	
-	private void updateLogItemLogs(int logItemId, List<String> logs)
-	{
-		try
-		{
-            if(connection == null)
-            {
-            	connection = getConnection();
-            }
-            String[] array = logs.toArray(new String[logs.size()]);
-            Array aArray = connection.createArrayOf("text", (Object[])array);
-			statement = this.connection.prepareStatement("UPDATE dlc_batch_ingest_log_item SET logs = ? WHERE id = "+ logItemId);
-			statement.setArray(1, aArray);
-
-            statement.executeUpdate();
-            statement.close();
-		}
-		catch(Exception e)
-		{
-			throw new RuntimeException("Error while uploading log", e);
-		}
-	}
 
 	private HashMap<String, BatchIngestItem> saveLogItems(HashMap<String, BatchIngestItem> items, ErrorLevel errorLevel)
 	{
 		Iterator i = items.entrySet().iterator();
-		HashMap<String, BatchIngestItem> newItems = new HashMap<String, BatchIngestItem>();
+	//	HashMap<String, BatchIngestItem> newItems = new HashMap<String, BatchIngestItem>();
 
 		while(i.hasNext())
 		{
 			Entry item = (Entry) i.next();
-			
 			String name = (String)item.getKey();
 			BatchIngestItem bi = (BatchIngestItem) item.getValue();
-			int logItemId = 0;
 			try {
-				logItemId = saveLogItem(logId, bi, errorLevel);
-				bi.setDbID(logItemId);
-				newItems.put(Integer.toString(logItemId), bi);
+				BatchLogItem logItem = new BatchLogItem();
+				synchronized(currentItem)
+				{
+					logItem.setName(bi.getName());
+					logItem.setErrorlevel(errorLevel);
+					logItem.setLogs(bi.getLogs());
+					logItem.setContent_model(bi.getContentModel());
+					logItem.setImages_nr(bi.getImageNr());
+					logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
+					logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
+					
+					addNewLogItem(logItem);
+					bi.setDbID(logItem.getId());
+				}
+		//		newItems.put(Long.toString(logItem.getId()), bi);
 				if(PropertyReader.getProperty("dlc.content-model.multivolume.id").equals(bi.getContentModel()))
 				{
-					int logItemVolumeId = 0;
 					for(BatchIngestItem vol : bi.getVolumes())
 					{
-
-						logItemVolumeId = saveLogItemVolume(logItemId, vol, errorLevel);
-						vol.setDbID(logItemVolumeId);
+						synchronized(currentItemVolume)
+						{
+							BatchLogItemVolume logItemVolume = new BatchLogItemVolume();
+							logItemVolume.setName(vol.getName());
+							logItemVolume.setErrorlevel(errorLevel);
+							logItemVolume.setLogs(vol.getLogs());
+							logItemVolume.setContent_model(vol.getContentModel());
+							logItemVolume.setImages_nr(vol.getImageNr());
+							logItemVolume.setTeiFileName((vol.getTeiFile() != null) ? vol.getTeiFile().getName() : null);
+							logItemVolume.setfFileName((vol.getFooter()!=null)? vol.getFooter().getName() : null);
+							
+							addNewLogItemVolume(logItem, logItemVolume);
+							vol.setDbID(logItemVolume.getId());
+						}
 					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 
 		}
-		return newItems;
+	//	return newItems;
+		return items;
 	}
 	
-	private int saveLogItem(int logId, BatchIngestItem item, ErrorLevel errorLevel)
+	private void addNewLogItem(BatchLogItem logItem)
 	{
-		synchronized(currentItem){
-			int logItemId;
-			try
-	        {
-	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item"
-	            		+ " (name, errorLevel, log_id, logs, content_model, images_nr, tei, footer) "
-	                    + "values (?, ?, ?, ?, ?, ?, ?, ?)");
-	            
-	            statement.setString(1,item.getName());
-	            statement.setString(2, errorLevel.toString());
-	            statement.setInt(3, logId);
-	            Array aArray = null;
-	            if(item.getLogs()!=null)
-	            {
-	                String[] array = item.getLogs().toArray(new String[item.getLogs().size()]);
-	                aArray = connection.createArrayOf("text", (Object[])array);
-	            }
-	            statement.setArray(4, aArray);
-	            statement.setString(5, item.getContentModel());
-	        
-	            statement.setInt(6, (item.getImageFiles() != null) ? item.getImageFiles().size() : 0);
-	            statement.setBoolean(7, item.getTeiFile()!=null);
-	            statement.setBoolean(8, item.getFooter() != null);
-	            statement.executeUpdate();
-	            //statement.close();
-	            
-	            if(this.connection == null)
-	            {
-	            	this.connection = getConnection();
-	            }
-	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log_item");
-	            resultSet = statement.executeQuery();
-	            if (resultSet.next())
-	            {
-	            	logItemId = resultSet.getInt("maxid");
-	                resultSet.close();
-	                statement.close();
-	            }
-	            else
-	            {
-	                resultSet.close();
-	                statement.close();
-	                //TODO update Log
-	                throw new RuntimeException("Error saving log");
-	            }
-	        }
-	        catch (Exception e)
-	        {
-	        	//TODO update Log
-	            throw new RuntimeException("Error saving log", e);
-	        }
-		return logItemId;
-		}
-	}
-	
-	private int saveLogItemVolume(int logItemId, BatchIngestItem item, ErrorLevel errorLevel)
-	{
-		synchronized(currentItemVolume){
-			int logItemIdVolume;
-			try
-	        {
-	            statement = this.connection.prepareStatement("insert into dlc_batch_ingest_log_item_volume"
-	            		+ " (name, errorLevel, log_item_id, logs, content_model, images_nr, tei, footer) "
-	                    + "values (?,?, ?, ?, ?, ?, ?, ?)");
-	            
-	            statement.setString(1,item.getName());
-	            statement.setString(2, errorLevel.toString());
-	            statement.setInt(3, logItemId);
 
-	            Array aArray = null;
-	            if(item.getLogs()!=null)
-	            {
-	                String[] array = item.getLogs().toArray(new String[item.getLogs().size()]);
-	                aArray = connection.createArrayOf("text", (Object[])array);
-	            }
-	            statement.setArray(4, aArray);		            		
-		       
-	            statement.setString(5, item.getContentModel());
-	        
-	            statement.setInt(6, (item.getImageFiles() != null) ? item.getImageFiles().size() : 0);
-	            statement.setBoolean(7, item.getTeiFile()!=null);
-	            statement.setBoolean(8, item.getFooter() != null);
-	            statement.executeUpdate();
-	            //statement.close();
-	            
-	            if(this.connection == null)
-	            {
-	            	this.connection = getConnection();
-	            }
-	            statement = this.connection.prepareStatement("select max(id) as maxid from dlc_batch_ingest_log_item_volume");
-	            resultSet = statement.executeQuery();
-	            if (resultSet.next())
-	            {
-	            	logItemIdVolume = resultSet.getInt("maxid");
-	                resultSet.close();
-	                statement.close();
-	            }
-	            else
-	            {
-	                resultSet.close();
-	                statement.close();
-	                //TODO update Log
-	                throw new RuntimeException("Error saving log");
-	            }
-	        }
-	        catch (Exception e)
-	        {
-	        	//TODO update Log
-	            throw new RuntimeException("Error saving log", e);
-	        }
-		return logItemIdVolume;
-		}
+			em.getTransaction().begin();
+			em.persist(logItem);
+			batchLog.addItem(logItem);
+			em.getTransaction().commit();
+		
 	}
+	
+	private void addNewLogItemVolume(BatchLogItem logItem, BatchLogItemVolume logItemVolume)
+	{
+		em.getTransaction().begin();
+		em.persist(logItemVolume);
+		logItem.addItemVolume(logItemVolume);
+		em.getTransaction().commit();
+	}
+	
 	
 	private String splitSuffix(String name)
 	{
@@ -1711,9 +1275,10 @@ public class IngestLog
         try {
 			ftp.logout();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("FTP logout error: " + e.getMessage());
 		}
 	    finally {
+	    	logger.info("FTP disconnected");
 	        if(ftp.isConnected()) {
 	          try {
 	            ftp.disconnect();
@@ -1740,67 +1305,6 @@ public class IngestLog
 			
 		
 	}
-	
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Step getStep() {
-		return step;
-	}
-
-	public void setStep(Step step) {
-		this.step = step;
-	}
-
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
-
-	public ErrorLevel getErrorLevel() {
-		return errorLevel;
-	}
-
-	public void setErrorLevel(ErrorLevel errorLevel) {
-		this.errorLevel = errorLevel;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 
 	public String getContextId() {
 		return contextId;
@@ -1826,13 +1330,6 @@ public class IngestLog
 		this.totalItems = totalItems;
 	}
 
-	public int getLogId() {
-		return logId;
-	}
-
-	public void setLogId(int logId) {
-		this.logId = logId;
-	}
 
 	public String getUserHandle() {
 		return userHandle;
@@ -1841,17 +1338,6 @@ public class IngestLog
 	public void setUserHandle(String userHandle) {
 		this.userHandle = userHandle;
 	}
-
-
-	public List<String> getLogs() {
-		return logs;
-	}
-
-
-	public void setLogs(List<String> logs) {
-		this.logs = logs;
-	}
-
 
 	public HashMap<String, BatchIngestItem> getItemsForBatchIngest() {
 		return itemsForBatchIngest;
@@ -1907,19 +1393,13 @@ public class IngestLog
 	}
 
 
-	public boolean isProtocol() {
-		return protocol;
+	public boolean isFtp() {
+		return ftp;
 	}
 
 
-	public void setProtocol(boolean protocol) {
-		this.protocol = protocol;
-	}
-
-
-
-	
-	
-	
+	public void setFtp(boolean ftp) {
+		this.ftp = ftp;
+	}	
 	
 }

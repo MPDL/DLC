@@ -1,14 +1,16 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
-import javax.faces.bean.ManagedProperty;
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import org.apache.log4j.Logger;
 
-import de.mpg.mpdl.dlc.batchIngest.IngestLog.ErrorLevel;
-import de.mpg.mpdl.dlc.batchIngest.IngestLog.Step;
-import de.mpg.mpdl.dlc.beans.ApplicationBean;
-import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 
 public class IngestProcess extends Thread{
@@ -16,10 +18,8 @@ public class IngestProcess extends Thread{
 	private static final Logger logger = Logger.getLogger(IngestProcess.class);
 	
 	private String logName;
-	private Step step;
 	private String action;
-	private ErrorLevel errorLevel;
-	private String userId;
+
 	private String contextId;
 	private String userHandle;
 
@@ -28,7 +28,7 @@ public class IngestProcess extends Thread{
 	/*
 	 * true for FTP, and false for FTPS
 	 */
-	private boolean protocol;
+	private boolean ftp;
 	
 	private String images;
 	private String mab;
@@ -39,34 +39,44 @@ public class IngestProcess extends Thread{
 	
 	private IngestLog log;
 	
-//	@ManagedProperty("#{applicationBean}")
-//	private ApplicationBean applicationBean;
-//	
-//	@ManagedProperty("#{loginBean}")
-//	private LoginBean loginBean;
-
-
+	private BatchLog batchLog;
+	private EntityManager em;
+	private Object currentLog = new Object();
 	
-	public IngestProcess(String name, Step step, String action, ErrorLevel errorLevel, String userId, String contextId, String userHandle, String server, boolean protocol, String userName, String password, String mab, String tei, String images) 
+	public IngestProcess(String name, String action, String contextId, String userHandle, String server, boolean ftp, String userName, String password, String mab, String tei, String images, BatchLog batchLog) 
 	{
 
 		this.logName = name;
-		this.step = step;
 		this.action = action;
-		this.errorLevel = errorLevel;
-		this.userId = userId;
 		this.contextId = contextId;
 		this.userHandle = userHandle;
 		this.server = server;
-		this.protocol = protocol;
+		this.ftp = ftp;
 		this.userName = userName;
 		this.password = password;
 		this.mab = mab;
 		this.tei = tei;
 		this.images = images;
+		this.batchLog = batchLog;
+		saveLog(batchLog);
+		
 
 	}
 
+	private void saveLog(BatchLog batchLog)
+	{
+		synchronized(currentLog){
+
+			EntityManagerFactory emf = VolumeServiceBean.getEmf();
+			this.em = emf.createEntityManager();
+			em.getTransaction().begin();
+			em.persist(batchLog);
+			em.getTransaction().commit();
+			this.setUncaughtExceptionHandler(new BatchIngestExceptionHandler(em, batchLog));
+		}
+
+	}
+	
 	public void run()
 	{
 		/*
@@ -81,12 +91,16 @@ public class IngestProcess extends Thread{
 //			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
 		
 		try {
-			log = new IngestLog(logName, step, action, errorLevel, userId, contextId, userHandle, server, protocol, userName, password, images, mab, tei);
+			log = new IngestLog(logName, action, contextId, userHandle, server, ftp, userName, password, images, mab, tei, batchLog);
 			try {
 				if(log.ftpCheck())
 					log.ftpSaveItems();
 				else
-					log.updateDB();
+				{
+					batchLog.setErrorLevel(ErrorLevel.ERROR);
+					batchLog.setStep(Step.STOPPED);
+				}
+
 			} catch (Exception e) {
 				logger.error("Error while checking ingest data", e);
 				MessageHelper.errorMessage("login error");
@@ -96,7 +110,10 @@ public class IngestProcess extends Thread{
 //				applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())-1);
 //				if(applicationBean.getUploadThreads().get(loginBean.getUserHandle()) == 0)
 //					applicationBean.getUploadThreads().remove(loginBean.getUserHandle());
-				
+				em.getTransaction().begin();
+				em.merge(batchLog);
+				em.getTransaction().commit();
+				em.close();
 				log.clear();
 			}
 		} catch (Exception e) {
@@ -104,108 +121,34 @@ public class IngestProcess extends Thread{
 		} 
 
 	}
-	String getLogName() {
-		return logName;
-	}
-	void setLogName(String logName) {
-		this.logName = logName;
-	}
-	Step getStep() {
-		return step;
-	}
-	void setStep(Step step) {
-		this.step = step;
-	}
-	String getAction() {
-		return action;
-	}
-	void setAction(String action) {
-		this.action = action;
-	}
-	ErrorLevel getErrorLevel() {
-		return errorLevel;
-	}
-	void setErrorLevel(ErrorLevel errorLevel) {
-		this.errorLevel = errorLevel;
-	}
-	String getUserId() {
-		return userId;
-	}
-	void setUserId(String userId) {
-		this.userId = userId;
-	}
-	String getContextId() {
-		return contextId;
-	}
-	void setContextId(String contextId) {
-		this.contextId = contextId;
-	}
-	
-	IngestLog getLog() {
-		return log;
-	}
-	
-	void setLog(IngestLog log) {
-		this.log = log;
-	}
-	String getMab() {
-		return mab;
-	}
-	void setMab(String mab) {
-		this.mab = mab;
-	}
-	String getTei() {
-		return tei;
-	}
-	void setTei(String tei) {
-		this.tei = tei;
-	}
-	String getImages() {
-		return images;
-	}
-	void setImages(String images) {
-		this.images = images;
-	}
-	String getUserHandle() {
-		return userHandle;
-	}
-	void setUserHandle(String userHandle) {
-		this.userHandle = userHandle;
-	}
 
-	String getServer() {
-		return server;
-	}
 
-	void setServer(String server) {
-		this.server = server;
-	}
+	public class BatchIngestExceptionHandler implements Thread.UncaughtExceptionHandler
+	{
+		
+		private EntityManager em;
+		private BatchLog batchLog;
 
-	String getUserName() {
-		return userName;
-	}
+		public BatchIngestExceptionHandler(EntityManager em, BatchLog batchLog)
+		{
+			this.em = em;
+			this.batchLog = batchLog; 
+		}
 
-	void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	String getPassword() {
-		return password;
-	}
-
-	void setPassword(String password) {
-		this.password = password;
+		@Override
+		public void uncaughtException(Thread t, Throwable e) {
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			em.getTransaction().begin();
+			em.persist(batchLog);
+			em.getTransaction().commit();
+			em.close();
+			
+			
+		}
+		
 	}
 
 
-
-	public boolean isProtocol() {
-		return protocol;
-	}
-
-	public void setProtocol(boolean protocol) {
-		this.protocol = protocol;
-	}
 	
 	
 	
