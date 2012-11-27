@@ -2572,7 +2572,9 @@ body .eg3_id_siteTitle {
 .eg3_collectionItem .eg3_titleListLink {
 	font-weight:bold;
 }
-
+.eg3_collectionItem h3 .eg3_searchTooltip {
+	font-size:85%;
+}
 
 
 
