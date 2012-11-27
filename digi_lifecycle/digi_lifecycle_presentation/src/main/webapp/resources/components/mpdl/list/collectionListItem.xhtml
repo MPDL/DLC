@@ -26,12 +26,7 @@
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
 		
-		<ui:remove>
-			<h:panelGroup layout="block" styleClass="eg3_container_1">
-				<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}" colLink="#{context.objid}"/>
-			</h:panelGroup>
-		</ui:remove>
-		
+
 		<h:panelGroup layout="block" styleClass="eg3_collectionItem eg3_overflow">
 			<h:panelGroup layout="block" styleClass="eg3_itemHeader" rendered="#{not empty cc.attrs.item.properties.name and !hideTitle}">
 				<h:panelGroup layout="block" styleClass="eg3_itemTitle">
@@ -40,7 +35,7 @@
 					</ui:fragment>
 					<ui:fragment rendered="#{not empty cc.attrs.item.objid and not empty cc.attrs.titleLinkID}">
 						<h2>
-							<pretty:link mappingId="#{cc.attrs.titleLinkID}">
+							<pretty:link mappingId="#{cc.attrs.titleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
 								<f:param value="#{cc.attrs.item.objid}"/>
 								<h:outputText value="#{cc.attrs.item.properties.name}"/>
 							</pretty:link>
@@ -74,9 +69,9 @@
 				
 				<h:panelGroup layout="block" styleClass="eg3_itemDescription">
 					<p>
-						<h:outputText value="#{cc.attrs.item.properties.description}"/>
+						<h:outputText value="#{utilBean.getShortenedText(cc.attrs.item.properties.description, 500)}"/>
 						
-						<pretty:link mappingId="#{cc.attrs.titleLinkID}">
+						<pretty:link mappingId="#{cc.attrs.titleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
 							<f:param value="#{cc.attrs.item.objid}"/>
 							<h:outputText value=" ..."/>
 							<h:panelGroup styleClass="eg3_icon_forwardi_16_16">

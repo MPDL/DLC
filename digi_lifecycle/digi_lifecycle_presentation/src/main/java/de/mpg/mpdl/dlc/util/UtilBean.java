@@ -102,4 +102,33 @@ public class UtilBean {
 		UtilBean.standardDateTimePattern = standardDateTimePattern;
 	}
 	
+	public String getShortenedText(String text, int length)
+	{
+		if(text!=null)
+		{
+			if(text.length()<=length)
+			{
+				return text;
+			}
+			
+			else
+			{
+				String shortText = text.substring(0, length);
+				
+				int lastBlank = shortText.lastIndexOf(" ");
+				if(lastBlank != -1)
+				{
+					return shortText.substring(0, lastBlank);
+				}
+				else
+				{
+					return shortText;
+				}
+			}
+		}
+		
+		return "";
+		
+		
+	}
 }
