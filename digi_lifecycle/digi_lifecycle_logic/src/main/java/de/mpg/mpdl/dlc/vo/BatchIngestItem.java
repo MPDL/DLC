@@ -9,7 +9,7 @@ import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
 
 public class BatchIngestItem {
-	private int dbID;
+	private Long dbID;
 	private String contentModel;
 	private String name;
 	private String dlcDirectory;
@@ -27,9 +27,8 @@ public class BatchIngestItem {
 	
 	public BatchIngestItem()
 	{
-		
+
 	}
-	
 	
 	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, File teiFile, ArrayList<File> imageFiles, File footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
 	{
@@ -166,12 +165,12 @@ public class BatchIngestItem {
 	}
 
 
-	public int getDbID() {
+	public Long getDbID() {
 		return dbID;
 	}
 
 
-	public void setDbID(int dbID) {
+	public void setDbID(Long dbID) {
 		this.dbID = dbID;
 	}
 
