@@ -76,8 +76,8 @@ public class IngestLog
 
 	
 
-	private Object currentItem = new Object();
-	private Object currentItemVolume = new Object();
+//	private Object currentItem = new Object();
+//	private Object currentItemVolume = new Object();
 
     
     private FTPClient ftpClient;
@@ -109,10 +109,14 @@ public class IngestLog
 		try
 		{
 			if(ftp)
+			{
 				this.ftpClient = ftpLogin(server, username, password);
+				batchLog.getLogs().add(BatchIngestLogs.FTP_LOGIN);
+			}
 			else
 			{
 				this.ftpClient = ftpsLogin(server, username, password);
+				batchLog.getLogs().add(BatchIngestLogs.FTPS_Login);
 			}
 		}catch(Exception e)
 		{
@@ -149,24 +153,31 @@ public class IngestLog
 	
 	public static FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
-	
+		long start = System.currentTimeMillis();
 		System.err.println("ftpLogin");
 		FTPClient ftp = new FTPClient();
 		ftp.connect(server);
-        ftp.setDataTimeout(60000); // 10 minutes
-        
-        ftp.setControlKeepAliveTimeout(600000);
+//        ftp.setDataTimeout(60000); // 10 minutes
+//        
+//        ftp.setControlKeepAliveTimeout(600000);
         ftp.setControlEncoding("UTF-8");
 		ftp.login(username, password);
         if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
         	ftp.disconnect();
 	        logger.error("FTP server refused connection.");
 	    }
+        
+		long time = System.currentTimeMillis()-start;
+		System.err.println("Time FTP Login: " + time);
+        
 		return ftp;
 	}
 	
 	public static FTPSClient ftpsLogin(String server, String username, String password) throws IOException
 	{
+		long start = System.currentTimeMillis();
+		System.err.println("ftpsLogin");
+		
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
 		
@@ -193,7 +204,8 @@ public class IngestLog
             System.err.println("FTP server refused connection.");
 
         }
-        System.err.println("ftps = " + ftps.getReplyCode());
+		long time = System.currentTimeMillis()-start;
+		System.err.println("Time FTPS Login: " + time);
 
 		return ftps;
 	}
@@ -336,7 +348,7 @@ public class IngestLog
 	}
 	
 	public String ftpSaveItems()
-	{
+	{   
 		if(itemsForBatchIngest.size()>0)
 		{
 			batchLog.setStep(Step.STARTED);
@@ -1065,7 +1077,7 @@ public class IngestLog
 		while(i.hasNext())
 		{
 			Entry item = (Entry) i.next();
-			
+			  
 //			String logItemId = (String)item.getKey();
 			BatchIngestItem bi = (BatchIngestItem) item.getValue();
 
@@ -1077,6 +1089,7 @@ public class IngestLog
 					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
 					query.setParameter("id", bi.getDbID());				
 					BatchLogItem logItem = query.getSingleResult();
+					logItem.setStartDate(new Date());
 					
 					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
 	
@@ -1098,12 +1111,13 @@ public class IngestLog
 				}
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 				{
-					
+					  
 					Volume mv;
 					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
 					query.setParameter("id", bi.getDbID());				
 					BatchLogItem logItem_multivolume = query.getSingleResult();
-					
+					logItem_multivolume.setStartDate(new Date());
+			  		
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
 					mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 					
@@ -1111,31 +1125,28 @@ public class IngestLog
 					{
 						ArrayList<String> volIds = new ArrayList<String>();
 						
-						for(BatchIngestItem v : bi.getVolumes())
+						for(BatchIngestItem vol : bi.getVolumes())
 						{
 							TypedQuery<BatchLogItemVolume> q = em.createNamedQuery(BatchLogItemVolume.ITEM_BY_ID, BatchLogItemVolume.class);
-							query.setParameter("id", v.getDbID());
+							q.setParameter("id", vol.getDbID());
 							BatchLogItemVolume logItemVolume = q.getSingleResult();
+							logItemVolume.setStartDate(new Date());
 
-							downloadImages(null, logItemVolume, v.getImagesDirectory(), v.getDlcDirectory(), v.getImageFiles(), v.getFooter());
+							downloadImages(null, logItemVolume, vol.getImagesDirectory(), vol.getDlcDirectory(), vol.getImageFiles(), vol.getFooter());
 							String mvId = mv.getItem().getObjid();
-							
-							
-							for(BatchIngestItem vol : bi.getVolumes())
-							{
-								CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
-								String volId = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
+							CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
+							String volId = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
 
-								if(volId == null)
-								{
-									logItem_multivolume.setErrorlevel(ErrorLevel.PROBLEM);
-									batchLog.setErrorLevel(ErrorLevel.PROBLEM);
-								}
-								else
-								{
-									volIds.add(volId);
-								}
-							}							
+							if(volId == null)
+							{
+								logItem_multivolume.setErrorlevel(ErrorLevel.PROBLEM);
+								batchLog.setErrorLevel(ErrorLevel.PROBLEM);
+							}
+							else
+							{
+								volIds.add(volId);
+							}
+														
 						}
 						if(volIds.size()==0)
 						{
@@ -1188,38 +1199,38 @@ public class IngestLog
 			BatchIngestItem bi = (BatchIngestItem) item.getValue();
 			try {
 				BatchLogItem logItem = new BatchLogItem();
-				synchronized(currentItem)
-				{
-					logItem.setName(bi.getName());
-					logItem.setErrorlevel(errorLevel);
-					logItem.setLogs(bi.getLogs());
-					logItem.setContent_model(bi.getContentModel());
-					logItem.setImages_nr(bi.getImageNr());
-					logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
-					logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
-					
-					addNewLogItem(logItem);
-					bi.setDbID(logItem.getId());
-				}
+//				synchronized(currentItem)
+//				{
+				logItem.setName(bi.getName());
+				logItem.setErrorlevel(errorLevel);
+				logItem.setLogs(bi.getLogs());
+				logItem.setContent_model(bi.getContentModel());
+				logItem.setImages_nr(bi.getImageNr());
+				logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
+				logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
+				
+				addNewLogItem(logItem);
+				bi.setDbID(logItem.getId());
+//				}
 		//		newItems.put(Long.toString(logItem.getId()), bi);
 				if(PropertyReader.getProperty("dlc.content-model.multivolume.id").equals(bi.getContentModel()))
 				{
 					for(BatchIngestItem vol : bi.getVolumes())
 					{
-						synchronized(currentItemVolume)
-						{
-							BatchLogItemVolume logItemVolume = new BatchLogItemVolume();
-							logItemVolume.setName(vol.getName());
-							logItemVolume.setErrorlevel(errorLevel);
-							logItemVolume.setLogs(vol.getLogs());
-							logItemVolume.setContent_model(vol.getContentModel());
-							logItemVolume.setImages_nr(vol.getImageNr());
-							logItemVolume.setTeiFileName((vol.getTeiFile() != null) ? vol.getTeiFile().getName() : null);
-							logItemVolume.setfFileName((vol.getFooter()!=null)? vol.getFooter().getName() : null);
-							
-							addNewLogItemVolume(logItem, logItemVolume);
-							vol.setDbID(logItemVolume.getId());
-						}
+//						synchronized(currentItemVolume)
+//						{
+						BatchLogItemVolume logItemVolume = new BatchLogItemVolume();
+						logItemVolume.setName(vol.getName());
+						logItemVolume.setErrorlevel(errorLevel);
+						logItemVolume.setLogs(vol.getLogs());
+						logItemVolume.setContent_model(vol.getContentModel());
+						logItemVolume.setImages_nr(vol.getImageNr());
+						logItemVolume.setTeiFileName((vol.getTeiFile() != null) ? vol.getTeiFile().getName() : null);
+						logItemVolume.setfFileName((vol.getFooter()!=null)? vol.getFooter().getName() : null);
+						
+						addNewLogItemVolume(logItem, logItemVolume);
+						vol.setDbID(logItemVolume.getId());
+//						}
 					}
 				}
 			} catch (Exception e) {

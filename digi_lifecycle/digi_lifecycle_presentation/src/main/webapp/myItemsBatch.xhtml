@@ -19,7 +19,7 @@
      </style>
 	<mpdl:paginator paginatorBean="#{ingestLogBean}">
 		<h:panelGroup layout="block">
-		    <rich:dataTable var="log" value="#{ingestLogBean.logs}" styleClass="eg3_container_1">
+		    <rich:dataTable var="log" value="#{ingestLogBean.logs}"  styleClass="eg3_container_1">
 		        <f:facet name="header">
 		            <rich:columnGroup>
 		                <rich:column>
@@ -107,29 +107,14 @@
        			<rich:column colspan="5">
        				<h:outputText value="&#160;"/>
        			</rich:column>
-       			<rich:column>
-	            	<h:outputText value="" />
-	       		</rich:column>
-	       		<rich:column>
-	            	<h:outputText value="" />
-	       		</rich:column>
-       			<rich:column>
-	            	<h:outputText value="" />
-	       		</rich:column>
-	       		<rich:column>
-	            	<h:outputText value="" />
-	       		</rich:column>
 
-	       		<rich:column>
-	            	<h:outputText value="" />
-	       		</rich:column>
        			
        			<rich:column colspan="15" breakRowBefore="true" rendered="#{log.totalItems > 0}">
        				<rich:collapsibleSubTableToggler for="logItem" colspan="16">
        					<h:outputText value="hide show"/>
        				</rich:collapsibleSubTableToggler>
        			</rich:column>
-       			<rich:collapsibleSubTable var="logItem" id="logItem" value="#{ingestLogBean.getLogItems(log)}" rendered="#{log.totalItems > 0}">
+       			<rich:collapsibleSubTable var="logItem" id="logItem" value="#{ingestLogBean.getLogItems(log)}" expanded="false" expandMode="client" rendered="#{log.totalItems > 0}">
 	       			<rich:column style="vertical-align:top;">
 	            		<h:outputText value="#{logItem.name}"/>
 	       			</rich:column>
@@ -145,8 +130,8 @@
 	            		<h:outputText value="#{logItem.errorLevel}"/>
 	       			</rich:column>
 
-	       			<rich:column style="vertical-align:top;">
-		       			<span onclick="$(this).next().toggle();">show hide</span>
+	       			<rich:column style="vertical-align:top;" rendered="#{logItem.logs.size() >0 }">
+		       			<span onclick="$(this).next().toggle();">show hide logs</span>
 	 		        	<div style="display:none; width:100%; clear:both;">
 		 		        	<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
 		            			<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false" >
@@ -207,12 +192,6 @@
 						                <rich:column>
 						                	<h:outputText value="Name"/>
 						                </rich:column>
-						                <rich:column>
-						                    <h:outputText value="Step"/>
-						                </rich:column>
-						                <rich:column>
-						                    <h:outputText value="Status"/>
-						                </rich:column>
 						                <rich:column >
 						                    <h:outputText value="Errorlevel"/>
 						                </rich:column>
@@ -225,16 +204,6 @@
 						                <rich:column>
 						                    <h:outputText value="Enddate"/>
 						                </rich:column>
-						                <rich:column >
-						                    <h:outputText value="Context"/>
-						                </rich:column>
-						                <rich:column>
-						                    <h:outputText value="TotalItems"/>
-						                </rich:column>		                
-						                <rich:column>
-						                    <h:outputText value="Finished Items"/>
-						                </rich:column>
-				
 						                <rich:column>
 						                    <h:outputText value="escidoc ID"/>
 						                </rich:column>		                
@@ -256,30 +225,28 @@
 								<rich:column breakRowBefore="true">
 									<h:outputText value="#{logItemVolume.name}"/>
 								</rich:column>
-								<rich:column>
-									<h:outputText value=""/>
-								</rich:column>
-								<rich:column>
-									<h:outputText value=""/>
-								</rich:column>
+
 								
 								<rich:column style="vertical-align:top;">
 									<h:outputText value="#{logItemVolume.errorLevel}"/>
 								</rich:column>
-								<rich:column style="vertical-align:top; width:30%;">
-									<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
-										<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
-									</a4j:repeat>
+								
+								<rich:column style="vertical-align:top; width:30%;" rendered="#{logItemVolume.logs.size() >0 }">
+									<span onclick="$(this).next().toggle();">show hide logs</span>
+									<div style="display:none; width:100%; clear:both;">
+										<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
+											<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
+										</a4j:repeat>
+									</div>
 								</rich:column>
+								
 								<rich:column style="vertical-align:top;">
 									<h:outputText value="#{logItemVolume.startDate}"/>
 								</rich:column>
 								<rich:column style="vertical-align:top;">
 									<h:outputText value="#{logItemVolume.endDate}"/>
 								</rich:column>
-								<rich:column colspan="3" style="vertical-align:top;">
-									<h:outputText value=""/>
-								</rich:column>
+
 								<rich:column rendered="#{not empty logItemVolume.escidocId}" style="vertical-align:top;">
 									<pretty:link mappingId = "viewPages">
 										<f:param value="#{logItemVolume.escidocId}"/>

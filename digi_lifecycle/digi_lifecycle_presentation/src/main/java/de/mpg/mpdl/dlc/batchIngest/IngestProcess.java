@@ -41,7 +41,6 @@ public class IngestProcess extends Thread{
 	
 	private BatchLog batchLog;
 	private EntityManager em;
-	private Object currentLog = new Object();
 	
 	public IngestProcess(String name, String action, String contextId, String userHandle, String server, boolean ftp, String userName, String password, String mab, String tei, String images, BatchLog batchLog) 
 	{
@@ -65,15 +64,14 @@ public class IngestProcess extends Thread{
 
 	private void saveLog(BatchLog batchLog)
 	{
-		synchronized(currentLog){
 
-			EntityManagerFactory emf = VolumeServiceBean.getEmf();
-			this.em = emf.createEntityManager();
-			em.getTransaction().begin();
-			em.persist(batchLog);
-			em.getTransaction().commit();
-			this.setUncaughtExceptionHandler(new BatchIngestExceptionHandler(em, batchLog));
-		}
+		EntityManagerFactory emf = VolumeServiceBean.getEmf();
+		this.em = emf.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(batchLog);
+		em.getTransaction().commit();
+		this.setUncaughtExceptionHandler(new BatchIngestExceptionHandler(em, batchLog));
+
 
 	}
 	
@@ -89,10 +87,10 @@ public class IngestProcess extends Thread{
 //		}
 //		else
 //			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
-		
+		  
 		try {
 			log = new IngestLog(logName, action, contextId, userHandle, server, ftp, userName, password, images, mab, tei, batchLog);
-			try {
+			try {  
 				if(log.ftpCheck())
 					log.ftpSaveItems();
 				else

@@ -1,9 +1,5 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
-import java.io.IOException;
-
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,19 +7,22 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
+import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
-
-
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Status;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
@@ -34,7 +33,7 @@ import de.mpg.mpdl.dlc.vo.collection.Collection;
 
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 @URLMapping(id="batchIngest", viewId = "/batchIngest.xhtml", pattern = "/ingest/batch")
 public class BatchIngestBean {
 
@@ -60,9 +59,9 @@ public class BatchIngestBean {
 	
 	private boolean protocol;
 	
-	@PostConstruct
+	@URLAction(onPostback=false)	
 	public void init()
-	{
+	{                 		
 		this.protocol = true;
 		this.contextSelectItems.clear();
 		SelectItem item;
@@ -120,7 +119,7 @@ public class BatchIngestBean {
 	}
 	
 	public String save(String action)
-	{
+	{ 
 		if("".equals(name))
 		{
 			Date startDate = new Date();
