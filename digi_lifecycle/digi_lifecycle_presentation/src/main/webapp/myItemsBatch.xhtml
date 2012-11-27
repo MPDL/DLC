@@ -16,7 +16,7 @@
 	
 	<mpdl:paginator paginatorBean="#{ingestLogBean}">
 		<h:panelGroup layout="block">
-		    <rich:dataTable var="log" value="#{ingestLogBean.logs}">
+		    <rich:dataTable var="log" value="#{ingestLogBean.logs}" styleClass="eg3_container_1">
 		        <f:facet name="header">
 		            <rich:columnGroup>
 		                <rich:column>
@@ -49,7 +49,6 @@
 		                <rich:column>
 		                    <h:outputText value="Finished Items" />
 		                </rich:column>
-
 		                <rich:column>
 		                    <h:outputText value="escidoc ID" />
 		                </rich:column>		                
@@ -65,7 +64,6 @@
 		                <rich:column>
 		                    <h:outputText value="TEI" />
 		                </rich:column>		                	             
-		           
 		            </rich:columnGroup>
 		        </f:facet>
 		        
@@ -103,10 +101,31 @@
 		        <rich:column>
             		<h:outputText value="#{log.finishedItems}" />
        			</rich:column>
+       			<rich:column>
+	            	<h:outputText value="" />
+	       		</rich:column>
+	       		<rich:column>
+	            	<h:outputText value="" />
+	       		</rich:column>
+       			<rich:column>
+	            	<h:outputText value="" />
+	       		</rich:column>
+	       		<rich:column>
+	            	<h:outputText value="" />
+	       		</rich:column>
+
+	       		<rich:column>
+	            	<h:outputText value="" />
+	       		</rich:column>
        			
-       			<rich:collapsibleSubTable var="logItem" value="#{ingestLogBean.getLogItems(log)}" rendered="#{log.totalItems > 0}">
-	       			<rich:column>
-	            		<h:outputText value="#{logItem.name}" />
+       			<rich:column colspan="15" breakRowBefore="true" rendered="#{log.totalItems > 0}">
+	                <rich:collapsibleSubTableToggler for="sbtbl" />
+	                <h:outputText value="hide show" />
+	            </rich:column>
+	            
+       			<rich:collapsibleSubTable var="logItem" id="sbtbl" value="#{ingestLogBean.getLogItems(log)}" rendered="#{log.totalItems > 0}" expandMode="client" noDataLabel="no entries available">
+	       			<rich:column style="vertical-align:top;">
+	            		<h:outputText value="#{logItem.name}"/>
 	       			</rich:column>
 	       			<rich:column>
 	            		<h:outputText value="" />
@@ -115,16 +134,14 @@
 	       			<rich:column>
 	            		<h:outputText value="" />
 	       			</rich:column>
-			        <rich:column>
+			        <rich:column style="vertical-align:top;">
 	            		<h:outputText value="#{logItem.errorLevel}" />
 	       			</rich:column>
 	       			<rich:column>
-		 		        <rich:column>
-		 		        	<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
-		            			<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false" >
-		            			</h:outputText>  
-		            		</a4j:repeat>         		
-		       			</rich:column>
+	 		        	<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
+	            			<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false" >
+	            			</h:outputText>  
+	            		</a4j:repeat>         		
 	       			</rich:column>
 	       			<rich:column>
 	            		<h:outputText value="#{logItem.startDate}" />
@@ -171,7 +188,12 @@
 	            		<h:outputText value="#{logItem.teiFileName}" />
 	       			</rich:column>
 		       		
-		       		<rich:collapsibleSubTable var="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" rendered="#{logItem.content_model == applicationBean.cmMultiVol}">
+					
+		       		<rich:column colspan="15" rendered="#{logItem.content_model == applicationBean.cmMultiVol}">
+		                <rich:collapsibleSubTableToggler for="logItemVolume" />
+		                <h:outputText value="hide show" />
+		            </rich:column>
+		       		<rich:collapsibleSubTable id="logItemVolume" var="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" rendered="#{logItem.content_model == applicationBean.cmMultiVol}" expandMode="client" >
 		       			<rich:column>
 		            		<h:outputText value="#{logItemVolume.name}" />
 		       			</rich:column>
@@ -186,11 +208,9 @@
 		            		<h:outputText value="#{logItemVolume.errorLevel}" />
 		       			</rich:column>
 		       			<rich:column>
-			 		        <rich:column>
-			 		        	<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
-			            			<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>  
-			            		</a4j:repeat>         		
-			       			</rich:column>
+		 		        	<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
+		            			<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>  
+		            		</a4j:repeat>         		
 		       			</rich:column>		       			
 		       			<rich:column>
 		            		<h:outputText value="#{logItemVolume.startDate}" />
@@ -234,7 +254,6 @@
 		            		<h:outputText value="#{logItemVolume.teiFileName}" />
 		       			</rich:column>
 	       			</rich:collapsibleSubTable>
-	       			
        			</rich:collapsibleSubTable>
 		 
 		    </rich:dataTable>
