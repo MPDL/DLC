@@ -1090,6 +1090,7 @@ public class IngestLog
 					query.setParameter("id", bi.getDbID());				
 					BatchLogItem logItem = query.getSingleResult();
 					logItem.setStartDate(new Date());
+					logItem.setStep(Step.STARTED);
 					
 					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
 	
@@ -1117,6 +1118,7 @@ public class IngestLog
 					query.setParameter("id", bi.getDbID());				
 					BatchLogItem logItem_multivolume = query.getSingleResult();
 					logItem_multivolume.setStartDate(new Date());
+					logItem_multivolume.setStep(Step.STARTED);
 			  		
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
 					mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
@@ -1131,6 +1133,7 @@ public class IngestLog
 							q.setParameter("id", vol.getDbID());
 							BatchLogItemVolume logItemVolume = q.getSingleResult();
 							logItemVolume.setStartDate(new Date());
+							logItemVolume.setStep(Step.STARTED);
 
 							downloadImages(null, logItemVolume, vol.getImagesDirectory(), vol.getDlcDirectory(), vol.getImageFiles(), vol.getFooter());
 							String mvId = mv.getItem().getObjid();
@@ -1160,10 +1163,11 @@ public class IngestLog
 							volumeService.updateMultiVolumeFromId(mv.getItem().getObjid(), volIds, userHandle);
 						}
 						logItem_multivolume.setEndDate(new Date());
+						logItem_multivolume.setStep(Step.FINISHED);
 					}
 					else
 					{
-						batchLog.setErrorLevel(ErrorLevel.PROBLEM);
+						batchLog.setErrorLevel(ErrorLevel.ERROR);
 //						for(BatchIngestItem vol : bi.getVolumes())
 //						{
 //							vol.getLogs().add(BatchIngestLogs.MULTIVOLUMEROLLBACKERROR);
