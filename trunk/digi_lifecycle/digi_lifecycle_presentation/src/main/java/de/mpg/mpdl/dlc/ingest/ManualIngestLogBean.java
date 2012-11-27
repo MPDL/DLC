@@ -97,7 +97,7 @@ public class ManualIngestLogBean extends BasePaginatorBean<DatabaseItem> {
 	
 	
 	
-	public boolean checkUploadCompletes()
+	public boolean checkUploadComplete()
 	{ 
 		for(DatabaseItem item : uploadedItems)
 		{
