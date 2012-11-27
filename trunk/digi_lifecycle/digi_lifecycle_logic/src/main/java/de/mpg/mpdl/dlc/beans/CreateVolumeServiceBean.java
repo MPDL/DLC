@@ -62,6 +62,7 @@ import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItem;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
@@ -1021,7 +1022,7 @@ public class CreateVolumeServiceBean {
 			batchLogItem.getLogs().add("Creating new monograph");
 
 		}
-		else
+		else if(batchLogItemVolume != null)
 		{
 			batchLogItemVolume.getLogs().add("Creating new volume");
 		}			
@@ -1146,6 +1147,13 @@ public class CreateVolumeServiceBean {
 				{				
 					batchLogItem.setEscidocId(volume.getItem().getOriginObjid());
 					batchLogItem.getLogs().add("successfully created");
+					batchLogItem.setStep(Step.FINISHED);
+				}
+				else if(batchLogItemVolume != null)
+				{
+					batchLogItemVolume.setEscidocId(volume.getItem().getOriginObjid());
+					batchLogItemVolume.getLogs().add("successfully created");
+					batchLogItem.setStep(Step.STOPPED);
 				}
 				return volume.getItem().getObjid();
 
