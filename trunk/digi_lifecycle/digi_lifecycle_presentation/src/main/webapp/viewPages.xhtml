@@ -42,86 +42,67 @@
 		</ui:define>
 		
 		<ui:define name="citationLinkContent">
-			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea"  rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 				<button class="eg3_icon_close_16_16 eg3_floatRight" onclick="$(this).parent().hide('slow');">
 					<h:outputText value="&#160;"/>
 				</button>
 				<br/>
 				
-				<h:outputLabel for="volumeLink">
-					<h:outputText value="#{lbl.citation_handle_title}"/>
-				</h:outputLabel>
-				<h:panelGroup styleClass="eg3_markTextButton">
+				<h:outputLabel for="volumeLink" styleClass="eg3_markTextButton">
 					<h:outputText value="#{lbl.citation_handle_title_mark}"/>
-				</h:panelGroup>
+				</h:outputLabel>
 				<h:inputText id="volumeLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				
 				<ui:fragment rendered="#{viewPages.viewType == 'SINGLE'}">
-					<h:outputLabel for="citSinglePage">
-						<h:outputText value="#{lbl.citation_handle_single}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="citSinglePage" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_handle_single_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="citSinglePage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
 					
-					<h:outputLabel for="bookmarkLinkSingle">
-						<h:outputText value="#{lbl.citation_link_bookmark}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="bookmarkLinkSingle" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="bookmarkLinkSingle" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 					
-					<h:outputLabel for="citDigiView">
-						<h:outputText value="#{lbl.citation_link_digilib}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="citDigiView" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_link_digilib_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="citDigiView" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				</ui:fragment>
 				
 				<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-					<h:outputLabel for="citLeftPage">
-						<h:outputText value="#{lbl.citation_handle_recto}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="citLeftPage" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_handle_recto_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage!=null}"/>
 					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage==null}"/>
 					
-					<h:outputLabel for="citRightPage">
-						<h:outputText value="#{lbl.citation_handle_verso}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="citRightPage" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_handle_verso_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="citRightPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage!=null}"/>
 					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage==null}"/>
 					
-					<h:outputLabel for="bookmarkLink">
-						<h:outputText value="#{lbl.citation_link_bookmark}"/>
-					</h:outputLabel>
-					<h:panelGroup styleClass="eg3_markTextButton">
+					<h:outputLabel for="bookmarkLink" styleClass="eg3_markTextButton">
 						<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
-					</h:panelGroup>
+					</h:outputLabel>
 					<h:inputText id="bookmarkLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				</ui:fragment>
 				
 				<ui:remove>
 					<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
-						<h:outputLabel for="citFulltextPage">
+						<h:outputLabel for="citFulltextPage" styleClass="eg3_markTextButton">
 							<h:outputText value="Handle-URL of page:"/> <!-- TODO: missing label -->
 						</h:outputLabel>
 						<h:inputText id="citFulltextPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
 					</ui:fragment>
 				</ui:remove>
 				<script type="text/javascript">
-					$('.eg3_markTextButton').bind("click", function(evt, btn){
-						$(this).next("input[id]").focus().select();
-					});
+					if ($.browser.msie) {
+						$('.eg3_markTextButton').bind("click", function(evt, btn){
+							$(this).next("input[id]").focus().select();
+						});
+					}
 				</script>
 			</h:panelGroup>
 		</ui:define>
