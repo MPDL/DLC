@@ -752,7 +752,7 @@ public class CreateVolumeServiceBean {
 				batchLogItemVolume.getLogs().add("Error while updating. " + e.getMessage());
 				batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
 			}
-			msg.setIngestStatus(IngestStatus.READY);
+			msg.setIngestStatus(IngestStatus.ERROR);
 			msg.setMessage("Error while updating Item " + volume.getItem().getOriginObjid());
 			msg.setError(e);
 			logger.error("Error while updating volume " + volume.getItem().getObjid(), e);
