@@ -5,7 +5,17 @@
 		<xsl:output indent="yes"/>
 		
 		<!-- Copy these elements into the TEI SD, ignore others -->
-		<xsl:template match="/tei:TEI|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:titlePage/tei:docTitle|tei:figure|tei:div/tei:byline">
+		
+		<xsl:template match="/tei:TEI">
+			<xsl:copy>
+				<xsl:copy-of select="@*"/>
+				<xsl:apply-templates select="tei:text"/>
+			</xsl:copy>
+		</xsl:template>
+		
+		
+		
+		<xsl:template match="tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:titlePage/tei:docTitle|tei:figure|tei:div/tei:byline">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates />
