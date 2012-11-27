@@ -1,6 +1,7 @@
 package de.mpg.mpdl.dlc.beans;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -79,10 +80,6 @@ public class CreateVolumeThread extends Thread implements Runnable{
 	
 	public void run()
 	{
-		
-		
-		
-		
 		CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(ingestMainProcess, em);
 		
 		logger.info("Creating new volume/monograph");

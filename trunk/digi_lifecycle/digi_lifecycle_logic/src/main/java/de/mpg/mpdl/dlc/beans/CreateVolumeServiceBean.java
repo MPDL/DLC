@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -32,7 +33,6 @@ import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.http.util.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
 import org.jibx.runtime.IMarshallingContext;
@@ -41,7 +41,6 @@ import org.joda.time.DateTime;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ItemHandlerClient;
 import de.escidoc.core.client.StagingHandlerClient;
 import de.escidoc.core.client.interfaces.StagingHandlerClientInterface;
@@ -63,9 +62,12 @@ import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLogItem;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
-import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage;
+import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
+import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage;
 import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.IngestImage;
@@ -86,22 +88,37 @@ public class CreateVolumeServiceBean {
 	private DatabaseItem dbItem;
 	
 	private EntityManager em;
+	
+	private BatchLogItem batchLogItem;
+	
+	private BatchLogItemVolume batchLogItemVolume;
 
-
+	public CreateVolumeServiceBean()
+	{
+		
+	}
+	
 	public CreateVolumeServiceBean(DatabaseItem dbItem, EntityManager em) {
 		this.dbItem = dbItem;
 		this.em = em;
 	}
 	
-	public CreateVolumeServiceBean() {
-
+	public CreateVolumeServiceBean(BatchLogItem batchLogItem, EntityManager em) 
+	{
+		this.batchLogItem = batchLogItem;
+		this.em = em;
+	}
+	
+	public CreateVolumeServiceBean(BatchLogItemVolume batchLogItemVolume, EntityManager em)
+	{
+		this.batchLogItemVolume = batchLogItemVolume;
+		this.em = em;
 	}
 	
 	private void addAndPersistMessage(IngestLogMessage msg)
 	{
 		if(dbItem!=null)
 		{
-			
 			em.getTransaction().begin();
 			em.merge(dbItem);
 			dbItem.addMessage(msg);
@@ -111,6 +128,19 @@ public class CreateVolumeServiceBean {
 			em.getTransaction().commit();
 		}
 		
+	}
+	
+	private void update(BatchLogItem batchLogItem, BatchLogItemVolume batchLogItemVolume)
+	{
+		em.getTransaction().begin();
+		if(batchLogItem != null)
+		{
+			em.merge(batchLogItem);
+		}else
+		{
+			em.merge(batchLogItemVolume);
+		}
+		em.getTransaction().commit();
 	}
 	
 	
@@ -170,7 +200,17 @@ public class CreateVolumeServiceBean {
 	{  
 		IngestLogMessage msg = new IngestLogMessage(ActivityType.CREATE_ITEM, "");
 		
+		
+		if(batchLogItem != null)
+		{
+			batchLogItem.getLogs().add("Creating new Multivoluem");
+
+		}
+			
+	
 		Item item = createNewEmptyItem(contentModel, contextId, userHandle, modsMetadata);
+
+		
 		Volume vol= new Volume();
 		try
 		{
@@ -183,11 +223,25 @@ public class CreateVolumeServiceBean {
 		
 		msg.setIngestStatus(IngestStatus.READY);
 		msg.setMessage("Multivolume created: " + vol.getItem().getObjid());
+		if(batchLogItem != null)
+		{
+			batchLogItem.setEscidocId(vol.getItem().getObjid());
+			batchLogItem.getLogs().add("successfully created");
+		}
+
 		addAndPersistMessage(msg);
 		}
 		catch(Exception e)
 		{
+
 			logger.error("Error while creating Volume. Trying to rollback", e);
+			if(batchLogItem != null)
+			{
+				batchLogItem.getLogs().add("Error while creating Multivolume. " + e.getMessage());
+				batchLogItem.getLogs().add("Multivolume rollback");
+				batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+			}
+			vol = null;
 			msg.setMessage("Error while creating Multivolume. Trying to rollback" + e.getMessage());
 			msg.setIngestStatus(IngestStatus.ERROR);
 			msg.setError(e);
@@ -195,8 +249,13 @@ public class CreateVolumeServiceBean {
 			rollbackCreation(vol, userHandle);
 			throw e;
 		}
-		
-		
+		finally
+		{
+			if(batchLogItem != null)
+			{
+				update(batchLogItem, null);
+			}
+		}
 		
 		return vol;
 	}
@@ -231,6 +290,16 @@ public class CreateVolumeServiceBean {
 				}
 				msg.setIngestStatus(IngestStatus.READY);
 			} catch (Exception e) {
+				if(batchLogItem != null)
+				{
+					batchLogItem.getLogs().add("Can not process footer: " + footer.getName() + " .");
+					batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+				}
+				else if(batchLogItemVolume != null)
+				{
+					batchLogItemVolume.getLogs().add("Can not process footer: " + footer.getName() + " .");
+					batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
+				}
 				msg.setIngestStatus(IngestStatus.ERROR);
 				msg.setMessage(msg.getMessage() + " " + e.getMessage());
 				msg.setError(e);
@@ -314,6 +383,16 @@ public class CreateVolumeServiceBean {
 					
 					
 			} catch (Exception e) {
+				if(batchLogItem != null)
+				{
+					batchLogItem.getLogs().add("Can not process image: " + imageItem.getName() + " .");
+					batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+				}
+				else if(batchLogItemVolume != null)
+				{
+					batchLogItemVolume.getLogs().add("Can not process image: " + imageItem.getName() + " .");
+					batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
+				}
 				msg.setIngestStatus(IngestStatus.ERROR);
 				msg.setMessage(msg.getMessage() + " " + e.getMessage());
 				msg.setError(e);
@@ -663,6 +742,16 @@ public class CreateVolumeServiceBean {
 		} 
 		catch (Exception e) 
 		{
+			if(batchLogItem != null)
+			{
+				batchLogItem.getLogs().add("Error while updating. " + e.getMessage());
+				batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+			}
+			else if(batchLogItemVolume != null)
+			{
+				batchLogItemVolume.getLogs().add("Error while updating. " + e.getMessage());
+				batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
+			}
 			msg.setIngestStatus(IngestStatus.READY);
 			msg.setMessage("Error while updating Item " + volume.getItem().getOriginObjid());
 			msg.setError(e);
@@ -819,7 +908,15 @@ public class CreateVolumeServiceBean {
 	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception {
 		logger.info("Creating new volume/monograph");
 		
-		IngestLogMessage msg = new IngestLogMessage(ActivityType.CREATE_ITEM);
+		if(batchLogItem != null)
+		{
+			batchLogItem.getLogs().add("Creating new monograph");
+
+		}
+		else
+		{
+			batchLogItemVolume.getLogs().add("Creating new volume");
+		}			
 	
 		Volume volume = new Volume();
 		Item item = createNewEmptyItem(contentModel,contextId, userHandle, modsMetadata);
@@ -937,26 +1034,40 @@ public class CreateVolumeServiceBean {
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
-					
-				msg.setIngestStatus(IngestStatus.READY);
-				msg.setMessage("Item " + volume.getItem().getOriginObjid() + " created successfully");
+				if(batchLogItem != null)
+				{				
+					batchLogItem.setEscidocId(volume.getItem().getOriginObjid());
+					batchLogItem.getLogs().add("successfully created");
+				}
 				return volume.getItem().getObjid();
 
 			}
-		
 			catch (Exception e) 
 			{
 				logger.error("Error while creating Volume. Trying to rollback", e);
-				msg.setIngestStatus(IngestStatus.ERROR);
-				msg.setMessage("Error while creating Item " + volume.getItem().getOriginObjid()  + " " + e.getMessage());
-				msg.setError(e);
+				if(batchLogItem != null)
+				{
+					batchLogItem.getLogs().add("Error while creating Monograph. " + e.getMessage());
+					batchLogItem.getLogs().add("monograph rollback");
+					batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+				}
+				else
+				{
+					batchLogItemVolume.getLogs().add("Error while creating Volume. " + e.getMessage());
+					batchLogItemVolume.getLogs().add("volume rollback");
+					batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
+				}
 				rollbackCreation(volume, userHandle);
 				//throw new Exception(e);
 				return null;
 			}
 		finally
 		{
-			addAndPersistMessage(msg);
+			if(batchLogItem != null)
+				batchLogItem.setEndDate(new Date());
+			else
+				batchLogItemVolume.setEndDate(new Date());
+			update(batchLogItem, batchLogItemVolume);
 		}
 			
 			
