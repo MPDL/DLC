@@ -6,22 +6,15 @@
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:rich="http://richfaces.org/rich"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
-	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view">
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list">
 
 
 <ui:composition template="templates/template_v3.xhtml">
 	<ui:define name="mainContent">
-		<!-- necessary for caroussel -->
-		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js" target="head"/>
-		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
 		
-		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_organisationUnitStartpage">
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_organizationUnitStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
-				<ui:remove>
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
-						<mpdl:hierarchicalBreadcrumb />
-					</h:panelGroup>
-				</ui:remove>
 				<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
 					<h:outputLink value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" target="_blank" title="#{tlt.ouUrl}">
 						<h:outputText value="Homepage: #{viewOU.orga.escidocMd.title}"/>
@@ -33,96 +26,31 @@
 				<h1><h:outputText value="#{viewOU.orga.escidocMd.title}"/></h1>
 			</h:panelGroup>
 			
-			<!-- left content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				<h:outputText value="&#160;"/>
-			</h:panelGroup>
-			
-			<!-- main content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-				<view:infoPanel descriptionTitle="" descriptionData="#{viewOU.orga.escidocMd.description}
-				"/>
-				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewOU.vols_Carousel}" style="margin-bottom:2em;">
-					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
-					<h:panelGroup layout="block" class="wrapper">
-						<ul>
-							<ui:repeat id="volume" value="#{viewOU.vols_Carousel}" var="volume" rowKeyVar="row">
-								<li>
-									<pretty:link mappingId="viewPagesWithoutNumber">
-										<f:param value="#{volume.getObjidAndVersion()}"/>
-										<f:param value="recto-verso" />
-										
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" width="75" height="75"  title="#{volumeUtilBean.getTitle(volume.modsMetadata).title}"/>
-									</pretty:link>
-								</li>
-							</ui:repeat>
-						</ul>
+			<h:panelGroup layout="block" styleClass="eg3_container_1" style="padding-left:1em;">
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="max-width:82em;">
+					<h:panelGroup layout="block" styleClass="eg3_organizationDescriptionContainer" rendered="#{not empty viewOU.orga.escidocMd.description}">
+						<p>
+							<h:outputText value="#{viewOU.orga.escidocMd.description}"/>
+						</p>
 					</h:panelGroup>
-					<ui:remove>
-					<h:form>
-						<h:outputText value="#{lbl.admin_ou_name}:" />
-						<h:outputText value="#{viewOU.orga.escidocMd.title}" rendered="#{not viewOU.orga.editable}"/>
-						<h:inputText value="#{viewOU.orga.escidocMd.title}" rendered="#{viewOU.orga.editable}" />
-				
-						
-						<h:outputText value="#{lbl.admin_ou_description}:" />
-						<h:outputText value="#{viewOU.orga.escidocMd.description}"  rendered="#{not viewOU.orga.editable}"/>
-						<h:inputText value="#{viewOU.orga.escidocMd.description}" rendered="#{viewOU.orga.editable}" />
-				
-						
-						<h:outputText value="#{lbl.admin_ou_country}:" />
-						<h:outputText value="#{viewOU.orga.escidocMd.country}" rendered="#{not viewOU.orga.editable}"/>
-						<h:inputText value="#{viewOU.orga.escidocMd.country}" rendered="#{viewOU.orga.editable}" />
-					
-						
-						<h:outputText value="#{lbl.admin_ou_city}:" />
-						<h:outputText value="#{viewOU.orga.escidocMd.city}" rendered="#{not viewOU.orga.editable}"/>
-						<h:inputText value="#{viewOU.orga.escidocMd.city}" rendered="#{viewOU.orga.editable}" />
-					
-						
-						<h:outputText value="#{lbl.admin_ou_homepageUrl}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.homePageURL}" rendered="#{viewOU.orga.editable}" />
-				
-						
-						<h:outputText value="#{lbl.admin_ou_contact}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.contact}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.contact}" rendered="#{viewOU.orga.editable}" />
-				
-						<h:outputText value="#{lbl.admin_ou_cataloguePrefix}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.cataloguePrefix}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.cataloguePrefix}" rendered="#{viewOU.orga.editable}" />
-
-						<h:outputText value="#{lbl.admin_ou_imprint}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.imprint}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.imprint}" rendered="#{viewOU.orga.editable}" />
-						
-						<h:outputText value="#{lbl.admin_ou_support}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.support}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.support}" rendered="#{viewOU.orga.editable}" />
-
-						<h:outputText value="#{lbl.admin_ou_usageRequirement}:" />
-						<h:outputText value="#{viewOU.orga.dlcMd.foafOrganization.usageRequirement}" rendered="#{not viewOU.orga.editable}"/>	
-						<h:inputText value="#{viewOU.orga.dlcMd.foafOrganization.usageRequirement}" rendered="#{viewOU.orga.editable}" />
-
-
-					
-						<h:commandButton value="#{lbl.button_command_edit}" action="#{viewOU.edit}"  rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and (not viewOU.orga.editable)}"/>
-						<h:commandButton value="#{lbl.button_command_save}" action="#{viewOU.save}" rendered="#{loginBean.login and (loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator' || loginBean.user.ou.objid == viewOU.id ) and viewOU.orga.editable}"/>
-					</h:form>
-					</ui:remove>
+					<h:panelGroup layout="block" styleClass="eg3_organizationCollectionOverview" rendered="#{not empty applicationBean.getContext(viewOU.orga.id)}">
+						<h:panelGroup layout="block" styleClass="eg3_simpleCollectionList">
+							<h:panelGroup layout="block" styleClass="eg3_listBody">
+								<a4j:repeat value="#{viewOU.collections}" var="context" rowKeyVar="rowKey">
+									<list:collectionListItem item="#{context}" titleLinkID="collection" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}"/>
+								</a4j:repeat>
+							</h:panelGroup>
+						</h:panelGroup>
+						<script type="text/javascript">
+							$('.eg3_organizationUnitStartpage .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+						</script>
+					</h:panelGroup>
 				</h:panelGroup>
 				
-				<ui:fragment rendered="#{not empty applicationBean.getContext(viewOU.orga.id)}">
-					<a4j:repeat value="#{viewOU.collections}" var="context" rowKeyVar="rowKey">
-						<h:panelGroup layout="block" styleClass="eg3_container_1">
-							<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}" colLink="#{context.objid}"/>
-						</h:panelGroup>
-
-					</a4j:repeat>
-				</ui:fragment>
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_containerCenter">
+					<view:cloud_carousel loadScript="true" loadCSS="true" initStart="true"/>
+				</h:panelGroup>
 			</h:panelGroup>
-			
 		</h:panelGroup>
 	</ui:define>
 </ui:composition>

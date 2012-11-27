@@ -718,6 +718,10 @@ function eg3_listenMultiVolume() {
 }
 
 
+
+
+
+
 $(document).ready(function(e) {
 	/*
 	 * use the setTimeout method only if you load the content via ajax 

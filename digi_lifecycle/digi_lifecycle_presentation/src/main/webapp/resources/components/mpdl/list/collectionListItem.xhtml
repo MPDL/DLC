@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list">
+	
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="item" required="true"/>
+		<cc:attribute name="titleLinkID" required="true"/>
+		<cc:attribute name="searchInput" required=""/>
+		<cc:attribute name="searchAction" method-signature="java.lang.String method()" required=""/>
+		<cc:attribute name="searchParam" required=""/>
+		<cc:attribute name="hideTitle" type="java.lang.Boolean" required="false"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+		<ui:remove>
+			<h:panelGroup layout="block" styleClass="eg3_container_1">
+				<view:infoPanel descriptionTitle="#{context.properties.name}" descriptionTitleLink="#{context.objid}" descriptionTitleLinkID="collection" descriptionData="#{context.properties.description}" searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}" colLink="#{context.objid}"/>
+			</h:panelGroup>
+		</ui:remove>
+		
+		<h:panelGroup layout="block" styleClass="eg3_collectionItem eg3_overflow">
+			<h:panelGroup layout="block" styleClass="eg3_itemHeader" rendered="#{not empty cc.attrs.item.properties.name and !hideTitle}">
+				<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+					<ui:fragment rendered="#{not empty cc.attrs.item.properties.name and (empty cc.attrs.item.objid or empty cc.attrs.titleLinkID)}">
+						<h2><h:outputText value="#{cc.attrs.item.properties.name}"/></h2>
+					</ui:fragment>
+					<ui:fragment rendered="#{not empty cc.attrs.item.objid and not empty cc.attrs.titleLinkID}">
+						<h2>
+							<pretty:link mappingId="#{cc.attrs.titleLinkID}">
+								<f:param value="#{cc.attrs.item.objid}"/>
+								<h:outputText value="#{cc.attrs.item.properties.name}"/>
+							</pretty:link>
+						</h2>
+					</ui:fragment>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_itemBody">
+				<h:panelGroup layout="block" styleClass="eg3_itemNavigation">
+					<h3>
+						<pretty:link mappingId="volumes">
+							<f:param value="#{cc.attrs.item.objid}"/>
+							<h:outputText value="#{lbl.view_ou_ColLink}" styleClass="eg3_titleListLink"/>
+						</pretty:link>
+						
+						<h:panelGroup styleClass="eg3_floatRight">
+							<h:form>
+								<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{cc.attrs.searchInput}" title="#{tlt.meta_quicksearch_placeholder}"/>
+								<h:panelGroup styleClass="eg3_searchTooltip">
+									<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/>
+								</h:panelGroup>
+								<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+								<h:commandButton action="#{cc.attrs.searchAction}" value="Go" style="position:absolute; top:-100000em;">
+									<f:param name="searchParam" value="#{cc.attrs.searchParam}"/>
+								</h:commandButton>
+							</h:form>
+						</h:panelGroup>
+					</h3>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_itemDescription">
+					<p>
+						<h:outputText value="#{cc.attrs.item.properties.description}"/>
+						
+						<pretty:link mappingId="#{cc.attrs.titleLinkID}">
+							<f:param value="#{cc.attrs.item.objid}"/>
+							<h:outputText value=" ..."/>
+							<h:panelGroup styleClass="eg3_icon_forwardi_16_16">
+								<h:outputText value="&#160;"/>
+							</h:panelGroup>
+						</pretty:link>
+					</p>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+	</cc:implementation>
+</html>
