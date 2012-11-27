@@ -26,58 +26,58 @@
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_collectionStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
 				<h:outputText value="&#160;"/>
-				<ui:remove>
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_breadTitle" style="background-color:#323232;">
-					<mpdl:hierarchicalBreadcrumb ouId = "#{viewCollection.col.ouId}" ouTitle="#{viewCollection.col.ouTitle}">
-					</mpdl:hierarchicalBreadcrumb>
-					</h:panelGroup>
-				</ui:remove>
 			</h:panelGroup>
 			
 			<!-- title -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
 				<h1>
-					<pretty:link mappingId="volumes">
-						<f:param value="#{viewCollection.col.id}" />
-						<h:outputText value="#{viewCollection.col.name}" />
-					</pretty:link>
+					<h:outputText value="#{viewCollection.col.name}"/>
 				</h1>
 			</h:panelGroup>
 			
-			<!-- left content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				&#160;
-			</h:panelGroup>
-			
-			<!-- main content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_overflow">
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<view:infoPanel descriptionData="#{viewCollection.col.description}" 
-									searchSize="eg3_container_1_5" searchPlaceholder="#{lbl.view_ou_collection}" searchTitle="#{tlt.col_quicksearch}"
-									searchAction="#{viewCollection.searchInCollection}" searchInput="#{viewCollection.searchString}" colLink="#{viewCollection.col.id}"/>
-				</h:panelGroup>
-						
-				<h:panelGroup layout="block" class="infiniteCarousel eg3_collectionCarousel" rendered="#{not empty viewCollection.volumes}" style="margin-top:2em; margin-bottom:2em;">
-					<ui:remove><h:outputText value="#{lbl.view_collection_carusell_header}" style="font-size:150%"/></ui:remove>
-					<h:panelGroup layout="block" class="wrapper">
-						<ul>
-							<ui:repeat id="volume" value="#{viewCollection.volumes}" var="volume" rowKeyVar="row">
-								<li>
-									<pretty:link mappingId="viewPagesWithoutNumber">
-										<f:param value="#{volume.getObjidAndVersion()}" />
-										<f:param value="recto-verso" />
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" width="75" height="75" />
-									</pretty:link>
-								</li>
-							</ui:repeat>
-						</ul>
+			<h:panelGroup layout="block" styleClass="eg3_container_1" style="padding-left:1em;">
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="max-width:82em;">
+					<h:panelGroup layout="block" styleClass="eg3_simpleCollectionList">
+						<h:panelGroup layout="block" styleClass="eg3_listBody">
+							<h:panelGroup layout="block" styleClass="eg3_collectionItem eg3_overflow">
+								<h:panelGroup layout="block" styleClass="eg3_itemBody">
+									<h:panelGroup layout="block" styleClass="eg3_itemNavigation">
+										<h3>
+											<pretty:link mappingId="volumes">
+												<f:param value="#{viewCollection.col.id}"/>
+												<h:outputText value="#{lbl.view_ou_ColLink}" styleClass="eg3_titleListLink"/>
+											</pretty:link>
+											
+											<h:panelGroup styleClass="eg3_floatRight">
+												<h:form>
+													<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{viewCollection.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
+													<h:panelGroup styleClass="eg3_searchTooltip">
+														<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/>
+													</h:panelGroup>
+													<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+													<h:commandButton action="#{viewCollection.searchInCollection}" value="Go" style="position:absolute; top:-100000em;"/>
+												</h:form>
+											</h:panelGroup>
+										</h3>
+										<script type="text/javascript">
+											$('.eg3_collectionStartpage .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+										</script>
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemDescription">
+										<p>
+											<h:outputText value="#{viewCollection.col.description}"/>
+										</p>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
 					</h:panelGroup>
 				</h:panelGroup>
-				<ui:remove>
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<view:infoPanel descriptionData="#{viewCollection.col.description} PART 2"/>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_containerCenter">
+					<view:cloud_carousel loadScript="true" loadCSS="true" initStart="true"/>
 				</h:panelGroup>
-				</ui:remove>
 			</h:panelGroup>
 		</h:panelGroup>
 	

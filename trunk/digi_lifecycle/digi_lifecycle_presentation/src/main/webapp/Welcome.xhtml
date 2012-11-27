@@ -17,118 +17,73 @@
 	<ui:param name="headline" value="#{lbl.HomePage}"/>
 	
 	<ui:define name="mainContent">
-
-		<style type="text/css">
-			.eg3_instituteAccordion .rf-ac {
-				width: 290px;
-				overflow:visible;
-			}
-			.rf-ac div {
-				float:none;
-			}
-			.rf-ac .rf-ac-itm {
-				overflow:visible;
-			}
-			.rf-ac-itm-c {
-				height: 550px;
-			}
-			.rf-ac-itm-lbl-act {
-				color:red;
-			}
-			.rf-ac-itm-cnt {
-				position:absolute;
-				top:0;
-				margin-left:26.333333333em;
-				height:20em;
-				width:100%;
-			}
-			
-		</style>
-		
-		<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon eg3_textRight">
-			<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
-				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_projectdescription}"><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h:outputLink>
-				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_guideline}"><h:outputText value="#{lbl.HomePage_title_guideline}"/></h:outputLink>
-				<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_install}"><h:outputText value="#{lbl.HomePage_title_install}"/></h:outputLink>
-			</h:panelGroup>
-		</h:panelGroup>
-		
-		<h:panelGroup layout="block" styleClass="eg3_container_1">
-			<h:panelGroup styleClass="eg3_startpageTitle">
-				<h1>Digitization Lifecycle</h1>
-			</h:panelGroup>
-		</h:panelGroup>
-		
-		
-		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_welcomeProjectInfo">
-		
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				<h:outputText value="&#160;"/>
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="eg3_container_4_5 eg3_logoImageInfotext">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_projectdescription}" descriptionData="
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-					"/>
-				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_guideline}" descriptionData="
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-					"/>
-					<view:infoPanel descriptionTitle="#{lbl.HomePage_title_install}" descriptionData="
-					Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
-						Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
-						ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
-						aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-					"/>
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_welcomePage">
+			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon eg3_textRight">
+				<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
+					<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_projectdescription}"><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h:outputLink>
+					<h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_guideline}"><h:outputText value="#{lbl.HomePage_title_guideline}"/></h:outputLink>
+					<!-- h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_install}"><h:outputText value="#{lbl.HomePage_title_install}"/></h:outputLink -->
 				</h:panelGroup>
 			</h:panelGroup>
 			
-			
-			<!-- carrousel -->
-			<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-				<h:outputText value="&#160;"/>
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
+				<h1><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h1>
 			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-				<ui:remove>
-				<h2><h:outputText value="#{lbl.HomePage_carrousel}"/></h2>
-				</ui:remove>
-				<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js" target="head"/>
-				<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+			<h:panelGroup layout="block" styleClass="eg3_container_1" style="padding-left:1em;">
 				
-				<h:panelGroup layout="block" styleClass="infiniteCarousel">
-					<h:panelGroup layout="block" class="wrapper">
-						<ul>
-							<ui:repeat id="volume" value="#{sessionBean.startpageVolumes}" var="volume" rowKeyVar="row">
-								<li>
-									<pretty:link mappingId="viewPagesWithoutNumber">
-										<f:param value="#{volume.getObjidAndVersion()}"/>
-										<f:param value="recto-verso"/>
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" width="75" height="75" title="#{volumeUtilBean.getTitle(volume.modsMetadata).title}"/>
-									</pretty:link>
-								</li>
-							</ui:repeat>
-						</ul>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="max-width:82em;">
+					<p style="font-size:110%; width:98%; max-width:70em; line-height:145%; margin-bottom:2em;">
+						Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+							Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. 
+							Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, 
+							ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, 
+							aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
+					</p>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflow">
+						<h:form>
+							<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
+							<h:panelGroup styleClass="eg3_searchTooltip">
+								<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->
+							</h:panelGroup>
+							<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+							<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; position:absolute; top:-30px;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+							<script type="text/javascript">
+								$('.eg3_welcomePage .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+							</script>
+						</h:form>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_1" style="margin-top:2em;">
+						<view:infoPanel descriptionTitle="#{lbl.HomePage_title_provider}" list="#{applicationBean.ous}" isProviderList="true"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_containerCenter">
+					<h:panelGroup layout="block" styleClass="eg3_container_1">
+						<img src="resources/images/mirror.png" width="100%"/>
 					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
-		
-		</h:panelGroup>
-		
-		
-		<!-- Organization Units -->
-		<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-			<h:outputText value="&#160;"/>
-		</h:panelGroup>
-		
-		<h:panelGroup layout="block" styleClass="eg3_container_4_5">
-			<view:infoPanel descriptionTitle="#{lbl.HomePage_title_provider}" list="#{applicationBean.ous}" isProviderList="true"/>
+			
 		</h:panelGroup>
 	</ui:define>
 
