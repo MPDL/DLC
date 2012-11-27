@@ -65,7 +65,7 @@
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
 							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
-								<a4j:ajax render="modsInfo teiInfo imageInfo" />
+								<a4j:ajax render="modsInfo teiInfo imageInfo"/>
 							</h:commandButton>
 						</h:panelGroup>
 						
@@ -76,18 +76,15 @@
 						</style>
 						
 						<div id="popup" title="#{msg.upload_progress}">
-							<p><h:outputText value="#{msg.upload_progressMsg}" /></p>
+							<p><h:outputText value="#{msg.upload_progressMsg}"/></p>
 						</div>
 						<script type="text/javascript">
-						   
 					        $( "#popup" ).dialog({
 					            modal: true,
 					            autoOpen:false,
 					            resizable:false,
 					            open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
 					        });
-						    
-						  
 		    			</script>
 					</rich:panel>
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
@@ -119,7 +116,7 @@
 									</h:panelGroup>
 									<h:selectOneMenu id="contextId" value="#{ingestBean.selectedContextId}">
 										<f:selectItems value="#{ingestBean.contextSelectItems}"/>
-										<a4j:ajax event="change" render="select" />
+										<a4j:ajax event="change" render="select"/>
 									</h:selectOneMenu>
 								</h:panelGroup>
 							</h:panelGroup>
@@ -141,37 +138,36 @@
 							</h:panelGroup>	
 						</h:panelGroup>
 					</rich:panel>
+					
 					<rich:panel id="modsInfo" header="#{lbl.admin_upload_biblMd}" styleClass="eg3_metadataPanel">
 						
 						<ui:fragment rendered="#{not empty ingestBean.volume or not empty ingestBean.mabFile}">
-							<h:panelGroup layout="block" rendered="#{not empty ingestBean.modsMetadata.catalogueId_001   or ingestBean.modsMetadata.catalogueId_001== ''}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty ingestBean.modsMetadata.catalogueId_001 or ingestBean.modsMetadata.catalogueId_001== ''}">
 								<modsEditor:mabUserEditor modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
 							
 							<ui:fragment rendered="#{empty ingestBean.modsMetadata.catalogueId_001}"> 
-								<h:panelGroup layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMultiVol}">
-									<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
+								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMultiVol}">
+									<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}"/>
 								</h:panelGroup>
-								<h:panelGroup  layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMono}">
+								<h:panelGroup  layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmMono}">
 									<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
 								</h:panelGroup>
-								<h:panelGroup layout="block" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmVolume}">
-									<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
+								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.volume.item.properties.contentModel.objid==applicationBean.cmVolume}">
+									<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}"/>
 								</h:panelGroup>
-
 							</ui:fragment> 
-
 						</ui:fragment>
 						
 						<ui:fragment rendered= "#{empty ingestBean.mabFile and empty ingestBean.volume}">
-							<h:panelGroup layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
-								<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}" />
+							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMultiVol}">
+								<modsEditor:multi modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
-							<h:panelGroup  layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMono}">
+							<h:panelGroup  layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.selectedContentModel==applicationBean.cmMono}">
 								<modsEditor:mono modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
-							<h:panelGroup layout="block" rendered="#{ingestBean.selectedContentModel==applicationBean.cmVolume}">
-								<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}" />
+							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ingestBean.selectedContentModel==applicationBean.cmVolume}">
+								<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
 						</ui:fragment>
 						
@@ -179,169 +175,140 @@
 						
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
-							<a4j:ajax render=":#{component.parent.clientId}" />
+							<a4j:ajax render=":#{component.parent.clientId}"/>
 						</h:commandButton>
 						<h:commandButton action="#{ingestBean.resetMAB}" value="reset Metadata" rendered="#{not empty ingestBean.mabFile and not empty ingestBean.volume}">
-							<a4j:ajax render=":#{component.parent.clientId}" />
+							<a4j:ajax render=":#{component.parent.clientId}"/>
 						</h:commandButton>
 					</rich:panel>
 					
 					
 					<rich:panel id="teiInfo" header="#{lbl.admin_upload_teiInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
-						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}">
+						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}" layout="block" styleClass="eg3_container_1">
 							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.teiFile}"/>
 							<h:outputText value="#{ingestBean.teiFile.name} - #{ingestBean.teiPbFacsValues.size()} #{lbl.ingest_scanReferencesFound}" rendered="#{not empty ingestBean.teiFile}"/>
-							<br/>
-							
 						</h:panelGroup>
 						
-						
-						
-						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}">
+						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}" layout="block" styleClass="eg3_container_1">
 							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.volume.tei and empty ingestBean.volume.teiSd and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiAlreadyAvailable}" rendered="#{not empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiSdAlreadyAvailable}" rendered="#{not empty ingestBean.volume.teiSd and empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiOverwriteWarning}" rendered="#{ingestBean.teiFile != null and (not empty ingestBean.volume.tei or empty ingestBean.volume.teiSd)}" styleClass="eg3_messageError"/><br/>
 							<h:outputText value="#{ingestBean.teiFile.name} - #{ingestBean.teiPbFacsValues.size()} #{lbl.ingest_scanReferencesFound}" rendered="#{ingestBean.teiFile != null}"/>
 						</h:panelGroup>
-						<br/>
-						<h:outputText value="#{lbl.ingest_TeiNumberOfPbWrong}" styleClass="eg3_messageError" rendered="#{(not empty ingestBean.teiPbFacsValues) and ingestBean.teiPbFacsValues.size() != ingestBean.imageFiles.size()}"/>
-						<br/>
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{(not empty ingestBean.teiPbFacsValues) and ingestBean.teiPbFacsValues.size() != ingestBean.imageFiles.size()}">
+							<h:outputText value="#{lbl.ingest_TeiNumberOfPbWrong}" styleClass="eg3_messageError"/>
+						</h:panelGroup>
+						
 						<h:commandButton action="#{ingestBean.clearUploadedTEI}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearTei}" rendered="#{not empty ingestBean.teiFile}">
-							<a4j:ajax render="@form" />
+							<a4j:ajax render="@form"/>
 						</h:commandButton>
 						
 					</rich:panel>
 					
 					
 					<rich:panel id="cdcInfo" header="#{lbl.ingest_codicologicalInfo}" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
-						<h:panelGroup  rendered="#{ingestBean.volumeId == 'new'}">
+						<h:panelGroup rendered="#{ingestBean.volumeId == 'new'}" layout="block" styleClass="eg3_container_1">
 							<h:outputText value="#{lbl.ingest_noCodicologicalAvailable}" rendered="#{empty ingestBean.codicologicalFile}"/>
 							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
-							<br/>
 						</h:panelGroup>
 						
-						
-						
-						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}">
+						<h:panelGroup rendered="#{ingestBean.volumeId != 'new'}" layout="block" styleClass="eg3_container_1">
 							<h:outputText value="#{lbl.ingest_noCodicologicalAvailable}" rendered="#{empty ingestBean.codicologicalFile and empty ingestBean.volume.codicological}"/>
 							<h:outputText value="#{lbl.ingest_CodicologicalAlreadyAvailable}" rendered="#{not empty ingestBean.volume.codicological and empty ingestBean.codicologicalFile}"/>
 							<h:outputText value="#{lbl.ingest_CodicologicalOverwriteWarning}" rendered="#{ingestBean.codicologicalFile != null and (not empty ingestBean.volume.codicological)}" styleClass="eg3_messageError"/><br/>
 							<h:outputText value="#{ingestBean.codicologicalFile.name}" rendered="#{not empty ingestBean.codicologicalFile}"/>
 						</h:panelGroup>
-						<br/>
-						<h:commandButton action="#{ingestBean.clearUploadedCodicological}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearCodicological}" rendered="#{not empty ingestBean.codicologicalFile}">
-							<a4j:ajax render="@form" />
-						</h:commandButton>
 						
+						<h:commandButton action="#{ingestBean.clearUploadedCodicological}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearCodicological}" rendered="#{not empty ingestBean.codicologicalFile}">
+							<a4j:ajax render="@form"/>
+						</h:commandButton>
 					</rich:panel>
 		  		  	
 					<rich:panel id="imageInfo" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
-							<h:outputText value="#{lbl.admin_upload_images} (#{ingestBean.imageFiles.size()})" />
+							<h:outputText value="#{lbl.admin_upload_images} (#{ingestBean.imageFiles.size()})"/>
 						</f:facet>
-						<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}" />
+						<h:outputText value="#{msg.upload_EmptyFileSection}" rendered="#{ingestBean.size==0}"/>
 						
 						<ui:fragment rendered="#{ingestBean.size>0}" >
 							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" styleClass="eg3_borderradius_5" rendered="#{ingestBean.volumeId == 'new' and ingestBean.size>0}">
-								<a4j:ajax render="@form" />
+								<a4j:ajax render="@form"/>
 							</h:commandButton>
 							<br/><br/>
 							<h:selectOneMenu value="#{ingestBean.sortImagesAlgorithm}">
 								<f:selectItems value="#{ingestBean.sortImageSelectItem}"/>
-								
 							</h:selectOneMenu>
+							
 							<h:commandButton value="#{lbl.ingest_sortImages}" styleClass="eg3_borderradius_5" action="#{ingestBean.sortImages}" >
-								<a4j:ajax render="imageInfo" execute="imageInfo" />
+								<a4j:ajax render="imageInfo" execute="imageInfo"/>
 							</h:commandButton>
 							<br/><br/>
 							 
-							 
-							 <style>
-			                    	.dragDefault {
-			                    		border: 5px solid red;
-			                    		background-color: white;
-			                    		cursor:move;
-			                    	}
-			                    	
-			                    	.dragAccept {
-			                    		border: 5px solid green;
-			                    		
-			                    	}
-			                    	
-			                    	.dragReject {
-			                    		border: 5px solid red;
-			                    		
-			                    	}
-			                    	
-			                    	.fileArea
-			                    	{
-			                    		border:1px solid black;
-			                    		cursor:move;
-			                    		
-			                    	}
-			                    	
-			                    
-			                    </style>
+							<style>
+		                    	.dragDefault {
+		                    		border: 5px solid red;
+		                    		background-color: white;
+		                    		cursor:move;
+		                    	}
+		                    	.dragAccept {
+		                    		border: 5px solid green;
+		                    	}
+		                    	.dragReject {
+		                    		border: 5px solid red;
+		                    	}
+		                    	.fileArea
+		                    	{
+		                    		border:1px solid black;
+		                    		cursor:move;
+		                    	}
+		                    </style>
 			                    
 							 
 				            <rich:dataGrid  columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row" >
-				                 <f:facet name="header">
+				                <f:facet name="header">
 			                    </f:facet>
-			                    
-			                    
-			                    	<rich:dragIndicator id="ind" acceptClass="dragAccept" rejectClass="dragReject" draggingClass="dragDefault">
-										<h:outputText value="#{file.name}" />
-		  		  					</rich:dragIndicator>
-		  		  					
-		  		  					
-		  		  					<a4j:outputPanel  styleClass="dropArea" style="float:left; height:10px; width:200px;">
-		  		  						<rich:dropTarget  acceptedTypes="file" dropValue="#{row}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
-			                        </a4j:outputPanel>
-			                        
+		                    	<rich:dragIndicator id="ind" acceptClass="dragAccept" rejectClass="dragReject" draggingClass="dragDefault">
+									<h:outputText value="#{file.name}"/>
+	  		  					</rich:dragIndicator>
+	  		  					
+	  		  					<a4j:outputPanel  styleClass="dropArea" style="float:left; height:10px; width:200px;">
+	  		  						<rich:dropTarget  acceptedTypes="file" dropValue="#{row}" dropListener="#{ingestBean.processDrop}" render="imageInfo"/>
+		                        </a4j:outputPanel>
+		                        
+		                        <br/>
+		                       
+		                        <a4j:outputPanel layout="block" styleClass="fileArea">
+			                        <b><h:outputText value="#{file.name}"/></b>
+			                        <h:outputText value=" NEW" style="color:red;" rendered="#{file.type eq 'DISK'}"/>
 			                        <br/>
-			                       
-			                        <a4j:outputPanel layout="block" styleClass="fileArea">
-				                        <b><h:outputText value="#{file.name}" /></b>
-				                        <h:outputText value=" NEW" style="color:red;" rendered="#{file.type eq 'DISK'}"/>
-				                        <br/>
-				                        <h:outputText value="mapped to TEI facs #{ingestBean.getAttributeValue(ingestBean.teiPbFacsValues[row], 'facs')}" rendered="#{not empty ingestBean.teiPbFacsValues and ingestBean.teiPbFacsValues.size() == ingestBean.imageFiles.size()}"/>
-				                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
-			                      	</a4j:outputPanel>
-			                       
-			                         <h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{file.type == 'DISK'}">
-										<a4j:ajax render="@form"/>
-									</h:commandButton>
+			                        <h:outputText value="mapped to TEI facs #{ingestBean.getAttributeValue(ingestBean.teiPbFacsValues[row], 'facs')}" rendered="#{not empty ingestBean.teiPbFacsValues and ingestBean.teiPbFacsValues.size() == ingestBean.imageFiles.size()}"/>
+			                        <rich:dragSource type="file" dragValue="#{file}" dragIndicator="ind"/>
+		                      	</a4j:outputPanel>
+		                       
+		                         <h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{file.type == 'DISK'}">
+									<a4j:ajax render="@form"/>
+								</h:commandButton>
 
-									<br/>
-									<a4j:outputPanel styleClass="dropArea" style="float:left; height:10px; width:200px;" rendered="#{row == ingestBean.size-1}">
-			                			<rich:dropTarget  acceptedTypes="file" dropValue="#{ingestBean.size}" dropListener="#{ingestBean.processDrop}" render="imageInfo" />
-			                		</a4j:outputPanel>
-									
-			                    
+								<br/>
+								<a4j:outputPanel styleClass="dropArea" style="float:left; height:10px; width:200px;" rendered="#{row == ingestBean.size-1}">
+		                			<rich:dropTarget  acceptedTypes="file" dropValue="#{ingestBean.size}" dropListener="#{ingestBean.processDrop}" render="imageInfo"/>
+		                		</a4j:outputPanel>
 			                </rich:dataGrid>
-			               	
-			                
 		    			</ui:fragment>
-		    			
-		    			
-		    			
 					</rich:panel>
-					
 					
 					
 					<rich:panel id="footer" rendered="#{ingestBean.volumeId == 'new' and ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
-							<h:outputText value="#{lbl.admin_upload_footer}" />
+							<h:outputText value="#{lbl.admin_upload_footer}"/>
 						</f:facet>
 						<h:outputText value="#{lbl.ingest_FooterNotAvailable}" rendered="#{empty ingestBean.footer}"/>
 						<h:outputText value="#{ingestBean.footer.name}" rendered="#{not empty ingestBean.footer}"/>
 		            </rich:panel>
-					
 				
-				
-				
-			</h:panelGroup>
+				</h:panelGroup>
 			</h:form>
 		</h:panelGroup>
 	</ui:define>
