@@ -69,6 +69,12 @@ public class BatchLogItemVolume {
 	
 	private String escidocId;
 	
+	@Column(columnDefinition="TEXT")
+	private String shortTitle;
+	
+	@Column(columnDefinition="TEXT")
+	private String subTitle;
+	
 	public Step getStep() {
 		return step;
 	}
@@ -219,6 +225,30 @@ public class BatchLogItemVolume {
 		this.teiFileName = teiFileName;
 	}
 
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+
+
+
+	
 
 
 }

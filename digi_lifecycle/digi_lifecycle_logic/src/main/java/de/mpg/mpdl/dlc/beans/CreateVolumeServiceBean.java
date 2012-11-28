@@ -3,6 +3,8 @@ package de.mpg.mpdl.dlc.beans;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -71,6 +73,7 @@ import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage;
 import de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage.ActivityType;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.util.SessionExtenderTask;
 import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
@@ -153,7 +156,8 @@ public class CreateVolumeServiceBean {
 		logger.info("Trying to create a new volume");
 		Item item = new Item();
 		ItemHandlerClient client;
-		try {
+		try 
+		{
 			client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);
 			//Create a dummy Item with dummy md record to get id of item
@@ -223,11 +227,6 @@ public class CreateVolumeServiceBean {
 		
 		msg.setIngestStatus(IngestStatus.READY);
 		msg.setMessage("Multivolume created: " + vol.getItem().getObjid());
-		if(batchLogItem != null)
-		{
-			batchLogItem.setEscidocId(vol.getItem().getObjid());
-			batchLogItem.getLogs().add("successfully created");
-		}
 
 		addAndPersistMessage(msg);
 		}
@@ -260,15 +259,12 @@ public class CreateVolumeServiceBean {
 		return vol;
 	}
 	
-	public void uploadImagesAndCreateMets(List<IngestImage> images, IngestImage footer, String itemId, Volume vol) throws Exception
-	{ 
-	
-		
+	public void uploadImagesAndCreateMets(List<IngestImage> images, IngestImage footer, String itemId, Volume vol, String userHandle) throws Exception
+	{   
 		Mets metsData = new Mets();
 		vol.setMets(metsData);
 		String itemIdWithoutColon = itemId.replaceAll(":", "_");
-		
-		
+				
 		File jpegFooter = null;
 		if(footer != null)
 		{
@@ -340,6 +336,9 @@ public class CreateVolumeServiceBean {
 				addAndPersistMessage(msg);
 			}
 		}
+		
+		SessionExtenderTask seTask = new SessionExtenderTask(userHandle);
+		seTask.start();
 		
 		for(IngestImage imageItem : images)
 		{
@@ -503,13 +502,14 @@ public class CreateVolumeServiceBean {
 				{
 					batchLogItemVolume.getLogs().add("Can not process image: " + imageItem.getName() + " .");
 					batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
-				}
+				} 
 				msg.setIngestStatus(IngestStatus.ERROR);
 				msg.setMessage(msg.getMessage() + " " + e.getMessage());
 				msg.setError(e);
 				throw e;
 			}
 			finally{
+				seTask.stop();
 				addAndPersistMessage(msg);
 			}
 		}		
@@ -530,7 +530,7 @@ public class CreateVolumeServiceBean {
 
 			if(images.size() >0)
 			{
-				uploadImagesAndCreateMets(images, null, volume.getItem().getObjid(), volume);
+				uploadImagesAndCreateMets(images, null, volume.getItem().getObjid(), volume, userHandle);
 			}
 		
 			/*
@@ -1014,7 +1014,7 @@ public class CreateVolumeServiceBean {
         validator.validate(cdc);    
 	}
 	
-	public String createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception {
+	public Volume createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception {
 		logger.info("Creating new volume/monograph");
 		
 		if(batchLogItem != null)
@@ -1137,25 +1137,14 @@ public class CreateVolumeServiceBean {
 				{
 					iifooter = new IngestImage(footer);
 				}
-				uploadImagesAndCreateMets(ingestImageList, iifooter, item.getOriginObjid(), volume);
+				uploadImagesAndCreateMets(ingestImageList, iifooter, item.getOriginObjid(), volume, userHandle);
 			
 				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = releaseVolume(volume.getItem().getObjid(), userHandle);
-				if(batchLogItem != null)
-				{				
-					batchLogItem.setEscidocId(volume.getItem().getOriginObjid());
-					batchLogItem.getLogs().add("successfully created");
-					batchLogItem.setStep(Step.FINISHED);
-				}
-				else if(batchLogItemVolume != null)
-				{
-					batchLogItemVolume.setEscidocId(volume.getItem().getOriginObjid());
-					batchLogItemVolume.getLogs().add("successfully created");
-					batchLogItem.setStep(Step.STOPPED);
-				}
-				return volume.getItem().getObjid();
+
+				return volume;
 
 			}
 			catch (Exception e) 
@@ -1166,25 +1155,28 @@ public class CreateVolumeServiceBean {
 					batchLogItem.getLogs().add("Error while creating Monograph. " + e.getMessage());
 					batchLogItem.getLogs().add("monograph rollback");
 					batchLogItem.setErrorlevel(ErrorLevel.ERROR);
+					batchLogItem.setStep(Step.STOPPED);
 				}
 				else
 				{
 					batchLogItemVolume.getLogs().add("Error while creating Volume. " + e.getMessage());
 					batchLogItemVolume.getLogs().add("volume rollback");
 					batchLogItemVolume.setErrorlevel(ErrorLevel.ERROR);
+					batchLogItemVolume.setStep(Step.STOPPED);
 				}
 				rollbackCreation(volume, userHandle);
 				//throw new Exception(e);
 				return null;
 			}
-		finally
-		{
-			if(batchLogItem != null)
-				batchLogItem.setEndDate(new Date());
-			else
-				batchLogItemVolume.setEndDate(new Date());
-			update(batchLogItem, batchLogItemVolume);
-		}
+		
+			finally
+			{
+				if(batchLogItem != null)
+					batchLogItem.setEndDate(new Date());
+				else
+					batchLogItemVolume.setEndDate(new Date());
+				update(batchLogItem, batchLogItemVolume);
+			}
 			
 			
 	}
@@ -1415,7 +1407,5 @@ public class CreateVolumeServiceBean {
 		
 		return volumeServiceBean.retrieveVolume(multiVol.getItem().getOriginObjid(), userHandle);
 	}
-	
-	
-	
+
 }
