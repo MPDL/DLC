@@ -112,7 +112,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			{
 				this.orga = ouServiceBean.retrieveOrganization(collection.getOuId());
 			}
-			else
+			else if(loginBean.isLogin())
 			{  
 				this.orga = ouServiceBean.retrieveOrganization(loginBean.getUser().getOuId());
 			}
