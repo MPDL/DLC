@@ -2,6 +2,8 @@ package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.File;
 
+
+
 import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.Connection;
@@ -32,9 +34,12 @@ import org.apache.log4j.Logger;
 import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
+
 import de.mpg.mpdl.dlc.util.BatchIngestLogs;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.util.SessionExtenderTask;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
+import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 
@@ -287,7 +292,7 @@ public class IngestLog_NFS_Backup
 		this.itemsForBatchIngest.clear();
 		this.errorItems.clear();
 
-	    SessionExtenderTask seTask = new SessionExtenderTask(userHandle, userId);
+	    SessionExtenderTask seTask = new SessionExtenderTask(userHandle);
 	    seTask.start();
 
 		try {
@@ -694,8 +699,8 @@ public class IngestLog_NFS_Backup
 				{
 					
 					
-					itemId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
-					
+					Volume v= createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
+					itemId = v.getItem().getObjid();
 					updateLogItem(logItemId, "item_id", itemId);
 					Date eDate = new Date();
 					updateLogItem(logItemId, "enddate", eDate.toString());
@@ -730,7 +735,8 @@ public class IngestLog_NFS_Backup
 						ArrayList<String> volIds = new ArrayList<String>();
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							String volId = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
+							Volume v = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
+							String volId = v.getItem().getObjid();
 							eDate = new Date();
 							updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());
 							if(volId == null)

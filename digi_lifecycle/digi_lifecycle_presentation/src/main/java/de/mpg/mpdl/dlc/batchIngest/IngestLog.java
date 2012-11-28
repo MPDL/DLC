@@ -41,6 +41,7 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.util.BatchIngestLogs;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
+import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
@@ -157,9 +158,9 @@ public class IngestLog
 		System.err.println("ftpLogin");
 		FTPClient ftp = new FTPClient();
 		ftp.connect(server);
-//        ftp.setDataTimeout(60000); // 10 minutes
+        ftp.setDataTimeout(60000); // 10 minutes
 //        
-//        ftp.setControlKeepAliveTimeout(600000);
+        ftp.setControlKeepAliveTimeout(600000);
         ftp.setControlEncoding("UTF-8");
 		ftp.login(username, password);
         if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
@@ -867,7 +868,7 @@ public class IngestLog
 //        
 //	}
 	
-	private void downloadImages(BatchLogItem logItem, BatchLogItemVolume logItemVolume, String imagesDirectory, String dlcDirectory, List<File> images, File footer)
+	private void downloadImages(BatchLogItem logItem, BatchLogItemVolume logItemVolume, String imagesDirectory, String dlcDirectory, List<File> images, File footer) throws Exception
 	{
 
 		if(logItem != null)
@@ -958,6 +959,7 @@ public class IngestLog
 						logItemVolume.getLogs().add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 					}
 					logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
+					throw e;
 				}
 				logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
 			
@@ -1043,6 +1045,7 @@ public class IngestLog
 						logItemVolume.getLogs().add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 					}
 					logger.error("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
+					throw e;
 				}
 				logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + footer.getName() + " | Size: " + footer.length());
 			}
@@ -1083,7 +1086,6 @@ public class IngestLog
 
 			
 			try {
-				String itemId = null;
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
 					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
@@ -1093,21 +1095,29 @@ public class IngestLog
 					logItem.setStep(Step.STARTED);
 					
 					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
-	
+					
+					update(logItem,null);
+					
 //					bi.getLogs().add("Uploading");
 //					updateLogItemLogs(bi.getDbID(), bi.getLogs());
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
-					
-					itemId = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
-					System.err.println("batchingest new Monograph" +itemId);
+					Volume vol = new Volume();
+					vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
 
-					if(itemId == null)
+					if(vol == null)
 					{
 						batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 					}
-					em.getTransaction().begin();
-					em.merge(logItem);
-					em.getTransaction().commit();
+					else
+					{
+						logItem.setEscidocId(vol.getItem().getOriginObjid());
+						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(vol));
+						logItem.setSubTitle(VolumeUtilBean.getSubTitleView(vol));
+						logItem.getLogs().add("successfully created");
+						logItem.setStep(Step.FINISHED);
+					}
+					update(logItem, null);
+
 					
 				}
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
@@ -1119,12 +1129,21 @@ public class IngestLog
 					BatchLogItem logItem_multivolume = query.getSingleResult();
 					logItem_multivolume.setStartDate(new Date());
 					logItem_multivolume.setStep(Step.STARTED);
+					
+					update(logItem_multivolume, null);
 			  		
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
 					mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 					
 					if(mv != null)
 					{
+						logItem_multivolume.setEscidocId(mv.getItem().getObjid());
+						logItem_multivolume.setShortTitle(VolumeUtilBean.getShortTitleView(mv));
+						logItem_multivolume.setSubTitle(VolumeUtilBean.getSubTitleView(mv));
+						logItem_multivolume.getLogs().add("successfully created");
+						
+						update(logItem_multivolume, null);
+						
 						ArrayList<String> volIds = new ArrayList<String>();
 						
 						for(BatchIngestItem vol : bi.getVolumes())
@@ -1136,19 +1155,29 @@ public class IngestLog
 							logItemVolume.setStep(Step.STARTED);
 
 							downloadImages(null, logItemVolume, vol.getImagesDirectory(), vol.getDlcDirectory(), vol.getImageFiles(), vol.getFooter());
+							
+							update(null, logItemVolume);
+							
 							String mvId = mv.getItem().getObjid();
 							CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
-							String volId = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
+							Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
 
-							if(volId == null)
+							if(v == null)
 							{
 								logItem_multivolume.setErrorlevel(ErrorLevel.PROBLEM);
 								batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 							}
 							else
 							{
-								volIds.add(volId);
+								volIds.add(v.getItem().getObjid());
+								logItemVolume.setEscidocId(v.getItem().getObjid());
+								logItemVolume.setShortTitle(VolumeUtilBean.getVolumeShortTitleView(v));
+								logItemVolume.setSubTitle(VolumeUtilBean.getVolumeSubTitleView(v));
+								logItemVolume.getLogs().add("successfully created");
+								logItemVolume.setStep(Step.FINISHED);
 							}
+							
+							update(null, logItemVolume);
 														
 						}
 						if(volIds.size()==0)
@@ -1174,9 +1203,7 @@ public class IngestLog
 //							updateLogItemVolumeLogs(vol.getDbID(), vol.getLogs());
 //						}
 					}
-					em.getTransaction().begin();
-					em.merge(logItem_multivolume);
-					em.getTransaction().commit();
+					update(logItem_multivolume, null);
 					
 				} 
 				batchLog.setStep(Step.FINISHED);
@@ -1263,6 +1290,19 @@ public class IngestLog
 		em.getTransaction().commit();
 	}
 	
+	
+	private void update(BatchLogItem batchLogItem, BatchLogItemVolume batchLogItemVolume)
+	{
+		em.getTransaction().begin();
+		if(batchLogItem != null)
+		{
+			em.merge(batchLogItem);
+		}else
+		{
+			em.merge(batchLogItemVolume);
+		}
+		em.getTransaction().commit();
+	}
 	
 	private String splitSuffix(String name)
 	{
