@@ -26,12 +26,15 @@ import javax.persistence.TemporalType;
 @Table(name="batch_log")
 @NamedQueries({
     @NamedQuery(name="BatchLog.itemsByUserId", query="SELECT i FROM BatchLog i WHERE i.userId = :userId ORDER BY i.startDate DESC, i.id DESC"),
-    @NamedQuery(name="BatchLog.itemById", query="SELECT i FROM BatchLog i WHERE i.id = :id")
+    @NamedQuery(name="BatchLog.itemById", query="SELECT i FROM BatchLog i WHERE i.id = :id"),
+    @NamedQuery(name="BatchLog.itemsByContextId", query="SELECT i FROM BatchLog i WHERE i.contextId = :contextId ORDER BY i.startDate DESC, i.id DESC")
 })
 public class BatchLog {
 	
 	public static String ITEMS_BY_USER_ID = "BatchLog.itemsByUserId";
+	public static String ITEM_BY_CONTEXT_ID = "BatchLog.itemsByContextId";
 	public static String ITEM_BY_ID = "BatchLog.ItemById";
+
 	
     /**
      * enum to describe if something went wrong with this element.
@@ -105,6 +108,9 @@ public class BatchLog {
 	private String userName;
 	
 	private String contextId;
+	
+	@Column(columnDefinition="TEXT")
+	private String contextName;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "logId",  orphanRemoval=true)
 	private List<BatchLogItem> batchItems = new ArrayList<BatchLogItem>();
@@ -237,6 +243,18 @@ public class BatchLog {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getContextName() {
+		return contextName;
+	}
+
+	public void setContextName(String contextName) {
+		this.contextName = contextName;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 

@@ -69,6 +69,12 @@ public class BatchLogItem {
 		
 	private String escidocId;
 	
+	@Column(columnDefinition="TEXT")
+	private String shortTitle;
+	
+	@Column(columnDefinition="TEXT")
+	private String subTitle;
+	
 	private String content_model;
 		
 	private int images_nr;
@@ -237,7 +243,24 @@ public class BatchLogItem {
 	public void setBatchItemVolumes(List<BatchLogItemVolume> batchItemVolumes) {
 		this.batchItemVolumes = batchItemVolumes;
 	}
-	
+
+	public String getShortTitle() {
+		return shortTitle;
+	}
+
+	public void setShortTitle(String shortTitle) {
+		this.shortTitle = shortTitle;
+	}
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+
 	
 	
 	
