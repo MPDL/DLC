@@ -1895,6 +1895,7 @@ body .eg3_id_siteTitle {
 }
 .eg3_citationOverlayArea label {
 	margin-right:1em;
+	cursor:pointer;
 }
 .eg3_markTextButton {
 	cursor:pointer;

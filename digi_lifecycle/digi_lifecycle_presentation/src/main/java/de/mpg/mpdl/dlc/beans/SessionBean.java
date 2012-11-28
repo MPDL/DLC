@@ -93,7 +93,7 @@ public class SessionBean implements Serializable
 		
 		if (logoUrl == null || logoUrl.equals("")) 
 		{
-			return "/resources/images/solution_logo_216_75.png";
+			return "/resources/images/logo-dlc_150x286.png";
 		}
 		else return logoUrl;
 	}
