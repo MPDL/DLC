@@ -16,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
@@ -86,6 +87,7 @@ public class DatabaseItem {
 	private int numberOfImages;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "ingestProcess",  orphanRemoval=true)
+	@OrderBy("dateCreated ASC")
 	private List<IngestLogMessage> messages = new ArrayList<IngestLogMessage>();
 	
 	
