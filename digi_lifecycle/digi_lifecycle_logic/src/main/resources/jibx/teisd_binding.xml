@@ -52,7 +52,7 @@
 	 	<value style="attribute" name="author2pnd" field="author2pnd" usage="optional"  whitespace="trim" default=""/>
 	 	<value style="attribute" name="author3pnd" field="author3pnd" usage="optional"  whitespace="trim" default=""/>
 	 	-->
-	 	<structure name="byline" usage="optional">
+	 	<structure name="byline" usage="optional" test-method="isNotEmptyDocAuthors">
 	 	<collection field="docAuthors" item-type="de.mpg.mpdl.dlc.vo.teisd.DocAuthor" factory="de.mpg.mpdl.dlc.vo.teisd.Div.docAuthorListFactory" usage="optional">		
 			<structure name="docAuthor" usage="optional">
 				<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
@@ -73,7 +73,7 @@
 	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
 	 	
-	 	<structure name="figDesc" usage="optional">
+	 	<structure name="figDesc" usage="optional" test-method="isNotEmptyFigDesc">
 	 		<value style="text" field="figDesc" type="java.lang.String" usage="optional" default=""/>
 	 		<collection field="persNames" item-type="de.mpg.mpdl.dlc.vo.teisd.PersName" factory="de.mpg.mpdl.dlc.vo.teisd.Figure.persNameListFactory" usage="optional">
 		 		<structure name="persName" usage="optional">

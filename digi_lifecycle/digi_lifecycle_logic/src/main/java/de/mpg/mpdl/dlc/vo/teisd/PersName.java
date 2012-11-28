@@ -55,5 +55,20 @@ public class PersName {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
+	public boolean isEmpty()
+	{
+		return ((numeration==null || numeration.trim().isEmpty()) &&
+				(author==null || author.trim().isEmpty()) &&
+				(invertedAuthor==null || invertedAuthor.trim().isEmpty()) &&
+				(key==null || key.trim().isEmpty()));
+		
+	}
+	
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
+		
+	}
 
 }

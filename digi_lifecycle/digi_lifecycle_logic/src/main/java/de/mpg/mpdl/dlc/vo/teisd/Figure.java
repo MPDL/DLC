@@ -69,6 +69,24 @@ public class Figure extends Div {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
+	
+	
+	public boolean isNotEmptyFigDesc()
+	{
+		boolean notEmptyPersNames = false;
+		if(persNames!=null)
+		{
+			for(PersName persName : persNames)
+			{
+				if(!persName.isEmpty())
+				{
+					notEmptyPersNames = true;
+				}
+			}
+		}
+		
+		return (!(figDesc==null || figDesc.trim().isEmpty())) || notEmptyPersNames;
+	}
 
 	
 
