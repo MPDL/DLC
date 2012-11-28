@@ -291,7 +291,7 @@ public class IngestLog
 	public String clear()
 	{
 		batchLog.setEndDate(new Date());
-		if(ErrorLevel.FATAL.equals(batchLog.getErrorLevel()))
+		if(ErrorLevel.FATAL.equals(batchLog.getErrorLevel()) || ErrorLevel.ERROR.equals(batchLog.getErrorLevel()))
 		{
 			batchLog.setStep(Step.STOPPED);
 		}
@@ -885,23 +885,23 @@ public class IngestLog
 			try {
 				out = new FileOutputStream(i);
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				if(logItem != null)
+				{
+					logItem.getLogs().add("Image not found: " + i.getName());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("Image not found: " + i.getName());
+				}				
+				throw e;
 			}
 			try{
-				
-				try {
-					if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
-					{
-						if(ftp)
-							this.ftpClient = ftpLogin(server, username, password);
-						else
-							this.ftpClient = ftpsLogin(server, username, password);
-					}
-				}catch (IOException e) 
+				if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 				{
-					batchLog.setErrorLevel(ErrorLevel.ERROR);
-					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
-
+					if(ftp)
+						this.ftpClient = ftpLogin(server, username, password);
+					else
+						this.ftpClient = ftpsLogin(server, username, password);
 				}
 				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 				ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
@@ -971,22 +971,23 @@ public class IngestLog
 			try {
 				out = new FileOutputStream(footer);
 			} catch (FileNotFoundException e2) {
-				e2.printStackTrace();
+				if(logItem != null)
+				{
+					logItem.getLogs().add("Footer not found: " + footer.getName());
+				}
+				else
+				{
+					logItemVolume.getLogs().add("Footer not found: " + footer.getName());
+				}				
+				throw e2;
 			}
 			try {
-				
-				try {
-					if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
-					{
-						if(ftp)
-							this.ftpClient = ftpLogin(server, username, password);
-						else
-							this.ftpClient = ftpsLogin(server, username, password);
-					}
-				}catch (IOException e) {
-					
-					batchLog.setErrorLevel(ErrorLevel.ERROR);
-					batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+				if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
+				{
+					if(ftp)
+						this.ftpClient = ftpLogin(server, username, password);
+					else
+						this.ftpClient = ftpsLogin(server, username, password);
 				}
 				ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 				out.flush();
@@ -1236,7 +1237,8 @@ public class IngestLog
 				logItem.setErrorlevel(errorLevel);
 				logItem.setLogs(bi.getLogs());
 				logItem.setContent_model(bi.getContentModel());
-				logItem.setImages_nr(bi.getImageNr());
+				if(bi.getContentModel() != PropertyReader.getProperty("dlc.content-model.multivolume.id"))
+					logItem.setImages_nr(bi.getImageNr());
 				logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
 				logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
 				
