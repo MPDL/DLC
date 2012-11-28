@@ -55,5 +55,21 @@ public class DocAuthor {
 	public void setKey(String key) {
 		this.key = key;
 	}
+	
+	public boolean isEmpty()
+	{
+		boolean result = ((numeration==null || numeration.trim().isEmpty()) &&
+				(author==null || author.trim().isEmpty()) &&
+				(invertedAuthor==null || invertedAuthor.trim().isEmpty()) &&
+				(key==null || key.trim().isEmpty()));
+		
+		return result;
+		
+	}
+	
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
+	}
 
 }

@@ -201,7 +201,21 @@ public class Div extends PbOrDiv {
 	
 	
 	
-
+	public boolean isNotEmptyDocAuthors()
+	{
+		if(docAuthors!=null)
+		{
+			for(DocAuthor docAuthor: docAuthors)
+			{
+				if(!docAuthor.isEmpty())
+				{
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 
 
 	
