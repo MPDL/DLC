@@ -103,7 +103,7 @@
 
        			
        			
- 			    <rich:column colspan="11" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
+ 			    <rich:column colspan="12" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
 					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="client" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_1 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
 						<rich:dataTable var="logItem" value="#{ingestLogBean.getLogItems(log)}" style="vertical-align:top;" styleClass="eg3_container_1">
 							<f:facet name="header">
@@ -212,7 +212,7 @@
 								<h:outputText value="#{logItem.teiFileName}"/>
 							</rich:column>
 							
-							<rich:column colspan="11" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{logItem.content_model == applicationBean.cmMultiVol and not empty ingestLogBean.getLogItemVolumes(logItem)}">
+							<rich:column colspan="12" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{logItem.content_model == applicationBean.cmMultiVol and not empty ingestLogBean.getLogItemVolumes(logItem)}">
 			       				<rich:collapsibleSubTableToggler for="logItemVolume" colspan="16">
 			       					<h:outputText value="#{lbl.batch_ingest_log_show_hide_items}"/>
 			       				</rich:collapsibleSubTableToggler>
