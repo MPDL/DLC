@@ -51,6 +51,7 @@ public class BatchIngestBean {
 
 	
 	private String selectedContextId;
+	private String selecetedContextName;
 	private List<SelectItem> contextSelectItems = new ArrayList<SelectItem>();
 	
 	private String name;
@@ -115,6 +116,8 @@ public class BatchIngestBean {
 		}
 		if(contextSelectItems.size()>0)
 			this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
+			this.selecetedContextName = (String)contextSelectItems.get(0).getLabel();
+		
 		}
 	}
 	
@@ -149,7 +152,8 @@ public class BatchIngestBean {
 		batchLog.setUserId(loginBean.getUser().getId());
 		batchLog.setUserName(loginBean.getUser().getName());
 		
-		batchLog.setContextId(selectedContextId);	
+		batchLog.setContextId(selectedContextId);
+		batchLog.setContextName(selecetedContextName);
 		
 		ingestProcess = new IngestProcess(name, action, selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images, batchLog);
 		ingestProcess.start();
