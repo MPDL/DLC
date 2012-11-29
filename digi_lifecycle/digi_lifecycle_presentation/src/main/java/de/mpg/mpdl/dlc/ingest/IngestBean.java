@@ -4,6 +4,7 @@ package de.mpg.mpdl.dlc.ingest;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -159,7 +160,11 @@ public class IngestBean{
 						*/
 					}
 				}
-				if(volume.getTeiSdXml()!=null)
+				if(volume.getTei()!=null)
+				{
+					teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(new StringReader(volume.getTei())));
+				}
+				else if(volume.getTeiSdXml()!=null)
 				{
 					teiPbFacsValues = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
 					
