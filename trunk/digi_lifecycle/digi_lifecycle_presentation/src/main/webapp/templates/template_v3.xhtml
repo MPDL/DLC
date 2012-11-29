@@ -68,7 +68,7 @@ All rights reserved. Use is subject to license terms.
 			
 			<!-- Refresh userhandle every 15 minutes -->
 			<a4j:region>
-				<a4j:poll id="poll" interval="900000" action="#{loginBean.renewUserHandle}" enabled="#{loginBean.login}"/>
+				<a4j:poll id="poll" interval="900000" action="#{loginBean.renewUserHandle}" enabled="#{loginBean.login}" limitRender="true"/>
 			</a4j:region>
 				
 			<h:panelGroup layout="block" styleClass="eg3_id_wrapper">
