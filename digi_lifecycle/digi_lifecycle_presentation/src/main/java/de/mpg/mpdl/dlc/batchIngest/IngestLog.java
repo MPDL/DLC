@@ -151,14 +151,14 @@ public class IngestLog
 		*/
 		
 	}
-	
+
 	public static FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
 		System.err.println("ftpLogin");
 		FTPClient ftp = new FTPClient();
 		ftp.connect(server);
-        ftp.setDataTimeout(60000); // 10 minutes
+//        ftp.setDataTimeout(60000); // 10 minutes
 //        
         ftp.setControlKeepAliveTimeout(600000);
         ftp.setControlEncoding("UTF-8");
@@ -182,7 +182,7 @@ public class IngestLog
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
 		
-		ftps.setDataTimeout(600000);
+//		ftps.setDataTimeout(600000);
 		ftps.setControlKeepAliveTimeout(600000);
 		logger.info("Connecting to FTPS Server");
         int reply;
