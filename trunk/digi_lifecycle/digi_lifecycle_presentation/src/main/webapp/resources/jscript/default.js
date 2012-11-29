@@ -762,7 +762,7 @@ $(document).ready(function(e) {
  * because of a bug in IE9, all input elements must get a js-listener for hover events/handlings
  */
 function eg3_ie9_addHoverColor() {
-	$('input').mouseover(function(e){
+	$('input[type="submit"], input[type="button"], input[type="reset"]').mouseover(function(e){
 		$(this).css("color", "#EA7125");
 	}).mouseout(function(e){
 		eg3_removeAttributeValue($(this), "style", "color");
