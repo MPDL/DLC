@@ -737,6 +737,10 @@ $(document).ready(function(e) {
 	
 	eg3_rerenderJSFForms();
 	
+	if (Number($.browser.version) < 9) {
+		eg3_ie8_addSearchSubmitOnEnter();
+	}
+	
 	if ($.browser.msie && (Number($.browser.version) === 9 || Number($.browser.version) < 9)) {
 		eg3_ie9_addHoverColor();
 	}
@@ -747,6 +751,14 @@ $(document).ready(function(e) {
 /**
  * following functions are only for IE8
  */
+function eg3_ie8_addSearchSubmitOnEnter() {
+	$('.eg3_icon_quickSearch_16_16').parents("form").keypress(function(e){
+		if (e.which == 13) {
+			eg3_stopDefaultAction(e);
+			$(this).find("[type=submit]").trigger("click");
+		}
+	});
+}
 /*function eg3_ie8_checkHeaderLogoHeight() {
 	var logo = $('.eg3_solutionLogo img');
 	var tmpImg = new Image(); 
