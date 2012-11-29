@@ -23,6 +23,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
@@ -30,13 +32,26 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import net.sf.saxon.s9api.Destination;
+import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
+import net.sf.saxon.s9api.Serializer;
+import net.sf.saxon.s9api.XPathCompiler;
+import net.sf.saxon.s9api.XPathExecutable;
+import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XQueryCompiler;
+import net.sf.saxon.s9api.XQueryEvaluator;
+import net.sf.saxon.s9api.XQueryExecutable;
+import net.sf.saxon.s9api.XdmDestination;
+import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.log4j.Logger;
 import org.apache.tika.Tika;
+import org.jibx.extras.JDOMWriter;
+import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.joda.time.DateTime;
@@ -684,10 +699,13 @@ public class CreateVolumeServiceBean {
 
 				//Add Ids to teiSd, if none are there
 				File teiSdWithIds = addIdsToTei(new StreamSource(new StringReader(sw.toString())));
+			
 				
 				//Set ids in mets
-				List<XdmNode> pbs = VolumeServiceBean.getAllPbs(new StreamSource(teiSdWithIds));
-				XdmNode titlePagePb = VolumeServiceBean.getTitlePagePb(new StreamSource(teiSdWithIds));
+				Source teiSdSource = new StreamSource(teiSdWithIds);
+				
+				List<XdmNode> pbs = VolumeServiceBean.getAllPbs(teiSdSource);
+				XdmNode titlePagePb = VolumeServiceBean.getTitlePagePb(teiSdSource);
 				
 				String titlePageId = null;
 				if(titlePagePb!=null)
@@ -701,7 +719,7 @@ public class CreateVolumeServiceBean {
 					String numeration = pbs.get(i).getAttributeValue(new QName("n"));
 					volume.getMets().getPages().get(i).setId(pbId);
 					volume.getMets().getPages().get(i).setOrderLabel(numeration);
-									
+							
 					if(pbId.equals(titlePageId))
 					{
 						volume.getMets().getPages().get(i).setType("titlePage");
@@ -712,13 +730,15 @@ public class CreateVolumeServiceBean {
 					}
 				}
 				
+				File teiSdWithIdsFacsReplaced = updatePagebreakFacs(new StreamSource(teiSdWithIds), volume);
+				
 				
 				if(teiSdComponent!=null)
 				{
 					volume.getItem().getComponents().remove(teiSdComponent);
 				}
 				
-				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIds));
+				URL uploadedTeiSd = sthc.upload(new FileInputStream(teiSdWithIdsFacsReplaced));
 				teiSdComponent = new Component();
 				ComponentProperties teiSdCompProps = new ComponentProperties();
 				teiSdComponent.setProperties(teiSdCompProps);
@@ -736,7 +756,7 @@ public class CreateVolumeServiceBean {
 				if(teiComponent == null)
 				{
 					//Add paged TEI as component
-					String pagedTei = transformTeiToPagedTei(new StreamSource(teiSdWithIds));
+					String pagedTei = transformTeiToPagedTei(new StreamSource(teiSdWithIdsFacsReplaced));
 					URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
 					
 					if(pagedTeiComponent!=null)
@@ -761,6 +781,7 @@ public class CreateVolumeServiceBean {
 				}
 				
 				teiSdWithIds.delete();
+				teiSdWithIdsFacsReplaced.delete();
 			}
 			
 			//Add codicological metadata as component
@@ -899,6 +920,47 @@ public class CreateVolumeServiceBean {
 	}
 	*/
 	
+	/**
+	 * Sets the facs attributes of the pagebreaks to the coresponding urls in mets
+	 * @param teiSdSource2
+	 * @param volume
+	 * @return
+	 * @throws Exception
+	 */
+	public File updatePagebreakFacs(Source teiSdSource2, Volume volume) throws Exception{
+		URL url = VolumeServiceBean.class.getClassLoader().getResource("xslt/teiToTeiSd/tei_replace_facs.xsl");
+		//File f = new File("C:/Projects/digi_lifecycle/digi_lifecycle_presentation/src/main/resources/xslt/teiToTeiSd/tei_replace_facs.xsl");
+		
+		Source xsltSource = new StreamSource(url.openStream());
+		
+		
+		File temp = File.createTempFile("tei_sd_facs_replaced", "xml");
+		
+		StringWriter sw = new StringWriter();
+		IMarshallingContext mCont = VolumeServiceBean.bfactMets.createMarshallingContext();
+		
+	
+		mCont.marshalDocument(volume.getMets(), "UTF-8", null, sw);
+		sw.close();
+		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document metsDoc = db.parse(new InputSource(new StringReader(sw.toString())));
+		
+		
+		Transformer transformer = VolumeServiceBean.transfFact.newTransformer(xsltSource);
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setParameter("mets", metsDoc);
+		
+
+		
+		//StringWriter resultWriter = new StringWriter();
+		javax.xml.transform.Result result = new StreamResult(temp);
+		transformer.transform(teiSdSource2, result);
+
+		return temp;
+		
+		
+	}
+
 	public static File addIdsToTei(Source teiXmlSource)throws Exception
 	{
 		
@@ -1406,6 +1468,139 @@ public class CreateVolumeServiceBean {
 
 		
 		return volumeServiceBean.retrieveVolume(multiVol.getItem().getOriginObjid(), userHandle);
+	}
+	
+	/*
+	public static  void replaceFacs(Source tei, List<Page> pages) throws Exception
+	{
+
+		Processor proc = new Processor(false);
+		net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.build(tei);
+        
+        XQueryCompiler xqc = proc.newXQueryCompiler();
+        xqc.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+		StringBuffer xQueryString = new StringBuffer();
+        for(Page p : pages)
+        {
+        	xQueryString.append("if (exists(//tei:pb[@id='"+ p.getId() +"']/@facs))\n" +
+        						"then (replace value of node //tei:pb[@id='"+ p.getId() +"']/@facs with '" + p.getContentIds() + "')\n" +
+        						"else (insert attribute facs {'" + p.getContentIds() + "'} into //tei:pb[@id='"+ p.getId() +"'])\n"
+        						);
+        }
+        
+        System.out.println(xQueryString);
+        XQueryExecutable xqe = xqc.compile(xQueryString.toString());
+        XQueryEvaluator xqeval = xqe.load();
+        xqeval.setContextItem(xdmDoc);
+
+        Destination dest = new XdmDestination();
+        xqeval.run(dest);
+
+		
+	}
+	
+	*/
+	public static void main(String[] args)
+	{
+		try {
+			
+			VolumeServiceBean vsb = new VolumeServiceBean();
+			File teiFile = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/Examples/Berlin/demo2/berlin.test.xml");
+			Source teiSource = new StreamSource(teiFile);
+			
+			List<Page> pages = new ArrayList<Page>();
+			
+			List<XdmNode> pblist = VolumeServiceBean.getAllPbs(teiSource);
+			
+			int i=0;
+			for(XdmNode node : pblist)
+			{
+				String pbId = node.getAttributeValue(new QName("http://www.w3.org/XML/1998/namespace","id"));
+				Page p = new Page();
+				p.setContentIds(String.valueOf(i));
+				p.setId(pbId);
+				pages.add(p);
+				i++;
+			}
+			
+			
+			CreateVolumeServiceBean cvs = new CreateVolumeServiceBean();
+			
+			
+			Volume vol = new Volume();
+			Mets mets = new Mets();
+			vol.setMets(mets);
+			mets.setPages(pages);
+			//String res = cvs.updatePagebreakFacs(teiSource, vol);
+			//System.out.println(res);
+			
+			
+			/*
+			
+			
+			
+			Processor proc = new Processor(false);
+			net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+	        XdmNode xdmDoc = db.build(teiSource);
+	        
+	        XQueryCompiler xqc = proc.newXQueryCompiler();
+	        xqc.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+	        StringBuffer xQueryString = new StringBuffer();
+        	xQueryString.append("let $doc := .\n" +
+        						"for $pb in $doc//tei:pb" +
+        						"where 
+        						
+        						"if (exists(//tei:pb[@id='F9_001_1921_pb0005_0001']/@facs))\n" +
+        						"then replace value of node //tei:pb[@id='F9_001_1921_pb0005_0001']/@facs with 'xyz'\n" +
+        						"else ()"	
+        						);
+	        
+	        
+	        System.out.println(xQueryString);
+	        XQueryExecutable xqe = xqc.compile(xQueryString.toString());
+	        XQueryEvaluator xqeval = xqe.load();
+	        xqeval.setContextItem(xdmDoc);
+
+	        StringWriter sw = new StringWriter();
+	        Destination dest = new Serializer(sw);
+	        xqeval.run(dest);
+	        
+	        System.out.println(sw.toString());
+	        
+			
+			*/
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			/*
+			
+			Source teiSource2 = new StreamSource(teiFile);
+			replaceFacs(teiSource2, pages);
+			*/
+			
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }
