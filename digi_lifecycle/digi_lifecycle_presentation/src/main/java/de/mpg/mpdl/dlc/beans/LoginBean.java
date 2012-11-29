@@ -225,4 +225,16 @@ public class LoginBean
     
     
 
+	/**
+	 * Called by javascript poll every xx seconds to refresh the session timeout
+	 */
+	public void renewUserHandle()
+	{
+		try {
+			logger.info("Trying to refresh user handle");
+			userAccountServiceBean.refreshUserHandle(getUserHandle());
+		} catch (Exception e) {
+			logger.error("Error while refreshing user handle", e);
+		}
+	}
 }
