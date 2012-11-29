@@ -32,6 +32,7 @@ import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.UserAccountServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.editor.TeiElementWrapper.PositionType;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
@@ -61,6 +62,7 @@ public class StructuralEditorBean implements Observer {
 	protected VolumeServiceBean volServiceBean = new VolumeServiceBean();
 	protected CreateVolumeServiceBean createVolServiceBean = new CreateVolumeServiceBean();
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	private UserAccountServiceBean uaService = new UserAccountServiceBean();
 	
 	private String volumeId;
 	
@@ -2442,6 +2444,6 @@ public class StructuralEditorBean implements Observer {
 
 	
 	
-
+	
 
 }
