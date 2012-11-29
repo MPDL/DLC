@@ -3,6 +3,7 @@ package de.mpg.mpdl.dlc.beans;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -678,7 +679,21 @@ public class UserAccountServiceBean {
 
 		return client.createGrant(userAccountId, grant);
 }
-
+    
+    
+    
+    public void refreshUserHandle(String userHandle) throws Exception
+    {
+    	
+			
+    		UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+    		client.setHandle(userHandle);
+    		client.retrieveCurrentUser();
+	
+		
+    }
+    
+    
 
 
 }
