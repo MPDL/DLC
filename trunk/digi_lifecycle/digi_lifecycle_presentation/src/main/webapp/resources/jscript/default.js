@@ -737,9 +737,7 @@ $(document).ready(function(e) {
 	
 	eg3_rerenderJSFForms();
 	
-	if ($.browser.msie && $.browser.version < 9) {
-		eg3_ie8_checkHeaderLogoHeight();
-	} else if ($.browser.msie && Number($.browser.version) === 9) {
+	if ($.browser.msie && (Number($.browser.version) === 9 || Number($.browser.version) < 9)) {
 		eg3_ie9_addHoverColor();
 	}
 });
@@ -749,13 +747,13 @@ $(document).ready(function(e) {
 /**
  * following functions are only for IE8
  */
-function eg3_ie8_checkHeaderLogoHeight() {
+/*function eg3_ie8_checkHeaderLogoHeight() {
 	var logo = $('.eg3_solutionLogo img');
 	var tmpImg = new Image(); 
 	tmpImg.src = logo.attr('src');
 	var rel = tmpImg.width / tmpImg.height;
 	logo.css("height", Math.round(logo.width() / rel));
-}
+}*/
 
 /**
  * following functions are only for IE9
