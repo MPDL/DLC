@@ -486,7 +486,7 @@
 										<h:outputText value=" (Version #{child_volume.item.properties.latestVersion.number})"/>
 									</pretty:link>
 									
-									<h:panelGroup rendered="#{loginBean.user.releasable(child_volume)}">
+									<h:panelGroup rendered="#{loginBean.user.releasable(child_volume) and cc.attrs.volume.item.properties.publicStatus.xmlValue=='released'}">
 										<h:commandButton action="#{allVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
 											<f:ajax render="child_volume :messages"/>
 										</h:commandButton>
@@ -564,6 +564,13 @@
 								<label class="eg3_iconActionLabel eg3_noMarginLeft">
 									<h:outputText value="#{lbl.list_NavElem_ShowRelatedPublications}"/>
 								</label>
+								<script type="text/javascript">
+									var toggle = $(".eg3_itemDetailAction_js");
+									toggle.unbind("click");
+									toggle.click(function(e){
+										eg3_bibListToggleItemMediumView(this);
+									});
+								</script>
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
