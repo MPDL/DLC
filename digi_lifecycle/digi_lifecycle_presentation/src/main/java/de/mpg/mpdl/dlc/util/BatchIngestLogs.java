@@ -26,6 +26,8 @@ public final class BatchIngestLogs {
     
     public static final String FTP_CONNECT_ERROR ="Error: cannot connect to ftp/ftps server";
     
+    public static final String FTP_CONNECT_RETRY ="Cannot connect to ftp/ftps server, Retry.";
+    
     public static final String IMAGE_DIRECTORY_ERROR = "Error: check images directory";
     
     public static final String TEI_DIRECTORY_ERROR ="Error: check tei directory";
@@ -43,6 +45,8 @@ public final class BatchIngestLogs {
     public static final String FTP_LOGIN ="ftp Logged in";
     
     public static final String FTPS_Login = "ftps logged in";
+    
+    public static final String READ_FILE_ERROR = "can not read file: ";
     
     
     private BatchIngestLogs()
