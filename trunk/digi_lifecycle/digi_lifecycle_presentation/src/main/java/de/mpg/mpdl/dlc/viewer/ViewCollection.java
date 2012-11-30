@@ -7,6 +7,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
@@ -19,8 +21,11 @@ import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeTypes;
+import de.mpg.mpdl.dlc.persistence.entities.CarouselItem;
 import de.mpg.mpdl.dlc.search.AdvancedSearchResultBean;
+import de.mpg.mpdl.dlc.searchLogic.Criterion.Operator;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
@@ -85,16 +90,39 @@ public class ViewCollection {
 				if(volumes!=null)
 					this.volumes.clear();
 
-				SearchCriterion sc= new SearchCriterion(SearchType.CONTEXT_ID, id);
+				
+				
+				//search volumes for carousel
 				List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-				scList.add(sc);
+
+				EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+				TypedQuery<CarouselItem> query = em.createNamedQuery(CarouselItem.ALL_ITEMS_BY_CONTEXT_ID, CarouselItem.class);
+				query.setParameter("contextId", id);
+				List<CarouselItem> carouselItems= query.getResultList();
+				em.close();
+				if(carouselItems!=null && !carouselItems.isEmpty())
+				{
+					for(CarouselItem ci : carouselItems)
+					{
+						SearchCriterion sc= new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, ci.getItemId());
+						scList.add(sc);
+					}
+				}
+				else
+				{
+					//search all in context
+					SearchCriterion sc= new SearchCriterion(SearchType.CONTEXT_ID, id);
+					scList.add(sc);
+				}
+				
+				
 				
 
 				List<SortCriterion> sortList = new ArrayList<SortCriterion>();
-				sortList.add(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING));
+				sortList.add(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING));
 				VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME};
 				SearchBean searchBean = new SearchBean();
-				VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 10, 0);
+				VolumeSearchResult res = searchBean.search(volTypes, scList, sortList, 7, 0);
 				
 				for(Volume vol : res.getVolumes())
 				{ 

@@ -37,7 +37,7 @@
 			<h:outputText value=":" rendered="#{cc.attrs.teiElement.docAuthors.size() > 0 and not empty cc.attrs.teiElement.head}"/>
 		</h:panelGroup>
 		
-		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='FRONT' or cc.attrs.teiElement.elementType=='BODY' or cc.attrs.teiElement.elementType=='BACK'}">
+		<h:panelGroup rendered="#{cc.attrs.teiElement.elementType=='TEXT' or cc.attrs.teiElement.elementType=='GROUP' or cc.attrs.teiElement.elementType=='FRONT' or cc.attrs.teiElement.elementType=='BODY' or cc.attrs.teiElement.elementType=='BACK'}">
 			<h:outputText value="#{cc.attrs.teiElement.elementType}"/>
 		</h:panelGroup>
 		

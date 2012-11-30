@@ -15,7 +15,7 @@
     </xsl:copy>
   </xsl:template>
     
-   <xsl:template match="tei:pb|tei:div|tei:back|tei:front|tei:body|tei:titlePage|tei:figure">
+   <xsl:template match="tei:text|tei:group|tei:pb|tei:div|tei:back|tei:front|tei:body|tei:titlePage|tei:figure">
     <xsl:copy>
       <xsl:if test="not(@xml:id)">
         <xsl:attribute name="xml:id">

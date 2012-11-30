@@ -25,7 +25,8 @@
 		<property name="javax.persistence.jdbc.password" value="ingestAdmin"/>
 		-->
 		<property name="eclipselink.logging.level" value="FINE" />
-		 <property name="eclipselink.ddl-generation" value="create-tables"/>
+		<property name="eclipselink.ddl-generation" value="create-tables"/>
+		<property name="eclipselink.jpa.uppercase-column-names" value="true"/>
 	</properties>
       
     

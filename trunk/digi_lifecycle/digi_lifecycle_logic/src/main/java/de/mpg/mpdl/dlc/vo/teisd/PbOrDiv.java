@@ -16,7 +16,7 @@ public abstract class PbOrDiv {
 	@XmlTransient
 	public enum ElementType
 	{
-		PB, DIV, FRONT, BODY, BACK, FIGURE, TITLE_PAGE
+		PB, DIV, FRONT, BODY, BACK, FIGURE, TITLE_PAGE, TEXT, GROUP
 	}
 	
 	@XmlAttribute(name = "id", namespace = "http://www.w3.org/XML/1998/namespace")

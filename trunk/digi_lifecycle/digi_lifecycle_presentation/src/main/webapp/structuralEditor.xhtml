@@ -16,7 +16,7 @@
 	<ui:composition template="templates/template_v3.xhtml">
 		<ui:define name="separateContentHeader">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
-			
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/cssFramework/jquery-ui/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.cookie.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
 			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="head"/>
@@ -28,6 +28,8 @@
 					<modsViewer:header volume="#{structuralEditorBean.volume}" context="#{structuralEditorBean.context}"/>
 				</h:panelGroup>
 			</h:panelGroup>
+			
+			
 		</ui:define>
 	
 	
@@ -776,7 +778,60 @@
 							
 							
 					
+					
 							<!-- START EDIT STRUCTURE POPUP -->
+							
+							
+							<ui:remove>
+							
+							
+							<style type="text/css">
+							.ui-dialog div {
+								float: none;
+							}
+							#editPopup div {
+								float:left;
+							}
+							</style>
+							
+							
+							
+							<div id="editPopup" title="#{lbl.edit_structureEditHeader}" style="width:500px; background-color: #2F2F2F;" class="eg3_container1">
+								<h:form>
+									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
+										
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
+											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+										</h:panelGroup>
+										<br/>
+										<br/>
+										<h:commandButton type="submit" styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
+										</h:commandButton>
+										<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
+										<h:outputText value="#{lbl.edit_cancelBtn}"/>
+										</h:outputLink>									
+									</h:panelGroup>
+								</h:form>
+							</div>
+							
+							<script type="text/javascript">
+							   
+						        $( "#editPopup" ).dialog({
+						            modal: true,
+						            autoOpen:false,
+						            resizable:false,
+						            width: 800
+						        });
+
+    						</script>
+							
+							
+							</ui:remove>
+							
+							
 							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400">
 								<f:facet name="header">
 									<h:outputText value="#{lbl.edit_structureHeader}"/>
@@ -820,6 +875,7 @@
 									</h:panelGroup>
 								</h:form>
 							</rich:popupPanel>
+							
 						<!-- END EDIT STRUCTURE POPUP -->
 						</h:panelGroup>
 					</h:panelGroup>	

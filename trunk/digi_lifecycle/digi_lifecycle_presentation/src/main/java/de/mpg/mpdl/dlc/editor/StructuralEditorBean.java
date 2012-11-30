@@ -253,7 +253,7 @@ public class StructuralEditorBean implements Observer {
 			//create a new TEI SD with Pagebreaks only
 			TeiSd teiSd = new TeiSd();
 			Body body = new Body();
-			teiSd.getPbOrDiv().add(body);
+			teiSd.getText().getPbOrDiv().add(body);
 			for(Page p : volume.getMets().getPages())
 			{
 				Pagebreak pb = new Pagebreak();
@@ -319,7 +319,7 @@ public class StructuralEditorBean implements Observer {
 	{
 		
 		
-		teiSd.getPbOrDiv().clear();
+		teiSd.getText().getPbOrDiv().clear();
 		PbOrDiv parentTeiElement = null;
 		
 		//clear old children
@@ -338,7 +338,7 @@ public class StructuralEditorBean implements Observer {
 			{
 				if(parentTeiElement == null)
 				{
-					teiSd.getPbOrDiv().add(teiElementWrapper.getTeiElement());
+					teiSd.getText().getPbOrDiv().add(teiElementWrapper.getTeiElement());
 				}
 				else
 				{
@@ -443,7 +443,7 @@ public class StructuralEditorBean implements Observer {
 	{
 		List<TeiElementWrapper> flatTeiElementList = new ArrayList<TeiElementWrapper>();
 		List<TeiElementWrapper> pbList = new ArrayList<TeiElementWrapper>();
-		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getPbOrDiv(), v, pbList, new ArrayList<TeiElementWrapper>());
+		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getText().getPbOrDiv(), v, pbList, new ArrayList<TeiElementWrapper>());
 		String[] s = new String[2];
 		return new List[]{flatTeiElementList, pbList};
 		

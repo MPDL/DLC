@@ -5,11 +5,15 @@
 	<mapping name="TEI" class="de.mpg.mpdl.dlc.vo.teisd.TeiSd">
 		
 
+		 <structure field="text" map-as="de.mpg.mpdl.dlc.vo.teisd.Text">
+		 </structure>
+		<!-- 
 		<structure name="text">
 				<collection field="pbOrDiv" factory="de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
 					<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" usage="optional" flexible="true" ordered="false"/>
 				</collection>
 		</structure>
+		-->
 
 	 </mapping>
 	 
@@ -32,6 +36,14 @@
 	 </mapping>
 	 
 	  <mapping name="back" class="de.mpg.mpdl.dlc.vo.teisd.Back" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="text" class="de.mpg.mpdl.dlc.vo.teisd.Text" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 <mapping name="group" class="de.mpg.mpdl.dlc.vo.teisd.Group" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
 			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
 	 </mapping>
 	 
