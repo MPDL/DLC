@@ -1083,7 +1083,8 @@ public class CreateVolumeServiceBean {
         validator.validate(cdc);    
 	}
 	
-	public Volume createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception {
+	public Volume createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception 
+	{
 		logger.info("Creating new volume/monograph");
 		
 		if(batchLogItem != null)
@@ -1235,7 +1236,7 @@ public class CreateVolumeServiceBean {
 				}
 				rollbackCreation(volume, userHandle);
 				//throw new Exception(e);
-				return null;
+				throw e;
 			}
 		
 			finally
