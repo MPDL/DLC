@@ -165,9 +165,9 @@ public class Export {
 				document.add(Chunk.NEWLINE);
 				PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("toc", false), "Table of contents");
 			
-				for (int i = 0; i< vol.getTeiSd().getPbOrDiv().size(); i++)			
+				for (int i = 0; i< vol.getTeiSd().getText().getPbOrDiv().size(); i++)			
 				{
-					PbOrDiv currentElem = vol.getTeiSd().getPbOrDiv().get(i);
+					PbOrDiv currentElem = vol.getTeiSd().getText().getPbOrDiv().get(i);
 					if (currentElem.getType()!= "PB")
 					{
 						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))

@@ -15,7 +15,7 @@
 		
 		
 		
-		<xsl:template match="tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:titlePage/tei:docTitle|tei:figure|tei:div/tei:byline">
+		<xsl:template match="tei:group|tei:text|tei:front|tei:body|tei:back|tei:div|tei:pb|tei:titlePage|tei:titlePage/tei:docTitle|tei:figure|tei:div/tei:byline">
 			<xsl:copy>
 				<xsl:copy-of select="@*"/>
 				<xsl:apply-templates />

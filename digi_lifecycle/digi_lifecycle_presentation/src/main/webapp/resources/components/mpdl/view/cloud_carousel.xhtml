@@ -17,6 +17,7 @@
 		<cc:attribute name="imageList" required="false"/>
 		<cc:attribute name="loadScript" type="java.lang.Boolean" required="false"/>
 		<cc:attribute name="loadCSS" type="java.lang.Boolean" required="false"/>
+		<cc:attribute name="volumes" type="java.util.Collection" required="false"/>
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -158,15 +159,41 @@
 			<div class="eg3_container_1 eg3_carousel">
 				<div class="carouselPositioner">
 					<div id="carouselContent" class="carouselContent">
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-						<h:outputLink>
+						<ui:remove>
+						<ui:fragment rendered="#{empty cc.attrs.volumes}">
+							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+							<h:outputLink>
+								<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
+							</h:outputLink>
+							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
 							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-						</h:outputLink>
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
+							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+						</ui:fragment>
+						</ui:remove>
+						
+						<ui:fragment rendered="#{not empty cc.attrs.volumes}">
+							<a4j:repeat var="volume" value="#{cc.attrs.volumes}">
+									<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}">
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getShortTitleView(volume)}">
+											<f:param value="#{volume.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
+										</pretty:link>
+									</ui:fragment>
+									<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getVolumeShortTitleView(volume)}">
+											<f:param value="#{volume.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
+										</pretty:link>
+									</ui:fragment>
+							
+							</a4j:repeat>
+						
+						</ui:fragment>
+						
 					</div>
 					<ui:remove>
 					<span id="cloudinfoText">

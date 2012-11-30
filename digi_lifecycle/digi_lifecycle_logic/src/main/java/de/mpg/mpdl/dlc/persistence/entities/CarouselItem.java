@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
@@ -16,9 +17,10 @@ import de.mpg.mpdl.dlc.vo.mets.Page;
 @Entity
 @Table(name="carousel_items")
 @NamedQueries({
-    @NamedQuery(name=CarouselItem.ALL_ITEMS_BY_CONTEXT_ID, query="SELECT i FROM CarouselItem i WHERE i.contextId = :contextId"),
-    @NamedQuery(name=CarouselItem.ALL_ITEMS_BY_OU_ID, query="SELECT i FROM CarouselItem i WHERE i.ouId = :ouId")
+    @NamedQuery(name=CarouselItem.ALL_ITEMS_BY_CONTEXT_ID, query="SELECT i FROM CarouselItem i WHERE i.contextId = :contextId")
+    //@NamedQuery(name=CarouselItem.ALL_ITEMS_BY_OU_ID, query="SELECT i FROM CarouselItem i WHERE i.ouId = :ouId")
     })
+@NamedNativeQuery(name=CarouselItem.ALL_ITEMS_BY_OU_ID, query="SELECT * FROM carousel_items i WHERE ouId = ? ORDER BY RANDOM()", resultClass=CarouselItem.class)
 public class CarouselItem {
 
 	public static final String ALL_ITEMS_BY_CONTEXT_ID = "CarouselItem.itemsByContextId";

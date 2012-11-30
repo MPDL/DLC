@@ -171,7 +171,7 @@ public class ViewPages implements Observer{
 				initPageListMenu();
 				if(volume.getTeiSd()!=null)
 				{
-					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getPbOrDiv());
+					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getText().getPbOrDiv());
 					this.pbList = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
 					
 					for(int i=0; i<pbList.size(); i++)

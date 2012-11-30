@@ -43,8 +43,8 @@ public class TeiSd {
 			@XmlPath("tei:text/tei:front/tei:pb")
 	})
 	
-	private List<PbOrDiv> pbOrDiv = new ArrayList<PbOrDiv>();
-	
+	//private List<PbOrDiv> pbOrDiv = new ArrayList<PbOrDiv>();
+	private Text text = new Text();
 
 	/**
 	 * Helper Maps for working with structural Links
@@ -62,7 +62,7 @@ public class TeiSd {
 		if(divMap==null)
 		{
 			divMap = new HashMap<String, PbOrDiv>();
-			createDivMap(getPbOrDiv());
+			createDivMap(getText().getPbOrDiv());
 		}
 		return divMap;
 	}
@@ -96,7 +96,7 @@ public class TeiSd {
 		
 		Unmarshaller um = ctx.createUnmarshaller();
 		TeiSd tei = (TeiSd)um.unmarshal(example);
-		System.out.println(tei.getPbOrDiv().size());
+		System.out.println(tei.getText().getPbOrDiv().size());
 		
 		
 		TeiSd teiSd = new TeiSd();
@@ -125,8 +125,8 @@ public class TeiSd {
 		body.getPbOrDiv().add(div);
 		front.getPbOrDiv().add(div);
 		
-		teiSd.getPbOrDiv().add(front);
-		teiSd.getPbOrDiv().add(body);
+		teiSd.getText().getPbOrDiv().add(front);
+		teiSd.getText().getPbOrDiv().add(body);
 		
 		Marshaller m = ctx.createMarshaller();
 		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -139,8 +139,18 @@ public class TeiSd {
 	}
 
 
+	public Text getText() {
+		return text;
+	}
 
 
+	public void setText(Text text) {
+		this.text = text;
+	}
+
+
+
+/*
 	public List<PbOrDiv> getPbOrDiv() {
 		return pbOrDiv;
 	}
@@ -151,7 +161,7 @@ public class TeiSd {
 	public void setPageOrDiv(List<PbOrDiv> pageOrDiv) {
 		this.pbOrDiv = pageOrDiv;
 	}
-	
+	*/
 
 	
 	
