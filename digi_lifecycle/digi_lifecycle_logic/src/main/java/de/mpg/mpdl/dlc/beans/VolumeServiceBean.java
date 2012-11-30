@@ -287,7 +287,7 @@ public class VolumeServiceBean {
 	
 	public Volume retrieveVolume(String id, String userHandle) throws Exception
 	{
-		
+		System.out.println("retrieve " + id);
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		if(userHandle!=null)
 		{
@@ -974,6 +974,13 @@ public class VolumeServiceBean {
 	
 	public static void main(String[] args) throws Exception
 	{
+		
+		
+		File tei = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/Examples/E29_001_1914_konvertiert teisd.xml");
+		IUnmarshallingContext icont = bfactTei.createUnmarshallingContext();
+		TeiSd teiSd = (TeiSd) icont.unmarshalDocument(new FileInputStream(tei), null);
+		
+		
 		/*	
 		File tei = new File("R:/dlc Ingest Daten/test_Berlin/B836F1_1885/B836F1_1885.xml");
 		
@@ -1897,8 +1904,8 @@ public class VolumeServiceBean {
 							}
 							else
 							{
-								Volume otherSubVol = retrieveVolume(subVolId, userHandle);
-								v.getRelatedChildVolumes().add(otherSubVol);
+								//Volume otherSubVol = retrieveVolume(subVolId, userHandle);
+								//v.getRelatedChildVolumes().add(otherSubVol);
 							}
 							
 							

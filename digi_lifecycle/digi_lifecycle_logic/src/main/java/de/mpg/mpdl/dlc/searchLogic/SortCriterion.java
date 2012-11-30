@@ -29,6 +29,8 @@ public class SortCriterion {
 		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING)),
 		VOLUME(new SortCriterion[]{
 				new SortCriterion(SortIndices.VOLUME_ORDER, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.VOLUME_PARTNUMBER, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.VOLUME_PARTTITLE, SortOrders.ASCENDING),
 				new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING),
 				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
 				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)
@@ -69,7 +71,9 @@ public class SortCriterion {
 		STATUS("", "/properties/public-status"),
 		LAST_MODIFIED("", "/sort/last-modification-date"),
 		
-		VOLUME_ORDER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/order");
+		VOLUME_ORDER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/order"),
+		VOLUME_PARTNUMBER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/detail/number"),
+		VOLUME_PARTTITLE("sort.escidoc.part", "/sort/md-records/md-record/mods/part/detail/title");
 		
 		private String searchIndexName;
 		private String filterIndexName;

@@ -31,7 +31,11 @@ public class FilterBean {
 	{
 		
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
+		if(userHandle!=null)
+		{
+			client.setHandle(userHandle);
+		}
+		
 		
 		SearchRetrieveRequestType request = new SearchRetrieveRequestType();
 		String query = getCompleteFilterQueries(volTypes, volStatus, publicStatus, fcList);
@@ -44,7 +48,7 @@ public class FilterBean {
 				query += " \"" + sc.getSortIndex().getFilterIndexName() + "\"" + sc.getSortOrder().getOrderName(); 
 			}
 		}
-		System.out.println("Filter query:" + query);
+		logger.info("Filter query:" + query);
 		request.setQuery(query);
 		if(limit >0 && offset >0)
 		{
