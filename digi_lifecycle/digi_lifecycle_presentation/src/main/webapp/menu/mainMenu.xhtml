@@ -57,7 +57,7 @@
 				</li>
 			</ui:fragment>
 			
-
+			<ui:remove>
 			<ui:fragment rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator' }">
 				<li class="eg3_menuEntry">
 					<h:outputLink id="lnkEditCarousel" title="#{tlt.main_admin}" value="/#{applicationBean.contextPath}/admin/carouseledit">
@@ -65,6 +65,7 @@
 					</h:outputLink>
 				</li>
 			</ui:fragment>
+			</ui:remove>
 
 			</ul>
 		</nav>

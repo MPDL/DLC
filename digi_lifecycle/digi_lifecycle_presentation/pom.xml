@@ -206,6 +206,13 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<dependency>
+		  	<groupId>org.owasp.antisamy</groupId>
+		  	<artifactId>antisamy</artifactId>
+		  	<version>1.4.5</version>
+		</dependency>
+		
+		
 		<!-- 
 		<dependency>
         	<groupId>org.apache.tomcat</groupId>

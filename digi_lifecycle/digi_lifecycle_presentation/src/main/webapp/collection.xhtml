@@ -66,7 +66,7 @@
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemDescription">
 										<p>
-											<h:outputText value="#{viewCollection.col.description}"/>
+											<h:outputText value="#{utilBean.cleanHtml(viewCollection.col.description)}" escape="false"/>
 										</p>
 									</h:panelGroup>
 								</h:panelGroup>

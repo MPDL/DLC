@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.util;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,13 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.owasp.validator.html.AntiSamy;
+import org.owasp.validator.html.CleanResults;
+import org.owasp.validator.html.Policy;
+import org.owasp.validator.html.PolicyException;
+import org.owasp.validator.html.ScanException;
 
 import com.ocpsoft.pretty.PrettyContext;
 
@@ -22,6 +30,19 @@ public class UtilBean {
 	
 	private static String standardDateTimePattern = "dd.MM.yyyy - HH:mm";
 
+	private static Logger logger = Logger.getLogger(UtilBean.class);
+	static
+	{
+		try {
+			URL in = UtilBean.class.getClassLoader().getResource("antisamy_policy/antisamy-slashdot-1.4.4.xml");
+			policy = Policy.getInstance(in);
+		} catch (PolicyException e) {
+			logger.error("Could not instantiate antisamy policy", e);
+		}  	
+	}
+	
+	private static Policy policy;
+	
 	public static int getListSize(List list)
 	{
 		if(list!= null)
@@ -129,6 +150,24 @@ public class UtilBean {
 		
 		return "";
 		
+		
+	}
+	
+	public String cleanHtml(String html)
+	{
+		try {
+			AntiSamy as = new AntiSamy();
+			CleanResults cr = as.scan(html, policy);
+			logger.info("Scan Time Antisamy: " +cr.getScanTime());
+			return cr.getCleanHTML();
+		} catch (ScanException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PolicyException e) {
+			logger.error("Could not sanitize html", e);
+			
+		}
+		return "";
 		
 	}
 }
