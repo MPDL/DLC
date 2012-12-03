@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.editor;
 
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,12 +18,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
 import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
+import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -157,6 +163,8 @@ public class StructuralEditorBean implements Observer {
 
 	private Context context;
 	
+	private TeiSd teiSd;
+	
 	public enum PaginationType
 	{
 		ARABIC, ROMAN, ROMAN_MINUSCULE, RECTO_VERSO, RECTO_VERSO_ARABIC, RECTO_VERSO_ROMAN, FREE
@@ -214,7 +222,7 @@ public class StructuralEditorBean implements Observer {
 	}
 	
 	@URLAction(onPostback=false)
-	public void loadVolume()
+	public void loadVolume() throws Exception
 	{
 		
 		if(loginBean.isLogin())
@@ -246,9 +254,9 @@ public class StructuralEditorBean implements Observer {
 	}
 	
 
-	protected void volumeLoaded() {
+	protected void volumeLoaded() throws Exception {
 		
-		if(volume.getTeiSd() == null)
+		if(volume.getTeiSdXml() == null)
 		{
 			//create a new TEI SD with Pagebreaks only
 			TeiSd teiSd = new TeiSd();
@@ -262,7 +270,16 @@ public class StructuralEditorBean implements Observer {
 				pb.setId(p.getId());
 				body.getPbOrDiv().add(pb);
 			}
-			volume.setTeiSd(teiSd);
+			this.teiSd = teiSd;
+		}
+		else
+		{
+
+			
+			IUnmarshallingContext uctx = VolumeServiceBean.bfactTei.createUnmarshallingContext();
+			String teiSdXmlString = volServiceBean.documentToString(volume.getTeiSdXml());
+			this.teiSd = (TeiSd) uctx.unmarshalDocument(new StringReader(teiSdXmlString), null);
+
 		}
 		
 		if(flatTeiElementList == null)
@@ -273,7 +290,7 @@ public class StructuralEditorBean implements Observer {
 			
 			
 			//Transform TEI-SD to flat element list
-			List<TeiElementWrapper>[] flatLists = teiSdToFlatTeiElementList(volume.getTeiSd(), volume);
+			List<TeiElementWrapper>[] flatLists = teiSdToFlatTeiElementList(teiSd, volume);
 			this.flatTeiElementList = flatLists[0];
 			this.pbList = flatLists[1];
 			initPageListMenu();
@@ -307,7 +324,7 @@ public class StructuralEditorBean implements Observer {
 	}
 
 
-	public void revert()
+	public void revert() throws Exception
 	{
 		this.volume = null;
 		loadVolume();
@@ -584,7 +601,19 @@ public class StructuralEditorBean implements Observer {
 		else
 		{
 			try {
-				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+				flatTeiElementListToTeiSd(flatTeiElementList, teiSd);
+				
+				IMarshallingContext marshContext = VolumeServiceBean.bfactTei.createMarshallingContext();
+				StringWriter sw = new StringWriter();
+				marshContext.marshalDocument(teiSd, "utf-8", null, sw);
+				sw.flush();
+				
+				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+				fac.setNamespaceAware(true);
+				DocumentBuilder db = fac.newDocumentBuilder();
+				Document doc = db.parse(new InputSource(new StringReader(sw.toString())));
+				volume.setTeiSdXml(doc);
+				
 				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
@@ -628,7 +657,18 @@ public class StructuralEditorBean implements Observer {
 		else
 		{
 			try {
-				flatTeiElementListToTeiSd(flatTeiElementList, volume.getTeiSd());
+				flatTeiElementListToTeiSd(flatTeiElementList, teiSd);
+				IMarshallingContext marshContext = VolumeServiceBean.bfactTei.createMarshallingContext();
+				StringWriter sw = new StringWriter();
+				marshContext.marshalDocument(teiSd, "utf-8", null, sw);
+				sw.flush();
+				
+				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+				fac.setNamespaceAware(true);
+				DocumentBuilder db = fac.newDocumentBuilder();
+				Document doc = db.parse(new InputSource(new StringReader(sw.toString())));
+				volume.setTeiSdXml(doc);
+				
 				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				this.volume = createVolServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
 				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
@@ -2440,6 +2480,14 @@ public class StructuralEditorBean implements Observer {
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+
+	public TeiSd getTeiSd() {
+		return teiSd;
+	}
+
+	public void setTeiSd(TeiSd teiSd) {
+		this.teiSd = teiSd;
 	}
 
 	

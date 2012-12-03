@@ -31,6 +31,9 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
@@ -96,7 +99,7 @@ public class ViewPages implements Observer{
 	
 	private Page selectedRightPage;
 	
-	private PbOrDiv selectedDiv;
+	private String selectedDiv;
 	
 	private List<Page> pageList = new ArrayList<Page>();
 	
@@ -112,7 +115,7 @@ public class ViewPages implements Observer{
 	
 	private List<SelectItem> pageListMenu = new ArrayList<SelectItem>();
 	
-	private Map<PbOrDiv, Boolean> treeExpansionStateMap = new HashMap<PbOrDiv, Boolean>();
+	private Map<String, Boolean> treeExpansionStateMap = new HashMap<String, Boolean>();
 	
 	private Organization volumeOu;
 	
@@ -134,6 +137,8 @@ public class ViewPages implements Observer{
 	private String exportTeiStructLink = "";
 
 	private String exportTeiFtLink = "";
+	
+	private List<TeiSdTreeNodeImpl> teiSdRoots;
 
 	@PostConstruct
 	public void postConstruct()
@@ -169,9 +174,20 @@ public class ViewPages implements Observer{
 							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 				
 				initPageListMenu();
-				if(volume.getTeiSd()!=null)
+				if(volume.getTeiSdXml()!=null)
 				{
-					fillExpansionMap(getTreeExpansionStateMap(), volume.getTeiSd().getText().getPbOrDiv());
+					
+					this.teiSdRoots = new ArrayList<TeiSdTreeNodeImpl>();
+					for(Node n = volume.getTeiSdXml().getDocumentElement().getFirstChild(); n!=null; n=n.getNextSibling())
+					{
+						if (n.getNodeType()==Node.ELEMENT_NODE && n.getLocalName().equals("text"))
+						{
+							teiSdRoots.add(new TeiSdTreeNodeImpl((Element) n));
+						}
+					}
+					
+					//this.teiSdRoots.add(new TeiSdTreeNodeImpl(volume.getTeiSdXml().getDocumentElement()));
+					fillExpansionMap(getTreeExpansionStateMap(), teiSdRoots);
 					this.pbList = VolumeServiceBean.getAllPbs(new DOMSource(volume.getTeiSdXml()));
 					
 					for(int i=0; i<pbList.size(); i++)
@@ -199,7 +215,7 @@ public class ViewPages implements Observer{
 				//If no Page Number is given, try to go to title page, if available
 				if(this.selectedPageNumber==0)
 				{
-					if(volume.getTeiSd()!=null)
+					if(volume.getTeiSdXml()!=null)
 					{
 						Page p = VolumeUtilBean.getTitlePage(volume);
 						this.setSelectedPageNumber(volume.getPages().indexOf(p) + 1);
@@ -363,7 +379,7 @@ public class ViewPages implements Observer{
 		{
 			if(getVolume().getTeiSdXml() != null && hasSelected == false)
 			{
-				PbOrDiv oldSelectedDiv = selectedDiv;
+				String oldSelectedDiv = selectedDiv;
 				/*
 			
 				if(getSelectedPage()!=null)
@@ -395,13 +411,13 @@ public class ViewPages implements Observer{
 	}
 	
 	
-	private static void fillExpansionMap(Map<PbOrDiv, Boolean> expansionMap, List<PbOrDiv> currentDivs)
+	private static void fillExpansionMap(Map<String, Boolean> expansionMap, List<TeiSdTreeNodeImpl> currentRoots)
 	{
 //		System.out.println("Fill exp map");
-		for(PbOrDiv pbOrDiv : currentDivs)
+		for(TeiSdTreeNodeImpl node : currentRoots)
 		{
-			expansionMap.put(pbOrDiv, true);
-			fillExpansionMap(expansionMap, pbOrDiv.getPbOrDiv());
+			expansionMap.put(node.getId(), true);
+			fillExpansionMap(expansionMap, node.getChildren());
 		}
 	}
 	
@@ -539,17 +555,17 @@ public class ViewPages implements Observer{
         return null;
 	}
 	
-	public void goTo(PbOrDiv div)
+	public void goTo(String divId)
 	{
-		logger.info("Go to div " + div.getId());
+		logger.info("Go to div " + divId);
 		Page p;
 		try {
-			p = volServiceBean.getPageForDiv(volume, div);
+			p = volServiceBean.getPageForDiv(volume, divId);
 		} catch (Exception e) {
 			p = volume.getPages().get(0);
 		}
 		selectedPageNumber = volume.getPages().indexOf(p) + 1 ;
-		setSelectedDiv(div);
+		setSelectedDiv(divId);
 		setHasSelected(true);
 		loadVolume();
 		
@@ -589,11 +605,11 @@ public class ViewPages implements Observer{
 			
 	}
 
-	public PbOrDiv getSelectedDiv() {
+	public String getSelectedDiv() {
 		return selectedDiv;
 	}
 
-	public void setSelectedDiv(PbOrDiv selectedDiv) {
+	public void setSelectedDiv(String selectedDiv) {
 		this.selectedDiv = selectedDiv;
 	}
 	
@@ -761,11 +777,11 @@ public class ViewPages implements Observer{
 		this.pageListMenu = pageListMenu;
 	}
 
-	public Map<PbOrDiv, Boolean> getTreeExpansionStateMap() {
+	public Map<String, Boolean> getTreeExpansionStateMap() {
 		return treeExpansionStateMap;
 	}
 
-	public void setTreeExpansionStateMap(Map<PbOrDiv, Boolean> treeExpansionStateMap) {
+	public void setTreeExpansionStateMap(Map<String, Boolean> treeExpansionStateMap) {
 		this.treeExpansionStateMap = treeExpansionStateMap;
 	} 
 
@@ -931,6 +947,14 @@ public class ViewPages implements Observer{
 
 	public void setExportTeiFtLink(String exportTeiFtLink) {
 		this.exportTeiFtLink = exportTeiFtLink;
+	}
+
+	public List<TeiSdTreeNodeImpl> getTeiSdRoots() {
+		return teiSdRoots;
+	}
+
+	public void setTeiSdRoots(List<TeiSdTreeNodeImpl> teiSdRoots) {
+		this.teiSdRoots = teiSdRoots;
 	}
 
 }

@@ -25,6 +25,7 @@ import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.TransformerFactoryImpl;
 
 import org.apache.log4j.Logger;
+import org.jibx.runtime.IUnmarshallingContext;
 
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
@@ -155,8 +156,14 @@ public class Export {
 			document.newPage();
 			document = this.generateBiblMd(vol, document, root);
 		
-			if (vol.getTeiSd() != null)
+			if (vol.getTeiSdXml() != null)
 			{
+				
+				
+				IUnmarshallingContext uctx = VolumeServiceBean.bfactTei.createUnmarshallingContext();
+				String teiSdXmlString = volServiceBean.documentToString(vol.getTeiSdXml());
+				TeiSd teiSd = (TeiSd) uctx.unmarshalDocument(new StringReader(teiSdXmlString), null);
+				
 				//write structure to pdf
 				document.newPage();
 				//Set toc link for outline
@@ -165,9 +172,9 @@ public class Export {
 				document.add(Chunk.NEWLINE);
 				PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("toc", false), "Table of contents");
 			
-				for (int i = 0; i< vol.getTeiSd().getText().getPbOrDiv().size(); i++)			
+				for (int i = 0; i< teiSd.getText().getPbOrDiv().size(); i++)			
 				{
-					PbOrDiv currentElem = vol.getTeiSd().getText().getPbOrDiv().get(i);
+					PbOrDiv currentElem = teiSd.getText().getPbOrDiv().get(i);
 					if (currentElem.getType()!= "PB")
 					{
 						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))
