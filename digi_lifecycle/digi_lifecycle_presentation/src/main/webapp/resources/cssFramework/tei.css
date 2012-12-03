@@ -41,6 +41,10 @@ body.pagetable {
    background-color: #FFFFFF;
 }
 
+p {
+	text-align: justify;
+}
+
 /* 3 columns allowed for, or just a right and left */  
 #col1{
    width: 20%;
@@ -1303,4 +1307,10 @@ span.numberParagraph:after {
 span.numberParagraph {
     font-size: smaller;
     color: grey;
+}
+
+
+.teidiv1,
+.teidiv2 {
+	width:100%;
 }
