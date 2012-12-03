@@ -641,10 +641,18 @@ public class CreateVolumeServiceBean {
 
 				//Transform TEI to Tei-SD and add to volume
 				String teiSdString = transformTeiToTeiSd(new StreamSource(teiFileWithIds));
+				/*
 				IUnmarshallingContext unmCtx = VolumeServiceBean.bfactTei.createUnmarshallingContext();
 				TeiSd teiSd = (TeiSd)unmCtx.unmarshalDocument(new StringReader(teiSdString));
 				volume.setTeiSd(teiSd);				
-
+				*/
+				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+				fac.setNamespaceAware(true);
+				volume.setTeiSdXml(fac.newDocumentBuilder().parse(new InputSource(new StringReader(teiSdString))));
+				
+				
+				
+				
 				//Add paged TEI as component
 				String pagedTei = transformTeiToPagedTei(new StreamSource(teiFileWithIds));
 				URL uploadedPagedTei = sthc.upload(new ByteArrayInputStream(pagedTei.getBytes("UTF-8")));
@@ -697,15 +705,18 @@ public class CreateVolumeServiceBean {
 			}
 
 			//if vol has a teiSd and it should be updated
-			if(volume.getTeiSd()!=null && updateTeiSd)
+			if(volume.getTeiSdXml()!=null && updateTeiSd)
 			{
 
+				/*
 				IMarshallingContext marshContext = VolumeServiceBean.bfactTei.createMarshallingContext();
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(volume.getTeiSd(), "utf-8", null, sw);
-
+				*/
+				
+				String teiSdXmlString = volumeServiceBean.documentToString(volume.getTeiSdXml());
 				//Add Ids to teiSd, if none are there
-				File teiSdWithIds = addIdsToTei(new StreamSource(new StringReader(sw.toString())));
+				File teiSdWithIds = addIdsToTei(new StreamSource(new StringReader(teiSdXmlString)));
 			
 				
 				//Set ids in mets
@@ -1610,5 +1621,7 @@ public class CreateVolumeServiceBean {
 		
 		
 	}
+	
+	
 
 }

@@ -1037,7 +1037,7 @@ public class VolumeServiceBean {
 //		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 //		client.setHandle(userHandle); 
 		//System.err.println("item id = " + item.getObjid());
-		TeiSd teiSd = null;
+		//TeiSd teiSd = null;
 		Document teiSdXml = null;
 		Volume vol = null;
 		String tei = null;
@@ -1145,7 +1145,7 @@ public class VolumeServiceBean {
 		
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
-		vol.setTeiSd(teiSd);
+		//vol.setTeiSd(teiSd);
 		vol.setTeiSdXml(teiSdXml);
 		vol.setTei(tei);
 		vol.setPagedTei(pagedTei);
@@ -1184,13 +1184,13 @@ public class VolumeServiceBean {
 		return tei;
 	}
 	
-	public TeiSd loadTeiSd(Volume vol, String userHandle) throws Exception
+	public Document loadTeiSd(Volume vol, String userHandle) throws Exception
 	{
 		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
 		Document teiSdXml = null;
 		
-		TeiSd teiSd = null;
+		//TeiSd teiSd = null;
 		for(Component c : vol.getItem().getComponents())
 		{
 			
@@ -1200,7 +1200,7 @@ public class VolumeServiceBean {
 
 				long start = System.currentTimeMillis();
 
-				
+				/*
 				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
 				try {
 					IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
@@ -1208,11 +1208,11 @@ public class VolumeServiceBean {
 				} finally {
 					is.close();
 				}
-
+				*/
 					
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
-				is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
 				try {
 					teiSdXml = fac.newDocumentBuilder().parse(is, null);
 				} finally {
@@ -1226,9 +1226,9 @@ public class VolumeServiceBean {
 				
 			}
 		}
-		vol.setTeiSd(teiSd);
+		//vol.setTeiSd(teiSd);
 		vol.setTeiSdXml(teiSdXml);
-		return teiSd;
+		return teiSdXml;
 	}
 	
 	public String loadPagedTei(Volume vol, String userHandle) throws Exception
@@ -1647,14 +1647,14 @@ public class VolumeServiceBean {
 	
 	
 	
-	public  Page getPageForDiv(Volume v, PbOrDiv div) throws Exception
+	public  Page getPageForDiv(Volume v, String  divId) throws Exception
 	{
 
 		String pageId = "";
 		Processor proc = new Processor(false);
         XPathCompiler xpath = proc.newXPathCompiler();
         xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
-        XPathExecutable xx = xpath.compile("//tei:*[@xml:id='"+ div.getId()+ "']/preceding::tei:pb[1]/@xml:id");
+        XPathExecutable xx = xpath.compile("//tei:*[@xml:id='"+ divId+ "']/preceding::tei:pb[1]/@xml:id");
         // Run the XPath Expression
         XPathSelector selector = xx.load();
         
@@ -1676,7 +1676,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public PbOrDiv getDivForPage(Volume v, Page p) throws Exception
+	public String getDivForPage(Volume v, Page p) throws Exception
 	{
 		logger.debug("Finding structural element for pagebreak " + p.getId());
 		long start = System.currentTimeMillis();
@@ -1712,11 +1712,13 @@ public class VolumeServiceBean {
             }
         }
         
+        /*
         PbOrDiv div = (PbOrDiv)v.getTeiSd().getDivMap().get(divId);
+        */
         long time = System.currentTimeMillis() - start;
        
         
-        return div;
+        return divId;
 	}  
 	
 	public Volume loadCompleteVolume(String volumeId, String userHandle) throws Exception
@@ -1987,6 +1989,19 @@ public class VolumeServiceBean {
 	public static EntityManagerFactory getEmf() {
 		return emf;
 	}
+	
+	
+	public String documentToString(Document node) throws Exception {
+        
+        Source source = new DOMSource(node);
+        StringWriter stringWriter = new StringWriter();
+        StreamResult result = new StreamResult(stringWriter);
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer();
+        transformer.transform(source, result);
+        return stringWriter.getBuffer().toString();
+ 
+}
 
 
 

@@ -190,10 +190,10 @@
 						</h:panelGroup>
 						
 						<h:panelGroup  rendered="#{ingestBean.volumeId != 'new'}" layout="block" styleClass="eg3_container_1">
-							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.volume.tei and empty ingestBean.volume.teiSd and empty ingestBean.teiFile}"/>
+							<h:outputText value="#{lbl.ingest_noTeiAvailable}" rendered="#{empty ingestBean.volume.tei and empty ingestBean.volume.teiSdXml and empty ingestBean.teiFile}"/>
 							<h:outputText value="#{lbl.ingest_TeiAlreadyAvailable}" rendered="#{not empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
-							<h:outputText value="#{lbl.ingest_TeiSdAlreadyAvailable}" rendered="#{not empty ingestBean.volume.teiSd and empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
-							<h:outputText value="#{lbl.ingest_TeiOverwriteWarning}" rendered="#{ingestBean.teiFile != null and (not empty ingestBean.volume.tei or empty ingestBean.volume.teiSd)}" styleClass="eg3_messageError"/><br/>
+							<h:outputText value="#{lbl.ingest_TeiSdAlreadyAvailable}" rendered="#{not empty ingestBean.volume.teiSdXml and empty ingestBean.volume.tei and empty ingestBean.teiFile}"/>
+							<h:outputText value="#{lbl.ingest_TeiOverwriteWarning}" rendered="#{ingestBean.teiFile != null and (not empty ingestBean.volume.tei or empty ingestBean.volume.teiSdXml)}" styleClass="eg3_messageError"/><br/>
 							<h:outputText value="#{ingestBean.teiFile.name} - #{ingestBean.teiPbFacsValues.size()} #{lbl.ingest_scanReferencesFound}" rendered="#{ingestBean.teiFile != null}"/>
 						</h:panelGroup>
 						

@@ -56,7 +56,7 @@ public class Volume {
 	private String codicological;
 	
 	
-	private TeiSd teiSd;
+	//private TeiSd teiSd;
 	
 
 	@XmlTransient
@@ -182,6 +182,7 @@ public class Volume {
 		return pagedTei;
 	}
 
+	/*
 	public TeiSd getTeiSd() {
 		return teiSd;
 	}
@@ -190,6 +191,8 @@ public class Volume {
 		this.teiSd = teiSd;
 	}
 
+	*/
+	
 	public Document getTeiSdXml() {
 		return teiSdXml;
 	}
