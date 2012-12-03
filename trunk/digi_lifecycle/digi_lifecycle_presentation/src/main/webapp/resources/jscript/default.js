@@ -412,6 +412,7 @@ function eg3_openOverlay(listButton, cnt) {
 					eg3_disableExpand(curControlPanel.find(".eg3_expandOverlay"), "true");
 					eg3_disableExpand(curControlPanel.find(".eg3_collapseOverlay"), "true");
 				};
+				curTabPanelContent.find(".rf-trn-cnt .rf-trn-lbl").addClass("eg3_noWrap");
 			}
 			break;
 		case 'thumbs':
@@ -482,6 +483,7 @@ function eg3_closeOverlay(listButton, cnt) {
 	if (curTabPanelContent) {
 		curTabPanelContent.removeClass("eg3_expand");
 		curTabPanelContent.removeClass("eg3_widthAuto");
+		curTabPanelContent.find(".rf-trn-cnt .rf-trn-lbl").removeClass("eg3_noWrap");
 		//finaly delete all inline width values in every rf-tab-cnt
 		for (var ctpc = 0; ctpc < curTabPanelContent.length; ctpc++) {
 			eg3_removeAttributeValue($(curTabPanelContent.get(ctpc)), "style", "width");
@@ -567,14 +569,13 @@ function eg3_rerenderJSFForms() {
 var EG3_PAGE = null;
 var EG3_PAGE_IMG_OBJ = null;
 var EG3_CALLBACK = new Array(); //an variable for global callback functions as array, e.g. used for sidebar resize and scrolling into sidebar
-
+var waitCounter = 0;
 
 /**
  * sidebar functions
  * @used by viewPages.xhtml & co.
  */
-
-function eg3_initSidebar(evt) {
+function eg3_definePageObjects() {
 	if ($('#viewPage').length > 0) {
 		EG3_PAGE = '#viewPage';
 		EG3_PAGE_IMG_OBJ = $('#viewPage img');
@@ -582,6 +583,10 @@ function eg3_initSidebar(evt) {
 		EG3_PAGE = '#editPage';
 		EG3_PAGE_IMG_OBJ = $('#editPage img');
 	}
+}
+
+function eg3_initSidebar(evt) {
+	eg3_definePageObjects();
 	if (!evt) { //if the function was called without an event, e.g. a tab was changed in viewPages
 		EG3_PAGE_IMG_OBJ.load(eg3_initSidebar); //add the img load event to the current image container
 	} else { // if the load event is given, call the resize function
@@ -596,56 +601,66 @@ function eg3_initSidebar(evt) {
 function eg3_resizeSidebar() {
 	var maxHeight = 0; //init a param for the greates height value of all available images
 	
-	//check every image of them height and safe the greates value
-	for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
-		var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
-		if (tmpHeight > maxHeight) {
-			maxHeight = tmpHeight;
-		}
-	}
-	//safe the sidebar as jQuery object
-	var sdb = $(".eg3_id_sidebarLeft");
-	if (sdb.length > 0) {
-		//eg3_iconBar
-		var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
-		var icbHeight = (icoBar.length > 0) ? icoBar.height() : 0;
-		
-		//sidebar padding bottom
-		var sdbPadBot = sdb.css("padding-bottom");
-		while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
-			sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
-		}
-		sdbPadBot = Math.round(Number(sdbPadBot));
-		
-		maxHeight = (maxHeight - sdbPadBot);	//use the maxHeight variable for the new height of the sidebar
-		
-		var curTabCnt = sdb.find(".rf-tab-cnt:visible");
-		
-		switch (EG3_PAGE) {
-			case '#editPage':
-				sdb.find('.eg3_editSidebarContent').css({
-					"height": maxHeight,
-					"max-height": maxHeight
-				});
-				break;
-			case '#viewPage':
-			default:
-				curTabCnt.css({
-					"height":maxHeight, 
-					"max-height":maxHeight
-					});
-				curTabCnt.find(".eg3_contentDetails").css({
-					"height": (maxHeight - icbHeight),
-					"max-height": (maxHeight - icbHeight)
-				});
-				break;
-		}
+	if (EG3_PAGE_IMG_OBJ == 'undefined' || EG3_PAGE_IMG_OBJ == undefined || EG3_PAGE_IMG_OBJ == null) {
+		eg3_definePageObjects();
 	}
 	
-	if (EG3_CALLBACK.length > 0) {
-		for (var func in EG3_CALLBACK) {
-			setTimeout(EG3_CALLBACK[func], 20);
+	if (EG3_PAGE_IMG_OBJ) {
+		//check every image of them height and safe the greates value
+		for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
+			var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
+			if (tmpHeight > maxHeight) {
+				maxHeight = tmpHeight;
+			}
 		}
+		//safe the sidebar as jQuery object
+		var sdb = $(".eg3_id_sidebarLeft");
+		if (sdb.length > 0) {
+			//eg3_iconBar
+			var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
+			var icbHeight = (icoBar.length > 0) ? icoBar.height() : 0;
+			
+			//sidebar padding bottom
+			var sdbPadBot = sdb.css("padding-bottom");
+			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
+				sdbPadBot = sdbPadBot.substr(0, sdbPadBot.length-1);
+			}
+			sdbPadBot = Math.round(Number(sdbPadBot));
+			
+			maxHeight = (maxHeight - sdbPadBot);	//use the maxHeight variable for the new height of the sidebar
+			
+			var curTabCnt = sdb.find(".rf-tab-cnt:visible");
+			
+			switch (EG3_PAGE) {
+				case '#editPage':
+					sdb.find('.eg3_editSidebarContent').css({
+						"height": maxHeight,
+						"max-height": maxHeight
+					});
+					break;
+				case '#viewPage':
+				default:
+					curTabCnt.css({
+						"height":maxHeight, 
+						"max-height":maxHeight
+						});
+					curTabCnt.find(".eg3_contentDetails").css({
+						"height": (maxHeight - icbHeight),
+						"max-height": (maxHeight - icbHeight)
+					});
+					break;
+			}
+		}
+		
+		if (EG3_CALLBACK.length > 0) {
+			for (var func in EG3_CALLBACK) {
+				setTimeout(EG3_CALLBACK[func], 20);
+			}
+		}
+	} else {
+		// if EG3_PAGE_IMG_OBJ missing, start a refresh for the function
+		eg3_definePageObjects();
+		setTimeout(eg3_resizeSidebar, 50);
 	}
 }
 
@@ -775,8 +790,9 @@ function eg3_ie8_addSearchSubmitOnEnter() {
  */
 function eg3_ie9_addHoverColor() {
 	$('input[type="submit"], input[type="button"], input[type="reset"]').mouseover(function(e){
-		$(this).css("color", "#EA7125");
+		$(this).css({"color": "#EA7125", "border-color": "#EA7125"});
 	}).mouseout(function(e){
 		eg3_removeAttributeValue($(this), "style", "color");
+		eg3_removeAttributeValue($(this), "style", "border-color");
 	});
 } 

@@ -290,6 +290,9 @@ body .eg3_id_siteTitle {
 .eg3_id_sidebarLeft .eg3_modusBtn:disabled {
 	color:#EA7125;
 }
+.eg3_id_sidebarLeft .eg3_iconBar {
+	background-color:#F0F0F0;
+}
 .eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
 	padding-right:0.25em;
 }
@@ -328,6 +331,15 @@ body .eg3_id_siteTitle {
 	padding-left:2.5%;
 	padding-right:2.5%;
 }
+
+.eg3_id_sidebarLeft .eg3_contentDetails {
+	background-color:#F0F0F0;
+}
+.eg3_id_sidebarLeft .eg3_contentDetails .eg3_importantButton {
+	margin-bottom:1.5em;
+	background-color:transparent;
+}
+
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
@@ -2011,8 +2023,9 @@ body .eg3_id_siteTitle {
 }
 .eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .eg3_viewPage_fulltextContent {
 	width:95%;
-	padding:0 2.49%;
+	padding:0 2.49% 1% 2.49%;
 	overflow:auto;
+	font-size:80%;
 }
 .eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .stdheader {
 	width:100%;
@@ -2956,16 +2969,19 @@ button:hover .eg3_icon_close_16_16 {
 .rf-trn {
 	white-space:normal;
 }
-.eg3_noWrapTrn .rf-trn {
-	white-space:nowrap;
-}
-
 span.rf-trn-ico-exp, span.rf-trn-ico-colps {
 	background:none;
 	width:0;
 }
 
-
+.eg3_id_sidebarLeft .rf-trn-cnt {
+	padding-right:1.5em;
+}
+.eg3_id_sidebarLeft .rf-trn-cnt .rf-trn-lbl {
+	white-space:normal;
+	padding-left:1em;
+	text-indent:-1em;
+}
 .eg3_editContent .rf-tab-cnt {
 	background-color:#2F2F2F;
 	color:#FFFFFF;

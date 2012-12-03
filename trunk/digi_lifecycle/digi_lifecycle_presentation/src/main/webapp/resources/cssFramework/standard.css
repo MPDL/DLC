@@ -170,7 +170,7 @@ option {
 }
 
 .eg3_noWrap {
-	white-space:nowrap;
+	white-space:nowrap !important;
 }
 
 /*
