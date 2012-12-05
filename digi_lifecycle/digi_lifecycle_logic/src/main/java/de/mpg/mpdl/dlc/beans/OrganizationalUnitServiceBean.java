@@ -59,7 +59,7 @@ public class OrganizationalUnitServiceBean {
 			OrganizationalUnitHandlerClient client = new OrganizationalUnitHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(null);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-			req.setQuery("\"/properties/public-status\"=opened and " + "\"/md-records/md-record/organizational-unit/organization-type\"=DLC");
+			req.setQuery("\"/properties/public-status\"=opened and \"/md-records/md-record/organizational-unit/organization-type\"=DLC sortby \"/sort/md-records/md-record/organizational-unit/title\"");
 			req.setMaximumRecords(new NonNegativeInteger("100"));
 			ous =  client.retrieveOrganizationalUnitsAsList(req);
 		}catch(Exception e)
