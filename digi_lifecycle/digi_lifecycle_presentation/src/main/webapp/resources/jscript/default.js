@@ -319,7 +319,7 @@ function eg3_addDisplayControl(target) {
 				
 				var volumeList = $('.eg3_listItemVolume');
 				var volumeListHidden = $('.eg3_listItemVolume:hidden');
-				if (volumeList.length == volumeListHidden.length) {
+				if (volumeListeHidden && volumeList && (volumeList.length == volumeListHidden.length)) {
 					$('.eg3_listHeader .eg3_toggleListItemVolume_js').removeClass("eg3_icon_expand_16_16").addClass("eg3_icon_collapse_16_16").find(".eg3_iconActionLabel").text(showAllText);
 				} else {
 					$('.eg3_listHeader .eg3_toggleListItemVolume_js').removeClass("eg3_icon_collapse_16_16").addClass("eg3_icon_expand_16_16").find(".eg3_iconActionLabel").text(hideAllText);
@@ -569,7 +569,6 @@ function eg3_rerenderJSFForms() {
 var EG3_PAGE = null;
 var EG3_PAGE_IMG_OBJ = null;
 var EG3_CALLBACK = new Array(); //an variable for global callback functions as array, e.g. used for sidebar resize and scrolling into sidebar
-var waitCounter = 0;
 
 /**
  * sidebar functions
@@ -774,13 +773,7 @@ function eg3_ie8_addSearchSubmitOnEnter() {
 		}
 	});
 }
-/*function eg3_ie8_checkHeaderLogoHeight() {
-	var logo = $('.eg3_solutionLogo img');
-	var tmpImg = new Image(); 
-	tmpImg.src = logo.attr('src');
-	var rel = tmpImg.width / tmpImg.height;
-	logo.css("height", Math.round(logo.width() / rel));
-}*/
+
 
 /**
  * following functions are only for IE9
