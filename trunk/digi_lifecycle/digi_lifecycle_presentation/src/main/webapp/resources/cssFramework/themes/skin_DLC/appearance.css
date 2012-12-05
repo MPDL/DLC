@@ -68,6 +68,10 @@
 	padding-left:0.5em;
 }
 
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top {
+	*padding-right:0.5em;
+}
+
 /*****************************************************************************************************************
  * 							declarations for all other browser
  */
@@ -2877,7 +2881,7 @@ button:hover .eg3_icon_close_16_16 {
 }
 .eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top {
 	background:none;
-	background-color:#transparent;
+	background-color:transparent;
 	border:none;
 	color:#FFFFFF;
 	padding:0.1633333em 0 0 0;
@@ -2891,7 +2895,7 @@ button:hover .eg3_icon_close_16_16 {
 }
 .eg3_id_sidebarLeft .rf-tab-hdr-act.rf-tab-hdr-top {
 	background:none;
-	background-color:#transparent;
+	background-color:transparent;
 	border:none;
 	color:#EA7125;
 	padding:0.1633333em 0 0 0;
