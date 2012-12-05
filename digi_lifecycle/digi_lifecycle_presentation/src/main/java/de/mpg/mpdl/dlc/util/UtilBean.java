@@ -158,7 +158,7 @@ public class UtilBean {
 		try {
 			AntiSamy as = new AntiSamy();
 			CleanResults cr = as.scan(html, policy);
-			logger.info("Scan Time Antisamy: " +cr.getScanTime());
+			//logger.info("Scan Time Antisamy: " +cr.getScanTime());
 			return cr.getCleanHTML();
 		} catch (ScanException e) {
 			// TODO Auto-generated catch block
