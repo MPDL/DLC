@@ -81,6 +81,7 @@ public class ContextServiceBean {
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
 			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/organizational-units/organizational-unit/id\"="+id);
+			req.setMaximumRecords(new NonNegativeInteger("10000"));
 			if(sortByName)
 			{
 				req.setQuery(req.getQuery() + " sortby \"/sort/properties/name\"");
@@ -129,6 +130,7 @@ public class ContextServiceBean {
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			//TODO
 			req.setQuery("\"/properties/public-status\"=opened and " + "\"/properties/type\"=DLC and" +"\"/properties/created-by/id\"="+ id + "  sortby \"/sort/properties/name\"");
+			req.setMaximumRecords(new NonNegativeInteger("10000"));
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
