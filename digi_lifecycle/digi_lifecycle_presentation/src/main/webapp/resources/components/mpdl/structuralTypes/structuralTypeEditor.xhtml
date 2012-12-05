@@ -76,7 +76,7 @@
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 						<h:outputText value="#{lbl.edit_structuralHead}"/>
 					</h:panelGroup>
-					<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_3_5"/>
+					<h:inputTextarea rows="3" value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_3_5"/>
 				</h:panelGroup>
 				
 				
@@ -121,39 +121,38 @@
 	          
 		<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'TITLE_PAGE'}">
 			<div class="eg3_editInputArea eg3_container_1">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 					<h:outputText value="#{lbl.edit_structuralHead}"/>
 				</h:panelGroup>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.docTitles[0].title}" styleClass="eg3_container_21_50"/>
+				<h:inputTextarea rows="3" value="#{cc.attrs.teiWrapper.teiElement.docTitles[0].title}" styleClass="eg3_container_3_5"/>
 			</div>
 		</h:panelGroup>
 	          
 		<h:panelGroup rendered="#{cc.attrs.selectedStructuralType == 'FIGURE'}">
 			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-					<h:outputText value="#{lbl.edit_structuralHead}"/>
-				</h:panelGroup>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_21_50"/>
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 					<h:outputText value="#{lbl.edit_numeration}"/>
 				</h:panelGroup>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.numeration}" styleClass="eg3_container_21_50"/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.numeration}" styleClass="eg3_container_3_5"/>
 			</h:panelGroup>
-			
 			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.edit_structuralHead}"/>
+				</h:panelGroup>
+				<h:inputTextarea rows="3" value="#{cc.attrs.teiWrapper.teiElement.head[0]}" styleClass="eg3_container_3_5"/>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 					<h:outputText value="#{lbl.edit_figureDescription}"/>
 				</h:panelGroup>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.figDesc}" styleClass="eg3_container_21_50"/>
+				<h:inputTextarea rows="5" value="#{cc.attrs.teiWrapper.teiElement.figDesc}" styleClass="eg3_container_3_5"/>
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
-				<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 					<h:outputText value="#{lbl.edit_caption}"/>
 				</h:panelGroup>
-				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.caption}" styleClass="eg3_container_21_50"/>
+				<h:inputText value="#{cc.attrs.teiWrapper.teiElement.caption}" styleClass="eg3_container_3_5"/>
 			</h:panelGroup>
 			
 			<a4j:repeat value="#{cc.attrs.teiWrapper.teiElement.persNames}" var="persName" rowKeyVar="rowKey" >
