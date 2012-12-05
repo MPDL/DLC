@@ -1279,17 +1279,46 @@ public class StructuralEditorBean implements Observer {
 		{
 			case DIV :
 			{
-				cloned = new Div((Div)elementToEdit.getTeiElement());
+				
+				Div clonedDiv = new Div((Div)elementToEdit.getTeiElement());
+				if(!clonedDiv.isNotEmptyDocAuthors())
+				{
+					clonedDiv.setDocAuthors(new ArrayList<DocAuthor>());
+					clonedDiv.getDocAuthors().add(new DocAuthor());
+				}
+				if(clonedDiv.getHead().isEmpty())
+				{
+					clonedDiv.getHead().add("");
+				}
+				
+				cloned = clonedDiv;
 				break;
 			}
 			case FIGURE :
 			{
-				cloned = new Figure((Figure)elementToEdit.getTeiElement());
+				Figure clonedFigure = new Figure((Figure)elementToEdit.getTeiElement());
+				if(clonedFigure.getHead().isEmpty())
+				{
+					clonedFigure.getHead().add("");
+				}
+				
+				if(clonedFigure.getPersNames()==null || clonedFigure.getPersNames().isEmpty())
+				{
+					clonedFigure.setPersNames(new ArrayList<PersName>());	
+					clonedFigure.getPersNames().add(new PersName());
+				}
+				cloned = clonedFigure;
 				break;
 			}
 			case TITLE_PAGE :
 			{
-				cloned = new TitlePage((TitlePage)elementToEdit.getTeiElement());
+				TitlePage clonedTitlePage = new TitlePage((TitlePage)elementToEdit.getTeiElement());
+				if(clonedTitlePage.getDocTitles() == null || clonedTitlePage.getDocTitles().isEmpty())
+				{
+					clonedTitlePage.setDocTitles(new ArrayList<DocTitle>());
+					clonedTitlePage.getDocTitles().add(new DocTitle());
+				}
+				cloned = clonedTitlePage;
 				break;
 			}
 		
