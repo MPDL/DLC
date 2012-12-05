@@ -39,7 +39,7 @@ public class SessionExtenderTask {
     	try {
 			timer.cancel();
 			timer.purge();
-			 System.err.println("Stop Retrieving user Account every 20 minutes.");
+			logger.info("Stop Retrieving user Account every 20 minutes.");
 		} catch (Exception e) {
 			logger.error("Error while stopping timer task for refreshing user handle",e);
 		}
@@ -50,7 +50,7 @@ public class SessionExtenderTask {
     	public void run() {
 	    	try {
 				uaService.refreshUserHandle(userHandle);
-				System.err.println("Retrieving user Account every 20 minutes.");
+				logger.info("Retrieving user Account every 20 minutes.");
 			} catch (Exception e) {
 				logger.error("Error while trying to refresh user handle", e);
 				stop();
