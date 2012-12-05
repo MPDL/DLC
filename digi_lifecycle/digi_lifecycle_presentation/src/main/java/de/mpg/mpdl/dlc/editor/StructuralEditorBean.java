@@ -1853,7 +1853,21 @@ public class StructuralEditorBean implements Observer {
 	{
 		int pos = flatTeiElementList.indexOf(selectedPb);
 		
+		//First, try to find element after		
+		for(int i=pos; i<flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper wrapper = flatTeiElementList.get(i);
+			if(!ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+			{
+				if (PositionType.START.equals(wrapper.getPositionType()))
+				{
+					//System.out.println(wrapper.getPagebreakWrapper().getTeiElement().getId());
+					return wrapper.getPagebreakWrapper();
+				}
+			}
+		}
 		
+		//if not found, try to find element before
 		for(int i=pos; i>=0; i--)
 		{
 			TeiElementWrapper wrapper = flatTeiElementList.get(i);
@@ -1866,6 +1880,7 @@ public class StructuralEditorBean implements Observer {
 				}
 			}
 		}
+		
 		//System.out.println("null");
 		return null;
 		
