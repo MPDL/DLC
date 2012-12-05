@@ -86,6 +86,10 @@ public class ContextServiceBean {
 			{
 				req.setQuery(req.getQuery() + " sortby \"/sort/properties/name\"");
 			}
+			else
+			{
+				req.setQuery(req.getQuery() + " sortby \"/sort/properties/creation-date\"");
+			}
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
