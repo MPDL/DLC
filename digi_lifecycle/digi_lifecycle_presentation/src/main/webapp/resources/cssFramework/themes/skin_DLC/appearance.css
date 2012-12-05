@@ -2978,10 +2978,14 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
 	padding-right:1.5em;
 }
 .eg3_id_sidebarLeft .rf-trn-cnt .rf-trn-lbl {
-	white-space:normal;
 	padding-left:1em;
 	text-indent:-1em;
 }
+
+.rf-trn-lbl {
+	white-space:normal;
+}
+
 .eg3_editContent .rf-tab-cnt {
 	background-color:#2F2F2F;
 	color:#FFFFFF;
