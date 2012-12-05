@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.axis.types.NonNegativeInteger;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.ContextHandlerClient;
@@ -151,8 +152,9 @@ public class ContextServiceBean {
 	        SearchRetrieveResponse response = null;
 			ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
-			req.setQuery(" \"/properties/type\"=DLC sortby \"/sort/properties/name\"");
+			req.setQuery("\"/properties/public-status\"=opened and " + " \"/properties/type\"=DLC sortby \"/sort/properties/name\"");
 			//req.setSortKeys("\"/sort/properties/name\"");
+			req.setMaximumRecords(new NonNegativeInteger("10000"));
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
 			{
