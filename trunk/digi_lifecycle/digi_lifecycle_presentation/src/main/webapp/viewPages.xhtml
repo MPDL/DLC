@@ -15,8 +15,6 @@
 		<ui:define name="separateContentHeader">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
 	
-			<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
-		
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
 					<modsViewer:header volume="#{viewPages.volume}" context="#{viewPages.context}"/>
@@ -397,15 +395,26 @@
 							}
 						}
 						
+						var pageInit = false;
+						function initPageStart() {
+							if (!pageInit) {
+								EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()", "setViewPortHeight('false')");
+								
+								$("#viewPage img").unbind("load").unbind("ready");
+								$("#viewPage img").load(eg3_initSidebar).ready(eg3_initSidebar);
+								eg3_initWindowResizeListener();
+								pageInit = true;
+							}
+						}
+						
 						/**
 						 * following functions for page handling after page init and every ajax call 
 						 */
 						var startSidebarContent = '';
-						$(document).ready(function(e) {
-							EG3_CALLBACK = new Array("scrollTree()", "scrollThumbs()", "resizeFulltext()", "setViewPortHeight('false')");
-							
-							$("#viewPage img").load(eg3_initSidebar);
-							eg3_initWindowResizeListener();
+						$(document).unbind("ready").unbind("load");
+						$(document).bind({
+							ready:initPageStart,
+							load:initPageStart
 						});
 						
 						jsf.ajax.addOnEvent(function(e) {
@@ -651,7 +660,6 @@
 										    <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
 													<h:outputText value="#{lbl.export_dfg_viewer}"/>
 												</h:outputLink></li>
-											 					
 										</ul>
 									</h:panelGroup>
 								</h:panelGroup>
@@ -663,11 +671,11 @@
 					
 					<!--  SINGLE VIEW  -->
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
-						
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js" target="body"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js" target="body"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js" target="body"/>
-						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.dlcplugin.js" target="body"/>
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.geometry.js"/>
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.birdseye.js"/>
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.regions.js"/>
+						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.dlcplugin.js"/>
 						<ui:fragment rendered="#{viewPages.selectedPage != null}">
 							<h:panelGroup layout="block" styleClass="digilib eg3_viewPage_imgContainer eg3_overflow_z20">
 								<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(viewPages.selectedPage,600,1400,viewPages.digilibQueryString)}"/>

@@ -2941,12 +2941,13 @@ button:hover .eg3_icon_close_16_16 {
 }
 
 .rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
-	text-align:center;
+	text-align:center; 
 }
 
 .rf-tab-cnt .eg3_thumbnail img {
 	height:14.583333em;
 	padding:10% 10% 0 10%;
+	padding:1em 1em 0 1em\9;
 }
 
 .rf-tab-cnt .eg3_thumbnail.eg3_active {

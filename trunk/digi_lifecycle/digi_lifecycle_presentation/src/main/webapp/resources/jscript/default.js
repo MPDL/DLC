@@ -619,6 +619,14 @@ function eg3_resizeSidebar() {
 			var icoBar = $('.eg3_id_sidebarLeft .eg3_iconBar:visible');
 			var icbHeight = (icoBar.length > 0) ? icoBar.height() : 0;
 			
+			/* set the tabpanel on the same height as the pageMenu, for a better look */
+			var scanMenu = $('.eg3_viewPageMenu');
+			$('.rf-tab-hdr-tabline-top').css({
+				"height": scanMenu.height(),
+				"padding-top": scanMenu.css("padding-top"),
+				"padding-bottom": scanMenu.css("padding-bottom")
+			});
+			
 			//sidebar padding bottom
 			var sdbPadBot = sdb.css("padding-bottom");
 			while (!Number(sdbPadBot.substr(sdbPadBot.length-1,1))) {
@@ -626,7 +634,7 @@ function eg3_resizeSidebar() {
 			}
 			sdbPadBot = Math.round(Number(sdbPadBot));
 			
-			maxHeight = (maxHeight - sdbPadBot);	//use the maxHeight variable for the new height of the sidebar
+			maxHeight = (maxHeight - sdbPadBot)+2;	//use the maxHeight variable for the new height of the sidebar
 			
 			var curTabCnt = sdb.find(".rf-tab-cnt:visible");
 			
