@@ -361,57 +361,6 @@
 							<!-- START TAB-PANEL -->
 								<rich:tabPanel styleClass="eg3_container_1" switchType="ajax">
 									
-									<rich:tab header="#{lbl.edit_tab_structure_head}" label="structure" id="structure">
-										<!-- START CREATE STRUCTURE ELEMENT -->
-										<a4j:region>
-											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
-												<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
-												
-												<h:panelGroup layout="block" styleClass="eg3_currentPageNumbers eg3_container_1">
-													<h:outputText value="#{lbl.edit_on} #{lbl.edit_scan} "/>
-													<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}"/>
-													<h:outputText value=" / #{lbl.edit_page} #{structuralEditorBean.selectedPb.teiElement.numeration}" rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
-													<h:outputText value=" / #{lbl.edit_page} -" rendered="#{empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
-												</h:panelGroup>
-												
-												<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
-													<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
-														teiWrapper="#{structuralEditorBean.currentNewElement}"/>
-												</h:panelGroup>
-												
-												<h:commandButton type="submit" styleClass="eg3_borderradius_5" value="#{lbl.edit_createStructuralElementBtn}" title="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
-													<f:ajax render=":messages :edit :paginator" execute="@form"/>
-												</h:commandButton>
-											</h:panelGroup>
-										</a4j:region>
-										<!-- END CREATE STRUCTURE ELEMENT -->
-									</rich:tab>
-									
-								<ui:remove>
-									<rich:tab header="#{lbl.edit_tab_editStructure}" label="edit_structure" id="edit_structure" rendered="#{structuralEditorBean.currentEditElementWrapper!=null}">
-										<!-- START EDIT STRUCTURE ELEMENT -->
-										<a4j:region>
-										<style type="text/css"> .xxx input { background-color:#990099;}</style>
-										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer xxx">
-											<h3><h:outputText value="#{lbl.edit_tab_editStructure_head}"/></h3>
-											
-											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-											<br/>
-											<br/>
-											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-												<f:ajax render=":messages :edit :paginator" execute="@form"/>
-											</h:commandButton>
-											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_cancelBtn}" action="#{structuralEditorBean.cancelEditStructuralElement}">
-												<f:ajax render=":messages :edit :paginator" execute="@form"/>
-											</h:commandButton>
-										</h:panelGroup>
-										</a4j:region>
-										
-										<!-- END EDIT STRUCTURE ELEMENT -->
-									</rich:tab>
-								</ui:remove>
 									
 									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
 										<!-- START PAGE EDITING -->
@@ -675,6 +624,63 @@
 										
 										<!-- END PAGE EDITING -->
 									</rich:tab>
+									
+									
+									
+									
+									<rich:tab header="#{lbl.edit_tab_structure_head}" label="structure" id="structure">
+										<!-- START CREATE STRUCTURE ELEMENT -->
+										<a4j:region>
+											<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer">
+												<h3><h:outputText value="#{lbl.edit_tab_structure_head}"/></h3>
+												
+												<h:panelGroup layout="block" styleClass="eg3_currentPageNumbers eg3_container_1">
+													<h:outputText value="#{lbl.edit_on} #{lbl.edit_scan} "/>
+													<h:outputText value="#{structuralEditorBean.selectedPb.page.order + 1}"/>
+													<h:outputText value=" / #{lbl.edit_page} #{structuralEditorBean.selectedPb.teiElement.numeration}" rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+													<h:outputText value=" / #{lbl.edit_page} -" rendered="#{empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+												</h:panelGroup>
+												
+												<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
+													<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralType}" structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralElementTypeChanged}"
+														teiWrapper="#{structuralEditorBean.currentNewElement}"/>
+												</h:panelGroup>
+												
+												<h:commandButton type="submit" styleClass="eg3_borderradius_5" value="#{lbl.edit_createStructuralElementBtn}" title="#{lbl.edit_createStructuralElementBtn}" action="#{structuralEditorBean.createStructuralElement}">
+													<f:ajax render=":messages :edit :paginator" execute="@form"/>
+												</h:commandButton>
+											</h:panelGroup>
+										</a4j:region>
+										<!-- END CREATE STRUCTURE ELEMENT -->
+									</rich:tab>
+									
+								<ui:remove>
+									<rich:tab header="#{lbl.edit_tab_editStructure}" label="edit_structure" id="edit_structure" rendered="#{structuralEditorBean.currentEditElementWrapper!=null}">
+										<!-- START EDIT STRUCTURE ELEMENT -->
+										<a4j:region>
+										<style type="text/css"> .xxx input { background-color:#990099;}</style>
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer xxx">
+											<h3><h:outputText value="#{lbl.edit_tab_editStructure_head}"/></h3>
+											
+											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+											<br/>
+											<br/>
+											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+												<f:ajax render=":messages :edit :paginator" execute="@form"/>
+											</h:commandButton>
+											<h:commandButton type="submit" styleClass="eg3_floatRight" value="#{lbl.edit_cancelBtn}" action="#{structuralEditorBean.cancelEditStructuralElement}">
+												<f:ajax render=":messages :edit :paginator" execute="@form"/>
+											</h:commandButton>
+										</h:panelGroup>
+										</a4j:region>
+										
+										<!-- END EDIT STRUCTURE ELEMENT -->
+									</rich:tab>
+								</ui:remove>
+									
+									
 								</rich:tabPanel>
 							</h:form>
 								
@@ -706,28 +712,51 @@
 											
 											<rich:treeNode styleClass="struct_#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.id}" expanded="#{true}" rendered="#{divItem.teiElementWrapper.teiElement.elementType != 'PB'}">
 												
-												<h:panelGroup style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'font-size:130%;' : ''}">
+												<h:panelGroup layout="block" style="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb ? 'background-color:#CACA86;' : ''} padding-left:1em;">
 													
-													<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
-															render=":messages :edit :paginator"/>							
+											
+													
+												<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" styleClass="#{cc.attrs.linkStyleClass}" style="#{divItem.invalid ? 'color:red;' : ''}">
+														<b>
+														<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
+															<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and not empty divItem.teiElementWrapper.teiElement.type}"/>
+															<h:outputText value="[-]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and empty divItem.teiElementWrapper.teiElement.type}"/>
+															<h:outputText value="[#{lbl.edit_elementType_title_page}]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}"/>
+															<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
+															
+															
+														</h:panelGroup>
+														<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TEXT' or divItem.teiElementWrapper.teiElement.elementType=='GROUP' or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+															<h:outputText value="#{divItem.teiElementWrapper.teiElement.elementType}"/>
+														</h:panelGroup>
+														
+																												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
+														<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
+														<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
+														</h:panelGroup>
+														</b>
+														<f:ajax render=":messages :edit :paginator"/>
+												</h:commandLink>
 
-													<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
-													<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
-													<h:outputText value=" - "/>
-													
-													<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
-														<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}"/>
-														<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
-													</h:panelGroup>
-													
-													<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
-														<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
-														<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
-													</h:selectOneMenu>
-													
-													<h:outputText value=")"/>
+
+														
+														
+												<h:outputText value=" (#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
+												<h:outputText value=" / #{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
+												<h:outputText value=" - "/>
+												
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
+													<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}"/>
+													<h:outputText value=" / #{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
 												</h:panelGroup>
 												
+												<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
+													<f:selectItems value="#{structuralEditorBean.getEndPagesSelectItemsForElement(divItem.teiElementWrapper)}"/>
+													<f:ajax event="change" listener="#{structuralEditorBean.moveEndPageTo(divItem.teiElementWrapper, divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo)}" render=":messages :edit :paginator"/>
+												</h:selectOneMenu>
+												
+												<h:outputText value=")"/>
+														
 												<h:commandButton value=" " title="&lt;&lt;" styleClass="eg3_ico_moveLeft_16_16" action="#{structuralEditorBean.moveElementToLeft(divItem.teiElementWrapper)}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.movableToLeft}">
 													<f:ajax render=":messages :edit :paginator" execute="@form"/>
 												</h:commandButton>
@@ -754,6 +783,36 @@
 												</h:commandButton>
 												</ui:remove>
 												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+												
+												
+												<br/>
+												
+												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
+													<h:outputText value=" #{divItem.teiElementWrapper.teiElement.docAuthors[0].invertedAuthor}" rendered="#{divItem.teiElementWrapper.teiElement.docAuthors.size() > 0 and not empty divItem.teiElementWrapper.teiElement.docAuthors[0].invertedAuthor}"/>
+													<h:outputText value="; #{divItem.teiElementWrapper.teiElement.docAuthors[1].invertedAuthor}" rendered="#{divItem.teiElementWrapper.teiElement.docAuthors.size() > 1 and not empty divItem.teiElementWrapper.teiElement.docAuthors[1].invertedAuthor}"/>
+													<h:outputText value="; #{divItem.teiElementWrapper.teiElement.docAuthors[2].invertedAuthor}" rendered="#{divItem.teiElementWrapper.teiElement.docAuthors.size() > 2 and not empty divItem.teiElementWrapper.teiElement.docAuthors[2].invertedAuthor}"/>
+													<h:outputText value=":" rendered="#{(not empty divItem.teiElementWrapper.teiElement.docAuthors[0].invertedAuthor or not empty divItem.teiElementWrapper.teiElement.docAuthors[1].invertedAuthor or not empty divItem.teiElementWrapper.teiElement.docAuthors[2].invertedAuthor) and not empty divItem.teiElementWrapper.teiElement.head}"/>		
+												</h:panelGroup>
+														
+												<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.head[0])}" rendered="#{not empty divItem.teiElementWrapper.teiElement.head}" />
+												
+												<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}" rendered="#{divItem.teiElementWrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
+									
+												
+												
+													
+													
+													
+													<ui:remove>
+													<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
+															render=":messages :edit :paginator"/>							
+													
+													
+													</ui:remove>
+													
+													
+												</h:panelGroup>
+												
 												
 											</rich:treeNode>
 											
