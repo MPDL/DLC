@@ -2,6 +2,7 @@ package de.mpg.mpdl.dlc.viewer;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.component.Component;
+import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
@@ -87,6 +89,8 @@ public class ViewPages implements Observer{
 	private ContextServiceBean contextServiceBean = new ContextServiceBean();
 	
 	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
+	
+	private ApplicationBean appBean = new ApplicationBean();
 
 	
 	private Context context;
@@ -134,9 +138,9 @@ public class ViewPages implements Observer{
 	
 	private String codicologicalXhtml;
 	
-	private String exportTeiStructLink = "";
+	//private String exportTeiStructLink = "";
 
-	private String exportTeiFtLink = "";
+	private String exportTeiLink = "";
 	
 	private List<TeiSdTreeNodeImpl> teiSdRoots;
 
@@ -800,6 +804,8 @@ public class ViewPages implements Observer{
 	 */
 	private void setExportLinks ()
 	{	
+		boolean orgTei = false;
+		
 		try
 		{
 			String frameworkUrl = PropertyReader.getProperty("escidoc.common.login.url");
@@ -811,13 +817,14 @@ public class ViewPages implements Observer{
 			for (int i = 0; i< this.volume.getItem().getComponents().size(); i++)
 			{
 				Component comp = this.volume.getItem().getComponents().get(i);
-				if (comp.getProperties().getContentCategory().equals("tei-sd"))
-				{
-					this.setExportTeiStructLink(frameworkUrl + comp.getXLinkHref()+"/content");
-				}
 				if (comp.getProperties().getContentCategory().equals("tei"))
 				{
-					this.setExportTeiFtLink(frameworkUrl + comp.getXLinkHref()+"/content");
+					orgTei = true;
+					this.setExportTeiLink(frameworkUrl + comp.getXLinkHref()+"/content");
+				}
+				if (!orgTei && comp.getProperties().getContentCategory().equals("tei-sd"))
+				{
+					this.setExportTeiLink(frameworkUrl + comp.getXLinkHref()+"/content");
 				}
 			}
 		}
@@ -933,20 +940,30 @@ public class ViewPages implements Observer{
 		this.codicologicalXhtml = codicologicalXhtml;
 	}
 	
-	public String getExportTeiStructLink() {
-		return exportTeiStructLink;
+//	public String getExportTeiStructLink() {
+//		return exportTeiStructLink;
+//	}
+//
+//	public void setExportTeiStructLink(String exportTeiStructLink) {
+//		this.exportTeiStructLink = exportTeiStructLink;
+//	}
+
+	public String getExportTeiLink() {
+		return exportTeiLink;
 	}
 
-	public void setExportTeiStructLink(String exportTeiStructLink) {
-		this.exportTeiStructLink = exportTeiStructLink;
+	public void setExportTeiLink(String exportTeiFtLink) {
+		this.exportTeiLink = exportTeiFtLink;
 	}
-
-	public String getExportTeiFtLink() {
-		return exportTeiFtLink;
-	}
-
-	public void setExportTeiFtLink(String exportTeiFtLink) {
-		this.exportTeiFtLink = exportTeiFtLink;
+	
+	public String getDfgUrl() throws UnsupportedEncodingException
+	{
+		String url ="";
+		url = appBean.getDfgUrl();
+		url += appBean.getDomain();
+		url += "/dlc/export";
+		url += "/?id=" + this.volume.getObjidAndVersion() + "&format=MODS";
+		return java.net.URLEncoder.encode(url, "UTF-8");
 	}
 
 	public List<TeiSdTreeNodeImpl> getTeiSdRoots() {
