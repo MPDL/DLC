@@ -87,6 +87,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
 		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, getSortCriterionList(), limit, offset);
 		this.totalNumberOfRecords = res.getNumberOfRecords();
+
 		return res.getVolumes();
 	}
 
@@ -105,11 +106,12 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 		return cqlQuery;
 	}
 
-	public void setCqlQuery(String query) {
-		if (this.getCurrentPartList().size() > 0)
-		{
-			this.getSessionBean().setLatestCql(query);
-		}
+	public void setCqlQuery(String query) 
+	{
+//		if (this.totalNumberOfRecords > 0) an empty search result list is also a result
+//		{
+			sessionBean.setLatestCql(cqlQuery);
+//		}
 		this.cqlQuery = query;
 	}
 

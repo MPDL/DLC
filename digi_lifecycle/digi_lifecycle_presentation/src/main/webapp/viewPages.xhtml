@@ -651,15 +651,12 @@
 											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=MODS" target="_blank">
 															  <h:outputText value="#{lbl.export_mets_mods}"/>
 												</h:outputLink></li>															  			  
-											<li><h:outputLink title="#{tlt.export_as_tei_struct}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiStructLink}" target="_blank" rendered="#{viewPages.exportTeiStructLink != ''}">
-													<h:outputText value="#{lbl.export_as_teistruct}"/>
-												</h:outputLink></li>
-											<li><h:outputLink title="#{tlt.export_as_tei_ft}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiFtLink}" target="_blank" rendered="#{viewPages.exportTeiFtLink != ''}">
-													<h:outputText value="#{lbl.export_as_teift}"/>
+											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiLink}" target="_blank" rendered="#{viewPages.exportTeiLink != ''}">
+													<h:outputText value="#{lbl.export_as_tei}"/>
 												</h:outputLink></li>	
-										    <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
+										   <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
 													<h:outputText value="#{lbl.export_dfg_viewer}"/>
-												</h:outputLink></li>
+												</h:outputLink></li>			
 										</ul>
 									</h:panelGroup>
 								</h:panelGroup>

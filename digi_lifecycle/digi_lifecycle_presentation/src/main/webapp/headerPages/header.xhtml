@@ -25,14 +25,12 @@
 					</h:outputLink> 
 										
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
-
-					
-					<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{sessionBean.latestCql!= null}"
-						value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{sessionBean.latestCql}">
-						<h:outputText value="#{lbl.header_lastSearchResult}"/>
-					</h:outputLink> 
-					
 					<h:form>
+						<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{sessionBean.latestCql!= null}"
+							value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{sessionBean.latestCql}">
+							<h:outputText value="#{lbl.header_lastSearchResult}"/>
+						</h:outputLink> 
+					
 						<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
 						<h:panelGroup styleClass="eg3_searchTooltip">
 							<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->

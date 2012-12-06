@@ -5,7 +5,6 @@ import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -18,6 +17,8 @@ import org.apache.log4j.Logger;
 import de.escidoc.core.client.OrganizationalUnitHandlerClient;
 import de.escidoc.core.resources.oum.OrganizationalUnit;
 import de.mpg.mpdl.dlc.list.AllVolumesBean;
+import de.mpg.mpdl.dlc.search.AdvancedSearchBean;
+import de.mpg.mpdl.dlc.search.AdvancedSearchResultBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
@@ -33,6 +34,7 @@ public class SessionBean implements Serializable
     
     @ManagedProperty("#{applicationBean}")
     private ApplicationBean appBean;
+	private AdvancedSearchBean advancedSearchBean = new AdvancedSearchBean();
     
     private String logoUrl;
     private String logoLink;
@@ -158,6 +160,11 @@ public class SessionBean implements Serializable
 	public void setAppBean(ApplicationBean appBean) 
 	{
 		this.appBean = appBean;
+	}
+	
+	public String startLatestSearch()
+	{
+		return advancedSearchBean.startSearch();
 	}
     
 }

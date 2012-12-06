@@ -24,9 +24,7 @@ public class SearchCriterion extends Criterion{
 		ID(new String[]{"dlc.identifier"}, null), 
 		FULLTEXT(new String[]{"escidoc.fulltext"}, null),
 		CORPORATE(new String[]{"dlc.corporate"}, null),
-		SHELFMARK(new String[]{"dlc.shelfmark"}, null), //TODO check
-		
-		//TODO: structmd title and author
+		SHELFMARK(new String[]{"dlc.shelfmark"}, null), 
 		
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}, new String[]{"/properties/context/id"}),
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}, new String[]{"/properties/content-model/id"}),

@@ -248,14 +248,10 @@ public class SearchBean {
 		{
 			volServiceBean.loadVolumesForMultivolume(volumeResult, null, false, null, null);
 		}
-		
-		
-		long time = System.currentTimeMillis() - start;
-		System.out.println("Time search: " + time );
-		
-		
-		
-		
+
+		//long time = System.currentTimeMillis() - start;
+		//System.out.println("Time search: " + time );
+
 		return new VolumeSearchResult(volumeResult, resp.getNumberOfRecords());
 	}
 	
