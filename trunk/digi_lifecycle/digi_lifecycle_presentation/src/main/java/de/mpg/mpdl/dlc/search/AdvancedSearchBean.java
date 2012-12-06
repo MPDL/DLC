@@ -159,7 +159,6 @@ public class AdvancedSearchBean implements Observer {
 		contextSelectItems.add(new SelectItem("",InternationalizationHelper.getLabel("sc_allCon")));
 		for(Context c : contextServiceBean.retrieveAllcontexts())
 		{
-			System.out.println(c.getProperties().getName());
 			contextSelectItems.add(new SelectItem(c.getObjid(),c.getProperties().getName()));
 		}
 		this.setAllConItems(contextSelectItems);
