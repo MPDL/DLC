@@ -360,7 +360,7 @@
 							
 							<h:form>
 							<!-- START TAB-PANEL -->
-								<rich:tabPanel styleClass="eg3_container_1" switchType="ajax">
+								<rich:tabPanel styleClass="eg3_container_1" switchType="ajax" onitemchange="resizeTreeContainer(); scrollTreeContainer();">
 									
 									
 									<rich:tab header="#{lbl.edit_tab_pagination}" label="pagination" id="pagination">
@@ -828,6 +828,9 @@
 							</h:panelGroup>
 							<!-- END TREE -->
 
+			
+							
+
 							<!-- START EDIT STRUCTURE POPUP -->
 							<style type="text/css">
 							.ui-dialog div {
@@ -884,16 +887,16 @@
 			<script type="text/javascript">
 			
 				function resizeTreeContainer() {
+					console.log("resizeTreeCont");
 					var structTree = $('.eg3_editorStructureTree');
-					structTree.css("height", ($('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top)));
+					var height = $('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top);
+					structTree.css("height", height);
+					structTree.css("max-height", height);
 				}
 				
-				$('.rf-tab-hdr').change(function(){
-					resizeTreeContainer();
-				});
-			
+				
 				$(document).ready(function(e) {
-					EG3_CALLBACK = new Array("scrollThumbsContainer()", "scrollTreeContainer()", "resizeTreeContainer()");
+					EG3_CALLBACK = new Array("resizeTreeContainer()", "scrollThumbsContainer()", "scrollTreeContainer()");
 					eg3_initSidebar(); //calls the defined EG3_CALLBACK functions at function end
 					eg3_initWindowResizeListener();
 				});
