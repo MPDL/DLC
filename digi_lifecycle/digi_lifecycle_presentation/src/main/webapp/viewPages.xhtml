@@ -651,7 +651,7 @@
 											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=MODS" target="_blank">
 															  <h:outputText value="#{lbl.export_mets_mods}"/>
 												</h:outputLink></li>															  			  
-											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" value="#{viewPages.exportTeiLink}" target="_blank" rendered="#{viewPages.exportTeiLink != ''}">
+											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=TEI" target="_blank" rendered="#{viewPages.hasTei}">
 													<h:outputText value="#{lbl.export_as_tei}"/>
 												</h:outputLink></li>	
 										   <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
