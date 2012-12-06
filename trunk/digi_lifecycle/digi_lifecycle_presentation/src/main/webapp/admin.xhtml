@@ -28,7 +28,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter eg3_adminPage">
 				
 					<rich:tabPanel switchType="ajax">
-						<rich:tab label="createdOUs" id="createdOUs" header="#{lbl.admin_ou_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+						<rich:tab label="createdOUs" id="createdOUs" header="#{lbl.admin_ou_header}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
 							<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
 								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
 									<pretty:link mappingId="ou">
@@ -66,7 +66,7 @@
 
 
 						
-						<rich:tab label="createdContexts" id="createdContexts" header="#{lbl.admin_context_header}:" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
+						<rich:tab label="createdContexts" id="createdContexts" header="#{lbl.admin_context_header}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
 							<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
 								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
 									<pretty:link mappingId="volumes">
@@ -103,11 +103,11 @@
 						</rich:tab>
 						
 						
-						<rich:tab label="createdUAs" id="createdUAs" header="#{lbl.admin_user_header}:" rendered="true">
+						<rich:tab label="createdUAs" id="createdUAs" header="#{lbl.admin_user_header}" rendered="true">
 							<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
 								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
-									<h:outputText value=" #{lbl.admin_user_loginname}: #{user.loginName} "/>
-									<h:outputText value=" (#{lbl.admin_user_name}: #{user.name}) "/>
+									<h:outputText value=" #{lbl.admin_user_loginname} #{user.loginName} "/>
+									<h:outputText value=" (#{lbl.admin_user_name} #{user.name}) "/>
 									
 									<h:panelGroup styleClass="eg3_floatRight">
 										<a4j:commandButton title="#{lbl.button_command_deactivate}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
