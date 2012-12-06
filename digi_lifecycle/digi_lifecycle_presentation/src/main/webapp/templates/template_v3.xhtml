@@ -43,23 +43,28 @@ All rights reserved. Use is subject to license terms.
 
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<h:head>
-			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
 			
+			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 			<meta http-equiv="pragma" content="no-cache" />
 			<meta http-equiv="cache-control" content="no-cache" />
 			<meta http-equiv="expires" content="-1" />
+			
+			<ui:fragment rendered="#{utilBean.userAgent.family == 'IE' and utilBean.userAgent.versionNumber.groups[0] lt 9}">
+				<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+			</ui:fragment>
 			
 			<h:outputStylesheet library="cssFramework" name="standard.css"/>
 			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/appearance.css" type="text/css" rel="stylesheet" />
 			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
 			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
 			
-			<link rel="icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
-			<link rel="icon" type="image/image/vnd.microsoft.icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
+			
 			<link rel="icon" type="image/ico" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
 			<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
 			<link rel="apple-touch-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
+			<link rel="icon" type="image/image/vnd.microsoft.icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
+			<link rel="icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/icon-dlc.png"/>
 		</h:head>
 
 		<h:body lang="#{internationalizationHelper.userLocaleString}">

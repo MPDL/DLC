@@ -680,30 +680,41 @@ body .eg3_id_siteTitle {
 	max-width:38em;
 	padding:0.5% 0.8%;
 	z-index:20;
-	background-color:#2F2F2F;
+	background-color:#3d3d3d; /*2F2F2F*/
 	color:#FFFFFF;
 	cursor:move;
 }
 .eg3_messageArea .eg3_messageText {
 	width:96.4%;
-	padding:0.5 0.8%;
-	background-color:#292929;
+	background-color:#636363; /*292929*/
 }
 .eg3_messageArea span {
 	display:block;
 }
 .eg3_messageError {
-	color:#FF0000;
+	color:#DD1111;
+	background-color:#DDDDDD;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
 }
 .eg3_messageWarning {
-	color:#FF6666;
+	color:#FF5555;
+	background-color:#FFFFFF;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
 }
 .eg3_messageSuccess {
-	color:#00AA11;
+	color:#00CC00;
+	background-color:#606060;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
 }
 .eg3_messageInfo {
-	color:#555555;
+	color:#333333;
+	background-color:#EEEEEE;
 	font-style:italic;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
 }
 /*************************************************************************************************************
  ******************************				eg3_breadcrump & siteTitle				******************************
@@ -3004,7 +3015,7 @@ span.rf-trn-ico-exp, span.rf-trn-ico-colps {
  **********************			richfaces messages			******************************************
  *****************************************************************************************************/
 .rf-msg-inf.eg3_messageSuccess, .rf-msgs-inf.eg3_messageSuccess {
-	color:#00AA11;
+	color:#00CC00;
 }
 
 
