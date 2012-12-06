@@ -11,6 +11,10 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.uadetector.UADetectorServiceFactory;
+import net.sf.uadetector.UserAgent;
+import net.sf.uadetector.UserAgentStringParser;
+
 import org.apache.log4j.Logger;
 import org.owasp.validator.html.AntiSamy;
 import org.owasp.validator.html.CleanResults;
@@ -168,6 +172,17 @@ public class UtilBean {
 			
 		}
 		return "";
+		
+	}
+	
+	public UserAgent getUserAgent()
+	{
+		HttpServletRequest httpReq = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+		UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
+		UserAgent ua = parser.parse(httpReq.getHeader("User-Agent"));
+		
+		
+		return ua;
 		
 	}
 }
