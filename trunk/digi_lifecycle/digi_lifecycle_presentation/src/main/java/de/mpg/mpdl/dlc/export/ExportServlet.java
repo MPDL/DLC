@@ -79,10 +79,18 @@ public class ExportServlet extends HttpServlet
 	        	this.contentType ="application/xml";
 	        	this.content = export.metsModsExport(identifier);	        	
 	        }
-
-	        if (!format.equalsIgnoreCase(ExportTypes.PDF.toString()) && !format.equalsIgnoreCase(ExportTypes.MODS.toString()))
+	        if (valid && format.equalsIgnoreCase(ExportTypes.TEI.toString()))
 	        {
-	        	response.sendError(400, "Format " + format + " not supported (allowed formats: PDF, MODS)");
+	        	System.out.println("in tei export");
+	        	this.contentType ="application/xml";
+	        	this.content = export.teiExport(identifier);	        	
+	        }
+
+	        if (!format.equalsIgnoreCase(ExportTypes.PDF.toString()) 
+	        		&& !format.equalsIgnoreCase(ExportTypes.MODS.toString())
+	        				&& !format.equalsIgnoreCase(ExportTypes.TEI.toString()))
+	        {
+	        	response.sendError(400, "Format " + format + " not supported (allowed formats: PDF, MODS, TEI)");
 	        	this.status = 400;
 	        }
 	        

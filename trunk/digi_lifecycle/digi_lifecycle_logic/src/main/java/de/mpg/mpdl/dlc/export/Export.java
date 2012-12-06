@@ -74,12 +74,34 @@ public class Export {
 	
 	public enum ExportTypes
 	{
-		PDF, MODS;
+		PDF, MODS, TEI;
 	}
 	
 	public Export()
 	{
 		
+	}
+	
+	public byte[] teiExport(String itemId) throws Exception
+	{	        
+		String xml = null;
+		Volume vol = volServiceBean.loadCompleteVolume(itemId, null);
+		xml = vol.getTei();
+		
+		// If no original tei exists, load tei_sd
+		if (xml == null)
+		{
+			for (int i = 0; i< vol.getItem().getComponents().size(); i++)
+				{
+					Component comp = vol.getItem().getComponents().get(i);
+					if (comp.getProperties().getContentCategory().equals("tei-sd"))
+					{
+						xml = volServiceBean.documentToString(vol.getTeiSdXml());
+					}
+				}
+		}
+		
+	    return xml.getBytes("UTF-8");
 	}
 	
 	public byte[] metsModsExport(String itemId) throws Exception

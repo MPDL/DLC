@@ -138,10 +138,6 @@ public class ViewPages implements Observer{
 	
 	private String codicologicalXhtml;
 	
-	//private String exportTeiStructLink = "";
-
-	private String exportTeiLink = "";
-	
 	private List<TeiSdTreeNodeImpl> teiSdRoots;
 
 	@PostConstruct
@@ -240,7 +236,6 @@ public class ViewPages implements Observer{
 			}
 		}
 		volumeLoaded();
-		setExportLinks();
 	}
 	
 	private void initPageListMenu()
@@ -797,41 +792,27 @@ public class ViewPages implements Observer{
 		this.volumeOu = volumeOu;
 	}
 
+
 	/**
-	 * Set the links for the tei exports
-	 * @throws URISyntaxException 
-	 * @throws IOException 
+	 * This method check if a volume has a tei component.
+	 * @return true if volume has tei component, else false
 	 */
-	private void setExportLinks ()
-	{	
-		boolean orgTei = false;
+	public boolean getHasTei()
+	{
+		for (int i = 0; i< this.volume.getItem().getComponents().size(); i++)
+		{
+			Component comp = this.volume.getItem().getComponents().get(i);
+			if (comp.getProperties().getContentCategory().equals("tei"))
+			{
+				return true;
+			}
+			if (comp.getProperties().getContentCategory().equals("tei-sd"))
+			{
+				return true;
+			}
+		}
 		
-		try
-		{
-			String frameworkUrl = PropertyReader.getProperty("escidoc.common.login.url");
-			if (frameworkUrl.endsWith("/"))
-			{
-				frameworkUrl = frameworkUrl.substring(0, frameworkUrl.length() -1);
-			}
-			
-			for (int i = 0; i< this.volume.getItem().getComponents().size(); i++)
-			{
-				Component comp = this.volume.getItem().getComponents().get(i);
-				if (comp.getProperties().getContentCategory().equals("tei"))
-				{
-					orgTei = true;
-					this.setExportTeiLink(frameworkUrl + comp.getXLinkHref()+"/content");
-				}
-				if (!orgTei && comp.getProperties().getContentCategory().equals("tei-sd"))
-				{
-					this.setExportTeiLink(frameworkUrl + comp.getXLinkHref()+"/content");
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			logger.error("Links for tei export could not be set." , e);
-		}
+		return false;
 	}
 
 	public String getDigilibQueryString() {
@@ -938,22 +919,6 @@ public class ViewPages implements Observer{
 
 	public void setCodicologicalXhtml(String codicologicalXhtml) {
 		this.codicologicalXhtml = codicologicalXhtml;
-	}
-	
-//	public String getExportTeiStructLink() {
-//		return exportTeiStructLink;
-//	}
-//
-//	public void setExportTeiStructLink(String exportTeiStructLink) {
-//		this.exportTeiStructLink = exportTeiStructLink;
-//	}
-
-	public String getExportTeiLink() {
-		return exportTeiLink;
-	}
-
-	public void setExportTeiLink(String exportTeiFtLink) {
-		this.exportTeiLink = exportTeiFtLink;
 	}
 	
 	public String getDfgUrl() throws UnsupportedEncodingException
