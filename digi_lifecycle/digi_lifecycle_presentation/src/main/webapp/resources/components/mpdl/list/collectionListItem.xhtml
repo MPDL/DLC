@@ -54,9 +54,9 @@
 						
 						<h:panelGroup styleClass="eg3_floatRight">
 							<h:form>
-								<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{cc.attrs.searchInput}" title="#{tlt.meta_quicksearch_placeholder}"/>
+								<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{cc.attrs.searchInput}" title="#{tlt.col_quicksearch}"/>
 								<h:panelGroup styleClass="eg3_searchTooltip">
-									<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/>
+									<h:outputText value="#{tlt.col_quicksearch}"/>
 								</h:panelGroup>
 								<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
 								<h:commandButton action="#{cc.attrs.searchAction}" value="Go" style="position:absolute; top:-100000em;">
