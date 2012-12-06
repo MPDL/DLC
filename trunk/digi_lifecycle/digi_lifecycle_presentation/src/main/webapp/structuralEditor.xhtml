@@ -787,7 +787,7 @@
 												<ui:remove>
 												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 												</ui:remove>
-												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="$('#editPopup').dialog('open');" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopupForm" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="$('#editPopup').dialog('open');" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 												
 												
 												<br/>
@@ -843,55 +843,67 @@
 							
 							
 							
-							<h:panelGroup layout="block" id="editPopup" style="background-color: #2F2F2F;" class="eg3_container1">
-								<h:form>
-									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
-										
-										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor rf-tab-cnt">
-											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
-												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
-												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
-										</h:panelGroup>
-										<br/>
-										<br/>
-										<h:commandButton  styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
-										</h:commandButton>
-										<h:outputLink style="color:#F0F0F0;" value="#" onclick="$('#editPopup').dialog('close'); return false;">
-											<h:outputText value="#{lbl.edit_cancelBtn}"/>
-										</h:outputLink>									
-									</h:panelGroup>
-								</h:form>
-								
-								<script type="text/javascript">
-							   
-						        $( "#editPopup" ).dialog({
-						            modal: true,
-						            autoOpen:false,
-						            resizable:false,
-						            width: 800,
-						            title: "#{lbl.edit_structureEditHeader}"
-						        });
-						        function closePopup()
-						        {
-						        	$( "#editPopup" ).dialog('close');
-						        }
-
-    						</script>
-							</h:panelGroup>
+							
 							
 						</h:panelGroup>
 					</h:panelGroup>	
 				</h:panelGroup>
 			</h:panelGroup>
+			
+			
+			
+			
+			<h:panelGroup layout="block" id="editPopup" style="background-color: #2F2F2F;" class="eg3_container1">
+				<h:form id="editPopupForm">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
+						
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor rf-tab-cnt">
+							<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
+								structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
+								teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
+						</h:panelGroup>
+						<br/>
+						<br/>
+						<h:commandButton  styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+							<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
+						</h:commandButton>
+						<h:outputLink style="color:#F0F0F0;" value="#" onclick="$('#editPopup').dialog('close'); return false;">
+							<h:outputText value="#{lbl.edit_cancelBtn}"/>
+						</h:outputLink>									
+					</h:panelGroup>
+				</h:form>
+				
+				<script type="text/javascript">
+		        $( "#editPopup" ).dialog({
+		            modal: true,
+		            autoOpen:false,
+		            resizable:false,
+		            width: 800,
+		            title: "#{lbl.edit_structureEditHeader}"
+		        });
+		        function closePopup()
+		        {
+		        	$( "#editPopup" ).dialog('close');
+		        }
+	
+						</script>
+			</h:panelGroup>
+			
+			
+			
 			<script type="text/javascript">
 			
 				function resizeTreeContainer() {
 					console.log("resizeTreeCont");
 					var structTree = $('.eg3_editorStructureTree');
 					var height = $('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top);
-					structTree.css("height", height);
-					structTree.css("max-height", height);
+					if(height>200)
+					{
+						structTree.css("height", height);
+						structTree.css("max-height", height);
+					}
+					
+					
 				}
 				
 				
