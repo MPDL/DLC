@@ -373,14 +373,14 @@
 												<a4j:region>
 													<h:panelGroup layout="block" styleClass="eg3_container_1">
 														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-															<h:outputText value="#{lbl.edit_physicalPageNumber}: "/>
+															<h:outputText value="#{lbl.edit_physicalPageNumber} "/>
 														</h:panelGroup>
 														<h:outputText value="&#160;#{structuralEditorBean.selectedPb.page.order + 1}"/>
 													</h:panelGroup>
 													
 													<h:panelGroup layout="block" styleClass="eg3_container_1">
 														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-															<h:outputText value="#{lbl.edit_currentLogicalPageNumber}: "/>
+															<h:outputText value="#{lbl.edit_currentLogicalPageNumber} "/>
 														</h:panelGroup>
 														<h:inputText value="#{structuralEditorBean.selectedPbNumeration}" styleClass="eg3_container_21_50"/>
 													</h:panelGroup>
@@ -388,7 +388,7 @@
 													
 													<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 														<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-															<h:outputText value="#{lbl.edit_pageDisplayType}: "/>
+															<h:outputText value="#{lbl.edit_pageDisplayType} "/>
 														</h:panelGroup>
 														<h:outputText value="&#160;"/>
 														<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
@@ -406,7 +406,7 @@
 										            
 										            <h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 										            	<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-															<h:outputText value="#{lbl.edit_pageType}: "/>
+															<h:outputText value="#{lbl.edit_pageType} "/>
 														</h:panelGroup>
 														<h:outputText value="&#160;"/>
 														<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_21_50">
@@ -783,7 +783,11 @@
 													<f:ajax render=":messages :edit :paginator" execute="@form"/>
 												</h:commandButton>
 												</ui:remove>
+												
+												<ui:remove>
 												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="#{rich:component('editPopup')}.show()" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
+												</ui:remove>
+												<a4j:commandButton value=" " styleClass="eg3_icon_editBtni_16_16" render="editPopup" action="#{structuralEditorBean.editStructuralElement(divItem.teiElementWrapper)}" oncomplete="$('#editPopup').dialog('open');" title="#{lbl.edit_editStructuralElementBtn}" rendered="#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}"/>
 												
 												
 												<br/>
@@ -842,7 +846,7 @@
 							<!-- START EDIT STRUCTURE POPUP -->
 							
 							
-							<ui:remove>
+							
 							
 							
 							<style type="text/css">
@@ -856,28 +860,27 @@
 							
 							
 							
-							<div id="editPopup" title="#{lbl.edit_structureEditHeader}" style="width:500px; background-color: #2F2F2F;" class="eg3_container1">
+							<h:panelGroup layout="block" id="editPopup" title="#{lbl.edit_structureEditHeader}" style="background-color: #2F2F2F;" class="eg3_container1">
 								<h:form>
 									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
 										
-										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor">
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_structTypeEditor rf-tab-cnt">
 											<structTypes:structuralTypeEditor selectedStructuralType="#{structuralEditorBean.selectedStructuralEditType}" 
 												structuralTypeChangeListener="#{structuralEditorBean.selectedStructuralEditElementTypeChanged}"
 												teiWrapper="#{structuralEditorBean.currentEditElementWrapper}"/>
 										</h:panelGroup>
 										<br/>
 										<br/>
-										<h:commandButton type="submit" styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="function(evt){#{rich:component('editPopup')}.hide(); return false;}"/>
+										<h:commandButton  styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
 										</h:commandButton>
-										<h:outputLink value="#" onclick="#{rich:component('editPopup')}.hide(); return false;">
-										<h:outputText value="#{lbl.edit_cancelBtn}"/>
+										<h:outputLink value="#" onclick="$('#editPopup').dialog('close'); return false;">
+											<h:outputText value="#{lbl.edit_cancelBtn}"/>
 										</h:outputLink>									
 									</h:panelGroup>
 								</h:form>
-							</div>
-							
-							<script type="text/javascript">
+								
+								<script type="text/javascript">
 							   
 						        $( "#editPopup" ).dialog({
 						            modal: true,
@@ -885,11 +888,18 @@
 						            resizable:false,
 						            width: 800
 						        });
+						        function closePopup()
+						        {
+						        	$( "#editPopup" ).dialog('close');
+						        }
 
     						</script>
+							</h:panelGroup>
 							
 							
-							</ui:remove>
+							
+							<ui:remove>
+							
 							
 							
 							<rich:popupPanel id="editPopup" modal="true" resizeable="false" domElementAttachment="form" width="600" height="400">
@@ -935,7 +945,7 @@
 									</h:panelGroup>
 								</h:form>
 							</rich:popupPanel>
-							
+							</ui:remove>
 						<!-- END EDIT STRUCTURE POPUP -->
 						</h:panelGroup>
 					</h:panelGroup>	
