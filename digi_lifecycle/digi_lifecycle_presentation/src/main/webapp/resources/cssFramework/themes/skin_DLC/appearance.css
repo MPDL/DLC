@@ -2086,6 +2086,20 @@ body .eg3_id_siteTitle {
 	color:#EA7125;
 	text-decoration:none;
 }
+#editPopup .eg3_submitPanel input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+#editPopup .eg3_submitPanel input[type=button]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+#editPopup .eg3_submitPanel input[type="submit"].eg3_floatRight {
+	margin-top:0;
+}
 
 
 .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree {
