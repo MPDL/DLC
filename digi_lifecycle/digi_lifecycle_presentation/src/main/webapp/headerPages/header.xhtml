@@ -32,9 +32,11 @@
 						</h:outputLink> 
 					
 						<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
-						<h:panelGroup styleClass="eg3_searchTooltip">
-							<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->
-						</h:panelGroup>
+						<ui:remove>
+							<h:panelGroup styleClass="eg3_searchTooltip">
+								<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->
+							</h:panelGroup>
+						</ui:remove>
 						<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
 						<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; position:absolute; top:-30px;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
 						<script type="text/javascript">
