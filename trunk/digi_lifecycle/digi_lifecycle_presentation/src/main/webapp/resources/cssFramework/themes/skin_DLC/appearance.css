@@ -2094,7 +2094,7 @@ body .eg3_id_siteTitle {
 .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
 	color:#EA7125;
 }
-.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_editInputArea {
+.eg3_pageEditingContainer .eg3_editInputArea {
 	margin-right:0.5em;
 	margin-top:0.5em;
 }
