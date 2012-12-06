@@ -315,13 +315,15 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h:outputText value="&#160;"/>					
-									<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"></h:outputText></h2>
+								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"></h:outputText></h2>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow">
 							<a4j:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" rowKeyVar="rowKey">
-								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
-									
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+										<h:outputText value="&#160;"/>											
+									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" rendered="#{rowKey gt 0}">
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
@@ -336,10 +338,8 @@
 											<ui:fragment rendered="#{rowKey lt 1}">
 												<h:outputText value="&#160;"/>
 											</ui:fragment>
-										</h:panelGroup>
-										
+									</h:panelGroup>		
 
-									
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">										
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
@@ -356,9 +356,7 @@
 												<f:ajax event="change" execute="@form" render=":#{rich:clientId('cdc')}"/>
 										</h:selectOneMenu>
 									</h:panelGroup>
-									
-									
-									
+
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50 eg3_floatRight">
 										
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
@@ -372,6 +370,9 @@
 								</h:panelGroup>
 									
 								<h:panelGroup layout="block" styleClass="eg3_container_1_12">
+									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+										<h:outputText value="&#160;"/>											
+									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
 										<h:commandButton type="button" action="#{volumeUtilBean.addNewCdcSearchCriterion(sc, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
 											<f:ajax render="@form" execute="@form"/>
