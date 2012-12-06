@@ -50,9 +50,9 @@
 											
 											<h:panelGroup styleClass="eg3_floatRight">
 												<h:form>
-													<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{viewCollection.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
+													<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{viewCollection.searchString}" title="#{tlt.col_quicksearch}"/>
 													<h:panelGroup styleClass="eg3_searchTooltip">
-														<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/>
+														<h:outputText value="#{tlt.col_quicksearch}"/>
 													</h:panelGroup>
 													<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
 													<h:commandButton action="#{viewCollection.searchInCollection}" value="Go" style="position:absolute; top:-100000em;"/>
@@ -60,7 +60,7 @@
 											</h:panelGroup>
 										</h3>
 										<script type="text/javascript">
-											$('.eg3_collectionStartpage .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+											$('.eg3_collectionStartpage .eg3_quickSearchInput').attr("placeholder", "#{lbl.view_ou_collection}");
 										</script>
 									</h:panelGroup>
 									
