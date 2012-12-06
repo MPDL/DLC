@@ -51,11 +51,11 @@
 					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 					<ui:remove>
 					<h:outputLink id="lnkHelp" title="#{tlt.meta_help}"
-						value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{applicationBean.helpAnchor}" target="_blank">
+						value="#{applicationBean.contextPath}/#{applicationBean.selectedHelpPage}#{prettyContext.currentViewId}" target="_blank">
 						<h:outputText value="#{lbl.header_lnk_help}"/>
 					</h:outputLink> 
 					</ui:remove>
-					<h:outputLink id="lnkHelp" title="Sorry! Help is not available now!" value="#">
+					<h:outputLink id="lnkHelp" title="#{lbl.header_lnk_help}" value="#{internationalizationHelper.selectedHelpPage}##{prettyContext.currentMapping.id}">
 						<h:outputText value="#{lbl.header_lnk_help}"/>
 					</h:outputLink>
 					

@@ -39,7 +39,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
 					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
 						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
@@ -99,7 +99,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
 					
 					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastModified}"/></h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
@@ -113,7 +113,7 @@
 						</pretty:link>
 						
 						<h:panelGroup id="releaseButton" rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
-							<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
+							<h:commandButton action="#{myVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
 								<f:ajax render="simpleAllVolume :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
@@ -139,7 +139,7 @@
 					<ui:fragment rendered="#{loginBean.user.structureEditable(cc.attrs.volume)}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-							<h:commandLink action="#{allVolumesBean.editStructure(cc.attrs.volume)}" styleClass="eg3_icon_editBtni_16_16">
+							<h:commandLink action="#{myVolumesBean.editStructure(cc.attrs.volume)}" styleClass="eg3_icon_editBtni_16_16">
 								<h:outputText value="#{lbl.list_EditStruct}"/>
 							</h:commandLink>
 							<ui:remove>
@@ -164,7 +164,7 @@
 					<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume)}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-							<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+							<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
 								<f:ajax render="@all :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
@@ -173,7 +173,7 @@
 					<ui:fragment rendered="#{loginBean.user.withdrawable(cc.attrs.volume)}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-							<h:commandButton action="#{allVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
+							<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
 								<f:ajax render="@all :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
@@ -283,7 +283,7 @@
 			<!-- update items which are in upload automatically every 30 seconds -->
 			
 			<a4j:region>
-				 <a4j:poll id="poll" interval="30000" render="poll bibSimpleItemAllVolumes messages" action="#{allVolumesBean.checkUploadComplete(cc.attrs.volume)}"/>
+				 <a4j:poll id="poll" interval="30000" render="poll bibSimpleItemAllVolumes messages" action="#{myVolumesBean.checkUploadComplete(cc.attrs.volume)}"/>
 			</a4j:region>
 			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
 				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
@@ -310,7 +310,7 @@
 		<h:panelGroup id="simpleAllVolumeMulti" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
 			
 			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
-				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
 					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
 						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
@@ -356,7 +356,7 @@
 				<!-- START shortView -->
 				<h:panelGroup layout="block" styleClass="eg3_shortView_js">
 					
-					<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+					<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
 						<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastModified}"/></h:panelGroup>
@@ -371,7 +371,7 @@
 							</pretty:link>
 							
 							<h:panelGroup rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
-								<h:commandButton action="#{allVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
+								<h:commandButton action="#{myVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
 									<f:ajax render="multiItemContent :messages"/>
 								</h:commandButton>
 							</h:panelGroup>
@@ -408,7 +408,7 @@
 						<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume) and empty cc.attrs.volume.relatedChildVolumes}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-								<h:commandButton action="#{allVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+								<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
 									<f:ajax render="@all :messages"/>
 	 							</h:commandButton>
 							</h:panelGroup>
@@ -417,7 +417,7 @@
 						<ui:fragment rendered="#{loginBean.user.withdrawable(cc.attrs.volume) and empty cc.attrs.volume.relatedChildVolumes}">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-								<h:commandButton action="#{allVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
+								<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
 									<f:ajax render="@all :messages"/>
 	 							</h:commandButton>
 							</h:panelGroup>
@@ -455,7 +455,7 @@
 					
 					<!-- multi volume childs -->
 					<a4j:repeat var="child_volume" value="#{cc.attrs.volume.relatedChildVolumes}">
-						<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1 eg3_multiVolumeItem#{(prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my') ? ' eg3_itemInclusiveAction' : ''}">
+						<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1 eg3_multiVolumeItem#{(prettyContext.currentMapping.id == 'myVolumes') ? ' eg3_itemInclusiveAction' : ''}">
 							<h:panelGroup layout="block" styleClass="eg3_itemSubTitle eg3_container_1">
 								<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}" rendered="#{child_volume.pages[0] != null}">
 									<f:param value="#{child_volume.objidAndVersion}"/>
@@ -471,7 +471,7 @@
 								</pretty:link>
 							</h:panelGroup>
 							
-							<ui:fragment rendered="#{prettyContext.currentMapping.id == 'volumes' and allVolumesBean.colId == 'my'}">
+							<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
 								<h:panelGroup layout="block" styleClass="eg3_clearLeft eg3_itemMetaLabel">
 									<h:outputText value="#{lbl.list_lastModified}"/>
 								</h:panelGroup>
@@ -487,7 +487,7 @@
 									</pretty:link>
 									
 									<h:panelGroup rendered="#{loginBean.user.releasable(child_volume) and cc.attrs.volume.item.properties.publicStatus.xmlValue=='released'}">
-										<h:commandButton action="#{allVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
+										<h:commandButton action="#{myVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
 											<f:ajax render="child_volume :messages"/>
 										</h:commandButton>
 									</h:panelGroup>
@@ -512,7 +512,7 @@
 								<ui:fragment rendered="#{loginBean.user.structureEditable(child_volume)}">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-										<h:commandLink action="#{allVolumesBean.editStructure(child_volume)}" styleClass="eg3_icon_editBtni_16_16">
+										<h:commandLink action="#{myVolumesBean.editStructure(child_volume)}" styleClass="eg3_icon_editBtni_16_16">
 											<h:outputText value="#{lbl.list_EditStruct}"/>
 										</h:commandLink>
 										<ui:remove>
@@ -539,7 +539,7 @@
 								<ui:fragment rendered="#{loginBean.user.deletable(child_volume)}">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-										<h:commandButton action="#{allVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
+										<h:commandButton action="#{myVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5">
 											<f:ajax render="@all :messages"/>
 			 							</h:commandButton>
 									</h:panelGroup>
@@ -549,7 +549,7 @@
 								<ui:fragment rendered="#{loginBean.user.withdrawable(child_volume)}">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
-										<h:commandButton action="#{allVolumesBean.withdraw(child_volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
+										<h:commandButton action="#{myVolumesBean.withdraw(child_volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5">
 											<f:ajax render="@all :messages"/>
 			 							</h:commandButton>
 									</h:panelGroup>

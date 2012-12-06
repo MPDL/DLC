@@ -84,16 +84,13 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	private String colId;
 	private String oldColId;
 	
-	private String filterString;
 	
-	private String filterItemState = "all";
 	
 	private OrganizationalUnitServiceBean ouServiceBean = new OrganizationalUnitServiceBean();
 	private Organization orga;
 	@ManagedProperty("#{sessionBean}")
 	private SessionBean sessionBean;
 	
-	private List<DatabaseItem> uploadedItems = new ArrayList<DatabaseItem>();
 	
 	public AllVolumesBean()
 	{		
@@ -124,19 +121,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			}
 				
 			oldColId = colId;
-			filterString = null;
 			setCurrentPageNumber(1);
+			selectedSortCriterion = CombinedSortCriterion.AUTHOR_TITLE_ASC;
 			
-			if("my".equals(colId))
-			{
-				selectedSortCriterion = CombinedSortCriterion.LAST_MODIFIED_DESC;
-				//sortCriterionList.add(new SortCriterion(SortIndices.LAST_MODIFIED_FILTER, SortOrders.ASCENDING));
-			}
-			else
-			{
-				selectedSortCriterion = CombinedSortCriterion.AUTHOR_TITLE_ASC;
-				//sortCriterionList.add(new SortCriterion(SortIndices.AUTHOR_FILTER, SortOrders.ASCENDING));
-			}
 		}
 		
 	} 
@@ -179,13 +166,6 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_title_desc")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_year")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_year_desc")));
-		
-		if("my".equals(colId))
-		{
-			scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_newest")));
-			scMenuList.add(new SelectItem(CombinedSortCriterion.LAST_MODIFIED_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_lastModified")));
-		}
-		
 		return scMenuList;
 	}
   
@@ -196,148 +176,21 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 
 		VolumeSearchResult res = null;
 		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
-		if(colId.equalsIgnoreCase("my") )
+
+	
+		//List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
+		if(collection != null)
 		{
-			if(loginBean.getUser() == null)
-			{
-				return null;
-			}
-			SearchCriterion fc;
-//			for(Grant grant: loginBean.getUser().getGrants())
-//			{
-//				
-//				
-//				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
-//				{
-//					for(Collection c : loginBean.getUser().getModeratorCollections())
-//					{
-//						sc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
-//						scList.add(sc);
-//					}
-//				}
-//				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
-//				{
-//					sc = new SearchCriterion(SearchType.CREATEDBY,loginBean.getUser().getName());
-//					scList.add(sc);
-//				}
-//			}
-			
-			
-			if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
-			{
-				for(int i=0; i< loginBean.getUser().getModeratorCollections().size(); i++)
-				{
-					Collection c = loginBean.getUser().getModeratorCollections().get(i);
-					if(i == 0)
-						fc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
-					else
-						fc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
-					fcList.add(fc);
-				}
-			}
-			if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
-			{
-				/*
-				for(int i=0; i<loginBean.getUser().getDepositorCollections().size(); i++)
-				{
-					Collection c = loginBean.getUser().getDepositorCollections().get(i);
-					*/
-					if(fcList.size()==0)
-					{
-						fc = new SearchCriterion(SearchType.CREATED_BY,loginBean.getUser().getId());
-						fcList.add(fc);
-					}
-					else
-					{
-						fc = new SearchCriterion(Operator.OR, SearchType.CREATED_BY,loginBean.getUser().getId());
-						fcList.add(fc);
-					}
-					/*
-				}*/
-			}
-			
-			if(loginBean.getUser().getMdEditorCollections() != null && loginBean.getUser().getMdEditorCollections().size() >0)
-			{
-				for(int i = 0; i < loginBean.getUser().getMdEditorCollections().size(); i++)
-				{
-					Collection c = loginBean.getUser().getMdEditorCollections().get(i);
-					if(fcList.size() == 0)
-						fc = new SearchCriterion(SearchType.CONTEXT_ID, c.getId());
-					else
-						fc = new SearchCriterion(Operator.OR,SearchType.CONTEXT_ID, c.getId());
-					fcList.add(fc);
-				}
-			}
-			
-			if(filterString!=null && !filterString.trim().isEmpty())
-			{
-				fc = new SearchCriterion(Operator.AND, SearchType.TITLE, filterString, 1, 0);
-				fcList.add(fc);
-				fc = new SearchCriterion(Operator.OR, SearchType.AUTHOR, filterString, 0, 1);
-				fcList.add(fc);
-			}
-			
-			VolumeStatus[] volVersionStatus = new VolumeStatus[]{};
-			VolumeStatus[] volPublicStatus = new VolumeStatus[]{};
-			VolumeTypes[] volTypes = new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
-			if("all".equals(filterItemState))
-			{
-				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
-			}
-			else if("submitted".equals(filterItemState))
-			{
-				volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted,};
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
-			}
-			else if("released".equals(filterItemState))
-			{
-				volVersionStatus = new VolumeStatus[]{VolumeStatus.released};
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.released};
-			}
-			else if("withdrawn".equals(filterItemState))
-			{
-				volPublicStatus = new VolumeStatus[]{VolumeStatus.withdrawn};
-				volTypes = new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
-			}
-			
-			res = filterBean.itemFilter(volTypes, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
-			
-			
-			/*
-			//Add items which are currently uploading
-			VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
-			res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
-			res.setNumberOfRecords(res.getNumberOfRecords() + resultVolumesInProgress.getNumberOfRecords());
-			*/
-			
-			/*
-			EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
-			TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
-			query.setParameter("userId", loginBean.getUser().getId());
-			List<DatabaseItem> resList = query.getResultList();
-			this.uploadedItems = resList;
-			em.close();
-			*/
-			
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus);
-			
-			
+			fcList.add(new SearchCriterion(SearchType.CONTEXT_ID, colId));
+			//SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
+			//scList.add(sc);
 		}
-		else{
-			//List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
-			if(collection != null)
-			{
-				fcList.add(new SearchCriterion(SearchType.CONTEXT_ID, colId));
-				//SearchCriterion sc = new SearchCriterion(SearchType.CONTEXT_ID, colId);
-				//scList.add(sc);
-			}
-			
-			
-			res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
-			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released});
-			//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
-		}
+		
+		
+		res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
+		volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released});
+		//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
+		
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 		
 		
@@ -408,93 +261,6 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 			return vols;
 	}
 	
-	public void release(Volume vol)
-	{ 
-		String userHandle = loginBean.getUserHandle();
-		try {
-			Volume newVol = createVolServiceBean.releaseVolume(vol.getItem().getObjid(), userHandle);
-			VolumeServiceBean.importVolumeIntoVolume(newVol, vol, userHandle);
-
-			
-			MessageHelper.infoMessage(InternationalizationHelper.getMessage("releasedSuccessfully"));
-		} catch (Exception e) {
-			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveAndReleaseStruct"));
-			logger.error("Error while releasing volume " + vol.getObjidAndVersion(), e);
-		}
-
-	}
-	
-	public String delete(Volume vol)
-	{ 
-		String userHandle = loginBean.getUserHandle();
-		try {
-			createVolServiceBean.deleteVolume(vol, userHandle);
-		
-
-			
-			MessageHelper.infoMessage(InternationalizationHelper.getMessage("success_deleteVolume"));
-		} catch (Exception e) {
-			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_deleteVolume"));
-			logger.error("Error while deleting volume " + vol.getObjidAndVersion(), e);
-		}
-		return "";
-	}
-	
-	public String withdraw(Volume vol)
-	{ 
-		String userHandle = loginBean.getUserHandle();
-		try {
-			createVolServiceBean.withdrawVolume(vol, userHandle);
-		
-
-			
-			MessageHelper.infoMessage(InternationalizationHelper.getMessage("success_withdrawVolume"));
-		} catch (Exception e) {
-			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_withdrawVolume"));
-			logger.error("Error while withdrawing volume " + vol.getObjidAndVersion(), e);
-		}
-		return "";
-
-	}
-	
-	
-	public void checkUploadComplete(Volume vol)
-	{ 
-		String userHandle = loginBean.getUserHandle();
-	
-			try {
-				Volume newVol = volServiceBean.retrieveVolume(vol.getItem().getOriginObjid(), userHandle);
-				VolumeServiceBean.importVolumeIntoVolume(newVol, vol, userHandle);
-			} catch (Exception e) {
-				logger.error("Error while updating volume in myItems " + vol.getObjidAndVersion(), e);
-			}
-
-		
-
-	}
-	
-	
-	public boolean checkUploadComplete()
-	{ 
-		
-		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
-		TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
-		query.setParameter("userId", loginBean.getUser().getId());
-		List<DatabaseItem> resList = query.getResultList();
-		this.uploadedItems = resList;
-		em.close();
-		
-		for(DatabaseItem item : uploadedItems)
-		{
-			if(IngestStatus.RUNNING.equals(item.getIngestStatus()))
-			{
-				return true;
-			}
-		}
-		
-		return false;
-
-	}
 	
 	
 	/**
@@ -574,44 +340,6 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	}
 
 
-	public String getFilterString() 
-	{
-		//System.out.println("SET FILTER:" + filterString);
-		return filterString;
-	}
-
-
-	public void setFilterString(String filterString) 
-	{
-		//System.out.println("GET FILTER:" + filterString);
-		this.filterString = filterString;
-	}
-
-
-	public String filterResults()
-	{
-		setCurrentPageNumber(1);
-		return getNavigationString();
-	}
-	
-	public String resetFilter()
-	{
-		this.filterString=null;
-		setCurrentPageNumber(1);
-		return getNavigationString();
-	}
-
-
-	public String getFilterItemState() 
-	{
-		return filterItemState;
-	}
-
-
-	public void setFilterItemState(String filterItemState) 
-	{
-		this.filterItemState = filterItemState;
-	}
 	
 	public SessionBean getSessionBean() 
 	{
@@ -623,14 +351,5 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		this.sessionBean = sessionBean;
 	}
 
-
-	public List<DatabaseItem> getUploadedItems() {
-		return uploadedItems;
-	}
-
-
-	public void setUploadedItems(List<DatabaseItem> uploadedItems) {
-		this.uploadedItems = uploadedItems;
-	}
 	
 }

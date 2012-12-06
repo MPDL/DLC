@@ -89,55 +89,7 @@
 						</ui:remove>
 					</h:form>
 				</h:panelGroup>
-				
-				
-				<ui:fragment rendered="#{allVolumesBean.colId=='my'}">
 					
-					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
-						<h:outputText value="#{lbl.list_stateFilter} "/>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-						<h:form>
-							<h:panelGroup layout="block" styleClass="eg3_container_1">
-									<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
-											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
-												<span class="eg3_selectionText"></span>
-											</h:panelGroup>
-											<h:selectOneMenu value="#{allVolumesBean.filterItemState}">
-												<f:selectItem itemLabel="#{lbl.list_statefilter_allExceptWithdrawn}" itemValue="all"/>
-												<f:selectItem itemLabel="#{lbl.list_statefilter_submitted}" itemValue="submitted"/>
-												<f:selectItem itemLabel="#{lbl.list_statefilter_released}" itemValue="released"/>
-												<f:selectItem itemLabel="#{lbl.list_statefilter_withdrawn}" itemValue="withdrawn"/>
-												<f:ajax event="change" listener="#{allVolumesBean.filterResults}" render="@all"/>
-											</h:selectOneMenu>
-										</h:panelGroup>
-									</h:panelGroup>
-							</h:panelGroup>
-						</h:form>
-					</h:panelGroup>
-					
-					
-					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
-						<h:outputText value="#{lbl.list_filter} "/>
-					</h:panelGroup>
-					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-						<h:form>
-							<h:panelGroup layout="block" styleClass="eg3_container_1">
-									<h:panelGroup layout="block" styleClass="eg3_container_3_4">
-										<h:panelGroup layout="block" styleClass="eg3_container_1">
-											
-											<h:inputText value="#{allVolumesBean.filterString}"/>
-											<h:commandButton styleClass="eg3_borderradius_5" action="#{allVolumesBean.filterResults}" value="OK"/>
-											<h:commandButton styleClass="eg3_borderradius_5" action="#{allVolumesBean.resetFilter}" value="X" rendered="#{not empty allVolumesBean.filterString}"/>
-											
-										</h:panelGroup>
-									</h:panelGroup>
-							</h:panelGroup>
-						</h:form>
-					</h:panelGroup>
-				</ui:fragment>
-				
 			</h:panelGroup>
 			
 			
