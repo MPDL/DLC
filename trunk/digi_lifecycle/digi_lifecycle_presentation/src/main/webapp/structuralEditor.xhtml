@@ -689,7 +689,7 @@
 							<!-- END TAB-PANEL -->
 							
 							<!-- START VALIDATION ERRORS -->
-							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer" style="border: 1px solid red;">
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer" style="border: 1px solid red;" rendered="#{not empty structuralEditorBean.validationList}">
 								<h:outputText value="#{lbl.edit_validationErrors}"/>
 								<br/>
 								<ul style="color:red;">
@@ -721,7 +721,7 @@
 														<b>
 														<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
 															<h:outputText value="#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and not empty divItem.teiElementWrapper.teiElement.type}"/>
-															<h:outputText value="-" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and empty divItem.teiElementWrapper.teiElement.type}"/>
+															<h:outputText value="[-]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and empty divItem.teiElementWrapper.teiElement.type}"/>
 															<h:outputText value="#{lbl.edit_elementType_title_page}" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}"/>
 															<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
 															
