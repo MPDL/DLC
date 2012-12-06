@@ -56,7 +56,7 @@
 			</h:panelGroup>
 			
  			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:outputText value="#{lbl.admin_user_dep}: "/>
+				<h:outputText value="#{lbl.admin_user_dep} "/>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:selectManyCheckbox value="#{cc.attrs.user.depositorContextIds}">
@@ -66,7 +66,7 @@
 			</h:panelGroup>	
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:outputText value="#{lbl.admin_user_mod} : "/>
+				<h:outputText value="#{lbl.admin_user_mod} "/>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:selectManyCheckbox value="#{cc.attrs.user.moderatorContextIds}">
@@ -76,7 +76,7 @@
 			</h:panelGroup>	
 			
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
-				<h:outputText value="#{lbl.admin_user_md_editor} : "/>
+				<h:outputText value="#{lbl.admin_user_md_editor} "/>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">			
 				<h:selectManyCheckbox value="#{cc.attrs.user.mdEditorContextIds}">

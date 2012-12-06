@@ -65,7 +65,7 @@
 				 		</h:commandLink>
 				 		
 				 		<a4j:repeat id="paginatorTop" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
-				 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage}: #{paginatorPage.number}">
+				 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage} #{paginatorPage.number}">
 				 				<h:panelGroup styleClass="eg3_pageNumber #{
 						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
 						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
@@ -166,7 +166,7 @@
 				 		</h:commandLink>
 			 			
 				 		<a4j:repeat id="paginatorBottom" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
-				 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage}: #{paginatorPage.number}">
+				 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage} #{paginatorPage.number}">
 				 				<h:panelGroup styleClass="eg3_pageNumber #{
 						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
 						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
