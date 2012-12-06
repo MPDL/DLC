@@ -720,9 +720,9 @@
 												<h:commandLink action="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" styleClass="#{cc.attrs.linkStyleClass}" style="#{divItem.invalid ? 'color:red;' : ''}">
 														<b>
 														<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' or divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}">
-															<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and not empty divItem.teiElementWrapper.teiElement.type}"/>
-															<h:outputText value="[-]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and empty divItem.teiElementWrapper.teiElement.type}"/>
-															<h:outputText value="[#{lbl.edit_elementType_title_page}]" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}"/>
+															<h:outputText value="#{internationalizationHelper.getLabelForEnum('structuretype_',divItem.teiElementWrapper.teiElement.type)}" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and not empty divItem.teiElementWrapper.teiElement.type}"/>
+															<h:outputText value="-" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='DIV' and empty divItem.teiElementWrapper.teiElement.type}"/>
+															<h:outputText value="#{lbl.edit_elementType_title_page}" rendered="#{divItem.teiElementWrapper.teiElement.elementType=='TITLE_PAGE'}"/>
 															<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
 															
 															
@@ -732,7 +732,7 @@
 														</h:panelGroup>
 														
 																												<h:panelGroup rendered="#{divItem.teiElementWrapper.teiElement.elementType=='FIGURE'}">
-														<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
+														<h:outputText value="#{lbl.edit_elementType_figure}"/>
 														<h:outputText value=" #{divItem.teiElementWrapper.teiElement.numeration} " rendered="#{not empty divItem.teiElementWrapper.teiElement.numeration}"/>
 														</h:panelGroup>
 														</b>
