@@ -177,17 +177,19 @@ public class Export {
 					PbOrDiv currentElem = teiSd.getText().getPbOrDiv().get(i);
 					if (currentElem.getType()!= "PB")
 					{
+						System.out.println(currentElem.getElementType().name());
 						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))
 						{
-								document = this.createTree(currentElem.getPbOrDiv(), document, root);
+								document = this.createTree(currentElem.getPbOrDiv(), document, root, writer);
 						}
 						else 
 							if (currentElem.getElementType().name().equals("FRONT") || currentElem.getElementType().name().equals("BACK") 
-									|| currentElem.getElementType().name().equals("BODY"))
+									|| currentElem.getElementType().name().equals("BODY")|| currentElem.getElementType().name().equals("GROUP")
+									|| currentElem.getElementType().name().equals("TEXT"))
 							{
-								//document.add(new Paragraph(currentElem.getElementType().name().toString()));
+								document.add(new Paragraph(currentElem.getElementType().name().toString()));
 								level += "  ";
-								document = this.createTree(currentElem.getPbOrDiv(), document, root);
+								document = this.createTree(currentElem.getPbOrDiv(), document, root, writer);
 							}
 					}
 				}	
@@ -228,6 +230,7 @@ public class Export {
 
 	/**
 	 * Generates the bibliografic metadata for pdf export
+	 * Please note: as tei md is so generic I have to catch every possible error, this results in many many if(...) phrases
 	 * @param doc
 	 * @return
 	 * @throws DocumentException 
@@ -289,12 +292,18 @@ public class Export {
 		
 		if (vol.getRelatedParentVolume() != null) //Item is a volume (not monograph)
 		{
-			phrase1 = new Phrase("Multivolume: ", fontbold);
-			phrase2 = new Phrase(vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
+			if (vol.getRelatedParentVolume().getModsMetadata() != null &&
+					vol.getRelatedParentVolume().getModsMetadata().getTitles() != null &&
+					vol.getRelatedParentVolume().getModsMetadata().getTitles().size() > 0 &&
+					vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle() != null)
+			{
+				phrase1 = new Phrase("Multivolume: ", fontbold);
+				phrase2 = new Phrase(vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle());
+				para = new Paragraph();
+				para.add(phrase1);
+				para.add(phrase2);
+				document.add(para);
+			}
 		}
 		document.add(new Paragraph(" "));
 		if (md.getCatalogueId_001() != null)
@@ -326,13 +335,20 @@ public class Export {
 			document.add(new Paragraph( ));
 			for (int i = 0; i< md.getNames().size(); i++)
 			{
-				ModsName mn = md.getNames().get(i);
-				para = new Paragraph("          " + mn.getDisplayLabel(),fontbold); document.add(para);
-				para = new Paragraph("          MAB id: " + mn.getMabId(),fontitalic); document.add(para);
-				para = new Paragraph("          Type: " + mn.getType(),fontitalic); document.add(para);
-				para = new Paragraph("          Name: " + mn.getName(),fontitalic); document.add(para);
-				para = new Paragraph("          Role: " + mn.getRole(),fontitalic); document.add(para);
-				para = new Paragraph("          Authority: " + mn.getRoleTermAuthority(),fontitalic); document.add(para);
+					ModsName mn = md.getNames().get(i);
+					if (mn.getDisplayLabel() != null)
+					{para = new Paragraph("          " + mn.getDisplayLabel(),fontbold); document.add(para);}
+					if (mn.getMabId() != null)
+					{para = new Paragraph("          MAB id: " + mn.getMabId(),fontitalic); document.add(para);}
+					if (mn.getType() != null)
+					{para = new Paragraph("          Type: " + mn.getType(),fontitalic); document.add(para);}
+					if (mn.getName() != null)
+					{para = new Paragraph("          Name: " + mn.getName(),fontitalic); document.add(para);}
+					if (mn.getRole() != null)
+					{para = new Paragraph("          Role: " + mn.getRole(),fontitalic); document.add(para);}
+					if (mn.getRole() != null)
+					{para = new Paragraph("          Authority: " + mn.getRole(),fontitalic); document.add(para);}
+				
 			}
 			document.add(plain);
 		}		
@@ -345,7 +361,7 @@ public class Export {
 			para.add(phrase2);
 			document.add(para);
 		}
-		if (md.getNotes() != null && md.getNotes().size() > 0)
+		if (md.getNotes() != null && md.getNotes().size() > 0 && md.getNotes().get(0).getNote()!= null)
 		{
 			phrase1 = new Phrase("Statement of responsibility: ", fontbold);
 			phrase2 = new Phrase(md.getNotes().get(0).getNote());
@@ -393,12 +409,15 @@ public class Export {
 				document.add(para);
 			}
 		}
-		phrase1 = new Phrase("Number of Scans: ", fontbold);
-		phrase2 = new Phrase("" + vol.getMets().getPages().size());
-		para = new Paragraph();
-		para.add(phrase1);
-		para.add(phrase2);
-		document.add(para);
+		if(vol.getMets().getPages() != null && vol.getMets().getPages().size() > 0)
+		{
+			phrase1 = new Phrase("Number of Scans: ", fontbold);
+			phrase2 = new Phrase("" + vol.getMets().getPages().size());
+			para = new Paragraph();
+			para.add(phrase1);
+			para.add(phrase2);
+			document.add(para);
+		}
 		if (md.getKeywords() != null && md.getKeywords().size() > 0)
 		{
 			phrase1 = new Phrase("Keywords: ", fontbold);		
@@ -423,7 +442,7 @@ public class Export {
 	 * @return
 	 * @throws DocumentException
 	 */
-	private Document createTree(List <PbOrDiv> elems, Document doc, PdfOutline root) throws DocumentException
+	private Document createTree(List <PbOrDiv> elems, Document doc, PdfOutline root, PdfWriter writer) throws DocumentException
 	{
 		Paragraph para = new Paragraph();
 		Font font = FontFactory.getFont("Verdana");
@@ -516,11 +535,14 @@ public class Export {
 					if (pd!= null && pd.size() > 0)
 					{
 						//Outline to a Page
-						if (pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
+						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
 						{
 							Pagebreak pb = (Pagebreak) pd.get(0);
-							PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(pb.getFacs(), false), titleStr);	
-							oline = out;
+							if (pb != null && pb.getFacs()!= null && pb.getFacs()!="" && oline != null) //TODO
+							{
+								PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(pb.getFacs(), false), titleStr);	
+								oline = out;
+							}
 						}
 					}
 
@@ -553,7 +575,7 @@ public class Export {
 			if (elems.get(i).getPbOrDiv().size() > 0)
 			{
 				level+="  ";
-				this.createTree(elems.get(i).getPbOrDiv(), doc, oline);
+				this.createTree(elems.get(i).getPbOrDiv(), doc, oline, writer);
 				oline = oline.parent();
 				level = level.substring(0, level.length() - 2);
 			}	
