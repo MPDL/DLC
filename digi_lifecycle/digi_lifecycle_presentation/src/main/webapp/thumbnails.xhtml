@@ -28,7 +28,7 @@
 							<h:form>
 									<h3 class="eg3_volumeTitle">
 										<h:panelGroup rendered="#{not empty volumeUtilBean.getFirstAuthor(thumbnailsBean.volume.modsMetadata)} #{not empty volumeUtilBean.getFirstAuthor(thumbnailsBean.volume.modsMetadata).name}">
-											<h:outputText value="#{volumeUtilBean.getFirstAuthor(thumbnailsBean.volume.modsMetadata).name}" rendered="#{not empty volumeUtilBean.getFirstAuthor(thumbnailsBeans.volume.modsMetadata).name}"/>
+											<h:outputText value="#{volumeUtilBean.getFirstAuthor(thumbnailsBean.volume.modsMetadata).name}:" rendered="#{not empty volumeUtilBean.getFirstAuthor(thumbnailsBeans.volume.modsMetadata).name}"/>
 										</h:panelGroup>
 										
 										<h:outputText value="#{volumeUtilBean.getTitle(thumbnailsBean.volume.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getTitle(thumbnailsBean.volume.modsMetadata).title}"/>
