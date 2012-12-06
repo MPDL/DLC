@@ -51,7 +51,7 @@
 							bringToFront:false,
 							mouseWheel:true
 					};
-					jQuery('.carouselContent').each(function(){
+					jQuery('.eg3_carouselContent').each(function(){
 						jQuery(this).CloudCarousel(opt);
 					});
 //					jQuery("#carouselContent").CloudCarousel(opt);
@@ -86,7 +86,7 @@
 					var miss = 0;
 					var success = 0;
 					
-					var imgCloud = $('.carouselContent img');
+					var imgCloud = $('.eg3_carouselContent img');
 					
 					imgCloud.load(function(){
 						success++;
@@ -111,21 +111,18 @@
 		
 		<ui:fragment rendered="#{cc.attrs.loadCSS}">
 			<style type="text/css">
-				div.eg3_carousel {
-					min-height:33.333333em; 
-					overflow:visible;
-				}
 				.eg3_carousel div#carouselContent {
 					height:26.66666666em; 
 					width:90%; 
 					margin:0 auto;
 					background:transparent;
 					text-align:center;
+					opacity:1;
 				}
 				div#carouselContent div {
 					overflow:visible;
 				}
-				.carouselContent a {
+				.eg3_carouselContent a {
 					display:block;
 				}
 				
@@ -134,7 +131,7 @@
 				}
 				.dynamicCloudinfo {
 					position:absolute;
-					z-index:5600;
+					z-index:500;
 					background-color:#292929;
 					padding:0.75em;
 				}
@@ -144,67 +141,63 @@
 				.eg3_carousel #alt-text {
 					margin:0;
 				}
-				div.carouselPositioner {
+				div.eg3_carousel {
 					position:fixed; 
+					left:70%;
 					max-height:400px; 
 					overflow:visible; 
 					min-width:350px; 
 					width:100%; 
 					margin:0 auto 1em auto;
+					display:block;
 				}
 			</style>
 		</ui:fragment>
 		
-		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflow">
-			<div class="eg3_container_1 eg3_carousel">
-				<div class="carouselPositioner">
-					<div id="carouselContent" class="carouselContent">
-						<ui:remove>
-						<ui:fragment rendered="#{empty cc.attrs.volumes}">
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-							<h:outputLink>
-								<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-							</h:outputLink>
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
-							<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
-						</ui:fragment>
-						</ui:remove>
-						
-						<ui:fragment rendered="#{not empty cc.attrs.volumes}">
-							<a4j:repeat var="volume" value="#{cc.attrs.volumes}">
-									<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}">
-										<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getShortTitleView(volume)}">
-											<f:param value="#{volume.objidAndVersion}"/>
-											<f:param value="recto-verso"/>
-											<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
-										</pretty:link>
-									</ui:fragment>
-									<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
-										<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getVolumeShortTitleView(volume)}">
-											<f:param value="#{volume.objidAndVersion}"/>
-											<f:param value="recto-verso"/>
-											<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
-										</pretty:link>
-									</ui:fragment>
-							
-							</a4j:repeat>
-						
-						</ui:fragment>
-						
-					</div>
-					<ui:remove>
-					<span id="cloudinfoText">
-						<h4 id="title-text"></h4>
-						<h5 id="alt-text"></h5>
-					</span>
-					</ui:remove>
-				</div>
+		<div class="eg3_carousel">
+			<div id="carouselContent" class="eg3_carouselContent">
+				<ui:remove>
+				<ui:fragment rendered="#{empty cc.attrs.volumes}">
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+					<h:outputLink>
+						<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
+					</h:outputLink>
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content_2.jpg" height="110"/>
+					<h:graphicImage styleClass="cloudcarousel" title="filename" alt="image" url="/resources/images/carousel_sample_content.jpg" height="110"/>
+				</ui:fragment>
+				</ui:remove>
+				
+				<ui:fragment rendered="#{not empty cc.attrs.volumes}">
+					<a4j:repeat var="volume" value="#{cc.attrs.volumes}">
+							<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmMono}">
+								<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getShortTitleView(volume)}">
+									<f:param value="#{volume.objidAndVersion}"/>
+									<f:param value="recto-verso"/>
+									<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
+								</pretty:link>
+							</ui:fragment>
+							<ui:fragment rendered="#{volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+								<pretty:link mappingId="viewPagesWithoutNumber" title="#{volumeUtilBean.getVolumeShortTitleView(volume)}">
+									<f:param value="#{volume.objidAndVersion}"/>
+									<f:param value="recto-verso"/>
+									<h:graphicImage styleClass="cloudcarousel" height="110" value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(volume).contentIds, 'THUMBNAIL')}" alt="" rendered="#{not empty volume.pages}"/>
+								</pretty:link>
+							</ui:fragment>
+					
+					</a4j:repeat>
+				
+				</ui:fragment>
 			</div>
-		</h:panelGroup>
-		
+			<ui:remove>
+			<span id="cloudinfoText">
+				<h4 id="title-text"></h4>
+				<h5 id="alt-text"></h5>
+			</span>
+			</ui:remove>
+		</div>
 		<ui:fragment rendered="#{cc.attrs.initStart}">
 			<script type="text/javascript">
 				checkImageForCarousel();

@@ -389,8 +389,10 @@ body .eg3_id_siteTitle {
 	position:absolute;
 	left:0;
 	top:1.5833333em;
-	z-index:5;
+	z-index:20;
 	display:none;
+	background-color:#CACA86;
+	padding:0 0.5em;
 }
 .eg3_id_wrapper input:focus+.eg3_searchTooltip {
 	display:inline;

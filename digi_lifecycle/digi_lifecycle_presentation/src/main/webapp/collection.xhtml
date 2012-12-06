@@ -20,8 +20,6 @@
 	</ui:define>
 	</ui:remove>
 	<ui:define name="mainContent">
-		<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js" target="head"/>
-		<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_collectionStartpage">
 			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
@@ -75,9 +73,7 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				
-				<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_containerCenter">
-					<view:cloud_carousel loadScript="true" loadCSS="true" initStart="true" volumes="#{viewCollection.volumes}"/>
-				</h:panelGroup>
+				<view:cloud_carousel loadScript="true" loadCSS="true" initStart="true" volumes="#{viewCollection.volumes}"/>
 			</h:panelGroup>
 		</h:panelGroup>
 	
