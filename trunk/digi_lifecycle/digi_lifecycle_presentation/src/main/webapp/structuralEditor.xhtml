@@ -864,12 +864,14 @@
 						</h:panelGroup>
 						<br/>
 						<br/>
-						<h:commandButton  styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
-							<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
-						</h:commandButton>
-						<h:outputLink style="color:#F0F0F0;" value="#" onclick="$('#editPopup').dialog('close'); return false;">
-							<h:outputText value="#{lbl.edit_cancelBtn}"/>
-						</h:outputLink>									
+						<h:panelGroup layout="block" styleClass="eg3_submitPanel eg3_container_1">
+							
+							<h:commandButton type="button" styleClass="eg3_floatLeft eg3_borderradius_5" value="#{lbl.edit_cancelBtn}" onclick="$('#editPopup').dialog('close'); return false;"/>
+							
+							<h:commandButton styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
+								<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
+							</h:commandButton>
+						</h:panelGroup>
 					</h:panelGroup>
 				</h:form>
 				
