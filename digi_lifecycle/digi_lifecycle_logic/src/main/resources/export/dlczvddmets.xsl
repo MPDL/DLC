@@ -112,35 +112,69 @@
 	<!-- The file section of a dlc item -->
 	<xsl:template name="files">
 		<xsl:element name="mets:fileSec">
-			<!-- All files in webresolution -->
-			<xsl:element name="mets:fileGrp">
-				<xsl:attribute name="USE">DEFAULT</xsl:attribute>
-				<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
-					<xsl:element name="mets:file">
-						<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
-						<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
-						<xsl:element name="mets:FLocat">
-							<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-							<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>web/<xsl:value-of select="@facs"/></xsl:attribute>
-						</xsl:element>
+			<xsl:choose> 
+				<xsl:when test="$teiXml"> <!-- Elements from tei file -->
+					<!-- All files in webresolution -->
+					<xsl:element name="mets:fileGrp">
+						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
+						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
+							<xsl:element name="mets:file">
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
+								<xsl:element name="mets:FLocat">
+									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
+									<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>web/<xsl:value-of select="@facs"/></xsl:attribute>
+								</xsl:element>
+							</xsl:element>
+						</xsl:for-each>
 					</xsl:element>
-				</xsl:for-each>
-			</xsl:element>
-			<!-- All files as thumbnails -->
-			<xsl:element name="mets:fileGrp">
-				<xsl:attribute name="USE">MIN</xsl:attribute>
-				<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
-					<xsl:element name="mets:file">
-						<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
-						<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
-						<xsl:element name="mets:FLocat">
-							<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-							<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>thumbnails/<xsl:value-of select="@facs"/></xsl:attribute>
-						</xsl:element>
+					<!-- All files as thumbnails -->
+					<xsl:element name="mets:fileGrp">
+						<xsl:attribute name="USE">MIN</xsl:attribute>
+						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
+							<xsl:element name="mets:file">
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
+								<xsl:element name="mets:FLocat">
+									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
+									<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>thumbnails/<xsl:value-of select="@facs"/></xsl:attribute>
+								</xsl:element>
+							</xsl:element>
+						</xsl:for-each>
+					</xsl:element>										
+				</xsl:when>
+		      	<xsl:otherwise> <!-- Elements from mets file -->
+					<!-- All files in webresolution -->
+					<xsl:element name="mets:fileGrp">
+						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
+						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
+							<xsl:element name="mets:file">
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
+								<xsl:element name="mets:FLocat">
+									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
+									<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>web/<xsl:value-of select="@CONTENTIDS"/></xsl:attribute>
+								</xsl:element>
+							</xsl:element>
+						</xsl:for-each>
 					</xsl:element>
-				</xsl:for-each>
-			</xsl:element>
-		</xsl:element>					
+					<!-- All files as thumbnails -->
+					<xsl:element name="mets:fileGrp">
+						<xsl:attribute name="USE">MIN</xsl:attribute>
+						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
+							<xsl:element name="mets:file">
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
+								<xsl:element name="mets:FLocat">
+									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
+									<xsl:attribute name="xlink:href"><xsl:value-of select="$imageUrl"/>thumbnails/<xsl:value-of select="@CONTENTIDS"/></xsl:attribute>
+								</xsl:element>
+							</xsl:element>
+						</xsl:for-each>
+					</xsl:element>	
+				</xsl:otherwise>
+			</xsl:choose> 	
+		</xsl:element>			
 	</xsl:template>	
 	
 	<!-- The physical structmap of a dlc item -->
