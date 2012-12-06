@@ -372,7 +372,7 @@
 							
 							<h:panelGroup rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
 								<h:commandButton action="#{myVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
-									<f:ajax render="multiItemContent :messages"/>
+									<f:ajax render="simpleAllVolumeMulti :messages"/>
 								</h:commandButton>
 							</h:panelGroup>
 						</h:panelGroup>
