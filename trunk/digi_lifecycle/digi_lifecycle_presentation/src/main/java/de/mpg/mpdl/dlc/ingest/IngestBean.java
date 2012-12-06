@@ -967,7 +967,7 @@ public class IngestBean{
 		    		this.volume = null;
 		    		allVolBean.setColId("my");
 		    		allVolBean.setCurrentPageNumber(1);
-		    		return "pretty:volumes";
+		    		return "pretty:myVolumes";
 				}
 				
 				else
@@ -1107,7 +1107,7 @@ public class IngestBean{
 				Thread.sleep(3000);
 				allVolBean.setColId("my");
 	    		allVolBean.setCurrentPageNumber(1);
-	    		return "pretty:volumes";
+	    		return "pretty:myVolumes";
 				
 			}
 			/*
