@@ -404,6 +404,13 @@
 								$("#viewPage img").load(eg3_initSidebar).ready(eg3_initSidebar);
 								eg3_initWindowResizeListener();
 								pageInit = true;
+								
+								/* Bugfix for tabPanel, inactive tabs were clickable and shows unwished effects */
+								$('.rf-tab-hdr-top, .rf-tab-hdr-top .rf-tab-lbl').click(function(e){
+									if ($(this).hasClass("rf-tab-hdr-act") || $(this).parent().hasClass("rf-tab-hdr-act")) {
+										eg3_stopDefaultAction(e);
+									}
+								});
 							}
 						}
 						
