@@ -118,8 +118,9 @@
 								
 								<h:panelGroup styleClass="eg3_defaultPagination">
 									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight eg3_pagePaginationLabel">
-										<h:outputText value="#{lbl.list_Page} #{structuralEditorBean.selectedPb.teiElement.numeration} / " rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
 										<h:outputText value="#{lbl.list_Scan} #{structuralEditorBean.selectedPb.page.order+1}"/>
+										<h:outputText value=" / #{lbl.list_Page} #{structuralEditorBean.selectedPb.teiElement.numeration}" rendered="#{not empty structuralEditorBean.selectedPb.teiElement.numeration}"/>
+										
 									</h:panelGroup>
 									
 									<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
