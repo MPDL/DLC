@@ -860,7 +860,7 @@
 							
 							
 							
-							<h:panelGroup layout="block" id="editPopup" title="#{lbl.edit_structureEditHeader}" style="background-color: #2F2F2F;" class="eg3_container1">
+							<h:panelGroup layout="block" id="editPopup" style="background-color: #2F2F2F;" class="eg3_container1">
 								<h:form>
 									<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
 										
@@ -874,7 +874,7 @@
 										<h:commandButton  styleClass="eg3_floatRight eg3_borderradius_5" value="#{lbl.edit_updateStructuralElementBtn}" action="#{structuralEditorBean.updateEditedStructuralElement}">
 											<f:ajax render=":messages :edit :paginator" execute="@form" onevent="closePopup"/>
 										</h:commandButton>
-										<h:outputLink value="#" onclick="$('#editPopup').dialog('close'); return false;">
+										<h:outputLink style="color:#F0F0F0;" value="#" onclick="$('#editPopup').dialog('close'); return false;">
 											<h:outputText value="#{lbl.edit_cancelBtn}"/>
 										</h:outputLink>									
 									</h:panelGroup>
@@ -886,7 +886,8 @@
 						            modal: true,
 						            autoOpen:false,
 						            resizable:false,
-						            width: 800
+						            width: 800,
+						            title: "#{lbl.edit_structureEditHeader}"
 						        });
 						        function closePopup()
 						        {
