@@ -177,12 +177,15 @@ public class UtilBean {
 	
 	public UserAgent getUserAgent()
 	{
-		HttpServletRequest httpReq = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-		UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
-		UserAgent ua = parser.parse(httpReq.getHeader("User-Agent"));
-		
-		
-		return ua;
+		try {
+			HttpServletRequest httpReq = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+			UserAgentStringParser parser = UADetectorServiceFactory.getResourceModuleParser();
+			UserAgent ua = parser.parse(httpReq.getHeader("User-Agent"));
+			return ua;
+		} catch (Exception e) {
+			logger.info("could not parse User Agent", e);
+			return null;
+		}
 		
 	}
 }
