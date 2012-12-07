@@ -9,8 +9,15 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.apache.axis.types.NonNegativeInteger;
 import org.apache.log4j.Logger;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 import de.escidoc.core.client.ContextHandlerClient;
 import de.escidoc.core.client.exceptions.EscidocException;
@@ -19,6 +26,8 @@ import de.escidoc.core.client.exceptions.TransportException;
 import de.escidoc.core.client.exceptions.application.violated.ContextNameNotUniqueException;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.OrganizationalUnitRef;
+import de.escidoc.core.resources.om.context.AdminDescriptor;
+import de.escidoc.core.resources.om.context.AdminDescriptors;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.context.ContextProperties;
 import de.escidoc.core.resources.om.context.OrganizationalUnitRefs;
@@ -43,7 +52,12 @@ public class ContextServiceBean {
 			collection = new Collection();
 			collection.setId(id);
 			collection.setName(context.getProperties().getName());
-			collection.setDescription(context.getProperties().getDescription());
+			
+			if(context.getAdminDescriptors()!=null && context.getAdminDescriptors().size()>0)
+			{
+				collection.setDescription(context.getAdminDescriptors().get("description").getContent().getTextContent());
+			}
+			
 			collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
 			collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
 			collection.setType(context.getProperties().getType());
@@ -259,9 +273,33 @@ public class ContextServiceBean {
 	{  
 		logger.info("Preparing new Context");
         ContextProperties properties = new ContextProperties();
+       
         properties.setName(collection.getName());
-        properties.setDescription(collection.getDescription());
+        properties.setDescription("dlc");
         properties.setType("DLC");
+        //ad.setContent("<desc>" + collection.getDescription() + "");
+       if(collection.getDescription()!=null)
+       {
+	       try {
+	   			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	   			DocumentBuilder db = dbf.newDocumentBuilder();
+	   			Document doc = db.newDocument();
+	   			Element el = doc.createElement("description");
+	   			el.setTextContent(collection.getDescription());
+	   			
+	   			//doc.appendChild(el);
+		   		 AdminDescriptors ads = new AdminDescriptors();
+		         AdminDescriptor ad = new AdminDescriptor("description");
+		         ads.add(ad);
+		         context.setAdminDescriptors(ads);
+	   			ad.setContent(el);
+	   		} catch (Exception e) {
+	   			// TODO Auto-generated catch block
+	   			e.printStackTrace();
+	   		}
+       }
+      
+        
         OrganizationalUnitRefs ous = new OrganizationalUnitRefs();
         ous.add(new OrganizationalUnitRef(collection.getOuId()));
         properties.setOrganizationalUnitRefs(ous);

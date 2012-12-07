@@ -69,7 +69,7 @@
 				
 				<h:panelGroup layout="block" styleClass="eg3_itemDescription">
 					<p>
-						<h:outputText value="#{utilBean.cleanHtml(utilBean.getShortenedText(cc.attrs.item.properties.description, 500))}" escape="false"/>
+						<h:outputText value="#{utilBean.cleanHtml(utilBean.getShortenedText(cc.attrs.item.adminDescriptors[0].content.textContent, 500))}" escape="false"/>
 						
 						<pretty:link mappingId="#{cc.attrs.titleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
 							<f:param value="#{cc.attrs.item.objid}"/>
