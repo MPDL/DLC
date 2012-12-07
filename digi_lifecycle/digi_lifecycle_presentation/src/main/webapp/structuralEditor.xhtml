@@ -82,7 +82,7 @@
 												<h:outputText  value=" - #{wrapper.teiElement.head[0]}" rendered="#{wrapper.teiElement.elementType == 'DIV' or wrapper.teiElement.elementType == 'FIGURE'}"/>
 												
 												<h:outputText  value=" - #{wrapper.teiElement.docTitles[0].title}" rendered="#{wrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
-											<br/><br/>
+												<br/><br/>
 											</h:panelGroup>
 									
 										</a4j:repeat>
@@ -252,12 +252,6 @@
 							padding:2%;
 						}
 					</style>
-					
-					
-					
-					
-					
-					
 					
 					
 					
@@ -803,21 +797,13 @@
 												
 												<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(divItem.teiElementWrapper.teiElement.docTitles[0].title)}" rendered="#{divItem.teiElementWrapper.teiElement.elementType == 'TITLE_PAGE'}"/>
 									
-												
-												
-													
-													
 													
 													<ui:remove>
 													<mpdl:treeEntry teiElement="#{divItem.teiElementWrapper.teiElement}" linkAction="#{structuralEditorBean.selectStructuralElement(divItem.teiElementWrapper)}" linkStyle="#{divItem.invalid ? 'color:red;' : ''}"
 															render=":messages :edit :paginator"/>							
-													
-													
 													</ui:remove>
 													
-													
 												</h:panelGroup>
-												
 												
 											</rich:treeNode>
 											
@@ -827,24 +813,6 @@
 								
 							</h:panelGroup>
 							<!-- END TREE -->
-
-			
-							
-
-							<!-- START EDIT STRUCTURE POPUP -->
-							<style type="text/css">
-							.ui-dialog div {
-								float: none;
-							}
-							#editPopup div {
-								float:left;
-							}
-							</style>
-							
-							
-							
-							
-							
 						</h:panelGroup>
 					</h:panelGroup>	
 				</h:panelGroup>
@@ -852,7 +820,15 @@
 			
 			
 			
-			
+			<!-- START EDIT STRUCTURE POPUP -->
+			<style type="text/css">
+				.ui-dialog div {
+					float: none;
+				}
+				#editPopup div {
+					float:left;
+				}
+			</style>
 			<h:panelGroup layout="block" id="editPopup" style="background-color: #2F2F2F;" class="eg3_container1">
 				<h:form id="editPopupForm">
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_pageEditingContainer eg3_editContent">
@@ -876,38 +852,30 @@
 				</h:form>
 				
 				<script type="text/javascript">
-		        $( "#editPopup" ).dialog({
-		            modal: true,
-		            autoOpen:false,
-		            resizable:false,
-		            width: 800,
-		            title: "#{lbl.edit_structureEditHeader}"
-		        });
-		        function closePopup()
-		        {
-		        	$( "#editPopup" ).dialog('close');
-		        }
-	
-						</script>
+					function closePopup() {
+			        	$( "#editPopup" ).dialog('close');
+			        }
+					$(function() {
+				        $( "#editPopup" ).dialog({
+				            modal: true,
+				            autoOpen:false,
+				            resizable:false,
+				            width: 800,
+				            title: "#{lbl.edit_structureEditHeader}"
+				        });
+					});
+				</script>
 			</h:panelGroup>
 			
-			
-			
 			<script type="text/javascript">
-			
 				function resizeTreeContainer() {
-					console.log("resizeTreeCont");
 					var structTree = $('.eg3_editorStructureTree');
 					var height = $('.eg3_editPage_imgContainer').height() - Math.round(structTree.position().top);
-					if(height>200)
-					{
+					if(height>200) {
 						structTree.css("height", height);
 						structTree.css("max-height", height);
 					}
-					
-					
 				}
-				
 				
 				$(document).ready(function(e) {
 					EG3_CALLBACK = new Array("resizeTreeContainer()", "scrollThumbsContainer()", "scrollTreeContainer()");

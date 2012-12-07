@@ -18,33 +18,13 @@
 	
 	<!-- IMPLEMENTATION -->
 	<cc:implementation>
-		
-	<ui:remove>
-		<h:form id="form" prependId="false">
-			<h3>Choose file(s)</h3>
-			<p><input id="files-upload" type="file"/></p>
-			<p id="drop-area"><span class="drop-instructions">or drag
-			and drop files here</span> <span class="drop-over">Drop files here!</span></p>
-	
-			<ul id="file-list">
-				<li class="no-items">(no files uploaded yet)</li>
-			</ul>
-	
-		</h:form>
-		<!-- 
-		<link href="#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/styles/plupload.queue.css" type="text/css" rel="stylesheet"/>
-		-->
-	</ui:remove>
 		<h:outputStylesheet library="components/fileUpload/plupload/img"/>
-		
-		
 		
 		<!-- Load source versions of the plupload script files -->
 		<h:outputScript library="components/fileUpload/plupload" name="plupload.full.js" target="head"/>
 		<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js" target="head"/>
-		 <h:outputScript library="components/fileUpload/plupload/i18n" name="#{internationalizationHelper.userLocaleString}.js" target="head"/>
+		<h:outputScript library="components/fileUpload/plupload/i18n" name="#{internationalizationHelper.userLocaleString}.js" target="head"/>
 	    <h:outputScript library="components/fileUpload" name="plupload_custom.js" target="head"/>
-	    
 	    
 		<style type="text/css">
 			#pluploader {
@@ -96,91 +76,60 @@
 				text-align:center;
 			}
 		</style>
-		
-		
-				
 
 		<script type="text/javascript">
-	   			 $(function(e)
-				{
-					initUploader('#{cc.clientId}', 
-							'#{cc.attrs.rerender}',
-							getViewState(),
-							'#{session.id}',
-							'#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}',
-							'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf',
-							'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.silverlight.xap');
-				});
-				
-				function getViewState()
-				{
-					if(document.getElementsByName('javax.faces.ViewState')[0])
-					{
-						var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
-						var regExp = new RegExp('\\+','g');
-						var encodedViewState = viewStateValue.replace(regExp, '\%2B');
-						return encodedViewState;
-					}
-					else
-					{
-						return '';
-					}
+			function getViewState() {
+				if(document.getElementsByName('javax.faces.ViewState')[0]) {
+					var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+					var regExp = new RegExp('\\+','g');
+					var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+					return encodedViewState;
+				} else {
+					return '';
 				}
-			//	$("link[href$='standard.css']").remove();
-	    </script>
-	
-		
-			<div id="#{cc.clientId}" style="width:100%;">
-		 
-			 	<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
-				
+			}
 			
-				<!-- 
-					<div id="filelist">No runtime found.</div>
-					<br />
-					<div id="dropArea" style="background-color: lightblue; width:100px; height:100px;">Drop Files Here</div>
-					<a id="pickfiles" href="#">[Select files]</a> 
-					<a id="uploadfiles" href="#">
-						<h:outputText value="[Upload files]"/>
-					</a>
-	-->
-	 
-				<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" action="#{cc.attrs.onUploadCompleteAction}" style="visibility:hidden; display:none;">
-					<a4j:ajax execute="#{cc.attrs.execute}" render="#{cc.attrs.rerender}"/>
-				</h:commandButton>
-
-
-				
-
-
-				<style type="text/css">
+			$(function(e) {
+				initUploader('#{cc.clientId}', 
+					'#{cc.attrs.rerender}',
+					getViewState(),
+					'#{session.id}',
+					'#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}',
+					'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf',
+					'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.silverlight.xap');
+			});
+		</script>
+		
+		<div id="#{cc.clientId}" style="width:100%;">
+			
+			<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
+			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" action="#{cc.attrs.onUploadCompleteAction}" style="visibility:hidden; display:none;">
+				<a4j:ajax execute="#{cc.attrs.execute}" render="#{cc.attrs.rerender}"/>
+			</h:commandButton>
+			
+			<style type="text/css">
 				.ui-dialog div {
 					float: none;
 				}
-				</style>
-				
-				<div id="modalUploadDialog" title="#{lbl.ingest_uploadInProgress}">
-					<p><h:outputText value="#{lbl.ingest_pleaseWait}" /></p>
-					<div id="progressBar"></div>
-				</div>
-				<script type="text/javascript">
-				   
-			        $( "#modalUploadDialog" ).dialog({
-			            modal: true,
-			            autoOpen:false,
-			            resizable:false,
-			            open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
-			        });
-				    
-				    $( "#progressBar" ).progressbar({
-			            value: 0  
-			        });
-    			</script>
-				
-				 	
-		    </div>
-		    
-		    
-		
+			</style>
+			
+			<div id="modalUploadDialog" title="#{lbl.ingest_uploadInProgress}">
+				<p><h:outputText value="#{lbl.ingest_pleaseWait}" /></p>
+				<div id="progressBar"></div>
+			</div>
+			<script type="text/javascript">
+				$(function() {
+					$( "#modalUploadDialog" ).dialog({
+						modal:true,
+						autoOpen:false,
+						resizable:false,
+						open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
+					});
+					$( "#progressBar" ).progressbar({
+						value: 0
+					});
+				});
+			</script>
+		</div>
 	</cc:implementation>
 </html>
