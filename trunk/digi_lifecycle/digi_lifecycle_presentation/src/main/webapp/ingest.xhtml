@@ -13,14 +13,14 @@
 
 
 
-		<ui:define name="separateContentHeader">
-			
-			<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader" rendered="#{ingestBean.volumeId != 'new'}">
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<modsViewer:header volume="#{ingestBean.volume}"/>
-				</h:panelGroup>
+	<ui:define name="separateContentHeader">
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader" rendered="#{ingestBean.volumeId != 'new'}">
+			<h:panelGroup layout="block" styleClass="eg3_container_1">
+				<modsViewer:header volume="#{ingestBean.volume}"/>
 			</h:panelGroup>
-		</ui:define>
+		</h:panelGroup>
+	</ui:define>
 
 	<ui:define name="mainContent">
 		
@@ -54,8 +54,6 @@
 			</script>
 			<!-- right content -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-				
-				
 					<rich:panel id="submit" styleClass="eg3_submitPanel">
 						<h:panelGroup styleClass="eg3_floatRight">
 							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="$('#popup').dialog('open');" oncomplete="$('#popup').dialog('close');">
@@ -68,24 +66,6 @@
 								<a4j:ajax render="modsInfo teiInfo imageInfo"/>
 							</h:commandButton>
 						</h:panelGroup>
-						
-						<style type="text/css">
-						.ui-dialog div {
-							float: none;
-						}
-						</style>
-						
-						<div id="popup" title="#{msg.upload_progress}">
-							<p><h:outputText value="#{msg.upload_progressMsg}"/></p>
-						</div>
-						<script type="text/javascript">
-					        $( "#popup" ).dialog({
-					            modal: true,
-					            autoOpen:false,
-					            resizable:false,
-					            open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
-					        });
-		    			</script>
 					</rich:panel>
 					<rich:panel id="select" styleClass="eg3_uploadTypePanel" rendered="#{ingestBean.volumeId == 'new'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
@@ -170,8 +150,6 @@
 								<modsEditor:volume modsMetadata="#{ingestBean.modsMetadata}"/>
 							</h:panelGroup>
 						</ui:fragment>
-						
-
 						
 						<br/>
 						<h:commandButton action="#{ingestBean.clearUploadedMAB}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clearArea}" rendered="#{not empty ingestBean.mabFile and empty ingestBean.volume}">
@@ -307,10 +285,29 @@
 						<h:outputText value="#{lbl.ingest_FooterNotAvailable}" rendered="#{empty ingestBean.footer}"/>
 						<h:outputText value="#{ingestBean.footer.name}" rendered="#{not empty ingestBean.footer}"/>
 		            </rich:panel>
-				
 				</h:panelGroup>
 			</h:form>
 		</h:panelGroup>
+		
+		<style type="text/css">
+			.ui-dialog div {
+				float: none;
+			}
+		</style>
+		
+		<div id="popup" title="#{msg.upload_progress}">
+			<p><h:outputText value="#{msg.upload_progressMsg}"/></p>
+		</div>
+		<script type="text/javascript">
+	        $(function() {
+	        	$( "#popup" ).dialog({
+		            modal: true,
+		            autoOpen:false,
+		            resizable:false,
+		            open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
+		        });
+	        });
+  		</script>
 	</ui:define>
 
 </ui:composition>
