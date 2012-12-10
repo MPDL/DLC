@@ -162,7 +162,7 @@
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.text.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[divItem]}" rendered="#{divItem.elementType != 'PB'}">
 												<mpdl:treeEntry teiElement="#{divItem}" linkAction="#{viewPages.goTo(divItem)}" linkStyleClass="struct_#{divItem.id} #{divItem == viewPages.selectedDiv ? 'eg3_active' : ''}"
-																render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>							
+																render=":viewPage :citationOverlayArea"/>							
 											</rich:treeNode>
 										</rich:treeModelRecursiveAdaptor>
 									</rich:tree>
@@ -172,7 +172,7 @@
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.teiSdRoots}" nodes="#{treeElement.children}">
 											<rich:treeNode expanded="#{viewPages.treeExpansionStateMap[treeElement.id]}" rendered="#{treeElement.render}">
 												
-												<h:commandLink action="#{viewPages.goTo(treeElement.id)}" styleClass="struct_#{treeElement.id} #{treeElement.id == viewPages.selectedDiv ? 'eg3_active' : ''}">
+												<h:commandLink action="#{viewPages.goTo(treeElement.id)}" styleClass="struct_#{treeElement.id} eg3_treeStructLink">
 													<h:panelGroup rendered="#{treeElement.element.localName=='div' or treeElement.element.localName=='titlePage'}">
 														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',treeElement.element.getAttribute('type'))}]" rendered="#{treeElement.element.localName=='div' and not empty treeElement.element.getAttribute('type')}"/>
 														<h:outputText value="[-]" rendered="#{treeElement.element.localName=='div' and empty treeElement.element.getAttribute('type')}"/>
@@ -201,7 +201,7 @@
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.head)}" rendered="#{(treeElement.element.localName=='div' or treeElement.element.localName=='figure') and not empty treeElement.head}" />
 													
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.docTitle)}" rendered="#{treeElement.element.localName=='titlePage'}"/>
-													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+													<f:ajax render=":viewPage :citationOverlayArea"/>
 												</h:commandLink>		
 											</rich:treeNode>
 										</rich:treeModelRecursiveAdaptor>
@@ -222,7 +222,7 @@
 											<h:panelGroup layout="block" styleClass=" #{var.id} eg3_container_1_2 eg3_thumbnail #{ (viewPages.viewTypeMap[var] == 'single' ||viewPages.viewTypeMap[var]=='right' || ((viewPages.viewTypeMap[var] != 'single' and viewPages.viewTypeMap[var] != 'left' and viewPages.viewTypeMap[var] != 'right') and (rowKey+1) % 2 == 1)) ? 'eg3_floatNone' : '' }">
 												<h:commandLink action="#{viewPages.goToPage(var)}" onclick="eg3_closeOverlay('.eg3_collapseOverlay', 'thumbs');">
 													<h:graphicImage id="img" value="#{volumeUtilBean.getImageServerUrl(var.contentIds, 'THUMBNAIL')}"/>
-													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+													<f:ajax render=":viewPage :citationOverlayArea"/>
 												</h:commandLink>
 												
 												<h:panelGroup styleClass="eg3_thumbnailLabel">
@@ -296,8 +296,13 @@
 						function scrollTree() {
 							var selectedDivId= '#{viewPages.selectedDiv}';
 							var containerId = "#{rich:clientId('tocTreeContainer')}";
+
+							$('.eg3_id_sidebarLeft .eg3_toc .eg3_treeStructLink').removeClass("eg3_active");
 							
-							scrollDiv(containerId, 'struct_' + selectedDivId);
+							if (selectedDivId) {
+								scrollDiv(containerId, 'struct_' + selectedDivId);
+								$('.struct_' + selectedDivId).addClass("eg3_active");
+							}
 						}
 						
 						function scrollThumbs() {
@@ -460,17 +465,17 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'RECTO_VERSO') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'FULLTEXT') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSdXml}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
@@ -485,17 +490,17 @@
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedRightPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
 										<h:outputText value="#{lbl.view_singlePage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('RECTO_VERSO', viewPages.selectedRightPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'RECTO_VERSO') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'RECTO_VERSO'}" title="#{tlt.view_page_rectoVerso}">
 										<h:outputText value="#{lbl.view_rectoVersoPage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<h:commandLink action="#{viewPages.switchViewType('FULLTEXT', viewPages.selectedRightPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'FULLTEXT') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'FULLTEXT'}" rendered="#{not empty viewPages.volume.teiSdXml}" title="#{tlt.view_page_transcript}">
 										<h:outputText value="#{lbl.view_fulltextPage}"/>
-										<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
 									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
@@ -527,11 +532,11 @@
 										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
 											<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
 												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 										</ui:fragment>
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt 2}">
@@ -548,11 +553,11 @@
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 											<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
 												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 										</ui:fragment>
 										<ui:fragment rendered="#{viewPages.selectedPageNumber >= viewPages.volume.pages.size()}">
@@ -583,11 +588,11 @@
 										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
 											<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
 												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-													<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+													<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 										</ui:fragment>
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt 2}">
@@ -615,7 +620,7 @@
 											</span>
 										</h:panelGroup>
 										<h:selectOneMenu value="#{viewPages.selectedPageNumber}">
-								   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+								   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage :citationOverlayArea"/>
 								   			<f:selectItems value="#{viewPages.pageListMenu}"/>
 								   		</h:selectOneMenu>
 								   	</h:panelGroup>
@@ -625,12 +630,12 @@
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
 											<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
 												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 											<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 		
-												<f:ajax render=":viewPage #{empty rich:clientId('tocTreeContainer') ? '' : ':'.concat(rich:clientId('tocTreeContainer'))} :citationOverlayArea"/>
+												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
 										</ui:fragment>
 										<ui:fragment rendered="#{viewPages.selectedPageNumber >= viewPages.volume.pages.size()}">
