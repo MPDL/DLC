@@ -32,7 +32,9 @@ import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
+import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.component.Component;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeServiceBean;
 import de.mpg.mpdl.dlc.beans.CreateVolumeThread;
 import de.mpg.mpdl.dlc.beans.LoginBean;
@@ -107,6 +109,9 @@ public class IngestBean{
 
 	private VolumeServiceBean volumeService = new VolumeServiceBean();
 	private CreateVolumeServiceBean createVolumeService = new CreateVolumeServiceBean();
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	
+	private Context context;
 	
 
 //	private SearchBean searchBeans = new SearchBean();
@@ -145,6 +150,7 @@ public class IngestBean{
 				//this.volume = volumeService.retrieveVolume(volumeId, loginBean.getUserHandle());
 				clearAllData();
 				this.volume = volumeService.loadCompleteVolume(volumeId,  loginBean.getUserHandle());
+				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 				//if(mabFile == null)
 				
 				this.modsMetadata = retrieveModsMetadata(volume.getModsMetadata());
@@ -281,6 +287,7 @@ public class IngestBean{
 							this.contextSelectItems.add(item);
 						}
 					}
+					/*
 					for(Collection c : loginBean.getUser().getModeratorCollections())
 					{  
 						if(!ids.contains(c.getId()))
@@ -290,6 +297,7 @@ public class IngestBean{
 							this.contextSelectItems.add(item);
 						}
 					}
+					*/
 				}
 				this.selectedContextId = (String)contextSelectItems.get(0).getValue();
 			}
@@ -1531,6 +1539,14 @@ public class IngestBean{
 
 	public void setCodicologicalFile(DiskFileItem codicologicalFile) {
 		this.codicologicalFile = codicologicalFile;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 	
 
