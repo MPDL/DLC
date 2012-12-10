@@ -297,10 +297,12 @@
 							var selectedDivId= '#{viewPages.selectedDiv}';
 							var containerId = "#{rich:clientId('tocTreeContainer')}";
 
-							$('.eg3_id_sidebarLeft .eg3_toc .eg3_treeStructLink').removeClass("eg3_active");
 							
+							$('.eg3_id_sidebarLeft .eg3_toc .eg3_treeStructLink').removeClass("eg3_active");
 							if (selectedDivId) {
 								scrollDiv(containerId, 'struct_' + selectedDivId);
+
+								//highlight tree entry which is currently selected
 								$('.struct_' + selectedDivId).addClass("eg3_active");
 							}
 						}
@@ -308,6 +310,7 @@
 						function scrollThumbs() {
 							var selectedPageId= "#{viewPages.selectedPage.id}";
 							var selectedRightPageId= "#{viewPages.selectedRightPage.id}";
+
 							
 							$('.eg3_id_sidebarLeft .eg3_thumbContainer .eg3_thumbnail').removeClass("eg3_active");
 							
@@ -315,6 +318,7 @@
 							
 							if (selectedPageId) {
 								scrollDiv(containerId, selectedPageId);
+								//highlight thumbnail entry which is currently selected
 								$('.' + selectedPageId).addClass("eg3_active");
 								if(selectedRightPageId) {
 									$('.' + selectedRightPageId).addClass("eg3_active");
