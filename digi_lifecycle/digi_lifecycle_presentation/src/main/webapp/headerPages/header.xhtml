@@ -65,13 +65,14 @@
 							<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 								<span class="eg3_selectionText"></span>
 							</h:panelGroup>
-							<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}" immediate="true" onchange="submit();"
+							<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}" immediate="true" 
 								valueChangeListener="#{internationalizationHelper.changeLanguage}" title="#{tlt.meta_language}">
 								<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}"/>
 								<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}"/>
 								<f:selectItem itemValue="es" itemLabel="#{lbl.ENUM_LANGUAGE_ES}"/>
 								<f:selectItem itemValue="fr" itemLabel="#{lbl.ENUM_LANGUAGE_FR}"/>
 								<f:selectItem itemValue="it" itemLabel="#{lbl.ENUM_LANGUAGE_IT}"/>
+								<f:ajax event="change" execute="@all" render="@all"/>
 							</h:selectOneMenu> 
 						</h:panelGroup>
 					</h:form>
