@@ -17,7 +17,7 @@
 		
 		<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPageHeader" rendered="#{ingestBean.volumeId != 'new'}">
 			<h:panelGroup layout="block" styleClass="eg3_container_1">
-				<modsViewer:header volume="#{ingestBean.volume}"/>
+				<modsViewer:header volume="#{ingestBean.volume}" context="#{ingestBean.context}"/>
 			</h:panelGroup>
 		</h:panelGroup>
 	</ui:define>
