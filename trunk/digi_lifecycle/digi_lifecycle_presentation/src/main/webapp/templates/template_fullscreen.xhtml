@@ -43,13 +43,13 @@ All rights reserved. Use is subject to license terms.
 
 	<html xmlns="http://www.w3.org/1999/xhtml">
 		<h:head>
-			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
+			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle | #{utilBean.userAgent.family}: #{tilBean.userAgent.versionNumber.groups[0]}}" /></title>
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 			<meta http-equiv="pragma" content="no-cache" />
 			<meta http-equiv="cache-control" content="no-cache" />
 			<meta http-equiv="expires" content="-1" />
 			
-			<ui:fragment rendered="#{utilBean.userAgent.family == 'IE' and utilBean.userAgent.versionNumber.groups[0] lt 9}">
+			<ui:fragment rendered="#{utilBean.userAgent.family == 'IE' and utilBean.userAgent.versionNumber.groups[0] lt 10}">
 				<meta http-equiv="X-UA-Compatible" content="IE=9"/>
 			</ui:fragment>
 			
