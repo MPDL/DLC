@@ -192,6 +192,7 @@ public class ViewCollection {
 			scList.add(new SearchCriterion(SearchType.CONTEXT_ID, col.getId()));
 			scList.add(new SearchCriterion(SearchType.FREE, searchString));
 			
+			advancedSearchResultBean.reset();
 			advancedSearchResultBean.setSearchCriterionList(scList);
 			String cql = searchBean.getAdvancedSearchCQL(scList);
 			advancedSearchResultBean.setCqlQuery(cql);

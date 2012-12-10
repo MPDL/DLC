@@ -41,7 +41,7 @@ public class QuickSearchBean {
 
 			//Set fulltext search
 
-
+			advancedSearchResultBean.reset();
 			advancedSearchResultBean.setSearchCriterionList(scList);
 			String cql = new SearchBean().getAdvancedSearchCQL(scList);
 			advancedSearchResultBean.setCqlQuery(cql);
