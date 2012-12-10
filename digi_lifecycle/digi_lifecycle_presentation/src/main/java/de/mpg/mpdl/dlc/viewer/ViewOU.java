@@ -246,6 +246,7 @@ public class ViewOU {
 			scList.add(new SearchCriterion(SearchType.CONTEXT_ID, ctx.getObjid()));
 			scList.add(new SearchCriterion(SearchType.FREE, collectionSearchStrings.get(pos)));
 			
+			advancedSearchResultBean.reset();
 			advancedSearchResultBean.setSearchCriterionList(scList);
 			String cql = searchBean.getAdvancedSearchCQL(scList);
 			advancedSearchResultBean.setCqlQuery(cql);

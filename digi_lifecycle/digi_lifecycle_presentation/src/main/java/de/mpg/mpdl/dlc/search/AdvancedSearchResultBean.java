@@ -112,6 +112,7 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 //		{
 			sessionBean.setLatestCql(cqlQuery);
 //		}
+		//this.setCurrentPageNumber(1);
 		this.cqlQuery = query;
 	}
 

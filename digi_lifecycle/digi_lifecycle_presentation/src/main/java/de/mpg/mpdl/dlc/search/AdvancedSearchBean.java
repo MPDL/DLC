@@ -495,6 +495,7 @@ public class AdvancedSearchBean implements Observer {
 			scList.addAll(cdcSearchCriterionList);
 			
 		
+			advancedSearchResultBean.reset();
 			advancedSearchResultBean.setSearchCriterionList(scList);
 			String cql = searchBean.getAdvancedSearchCQL(scList);
 			advancedSearchResultBean.setCqlQuery(cql);
