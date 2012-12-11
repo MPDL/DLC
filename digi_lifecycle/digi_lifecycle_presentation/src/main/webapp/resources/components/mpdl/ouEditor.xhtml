@@ -9,62 +9,65 @@
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich">
 	
-<!-- INTERFACE -->
-<cc:interface>
-	<cc:attribute name="target" required="true"/>
-	<cc:attribute name="title" requied="false" />
-	<cc:attribute name="organization" required="true" />
-	<cc:attribute name="command"  method-signature="java.lang.String action()" required="true" />
-</cc:interface>	
-
-<!-- IMPLEMENTATION -->
-<cc:implementation>	
-
-	<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()" width="400" height="400">
-        <f:facet name="header">
-            <h:outputText value="#{cc.attrs.title}" />
-        </f:facet>
-        <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
-            	X
-            </h:outputLink>
-        </f:facet>
-        
-
-        <h:panelGrid columns="2" id="editOrga">
-            <h:outputText value="#{lbl.admin_ou_name} *" />
-            <h:inputText value="#{cc.attrs.organization.escidocMd.title}"/>
-            
-            <h:outputText value="#{lbl.admin_ou_description}" />
-            <h:inputTextarea cols="1000"  value="#{cc.attrs.organization.escidocMd.description}"/>
-            
-            <h:outputText value="#{lbl.admin_ou_logoUrl}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imgURL}"/>
-            <h:outputText value="#{lbl.admin_ou_homepageUrl}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.homePageURL}"/>
-            <h:outputText value="#{lbl.admin_ou_contact}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.contact}"/>
-            <h:outputText value="#{lbl.admin_ou_cataloguePrefix}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.cataloguePrefix}"/>    
-            <h:outputText value="#{lbl.admin_ou_imprint}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imprint}"/>
-            <h:outputText value="#{lbl.admin_ou_support}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.support}"/>
-            <h:outputText value="#{lbl.admin_ou_usageRequirement}" />
-            <h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.usageRequirement}"/>            
-            
-            
-                  
-            <h:outputText value="#{lbl.admin_ou_country}" />
-            <h:inputText value="#{cc.attrs.organization.escidocMd.country}" />
-            <h:outputText value="#{lbl.admin_ou_city}" />
-            <h:inputText value="#{cc.attrs.organization.escidocMd.city}"/>
-        </h:panelGrid>
-    	<a4j:commandButton value="#{lbl.button_command_save}" action="#{cc.attrs.command}" execute="@form"/>
-
-    </rich:popupPanel>
-
-</cc:implementation>
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="target" required="true"/>
+		<cc:attribute name="title" requied="false"/>
+		<cc:attribute name="organization" required="true"/>
+		<cc:attribute name="command"  method-signature="java.lang.String action()" required="true"/>
+	</cc:interface>
 	
-	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()" width="600" height="400" headerClass="eg3_container_1" styleClass="eg3_borderradius_5 eg3_pageEditingContainer" style="color:#FFFFFF;">
+			<f:facet name="header">
+				<h:outputText value="#{cc.attrs.title}"/>
+			</f:facet>
+			<f:facet name="controls">
+				<h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+					<h:outputText value=" " styleClass="eg3_icon_delete_16_16" style="display:inline-block;"/>
+				</h:outputLink>
+			</f:facet>
+			
+			<h:panelGroup id="editUser">
+				<h:panelGrid columns="2" id="editOrga" styleClass="eg3_container_1">
+					<h:outputText value="#{lbl.admin_ou_name} *"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.title}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_description}"/>
+					<h:inputTextarea value="#{cc.attrs.organization.escidocMd.description}" styleClass="eg3_container_1" rows="10"/>
+					
+					<h:outputText value="#{lbl.admin_ou_logoUrl}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imgURL}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_homepageUrl}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.homePageURL}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_contact}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.contact}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_cataloguePrefix}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.cataloguePrefix}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_imprint}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imprint}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_support}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.support}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_usageRequirement}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.usageRequirement}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_country}"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.country}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_city}"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.city}" styleClass="eg3_container_1"/>
+				</h:panelGrid>
+				<h:panelGroup layout="block" styleClass="eg3_submitPanel eg3_container_1">
+					<a4j:commandButton value="#{lbl.button_command_save}" action="#{cc.attrs.command}" execute="@form" styleClass="eg3_borderradius_5"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</rich:popupPanel>
+	</cc:implementation>
 </html>

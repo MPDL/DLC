@@ -25,17 +25,17 @@
 			</f:facet>
 			<f:facet name="controls">
 				<h:outputLink value="#" onclick="#{rich:component('popupContext')}.hide(); return false;">
-					<h:outputText value="X"/>
+					<h:outputText value=" " styleClass="eg3_icon_delete_16_16" style="display:inline-block;"/>
 				</h:outputLink>
 			</f:facet>
 			
 			<h:panelGroup id="editCollection">
 				<h:panelGrid columns="2" styleClass="eg3_container_1">
 					<h:outputText value="#{lbl.admin_context_name} *"/>
-					<h:inputText id="contextName" value="#{cc.attrs.collection.name}" style="width:29em;"/>
+					<h:inputText id="contextName" value="#{cc.attrs.collection.name}" styleClass="eg3_container_1"/>
 					
 					<h:outputText value="#{lbl.admin_context_description} *"/>
-					<h:inputTextarea id="contextDes" value="#{cc.attrs.collection.description}" styleClass="eg3_border_1 eg3_maxLength" rows="20" style="width:30em; resize:vertical;" onkeyup="updateLeftChars('input.eg3_charLeft', 25000, this);"/>
+					<h:inputTextarea id="contextDes" value="#{cc.attrs.collection.description}" styleClass="eg3_container_1 eg3_border_1 eg3_maxLength" rows="20" onkeyup="updateLeftChars('input.eg3_charLeft', 25000, this);"/>
 					
 					<h:panelGroup> </h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_1">
