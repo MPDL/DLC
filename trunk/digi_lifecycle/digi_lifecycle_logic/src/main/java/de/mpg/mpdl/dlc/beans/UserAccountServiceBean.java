@@ -87,6 +87,7 @@ public class UserAccountServiceBean {
 			client.setHandle(userHandle);
 			UserAccount ua = client.retrieve(userId);
 			
+			user.setUserAccount(ua);
 			user.setId(userId);
 			user.setName(ua.getProperties().getName());
 			user.setLoginName(ua.getProperties().getLoginName());
@@ -154,6 +155,9 @@ public class UserAccountServiceBean {
 		return user;
 	}
 	
+	
+	
+	
 	public User retrieveCurrentUser(String userHandle)
 	{
 		User user = new User();
@@ -168,6 +172,7 @@ public class UserAccountServiceBean {
 			}
 			UserAccount ua = client.retrieveCurrentUser();
 			String userId = ua.getObjid();
+			user.setUserAccount(ua);
 			user.setId(userId);
 			user.setName(ua.getProperties().getName());
 			user.setLoginName(ua.getProperties().getLoginName());
@@ -383,6 +388,7 @@ public class UserAccountServiceBean {
 				}
 				
 				ua = client.retrieve(ua.getObjid());
+				user.setUserAccount(ua);
 			}
 			
 		}catch(UniqueConstraintViolationException e)
@@ -552,7 +558,7 @@ public class UserAccountServiceBean {
 		return id;
 	}
 	
-	public String deactivateUserAccount(String id, String userHandle)
+	public UserAccount deactivateUserAccount(String id, String userHandle)
 	{
 		logger.info("deaktive user Account");
 		UserAccount ua;
@@ -567,12 +573,16 @@ public class UserAccountServiceBean {
 			taskParam.setLastModificationDate(ua.getLastModificationDate());
 			
 			client.deactivate(id, taskParam);
+			ua = client.retrieve(ua.getObjid());
+			return ua;
+			
 			
 		}catch(Exception e)
 		{
-			
+			logger.error("Error while deactivating user account", e);
 		}
-		return id;
+		return null;
+		
 	}
 
 	public static void main(String[] args) throws Exception {

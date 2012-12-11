@@ -195,6 +195,9 @@ public class AdminBean{
 		if(collection.getName().equals("") || collection.getDescription().equals(""))
 		{
 			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_collection_validation"));
+			Collection editCo= contextServiceBean.retrieveCollection(editCollectionId, loginBean.getUserHandle());
+			loginBean.getUser().getCreatedCollections().remove(collection);
+			loginBean.getUser().getCreatedCollections().add(editCo);
 			return "pretty:admin";
 		}
 		if(editCollectionId != null && editCollectionId.equals(collection.getId()))
@@ -203,12 +206,14 @@ public class AdminBean{
 				contextServiceBean.updateContext(collection, loginBean.getUserHandle());
 			} catch (ContextNameNotUniqueException e) 
 			{ 
-				Collection editCo= contextServiceBean.retrieveCollection(editCollectionId, loginBean.getUserHandle());
-				loginBean.getUser().getCreatedCollections().remove(collection);
-				loginBean.getUser().getCreatedCollections().add(editCo);
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_collection_name_exists"));
-				return "pretty:admin";
+				
 			}
+
+			Collection editCo= contextServiceBean.retrieveCollection(editCollectionId, loginBean.getUserHandle());
+			loginBean.getUser().getCreatedCollections().remove(collection);
+			loginBean.getUser().getCreatedCollections().add(editCo);
+			return "pretty:admin";
 		} 
 		else
 		{
@@ -253,26 +258,29 @@ public class AdminBean{
 			if(user.getName().equals("") || user.getLoginName().equals(""))
 			{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_user_edit_validation"));
-				return "pretty:admin";
+				return "";
 			}	
 			try
 			{
 				uaServiceBean.updateUserAccount(user, loginBean.getUserHandle());
+				
 			}
 			catch(UniqueConstraintViolationException e)
 			{
-				User editUser = uaServiceBean.retrieveUserById(user.getId(), loginBean.getUserHandle());
-				loginBean.getUser().getCreatedUsers().add(editUser);
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_user_loginname_exists"));
-				return "pretty:admin";
+				
 			}
+			User editUser = uaServiceBean.retrieveUserById(user.getId(), loginBean.getUserHandle());
+			loginBean.getUser().getCreatedUsers().remove(user);
+			loginBean.getUser().getCreatedUsers().add(editUser);
+			return "";
 		}
 		else
 		{
 			if(user.getName().equals("") || user.getLoginName().equals("") || user.getPassword().equals(""))
 			{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_user_validation"));
-				return "pretty:admin";
+				return "";
 			}
 			UserAccount ua = null;
 			try{
@@ -280,26 +288,27 @@ public class AdminBean{
 			}catch(UniqueConstraintViolationException e)
 			{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_admin_user_loginname_exists"));
-				return "pretty:admin";
+				return "";
 			}
 			if(ua != null)
 				loginBean.getUser().getCreatedUsers().add(uaServiceBean.retrieveUserById(ua.getObjid(),loginBean.getUserHandle()));
 		}
-		return "pretty:admin";
+		return "";
 	}
 	
 	public String deleteUser() throws Exception
 	{
 		String id = uaServiceBean.deleteUserAccount(user.getId(), loginBean.getUserHandle());
 		loginBean.getUser().getCreatedUsers().remove(user);
-		return "pretty:admin";
+		return "";
 	}
 	
 	public String deactivateUser() throws Exception
 	{
-		String id = uaServiceBean.deactivateUserAccount(user.getId(), loginBean.getUserHandle());
-		loginBean.getUser().getCreatedUsers().remove(user);
-		return "pretty:admin";
+		UserAccount ua = uaServiceBean.deactivateUserAccount(user.getId(), loginBean.getUserHandle());
+		user.setUserAccount(ua);
+		//loginBean.getUser().getCreatedUsers().remove(user);
+		return "";
 	}
 
 	public Organization getOrga() { 
