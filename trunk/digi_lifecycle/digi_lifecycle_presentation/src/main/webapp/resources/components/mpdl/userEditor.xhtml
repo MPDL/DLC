@@ -24,21 +24,20 @@
 			</f:facet>
 			<f:facet name="controls">
 				<h:outputLink value="#" onclick="#{rich:component('popupUser')}.hide(); return false;">
-					<h:outputText value="X"/>
+					<h:outputText value=" " styleClass="eg3_icon_delete_16_16" style="display:inline-block;"/>
 				</h:outputLink>
 			</f:facet>
 			
-			
 			<h:panelGroup id="editUser">
-				<h:panelGrid columns="2">
+				<h:panelGrid columns="2" styleClass="eg3_container_1">
 					<h:outputText value="#{lbl.admin_user_name} *"/>
-					<h:inputText id="name" value="#{cc.attrs.user.name}"/>
+					<h:inputText id="name" value="#{cc.attrs.user.name}" styleClass="eg3_container_1"/>
 					
 					<h:outputText value="#{lbl.admin_user_loginname} *"/>
-					<h:inputText id="loginName" value="#{cc.attrs.user.loginName}"/>
+					<h:inputText id="loginName" value="#{cc.attrs.user.loginName}" styleClass="eg3_container_1"/>
 					
 					<h:outputText value="#{lbl.admin_user_pwd} *"/>
-					<h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}"/>
+					<h:inputSecret redisplay="false" id="userpwd" value="#{cc.attrs.user.password}" styleClass="eg3_container_1"/>
 					
 					<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
 						<h:outputText value="#{lbl.admin_user_grants} *: "/>
@@ -53,7 +52,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_1" style="margin-top:1.75em;" rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 						<h:outputText value="#{lbl.admin_user_dep} "/>
-						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="height:40em;">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="max-height:40em;">
 							<h:selectManyCheckbox value="#{cc.attrs.user.depositorContextIds}" layout="pageDirection">
 								<f:selectItems value="#{adminBean.contextSelectItems}"/>
 							</h:selectManyCheckbox>
@@ -62,7 +61,7 @@
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 						<h:outputText value="#{lbl.admin_user_mod} "/>
-						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="height:40em;">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="max-height:40em;">
 							<h:selectManyCheckbox value="#{cc.attrs.user.moderatorContextIds}" layout="pageDirection">
 								<f:selectItems value="#{adminBean.contextSelectItems}"/>
 							</h:selectManyCheckbox>
@@ -71,7 +70,7 @@
 					
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 						<h:outputText value="#{lbl.admin_user_md_editor} "/>
-						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="height:40em;">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflowAuto" style="max-height:40em;">
 							<h:selectManyCheckbox value="#{cc.attrs.user.mdEditorContextIds}" layout="pageDirection">
 								<f:selectItems value="#{adminBean.contextSelectItems}"/>
 							</h:selectManyCheckbox>
@@ -84,7 +83,6 @@
 						<f:ajax execute="@form" render="@all :messages"  onevent="#{rich:component('popupUser')}.hide();"/>
 					</h:commandButton>
 				</h:panelGroup>
-			
 			</h:panelGroup>
 		</rich:popupPanel>
 	</cc:implementation>
