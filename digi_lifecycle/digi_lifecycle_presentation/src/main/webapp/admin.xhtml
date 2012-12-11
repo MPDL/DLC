@@ -54,11 +54,14 @@
 								</a4j:commandButton>
 							</h:panelGroup>
 							
-							
 							<rich:popupPanel id="confirmOrgaPane" autosized="true">
-								<h:outputText value="#{msg.admin_confirmCloseOu}"/>
-								<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;"/>
-								<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}"/>
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+									<h:outputText value="#{msg.admin_confirmCloseOu}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+									<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" styleClass="eg3_borderradius_5"/>
+									<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}" styleClass="eg3_floatRight eg3_borderradius_5"/>
+								</h:panelGroup>
 							</rich:popupPanel>
 							
 							<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
@@ -86,13 +89,16 @@
 								</h:panelGroup>
 							</a4j:repeat>
 							
-							<rich:popupPanel id="confirmCollectionPane" autosized="true"> 
-				    			<h:outputText value="#{msg.admin_confirmCloseCollection}"/>
-				    			<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmCollectionPane')}.hide(); return false;"/>
-				    			<a4j:commandButton value="#{lbl.button_command_close}" execute="@this" action="#{adminBean.closeCollection}"/>
+							<rich:popupPanel id="confirmCollectionPane" autosized="true">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+				    				<h:outputText value="#{msg.admin_confirmCloseCollection}"/>
+				    			</h:panelGroup>
+				    			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+				    				<a4j:commandButton value="#{lbl.button_command_cancel}" styleClass="eg3_borderradius_5" onclick="#{rich:component('confirmCollectionPane')}.hide(); return false;"/>
+				    				<a4j:commandButton value="#{lbl.button_command_close}" styleClass="eg3_floatRight eg3_borderradius_5" execute="@this" action="#{adminBean.closeCollection}"/>
+				    			</h:panelGroup>
 				    		</rich:popupPanel>
 				   
-				    		
 				    		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
 					    		<a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" styleClass="eg3_borderradius_5" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
 					    			<f:setPropertyActionListener target="#{adminBean.collection}" value="#{adminBean.newEmptyCollection}"/>
@@ -123,16 +129,19 @@
 										<h:panelGroup styleClass="eg3_floatRight" rendered="#{!user.userAccount.properties.active}">
 											<h:outputText value="#{lbl.admin_user_inactive}"/>
 										</h:panelGroup>
-										
 					               	</h:panelGroup> 
 								</a4j:repeat>
 							</h:panelGroup>
 							
 							<rich:popupPanel id="confirmUserPane" autosized="true">
-								<h:outputText value="#{msg.admin_confirmCloseUser}"/>
-								<a4j:commandButton title="#{lbl.button_command_cancel}" value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
-								<a4j:commandButton title="#{lbl.button_command_delete}" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-								<a4j:commandButton title="#{lbl.button_command_deactivate}" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_deactivate}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+				    				<h:outputText value="#{msg.admin_confirmCloseUser}"/>
+				    			</h:panelGroup>
+				    			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+									<a4j:commandButton title="#{lbl.button_command_cancel}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
+									<a4j:commandButton title="#{lbl.button_command_delete}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+									<a4j:commandButton title="#{lbl.button_command_deactivate}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_deactivate}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+								</h:panelGroup>
 							</rich:popupPanel>
 							
 							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
@@ -143,7 +152,6 @@
 							
 							<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}"/>
 						</rich:tab>
-
 					</rich:tabPanel>
 					
 				</h:panelGroup>
