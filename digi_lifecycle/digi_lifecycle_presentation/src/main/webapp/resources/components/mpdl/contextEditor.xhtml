@@ -32,10 +32,10 @@
 			<h:panelGroup id="editCollection">
 				<h:panelGrid columns="2" styleClass="eg3_container_1">
 					<h:outputText value="#{lbl.admin_context_name} *"/>
-					<h:inputText id="contextName" value="#{cc.attrs.collection.name}"/>
+					<h:inputText id="contextName" value="#{cc.attrs.collection.name}" style="width:29em;"/>
 					
 					<h:outputText value="#{lbl.admin_context_description} *"/>
-					<h:inputTextarea id="contextDes" value="#{cc.attrs.collection.description}" styleClass="eg3_border_1 eg3_maxLength" rows="10" style="width:30em; resize:vertical;" onkeyup="updateLeftChars('input.eg3_charLeft', 25000, this);"/>
+					<h:inputTextarea id="contextDes" value="#{cc.attrs.collection.description}" styleClass="eg3_border_1 eg3_maxLength" rows="20" style="width:30em; resize:vertical;" onkeyup="updateLeftChars('input.eg3_charLeft', 25000, this);"/>
 					
 					<h:panelGroup> </h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_1">
@@ -46,7 +46,7 @@
 						<h:outputText value="In"/>
 					</h:panelGroup>
 					<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
-						<h:selectOneMenu id="contextId1" value="#{cc.attrs.collection.ouId}">
+						<h:selectOneMenu id="contextId1" value="#{cc.attrs.collection.ouId}" style="width:29em;">
 							<f:selectItems value="#{adminBean.ouSelectItems}"/>
 						</h:selectOneMenu>
 					</h:panelGroup>
@@ -55,7 +55,7 @@
 						<h:outputText value="In"/>
 					</h:panelGroup>
 					<h:panelGroup rendered="#{loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}">
-						<h:selectOneMenu id="contextId2" value="#{cc.attrs.collection.ouId}">
+						<h:selectOneMenu id="contextId2" value="#{cc.attrs.collection.ouId}" style="width:29em;">
 							<f:selectItems value="#{adminBean.ouSelectItems}"/>
 						</h:selectOneMenu>
 					</h:panelGroup>

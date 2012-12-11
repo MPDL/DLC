@@ -80,7 +80,9 @@
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_submitPanel eg3_container_1">
-					<h:commandButton id="uaEditButton" value="#{lbl.button_command_save}" action="#{adminBean.editUser}" render="messages" execute="@form" styleClass="eg3_borderradius_5"/>
+					<h:commandButton id="uaEditButton" value="#{lbl.button_command_save}" action="#{adminBean.editUser}"  styleClass="eg3_borderradius_5">
+						<f:ajax execute="@form" render="@all :messages"  onevent="#{rich:component('popupUser')}.hide();"/>
+					</h:commandButton>
 				</h:panelGroup>
 			
 			</h:panelGroup>

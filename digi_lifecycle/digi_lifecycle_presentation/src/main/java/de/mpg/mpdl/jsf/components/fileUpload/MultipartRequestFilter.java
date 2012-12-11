@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 /**
  * This filter detects <tt>multipart/form-data</tt> and <tt>multipart/mixed</tt> POST requests and
@@ -44,6 +45,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 @WebFilter(filterName = "FileUploadFilter", urlPatterns = { "/*" })
 public class MultipartRequestFilter implements Filter {
 
+	private static Logger logger = Logger.getLogger(MultipartRequestFilter.class);
     // Constants ----------------------------------------------------------------------------------
 
     private static final String INIT_PARAM_LOCATION = "location";
@@ -65,7 +67,12 @@ public class MultipartRequestFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
+        
         if (ServletFileUpload.isMultipartContent(httpRequest)) {
+        	if(httpRequest.getSession()!=null)
+            {
+            	logger.info("Found multipart Content for sesssion: " + httpRequest.getSession().getId());
+            }
             request = new MultipartRequest(httpRequest, location);
             //System.out.println(request);
             //System.out.println(httpRequest.getHeader("Cookie"));

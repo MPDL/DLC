@@ -14,6 +14,9 @@ import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 public class User {
 	
+	
+	private UserAccount userAccount;
+	
 	private String id;
 	private String name;
 	private String loginName;
@@ -288,6 +291,14 @@ public class User {
 
 	public void setMdEditorContextIds(List<String> mdEditorContextIds) {
 		this.mdEditorContextIds = mdEditorContextIds;
+	}
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	
