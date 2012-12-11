@@ -146,6 +146,9 @@ option {
 .eg3_overflowAuto {
 	overflow:auto !important;
 }
+.eg3_id_wrapper div.eg3_overflowAuto {
+	overflow:auto;
+}
 .eg3_overflow_z20 {
 	overflow:visible !important;
 	z-index:20;

@@ -607,11 +607,15 @@ function eg3_resizeSidebar() {
 	if (EG3_PAGE_IMG_OBJ) {
 		//check every image of them height and safe the greates value
 		for (var i = 0; i < EG3_PAGE_IMG_OBJ.length; i++) {
-			var tmpHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height();
+			var imgHeight = $(EG3_PAGE_IMG_OBJ.get(i)).height(); // height of the image
+			var imgContHeight = $(EG3_PAGE_IMG_OBJ.get(i)).parent().height(); // height of image container
+			tmpHeight = (imgHeight < imgContHeight) ? imgContHeight : imgHeight; //check which height is greater
+			//check if the new height is the maximum value for sidebar height
 			if (tmpHeight > maxHeight) {
 				maxHeight = tmpHeight;
 			}
 		}
+		
 		//safe the sidebar as jQuery object
 		var sdb = $(".eg3_id_sidebarLeft");
 		if (sdb.length > 0) {
