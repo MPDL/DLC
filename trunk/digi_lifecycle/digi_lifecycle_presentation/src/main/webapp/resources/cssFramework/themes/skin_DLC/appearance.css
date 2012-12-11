@@ -2383,8 +2383,44 @@ body .eg3_id_siteTitle {
 
 /*****************************************************************************************************
  *******************************					submitPanel				**************************
- used by editing
+ used by editing, search, admin, ...
  *****************************************************************************************************/
+.eg3_submitPanel.eg3_popup input[type=submit] {
+	background-color:transparent;
+	margin-left:1em;
+	margin-top:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=submit]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_submitPanel.eg3_popup input[type=reset] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=reset]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_submitPanel.eg3_popup input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=button]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+
+ 
 .eg3_searchPage .eg3_submitPanel input[type=submit] {
 	background-color:transparent;
 	margin-left:1em;
