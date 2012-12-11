@@ -92,11 +92,13 @@
 					</ui:fragment>
 				</ui:remove>
 				<script type="text/javascript">
-					if ($.browser.msie) {
-						$('.eg3_markTextButton').bind("click", function(evt, btn){
-							$(this).next("input[id]").focus().select();
-						});
-					}
+					$(function(){
+						if ($.browser.msie) {
+							$('.eg3_markTextButton').bind("click", function(evt, btn){
+								$(this).next("input[id]").focus().select();
+							});
+						}
+					});
 				</script>
 			</h:panelGroup>
 		</ui:define>
@@ -399,6 +401,25 @@
 							}
 						}
 						
+						
+						function openExportMenu(headerObj) {
+							var menuBody = $(headerObj).parents(".eg3_overlayHeader").next();
+							menuBody.show();
+							$(".eg3_id_wrapper").one("click", function(e){
+								menuBody.hide();
+							});
+						}
+						function closeExportMenu(bodyObj) {
+							$(bodyObj).parents(".eg3_overlayBody").hide();
+						}
+						$(function() {
+							$('.eg3_overlayHeader .eg3_selectionText').click(function(e){
+								eg3_stopDefaultAction(e);
+								openExportMenu(this);
+							});
+						});
+						
+						
 						var pageInit = false;
 						function initPageStart() {
 							if (!pageInit) {
@@ -512,7 +533,6 @@
 							</ui:fragment>
 							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
 						</h:panelGroup>
-						
 						
 						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_2_3">
 							<h:form styleClass="eg3_pageBrowser">
@@ -646,28 +666,33 @@
 							</h:form>
 						</h:panelGroup>
 						
-						
 						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color eg3_container_1_20 eg3_noWrap" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
 							<h:form>
 								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow_z20">
 									<h:panelGroup layout="block" styleClass="eg3_overlayHeader eg3_alternate_color_1">
-										<h:panelGroup styleClass="eg3_selectionText"><h:outputText value="#{lbl.export_headline}"/></h:panelGroup>
+										<a class="eg3_selectionText" onclick="openExportMenu(this);"><h:outputText value="#{lbl.export_headline}"/></a>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_overlayBody eg3_posBottom eg3_posRight eg3_overflow_z50">
-										<ul>											
+										<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_textRight">
+											<span class="eg3_icon_delete_16_16" onclick="closeExportMenu(this);" style="display:inline-block;"> </span>
+										</h:panelGroup>
+										<ul class="eg3_clearAll">										
 											<li><h:outputLink styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=PDF" target="_blank">
 													<h:outputText value="#{lbl.export_as_pdf}"/>
-												</h:outputLink></li>										
-
+												</h:outputLink>
+											</li>										
 											<li><h:outputLink title="#{tlt.export_mods}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=MODS" target="_blank">
 															  <h:outputText value="#{lbl.export_mets_mods}"/>
-												</h:outputLink></li>															  			  
+												</h:outputLink>
+											</li>															  			  
 											<li><h:outputLink title="#{tlt.export_as_tei}" styleClass="eg3_selectionText" value="#{applicationBean.domain}/dlc/export/?id=#{viewPages.volume.objidAndVersion}&amp;format=TEI" target="_blank" rendered="#{viewPages.hasTei}">
 													<h:outputText value="#{lbl.export_as_tei}"/>
-												</h:outputLink></li>	
+												</h:outputLink>
+											</li>	
 										   <li><h:outputLink title="#{tlt.export_dfg_viewer}" styleClass="eg3_selectionText" value="#{applicationBean.dfgUrl}#{applicationBean.domain}%2Fdlc%2Fexport%2F%3Fid=#{viewPages.volume.objidAndVersion}%26format%3DMODS" target="_blank">
 													<h:outputText value="#{lbl.export_dfg_viewer}"/>
-												</h:outputLink></li>			
+												</h:outputLink>
+											</li>			
 										</ul>
 									</h:panelGroup>
 								</h:panelGroup>
