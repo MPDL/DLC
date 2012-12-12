@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.naming.InitialContext;
 
+import org.apache.axis.types.NonNegativeInteger;
 import org.apache.log4j.Logger;
 
 import de.escidoc.core.client.Authentication;
@@ -77,42 +78,41 @@ public class UserAccountServiceBean {
 		return ua;
 	}
 	
-	public User retrieveUserById(String userId,String userHandle)
+	
+	
+	private User getUserVo(UserAccount ua, String userHandle)
 	{
-		User user = new User();
-		logger.info("Retrieving User " + userId);
-		try
-		{
+		try {
 			UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 			client.setHandle(userHandle);
-			UserAccount ua = client.retrieve(userId);
-			
+		
+			User user = new User();
 			user.setUserAccount(ua);
-			user.setId(userId);
+			user.setId(ua.getObjid());
 			user.setName(ua.getProperties().getName());
 			user.setLoginName(ua.getProperties().getLoginName());
 			
-			for(Grant grant : client.retrieveCurrentGrants(userId))
+			for(Grant grant : client.retrieveCurrentGrants(ua.getObjid()))
 			{
 				//			user.getGrants().add(grant);
-//				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
-//				{
-//					user.getGrants().add(grant);
-//					user.setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(userHandle, userId));
-//					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle,userId));
-//					user.setCreatedUsers(retrieveAllUsers(userHandle));
-//				}
+	//			if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
+	//			{
+	//				user.getGrants().add(grant);
+	//				user.setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(userHandle, userId));
+	//				user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle,userId));
+	//				user.setCreatedUsers(retrieveAllUsers(userHandle));
+	//			}
 				
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
 	        	{
 					user.getGrants().add(grant);
-					Attributes attributes = client.retrieveAttributes(userId);
+					Attributes attributes = client.retrieveAttributes(ua.getObjid());
 					String ouID = attributes.get(0).getValue();
 					user.setOu(ouServiceBean.retrieveOU(ouID));
 					
 	//				user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userId));
-					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle, userId));
-					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,userId));
+					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle, ua.getObjid()));
+					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,ua.getObjid()));
 	        	}
 				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
@@ -148,11 +148,32 @@ public class UserAccountServiceBean {
 					}
 	        	}
 			}
+			return user;
 		}catch(Exception e)
 		{
-			logger.error("Error while Retrieving User" + userId, e);
+			logger.error("Error while Retrieving grants for user" + ua.getObjid());
 		}
-		return user;
+		return null;
+	}
+	
+	public User retrieveUserById(String userId,String userHandle)
+	{
+		
+		logger.info("Retrieving User " + userId);
+		try
+		{
+			UserAccountHandlerClient client = new UserAccountHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			UserAccount ua = client.retrieve(userId);
+			
+			return getUserVo(ua, userHandle);
+		}
+		catch(Exception e)
+		{
+			logger.error("Error while Retrievinguser" + userId);
+		}
+		return null;
+			
 	}
 	
 	
@@ -171,81 +192,16 @@ public class UserAccountServiceBean {
 				client.setHandle(userHandle);
 			}
 			UserAccount ua = client.retrieveCurrentUser();
-			String userId = ua.getObjid();
-			user.setUserAccount(ua);
-			user.setId(userId);
-			user.setName(ua.getProperties().getName());
-			user.setLoginName(ua.getProperties().getLoginName());
-		  	
-			Grants grants = client.retrieveCurrentGrants(ua);
-			for(Grant grant : grants)
-			{
-//				user.getGrants().add(grant);
-				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
-				{
-					user.getGrants().add(grant);
-					user.setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(userHandle, userId));
-					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle,userId));
-					user.setCreatedUsers(retrieveAllUsers(userHandle));
-				}
-				
-				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
-	        	{
-					user.getGrants().add(grant);
-					Attributes attributes = client.retrieveAttributes(userId);
-					String ouID = attributes.get(0).getValue();
-					user.setOu(ouServiceBean.retrieveOU(ouID));
-					  
-//					user.setCreatedOUs(ouServiceBean.retrieveOUsCreatedBy(userId));
-					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle, userId));
-					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,userId));
-	        	}
-				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
-	        	{
-					
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c != null)
-					{
-	
-						user.setOuId(c.getOuId());
-						user.getGrants().add(grant);
-						user.getModeratorCollections().add(c);
-						user.getModeratorContextIds().add(c.getId());
-					}
-	        	}				
-				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
-	        	{
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c != null)
-					{
-						if(user.getOuId() == null)
-							user.setOuId(c.getOuId());
-						user.getGrants().add(grant);
-						user.getDepositorCollections().add(c);
-						user.getDepositorContextIds().add(c.getId());
-					}
-	        	}		
-				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
-	        	{   
-					
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c != null)
-					{
-						if(user.getOuId() == null)
-							user.setOuId(c.getOuId());
-						user.getGrants().add(grant);
-						user.getMdEditorCollections().add(c);
-						user.getMdEditorContextIds().add(c.getId());
-					}
-	        	}
-			}			
+			
+			return getUserVo(ua, userHandle);
+			
 
 		}catch(Exception e)
 		{
 			logger.error("Error while Retrieving login User", e);
 		}
 
-		return user;
+		return null;
 	}
 	
 	public List<User> retrieveUsersCreatedBy(String userHandle, String id)
@@ -253,7 +209,7 @@ public class UserAccountServiceBean {
 		logger.info("Retrieving DLC Users created by" + id);
 		List<User> users = new ArrayList<User>();
 		for(UserAccount ua : retrieveUserAccountsCreatedBy(userHandle, id))
-			users.add(retrieveUserById(ua.getObjid(),userHandle));
+			users.add(getUserVo(ua, userHandle));
 		return users;
 	}
 	
@@ -262,7 +218,7 @@ public class UserAccountServiceBean {
 		logger.info("Retrieving All DLC Users");
 		List<User> users = new ArrayList<User>();
 		for(UserAccount ua : retrieveAllUserAccounts(userHandle))
-			users.add(retrieveUserById(ua.getObjid(),userHandle));
+			users.add(getUserVo(ua, userHandle));
 		return users;
 	}
 	
@@ -301,6 +257,7 @@ public class UserAccountServiceBean {
 			client.setHandle(userHandle);
 			SearchRetrieveRequestType req = new SearchRetrieveRequestType();
 			req.setQuery("");
+			req.setMaximumRecords(new NonNegativeInteger("5000"));
 			SearchRetrieveResponse resp = client.retrieveUserAccounts(req);
 			for(SearchResultRecord rec:resp.getRecords())
 			{

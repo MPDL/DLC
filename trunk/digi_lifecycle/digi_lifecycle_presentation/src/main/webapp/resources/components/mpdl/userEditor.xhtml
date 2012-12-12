@@ -27,9 +27,9 @@
 					<h:outputText value=" " styleClass="eg3_icon_delete_16_16" style="display:inline-block;"/>
 				</h:outputLink>
 			</f:facet>
-			
 			<h:panelGroup id="editUser">
-				<h:panelGrid columns="2" styleClass="eg3_container_1">
+				<h:panelGrid columns="2" styleClass="eg3_container_1"  >
+
 					<h:outputText value="#{lbl.admin_user_name} *"/>
 					<h:inputText id="name" value="#{cc.attrs.user.name}" styleClass="eg3_container_1"/>
 					
@@ -83,7 +83,9 @@
 						<f:ajax execute="@form" render="@all :messages"  onevent="#{rich:component('popupUser')}.hide();"/>
 					</h:commandButton>
 				</h:panelGroup>
+				
 			</h:panelGroup>
+		
 		</rich:popupPanel>
 	</cc:implementation>
 </html>

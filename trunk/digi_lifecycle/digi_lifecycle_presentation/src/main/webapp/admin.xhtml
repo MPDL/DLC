@@ -120,11 +120,14 @@
 											<a4j:commandButton title="#{lbl.button_command_deactivate}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
 												<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
 											</a4j:commandButton>
-											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+											
+											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="test editUser" oncomplete="#{rich:component('popupUser')}.show()">
 												<a4j:param value="#{user.id}" assignTo="#{adminBean.editUserId}"/>
 												<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
 											</a4j:commandButton>
 										</h:panelGroup>
+										
+										
 										
 										<h:panelGroup styleClass="eg3_floatRight" rendered="#{!user.userAccount.properties.active}">
 											<h:outputText value="#{lbl.admin_user_inactive}"/>
@@ -151,6 +154,7 @@
 							</h:panelGroup>
 							
 							<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}"/>
+							
 						</rich:tab>
 					</rich:tabPanel>
 					

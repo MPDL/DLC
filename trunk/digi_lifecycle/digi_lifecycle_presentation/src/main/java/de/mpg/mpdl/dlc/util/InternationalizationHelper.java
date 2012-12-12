@@ -60,8 +60,8 @@ public class InternationalizationHelper extends Observable
     public static final String LABEL_BUNDLE = "Label";
     public static final String MESSAGES_BUNDLE = "Messages";
     //TODO help_page
-    public static final String HELP_PAGE_DE = "http://link-to-dlc-help.de/de";
-    public static final String HELP_PAGE_EN = "http://link-to-dlc-help.de/en";
+    public static final String HELP_PAGE_DE = "http://dlcproject.wordpress.com/guideline/de/";
+    public static final String HELP_PAGE_EN = "http://dlcproject.wordpress.com/guideline/en/";
     
     private String selectedHelpPage;
     private String userLocaleString = "en";
