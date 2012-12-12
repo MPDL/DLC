@@ -404,7 +404,7 @@ public class AdminBean{
 	}  
 
 	public void setEditUserId(String editUserId) {
-		this.user = uaServiceBean.retrieveUserById(editUserId, loginBean.getUserHandle());
+		//this.user = uaServiceBean.retrieveUserById(editUserId, loginBean.getUserHandle());
 		this.editUserId = editUserId;
 	}
 

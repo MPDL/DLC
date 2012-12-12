@@ -93,6 +93,7 @@ import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.common.reference.ItemRef;
 import de.escidoc.core.resources.common.reference.Reference;
+import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.Item;
 import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
@@ -975,11 +976,15 @@ public class VolumeServiceBean {
 	public static void main(String[] args) throws Exception
 	{
 		
+		System.out.println("abs".substring(1,2));
+		
+		
+		/*
 		
 		File tei = new File("C:/Users/haarlae1/Documents/Digi Lifecycle/Examples/E29_001_1914_konvertiert teisd.xml");
 		IUnmarshallingContext icont = bfactTei.createUnmarshallingContext();
 		TeiSd teiSd = (TeiSd) icont.unmarshalDocument(new FileInputStream(tei), null);
-		
+		*/
 		
 		/*	
 		File tei = new File("R:/dlc Ingest Daten/test_Berlin/B836F1_1885/B836F1_1885.xml");

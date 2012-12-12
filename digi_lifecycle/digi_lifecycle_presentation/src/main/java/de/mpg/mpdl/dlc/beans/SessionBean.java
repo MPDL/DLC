@@ -30,7 +30,7 @@ public class SessionBean implements Serializable
     private static Logger logger = Logger.getLogger(SessionBean.class);
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
     private List<Volume> startpageVolumes = new ArrayList<Volume>();
-    private AllVolumesBean avb = new AllVolumesBean();
+    //private AllVolumesBean avb = new AllVolumesBean();
     
     @ManagedProperty("#{applicationBean}")
     private ApplicationBean appBean;
@@ -57,7 +57,7 @@ public class SessionBean implements Serializable
 			client.setHandle(null);
 			SearchRetrieveRequestType request = new SearchRetrieveRequestType();
 			
-			this.startpageVolumes = avb.getStartPageVolumes();
+			//this.startpageVolumes = avb.getStartPageVolumes();
 			
 			client.retrieveOrganizationalUnitsAsList(request);
         } catch (Exception e) {

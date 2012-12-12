@@ -268,6 +268,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	 * TODO: check multivolume, what can be displayed here?
 	 * @return
 	 */
+	/*
 	public  List<Volume> getStartPageVolumes ()
 	{ 
 		List<Volume> volumes = new ArrayList<Volume>();
@@ -301,6 +302,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 		return volumes;
 	}
+	*/
 
 
 	public InternationalizationHelper getInternationalizationHelper() 
