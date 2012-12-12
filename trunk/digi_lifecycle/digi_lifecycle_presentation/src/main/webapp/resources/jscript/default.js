@@ -707,6 +707,7 @@ function eg3_initWindowResizeListener() {
 		if ($('.eg3_id_sidebarLeft').length > 0) {
 			eg3_resizeSidebar();
 		}
+		eg3_checkLogoDimension();
 	});
 }
 
@@ -743,8 +744,37 @@ function eg3_listenMultiVolume() {
 	});
 }
 
-
-
+/*
+ * the function checks the solution logo in the header
+ * if the width is greater than the container, the logo must be fit to container 
+ */
+function eg3_checkLogoDimension() {
+	var logo = $('.eg3_solutionLogo img');
+	var logoContainer = logo.parents('.eg3_solutionLogo');
+	var logoContainerWidth = logoContainer.width() - 10;
+	var tmpImg = new Image();
+	tmpImg.src = logo.attr("src");
+	
+	//to resize the logo on every resolution, it's necessary to remove old settings of this function
+	eg3_removeAttributeValue(logoContainer, "style", "padding-top");
+	eg3_removeAttributeValue(logo, "style", "height");
+	
+	//if the image was loaded, chech the new dimensions and resize if necessary
+	$(tmpImg).load(function(e) {
+		var cssHeight, factor = 0;
+		if (logo.css("height") != "none" || logo.css("max-height") != "none") {
+			cssHeight = (logo.css("height") != "none") ? Number(logo.css("height").replace("px", "")) : Number(logo.css("max-height").replace("px", ""));
+			factor = tmpImg.height / cssHeight;
+			if ((tmpImg.width / factor) > logoContainerWidth) {
+				var resizeFactor = logoContainerWidth / tmpImg.width;
+				var newHeight = Math.floor(tmpImg.height * resizeFactor);
+				var paddingForMiddle = Math.round((cssHeight - newHeight) / 2);
+				logo.css("height", newHeight);
+				logoContainer.css("padding-top", paddingForMiddle);
+			}
+		}
+	});
+}
 
 
 
@@ -762,6 +792,8 @@ $(document).ready(function(e) {
 	eg3_addShowHideAll('.eg3_toggleListItemVolume_js', '.eg3_listItemVolume', '.eg3_bibList');
 	
 	eg3_rerenderJSFForms();
+	
+	eg3_checkLogoDimension();
 	
 	if (Number($.browser.version) < 9) {
 		eg3_ie8_addSearchSubmitOnEnter();
