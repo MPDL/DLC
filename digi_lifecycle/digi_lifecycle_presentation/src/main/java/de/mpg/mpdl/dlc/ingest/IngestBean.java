@@ -1579,6 +1579,11 @@ public class IngestBean{
 		this.context = context;
 	}
 
+	/**
+	 * A List of filenames, seperated by "||", which is set by pluploader before a file is uploaded. Thus, errors can be detected if an
+	 * file was added to pluploader, but does not appear in the backing bean.
+	 * @return
+	 */
 	public String getUploadedFilesByPlupload() {
 		return uploadedFilesByPlupload;
 	}
