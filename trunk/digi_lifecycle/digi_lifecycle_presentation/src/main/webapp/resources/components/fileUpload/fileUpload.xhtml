@@ -14,6 +14,7 @@
 		<cc:attribute name="onUploadCompleteAction" method-signature="java.lang.String method()"/>
 		<cc:attribute name="rerender" type="java.lang.String"/>
 		<cc:attribute name="execute" type="java.lang.String"/>
+		<cc:attribute name="pluploadFileNames"/>
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -79,8 +80,8 @@
 
 		<script type="text/javascript">
 			function getViewState() {
-				if(document.getElementsByName('javax.faces.ViewState')[0]) {
-					var viewStateValue = encodeURI(document.getElementsByName('javax.faces.ViewState')[0].value);
+				if($('input[name=javax\\.faces\\.ViewState]').first()) {
+					var viewStateValue = encodeURI($('input[name=javax\\.faces\\.ViewState]').first().val());
 					var regExp = new RegExp('\\+','g');
 					var encodedViewState = viewStateValue.replace(regExp, '\%2B');
 					return encodedViewState;
@@ -90,6 +91,7 @@
 			}
 			
 			$(function(e) {
+				console.log("initUploader" + getViewState());
 				initUploader('#{cc.clientId}', 
 					'#{cc.attrs.rerender}',
 					getViewState(),
@@ -104,8 +106,10 @@
 			
 			<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
 			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" action="#{cc.attrs.onUploadCompleteAction}" style="visibility:hidden; display:none;">
-				<a4j:ajax execute="#{cc.attrs.execute}" render="#{cc.attrs.rerender}"/>
+				<a4j:ajax execute="#{cc.attrs.execute} uploadedFilesByPlupload"  render="#{cc.attrs.rerender} uploadedFilesByPlupload"/>
 			</h:commandButton>
+			
+			<h:inputHidden id="uploadedFilesByPlupload" styleClass="uploadedFilesByPlupload" value="#{cc.attrs.pluploadFileNames}"/>
 			
 			<style type="text/css">
 				.ui-dialog div {
