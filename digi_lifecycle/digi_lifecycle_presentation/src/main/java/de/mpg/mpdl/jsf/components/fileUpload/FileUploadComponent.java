@@ -37,7 +37,7 @@ public class FileUploadComponent extends UINamingContainer {
         //HTML 4 uploads
         if(!FacesContext.getCurrentInstance().getPartialViewContext().isAjaxRequest())
 		{
-        	logger.info("processEvent: " + event);	
+        	//logger.info("processEvent: " + event);	
 			checkFileUpload();
 		}
     }
@@ -60,14 +60,14 @@ public class FileUploadComponent extends UINamingContainer {
     	 
  		//System.out.println("DECODE");
  		 Object request = getFacesContext().getExternalContext().getRequest();
- 		logger.info("checkFileUpload: ");	
+ 		//logger.info("checkFileUpload: ");	
  		 
  		 if(request instanceof MultipartRequest)
  			{
- 			 logger.info("request is multipart, get file for client id " + getClientId());	
+ 			 //logger.info("request is multipart, get file for client id " + getClientId());	
  				if(((MultipartRequest)request).getFile(getClientId())!=null)
  				{
- 					logger.info("append to event queue");
+ 					//logger.info("append to event queue");
  					FileUploadEvent evt = new FileUploadEvent(this); 
  					evt.setFileItem(((MultipartRequest)request).getFile(getClientId()));
  		            queueEvent(evt);
