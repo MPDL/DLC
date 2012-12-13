@@ -47,8 +47,20 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 	
 		uploader.bind('FileUploaded', function(up, file, response) {
 			//If last file was uploaded
+			/*
+			if ((uploader.total.uploaded + 1) == uploader.files.length)
+			{
+
+				$('[id="'+clientId+'"]').find('.hiddenUploadCompleteButton').click();
+			}
+			*/
+		});
+		
+		
+		uploader.bind('UploadProgress', function(up, file, response) {
+			//If last file was uploaded
 			$( "#progressBar" ).progressbar({
-	            value: ((uploader.total.uploaded + 1)/ uploader.files.length) * 100 
+	            value: up.total.percent 
 	        });
 			
 			
