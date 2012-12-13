@@ -89,6 +89,7 @@ import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.common.Relations;
 import de.escidoc.core.resources.common.Result;
 import de.escidoc.core.resources.common.TaskParam;
+import de.escidoc.core.resources.common.properties.PublicStatus;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.common.reference.ItemRef;
@@ -1171,103 +1172,123 @@ public class VolumeServiceBean {
 	
 	public String loadTei(Volume vol, String userHandle) throws Exception
 	{
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
-
-		String tei = null;
-		for(Component c : vol.getItem().getComponents())
+		if(!vol.getItem().getProperties().getPublicStatus().equals(PublicStatus.WITHDRAWN))
 		{
-			
-			
-			if (c.getProperties().getContentCategory().equals("tei"))
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+	
+			String tei = null;
+			for(Component c : vol.getItem().getComponents())
 			{
-
-				tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				
+				
+				if (c.getProperties().getContentCategory().equals("tei"))
+				{
+	
+					tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				}
 			}
+			vol.setTei(tei);
+			return tei;
 		}
-		vol.setTei(tei);
-		return tei;
+		return null;
 	}
 	
 	public Document loadTeiSd(Volume vol, String userHandle) throws Exception
 	{
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
-		Document teiSdXml = null;
-		
-		//TeiSd teiSd = null;
-		for(Component c : vol.getItem().getComponents())
+		if(!vol.getItem().getProperties().getPublicStatus().equals(PublicStatus.WITHDRAWN))
 		{
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+			Document teiSdXml = null;
 			
-			
-			if (c.getProperties().getContentCategory().equals("tei-sd"))
+			//TeiSd teiSd = null;
+			for(Component c : vol.getItem().getComponents())
 			{
-
-				long start = System.currentTimeMillis();
-
-				/*
-				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
-				try {
-					IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
-					teiSd = (TeiSd) uctx.unmarshalDocument(is, null);
-				} finally {
-					is.close();
-				}
-				*/
+				
+				
+				if (c.getProperties().getContentCategory().equals("tei-sd"))
+				{
+	
+					long start = System.currentTimeMillis();
+	
+					/*
+					HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+					try {
+						IUnmarshallingContext uctx = bfactTei.createUnmarshallingContext();
+						teiSd = (TeiSd) uctx.unmarshalDocument(is, null);
+					} finally {
+						is.close();
+					}
+					*/
+						
+					DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
+					fac.setNamespaceAware(true);
+					HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
+					try {
+						teiSdXml = fac.newDocumentBuilder().parse(is, null);
+					} finally {
+						is.close();
+					}
+			
+					long time = System.currentTimeMillis() - start;
+					System.out.println("TIME TEI: " + time);
+	
 					
-				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
-				fac.setNamespaceAware(true);
-				HttpInputStream is = client.retrieveContent(vol.getItem().getObjid(), c.getObjid());
-				try {
-					teiSdXml = fac.newDocumentBuilder().parse(is, null);
-				} finally {
-					is.close();
+					
 				}
-		
-				long time = System.currentTimeMillis() - start;
-				System.out.println("TIME TEI: " + time);
-
-				
-				
 			}
+			//vol.setTeiSd(teiSd);
+			vol.setTeiSdXml(teiSdXml);
+			return teiSdXml;
 		}
-		//vol.setTeiSd(teiSd);
-		vol.setTeiSdXml(teiSdXml);
-		return teiSdXml;
+		return null;
 	}
 	
 	public String loadPagedTei(Volume vol, String userHandle) throws Exception
 	{
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
-
-		String tei = null;
-		for(Component c : vol.getItem().getComponents())
+		if(!vol.getItem().getProperties().getPublicStatus().equals(PublicStatus.WITHDRAWN))
 		{
-			if (c.getProperties().getContentCategory().equals("tei-paged"))
+			
+		
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+	
+			String tei = null;
+			for(Component c : vol.getItem().getComponents())
 			{
-				tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				if (c.getProperties().getContentCategory().equals("tei-paged"))
+				{
+					tei = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				}
 			}
+			vol.setPagedTei(tei);
+			return tei;
 		}
-		vol.setPagedTei(tei);
-		return tei;
+		return null;
 	}
 	
 	public String loadCodicologicalMd(Volume vol, String userHandle) throws Exception
 	{
-		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
-		client.setHandle(userHandle);
-
-		String cdc = null;
-		for(Component c : vol.getItem().getComponents())
+		if(!vol.getItem().getProperties().getPublicStatus().equals(PublicStatus.WITHDRAWN))
 		{
-			if (c.getProperties().getContentCategory().equals("codicological"))
+			
+			
+			ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			client.setHandle(userHandle);
+	
+			String cdc = null;
+			for(Component c : vol.getItem().getComponents())
 			{
-				cdc = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				if (c.getProperties().getContentCategory().equals("codicological"))
+				{
+					cdc = convertStreamToString(client.retrieveContent(vol.getItem().getObjid(), c.getObjid()));
+				}
 			}
+			vol.setCodicological(cdc);
+			return cdc;
 		}
-		vol.setCodicological(cdc);
-		return cdc;
+		return null;
 	}
 	
 	
