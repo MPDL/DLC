@@ -24,7 +24,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 		multipart_params : {
 			
 			'javax.faces.ViewState' : viewState,
-			'javax.faces.partial.ajax' : '1',
+			'javax.faces.partial.ajax' : 'true',
 			'javax.faces.partial.execute' : clientId,
 			'javax.faces.source' : clientId
 			
@@ -61,12 +61,32 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 			*/
 		});
 		
-		
-		
 		uploader.bind('BeforeUpload', function(up, file, response) {
 			
-			//console.log('BeforeUpload');
-			if (uploader.total.uploaded  == 0) {
+			var inputId = "#" + clientId + ":uploadedFilesByPlupload";
+			inputId = inputId.replace(/:/g, "\\:");
+			var input = $(inputId);
+			input.val(input.val() + "||" + file.name)
+			//input.val(input.val() + "||yy" + file.name)
+			
+			/*
+			if ((uploader.total.uploaded + 1) == uploader.files.length)
+			{
+
+				$('[id="'+clientId+'"]').find('.hiddenUploadCompleteButton').click();
+			}
+			*/
+		});
+		
+		
+		
+		
+		
+		
+		uploader.bind('StateChanged', function(up) {
+			
+			console.log('Statechanged: ' + up.state);
+			if (up.state=plupload.STARTED) {
 				//console.log('StartUpload');
 				$("#modalUploadDialog").dialog("open");   
 			}

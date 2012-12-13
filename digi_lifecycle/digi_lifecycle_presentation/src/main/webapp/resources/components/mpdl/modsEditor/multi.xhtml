@@ -43,10 +43,10 @@
 							
 							<h:panelGroup styleClass="eg3_floatRight">
 								<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" styleClass="eg3_ico_add_16" value=" " title="#{tlt.edit_add_item}#{lbl.mods_names}">
-									 <f:ajax render="@form" execute="@form"/>
+									 <f:ajax render=":#{cc.attrs.clientId}:editorMulti" execute="@form"/>
 								</h:commandButton>
 								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_names}" rendered="#{cc.attrs.modsMetadata.names.size() > 1}">
-									 <f:ajax render="@form" execute="@form"/>
+									 <f:ajax render=":#{cc.attrs.clientId}:editorMulti" execute="@form"/>
 								</h:commandButton>
 							</h:panelGroup>
 						</h:panelGroup>
@@ -159,10 +159,10 @@
 							
 							<h:panelGroup styleClass="eg3_floatRight">
 								<h:commandButton action="#{volumeUtilBean.addNewModsKeyword(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_add_16" title="#{tlt.edit_add_item}#{lbl.mods_keywords}">
-									 <f:ajax render="@form" execute="@form"/>
+									 <f:ajax render=":#{cc.attrs.clientId}:editorMulti" execute="@form"/>
 								</h:commandButton>
 								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.keywords)}" value=" " styleClass="eg3_ico_remove_16" title="#{tlt.edit_remove_item}#{lbl.mods_keywords}" rendered="#{cc.attrs.modsMetadata.keywords.size() gt 1}">
-									 <f:ajax render="@form" execute="@form"/>
+									 <f:ajax render=":#{cc.attrs.clientId}:editorMulti" execute="@form"/>
 								</h:commandButton>
 							</h:panelGroup>
 						</h:panelGroup>

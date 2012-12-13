@@ -6,8 +6,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -139,6 +141,8 @@ public class IngestBean{
 	private DiskFileItem recentlyUpladedCodicologigalFile;
 
 	private List<DiskFileItem> recentlyUploadedImageFiles = new ArrayList<DiskFileItem>();
+	
+	private String uploadedFilesByPlupload;
 	
 	 
 	@URLAction(onPostback=false)
@@ -559,6 +563,19 @@ public class IngestBean{
 	{
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("ingest_uploadComplete"));
 		
+		List<String> uploadedFileNamesByPluploader = new LinkedList<String>();
+		for(String plFileName : uploadedFilesByPlupload.split("\\|\\|"))
+		{
+			if (!plFileName.isEmpty())
+			{
+				uploadedFileNamesByPluploader.add(plFileName);
+			}
+		}
+		
+		
+		
+				
+		
 		//process mab
 		if(recentlyUpladedMabFile!=null)
 		{
@@ -570,7 +587,10 @@ public class IngestBean{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidMab"));
 				//this.modsMetadata = new ModsMetadata();
 			}
+			uploadedFileNamesByPluploader.remove(recentlyUpladedMabFile.getName());
 			recentlyUpladedMabFile = null;
+			
+			
 		}
 		
 		
@@ -588,7 +608,9 @@ public class IngestBean{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei") + "\n " + e.getMessage()); 
 			}
 			
+			uploadedFileNamesByPluploader.remove(recentlyUpladedTeiFile.getName());
 			recentlyUpladedTeiFile = null;
+			
 		}
 		
 		//validate codicological md
@@ -603,6 +625,7 @@ public class IngestBean{
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidCodicological") + "\n " + e.getMessage()); 
 			}
 			
+			uploadedFileNamesByPluploader.remove(recentlyUpladedCodicologigalFile.getName());
 			recentlyUpladedCodicologigalFile = null;
 		}
 		
@@ -625,6 +648,7 @@ public class IngestBean{
 				logger.error("Error while reading footer", e);
 			}
 			
+			uploadedFileNamesByPluploader.remove(recentlyUpladedFooterFile.getName());
 			this.recentlyUpladedFooterFile = null;
 		}
 		
@@ -659,11 +683,17 @@ public class IngestBean{
 				
 				logger.error("Could not detect mimetype for " +ingestImage.getName());	
 			}
+			uploadedFileNamesByPluploader.remove(img.getName());
 		}
 		
 		recentlyUploadedImageFiles.clear();
 		
+		if(uploadedFileNamesByPluploader.size()>0)
+		{
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_uploadFollowing Files") + ": " + uploadedFileNamesByPluploader);
+		}
 	
+		this.uploadedFilesByPlupload = "";
 		checkSortImagesByTei();
 		
 		return "";
@@ -1547,6 +1577,14 @@ public class IngestBean{
 
 	public void setContext(Context context) {
 		this.context = context;
+	}
+
+	public String getUploadedFilesByPlupload() {
+		return uploadedFilesByPlupload;
+	}
+
+	public void setUploadedFilesByPlupload(String uploadedFilesByPlupload) {
+		this.uploadedFilesByPlupload = uploadedFilesByPlupload;
 	}
 	
 

@@ -37,7 +37,7 @@
 						<h:outputText value="#{msg.ingest_uploadInfo}" escape="false"/>
 					</h:panelGroup>
 					<br/><br/>
-					<fu:fileUpload rerender="@form :messages" execute="@form" fileUploadListener="#{ingestBean.fileUploaded}" onUploadCompleteAction="#{ingestBean.uploadComplete}"></fu:fileUpload>
+					<fu:fileUpload rerender="@form :messages" execute="@form" fileUploadListener="#{ingestBean.fileUploaded}" pluploadFileNames="#{ingestBean.uploadedFilesByPlupload}" onUploadCompleteAction="#{ingestBean.uploadComplete}"></fu:fileUpload>
 				</rich:panel>
 			</h:panelGroup>
 			<script type="text/javascript">
@@ -53,7 +53,7 @@
 				});
 			</script>
 			<!-- right content -->
-			<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+			<h:panelGroup id="rightContent" layout="block" styleClass="eg3_container_1_2">
 					<rich:panel id="submit" styleClass="eg3_submitPanel">
 						<h:panelGroup styleClass="eg3_floatRight">
 							<a4j:commandButton action="#{ingestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages modsInfo teiInfo imageInfo" execute="@form" onbegin="$('#popup').dialog('open');" oncomplete="$('#popup').dialog('close');">
@@ -63,7 +63,7 @@
 								<!-- <rich:componentControl event="begin" target="popup" operation="show"/>-->
 							</a4j:commandButton>
 							<h:commandButton action="#{ingestBean.clearAllData}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" rendered="#{ingestBean.volumeId == 'new'}">
-								<a4j:ajax render="modsInfo teiInfo imageInfo"/>
+								<f:ajax render="@form"/>
 							</h:commandButton>
 						</h:panelGroup>
 					</rich:panel>
@@ -79,7 +79,7 @@
 									</h:panelGroup>
 									<h:selectOneMenu id="contentModel" value="#{ingestBean.selectedContentModel}">
 										<f:selectItems value="#{ingestBean.contentModelItems}"/>
-										<a4j:ajax event="change" render="@form"/>
+										<a4j:ajax event="change" render="form2:rightContent"/>
 									</h:selectOneMenu> 
 								</h:panelGroup>
 							</h:panelGroup>
@@ -180,7 +180,7 @@
 						</h:panelGroup>
 						
 						<h:commandButton action="#{ingestBean.clearUploadedTEI}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearTei}" rendered="#{not empty ingestBean.teiFile}">
-							<a4j:ajax render="@form"/>
+							<a4j:ajax render="form2:rightContent"/>
 						</h:commandButton>
 						
 					</rich:panel>
@@ -200,7 +200,7 @@
 						</h:panelGroup>
 						
 						<h:commandButton action="#{ingestBean.clearUploadedCodicological}" styleClass="eg3_borderradius_5" value="#{lbl.ingest_clearCodicological}" rendered="#{not empty ingestBean.codicologicalFile}">
-							<a4j:ajax render="@form"/>
+							<a4j:ajax render="form2:rightContent"/>
 						</h:commandButton>
 					</rich:panel>
 		  		  	
@@ -212,7 +212,7 @@
 						
 						<ui:fragment rendered="#{ingestBean.size>0}" >
 							<h:commandButton action="#{ingestBean.clearUploadedImages}" value="#{lbl.ingest_clearImages}" styleClass="eg3_borderradius_5" rendered="#{ingestBean.volumeId == 'new' and ingestBean.size>0}">
-								<a4j:ajax render="@form"/>
+								<a4j:ajax render="form2:rightContent"/>
 							</h:commandButton>
 							<br/><br/>
 							<h:selectOneMenu value="#{ingestBean.sortImagesAlgorithm}">
@@ -243,7 +243,7 @@
 		                    	}
 		                    </style>
 			                    
-							 
+							
 				            <rich:dataGrid  columns="1" id="imageArea" value="#{ingestBean.imageFiles}" var="file" rowKeyVar="row" >
 				                <f:facet name="header">
 			                    </f:facet>
@@ -266,7 +266,7 @@
 		                      	</a4j:outputPanel>
 		                       
 		                         <h:commandButton action="#{ingestBean.deleteImage(row, file)}" value=" " styleClass="eg3_ico_removei_16" rendered="#{file.type == 'DISK'}">
-									<a4j:ajax render="@form"/>
+									<a4j:ajax render="form2:rightContent"/>
 								</h:commandButton>
 
 								<br/>
