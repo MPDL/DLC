@@ -97,7 +97,7 @@ function initUploader(clientId, rerender, viewState, sessionId, url, flashUrl, s
 		
 		uploader.bind('StateChanged', function(up) {
 			
-			console.log('Statechanged: ' + up.state);
+			//console.log('Statechanged: ' + up.state);
 			if (up.state=plupload.STARTED) {
 				//console.log('StartUpload');
 				$("#modalUploadDialog").dialog("open");   
