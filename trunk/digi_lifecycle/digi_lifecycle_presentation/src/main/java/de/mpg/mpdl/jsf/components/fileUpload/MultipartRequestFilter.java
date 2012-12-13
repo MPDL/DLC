@@ -69,11 +69,9 @@ public class MultipartRequestFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         
         if (ServletFileUpload.isMultipartContent(httpRequest)) {
-        	if(httpRequest.getSession()!=null)
-            {
-            	logger.info("Found multipart Content for sesssion: " + httpRequest.getSession().getId());
-            }
             request = new MultipartRequest(httpRequest, location);
+          
+            
             //System.out.println(request);
             //System.out.println(httpRequest.getHeader("Cookie"));
         }
