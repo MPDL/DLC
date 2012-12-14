@@ -43,24 +43,31 @@ public class ContextServiceBean {
 
 
 	
+	private Collection getCollectionVO(Context context)
+	{
+		Collection collection = new Collection();
+		collection.setId(context.getObjid());
+		collection.setName(context.getProperties().getName());
+		
+		if(context.getAdminDescriptors()!=null && context.getAdminDescriptors().size()>0)
+		{
+			collection.setDescription(context.getAdminDescriptors().get("description").getContent().getTextContent());
+		}
+		
+		collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
+		collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
+		collection.setType(context.getProperties().getType());
+		
+		return collection;
+	}
+	
 	public Collection retrieveCollection(String id, String userHandle)
 	{
 		Collection collection = null;
 		Context context = retrieveContext(id, userHandle);
 		if(context != null)
 		{
-			collection = new Collection();
-			collection.setId(id);
-			collection.setName(context.getProperties().getName());
-			
-			if(context.getAdminDescriptors()!=null && context.getAdminDescriptors().size()>0)
-			{
-				collection.setDescription(context.getAdminDescriptors().get("description").getContent().getTextContent());
-			}
-			
-			collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
-			collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
-			collection.setType(context.getProperties().getType());
+			return getCollectionVO(context);
 		}
 		return collection;
 	}
@@ -123,7 +130,7 @@ public class ContextServiceBean {
 		logger.info("Retrieving DLC Collections Created by" + id);
 		List<Collection> collections = new ArrayList<Collection>();
 		for(Context c : retrieveContextsCreatedBy(userHandle, id))
-			collections.add(retrieveCollection(c.getObjid(), userHandle));
+			collections.add(getCollectionVO(c));
 		return collections;
 	}
 	
@@ -132,7 +139,7 @@ public class ContextServiceBean {
 		logger.info("Retrieving OU Collections" + ouId);
 		List<Collection> collections = new ArrayList<Collection>();
 		for(Context c : retrieveOUContexts(ouId, false))
-			collections.add(retrieveCollection(c.getObjid(), userHandle));
+			collections.add(getCollectionVO(c));
 		return collections;
 	}
 	
@@ -162,6 +169,72 @@ public class ContextServiceBean {
         }
         return contextList;	
 	}
+	
+	
+	
+	public List<Context> retrieveContextsById(List<String> ids, String userHandle)
+	{
+		
+        List<Context> contextList = new ArrayList<Context>();
+        try
+        {
+	        if(ids!=null && ids.size()>0)
+	        {
+	        	logger.info("Retrieving contexts by ids");
+	        	SearchRetrieveResponse response = null;
+				ContextHandlerClient contextClient = new ContextHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+				contextClient.setHandle(userHandle);
+				SearchRetrieveRequestType req = new SearchRetrieveRequestType();
+				//TODO
+				
+				StringBuffer query = new StringBuffer();
+				query.append("\"/id\"=(");
+				
+				for(int i=0; i<ids.size(); i++)
+				{
+					if(i>0)
+					{
+						query.append(" OR ");
+					}
+					query.append("\"" + ids.get(i) + "\"");
+					
+				}
+				query.append(")");
+				query.append(" AND \"/properties/public-status\"=opened AND " + "\"/properties/type\"=DLC sortby \"/sort/properties/name\"");
+				
+				req.setQuery(query.toString());
+				req.setMaximumRecords(new NonNegativeInteger("10000"));
+				logger.info("Retrieving contexts created by ids: " +query);
+				response = contextClient.retrieveContexts(req);
+				for(SearchResultRecord rec : response.getRecords())
+				{
+					Context context = (Context)rec.getRecordData().getContent();
+					contextList.add(context);
+				}
+	        }
+        	
+
+        }catch(Exception e)
+        {
+        	logger.error("Error while retrieving contexts by id", e);
+        }
+        return contextList;	
+	}
+	
+	public List<Collection> retrieveCollectionsById(List<String> ids, String userHandle)
+	{
+		List<Context> contexts = retrieveContextsById(ids, userHandle);
+		
+		List<Collection> collections = new ArrayList<Collection>();
+		
+		for(Context c : contexts)
+		{
+			collections.add(getCollectionVO(c));
+		}
+		
+		return collections;
+	}
+	
 	
 	public List<Context> retrieveAllcontexts()
 	{

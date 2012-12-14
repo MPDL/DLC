@@ -115,39 +115,49 @@ public class UserAccountServiceBean {
 					user.setCreatedUsers(retrieveUsersCreatedBy(userHandle,ua.getObjid()));
 	        	}
 				
+				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.depositor")))
 	        	{
 					user.getGrants().add(grant);
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c!= null)
-					{
-						user.getDepositorCollections().add(c);
-						user.getDepositorContextIds().add(c.getId());
-					}
+					//Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					//if(c!= null)
+					//{
+						//user.getDepositorCollections().add(c);
+						user.getDepositorContextIds().add(grant.getProperties().getAssignedOn().getObjid());
+					//}
 	        	}			
 				
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.moderator")))
 	        	{
 					user.getGrants().add(grant);
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c!= null)
-					{
-						user.getModeratorCollections().add(c);
-						user.getModeratorContextIds().add(c.getId());
-					}
+					//Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					//if(c!= null)
+					//{
+					//	user.getModeratorCollections().add(c);
+						user.getModeratorContextIds().add(grant.getProperties().getAssignedOn().getObjid());
+					//}
 	        	}
 				  
 				else if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.user.md-editor")))
 	        	{
 					user.getGrants().add(grant);
-					Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
-					if(c!= null)
-					{
-						user.getMdEditorCollections().add(c);
-						user.getMdEditorContextIds().add(c.getId());
-					}
+					//Collection c = contextServiceBean.retrieveCollection(grant.getProperties().getAssignedOn().getObjid(), userHandle);
+					//if(c!= null)
+					//{
+					//	user.getMdEditorCollections().add(c);
+						user.getMdEditorContextIds().add(grant.getProperties().getAssignedOn().getObjid());
+					//}
 	        	}
 			}
+			
+			user.getDepositorCollections().addAll(contextServiceBean.retrieveCollectionsById(user.getDepositorContextIds(), userHandle));
+			user.getModeratorCollections().addAll(contextServiceBean.retrieveCollectionsById(user.getModeratorContextIds(), userHandle));
+			user.getMdEditorCollections().addAll(contextServiceBean.retrieveCollectionsById(user.getMdEditorContextIds(), userHandle));
+			
+			
+			
+			
+			
 			return user;
 		}catch(Exception e)
 		{
