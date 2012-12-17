@@ -324,9 +324,9 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 			VolumeServiceBean.importVolumeIntoVolume(newVol, vol, userHandle);
 
 			
-			MessageHelper.infoMessage(InternationalizationHelper.getMessage("releasedSuccessfully"));
+			MessageHelper.infoMessage(InternationalizationHelper.getMessage("success_releaseVolume"));
 		} catch (Exception e) {
-			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_saveAndReleaseStruct"));
+			MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_releaseVolume"));
 			logger.error("Error while releasing volume " + vol.getObjidAndVersion(), e);
 		}
 
