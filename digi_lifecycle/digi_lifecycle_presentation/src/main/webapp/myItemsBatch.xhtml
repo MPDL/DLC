@@ -81,6 +81,7 @@
             		</a4j:repeat>
             		</div>
        			</rich:column>
+       			
        			<rich:column style="vertical-align:top;" rendered="#{empty log.logs}">
        				<h:outputText value="" />
        			</rich:column>
@@ -103,8 +104,8 @@
 
        			
        			
- 			    <rich:column colspan="12" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
-					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="client" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_1 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
+ 			    <rich:column colspan="13" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
+					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="client" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_9_10 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
 						<rich:dataTable var="logItem" value="#{ingestLogBean.getLogItems(log)}" style="vertical-align:top;" styleClass="eg3_container_1">
 							<f:facet name="header">
 					            <rich:columnGroup>
@@ -135,6 +136,12 @@
 					                <rich:column>
 					                    <h:outputText value="#{lbl.batch_ingest_log_imagesNr}"/>
 					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_volumes_nr}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_finished_volumes_nr}"/>
+					                </rich:column>					                
 					                <rich:column>
 					                    <h:outputText value="#{lbl.batch_ingest_log_footer}"/>
 					                </rich:column>
@@ -202,8 +209,23 @@
 			       			<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;">
 			            		<h:outputText value="#{lbl.multivolume}"/>
 			       			</rich:column>
-							<rich:column style="vertical-align:top;">
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;">
 								<h:outputText value="#{logItem.images_nr}"/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;">
+								<h:outputText value=""/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;">
+								<h:outputText value=""/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;">
+								<h:outputText value="#{logItem.volumes_nr}"/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;">
+								<h:outputText value=""/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;">
+								<h:outputText value="#{logItem.finished_volumes_nr}"/>
 							</rich:column>
 							<rich:column style="vertical-align:top;">
 								<h:outputText value="#{logItem.fFileName}"/>
@@ -212,76 +234,83 @@
 								<h:outputText value="#{logItem.teiFileName}"/>
 							</rich:column>
 							
-							<rich:column colspan="12" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{logItem.content_model == applicationBean.cmMultiVol and not empty ingestLogBean.getLogItemVolumes(logItem)}">
+
+
+							<rich:column colspan="13" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{logItem.content_model == applicationBean.cmMultiVol and logItem.volumes_nr > 0}" >
 			       				<rich:collapsibleSubTableToggler for="logItemVolume" colspan="16">
 			       					<h:outputText value="#{lbl.batch_ingest_log_show_hide_items}"/>
 			       				</rich:collapsibleSubTableToggler>
-			       			</rich:column>
 			       			
-			       			<rich:collapsibleSubTable style="border:1px" var="logItemVolume" id="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" rendered="#{logItem.content_model == applicationBean.cmMultiVol and not empty ingestLogBean.getLogItemVolumes(logItem)}" expanded="#{false}" expandMode="client">
-
-								<rich:column breakRowBefore="true" style="vertical-align:top">
-									<h:outputText value="#{logItemVolume.name}"/>
-								</rich:column>
-								
-								<rich:column style="vertical-align:top">
-									<h:outputText value="#{logItemVolume.step}"/>
-								</rich:column>
-								
-								<rich:column style="vertical-align:top;border:1px">
-									<h:outputText value="#{logItemVolume.errorLevel}"/>
-								</rich:column>
-								
-								<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItemVolume.logs}">
-						       		<span onclick="$(this).next().toggle();">
-						       			<h:outputText value="#{lbl.batch_ingest_show_hide_logs}" />
-						       		</span>
-									<div style="display:none; width:100%; clear:both;">
-										<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
-											<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
-										</a4j:repeat>
-									</div>
-								</rich:column>
-								
-								<rich:column style="vertical-align:top; width:30%;" rendered="#{empty logItemVolume.logs}">
-									<h:outputText value=""/>
-								</rich:column>
-								
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.startDate}"/>
-								</rich:column>
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.endDate}"/>
-								</rich:column>
-
-								<rich:column rendered="#{not empty logItemVolume.escidocId}" style="vertical-align:top;">
-									<pretty:link mappingId = "viewPages">
-										<f:param value="#{logItemVolume.escidocId}"/>
-										<f:param value="recto-verso"/>
-										<f:param value="1"/>
-										<h:outputText value="#{logItemVolume.shortTitle}"/>
-									</pretty:link>
-								</rich:column>
-								<rich:column rendered="#{empty logItemVolume.escidocId}" style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.escidocId}"/>
-								</rich:column>
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{lbl.volume}"/>
-								</rich:column>
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.images_nr}"/>
-								</rich:column>
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.fFileName}"/>
-								</rich:column>
-								<rich:column style="vertical-align:top;">
-									<h:outputText value="#{logItemVolume.teiFileName}"/>
-								</rich:column>							
-							</rich:collapsibleSubTable>
+				       			<rich:collapsibleSubTable style="border:1px" var="logItemVolume" id="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" expanded="#{false}" expandMode="client">
+									<rich:column breakRowBefore="true" style="vertical-align:top">
+										<h:outputText value="#{logItemVolume.name}"/>
+									</rich:column>
+									
+									<rich:column style="vertical-align:top">
+										<h:outputText value="#{logItemVolume.step}"/>
+									</rich:column>
+									
+									<rich:column style="vertical-align:top;border:1px">
+										<h:outputText value="#{logItemVolume.errorLevel}"/>
+									</rich:column>
+									
+									<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItemVolume.logs}">
+							       		<span onclick="$(this).next().toggle();">
+							       			<h:outputText value="#{lbl.batch_ingest_show_hide_logs}" />
+							       		</span>
+										<div style="display:none; width:100%; clear:both;">
+											<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
+												<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
+											</a4j:repeat>
+										</div>
+									</rich:column>
+									
+									<rich:column style="vertical-align:top; width:30%;" rendered="#{empty logItemVolume.logs}">
+										<h:outputText value=""/>
+									</rich:column>
+									
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.startDate}"/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.endDate}"/>
+									</rich:column>
+	
+									<rich:column rendered="#{not empty logItemVolume.escidocId}" style="vertical-align:top;">
+										<pretty:link mappingId = "viewPages">
+											<f:param value="#{logItemVolume.escidocId}"/>
+											<f:param value="recto-verso"/>
+											<f:param value="1"/>
+											<h:outputText value="#{logItemVolume.shortTitle}"/>
+										</pretty:link>
+									</rich:column>
+									<rich:column rendered="#{empty logItemVolume.escidocId}" style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.escidocId}"/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{lbl.volume}"/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.images_nr}"/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value=""/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value=""/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.fFileName}"/>
+									</rich:column>
+									<rich:column style="vertical-align:top;">
+										<h:outputText value="#{logItemVolume.teiFileName}"/>
+									</rich:column>							
+								</rich:collapsibleSubTable>
+				       			</rich:column>
+	
+							</rich:dataTable>
 							
-						</rich:dataTable>
-						
-					</rich:collapsiblePanel>
+						</rich:collapsiblePanel>
 				</rich:column>
 					        
      	
