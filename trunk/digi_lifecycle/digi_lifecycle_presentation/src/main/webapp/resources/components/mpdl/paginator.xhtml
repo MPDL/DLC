@@ -207,8 +207,8 @@
 					<h:inputText type="text" id="inpGoToPageBottom" styleClass="eg3_gotoInput" title="#{tlt.paginator_goToPageInput}" value="#{cc.attrs.paginatorBean.goToPageBottom}" maxlength="5" />
 					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
 					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
-					<h:commandButton type="submit" id="btList_btGoBottom" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
-				 		<f:ajax event="action" render=":#{cc.clientId}"/>
+					<h:commandButton type="submit" id="btList_btGoBottom" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageBottom}">
+				 		<f:ajax execute="@form" event="action" render=":#{cc.clientId}"/>
 				 	</h:commandButton>
 				</h:form>
 			</h:panelGroup>
