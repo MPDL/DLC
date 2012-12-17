@@ -595,6 +595,9 @@ public class AdvancedSearchBean implements Observer {
 		{
 			if (this.yearTo.getValue().trim().isEmpty())
 			{
+				this.yearFrom.setConnector(">=");
+				this.yearFrom.setOpenBracket(0);
+				this.yearFrom.setCloseBracket(0);
 				scList.add(this.yearFrom);
 			}
 			
