@@ -28,7 +28,7 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 
 @Entity
-@Table(name="batch_log_Item_new")
+@Table(name="batch_log_Item")
 @NamedQueries({
     @NamedQuery(name="BatchLogItem.itemsByLogId", query="SELECT i FROM BatchLogItem i WHERE i.logId = :logId ORDER BY i.startDate DESC, i.id DESC"),
     @NamedQuery(name="BatchLogItem.itemById", query="SELECT i FROM BatchLogItem i WHERE i.id = :id")
