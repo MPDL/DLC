@@ -28,7 +28,7 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 
 @Entity
-@Table(name="batch_log_Item")
+@Table(name="batch_log_Item_new")
 @NamedQueries({
     @NamedQuery(name="BatchLogItem.itemsByLogId", query="SELECT i FROM BatchLogItem i WHERE i.logId = :logId ORDER BY i.startDate DESC, i.id DESC"),
     @NamedQuery(name="BatchLogItem.itemById", query="SELECT i FROM BatchLogItem i WHERE i.id = :id")
@@ -82,6 +82,10 @@ public class BatchLogItem {
 	private String fFileName;
 	
 	private String teiFileName;
+	
+	private int volumes_nr;
+	
+	private int finished_volumes_nr;
 	
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "logItemId",  orphanRemoval=true)
@@ -258,6 +262,22 @@ public class BatchLogItem {
 
 	public void setSubTitle(String subTitle) {
 		this.subTitle = subTitle;
+	}
+
+	public int getVolumes_nr() {
+		return volumes_nr;
+	}
+
+	public void setVolumes_nr(int volumes_nr) {
+		this.volumes_nr = volumes_nr;
+	}
+
+	public int getFinished_volumes_nr() {
+		return finished_volumes_nr;
+	}
+
+	public void setFinished_volumes_nr(int finished_volumes_nr) {
+		this.finished_volumes_nr = finished_volumes_nr;
 	}
 
 
