@@ -165,7 +165,6 @@
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
-								<f:ajax render="@all :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
 					</ui:fragment>
@@ -174,7 +173,6 @@
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
-								<f:ajax render="@all :messages"/>
  							</h:commandButton>
 						</h:panelGroup>
 					</ui:fragment>
@@ -409,7 +407,6 @@
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 								<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
-									<f:ajax render="@all :messages"/>
 	 							</h:commandButton>
 							</h:panelGroup>
 						</ui:fragment>
@@ -418,7 +415,6 @@
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 								<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
-									<f:ajax render="@all :messages"/>
 	 							</h:commandButton>
 							</h:panelGroup>
 						</ui:fragment>
@@ -540,7 +536,6 @@
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 										<h:commandButton action="#{myVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
-											<f:ajax render="@all :messages"/>
 			 							</h:commandButton>
 									</h:panelGroup>
 								</ui:fragment>
@@ -550,7 +545,6 @@
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 										<h:commandButton action="#{myVolumesBean.withdraw(child_volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
-											<f:ajax render="@all :messages"/>
 			 							</h:commandButton>
 									</h:panelGroup>
 								</ui:fragment>
