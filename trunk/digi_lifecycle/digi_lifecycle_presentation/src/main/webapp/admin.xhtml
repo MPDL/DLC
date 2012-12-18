@@ -117,7 +117,7 @@
 										<h:outputText value=" (#{lbl.admin_user_name} #{user.name}) "/>
 										
 										<h:panelGroup styleClass="eg3_floatRight" rendered="#{user.userAccount.properties.active}">
-											<a4j:commandButton title="#{lbl.button_command_deactivate}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
+											<a4j:commandButton title="#{lbl.admin_btn_deactivate_user}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
 												<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
 											</a4j:commandButton>
 											
@@ -143,7 +143,7 @@
 				    			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
 									<a4j:commandButton title="#{lbl.button_command_cancel}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
 									<a4j:commandButton title="#{lbl.button_command_delete}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
-									<a4j:commandButton title="#{lbl.button_command_deactivate}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_deactivate}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+									<a4j:commandButton title="#{lbl.admin_btn_deactivate_user}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.admin_btn_deactivate_user}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
 								</h:panelGroup>
 							</rich:popupPanel>
 							
