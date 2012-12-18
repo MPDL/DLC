@@ -8,7 +8,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
-	xmlns:rich="http://richfaces.org/rich">
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 	
 	<!-- INTERFACE -->
 	<cc:interface>
@@ -168,7 +169,10 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						
+						<ui:remove>
 						<h:outputText value="size #{cc.attrs.vol.item.objid}" />
+						</ui:remove>
+						
 						
 						<a4j:repeat var="v" value="#{cc.attrs.vol.relatedChildVolumes}" rowKeyVar="rowKey" rendered = "#{cc.attrs.vol.relatedChildVolumes.size()>0}">
 							<h:panelGroup id="v" layout="block" styleClass="eg3_container_1" style="margin:0.75em 0;">
@@ -177,7 +181,11 @@
 										<h:outputText value="#{lbl.list_volume}"/>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-										<h:outputText value="#{volumeUtilBean.getPart_089(v.modsMetadata)} "/>
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+											<f:param value="#{v.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:outputText value="#{volumeUtilBean.getPart_089(v.modsMetadata)} "/>
+										</pretty:link>
 									</h:panelGroup>
 								</h:panelGroup>
 								
@@ -186,7 +194,11 @@
 										<h:outputText value="#{lbl.mods_title}"/>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
-										<h:outputText value="#{volumeUtilBean.getMainTitle(v.modsMetadata).title}"/>
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+											<f:param value="#{v.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:outputText value="#{volumeUtilBean.getMainTitle(v.modsMetadata).title}"/>
+										</pretty:link>
 									</h:panelGroup>
 								</h:panelGroup>
 								
