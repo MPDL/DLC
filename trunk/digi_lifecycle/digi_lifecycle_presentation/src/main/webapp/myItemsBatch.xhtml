@@ -16,6 +16,8 @@
 	<style type="text/css">
     	.noBackground { background-image:none !important; background-color:transparent !important; border:none;}
     	.noPaddingTop {padding-top:0 !important;}
+    	.eg3_error {background-color:red;}
+    	.eg3_success {background-color:#CACA86;}
      </style>
 	<mpdl:paginator paginatorBean="#{ingestLogBean}">
 		<h:panelGroup layout="block">
@@ -28,9 +30,7 @@
 		                <rich:column>
 		                    <h:outputText value="#{lbl.batch_ingest_log_step}"/>
 		                </rich:column>
-		                <rich:column>
-		                    <h:outputText value="#{lbl.batch_ingest_log_status}"/>
-		                </rich:column>
+
 		                <rich:column >
 		                    <h:outputText value="#{lbl.batch_ingest_log_errorlevel}"/>
 		                </rich:column>
@@ -50,23 +50,23 @@
 		                    <h:outputText value="#{lbl.batch_ingest_log_totalItems}"/>
 		                </rich:column>		                
 		                <rich:column>
-		                    <h:outputText value="#{lbl.batch_ingest_log_finished_items}"/>
+		                    <h:outputText value="#{lbl.batch_ingest_log_finished_items}"/>		             
 		                </rich:column>
-	                	             
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_action}"/>
+		                </rich:column>	                	             
 		            </rich:columnGroup>
 		        </f:facet>
 		        
-		        <rich:column style="vertical-align:top;">
+		        <ui:param name="backgroundStyle" value="#{log.errorLevel=='ERROR' or log.errorLevel=='PROBLEM' ? 'eg3_error' :  log.step=='FINISHED' ? 'eg3_success':''}"/>
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
             		<h:outputText value="#{log.name}" />
        			</rich:column>
-		        <rich:column style="vertical-align:top;">
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
             		<h:outputText value="#{log.step}"/>
        			</rich:column>
-       			<rich:column style="vertical-align:top;">
-            		<h:outputText value="#{log.status}"/>
-       			</rich:column>
-		        <rich:column style="vertical-align:top;">
-            		<h:outputText value="#{log.errorLevel}"/>           		
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
+            		<h:outputText value="#{log.errorLevel}" />           		
        			</rich:column>
  		       	
  		       	<rich:column style="vertical-align:top;" rendered="#{not empty log.logs}">
@@ -101,7 +101,9 @@
 		        <rich:column style="vertical-align:top;">
             		<h:outputText value="#{log.finishedItems}"/>
        			</rich:column>
-
+       			<rich:column style="vertical-align:top;">
+            		<h:outputText value="#{log.status}"/>
+       			</rich:column>
        			
        			
  			    <rich:column colspan="13" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
@@ -151,16 +153,17 @@
 					            </rich:columnGroup>
 					        </f:facet>    	
 					        
-					        <rich:column breakRowBefore="true" style="vertical-align:top;">
+					         <ui:param name="backgroundStyleSubItem" value="#{logItem.errorLevel=='ERROR' or logItem.errorLevel=='PROBLEM' ? 'eg3_error' :  logItem.step=='FINISHED' ? 'eg3_success':''}"/>
+					        <rich:column breakRowBefore="true" style="vertical-align:top;" styleClass="#{backgroundStyleSubItem}">
 								<h:outputText value="#{logItem.name}"/>
 							</rich:column>
 							
-							<rich:column style="vertical-align:top;">
-								<h:outputText value="#{logItem.step}"/>
+							<rich:column style="vertical-align:top;" styleClass="#{backgroundStyleSubItem}">
+								<h:outputText value="#{logItem.step}" />
 							</rich:column>
 							
-							<rich:column style="vertical-align:top;">
-								<h:outputText value="#{logItem.errorLevel}"/>
+							<rich:column style="vertical-align:top;"  styleClass="#{backgroundStyleSubItem}">
+								<h:outputText value="#{logItem.errorLevel}" />
 							</rich:column>
 							
 							<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItem.logs}">
