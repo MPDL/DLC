@@ -1124,9 +1124,7 @@ public class IngestLog
 					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
 					
 					update(logItem);
-					
-//					bi.getLogs().add("Uploading");
-//					updateLogItemLogs(bi.getDbID(), bi.getLogs());
+
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
 					Volume vol = new Volume();
 					try{
@@ -1172,6 +1170,7 @@ public class IngestLog
 						update(logItem_multivolume);
 						
 						ArrayList<String> volIds = new ArrayList<String>();
+
 						
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
@@ -1191,6 +1190,7 @@ public class IngestLog
 								
 								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
 								volIds.add(v.getItem().getObjid());
+								logItem_multivolume.setFinished_volumes_nr(volIds.size());
 								logItemVolume.setEscidocId(v.getItem().getObjid());
 								logItemVolume.setShortTitle(VolumeUtilBean.getVolumeShortTitleView(v));
 								logItemVolume.setSubTitle(VolumeUtilBean.getVolumeSubTitleView(v));
@@ -1215,7 +1215,8 @@ public class IngestLog
 						if(volIds.size()==0)
 						{
 							cvsb.rollbackCreation(mv, userHandle);
-
+							logItem_multivolume.setShortTitle("");
+							logItem_multivolume.setSubTitle("");
 							logItem_multivolume.getLogs().add("Multivolume Rollback");
 							logItem_multivolume.setEscidocId("");
 						}
@@ -1272,8 +1273,11 @@ public class IngestLog
 				logItem.setErrorlevel(errorLevel);
 				logItem.setLogs(bi.getLogs());
 				logItem.setContent_model(bi.getContentModel());
+
 				if(bi.getContentModel() != PropertyReader.getProperty("dlc.content-model.multivolume.id"))
 					logItem.setImages_nr(bi.getImageNr());
+				else
+					logItem.setVolumes_nr(bi.getVolumes().size());
 				logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
 				logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
 				

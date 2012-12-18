@@ -79,27 +79,36 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 	}
 	
 	public List<BatchLog> retrieveList(int offset, int limit)
-	{   
+	{  
+		long start = System.currentTimeMillis();
 		logs.clear();   
+
 		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
 		TypedQuery<BatchLog> query = em.createNamedQuery(BatchLog.ITEMS_BY_USER_ID, BatchLog.class);
 		query.setParameter("userId", userId);
 		
 		List<BatchLog> allLogs =query.getResultList(); 
 		
+		long time1 = System.currentTimeMillis()-start;
+		System.err.println("RetrieveResultList Time = " + time1);
+		
 		this.totalNumberOfRecords = allLogs.size();
+		System.err.println("totalNumberOfRecords = " + totalNumberOfRecords);
 
 		try
 		{
-            for(int i = offset-1; i< ((totalNumberOfRecords > offset + limit)?(offset+limit):totalNumberOfRecords); i++)
+            for(int i = offset-1; i <= ((totalNumberOfRecords > offset + limit)?(offset+limit-1):totalNumberOfRecords-1); i++)
             {
             	logs.add(allLogs.get(i));
             }
+            System.out.println("List Nr. = " + logs.size());
+    		long time = System.currentTimeMillis()-start;
+    		System.out.println("RetrieveList Time = " + time);
             
   		}catch(Exception e)
 		{
   			logger.error("Error while retrieving batch ingest logs: " + e.getMessage());
-  			System.err.println("Error while retrieving batch ingest logs: " + e.getMessage());
+  			System.out.println("Error while retrieving batch ingest logs: " + e.getMessage());
 		}
 		finally{
 			em.close();
@@ -110,6 +119,7 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 	
     public  List<BatchLogItem> getLogItems(BatchLog logId)
     {  	
+		long start = System.currentTimeMillis();
 		List<BatchLogItem> logItems = new ArrayList<BatchLogItem>();
 		
 		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
@@ -119,6 +129,8 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 		{
 
 			logItems = query.getResultList();
+    		long time = System.currentTimeMillis()-start;
+    		System.err.println("getLogItems Time = " + time + " | size = " + logItems.size() + " | logId = " + logId.getId() );
 		
 		}catch(Exception e)
 		{
@@ -134,7 +146,8 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
     
    public List<BatchLogItemVolume> getLogItemVolumes(BatchLogItem logItemId)
     {
-    	
+		long start = System.currentTimeMillis();
+		
 		List<BatchLogItemVolume> logItemVolumes = new ArrayList<BatchLogItemVolume>();
 		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
 		TypedQuery<BatchLogItemVolume> query = em.createNamedQuery(BatchLogItemVolume.ITEMS_BY_LOG_ITME_ID, BatchLogItemVolume.class);
@@ -142,6 +155,8 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 		try
 		{
 			logItemVolumes = query.getResultList();
+    		long time = System.currentTimeMillis()-start;
+    		System.err.println("getLogItemVolumes Time = " + time +  " | size = " + logItemVolumes.size() + " | logItemId = " + logItemId.getId());
 		
 		}catch(Exception e)
 		{
