@@ -1788,8 +1788,10 @@ public class VolumeServiceBean {
 					try {
 						Volume parent = null;
 						Relation rel = volume.getItem().getRelations().get(0);
-						parent = retrieveVolume(rel.getObjid(), userHandle);
+						parent = loadCompleteVolume(rel.getObjid(), userHandle);
 						volume.setRelatedParentVolume(parent);
+
+						
 					} catch (Exception e) {
 						logger.error("cannot retrieve parent Volume" + e.getMessage());
 					}
