@@ -321,10 +321,10 @@ public class IngestLog
 				errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
 			}
 			batchLog.setTotalItems(totalItems);
-			if(!batchLog.getErrorLevel().equals(ErrorLevel.ERROR) && errorItems.size()==0 && itemsForBatchIngest.size()>0)
-			{
+			if(batchLog.getErrorLevel() == null && errorItems.size()==0 && itemsForBatchIngest.size()>0)
 				valid = true;
-			}
+			else if(!batchLog.getErrorLevel().equals(ErrorLevel.ERROR) && errorItems.size()==0 && itemsForBatchIngest.size()>0)
+				valid = true;
 		} catch (Exception e) {
 			logger.error("Error while checking ftp data", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
