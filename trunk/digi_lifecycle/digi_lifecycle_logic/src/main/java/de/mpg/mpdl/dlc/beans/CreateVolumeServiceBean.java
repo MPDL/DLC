@@ -203,7 +203,7 @@ public class CreateVolumeServiceBean {
 			msg.setMessage("Empty item created: " + item.getObjid());
 			
 		} catch (Exception e) {
-			logger.error("Error while creating Item" + e.getMessage());
+			logger.error("Error while creating Item" + e.getMessage(), e);
 			msg.setIngestStatus(IngestStatus.ERROR);
 			msg.setError(e);
 			msg.setMessage("Error while creating Item" + e.getMessage());
