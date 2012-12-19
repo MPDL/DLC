@@ -264,6 +264,7 @@ public class IngestLog
 		logger.info("CHECK DATA");
 		this.itemsForBatchIngest.clear();
 		this.errorItems.clear();
+		boolean valid = false;
 		try {		
 			batchLog.getLogs().add("CHECK DATA");
 			ftpCheckImages(itemsForBatchIngest, this.images);		
@@ -320,6 +321,10 @@ public class IngestLog
 				errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
 			}
 			batchLog.setTotalItems(totalItems);
+			if(!batchLog.getErrorLevel().equals(ErrorLevel.ERROR) && errorItems.size()==0 && itemsForBatchIngest.size()>0)
+			{
+				valid = true;
+			}
 		} catch (Exception e) {
 			logger.error("Error while checking ftp data", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
@@ -330,8 +335,8 @@ public class IngestLog
 			update(batchLog);
 			if(FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 				ftpLogout(ftpClient);
-		}    
-		return (errorItems.size()==0 && itemsForBatchIngest.size()>0);
+		}
+		return valid;    
 
 	}
 	
@@ -437,6 +442,7 @@ public class IngestLog
 	{
  		try{
  			batchLog.getLogs().add("CHECK IMAGES");
+ 			batchLog.getLogs().add("Images directory: " + directory);
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
 				ftpClient.disconnect();
@@ -498,6 +504,7 @@ public class IngestLog
 				}
 			}
 		}catch (IOException e) {
+			logger.error("Error while checking images files ", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
 			batchLog.setStep(Step.STOPPED);
 			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
@@ -512,6 +519,7 @@ public class IngestLog
 	{		
  		try {
 			batchLog.getLogs().add("CHECK TEI FILES");
+ 			batchLog.getLogs().add("Tei directory: " + directory);
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
 				if(ftp)
@@ -599,6 +607,7 @@ public class IngestLog
 			}
 
 		}catch (Exception e) {
+			logger.error("Error while checking tei files ", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
 			batchLog.setStep(Step.STOPPED);
 			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
@@ -663,6 +672,7 @@ public class IngestLog
 //		ftp.changeWorkingDirectory(directory);
  		try {
  			batchLog.getLogs().add("CHECK MAB FILES");
+ 			batchLog.getLogs().add("MAB directory: " + directory);
 			HashMap<String, BatchIngestItem> multiVolumes = new HashMap<String, BatchIngestItem>();
 			HashMap<String, BatchIngestItem> volumes = new HashMap<String, BatchIngestItem>();
 	 			
@@ -808,6 +818,7 @@ public class IngestLog
 			if(multiVolumes.size() >0 || volumes.size() >0 )
 				updateItemsForBatchIngest(items, errorItems, multiVolumes, volumes);
 		}catch (IOException e) {
+			logger.error("Error while checking mab files ", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
 			batchLog.setStep(Step.STOPPED);
 			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
@@ -1230,6 +1241,8 @@ public class IngestLog
 						else
 						{
 							volumeService.updateMultiVolumeFromId(mv.getItem().getObjid(), volIds, userHandle);
+							if(operation.equalsIgnoreCase("release"))
+								cvsb.releaseVolume(mv.getItem().getObjid(), operation);
 						}
 						logItem_multivolume.setEndDate(new Date());
 						logItem_multivolume.setStep(Step.FINISHED);
