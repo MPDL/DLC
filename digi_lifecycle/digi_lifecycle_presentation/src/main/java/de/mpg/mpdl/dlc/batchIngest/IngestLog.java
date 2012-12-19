@@ -163,11 +163,12 @@ public class IngestLog
 		
 	}
 
-	public static FTPClient ftpLogin(String server, String username, String password) throws IOException
+	public FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
 		System.err.println("ftpLogin");
 		FTPClient ftp = new FTPClient();
+		ftp.setDataTimeout(120000);
 		if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
 		{
 			ftp.connect(server);
@@ -188,13 +189,14 @@ public class IngestLog
         
 		return ftp;
 	}
-	
-	public static FTPSClient ftpsLogin(String server, String username, String password) throws IOException
+	  
+	public FTPSClient ftpsLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
 		System.err.println("ftpsLogin");
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
+		ftps.setDataTimeout(120000);
 		if(!FTPReply.isPositiveCompletion(ftps.getReplyCode()))
 		{
 			ftps.connect(server, 21000);
@@ -300,7 +302,12 @@ public class IngestLog
 				{
 					Entry item = (Entry) i.next();
 					BatchIngestItem bi = (BatchIngestItem) item.getValue();
-					if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
+					
+					if(bi.getContentModel()==null)
+					{
+						totalItems ++;
+					}
+					else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 					{
 						totalItems ++;
 					}
@@ -314,9 +321,9 @@ public class IngestLog
 			}
 			batchLog.setTotalItems(totalItems);
 		} catch (Exception e) {
+			logger.error("Error while checking ftp data", e);
 			batchLog.setErrorLevel(ErrorLevel.ERROR);
 			batchLog.setStep(Step.STOPPED);
-			MessageHelper.errorMessage("error stop");
 		}
 		finally
 		{  
