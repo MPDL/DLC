@@ -942,8 +942,9 @@ public class IngestBean{
 			md.setRelatedItems(null);
 		else
 		{
-			md.getRelatedItems().get(0).setDisplayLabel("series1");
-			md.getRelatedItems().get(0).setType("series");
+//			md.getRelatedItems().get(0).setDisplayLabel("series1");
+//			md.getRelatedItems().get(0).setType("series");
+			md.getRelatedItems().get(0).setType("host");
 		}
 		if(md.getParts().get(1).getValue() !="" && md.getParts().get(1).getValue() != null)
 			md.getParts().get(1).setType("host");
