@@ -14,12 +14,12 @@ public class BatchIngestItem {
 	private String name;
 	private String dlcDirectory;
 	private ModsMetadata modsMetadata;
-	private File teiFile;
+	private IngestImage teiFile;
 	private int teiPbs;
-	private List<File> imageFiles = new ArrayList<File>();
+	private List<IngestImage> imageFiles = new ArrayList<IngestImage>();
 	private int imageNr;
 	private String imagesDirectory;
-	private File footer;
+	private IngestImage footer;
 	private int footerNr;
 	private String parentId;
 	private List<BatchIngestItem> volumes = new ArrayList<BatchIngestItem>();
@@ -30,7 +30,7 @@ public class BatchIngestItem {
 
 	}
 	
-	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, File teiFile, ArrayList<File> imageFiles, File footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
+	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, IngestImage teiFile, ArrayList<IngestImage> imageFiles, IngestImage footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
 	{
 		
 		this.contentModel = contentModel;
@@ -68,29 +68,29 @@ public class BatchIngestItem {
 		this.modsMetadata = modsMetadata;
 	}
 
-	public File getTeiFile() {
+	public IngestImage getTeiFile() {
 		return teiFile;
 	}
 
-	public void setTeiFile(File teiFile) {
+	public void setTeiFile(IngestImage teiFile) {
 		this.teiFile = teiFile;
 	}
 
-	public List<File> getImageFiles() {
+	public List<IngestImage> getImageFiles() {
 		return imageFiles;
 	}
 
-	public void setImageFiles(List<File> imageFiles) {
+	public void setImageFiles(List<IngestImage> imageFiles) {
 		this.imageFiles = imageFiles;
 	}
 	
 	
 
-	public File getFooter() {
+	public IngestImage getFooter() {
 		return footer;
 	}
 
-	public void setFooter(File footer) {
+	public void setFooter(IngestImage footer) {
 		this.footer = footer;
 	}
 

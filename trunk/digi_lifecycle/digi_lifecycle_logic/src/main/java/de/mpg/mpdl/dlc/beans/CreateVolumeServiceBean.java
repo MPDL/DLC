@@ -281,7 +281,7 @@ public class CreateVolumeServiceBean {
 		String itemIdWithoutColon = itemId.replaceAll(":", "_");
 				
 		File jpegFooter = null;
-		if(footer != null)
+		if(footer != null && footer.getFile()!=null)
 		{
 			IngestLogMessage msg = new IngestLogMessage(ActivityType.PROCESS_IMAGE, "Footer: " + footer.getName());
 			try {
@@ -540,7 +540,7 @@ public class CreateVolumeServiceBean {
 		}
 	}
 	
-	public Volume update(Volume volume, String userHandle, String operation,  DiskFileItem teiFile, ModsMetadata modsMetadata, List<IngestImage> images, DiskFileItem cdcFile)
+	public Volume update(Volume volume, String userHandle, String operation,  IngestImage teiFile, ModsMetadata modsMetadata, List<IngestImage> images, IngestImage cdcFile)
 	{
 		
 		ItemHandlerClient client;
@@ -578,7 +578,7 @@ public class CreateVolumeServiceBean {
 			
 			
 			
-			if(teiFile != null || modsMetadata != null || cdcFile!=null)
+			if((teiFile != null && teiFile.getFile()!=null) || modsMetadata != null || (cdcFile!=null && cdcFile.getFile()!=null))
 			{
 			
 				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
@@ -597,7 +597,7 @@ public class CreateVolumeServiceBean {
 		return volume;
 	}
 	
-	public Volume updateVolume(Volume volume, String userHandle, DiskFileItem teiFile, DiskFileItem cdcFile, boolean updateTeiSd) throws Exception
+	public Volume updateVolume(Volume volume, String userHandle, IngestImage teiFile, IngestImage cdcFile, boolean updateTeiSd) throws Exception
 	{  
 		
 		IngestLogMessage msg = new IngestLogMessage(ActivityType.UPDATE_ITEM);
@@ -633,10 +633,10 @@ public class CreateVolumeServiceBean {
 		StagingHandlerClientInterface sthc = new StagingHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
 		sthc.setHandle(userHandle);
 			
-		if(teiFile!=null)	
+		if(teiFile!=null && teiFile.getFile()!=null)	
 			{
 				logger.info("TEI file found");
-				File teiFileWithPbConvention = applyPbConventionToTei(new StreamSource(teiFile.getStoreLocation()));
+				File teiFileWithPbConvention = applyPbConventionToTei(new StreamSource(teiFile.getFile()));
 				File teiFileWithIds = addIdsToTei(new StreamSource(teiFileWithPbConvention));
 
 				//Transform TEI to Tei-SD and add to volume
@@ -803,11 +803,11 @@ public class CreateVolumeServiceBean {
 			}
 			
 			//Add codicological metadata as component
-			if(cdcFile!=null)	
+			if(cdcFile!=null && cdcFile.getFile()!=null)	
 			{
 				logger.info("Codicological file found");
 				
-				URL uploadedCdc = sthc.upload(cdcFile.getStoreLocation());
+				URL uploadedCdc = sthc.upload(cdcFile.getFile());
 				
 				if(cdcComponent!=null)
 				{
@@ -1094,7 +1094,7 @@ public class CreateVolumeServiceBean {
         validator.validate(cdc);    
 	}
 	
-	public Volume createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<File> images, File footer, DiskFileItem teiFile, DiskFileItem cdcFile) throws Exception 
+	public Volume createNewItem(String operation, String contentModel, String contextId, String multiVolumeId, String userHandle, ModsMetadata modsMetadata, List<IngestImage> images, IngestImage footer, IngestImage teiFile, IngestImage cdcFile) throws Exception 
 	{
 		logger.info("Creating new volume/monograph");
 		
@@ -1207,9 +1207,10 @@ public class CreateVolumeServiceBean {
 				long time = System.currentTimeMillis()-start;
 				logger.info("Time to upload images: " + time);
 			*/
-			  
+			   /*
 			 	List<IngestImage> ingestImageList = new ArrayList<IngestImage>();
-				for(File img : images)
+				
+			 	for(File img : images)
 				{
 					ingestImageList.add(new IngestImage(img));
 				}
@@ -1218,7 +1219,8 @@ public class CreateVolumeServiceBean {
 				{
 					iifooter = new IngestImage(footer);
 				}
-				uploadImagesAndCreateMets(ingestImageList, iifooter, item.getOriginObjid(), volume, userHandle);
+				*/
+				uploadImagesAndCreateMets(images, footer, item.getOriginObjid(), volume, userHandle);
 			
 				volume = updateVolume(volume, userHandle, teiFile, cdcFile, true);
 			

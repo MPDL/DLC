@@ -39,6 +39,7 @@ import de.mpg.mpdl.dlc.util.BatchIngestLogs;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.SessionExtenderTask;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
+import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
@@ -355,7 +356,7 @@ public class IngestLog_NFS_Backup
 		for(File imageDir : subdir)
 		{
 			BatchIngestItem newItem = new BatchIngestItem();
-			ArrayList<File> images = new ArrayList<File>();
+			ArrayList<IngestImage> images = new ArrayList<IngestImage>();
 			name = imageDir.getName();
 			newItem.setName(name);
 			logger.info("read images for " + name);
@@ -365,11 +366,11 @@ public class IngestLog_NFS_Backup
 				{
 					if(image.getName().startsWith("footer"))
 					{
-						newItem.setFooter(image);
+						newItem.setFooter(new IngestImage(image));
 						logger.info(name + " has footer image");
 					}
 					else
-						images.add(image);
+						images.add(new IngestImage(image));
 				}
 			}
 			newItem.setImageFiles(images);
@@ -394,7 +395,7 @@ public class IngestLog_NFS_Backup
 				{
 					item = new BatchIngestItem();
 					item.setName(name);
-					item.setTeiFile(tFile);
+					item.setTeiFile(new IngestImage(tFile));
 					String errorMessage = BatchIngestLogs.SINGLE_TEI_ERROR;
 					logger.error(errorMessage + name);
 					item.getLogs().add(errorMessage);
@@ -402,7 +403,7 @@ public class IngestLog_NFS_Backup
 				}
 				else 
 				{
-					item.setTeiFile(tFile);
+					item.setTeiFile(new IngestImage(tFile));
 					logger.info("read tei for " + name);
 					try {
 						//InputStream teiIs = new FileInputStream(tFile);
@@ -432,11 +433,11 @@ public class IngestLog_NFS_Backup
 	}
 	
 	
-	public static List<File> sortImagesByTeiFile(List<File> imageFiles, List<XdmNode> teiPbFacsValues)
+	public static List<IngestImage> sortImagesByTeiFile(List<IngestImage> imageFiles, List<XdmNode> teiPbFacsValues)
 	{
 		//Sort images using pb facs attribute in tei file
 				
-			List<File> imageFilesSorted = new ArrayList<File>();
+			List<IngestImage> imageFilesSorted = new ArrayList<IngestImage>();
 			if(teiPbFacsValues != null && imageFiles.size() == teiPbFacsValues.size())
 			{
 				
@@ -447,7 +448,7 @@ public class IngestLog_NFS_Backup
 					if(facs!=null)
 					{
 						
-						for(File imgFile : imageFiles)
+						for(IngestImage imgFile : imageFiles)
 						{
 							if(facs.equals(imgFile.getName()))
 							{
@@ -699,7 +700,7 @@ public class IngestLog_NFS_Backup
 				{
 					
 					
-					Volume v= createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()), null);
+					Volume v= createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter()	, bi.getTeiFile(), null);
 					itemId = v.getItem().getObjid();
 					updateLogItem(logItemId, "item_id", itemId);
 					Date eDate = new Date();
@@ -735,7 +736,7 @@ public class IngestLog_NFS_Backup
 						ArrayList<String> volIds = new ArrayList<String>();
 						for(BatchIngestItem vol : bi.getVolumes())
 						{
-							Volume v = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()), null);
+							Volume v = createVolumeService.createNewItem(status.toString(), PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, itemId, userHandle, bi.getModsMetadata(), vol.getImageFiles(), vol.getFooter()	, vol.getTeiFile(), null);
 							String volId = v.getItem().getObjid();
 							eDate = new Date();
 							updateLogItemVolume(logItemId, vol.getName(), sDate.toString(), volId, eDate.toString());

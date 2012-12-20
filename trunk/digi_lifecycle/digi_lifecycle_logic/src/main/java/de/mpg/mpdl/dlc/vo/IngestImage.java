@@ -29,9 +29,13 @@ public class IngestImage implements Comparable<IngestImage> {
 	public IngestImage(DiskFileItem diskFileItem)
 	{
 		this.diskFileItem = diskFileItem;
-		this.file =diskFileItem.getStoreLocation();
-		//this.diskFileItem = diskFileItem;
-		this.name = diskFileItem.getName();
+		if(diskFileItem!=null)
+		{
+			this.file =diskFileItem.getStoreLocation();
+			//this.diskFileItem = diskFileItem;
+			this.name = diskFileItem.getName();
+		}
+		
 		this.type = Type.DISK;
 	}
 	  

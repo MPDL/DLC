@@ -43,6 +43,7 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
+import de.mpg.mpdl.dlc.vo.IngestImage;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
@@ -166,22 +167,18 @@ public class IngestLog
 	public FTPClient ftpLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
-		System.err.println("ftpLogin");
+		
 		FTPClient ftp = new FTPClient();
 		ftp.setDataTimeout(120000);
-		if(!FTPReply.isPositiveCompletion(ftp.getReplyCode()))
-		{
-			ftp.connect(server);
-			logger.info("connect to server: "+server + " : "+ftp.getReplyCode());	
-		}
-//       ftp.setDataTimeout(60000); // 10 minutes   
-//       ftp.setConnectTimeout(600000); // 10 minutes
-        ftp.setControlKeepAliveTimeout(600000);
+		ftp.setConnectTimeout(300);
+		ftp.connect(server);
+		logger.info("connected to server: "+server + " - reply code: "+ftp.getReplyCode() + " - " +ftp.getReplyString());
+        ftp.setControlKeepAliveTimeout(300);
         ftp.setControlEncoding("UTF-8");
 		ftp.login(username, password);
         if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
         	ftp.disconnect();
-	        logger.error("FTP server refused connection.");
+	        logger.error("FTP server refused connection with code " + ftp.getReplyCode() + " - " +  ftp.getReplyString());
 	    }
         
 		long time = System.currentTimeMillis()-start;
@@ -193,18 +190,15 @@ public class IngestLog
 	public FTPSClient ftpsLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
-		System.err.println("ftpsLogin");
+		
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
 		ftps.setDataTimeout(120000);
-		if(!FTPReply.isPositiveCompletion(ftps.getReplyCode()))
-		{
-			ftps.connect(server, 21000);
-			logger.info("Connecting to FTPS Server: "+server + " : "+ftps.getReplyCode());
-		}
-//      ftps.setDataTimeout(60000); // 10 minutes   
-//     	ftps.setConnectTimeout(600000); // 10 minutes
-		ftps.setControlKeepAliveTimeout(600000);
+		ftps.setConnectTimeout(300);
+		
+		ftps.connect(server, 21000);
+		logger.info("connected to server: "+server + " - reply code: "+ftps.getReplyCode() + " - " +ftps.getReplyString());	
+		ftps.setControlKeepAliveTimeout(300);
 		logger.info("Connecting to FTPS Server");
         int reply;
         ftps.login(username, password);
@@ -221,7 +215,7 @@ public class IngestLog
         if (!FTPReply.isPositiveCompletion(reply))
         {
         	ftps.disconnect();
-            System.err.println("FTP server refused connection.");
+        	logger.error("disconnected from server: "+server + " - reply code: "+ftps.getReplyCode() + " - " +ftps.getReplyString());
 
         }
 		long time = System.currentTimeMillis()-start;
@@ -443,6 +437,7 @@ public class IngestLog
  		try{
  			batchLog.getLogs().add("CHECK IMAGES");
  			batchLog.getLogs().add("Images directory: " + directory);
+ 			logger.info("checking images");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
 				ftpClient.disconnect();
@@ -483,13 +478,18 @@ public class IngestLog
 						if(tmpFile.getName().startsWith("footer"))
 						{
 							footerNr ++;
-							File footer = new File(dlcDirectory + "/"+ tmpFile.getName());
+							File footerFile = File.createTempFile(tmpFile.getName(), "footer", new File(dlcDirectory));
+							IngestImage footer = new IngestImage(footerFile);
+							footer.setName(tmpFile.getName());
+							//File footer = new File(dlcDirectory + "/"+ tmpFile.getName());
 							newItem.setFooter(footer);
 						}
 						else
 						{
 						imageNr ++;
-						File image = new File(dlcDirectory + "/"+ tmpFile.getName());
+						File imageFile = File.createTempFile(tmpFile.getName(), "img", new File(dlcDirectory));
+						IngestImage image = new IngestImage(imageFile);
+						image.setName(tmpFile.getName());
 						newItem.getImageFiles().add(image);
 						}
 					}
@@ -520,6 +520,7 @@ public class IngestLog
  		try {
 			batchLog.getLogs().add("CHECK TEI FILES");
  			batchLog.getLogs().add("Tei directory: " + directory);
+ 			logger.info("checking teis");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
 				if(ftp)
@@ -557,8 +558,11 @@ public class IngestLog
 					item.setName(name);
 					item.setDlcDirectory(dlcDirectory);
 					
-					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-					FileOutputStream out = new FileOutputStream(tFile);
+					File tFileF = File.createTempFile(tmpFile.getName(), "tei.xml", new File(dlcDirectory));
+					IngestImage tFile = new IngestImage(tFileF);
+					tFile.setName(tmpFile.getName());
+					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(tFileF);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
@@ -571,8 +575,11 @@ public class IngestLog
 				else 
 				{
 					String dlcDirectory = item.getDlcDirectory();
-					File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
-					FileOutputStream out = new FileOutputStream(tFile);
+					File tFileF = File.createTempFile(tmpFile.getName(), "tei.xml", new File(dlcDirectory));
+					IngestImage tFile = new IngestImage(tFileF);
+					tFile.setName(tmpFile.getName());
+					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(tFileF);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
@@ -581,8 +588,8 @@ public class IngestLog
 					logger.info("read tei for " + name);
 					try {
 						//InputStream teiIs = new FileInputStream(tFile);
-						CreateVolumeServiceBean.validateTei(new StreamSource(tFile));
-						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new StreamSource(tFile));
+						CreateVolumeServiceBean.validateTei(new StreamSource(tFileF));
+						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new StreamSource(tFileF));
 						item.setImageFiles(sortImagesByTeiFile(item.getImageFiles(), pbList));
 						int numberOfTeiPbs = pbList.size();
 						int numberOfImages = item.getImageNr();
@@ -620,11 +627,11 @@ public class IngestLog
 	}
 	
 	
-	public static List<File> sortImagesByTeiFile(List<File> imageFiles, List<XdmNode> teiPbFacsValues)
+	public static List<IngestImage> sortImagesByTeiFile(List<IngestImage> imageFiles, List<XdmNode> teiPbFacsValues)
 	{
 		//Sort images using pb facs attribute in tei file
 				
-		List<File> imageFilesSorted = new ArrayList<File>();
+		List<IngestImage> imageFilesSorted = new ArrayList<IngestImage>();
 		if(teiPbFacsValues != null && imageFiles.size() == teiPbFacsValues.size())
 		{
 			
@@ -635,7 +642,7 @@ public class IngestLog
 				if(facs!=null)
 				{
 					
-					for(File imgFile : imageFiles)
+					for(IngestImage imgFile : imageFiles)
 					{
 						if(facs.equals(imgFile.getName()))
 						{
@@ -673,6 +680,7 @@ public class IngestLog
  		try {
  			batchLog.getLogs().add("CHECK MAB FILES");
  			batchLog.getLogs().add("MAB directory: " + directory);
+ 			logger.info("checking mabs");
 			HashMap<String, BatchIngestItem> multiVolumes = new HashMap<String, BatchIngestItem>();
 			HashMap<String, BatchIngestItem> volumes = new HashMap<String, BatchIngestItem>();
 	 			
@@ -705,8 +713,8 @@ public class IngestLog
 	//				FileOutputStream out = new FileOutputStream(tFile);
 	//				ftp.retrieveFile(directory+"/"+tmpFile.getName(), out);
 				
-				
-					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					File mFile = File.createTempFile(tmpFile.getName(), ".mab.xml", new File(dlcDirectory));	
+					//File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);		
 					out.flush();
@@ -914,7 +922,7 @@ public class IngestLog
 //        
 //	}
 	
-	private void downloadImages(BatchLogItem logItem, BatchLogItemVolume logItemVolume, String imagesDirectory, String dlcDirectory, List<File> images, File footer) throws Exception
+	private void downloadImages(BatchLogItem logItem, BatchLogItemVolume logItemVolume, String imagesDirectory, String dlcDirectory, List<IngestImage> images, IngestImage footer) throws Exception
 	{
 
 		if(logItem != null)
@@ -931,11 +939,11 @@ public class IngestLog
 			else
 				this.ftpClient = ftpsLogin(server, username, password);	
 
-			for(File i : images)
+			for(IngestImage i : images)
 			{
 				FileOutputStream out = null;
 				try {
-					out = new FileOutputStream(i);
+					out = new FileOutputStream(i.getFile());
 				} catch (FileNotFoundException e) {
 					if(logItem != null)
 					{
@@ -955,13 +963,13 @@ public class IngestLog
 					out.close();
 					if(logItem != null)
 					{
-						logItem.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.length());
+						logItem.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.getFile().length());
 					}
 					else
 					{
-						logItemVolume.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.length());
+						logItemVolume.getLogs().add("downloading image Name: " + i.getName() + " | Size: " + i.getFile().length());
 					}
-					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
 				}catch(IOException e)
 				{
 					logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
@@ -986,13 +994,13 @@ public class IngestLog
 						out.close();
 						if(logItem != null)
 						{
-							logItem.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.length());
+							logItem.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.getFile().length());
 						}
 						else
 						{
-							logItemVolume.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.length());
+							logItemVolume.getLogs().add("Retry downloading image Name: " + i.getName() + " | Size: " + i.getFile().length());
 						}		
-						logger.info("Retry :downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+						logger.info("Retry :downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
 					} catch (IOException e1) {
 						if(logItem != null)
 						{
@@ -1005,7 +1013,7 @@ public class IngestLog
 						logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 						throw e;
 					}
-					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.length());
+					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
 				
 				}
 			}
@@ -1013,7 +1021,7 @@ public class IngestLog
 			{
 				FileOutputStream out = null;
 				try {
-					out = new FileOutputStream(footer);
+					out = new FileOutputStream(footer.getFile());
 				} catch (FileNotFoundException e2) {
 					if(logItem != null)
 					{
@@ -1036,13 +1044,13 @@ public class IngestLog
 					out.close();
 					if(logItem != null)
 					{
-						logItem.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+						logItem.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 					}
 					else
 					{
-						logItemVolume.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+						logItemVolume.getLogs().add("downloading footer Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 					}
-					logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
+					logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.getFile().length());
 					
 				} catch (IOException e) 
 				{
@@ -1067,13 +1075,13 @@ public class IngestLog
 						out.close();
 						if(logItem != null)
 						{
-							logItem.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+							logItem.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 						}
 						else
 						{
-							logItemVolume.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.length());
+							logItemVolume.getLogs().add("Retry downloading footer Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 						}
-						logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.length());
+						logger.info("downloading footer to " + dlcDirectory + " | Name:  " + footer.getName() + " | Size: " + footer.getFile().length());
 						
 					} catch (IOException e1) {
 						if(logItem != null)
@@ -1087,7 +1095,7 @@ public class IngestLog
 						logger.error("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 						throw e;
 					}
-					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + footer.getName() + " | Size: " + footer.length());
+					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 				}
 			}
 		}catch(Exception e){
@@ -1146,7 +1154,7 @@ public class IngestLog
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
 					Volume vol = new Volume();
 					try{
-						vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter() !=null ? bi.getFooter() : null, bi.getTeiFile() != null ? CreateVolumeServiceBean.fileToDiskFileItem(bi.getTeiFile()) : null, null);
+						vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter(), bi.getTeiFile(), null);
 						logItem.setEscidocId(vol.getItem().getOriginObjid());
 						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(vol));
 						logItem.setSubTitle(VolumeUtilBean.getSubTitleView(vol));
@@ -1206,7 +1214,7 @@ public class IngestLog
 							CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
 							try{
 								
-								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter() !=null ? vol.getFooter() : null, vol.getTeiFile() !=null ? CreateVolumeServiceBean.fileToDiskFileItem(vol.getTeiFile()) : null, null);
+								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter(), vol.getTeiFile(), null);
 								volIds.add(v.getItem().getObjid());
 								logItem_multivolume.setFinished_volumes_nr(volIds.size());
 								logItemVolume.setEscidocId(v.getItem().getObjid());
@@ -1345,6 +1353,8 @@ public class IngestLog
 	
 	private void addNewLogItemVolume(BatchLogItem logItem, BatchLogItemVolume logItemVolume)
 	{
+		
+	
 		em.getTransaction().begin();
 		em.persist(logItemVolume);
 		logItem.addItemVolume(logItemVolume);
@@ -1354,6 +1364,7 @@ public class IngestLog
 	
 	private void update(Object log)
 	{
+
 		em.getTransaction().begin();
 		em.merge(log);
 		em.getTransaction().commit();
