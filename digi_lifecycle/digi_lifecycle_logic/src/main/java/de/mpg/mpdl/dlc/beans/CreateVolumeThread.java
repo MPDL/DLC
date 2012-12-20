@@ -159,7 +159,7 @@ public class CreateVolumeThread extends Thread implements Runnable{
 				if(teiFile != null)
 					teiInputStream = teiFile.getInputStream();
 					*/
-				volume = cvsb.updateVolume(volume, userHandle, teiFile, codicologicalFile, true);
+				volume = cvsb.updateVolume(volume, userHandle, new IngestImage(teiFile), new IngestImage(codicologicalFile), true);
 			
 				if(operation.equalsIgnoreCase("release"))
 					volume = cvsb.releaseVolume(volume.getItem().getObjid(), userHandle);

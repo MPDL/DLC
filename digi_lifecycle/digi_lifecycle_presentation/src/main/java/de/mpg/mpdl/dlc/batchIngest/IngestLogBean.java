@@ -90,10 +90,10 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 		List<BatchLog> allLogs =query.getResultList(); 
 		
 		long time1 = System.currentTimeMillis()-start;
-		System.err.println("RetrieveResultList Time = " + time1);
+		//System.err.println("RetrieveResultList Time = " + time1);
 		
 		this.totalNumberOfRecords = allLogs.size();
-		System.err.println("totalNumberOfRecords = " + totalNumberOfRecords);
+		//System.err.println("totalNumberOfRecords = " + totalNumberOfRecords);
 
 		try
 		{
@@ -130,12 +130,12 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 
 			logItems = query.getResultList();
     		long time = System.currentTimeMillis()-start;
-    		System.err.println("getLogItems Time = " + time + " | size = " + logItems.size() + " | logId = " + logId.getId() );
+    		//System.err.println("getLogItems Time = " + time + " | size = " + logItems.size() + " | logId = " + logId.getId() );
 		
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving batch ingest log Items: " + e.getMessage());
-  			System.err.println("Error while retrieving batch ingest log Items: " + e.getMessage());
+  			//System.err.println("Error while retrieving batch ingest log Items: " + e.getMessage());
 		}
 		finally{
 			em.close();
@@ -156,12 +156,12 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 		{
 			logItemVolumes = query.getResultList();
     		long time = System.currentTimeMillis()-start;
-    		System.err.println("getLogItemVolumes Time = " + time +  " | size = " + logItemVolumes.size() + " | logItemId = " + logItemId.getId());
+    		//System.err.println("getLogItemVolumes Time = " + time +  " | size = " + logItemVolumes.size() + " | logItemId = " + logItemId.getId());
 		
 		}catch(Exception e)
 		{
   			logger.error("Error while retrieving logItemVolumes " + e.getMessage());
-  			System.err.print("Error while retrieving logItemVolumes " + e.getMessage());
+  			//System.err.print("Error while retrieving logItemVolumes " + e.getMessage());
 		}
 		finally{
 			em.close();
