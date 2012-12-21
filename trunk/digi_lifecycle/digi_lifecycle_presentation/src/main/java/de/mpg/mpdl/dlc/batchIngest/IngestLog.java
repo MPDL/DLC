@@ -934,11 +934,17 @@ public class IngestLog
 
 		if(logItem != null)
 		{
-			logItem.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES);
+			if(ftp)
+				logItem.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTP);
+			else
+				logItem.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTPS);
 		}
 		else
 		{
-			logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES);
+			if(ftp)
+				logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTP);
+			else
+				logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTPS);
 		}
 		try{
 			if(ftp)
