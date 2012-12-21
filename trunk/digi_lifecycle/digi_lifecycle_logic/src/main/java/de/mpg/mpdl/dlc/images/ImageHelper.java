@@ -286,7 +286,7 @@ public class ImageHelper{
 		        fos.close();
 	    	}catch(Exception e)
 	    	{
-	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
+	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length(), e);
 	    	}
 	        return tmpFile;
 	    } 

@@ -45,7 +45,7 @@
 				<h:outputLabel for="volumeLink" styleClass="eg3_markTextButton">
 					<h:outputText value="#{lbl.citation_handle_title_mark}"/>
 				</h:outputLabel>
-				<h:inputText id="volumeLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
+				<h:inputText id="volumeLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/recto-verso" readonly="true" styleClass="eg3_container_1"/>
 				
 				<ui:fragment rendered="#{viewPages.viewType == 'SINGLE'}">
 					<h:outputLabel for="citSinglePage" styleClass="eg3_markTextButton">
