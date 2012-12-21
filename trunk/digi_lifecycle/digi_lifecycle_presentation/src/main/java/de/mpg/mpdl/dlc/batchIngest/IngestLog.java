@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
+import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -169,6 +171,7 @@ public class IngestLog
 		long start = System.currentTimeMillis();
 		
 		FTPClient ftp = new FTPClient();
+		ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 		ftp.setDataTimeout(120000);
 		ftp.setConnectTimeout(300);
 		ftp.connect(server);
@@ -190,22 +193,26 @@ public class IngestLog
 	public FTPSClient ftpsLogin(String server, String username, String password) throws IOException
 	{
 		long start = System.currentTimeMillis();
-		
+		logger.info("Connecting to FTPS Server");
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
+		
+		ftps.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+
 		ftps.setDataTimeout(120000);
 		ftps.setConnectTimeout(300);
 		
 		ftps.connect(server, 21000);
 		logger.info("connected to server: "+server + " - reply code: "+ftps.getReplyCode() + " - " +ftps.getReplyString());	
 		ftps.setControlKeepAliveTimeout(300);
-		logger.info("Connecting to FTPS Server");
+		
         int reply;
         ftps.login(username, password);
         System.err.println("Login FTPS Success");
 
-        //client.setFileType(FTP.BINARY_FILE_TYPE);
-        ftps.setFileType(FTP.NON_PRINT_TEXT_FORMAT);
+        ftps.setFileType(FTP.BINARY_FILE_TYPE);
+       
+        //ftps.setFileType(FTP.NON_PRINT_TEXT_FORMAT);
         ftps.execPBSZ(0);  // Set protection buffer size
         ftps.execPROT("P"); // Set data channel protection to private
         ftps.enterLocalPassiveMode();
@@ -957,7 +964,9 @@ public class IngestLog
 				}
 				try{
 				
+					
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					ftpClient.setDataTimeout(60000);
 					ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 					out.flush();
 					out.close();
@@ -989,6 +998,7 @@ public class IngestLog
 							this.ftpClient = ftpsLogin(server, username, password);
 	
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+						ftpClient.setDataTimeout(60000);
 						ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 						out.flush();
 						out.close();
