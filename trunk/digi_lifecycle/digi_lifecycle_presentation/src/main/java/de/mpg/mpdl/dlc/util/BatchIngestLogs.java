@@ -34,7 +34,9 @@ public final class BatchIngestLogs {
     
     public static final String MAB_DIRECTORYE_RROR ="Error: check mab directory";
     
-    public static final String DOWNLOAD_IMAGES="downloading images from FTP(S) Server";
+    public static final String DOWNLOAD_IMAGES_FTP="downloading images from FTP Server";
+    
+    public static final String DOWNLOAD_IMAGES_FTPS="downloading images from FTPS Server";
     
     public static final String NEW_MULTIVOLUME ="Creating new Multivolume";
     
