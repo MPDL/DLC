@@ -171,7 +171,7 @@ public class IngestLog
 		long start = System.currentTimeMillis();
 		
 		FTPClient ftp = new FTPClient();
-		ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+		//ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 		ftp.setDataTimeout(120000);
 		ftp.setConnectTimeout(300);
 		ftp.connect(server);
@@ -197,7 +197,7 @@ public class IngestLog
 		boolean isImpicit = false;
 		FTPSClient ftps = new FTPSClient("SSL", isImpicit);
 		
-		ftps.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+		//ftps.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
 		ftps.setDataTimeout(120000);
 		ftps.setConnectTimeout(300);
@@ -570,6 +570,7 @@ public class IngestLog
 					tFile.setName(tmpFile.getName());
 					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFileF);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
@@ -587,6 +588,7 @@ public class IngestLog
 					tFile.setName(tmpFile.getName());
 					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(tFileF);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
 					out.flush();
 					out.close();
@@ -723,6 +725,7 @@ public class IngestLog
 					File mFile = File.createTempFile(tmpFile.getName(), ".mab.xml", new File(dlcDirectory));	
 					//File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);		
 					out.flush();
 					out.close();
@@ -763,6 +766,7 @@ public class IngestLog
 					String dlcDirectory = item.getDlcDirectory();
 					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);	
 					out.flush();
 					out.close();
@@ -805,6 +809,7 @@ public class IngestLog
 					
 					File mFile = new File(dlcDirectory + "/"+ tmpFile.getName());
 					FileOutputStream out = new FileOutputStream(mFile);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);	
 					out.flush();
 					out.close();
@@ -1055,6 +1060,7 @@ public class IngestLog
 						this.ftpClient = ftpLogin(server, username, password);
 					else
 						this.ftpClient = ftpsLogin(server, username, password);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 					out.flush();
 					out.close();
