@@ -557,7 +557,8 @@ public class Export {
 					if (pd!= null && pd.size() > 0)
 					{
 						//Outline to a Page
-						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
+						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb")
+								&& !elem.getElementType().name().equalsIgnoreCase("div"))
 						{
 							Pagebreak pb = (Pagebreak) pd.get(0);
 							if (pb != null && pb.getFacs()!= null && pb.getFacs()!="" && oline != null) //TODO
@@ -575,12 +576,32 @@ public class Export {
 						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(tp.getId(), false), titleStr);	
 						oline = out;
 					}
-					//Outline to a section
-					else if (elem.getElementType().name().equalsIgnoreCase("div") && elem.getType().equalsIgnoreCase("section"))
+//					//Outline to a section
+//					System.out.println("Type: " + elem.getType());
+//					if (elem.getElementType().name().equalsIgnoreCase("div") && elem.getType().equalsIgnoreCase("section"))
+//					{								
+//						Div sec = (Div) elem;
+//						if (sec.getHead()!= null && sec.getHead().size()>0)
+//						{
+//							titleStr = sec.getHead().get(0);
+//							PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(sec.getId(), false), titleStr);	
+//							oline = out;
+//						}
+//					}
+					//Outline to other elements
+					if (elem.getElementType().name().equalsIgnoreCase("div"))
 					{								
-						Div sec = (Div) elem;
-						titleStr = sec.getHead().get(0);
-						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(sec.getId(), false), titleStr);	
+						Div div = (Div) elem;
+						if (div.getHead()!= null && div.getHead().size()>0)
+						{
+							titleStr = div.getHead().get(0);
+						}
+						else 
+						{
+							titleStr = div.getNumeration();
+						}
+						
+						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(div.getId(), false), titleStr);	
 						oline = out;
 					}
 					//*************END CREATE OUTLINE ******************************************************************************
@@ -598,7 +619,10 @@ public class Export {
 			{
 				level+="  ";
 				this.createTree(elems.get(i).getPbOrDiv(), doc, oline, writer);
-				oline = oline.parent();
+				if (oline != null)
+				{
+					oline = oline.parent();
+				}
 				level = level.substring(0, level.length() - 2);
 			}	
 			
