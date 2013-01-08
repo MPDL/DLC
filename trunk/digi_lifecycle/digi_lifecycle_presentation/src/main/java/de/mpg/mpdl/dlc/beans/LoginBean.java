@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
@@ -37,13 +36,11 @@ public class LoginBean
     private boolean login;
     private static Logger logger = Logger.getLogger(LoginBean.class);
     private static final String LOGIN_URL = "aa/login?target=$1";
-    public static final String LOGOUT_URL = "aa/logout/clear.jsp?target=$1";
+//    public static final String LOGOUT_URL = "aa/logout/clear.jsp?target=$1";
+    public static final String LOGOUT_URL = "aa/logout?target=$1";
     private String userHandle;
     private User user;
     private String tab = "toc";
-    
-	@ManagedProperty("#{applicationBean}")
-	private ApplicationBean appBean;
     
     private UserAccountServiceBean userAccountServiceBean = new UserAccountServiceBean();
     
@@ -56,8 +53,6 @@ public class LoginBean
 	{
 		this.tab = tab;
 	}
-	
-
 
 	public void changeTab(ItemChangeEvent event)
 	{  
@@ -150,7 +145,6 @@ public class LoginBean
 //		String requestURL = request.getRequestURL().toString();
         try 
         {
-        	
     		String requestURL = PropertyReader.getProperty("dlc.instance.url") + pc.getContextPath()+pc.getRequestURL().toString();
 			fc.getExternalContext().redirect(getLoginUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
             
@@ -175,13 +169,9 @@ public class LoginBean
 			
 				FacesContext fc = FacesContext.getCurrentInstance();
 				
-				if(!appBean.getUploadThreads().containsKey(userHandle))
-				{
-					//logout from escidoc
-		    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
-					fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
-				}
-
+				//logout from escidoc
+	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
+				fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
 
 				//delete session
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
@@ -215,14 +205,6 @@ public class LoginBean
     	return PropertyReader.getProperty("escidoc.common.login.url") + LOGOUT_URL;
     }
 
-	public ApplicationBean getAppBean() {
-		return appBean;
-	}
-
-	public void setAppBean(ApplicationBean appBean) {
-		this.appBean = appBean;
-	}
-    
     
 
 	/**
