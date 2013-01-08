@@ -138,20 +138,22 @@ All rights reserved. Use is subject to license terms.
 						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 						
 						<h:outputLink id="lnkCopyright" title="#{tlt.meta_copyright}"
-							value="http://colab.mpdl.mpg.de/mediawiki/VIRR_Copyright_and_Disclaimer#Urheberrecht_des_Inhalts" target="_blank">
+							value="http://dlcproject.wordpress.com/terms-of-use/" target="_blank">
 							<h:outputText value="#{lbl.header_lnk_copyright}" />
 						</h:outputLink> 
 						
 						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
-						<a>
+						<h:outputLink id="lnkImpress" title="#{lbl.footer_impress}"
+							value="http://dlcproject.wordpress.com/imprint/" target="_blank">
 							<h:outputText value="#{lbl.footer_impress}" />
-						</a>
+						</h:outputLink> 
 						
 						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+						<h:outputLink id="lnkContact" title="#{lbl.footer_contact}"
+								value="http://dlcproject.wordpress.com/contact/" target="_blank">
+								<h:outputText value="#{lbl.footer_contact}" />
+						</h:outputLink> 
 						
-						<a>
-							<h:outputText value="#{lbl.footer_contact}" />
-						</a>
 					</div>
 				</div>
 			</h:panelGroup>
