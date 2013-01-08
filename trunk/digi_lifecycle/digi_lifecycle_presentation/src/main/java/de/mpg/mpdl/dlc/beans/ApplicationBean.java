@@ -67,8 +67,8 @@ public class ApplicationBean
 
 
 	//TODO help_page
-    public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
-    public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
+    //public static final String HELP_PAGE_DE = "help/dlc_help_de.html";
+    //public static final String HELP_PAGE_EN = "help/dlc_help_en.html";
     
     
     private ContextServiceBean contextServiceBean = new ContextServiceBean();
