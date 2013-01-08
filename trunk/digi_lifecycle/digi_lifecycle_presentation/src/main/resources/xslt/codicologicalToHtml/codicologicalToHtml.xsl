@@ -4,7 +4,7 @@
    
     
     
-    <xsl:template match="bookMark|objectType|lacuna|pagesMisbound |leavesRebound|leavesLoosePrinted|leavesLooseHandwritten|tippedIn|tippedInLooseDesc|tippedInPastedDesc|endpaper|endpaperDesc|supportDesc|collationDesc|paginationDesc|edge|edgeDesc|leafMarker|leafMarkerDesc|pagesTrimmed|watermark|seal|sealDesc|heraldry|marginalDecoration|decoratedBorders|illustrationsMiscellaneous|initials|initialsDesc|rubrics|rubricsDesc|musicNotation|marginalia |marginaliaDesc|notesHandwrittenMiscellaneous|addedWork|exLibrisRemarkHandwritten|exLibrisRemarkUnidentified|donationText|dedicationText|signatureAuthor|bookPlate|bookPlateDesc|ownerStamp|stampMiscellaneous|label|provenanceReference|notesBookseller|shelfMarkMiscellaneous|acquisitionDateInstitution|binding|bindingMaterial|headbandDesc|sewingDesc|bookCoverDecoration|bookCoverDecorationDesc|ribbonMarker|papersPastedCover|dateCoined|initialsCoined|wastePaper|wastePaperDesc|pasteDownMarbeledPaper|width|height|condition|numberedCopy|miscellaneous|VDNumber|EDIT16Number|ICCUNumber|ISTCNumber|identificationNumberMiscellaneous">
+    <xsl:template match="bookMark|objectType|lacuna|pagesMisbound|leavesRebound|leavesLoosePrinted|leavesLooseHandwritten|tippedIn|tippedInLooseDesc|tippedInPastedDesc|endpaper|endpaperDesc|supportDesc|collationDesc|paginationDesc|edge|edgeDesc|leafMarker|leafMarkerDesc|pagesTrimmed|watermark|seal|sealDesc|heraldry|marginalDecoration|decoratedBorders|illustrationsMiscellaneous|initials|initialsDesc|rubrics|rubricsDesc|musicNotation|marginalia|marginaliaDesc|notesHandwrittenMiscellaneous|addedWork|exLibrisRemarkHandwritten|exLibrisRemarkUnidentified|donationText|dedicationText|signatureAuthor|bookPlate|bookPlateDesc|ownerStamp|stampMiscellaneous|label|provenanceReference|notesBookseller|shelfMarkMiscellaneous|acquisitionDateInstitution|bindingMaterial|bindingDesc|headbandDesc|sewingDesc|bookCoverDecoration|bookCoverDecorationDesc|ribbonMarker|papersPastedCover|dateCoined|initialsCoined|wastePaper|wastePaperDesc|pasteDownMarbeledPaper|width|height|condition|numberedCopy|miscellaneous|VDNumber|EDIT16Number|ICCUNumber|ISTCNumber|identificationNumberMiscellaneous">
     		 <xsl:if test="normalize-space(text()) or @available">
     		 	<div class="cdc">
 				    <span class="cdcLabel">
@@ -23,8 +23,17 @@
 					</span>
 		    	</div>
     		 </xsl:if>
+    		
     
     </xsl:template>
+    
+    
+      <xsl:template match="object|bodyOfVolume|provenance|binding">
+      	<div class="cdcLabelHeader">	    
+			<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
+		</div>
+		 <xsl:apply-templates/>
+      </xsl:template>
     
     <xsl:template match="text()">
     

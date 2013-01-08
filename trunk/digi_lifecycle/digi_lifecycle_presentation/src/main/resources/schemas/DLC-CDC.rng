@@ -43,7 +43,7 @@ Sonstige Hinweise:
 			</zeroOrMore>
 
 			<zeroOrMore>
-				<ref name="provenance"/>
+				<ref name="provenanceData"/>
 			</zeroOrMore>
 
 			<zeroOrMore>
@@ -112,29 +112,34 @@ Sonstige Hinweise:
 						</element>
 					</optional>
 
-					<zeroOrMore>
-						<!-- zeroOrMore in RelaxNG heißt, dass dieses Element wiederholt werden kann -->
-						<element name="objectType">
-							<choice>
-								<value>gedrucktes Buch</value>
-								<value>Handschrift</value>
-								<value>handschriftliches Dokument</value>
-								<value>maschinenschriftliches Manuskript</value>
-								<value>Tafelband gebunden</value>
-								<value>Tafelband ungebunden</value>
-								<value>Zeitschrift</value>
-								<value>Druckgraphik Einzelblatt</value>
-								<value>Photographie</value>
-								<value>Zeitungsartikel</value>
-								<value>Photokopie</value>
-								<value>Einzelblatt handschriftlich</value>
-								<value>Einzelblatt gedruckt</value>
-								<value>Zeichnung</value>
-								<value>Malerei</value>
-								<value></value>
-							</choice>
-						</element>
-					</zeroOrMore>
+					<!-- .............................. Mutterelement "object" ..............................  -->
+					<element name="object">
+						<zeroOrMore>
+							<!-- zeroOrMore in RelaxNG heißt, dass dieses Element wiederholt werden kann -->
+							<element name="objectType">
+								<choice>
+									<value>gedrucktes Buch</value>
+									<value>Handschrift</value>
+									<value>handschriftliches Dokument</value>
+									<value>maschinenschriftliches Manuskript</value>
+									<value>Tafelband gebunden</value>
+									<value>Tafelband ungebunden</value>
+									<value>Zeitschrift</value>
+									<value>Druckgraphik Einzelblatt</value>
+									<value>Photographie</value>
+									<value>Zeitungsartikel</value>
+									<value>Photokopie</value>
+									<value>Einzelblatt handschriftlich</value>
+									<value>Einzelblatt gedruckt</value>
+									<value>Zeichnung</value>
+									<value>Malerei</value>
+									<value></value>
+								</choice>
+							</element>
+						</zeroOrMore>
+					</element>
+					<!-- .............................. Mutterelement "object" Ende..........................  -->
+						
 					
 					<optional>
 						<element name="origDate">
@@ -210,382 +215,387 @@ Sonstige Hinweise:
 						</element>
 					</optional>
 
-					<optional>
-						<element name="lacuna">
-							<data type="token" />
-						</element>
-					</optional>
+					<!-- .............................. Mutterelement "bodyOfVolume".........................  -->
+					<element name="bodyOfVolume">
+						<optional>
+							<element name="lacuna">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="leavesMisbound">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="leavesMisbound">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="leavesRebound">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="leavesRebound">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="leavesLoosePrinted">
-							<optional>
-								<attribute name="available">
-									<data type="boolean"/>
-								</attribute>
-							</optional>
+						<optional>
+							<element name="leavesLoosePrinted">
+								<optional>
+									<attribute name="available">
+										<data type="boolean"/>
+									</attribute>
+								</optional>
 
-							<data type="token"/>
-						</element>
-					</optional>
-								
+								<data type="token"/>
+							</element>
+						</optional>
+									
 
-					<optional>
-						<element name="leavesLooseHandwritten">
-							<optional>
-								<attribute name="available">
-									<data type="boolean"/>
-								</attribute>
-							</optional>
+						<optional>
+							<element name="leavesLooseHandwritten">
+								<optional>
+									<attribute name="available">
+										<data type="boolean"/>
+									</attribute>
+								</optional>
 
-							<data type="token"/>
-						</element>
-					</optional>
+								<data type="token"/>
+							</element>
+						</optional>
 
-					<zeroOrMore>
-						<element name="tippedIn">
+						<zeroOrMore>
+							<element name="tippedIn">
+									<choice>
+									<!-- 	
+										It's possible to use an additional scheme overwriting those values
+										(as it is designated by using RelaxNG schemes) in order to fit them 
+										into your project specifics
+									-->
+										<value>Brief</value>
+										<value>Foto</value>
+										<value>Oblate</value>
+										<value>Devotionalie</value>
+										<value>Notizblatt</value>
+										<value>Zeitungsartitek</value>
+										<value>Katalogartikel Verkaufskatalog</value>
+										<value></value>
+									</choice>
+										
+							</element>
+						</zeroOrMore>
+
+						<optional>
+							<element name="tippedInLooseDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
+						<optional>
+							<element name="tippedInPastedDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
+
+
+						<optional>
+							<element name="endpaper">
 								<choice>
 								<!-- 	
 									It's possible to use an additional scheme overwriting those values
 									(as it is designated by using RelaxNG schemes) in order to fit them 
 									into your project specifics
 								-->
-									<value>Brief</value>
-									<value>Foto</value>
-									<value>Oblate</value>
-									<value>Devotionalie</value>
-									<value>Notizblatt</value>
-									<value>Zeitungsartitek</value>
-									<value>Katalogartikel Verkaufskatalog</value>
+								
+									<value>Band ohne Vorsatzblätter</value>
+									<value>Vorsatzblatt mit Wasserzeichen</value>
+									<value>alter Vorsatz eingebunden</value>
+									<value>Vorsatzblätter bei Neubindung</value>
+									<value>alte Bindung ohne Vorsatzblätter</value>
+									<value>Originalbindung ohne Vorsatzblätter</value>
+									<value>Vorsatz als Umschlagpapier</value>
+									<value>alte Bindung mit neuem Vorsatz</value>
+									<value>altes Vorsatzblatt mit neuem Vorsatzblatt verbunden</value>
+									<value>Vorsatzblatt entfernt</value>
+									<value>vorderes Vorsatzblatt handschriftlich beschrieben</value>
+									<value>Vorsatzblatt mit Widmungseintrag</value>
+									<value>Vorsatzblatt mit Stiftungsnotiz</value>
+									<value>Vorsatzblatt mit Besitzeintrag</value>
+									<value>alte Vorsatzblätter zum Spiegel verklebt</value>
+									<value>neue Vorsatzblätter bei Restaurierung</value>
+									<value>Vorsatz aus Buntpapier</value>
+									<value>Vorsatz aus Marmorpapier</value>
+									<value>vorderes Vorsatzblatt mit alter Signatur</value>
+									<value>Vorsatzblatt mit Handzeichnung</value>
+									<value>Vorsatz aus Goldbrokatpapier</value>
+									<value>Vorsatz aus gefärbtem Papier</value>
+									<value>altes Vorsatzblatt mit Interimsumschlag verklebt</value>
+									<value>Neubindung ohne Vorsatz</value>
+									<value>Vorsatzblatt aus Pergament</value>
+									<value>Spiegelblatt handschriftlich beschrieben</value>
+									<value>Andere Variante – siehe Details</value>
 									<value></value>
 								</choice>
-									
-						</element>
-					</zeroOrMore>
 
-					<optional>
-						<element name="tippedInLooseDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
-					<optional>
-						<element name="tippedInPastedDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
+							</element>
+						</optional>
 
+						<optional>
+							<element name="endpaperDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
+						<optional>
+							<element name="supportDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="endpaper">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-							
-								<value>Band ohne Vorsatzblätter</value>
-								<value>Vorsatzblatt mit Wasserzeichen</value>
-								<value>alter Vorsatz eingebunden</value>
-								<value>Vorsatzblätter bei Neubindung</value>
-								<value>alte Bindung ohne Vorsatzblätter</value>
-								<value>Originalbindung ohne Vorsatzblätter</value>
-								<value>Vorsatz als Umschlagpapier</value>
-								<value>alte Bindung mit neuem Vorsatz</value>
-								<value>altes Vorsatzblatt mit neuem Vorsatzblatt verbunden</value>
-								<value>Vorsatzblatt entfernt</value>
-								<value>vorderes Vorsatzblatt handschriftlich beschrieben</value>
-								<value>Vorsatzblatt mit Widmungseintrag</value>
-								<value>Vorsatzblatt mit Stiftungsnotiz</value>
-								<value>Vorsatzblatt mit Besitzeintrag</value>
-								<value>alte Vorsatzblätter zum Spiegel verklebt</value>
-								<value>neue Vorsatzblätter bei Restaurierung</value>
-								<value>Vorsatz aus Buntpapier</value>
-								<value>Vorsatz aus Marmorpapier</value>
-								<value>vorderes Vorsatzblatt mit alter Signatur</value>
-								<value>Vorsatzblatt mit Handzeichnung</value>
-								<value>Vorsatz aus Goldbrokatpapier</value>
-								<value>Vorsatz aus gefärbtem Papier</value>
-								<value>altes Vorsatzblatt mit Interimsumschlag verklebt</value>
-								<value>Neubindung ohne Vorsatz</value>
-								<value>Vorsatzblatt aus Pergament</value>
-								<value>Spiegelblatt handschriftlich beschrieben</value>
-								<value>Andere Variante – siehe Details</value>
-								<value></value>
-							</choice>
+						<optional>
+							<element name="collationDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
+						
+						<optional>
+							<element name="paginationDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-						</element>
-					</optional>
+						<optional>
+							<element name="edge">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Goldschnitt</value>
+									<value>Kopfgoldschnitt</value>
+									<value>Farbschnitt</value>
+									<value>Schnitt bemalt</value>
+									<value>Schnitt mit Titel beschriftet</value>
+									<value>ohne Schnittverzierung</value>
+									<value>Sprenkelschnitt</value>
+									<value>Marmorschnitt</value>
+									<value>Schnitt eingeritzt</value>
+									<value>Tupfschnitt</value>
+									<value>Schnittpunzierung</value>
+									<value>Abziehschnitt</value>
+									<value>Kreideschnitt</value>
+									<value>verschobener Schnitt</value>
+									<value>Silberschnitt</value>
+									<value>Goldschnitt punziert</value>
+									<value>bei Neubindung beschnitten</value>
+									<value>Blätter unbeschnitten</value>
+									<value>Fore-edge-painting</value>
+									<value>unaufgeschnitten</value>
+									<value>teilweise unaufgeschnitten</value>
+									<value>aufgeschnitten</value>
+									<value>Blätter teilweise unbeschnitten</value>
+									<value></value>
+								</choice>
+								
+							</element>
+						</optional>
 
-					<optional>
-						<element name="endpaperDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
-					<optional>
-						<element name="supportDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="edgeDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
 
-					<optional>
-						<element name="collationDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
-					
-					<optional>
-						<element name="paginationDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="leafMarker">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Blattweiser Pergament</value>
+									<value>Blattweiser Leder</value>
+									<value>Blattweiser Papier</value>
+									<value>Lesezeichen, unbeschriebenes Papier</value>
+									<value>Lesezeichen lose, mit Tinte beschrieben</value>
+									<value>Lesezeichen, ausgeschnitten und bedruckt</value>
+									<value>Lesezeichen mit Zeichnung</value>
+									<value></value>
+								</choice>
+															
+							</element>
+						</optional>
 
-					<optional>
-						<element name="edge">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-								<value>Goldschnitt</value>
-								<value>Kopfgoldschnitt</value>
-								<value>Farbschnitt</value>
-								<value>Schnitt bemalt</value>
-								<value>Schnitt mit Titel beschriftet</value>
-								<value>ohne Schnittverzierung</value>
-								<value>Sprenkelschnitt</value>
-								<value>Marmorschnitt</value>
-								<value>Schnitt eingeritzt</value>
-								<value>Tupfschnitt</value>
-								<value>Schnittpunzierung</value>
-								<value>Abziehschnitt</value>
-								<value>Kreideschnitt</value>
-								<value>verschobener Schnitt</value>
-								<value>Silberschnitt</value>
-								<value>Goldschnitt punziert</value>
-								<value>bei Neubindung beschnitten</value>
-								<value>Blätter unbeschnitten</value>
-								<value>Fore-edge-painting</value>
-								<value>unaufgeschnitten</value>
-								<value>teilweise unaufgeschnitten</value>
-								<value>aufgeschnitten</value>
-								<value>Blätter teilweise unbeschnitten</value>
-								<value></value>
-							</choice>
-							
-						</element>
-					</optional>
+						<optional>
+							<element name="leafMarkerDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
 
-					<optional>
-						<element name="edgeDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
+						<optional>
+							<element name="pagesTrimmed">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="leafMarker">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-								<value>Blattweiser Pergament</value>
-								<value>Blattweiser Leder</value>
-								<value>Blattweiser Papier</value>
-								<value>Lesezeichen, unbeschriebenes Papier</value>
-								<value>Lesezeichen lose, mit Tinte beschrieben</value>
-								<value>Lesezeichen, ausgeschnitten und bedruckt</value>
-								<value>Lesezeichen mit Zeichnung</value>
-								<value></value>
-							</choice>
-														
-						</element>
-					</optional>
+						<optional>
+							<element name="watermark">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="leafMarkerDesc">
-							<data type="token" />
-						</element>
-					</optional>
-					
+						<optional>
+							<element name="seal">
+								<data type="boolean"/>
+							</element>
+						</optional>
 
-					<optional>
-						<element name="pagesTrimmed">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="sealDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="watermark">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="heraldry">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="seal">
-							<data type="boolean"/>
-						</element>
-					</optional>
+						<optional>
+							<element name="marginalDecoration">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="sealDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="decoratedBorders">
+								<data type="token" />
+							</element>
+						</optional>
+						
+						<optional>
+							<element name="illustrationsMiscellaneous">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="heraldry">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="initials">
+								<data type="boolean"/>
+							</element>
+						</optional>
 
-					<optional>
-						<element name="marginalDecoration">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="initialsDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="decoratedBorders">
-							<data type="token" />
-						</element>
-					</optional>
-					
-					<optional>
-						<element name="illustrationsMiscellaneous">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="rubrics">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Kapitelüberschriften</value>
+									<value>Satzzeichen</value>
+									<value>andere</value>
+									<value>diverse</value>
+									<value>Titelblatt</value>
+									<value></value>
+								</choice>
+							</element>
+						</optional>
 
-					<optional>
-						<element name="initials">
-							<data type="boolean"/>
-						</element>
-					</optional>
+						<optional>
+							<element name="rubricsDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="initialsDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="graphic">
+								<data type="boolean"/>
+							</element>
+						</optional>
 
-					<optional>
-						<element name="rubrics">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-								<value>Kapitelüberschriften</value>
-								<value>Satzzeichen</value>
-								<value>andere</value>
-								<value>diverse</value>
-								<value>Titelblatt</value>
-								<value></value>
-							</choice>
-						</element>
-					</optional>
+						<optional>
+							<element name="graphicDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="rubricsDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<!--                 *** Not Used at the KHI ***
+						<optional>
+							<element name="musicNotation">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="graphic">
-							<data type="boolean"/>
-						</element>
-					</optional>
+						-->
+						<!-- ################## Portraits-Link hier ################ -->
 
-					<optional>
-						<element name="graphicDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<zeroOrMore>
+							<element name="portraitReference">
+								<optional>
+									<attribute name="ref">
+										<data type="IDREF"/>
+									</attribute>
+								</optional>
 
-					<!--                 *** Not Used at the KHI ***
-					<optional>
-						<element name="musicNotation">
-							<data type="token" />
-						</element>
-					</optional>
+							</element>
+						</zeroOrMore>
 
-					-->
-					<!-- ################## Portraits-Link hier ################ -->
+						<!-- ####################################################### -->
+						
 
-					<zeroOrMore>
-						<element name="portraitReference">
-							<optional>
-								<attribute name="ref">
-									<data type="IDREF"/>
-								</attribute>
-							</optional>
-
-						</element>
-					</zeroOrMore>
-
-					<!-- ####################################################### -->
-					
-
-					<optional>
-						<element name="portraitDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="portraitDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
 
-					<zeroOrMore>
-						<element name="marginalia"> 
-							<choice>
-								<value>Marginalglossen</value>
-								<value>Interlinearglossen</value>
-								<value>Wortglossen</value>
-								<value>Korrekturen</value>
-								<value>Randnotizen</value>
-								<value>Zeigehand</value>
-								<value>autonome Randzeichnungen</value>
-								<value>Schemata</value>
-								<value>Stammbaum</value>
-								<value>Federproben</value>
-								<value>Anstreichungen</value>
-								<value>Unterstreichungen</value> <!-- Weitere Values denkbar -->
-								<value></value>
-							</choice>
+						<zeroOrMore>
+							<element name="marginalia"> 
+								<choice>
+									<value>Marginalglossen</value>
+									<value>Interlinearglossen</value>
+									<value>Wortglossen</value>
+									<value>Korrekturen</value>
+									<value>Randnotizen</value>
+									<value>Zeigehand</value>
+									<value>autonome Randzeichnungen</value>
+									<value>Schemata</value>
+									<value>Stammbaum</value>
+									<value>Federproben</value>
+									<value>Anstreichungen</value>
+									<value>Unterstreichungen</value> <!-- Weitere Values denkbar -->
+									<value></value>
+								</choice>
 
-						</element>
-					</zeroOrMore>
+							</element>
+						</zeroOrMore>
 
-					<optional>
-						<element name="marginaliaDesc">
-							<data type="token"/>
-						</element>
-					</optional>
-					
-					<optional>
-						<element name="notesHandwrittenMiscellaneous">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="marginaliaDesc">
+								<data type="token"/>
+							</element>
+						</optional>
+						
+						<optional>
+							<element name="notesHandwrittenMiscellaneous">
+								<data type="token" />
+							</element>
+						</optional>
+					</element>
+					<!-- .............................. Mutterelement "bodyOfVolume" Ende....................  -->
+
 					
 					<optional>
 						<element name="workAdded">
@@ -599,332 +609,339 @@ Sonstige Hinweise:
 						</element>
 					</optional>
 
-					<!-- ............................................................................ -->
 
-					<optional>
-						<element name="exLibrisRemarkHandwritten">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="exLibrisRemarkUnidentified">
-							<data type="boolean"/>
-						</element>
-					</optional>
-
-					<optional>
-						<element name="donationText">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="dedicationText">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="signatureAuthor">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="bookPlate">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="bookPlateDesc">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="ownerStamp">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="stampMiscellaneous">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="label">
-							<data type="token" />
-						</element>
-					</optional>
-
-
-					<!-- ############### Provenience Link hier ############# -->
-
-					<zeroOrMore>
-						<element name="provenanceReference">
-							<optional>
-								<attribute name="ref">
-									<data type="IDREF"/>
-								</attribute>
-							</optional>
-
-						</element>
-					</zeroOrMore>
-
-					<!-- ################################################### -->
-
-
-					<optional>
-						<element name="notesBookseller">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="shelfMarkMiscellaneous">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="acquisitionDateInstitution">
-							<data type="short"/>
-						</element>
-					</optional>
-
-					<optional>
-						<element name="acquisitionMode">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-								<value>Geschenk</value>
-								<value>Ankauf über Antiquariat</value>
-								<value>Tausch</value>
-								<value>Ankauf von Privatperson</value>
-								<value>Ankauf über Auktionshaus</value>
-								<value>Galerie</value>
-								<value>Nachlass</value>
-								<value>Ankauf</value>
-								<value></value>
-							</choice>
-						</element>
-					</optional>
-
-					<optional>
-						<element name="acquisitionModeDesc">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="pricePaid">
-							<data type="token" />
-						</element>
-					</optional>
 					
-					<!-- ............................................................................ -->
-
-					<optional>
-						<element name="binding">
-							<choice>
-							<!-- 	
-								It's possible to use an additional scheme overwriting those values
-								(as it is designated by using RelaxNG schemes) in order to fit them 
-								into your project specifics
-							-->
-								<value>Pergamenteinband</value>
-								<value>Pergament auf Holz</value>
-								<value>Pergament auf Pappe</value>
-								<value>Halbpergamenteinband</value>
-								<value>Viertelpergamenteinband</value>
-								<value>flexibler Pergamenteinband</value>
-								<value>Schweinsledereinband</value>
-								<value>Schweinsleder auf Holz</value>
-								<value>Schweinsleder auf Pappe</value>
-								<value>Wildschweinledereinband</value>
-								<value>Wildschweinleder auf Holz</value>
-								<value>Wildschweinleder auf Pappe</value>
-								<value>Kalbsledereinband</value>
-								<value>Kalbsleder auf Holz</value>
-								<value>Kalbsleder auf Pappe</value>
-								<value>Halbeinband Kalbsleder</value>
-								<value>Ziegenledereinband</value>
-								<value>Ziegenleder auf Holz</value>
-								<value>Ziegenleder auf Pappe</value>
-								<value>Halbeinband Ziegenleder</value>
-								<value>Schafsledereinband</value>
-								<value>Schafsleder auf Holz</value>
-								<value>Schafsleder auf Pappe</value>
-								<value>Halbeinband Schafsleder</value>
-								<value>Halbledereinband</value>
-								<value>Viertelledereinband</value>
-								<value>Pappeinband</value>
-								<value>Pappeinband - Flexibler Pappeinband</value>
-								<value>Pappeinband - Marmorpapier auf Pappe</value>
-								<value>Pappeinband - Buntpapier auf Pappe</value>
-								<value>Pappeinband - Brokatpapier auf Pappe</value>
-								<value>Pappeinband - Büttenpapier</value>
-								<value>Interimsumschlag - Papier</value>
-								<value>Interimseinband - Pappe</value>
-								<value>Ganzgewebeband</value>
-								<value>Ganzgewebeband - Baumwolle</value>
-								<value>Ganzgewebeband - Leinen</value>
-								<value>Gewebeband - Efalin Feinleinen</value>
-								<value>Ganzgewebeband - Samt</value>
-								<value>Ganzgewebeband - Seide</value>
-								<value>Halbgewebeband</value>
-								<value>Halbgewebeband - Baumwolle</value>
-								<value>Halbgewebeband - Leinen</value>
-								<value>Halbgewebeband - Efalin Feinleinen</value>
-								<value>Halbgewebeband - Samt</value>
-								<value>Halbgewebeband - Seide</value>
-								<value>Ganzgewebe - Mappe</value>
-								<value>Viertelgewebeband</value>
-								<value>Pamphlet-binding</value>
-								<value>flexibler Einband</value>
-								<value>ohne Einband</value>
-								<value>Maroquineinband</value>
-								<value>Prachteinband</value>
-								<value>Boxcalfband</value>
-								<value>Pappmappe</value>
-								<value>Ledermappe</value>
-								<value></value>
-							</choice>
-						</element>
-					</optional>
-
-					<optional>
-						<element name="bindingDesc">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="headbandDesc">
-							<data type="token" />
-						</element>
-					</optional>
-
-					<optional>
-						<element name="sewingDesc">
-							<data type="token" />
-						</element>
-					</optional>
+					<!-- .............................. Mutterelement "provenance".........................  -->
 					
-					<optional>
-						<element name="bookCoverRebound">
-							<data type="boolean"/>
-						</element>
-					</optional>
+					<element name="provenance">
+						<optional>
+							<element name="exLibrisRemarkHandwritten">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="exLibrisRemarkUnidentified">
+								<data type="boolean"/>
+							</element>
+						</optional>
+
+						<optional>
+							<element name="donationText">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="dedicationText">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="signatureAuthor">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="bookPlate">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="bookPlateDesc">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="ownerStamp">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="stampMiscellaneous">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="label">
+								<data type="token" />
+							</element>
+						</optional>
+
+
+						<!-- ############### Provenience Link hier ############# -->
+
+						<zeroOrMore>
+							<element name="provenanceReference">
+								<optional>
+									<attribute name="ref">
+										<data type="IDREF"/>
+									</attribute>
+								</optional>
+
+							</element>
+						</zeroOrMore>
+
+						<!-- ################################################### -->
+
+
+						<optional>
+							<element name="notesBookseller">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="shelfMarkMiscellaneous">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="acquisitionDateInstitution">
+								<data type="short"/>
+							</element>
+						</optional>
+
+						<optional>
+							<element name="acquisitionMode">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Geschenk</value>
+									<value>Ankauf über Antiquariat</value>
+									<value>Tausch</value>
+									<value>Ankauf von Privatperson</value>
+									<value>Ankauf über Auktionshaus</value>
+									<value>Galerie</value>
+									<value>Nachlass</value>
+									<value>Ankauf</value>
+									<value></value>
+								</choice>
+							</element>
+						</optional>
+
+						<optional>
+							<element name="acquisitionModeDesc">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="pricePaid">
+								<data type="token" />
+							</element>
+						</optional>
+					</element>
+					<!-- .............................. Mutterelement "provenance" Ende ...................  -->
 					
-					<zeroOrMore>
-						<element name="bookCoverDecoration">
-							<choice>
+					<!-- .............................. Mutterelement "binding" ...........................  -->
+					<element name="binding">
+						<optional>
+							<element name="bindingMaterial">
+								<choice>
+								<!-- 	
+									It's possible to use an additional scheme overwriting those values
+									(as it is designated by using RelaxNG schemes) in order to fit them 
+									into your project specifics
+								-->
+									<value>Pergamenteinband</value>
+									<value>Pergament auf Holz</value>
+									<value>Pergament auf Pappe</value>
+									<value>Halbpergamenteinband</value>
+									<value>Viertelpergamenteinband</value>
+									<value>flexibler Pergamenteinband</value>
+									<value>Schweinsledereinband</value>
+									<value>Schweinsleder auf Holz</value>
+									<value>Schweinsleder auf Pappe</value>
+									<value>Wildschweinledereinband</value>
+									<value>Wildschweinleder auf Holz</value>
+									<value>Wildschweinleder auf Pappe</value>
+									<value>Kalbsledereinband</value>
+									<value>Kalbsleder auf Holz</value>
+									<value>Kalbsleder auf Pappe</value>
+									<value>Halbeinband Kalbsleder</value>
+									<value>Ziegenledereinband</value>
+									<value>Ziegenleder auf Holz</value>
+									<value>Ziegenleder auf Pappe</value>
+									<value>Halbeinband Ziegenleder</value>
+									<value>Schafsledereinband</value>
+									<value>Schafsleder auf Holz</value>
+									<value>Schafsleder auf Pappe</value>
+									<value>Halbeinband Schafsleder</value>
+									<value>Halbledereinband</value>
+									<value>Viertelledereinband</value>
+									<value>Pappeinband</value>
+									<value>Pappeinband - Flexibler Pappeinband</value>
+									<value>Pappeinband - Marmorpapier auf Pappe</value>
+									<value>Pappeinband - Buntpapier auf Pappe</value>
+									<value>Pappeinband - Brokatpapier auf Pappe</value>
+									<value>Pappeinband - Büttenpapier</value>
+									<value>Interimsumschlag - Papier</value>
+									<value>Interimseinband - Pappe</value>
+									<value>Ganzgewebeband</value>
+									<value>Ganzgewebeband - Baumwolle</value>
+									<value>Ganzgewebeband - Leinen</value>
+									<value>Gewebeband - Efalin Feinleinen</value>
+									<value>Ganzgewebeband - Samt</value>
+									<value>Ganzgewebeband - Seide</value>
+									<value>Halbgewebeband</value>
+									<value>Halbgewebeband - Baumwolle</value>
+									<value>Halbgewebeband - Leinen</value>
+									<value>Halbgewebeband - Efalin Feinleinen</value>
+									<value>Halbgewebeband - Samt</value>
+									<value>Halbgewebeband - Seide</value>
+									<value>Ganzgewebe - Mappe</value>
+									<value>Viertelgewebeband</value>
+									<value>Pamphlet-binding</value>
+									<value>flexibler Einband</value>
+									<value>ohne Einband</value>
+									<value>Maroquineinband</value>
+									<value>Prachteinband</value>
+									<value>Boxcalfband</value>
+									<value>Pappmappe</value>
+									<value>Ledermappe</value>
+									<value></value>
+								</choice>
+							</element>
+						</optional>
 
-								<value>flacher Rücken</value>
-								<value>Bünde</value>
-								<value>erhabene Bünde</value>
-								<value>Doppelbünde</value>
-								<value>Querbänder</value>
-								<value>Blindprägung</value>
-								<value>Blindstempelung - Einzelstempel</value>
-								<value>Blindstempelung - Rollenstempel</value>
-								<value>Blindstempelung - Plattenstempel</value>
-								<value>Blindstempelung - Goldstempeleinband</value>
-								<value>Goldprägung</value>
-								<value>Streicheisenlinien</value>
-								<value>Lederschnitt</value>
-								<value>Goldschnitt punziert</value>
-								<value>Goldschnitt bemalt</value>
-								<value>Rückenverzierung</value>
-								<value>Intarsien</value>
-								<value>Einlegearbeit</value>
-								<value>Wachsmalerei</value>
-								<value>Lackmalerei</value>
-								<value>Silberbemalung</value>
-								<value>Schalblonierung farbig</value>
-								<value>Stehkantenvergoldung</value>
-								<value>Innenkantenvergoldung</value>
-								<value>Wappensupralibros</value>
-								<value>Portraitsupralibros</value>
-								<value>Cameo</value>
-								<value>Motto</value>
-								<value>Buckel</value>
-								<value>Eisenbeschläge</value>
-								<value>Eckbeschläge</value>
-								<value>Schließen mit Schließraste</value>
-								<value>Schleifenschließen Leder</value>
-								<value>Schleifenschließen textil</value>
-								<value></value>
-							</choice>
-						</element>
-					</zeroOrMore>
-					<optional>
-						<element name="bookCoverDecorationDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="bindingDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="ribbonMarker">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="headbandDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="papersPastedCover">
-							<data type="boolean"/>
-						</element>
-					</optional>
+						<optional>
+							<element name="sewingDesc">
+								<data type="token" />
+							</element>
+						</optional>
+						
+						<optional>
+							<element name="bookCoverRebound">
+								<data type="boolean"/>
+							</element>
+						</optional>
+						
+						<zeroOrMore>
+							<element name="bookCoverDecoration">
+								<choice>
 
-					<optional>
-						<element name="dateCoined">
-							<data type="token"/>
-						</element>
-					</optional>
+									<value>flacher Rücken</value>
+									<value>Bünde</value>
+									<value>erhabene Bünde</value>
+									<value>Doppelbünde</value>
+									<value>Querbänder</value>
+									<value>Blindprägung</value>
+									<value>Blindstempelung - Einzelstempel</value>
+									<value>Blindstempelung - Rollenstempel</value>
+									<value>Blindstempelung - Plattenstempel</value>
+									<value>Blindstempelung - Goldstempeleinband</value>
+									<value>Goldprägung</value>
+									<value>Streicheisenlinien</value>
+									<value>Lederschnitt</value>
+									<value>Goldschnitt punziert</value>
+									<value>Goldschnitt bemalt</value>
+									<value>Rückenverzierung</value>
+									<value>Intarsien</value>
+									<value>Einlegearbeit</value>
+									<value>Wachsmalerei</value>
+									<value>Lackmalerei</value>
+									<value>Silberbemalung</value>
+									<value>Schalblonierung farbig</value>
+									<value>Stehkantenvergoldung</value>
+									<value>Innenkantenvergoldung</value>
+									<value>Wappensupralibros</value>
+									<value>Portraitsupralibros</value>
+									<value>Cameo</value>
+									<value>Motto</value>
+									<value>Buckel</value>
+									<value>Eisenbeschläge</value>
+									<value>Eckbeschläge</value>
+									<value>Schließen mit Schließraste</value>
+									<value>Schleifenschließen Leder</value>
+									<value>Schleifenschließen textil</value>
+									<value></value>
+								</choice>
+							</element>
+						</zeroOrMore>
+						<optional>
+							<element name="bookCoverDecorationDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="initialsCoined">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="ribbonMarker">
+								<data type="token" />
+							</element>
+						</optional>
+
+						<optional>
+							<element name="papersPastedCover">
+								<data type="boolean"/>
+							</element>
+						</optional>
+
+						<optional>
+							<element name="dateCoined">
+								<data type="token"/>
+							</element>
+						</optional>
+
+						<optional>
+							<element name="initialsCoined">
+								<data type="token" />
+							</element>
+						</optional>
 
 
-					<zeroOrMore>
-						<element name="wastePaper">
-							<choice>
+						<zeroOrMore>
+							<element name="wastePaper">
+								<choice>
 
-								<value>Einbandbezug</value>
-								<value>Spiegel</value>
-								<value>Vorsatzblatt</value>
-								<value>Falzstreifen</value>
-								<value>geleimt als Pappdeckel</value>
-								<value>Rückenverstärkung</value>
-								<value>historische Restaurierung</value>
-								<value>Hinterklebung</value>
-								<value></value>
-							</choice>
-						</element>
-					</zeroOrMore>
+									<value>Einbandbezug</value>
+									<value>Spiegel</value>
+									<value>Vorsatzblatt</value>
+									<value>Falzstreifen</value>
+									<value>geleimt als Pappdeckel</value>
+									<value>Rückenverstärkung</value>
+									<value>historische Restaurierung</value>
+									<value>Hinterklebung</value>
+									<value></value>
+								</choice>
+							</element>
+						</zeroOrMore>
 
-					<optional>
-						<element name="wastePaperDesc">
-							<data type="token" />
-						</element>
-					</optional>
+						<optional>
+							<element name="wastePaperDesc">
+								<data type="token" />
+							</element>
+						</optional>
 
-					<optional>
-						<element name="pasteDownMarbeledPaper">
-							<data type="boolean"/>
-						</element>
-					</optional>
+						<optional>
+							<element name="pasteDownMarbeledPaper">
+								<data type="boolean"/>
+							</element>
+						</optional>
+					</element>
+					<!-- .............................. Mutterelement "binding" Ende ......................  -->
 
 					<optional>
 						<element name="width">
@@ -1095,8 +1112,8 @@ Sonstige Hinweise:
 
 	<!-- ############################ Provenience Modul ab hier ################# -->
 
-	<define name="provenance">
-		<element name="provenance">
+	<define name="provenanceData">
+		<element name="provenanceData">
 
 			<zeroOrMore>
 				<element name="provenanceDataset">
