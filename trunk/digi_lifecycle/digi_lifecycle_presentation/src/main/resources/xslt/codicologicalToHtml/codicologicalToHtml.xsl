@@ -29,7 +29,7 @@
     
     
       <xsl:template match="object|bodyOfVolume|provenance|binding">
-      	<div class="cdcLabelHeader">	    
+      	<div class="cdc cdcLabelHeader">	    
 			<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
 		</div>
 		 <xsl:apply-templates/>
