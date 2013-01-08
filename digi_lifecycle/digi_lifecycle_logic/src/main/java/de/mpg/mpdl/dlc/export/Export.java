@@ -611,9 +611,18 @@ public class Export {
 				}
 				if (elems.get(i).getElementType().name().equals("FIGURE"))
 				{
+					//Add to toc
 					doc.add(new Paragraph(level + "[figure]"));
-				}
-			
+					
+					//Add to outline						
+					Div div = (Div) elems.get(i);
+					if (div.getHead()!= null && div.getHead().size()>0)
+					{
+						titleStr = div.getHead().get(0);
+					}						
+					PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(div.getId(), false), titleStr);	
+					oline = out;
+				}		
 				
 			if (elems.get(i).getPbOrDiv().size() > 0)
 			{
