@@ -199,7 +199,6 @@ public class Export {
 					PbOrDiv currentElem = teiSd.getText().getPbOrDiv().get(i);
 					if (currentElem.getType()!= "PB")
 					{
-						System.out.println(currentElem.getElementType().name());
 						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))
 						{
 								document = this.createTree(currentElem.getPbOrDiv(), document, root, writer);
@@ -477,6 +476,7 @@ public class Export {
 		for (int i = 0; i < elems.size(); i++)
 		{
 
+				//Create Outline and TOC for div and title elements
 				if (elems.get(i).getElementType().name().equals("DIV") || elems.get(i).getElementType().name().equals("TITLE_PAGE"))
 				{
 					para.add(level);
@@ -510,28 +510,8 @@ public class Export {
 							n++;
 							
 						}
-							//para.add(": ");
 					}
 
-					/*
-					if (elem.getAuthor1inv() != null)
-					{
-						entry += elem.getAuthor1inv();
-					}
-					if (elem.getAuthor2inv() != null)
-					{
-						entry += "; " + elem.getAuthor2inv();
-					}
-					if (elem.getAuthor3inv() != null)
-					{
-						entry += "; " + elem.getAuthor3inv();
-					}
-					if ((elem.getAuthor1inv() != null || elem.getAuthor2inv() != null || elem.getAuthor3inv() != null)
-							&& elem.getHead().size() > 0)
-					{
-						entry += " : ";
-					}
-					*/
 					//Element title
 					if (elem.getHead().size() > 0 && elem.getHead().get(0) != "")
 					{
@@ -552,63 +532,48 @@ public class Export {
 						para.add(titleStr);
 					}
 
-					//************* START CREATE OUTLINE ******************************************************************************
 					List<PbOrDiv> pd = elem.getPbOrDiv();
 					if (pd!= null && pd.size() > 0)
 					{
 						//Outline to a Page
-						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb")
-								&& !elem.getElementType().name().equalsIgnoreCase("div"))
+						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
 						{
 							Pagebreak pb = (Pagebreak) pd.get(0);
-							if (pb != null && pb.getFacs()!= null && pb.getFacs()!="" && oline != null) //TODO
+							if (pb != null && pb.getFacs()!= null && pb.getFacs()!="" && oline != null)
 							{
 								PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(pb.getFacs(), false), titleStr);	
 								oline = out;
 							}
 						}
-					}
-
-					//Outline to a titlepage
-					if (elem.getElementType().name().equalsIgnoreCase("TITLE_PAGE"))
-					{
-						TitlePage tp = (TitlePage) elem;
-						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(tp.getId(), false), titleStr);	
-						oline = out;
-					}
-//					//Outline to a section
-//					System.out.println("Type: " + elem.getType());
-//					if (elem.getElementType().name().equalsIgnoreCase("div") && elem.getType().equalsIgnoreCase("section"))
-//					{								
-//						Div sec = (Div) elem;
-//						if (sec.getHead()!= null && sec.getHead().size()>0)
-//						{
-//							titleStr = sec.getHead().get(0);
-//							PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(sec.getId(), false), titleStr);	
-//							oline = out;
-//						}
-//					}
-					//Outline to other elements
-					if (elem.getElementType().name().equalsIgnoreCase("div"))
-					{								
-						Div div = (Div) elem;
-						if (div.getHead()!= null && div.getHead().size()>0)
-						{
-							titleStr = div.getHead().get(0);
-						}
 						else 
-						{
-							titleStr = div.getNumeration();
+							{
+							//Outline to a titlepage
+							if (elem.getElementType().name().equalsIgnoreCase("TITLE_PAGE"))
+								{
+									TitlePage tp = (TitlePage) elem;
+									PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(tp.getId(), false), titleStr);	
+									oline = out;
+								}
+								//Outline to other elements
+								else if (elem.getElementType().name().equalsIgnoreCase("div"))
+								{								
+									Div div = (Div) elem;
+									if (div.getHead()!= null && div.getHead().size()>0)
+									{
+										titleStr = div.getHead().get(0);
+									}
+									else 
+									{
+										titleStr = div.getType();
+									}
+									PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(div.getId(), false), titleStr);	
+									oline = out;
+								}
 						}
-						
-						PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(div.getId(), false), titleStr);	
-						oline = out;
 					}
-					//*************END CREATE OUTLINE ******************************************************************************
-
-					doc.add(para);
-					para = new Paragraph();
 				}
+				
+				//Create Outline and TOC for FIGURE elements
 				if (elems.get(i).getElementType().name().equals("FIGURE"))
 				{
 					//Add to toc
@@ -624,6 +589,9 @@ public class Export {
 					oline = out;
 				}		
 				
+			doc.add(para);
+			para = new Paragraph();
+			
 			if (elems.get(i).getPbOrDiv().size() > 0)
 			{
 				level+="  ";
