@@ -91,17 +91,17 @@ public class UserAccountServiceBean {
 			user.setId(ua.getObjid());
 			user.setName(ua.getProperties().getName());
 			user.setLoginName(ua.getProperties().getLoginName());
-			
+			Grants gs = client.retrieveCurrentGrants(ua.getObjid());
 			for(Grant grant : client.retrieveCurrentGrants(ua.getObjid()))
 			{
 				//			user.getGrants().add(grant);
-	//			if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
-	//			{
-	//				user.getGrants().add(grant);
-	//				user.setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(userHandle, userId));
-	//				user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle,userId));
-	//				user.setCreatedUsers(retrieveAllUsers(userHandle));
-	//			}
+				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
+				{
+					user.getGrants().add(grant);
+					user.setCreatedOrgas(ouServiceBean.retrieveOrgasCreatedBy(userHandle, user.getId()));
+//					user.setCreatedCollections(contextServiceBean.retrieveCollectionsCreatedBy(userHandle,user.getId()));
+					user.setCreatedUsers(retrieveUserAccountsCreatedBySysAdmin(userHandle,user.getId()));
+				}
 				
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.ou.admin")))
 	        	{
@@ -223,12 +223,17 @@ public class UserAccountServiceBean {
 		return users;
 	}
 	
-	public List<User> retrieveAllUsers(String userHandle)
+	public List<User> retrieveUserAccountsCreatedBySysAdmin(String userHandle, String id)
 	{
-		logger.info("Retrieving All DLC Users");
+		logger.info("Retrieving DLC Users Created by System-Admin");
 		List<User> users = new ArrayList<User>();
-		for(UserAccount ua : retrieveAllUserAccounts(userHandle))
-			users.add(getUserVo(ua, userHandle));
+		for(UserAccount ua : retrieveAllUserAccounts(userHandle, id))
+		{
+			if(!ua.getObjid().equalsIgnoreCase(id))
+			{
+				users.add(getUserVo(ua, userHandle));
+			}
+		}
 		return users;
 	}
 	
@@ -256,7 +261,7 @@ public class UserAccountServiceBean {
 		return uas;
 	}
 	
-	public List<UserAccount> retrieveAllUserAccounts(String userHandle)
+	public List<UserAccount> retrieveAllUserAccounts(String userHandle, String id)
 	{
 		logger.info("Retrieving all users");
 		List<UserAccount> uas = new ArrayList<UserAccount>();
