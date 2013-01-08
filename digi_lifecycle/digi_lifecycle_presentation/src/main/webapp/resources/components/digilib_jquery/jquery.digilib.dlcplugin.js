@@ -156,7 +156,7 @@ digilib plugin stub
 			$('#' + citationLinkIds[i]).val(newUrl);
 		}
 		
-		console.debug("New DLC Url: " + newUrl);
+		//console.debug("New DLC Url: " + newUrl);
 		
 		//var ck = "digilib-embed:fn:" + fn.escape(data.settings.fn) + ":pn:" + data.settings.pn;
 
