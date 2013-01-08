@@ -60,6 +60,7 @@ import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
+import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
 import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 import de.mpg.mpdl.dlc.vo.teisd.TitlePage;
 
@@ -199,14 +200,14 @@ public class Export {
 					PbOrDiv currentElem = teiSd.getText().getPbOrDiv().get(i);
 					if (currentElem.getType()!= "PB")
 					{
-						if (currentElem.getElementType().name().equals("DIV") || currentElem.getElementType().name().equals("TITLE_PAGE"))
+						if (currentElem.getElementType() == ElementType.DIV || currentElem.getElementType() == ElementType.TITLE_PAGE)
 						{
 								document = this.createTree(currentElem.getPbOrDiv(), document, root, writer);
 						}
 						else 
-							if (currentElem.getElementType().name().equals("FRONT") || currentElem.getElementType().name().equals("BACK") 
-									|| currentElem.getElementType().name().equals("BODY")|| currentElem.getElementType().name().equals("GROUP")
-									|| currentElem.getElementType().name().equals("TEXT"))
+							if (currentElem.getElementType() == ElementType.FRONT || currentElem.getElementType() == ElementType.BACK
+									|| currentElem.getElementType() == ElementType.BODY || currentElem.getElementType() == ElementType.GROUP
+									|| currentElem.getElementType() == ElementType.TEXT )
 							{
 								document.add(new Paragraph(currentElem.getElementType().name().toString()));
 								level += "  ";
@@ -477,7 +478,8 @@ public class Export {
 		{
 
 				//Create Outline and TOC for div and title elements
-				if (elems.get(i).getElementType().name().equals("DIV") || elems.get(i).getElementType().name().equals("TITLE_PAGE"))
+				if (elems.get(i).getElementType() == ElementType.DIV || 
+						elems.get(i).getElementType() == ElementType.TITLE_PAGE)
 				{
 					para.add(level);
 					Div elem = (Div) elems.get(i);
@@ -525,7 +527,7 @@ public class Export {
 						type = "";
 					}
 					
-					if (elem.getElementType().name().equals("TITLE_PAGE"))
+					if (elem.getElementType() == ElementType.TITLE_PAGE)
 					{
 						TitlePage tp = (TitlePage) elem;
 						titleStr = this.replaceLineBreaksWithBlanks(tp.getDocTitles().get(0).getTitle());
@@ -536,7 +538,7 @@ public class Export {
 					if (pd!= null && pd.size() > 0)
 					{
 						//Outline to a Page
-						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType().name().equalsIgnoreCase("pb"))
+						if (pd.get(0)!= null && pd.get(0).getElementType()!= null && pd.get(0).getElementType() == ElementType.PB)
 						{
 							Pagebreak pb = (Pagebreak) pd.get(0);
 							if (pb != null && pb.getFacs()!= null && pb.getFacs()!="" && oline != null)
@@ -548,14 +550,14 @@ public class Export {
 						else 
 							{
 							//Outline to a titlepage
-							if (elem.getElementType().name().equalsIgnoreCase("TITLE_PAGE"))
+							if (elem.getElementType() == ElementType.TITLE_PAGE)
 								{
 									TitlePage tp = (TitlePage) elem;
 									PdfOutline out = new PdfOutline(oline, PdfAction.gotoLocalPage(tp.getId(), false), titleStr);	
 									oline = out;
 								}
 								//Outline to other elements
-								else if (elem.getElementType().name().equalsIgnoreCase("div"))
+								else if (elem.getElementType() == ElementType.DIV)
 								{								
 									Div div = (Div) elem;
 									if (div.getHead()!= null && div.getHead().size()>0)
@@ -574,7 +576,7 @@ public class Export {
 				}
 				
 				//Create Outline and TOC for FIGURE elements
-				if (elems.get(i).getElementType().name().equals("FIGURE"))
+				if (elems.get(i).getElementType() == ElementType.FIGURE)
 				{
 					//Add to toc
 					doc.add(new Paragraph(level + "[figure]"));
