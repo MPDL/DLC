@@ -171,7 +171,7 @@ public class Export {
 		writer.setViewerPreferences(PdfWriter.PageModeUseOutlines);
 		writer.setViewerPreferences(PdfWriter.PageLayoutTwoPageRight);
 		document.setPageSize(PageSize.A4);
-		document.addCreator("Digitization Lifecycle");
+		document.addCreator("DLC - Digital Libraries Connected");
 		
 		try 
 		{		
