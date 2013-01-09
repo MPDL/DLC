@@ -83,6 +83,12 @@ public class Export {
 		
 	}
 	
+	/**
+	 * Returns the tei of an item. If a original tei exists it will be returned, otherwise the dlc created tei will be returned.
+	 * @param itemId
+	 * @return byte array of the tei of this item
+	 * @throws Exception
+	 */
 	public byte[] teiExport(String itemId) throws Exception
 	{	        
 		String xml = null;
@@ -105,6 +111,12 @@ public class Export {
 	    return xml.getBytes("UTF-8");
 	}
 	
+	/**
+	 * Export item in mets/mods format, using an xslt transformation
+	 * @param itemId
+	 * @return byte array of the item in mets/mods format (xml)
+	 * @throws Exception
+	 */
 	public byte[] metsModsExport(String itemId) throws Exception
 	{
         String xsltUri ="export/dlczvddmets.xsl";
@@ -476,7 +488,6 @@ public class Export {
 		
 		for (int i = 0; i < elems.size(); i++)
 		{
-
 				//Create Outline and TOC for div and title elements
 				if (elems.get(i).getElementType() == ElementType.DIV || 
 						elems.get(i).getElementType() == ElementType.TITLE_PAGE)
@@ -509,8 +520,11 @@ public class Export {
 							}
 							
 							para.add(new Phrase(docAuthor.getAuthor(), fontitalic));
-							n++;
-							
+							n++;						
+						}
+						if (n == elem.getDocAuthors().size())
+						{
+							para.add(": ");
 						}
 					}
 
@@ -622,20 +636,20 @@ public class Export {
 		if (type.equalsIgnoreCase("PDF")) 
 			this.exportType = ExportTypes.PDF;
 		if (type.equalsIgnoreCase("MODS")) 
-			this.exportType = ExportTypes.MODS;		
+			this.exportType = ExportTypes.MODS;	
+		if (type.equalsIgnoreCase("TEI")) 
+			this.exportType = ExportTypes.TEI;	
 	}
 	
+	
 	public String replaceLineBreaksWithBlanks(String teiText)
-	{
-		
+	{		
 		String replacedText = teiText.replaceAll("<lb\\s*/>", " ");
-		return replacedText;
-		
+		return replacedText;		
 	}
 	
 	public String getEscidocItem(String identifier) throws MalformedURLException, IOException, URISyntaxException 
 	{
-
 		//Variables
 		String resultXml = "";
 		InputStreamReader isReader;
