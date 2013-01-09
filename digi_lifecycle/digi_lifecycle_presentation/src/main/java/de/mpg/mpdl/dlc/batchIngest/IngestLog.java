@@ -960,6 +960,7 @@ public class IngestLog
 			for(IngestImage i : images)
 			{
 				FileOutputStream out = null;
+				
 				try {
 					out = new FileOutputStream(i.getFile());
 				} catch (FileNotFoundException e) {
@@ -992,6 +993,7 @@ public class IngestLog
 					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
 				}catch(IOException e)
 				{
+					out.close();
 					logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
 					if(logItem != null)
 					{
@@ -1008,6 +1010,7 @@ public class IngestLog
 						else
 							this.ftpClient = ftpsLogin(server, username, password);
 	
+						out = new FileOutputStream(i.getFile());
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 						ftpClient.setDataTimeout(60000);
 						ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
@@ -1076,6 +1079,7 @@ public class IngestLog
 					
 				} catch (IOException e) 
 				{
+					out.close();
 					logger.info("Error while copying Footer from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
 					if(logItem != null)
 					{
@@ -1091,6 +1095,7 @@ public class IngestLog
 						else
 							this.ftpClient = ftpsLogin(server, username, password);
 	
+						out = new FileOutputStream(footer.getFile());
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 						ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
 						out.flush();
