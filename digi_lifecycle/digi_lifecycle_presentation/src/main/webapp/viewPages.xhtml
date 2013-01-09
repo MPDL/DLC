@@ -171,17 +171,16 @@
 												
 												<h:commandLink action="#{viewPages.goTo(treeElement.id)}" styleClass="struct_#{treeElement.id} eg3_treeStructLink">
 													<h:panelGroup rendered="#{treeElement.element.localName=='div' or treeElement.element.localName=='titlePage'}">
-														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',treeElement.element.getAttribute('type'))}]" rendered="#{treeElement.element.localName=='div' and not empty treeElement.element.getAttribute('type')}"/>
-														<h:outputText value="[-]" rendered="#{treeElement.element.localName=='div' and empty treeElement.element.getAttribute('type')}"/>
-														<h:outputText value="[#{lbl.edit_elementType_title_page}]" rendered="#{treeElement.element.localName=='titlePage'}"/>
+														<h:outputText value="[#{internationalizationHelper.getLabelForEnum('structuretype_',treeElement.element.getAttribute('type'))}]" rendered="#{treeElement.element.localName=='div' and not empty treeElement.element.getAttribute('type') and empty treeElement.head}"/>
+														<h:outputText value="[-]" rendered="#{treeElement.element.localName=='div' and empty treeElement.element.getAttribute('type') and empty treeElement.head}"/>
+														<h:outputText value="[#{lbl.edit_elementType_title_page}]" rendered="#{treeElement.element.localName=='titlePage' and empty treeElement.docTitle}"/>
 														
 														<h:outputText value=" #{treeElement.element.getAttribute('n')} " rendered="#{not empty treeElement.element.getAttribute('n')}"/>
 														
 														<h:outputText value=" #{treeElement.docAuthors[0].getAttribute('ana')}" rendered="#{treeElement.docAuthors.size() > 0 and not empty treeElement.docAuthors[0].getAttribute('ana')}"/>
 														<h:outputText value="; #{treeElement.docAuthors[1].getAttribute('ana')}" rendered="#{treeElement.docAuthors.size() > 1 and not empty treeElement.docAuthors[1].getAttribute('ana')}"/>
 														<h:outputText value="; #{treeElement.docAuthors[2].getAttribute('ana')}" rendered="#{treeElement.docAuthors.size() > 2 and not empty treeElement.docAuthors[2].getAttribute('ana')}"/>
-														<h:outputText value=":" rendered="#{treeElement.docAuthors.size() > 0 and not empty treeElement.head}"/>
-														
+														<h:outputText value=":" rendered="#{treeElement.docAuthors.size() > 0 and not empty treeElement.head}"/>			
 													</h:panelGroup>
 													
 													<h:panelGroup rendered="#{treeElement.element.localName=='text' or treeElement.element.localName=='group' or treeElement.element.localName=='front' or treeElement.element.localName=='body' or treeElement.element.localName=='back'}">
@@ -189,12 +188,10 @@
 													</h:panelGroup>
 													
 													<h:panelGroup rendered="#{treeElement.element.localName=='figure'}">
-														<h:outputText value="[#{lbl.edit_elementType_figure}]"/>
-														<h:outputText value=" #{treeElement.element.getAttribute('n')} " rendered="#{not empty treeElement.element.getAttribute('n')}"/>
+														<h:outputText value="[#{lbl.edit_elementType_figure}]" rendered="#{empty treeElement.head}"/>
+														<h:outputText value=" #{treeElement.element.getAttribute('n')}" rendered="#{not empty treeElement.element.getAttribute('n')}"/>
 													</h:panelGroup>
-													
 
-													
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.head)}" rendered="#{(treeElement.element.localName=='div' or treeElement.element.localName=='figure') and not empty treeElement.head}" />
 													
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.docTitle)}" rendered="#{treeElement.element.localName=='titlePage'}"/>
