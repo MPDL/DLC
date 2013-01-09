@@ -85,10 +85,10 @@
 					<xsl:attribute name="MIMETYPE">text/xml</xsl:attribute>
 					<xsl:element name="mets:xmlData">
 						<xsl:element name="dv:rights">
-							<xsl:element name="dv:owner"></xsl:element>	
-							<xsl:element name="dv:ownerContact"></xsl:element>	
+							<xsl:element name="dv:owner">DLC - Digital Libraries Connected</xsl:element>	
+							<xsl:element name="dv:ownerContact">http://dlcproject.wordpress.com/contact/</xsl:element>	
 							<xsl:element name="dv:ownerLogo">http://dlc.mpdl.mpg.de/dlc/resources/images/logo-dlc_150x286.png</xsl:element>	
-							<xsl:element name="dv:ownerSiteURL"></xsl:element>	
+							<xsl:element name="dv:ownerSiteURL">http://dlc.mpdl.mpg.de/dlc/</xsl:element>	
 						</xsl:element>	
 					</xsl:element>
 				</xsl:element>					
