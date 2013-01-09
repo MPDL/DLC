@@ -190,7 +190,7 @@ public class ImageServlet extends HttpServlet {
 					    FileOutputStream output = new FileOutputStream(f);
 					    InputStream tempFileInput = ((DiskFileItem)item).getInputStream();
 					    
-					    byte[] buf = new byte[2048];
+					    byte[] buf = new byte[8192];
 					    int count = 0;
 					    while((count = tempFileInput.read(buf)) != -1)
 					    {
