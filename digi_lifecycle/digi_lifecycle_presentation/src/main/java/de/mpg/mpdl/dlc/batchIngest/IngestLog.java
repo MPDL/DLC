@@ -1167,21 +1167,22 @@ public class IngestLog
 
 			
 			try {
+				
+				TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
+				query.setParameter("id", bi.getDbID());				
+				BatchLogItem logItem = query.getSingleResult();
+				logItem.setStartDate(new Date());
+				logItem.setStep(Step.STARTED);
+				update(logItem);
+				
 				if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
 				{
-					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
-					query.setParameter("id", bi.getDbID());				
-					BatchLogItem logItem = query.getSingleResult();
-					logItem.setStartDate(new Date());
-					logItem.setStep(Step.STARTED);
 					
-					downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());
-					
-					update(logItem);
-
-					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
-					Volume vol = new Volume();
 					try{
+						downloadImages(logItem, null , bi.getImagesDirectory(), bi.getDlcDirectory(), bi.getImageFiles(), bi.getFooter());					
+	
+						CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
+						Volume vol = new Volume();
 						vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter(), bi.getTeiFile(), null);
 						logItem.setEscidocId(vol.getItem().getOriginObjid());
 						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(vol));
@@ -1203,25 +1204,25 @@ public class IngestLog
 				}
 				else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 				{
-					  
-					Volume mv;
+					/*  
 					TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
 					query.setParameter("id", bi.getDbID());				
 					BatchLogItem logItem_multivolume = query.getSingleResult();
 					logItem_multivolume.setStartDate(new Date());
-					logItem_multivolume.setStep(Step.STARTED);
+					logItem_multivolume.setStep(Step.STARTED);					
+					update(logItem_multivolume);					
+					 */
 					
-					update(logItem_multivolume);
-			  		  
-					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
+					Volume mv;  
+					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
 					try{
 						mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
-						logItem_multivolume.setEscidocId(mv.getItem().getObjid());
-						logItem_multivolume.setShortTitle(VolumeUtilBean.getShortTitleView(mv));
-						logItem_multivolume.setSubTitle(VolumeUtilBean.getSubTitleView(mv));
-						logItem_multivolume.getLogs().add("successfully created");
+						logItem.setEscidocId(mv.getItem().getObjid());
+						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(mv));
+						logItem.setSubTitle(VolumeUtilBean.getSubTitleView(mv));
+						logItem.getLogs().add("successfully created");
 						
-						update(logItem_multivolume);
+						update(logItem);
 						
 						ArrayList<String> volIds = new ArrayList<String>();
 
@@ -1234,17 +1235,14 @@ public class IngestLog
 							logItemVolume.setStartDate(new Date());
 							logItemVolume.setStep(Step.STARTED);
 
-							downloadImages(null, logItemVolume, vol.getImagesDirectory(), vol.getDlcDirectory(), vol.getImageFiles(), vol.getFooter());
-							
-							update(logItemVolume);
-							
-							String mvId = mv.getItem().getObjid();
-							CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
 							try{
-								
+								downloadImages(null, logItemVolume, vol.getImagesDirectory(), vol.getDlcDirectory(), vol.getImageFiles(), vol.getFooter());								
+								update(logItemVolume);								
+								String mvId = mv.getItem().getObjid();
+								CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
 								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter(), vol.getTeiFile(), null);
 								volIds.add(v.getItem().getObjid());
-								logItem_multivolume.setFinished_volumes_nr(volIds.size());
+								logItem.setFinished_volumes_nr(volIds.size());
 								logItemVolume.setEscidocId(v.getItem().getObjid());
 								logItemVolume.setShortTitle(VolumeUtilBean.getVolumeShortTitleView(v));
 								logItemVolume.setSubTitle(VolumeUtilBean.getVolumeSubTitleView(v));
@@ -1254,14 +1252,14 @@ public class IngestLog
 							}catch(Exception e)
 							{
 								batchLog.setErrorLevel(ErrorLevel.PROBLEM);
-								logItem_multivolume.setErrorlevel(ErrorLevel.PROBLEM);
+								logItem.setErrorlevel(ErrorLevel.PROBLEM);
 								logItemVolume.setStep(Step.STOPPED);
 							}
 							finally{
 								finishedItems++;
 								batchLog.setFinishedItems(finishedItems);
 								update(batchLog);
-								update(logItem_multivolume);
+								update(logItem);
 								update(logItemVolume);
 							}
 														
@@ -1269,10 +1267,10 @@ public class IngestLog
 						if(volIds.size()==0)
 						{
 							cvsb.rollbackCreation(mv, userHandle);
-							logItem_multivolume.setShortTitle("");
-							logItem_multivolume.setSubTitle("");
-							logItem_multivolume.getLogs().add("Multivolume Rollback");
-							logItem_multivolume.setEscidocId("");
+							logItem.setShortTitle("");
+							logItem.setSubTitle("");
+							logItem.getLogs().add("Multivolume Rollback");
+							logItem.setEscidocId("");
 						}
 						else
 						{
@@ -1280,16 +1278,16 @@ public class IngestLog
 							if(operation.equalsIgnoreCase("release"))
 								cvsb.releaseVolume(mv.getItem().getObjid(), operation);
 						}
-						logItem_multivolume.setEndDate(new Date());
-						logItem_multivolume.setStep(Step.FINISHED);
+						logItem.setEndDate(new Date());
+						logItem.setStep(Step.FINISHED);
 
 					}catch(Exception e)
 					{
-						logItem_multivolume.setStep(Step.STOPPED);
+						logItem.setStep(Step.STOPPED);
 						batchLog.setErrorLevel(ErrorLevel.ERROR);
 					}
 					finally{
-						update(logItem_multivolume);				
+						update(logItem);				
 						update(batchLog);
 					}
 				} 
