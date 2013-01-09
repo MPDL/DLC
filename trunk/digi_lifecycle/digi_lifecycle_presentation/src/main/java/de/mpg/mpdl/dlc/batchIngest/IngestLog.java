@@ -98,7 +98,7 @@ public class IngestLog
     }
 
 
-	public IngestLog(String name, String action, String contextId, String userHandle, String server, boolean ftp, String username, String password, String images, String mab, String tei, BatchLog batchLog) throws Exception
+	public IngestLog(String name, String action, String contextId, String userHandle, String server, boolean ftp, String username, String password, String images, String mab, String tei, BatchLog batchLog) 
 	{
 		this.contextId = contextId;
 		this.userHandle = userHandle;
@@ -400,7 +400,7 @@ public class IngestLog
 		return "";
 	}
 	
-	public String ftpSaveItems()
+	public String ftpSaveItems() throws InterruptedException
 	{   
 		if(itemsForBatchIngest.size()>0)
 		{
@@ -1127,6 +1127,7 @@ public class IngestLog
 			}
 		}catch(Exception e){
 			logger.error("Exception while downloading images from FTP Server");
+			throw e;
 		}
 		finally
 		{
@@ -1211,7 +1212,7 @@ public class IngestLog
 					logItem_multivolume.setStep(Step.STARTED);
 					
 					update(logItem_multivolume);
-			  		
+			  		  
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem_multivolume, em);
 					try{
 						mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
