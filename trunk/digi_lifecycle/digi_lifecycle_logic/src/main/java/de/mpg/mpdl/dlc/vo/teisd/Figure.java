@@ -73,6 +73,13 @@ public class Figure extends Div {
 	
 	public boolean isNotEmptyFigDesc()
 	{
+		
+		
+		return (!(figDesc==null || figDesc.trim().isEmpty())) || isNotEmptyPersNames();
+	}
+	
+	public boolean isNotEmptyPersNames()
+	{
 		boolean notEmptyPersNames = false;
 		if(persNames!=null)
 		{
@@ -85,7 +92,7 @@ public class Figure extends Div {
 			}
 		}
 		
-		return (!(figDesc==null || figDesc.trim().isEmpty())) || notEmptyPersNames;
+		return notEmptyPersNames;
 	}
 
 	
