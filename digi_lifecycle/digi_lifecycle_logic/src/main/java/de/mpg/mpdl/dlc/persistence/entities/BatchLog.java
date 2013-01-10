@@ -32,7 +32,7 @@ import javax.persistence.TemporalType;
 public class BatchLog {
 	
 	public static String ITEMS_BY_USER_ID = "BatchLog.itemsByUserId";
-	public static String ITEM_BY_CONTEXT_ID = "BatchLog.itemsByContextId";
+	public static String ITEMS_BY_CONTEXT_ID = "BatchLog.itemsByContextId";
 	public static String ITEM_BY_ID = "BatchLog.ItemById";
 
 	
@@ -47,7 +47,7 @@ public class BatchLog {
      */
 	public enum Step
 	{
-		CHECK, STOPPED, STARTED, FINISHED
+		CHECK, STOPPED, STARTED, FINISHED, INTERRPTED
 	}
 	
     /**
