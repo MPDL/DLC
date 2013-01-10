@@ -294,7 +294,7 @@ public class InternationalizationHelper extends Observable
 	    	}
 	    	catch(Exception e)
 	    	{
-	    		logger.warn("Value: " + name + " not found in resource bundle: " + bundle);
+	    		//logger.warn("Value: " + name + " not found in resource bundle: " + bundle);
 	    		return "???" + name + "???";
 	    	}
 	    }
