@@ -328,22 +328,24 @@
 													<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
 												</h:selectOneMenu>
 											</h:panelGroup>
-											<ui:fragment rendered="#{rowKey lt 1}">
-												<h:outputText value="&#160;"/>
-											</ui:fragment>
+											
 									</h:panelGroup>		
 
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_9">										
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-												<h:selectOneMenu value="#{sc.superElementName}">						
+											<h:selectOneMenu value="#{sc.superElementName}">						
 												<f:selectItem itemLabel="#{lbl.cdc_object}" itemValue="object"/>
 												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="binding"/>
 												<f:selectItem itemLabel="#{lbl.cdc_bodyOfVolume}" itemValue="bodyOfVolume"/>
 												<f:selectItem itemLabel="#{lbl.cdc_provenance}" itemValue="provenance"/>
 												<f:ajax event="change" listener="#{sc.superElementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>
-										</h:selectOneMenu>
+											</h:selectOneMenu>
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_20">										
+											<span>&#160;</span>
 									</h:panelGroup>
 
 									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3">
