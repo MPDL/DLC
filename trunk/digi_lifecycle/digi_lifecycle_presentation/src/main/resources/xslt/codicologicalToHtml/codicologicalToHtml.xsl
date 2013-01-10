@@ -29,10 +29,13 @@
     
     
       <xsl:template match="object|bodyOfVolume|provenance|binding">
-      	<div class="cdc cdcLabelHeader">	    
+      	<div class="cdcBlock cdc">	    
+			<span class="cdcLabelHeader">
 			<xsl:value-of select="dlc:i18n(concat('cdc_', name()))"/>
+			</span>
+			 <xsl:apply-templates/>
 		</div>
-		 <xsl:apply-templates/>
+		
       </xsl:template>
     
     <xsl:template match="text()">
