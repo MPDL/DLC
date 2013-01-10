@@ -1,13 +1,10 @@
 package de.mpg.mpdl.dlc.batchIngest;
 
 import java.io.File;
-
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +21,6 @@ import javax.xml.transform.stream.StreamSource;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
 
-import org.apache.commons.net.PrintCommandListener;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -41,7 +37,6 @@ import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItem;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.util.BatchIngestLogs;
-import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.BatchIngestItem;
@@ -90,6 +85,7 @@ public class IngestLog
     
     private BatchLog batchLog;
     private EntityManager em;
+
     
 //    private SessionExtenderTask seTask;
 
@@ -320,9 +316,11 @@ public class IngestLog
 					}
 				}
 				errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
-			}
+			}  
 			batchLog.setTotalItems(totalItems);
-			if(batchLog.getErrorLevel() == null && errorItems.size()==0 && itemsForBatchIngest.size()>0)
+			if(errorItems.size() > 0)
+				valid = false;
+			else if(batchLog.getErrorLevel() == null && errorItems.size()==0 && itemsForBatchIngest.size()>0)
 				valid = true;
 			else if(!batchLog.getErrorLevel().equals(ErrorLevel.ERROR) && errorItems.size()==0 && itemsForBatchIngest.size()>0)
 				valid = true;
@@ -400,7 +398,7 @@ public class IngestLog
 		return "";
 	}
 	
-	public String ftpSaveItems() throws InterruptedException
+	public String ftpSaveItems()
 	{   
 		if(itemsForBatchIngest.size()>0)
 		{
@@ -1201,6 +1199,7 @@ public class IngestLog
 					}catch(Exception e)
 					{
 						logItem.setStep(Step.STOPPED);
+						logItem.setErrorlevel(ErrorLevel.ERROR);
 						batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 					}
 					finally
@@ -1263,6 +1262,7 @@ public class IngestLog
 								batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 								logItem.setErrorlevel(ErrorLevel.PROBLEM);
 								logItemVolume.setStep(Step.STOPPED);
+								logItemVolume.setErrorlevel(ErrorLevel.ERROR);
 							}
 							finally{
 								finishedItems++;
@@ -1280,16 +1280,18 @@ public class IngestLog
 							logItem.setSubTitle("");
 							logItem.getLogs().add("Multivolume Rollback");
 							logItem.setEscidocId("");
+							logItem.setErrorlevel(ErrorLevel.ERROR);
+							logItem.setStep(Step.STOPPED);
 						}
 						else
 						{
 							volumeService.updateMultiVolumeFromId(mv.getItem().getObjid(), volIds, userHandle);
+							logItem.setStep(Step.FINISHED);
 							if(operation.equalsIgnoreCase("release"))
 								cvsb.releaseVolume(mv.getItem().getObjid(), operation);
 						}
 						logItem.setEndDate(new Date());
-						logItem.setStep(Step.FINISHED);
-
+						
 					}catch(Exception e)
 					{
 						logItem.setStep(Step.STOPPED);

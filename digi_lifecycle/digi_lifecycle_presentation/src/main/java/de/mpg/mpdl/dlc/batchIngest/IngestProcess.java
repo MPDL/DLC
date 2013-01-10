@@ -7,11 +7,8 @@ import org.apache.log4j.Logger;
 
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
-import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.ErrorLevel;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
-import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
-import de.mpg.mpdl.dlc.util.MessageHelper;
 
 public class IngestProcess extends Thread{
 	
@@ -64,59 +61,44 @@ public class IngestProcess extends Thread{
 
 	private void saveLog(BatchLog batchLog)
 	{
-
 		EntityManagerFactory emf = VolumeServiceBean.getEmf();
 		this.em = emf.createEntityManager();
 		em.getTransaction().begin();
 		em.persist(batchLog);
 		em.getTransaction().commit();
 		this.setUncaughtExceptionHandler(new BatchIngestExceptionHandler(em, batchLog));
-
-
 	}
 	
 	public void run()
 	{
+		Thread thisThread = Thread.currentThread();
 		/*
 		log = new IngestLog_NFS_Backup(logName, step, action, errorLevel, userId, contextId, images, mab, tei,  userHandle);
 		*/
-
-//		if(applicationBean != null && applicationBean.getUploadThreads().containsKey(loginBean.getUserHandle()))
-//		{
-//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())+1);
-//		}
-//		else
-//			applicationBean.getUploadThreads().put(loginBean.getUserHandle(), 1);
-		  
-		try {
+		try {  
 			log = new IngestLog(logName, action, contextId, userHandle, server, ftp, userName, password, images, mab, tei, batchLog);
-			try {  
-				if(log.ftpCheck())
-					log.ftpSaveItems();
-				else
-				{
-					batchLog.setErrorLevel(ErrorLevel.ERROR);
-					batchLog.setStep(Step.STOPPED);
-				}
 
-			} catch (Exception e) {
-				logger.error("Error while checking ingest data", e);
-				MessageHelper.errorMessage("login error");
-			}
-			finally
+			if(log.ftpCheck())
 			{
-//				applicationBean.getUploadThreads().put(loginBean.getUserHandle(), applicationBean.getUploadThreads().get(loginBean.getUserHandle())-1);
-//				if(applicationBean.getUploadThreads().get(loginBean.getUserHandle()) == 0)
-//					applicationBean.getUploadThreads().remove(loginBean.getUserHandle());
-				em.getTransaction().begin();
-				em.merge(batchLog);
-				em.getTransaction().commit();
-				em.close();
-				log.clear();
+					log.ftpSaveItems();
 			}
+			else
+			{
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
+				batchLog.setStep(Step.STOPPED);
+			}
+			
 		} catch (Exception e) {
-			logger.error("Exception while batchingest");
-		} 
+			batchLog.setErrorLevel(ErrorLevel.PROBLEM);
+		}
+		finally
+		{
+			em.getTransaction().begin();
+			em.merge(batchLog);
+			em.getTransaction().commit();
+			em.close();
+			log.clear();
+		}
 
 	}
 

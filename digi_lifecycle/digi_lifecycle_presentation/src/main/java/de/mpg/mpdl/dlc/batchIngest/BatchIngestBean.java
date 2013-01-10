@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
 
 import org.apache.log4j.Logger;
 
@@ -20,9 +17,7 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.mpg.mpdl.dlc.beans.LoginBean;
-import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
-import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Status;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
@@ -120,7 +115,7 @@ public class BatchIngestBean {
 		
 		}
 	}
-	
+
 	public String save(String action)
 	{ 
 		if("".equals(name))
@@ -157,12 +152,16 @@ public class BatchIngestBean {
 		
 		ingestProcess = new IngestProcess(name, action, selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images, batchLog);
 		ingestProcess.start();
+		
+
 		MessageHelper.infoMessage(InternationalizationHelper.getMessage("info_batch_ingest_start"));
 
 		clear();
 
 		return "pretty:batchIngest";
 	}
+	
+
 	
 	public String clear()
 	{
@@ -214,6 +213,12 @@ public class BatchIngestBean {
 	}
 
 	public void setSelectedContextId(String selectedContextId) {
+		System.err.println("Set context Id= " + selectedContextId);
+		for(SelectItem si : contextSelectItems)
+		{
+			if(si.getValue().equals(selectedContextId))
+				this.selecetedContextName = si.getLabel();
+		}
 		this.selectedContextId = selectedContextId;
 	}
 
