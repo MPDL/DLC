@@ -72,12 +72,17 @@ public class TeiSdTreeNodeImpl {
 	{
 		StringBuffer sb = new StringBuffer();
 		
+		int i=0;
 		for(Node n = getElement().getFirstChild(); n!=null; n=n.getNextSibling())
 		{
 			if(n.getNodeType()==Node.ELEMENT_NODE && n.getLocalName().equals("head"))
 			{
-				sb.append(n.getTextContent());
-				sb.append(" ");
+				if(n.getTextContent()!=null && !n.getTextContent().trim().isEmpty())
+				{
+					sb.append(n.getTextContent());
+					sb.append(" ");
+				}
+				
 			}
 		}
 		
@@ -95,8 +100,11 @@ public class TeiSdTreeNodeImpl {
 		{
 			if(n.getNodeType()==Node.ELEMENT_NODE && n.getLocalName().equals("docTitle"))
 			{
-				sb.append(n.getTextContent());
-				sb.append(" ");
+				if(n.getTextContent()!=null && !n.getTextContent().trim().isEmpty())
+				{
+					sb.append(n.getTextContent());
+					sb.append(" ");
+				}
 			}
 		}
 		return sb.toString();
