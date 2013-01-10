@@ -216,6 +216,23 @@ public class Div extends PbOrDiv {
 		
 		return false;
 	}
+	
+	public boolean isNotEmptyHead()
+	{
+		if(head!=null)
+		{
+			for(String h: head)
+			{
+				if(!h.trim().isEmpty())
+				{
+					System.out.println("isNotEmptyhead true");
+					return true;
+				}
+			}
+		}
+		System.out.println("isNotEmptyhead false");
+		return false;
+	}
 
 
 	
