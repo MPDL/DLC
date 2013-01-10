@@ -291,23 +291,8 @@
 					</h:panelGroup>
 					 -->
 					<!-- codicological data -->
-					<!-- 
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow">
-						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
-								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"/></h2>
-							</h:panelGroup> 
-						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
-							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow eg3_cdcSearch">
-								<h:inputText type="text" id="cdcSearchString" value="#{advancedSearchBean.cdcSearch.value}" styleClass="eg3_container_1"/>
-								<h:panelGroup styleClass="eg3_searchTooltip">
-									<h:outputText value="#{lbl.sc_codicological}"/>
-								</h:panelGroup>
-							</h:panelGroup>
-						</h:panelGroup>
-					</h:panelGroup>
-					 -->
+					
+					 
 					
 					
 					
@@ -318,6 +303,14 @@
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_codicological}"></h:outputText></h2>
 							</h:panelGroup>
 						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
+							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow eg3_cdcSearch">
+								<h:inputText type="text" id="cdcSearchString" value="#{advancedSearchBean.cdcSearch.value}" styleClass="eg3_container_1"/>
+								<h:panelGroup styleClass="eg3_searchTooltip">
+									<h:outputText value="#{lbl.sc_codicological}"/>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
 						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow">
 							<a4j:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" rowKeyVar="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
@@ -325,7 +318,7 @@
 										<h:outputText value="&#160;"/>											
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
-										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" rendered="#{rowKey gt 0}">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js" >
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
@@ -345,10 +338,10 @@
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
 												<h:selectOneMenu value="#{sc.superElementName}">						
-												<f:selectItem itemLabel="#{lbl.cdc_objectType}" itemValue="object"/>
+												<f:selectItem itemLabel="#{lbl.cdc_object}" itemValue="object"/>
+												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="binding"/>
 												<f:selectItem itemLabel="#{lbl.cdc_bodyOfVolume}" itemValue="bodyOfVolume"/>
 												<f:selectItem itemLabel="#{lbl.cdc_provenance}" itemValue="provenance"/>
-												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="binding"/>
 												<f:ajax event="change" listener="#{sc.superElementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>
 										</h:selectOneMenu>
 									</h:panelGroup>
