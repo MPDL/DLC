@@ -2,7 +2,9 @@ package de.mpg.mpdl.dlc.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -42,7 +44,7 @@ public class AdvancedSearchBean implements Observer {
 	
 	private List<SearchCriterion> searchCriterionList;	
 	
-	private List<SearchCriterion> cdcSearchCriterionList;	
+	private List<CodicologicalSearchCriterion> cdcSearchCriterionList;	
 	
 	private String freeSearch ="";
 	
@@ -66,6 +68,10 @@ public class AdvancedSearchBean implements Observer {
 	//private ContextSearch contextSearchItem;
 	private List<ContextSearch> contextScElements = new ArrayList<ContextSearch>();
 	
+	
+	
+	
+	/*
 	private List<SelectItem> cdcObjectTypeSelectItems;
 	private List<SelectItem> cdcLeafMarkerSelectItems;
 	private List<SelectItem> cdcTippedInSelectItems;
@@ -74,6 +80,8 @@ public class AdvancedSearchBean implements Observer {
 	private List<SelectItem> cdcEndPaperSelectItems;
 	private List<SelectItem> cdcMarginaliaSelectItems;
 	private List<SelectItem> cdcEdgeSelectItems;
+	*/
+	
 	
 	@ManagedProperty("#{internationalizationHelper}")
 	private InternationalizationHelper internationalizationHelper;
@@ -123,8 +131,11 @@ public class AdvancedSearchBean implements Observer {
 		
 		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		//this.contextSearchItem = new ContextSearch();
-		this.cdcSearchCriterionList = new ArrayList<SearchCriterion>();
-		this.cdcSearchCriterionList.add(new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));
+
+		
+		
+		this.cdcSearchCriterionList = new ArrayList<CodicologicalSearchCriterion>();
+		this.cdcSearchCriterionList.add(new CodicologicalSearchCriterion(false));
 		
 		this.init();
 	}
@@ -150,7 +161,7 @@ public class AdvancedSearchBean implements Observer {
 	
 	public void init()
 	{
-		initCdcSelectItems();
+		//initCdcSelectItems();
 		//Set the libraries list
 		initOUList();
 		
@@ -195,6 +206,7 @@ public class AdvancedSearchBean implements Observer {
 		cs.setOuId(ouId);
 	}
 	
+	/*
 	private void initCdcSelectItems()
 	{
 		this.cdcObjectTypeSelectItems = new ArrayList<SelectItem>();
@@ -417,7 +429,9 @@ public class AdvancedSearchBean implements Observer {
 		//cdcSelectItems.add(bookCoverDecorationGroup);
 		
 	}
+	*/
 	
+	/*
 	public List<SelectItem> getCdcSelectItemsForSearchType(SearchType st)
 	{
 		
@@ -460,6 +474,7 @@ public class AdvancedSearchBean implements Observer {
 		
 		return null;
 	}
+	*/
 	
 	public String startSearch()
 	{		
@@ -638,8 +653,8 @@ public class AdvancedSearchBean implements Observer {
 		this.yearTo = new SearchCriterion(SearchType.YEAR, "");
 		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		
-		this.cdcSearchCriterionList = new ArrayList<SearchCriterion>();
-		this.cdcSearchCriterionList.add(new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));
+		this.cdcSearchCriterionList = new ArrayList<CodicologicalSearchCriterion>();
+		this.cdcSearchCriterionList.add(new CodicologicalSearchCriterion(false));
 		
 		//Reset context
 		this.contextScElements.clear();
@@ -758,14 +773,16 @@ public class AdvancedSearchBean implements Observer {
 	}
 
 
-	public List<SearchCriterion> getCdcSearchCriterionList() {
+	
+	public List<CodicologicalSearchCriterion> getCdcSearchCriterionList() {
 		return cdcSearchCriterionList;
 	}
 
-	public void setCdcSearchCriterionList(List<SearchCriterion> cdcSearchCriterionList) {
+	public void setCdcSearchCriterionList(List<CodicologicalSearchCriterion> cdcSearchCriterionList) {
 		this.cdcSearchCriterionList = cdcSearchCriterionList;
 	}
 
+	/*
 	public List<SelectItem> getCdcObjectTypeSelectItems() {
 		return cdcObjectTypeSelectItems;
 	}
@@ -809,6 +826,6 @@ public class AdvancedSearchBean implements Observer {
 		this.cdcBookCoverDecorationSelectItems = cdcBookCoverDecorationSelectItems;
 	}
 
-	
+	*/
 	
 }

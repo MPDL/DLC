@@ -340,31 +340,45 @@
 											</ui:fragment>
 									</h:panelGroup>		
 
-									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50">										
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_9">										
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-												<h:selectOneMenu value="#{sc.searchType}">						
-												<f:selectItem itemLabel="#{lbl.cdc_objectType}" itemValue="CDC_OBJECT_TYPE"/>
-												<f:selectItem itemLabel="#{lbl.cdc_tippedIn}" itemValue="CDC_TIPPED_IN"/>
-												<f:selectItem itemLabel="#{lbl.cdc_endpaper}" itemValue="CDC_ENDPAPER"/>
-												<f:selectItem itemLabel="#{lbl.cdc_edge}" itemValue="CDC_EDGE"/>
-												<f:selectItem itemLabel="#{lbl.cdc_leafMarker}" itemValue="CDC_LEAF_MARKER"/>
-												<f:selectItem itemLabel="#{lbl.cdc_marginalia}" itemValue="CDC_MARGINALIA"/>
-												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="CDC_BINDING"/>
-												<f:selectItem itemLabel="#{lbl.cdc_bookCoverDecoration}" itemValue="CDC_BOOK_COVER_DECORATION"/>
-												<f:ajax event="change" execute="@form" render=":#{rich:clientId('cdc')}"/>
+												<h:selectOneMenu value="#{sc.superElementName}">						
+												<f:selectItem itemLabel="#{lbl.cdc_objectType}" itemValue="object"/>
+												<f:selectItem itemLabel="#{lbl.cdc_bodyOfVolume}" itemValue="bodyOfVolume"/>
+												<f:selectItem itemLabel="#{lbl.cdc_provenance}" itemValue="provenance"/>
+												<f:selectItem itemLabel="#{lbl.cdc_binding}" itemValue="binding"/>
+												<f:ajax event="change" listener="#{sc.superElementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>
 										</h:selectOneMenu>
 									</h:panelGroup>
 
-									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_21_50 eg3_floatRight">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3">
 										
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.value}" onchange="updateCustomSelectBox(this);">								
-												<f:selectItems value="#{advancedSearchBean.getCdcSelectItemsForSearchType(sc.searchType)}"/>										
+											<h:selectOneMenu value="#{sc.elementName}">								
+												<f:selectItems value="#{sc.elementSelectItems}"/>
+												<f:ajax event="change" listener="#{sc.elementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>										
 											</h:selectOneMenu> 
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'ENUM'}">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{sc.value}">								
+												<f:selectItems value="#{sc.enumSelectItems}"/>									
+											</h:selectOneMenu> 
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'TEXT'}">
+											<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>								
+									</h:panelGroup>
+									
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'BOOLEAN'}">
+											<h:selectBooleanCheckbox value="#{sc.value}" />					
 									</h:panelGroup>
 
 								</h:panelGroup>
@@ -387,7 +401,7 @@
 						</h:panelGroup>
 					</h:panelGroup>
 					
-					
+					 
 					
 					
 					

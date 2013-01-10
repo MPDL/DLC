@@ -79,7 +79,7 @@ public class FilterBean {
 		List<SearchCriterion> clonedFcList = new ArrayList<SearchCriterion>();
 		for(SearchCriterion sc : fcList)
 		{
-			clonedFcList.add(new SearchCriterion(sc));
+			clonedFcList.add(sc.clone());
 		}
 		
 		List<SearchCriterion> fcStandard = getStandardFilterCriterions(volTypes, volStatus, publicStatus);
@@ -87,7 +87,7 @@ public class FilterBean {
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
 		for(SearchCriterion fc : clonedFcList)
 		{
-			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getSearchType()!=null)
+			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getSearchIndexes()!=null)
 			{
 				listWithoutEmptyEntries.add(fc);
 			}

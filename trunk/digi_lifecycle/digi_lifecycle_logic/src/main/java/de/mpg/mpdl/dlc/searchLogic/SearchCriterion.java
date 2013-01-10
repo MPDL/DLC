@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 
 
+
 public class SearchCriterion extends Criterion{
 
 	
@@ -80,6 +81,12 @@ public class SearchCriterion extends Criterion{
 	private SearchType searchType;
 
 
+	public SearchCriterion()
+	{
+		this.operator = Operator.AND;
+		//this.searchType = toBeCloned.getSearchType();
+		
+	}
 	
 	public SearchCriterion(SearchCriterion toBeCloned)
 	{
@@ -120,12 +127,30 @@ public class SearchCriterion extends Criterion{
 		this.setCloseBracket(closeBracket);
 	}
 	
+	
+	@Override
+	public SearchCriterion clone()
+	{
+		return new SearchCriterion(this);
+	}
+	
 	public SearchType getSearchType() {
 		return searchType;
 	}
 
 	public void setSearchType(SearchType searchType) {
 		this.searchType = searchType;
+	}
+	
+	
+	public String[] getSearchIndexes()
+	{
+		if(getSearchType()!=null)
+		{
+			return getSearchType().getSearchIndexNames();
+		}
+		else return null;
+				
 	}
 	public static String toCql(List<SearchCriterion> cList, boolean filter ) {
 		{
@@ -174,7 +199,7 @@ public class SearchCriterion extends Criterion{
 					
 					if(!filter)
 					{
-						cql += baseCqlBuilder(sc.getSearchType().getSearchIndexNames(), sc.getValue(), sc.getConnector());
+						cql += baseCqlBuilder(sc.getSearchIndexes(), sc.getValue(), sc.getConnector());
 					}
 					else
 					{
