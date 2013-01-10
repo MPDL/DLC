@@ -15,7 +15,7 @@ public class SearchCriterion extends Criterion{
 	public enum SearchType
 	{
 		FREE(new String[]{"escidoc.metadata"}, null), 
-		FREE_AND_FULLTEXT(new String[]{"escidoc.metadata","escidoc.fulltext","dlc.cdc.metadata"}, null), 
+		FREE_AND_FULLTEXT(new String[]{"escidoc.metadata","escidoc.fulltext"}, null), 
 		AUTHOR(new String[]{"dlc.author"}, new String[]{"/dlc/author"}), 
 		TITLE(new String[]{"dlc.title"}, new String[]{"/dlc/title"}), 
 		PLACE(new String[]{"dlc.place"}, null), 
