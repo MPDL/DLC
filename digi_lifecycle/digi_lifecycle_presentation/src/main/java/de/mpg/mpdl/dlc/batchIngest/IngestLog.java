@@ -172,7 +172,7 @@ public class IngestLog
 		
 		FTPClient ftp = new FTPClient();
 		//ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
-		ftp.setDataTimeout(120000);
+		ftp.setDataTimeout(300000);
 		ftp.setConnectTimeout(300);
 		ftp.connect(server);
 		logger.info("connected to server: "+server + " - reply code: "+ftp.getReplyCode() + " - " +ftp.getReplyString());
@@ -199,7 +199,7 @@ public class IngestLog
 		
 		//ftps.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 
-		ftps.setDataTimeout(120000);
+		ftps.setDataTimeout(300000);
 		ftps.setConnectTimeout(300);
 		
 		ftps.connect(server, 21000);
@@ -978,7 +978,7 @@ public class IngestLog
 				
 					
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-					ftpClient.setDataTimeout(60000);
+					ftpClient.setDataTimeout(300000);
 					ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 					out.flush();
 					out.close();
@@ -993,7 +993,12 @@ public class IngestLog
 					logger.info("downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
 				}catch(IOException e)
 				{
-					out.close();
+					try{
+						out.close();
+					}
+					catch (Exception e2)
+					{}
+					
 					logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage(), e);
 					if(logItem != null)
 					{
@@ -1012,7 +1017,7 @@ public class IngestLog
 	
 						out = new FileOutputStream(i.getFile());
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-						ftpClient.setDataTimeout(60000);
+						ftpClient.setDataTimeout(300000);
 						ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
 						out.flush();
 						out.close();
@@ -1079,7 +1084,11 @@ public class IngestLog
 					
 				} catch (IOException e) 
 				{
-					out.close();
+					try{
+						out.close();
+					}
+					catch (Exception e2)
+					{}
 					logger.info("Error while copying Footer from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
 					if(logItem != null)
 					{
