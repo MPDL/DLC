@@ -117,7 +117,15 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		
 		for(SelectItem selItem : toBeCloned.enumSelectItems)
 		{
-			this.enumSelectItems.add(new SelectItem(selItem.getValue(), selItem.getLabel()));
+			if (selItem.getValue()==null || selItem.getValue().toString().trim().isEmpty())
+			{
+				enumSelectItems.add(new SelectItem("", InternationalizationHelper.getLabel("cdc_all")));
+			}
+			else
+			{
+				String label = InternationalizationHelper.getLabel("cdc_" + selItem.getValue().toString().replaceAll("\\s", "_"));
+				enumSelectItems.add(new SelectItem(selItem.getValue(), label));
+			}	
 		}
 		
 		if(this.type.equals(toBeCloned.type))
