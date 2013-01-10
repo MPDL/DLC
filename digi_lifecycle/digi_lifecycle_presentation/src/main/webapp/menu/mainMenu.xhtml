@@ -15,7 +15,7 @@
 				</li>
 				-->
 			
-			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
+			<ui:fragment rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid != 'escidoc:role-system-administrator' and  loginBean.user.grants[0].properties.role.objid != 'escidoc:role-ou-administrator'}">
 				<li class="eg3_menuEntry">
 					<h:outputLink id="lnkMyItems" title="#{tlt.main_my}" value="/#{applicationBean.contextPath}/myvolumes">
 						<h:outputText value="#{lbl.navigation_lnk_My_Items}" />
