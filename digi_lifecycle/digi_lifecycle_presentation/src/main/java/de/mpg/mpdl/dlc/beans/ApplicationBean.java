@@ -77,8 +77,10 @@ public class ApplicationBean
     
     private List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 
-    private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
-
+//    private HashMap<String, Integer> uploadThreads = new HashMap<String, Integer>();
+    
+    private HashMap<Long, Thread> uploadThreads = new HashMap<Long, Thread>();
+    
     /**
      * Public constructor.
      */
@@ -277,20 +279,13 @@ public class ApplicationBean
 		return dfgUrl;
 	}
 
-	public HashMap<String, Integer> getUploadThreads() {
+	public HashMap<Long, Thread> getUploadThreads() {
 		return uploadThreads;
 	}
 
-	public void setUploadThreads(HashMap<String, Integer> uploadThreads) {
+	public void setUploadThreads(HashMap<Long, Thread> uploadThreads) {
 		this.uploadThreads = uploadThreads;
 	}
-
-    
-
-
-
-
-    
     
 
     
