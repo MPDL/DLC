@@ -140,7 +140,7 @@ public class SearchBean {
 		List<SearchCriterion> clonedScList = new ArrayList<SearchCriterion>();
 		for(SearchCriterion sc : scList)
 		{
-			clonedScList.add(new SearchCriterion(sc));
+			clonedScList.add(sc.clone());
 		}
 		
 		
@@ -150,7 +150,7 @@ public class SearchBean {
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
 		for(SearchCriterion sc : clonedScList)
 		{
-			if(sc.getValue()!=null && !sc.getValue().isEmpty() && sc.getSearchType()!=null)
+			if(sc.getValue()!=null && !sc.getValue().isEmpty() && sc.getSearchIndexes()!=null)
 			{
 				listWithoutEmptyEntries.add(sc);
 			}

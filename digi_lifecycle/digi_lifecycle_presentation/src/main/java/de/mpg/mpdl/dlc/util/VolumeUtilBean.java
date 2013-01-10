@@ -27,6 +27,7 @@ import de.mpg.mpdl.dlc.beans.LoginBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
+import de.mpg.mpdl.dlc.search.CodicologicalSearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion.SearchType;
@@ -930,7 +931,7 @@ public class VolumeUtilBean {
 	
 	public void addNewCdcSearchCriterion(SearchCriterion sc, List<SearchCriterion> scList)
 	{		
-			scList.add(scList.indexOf(sc)+1, new SearchCriterion(SearchType.CDC_OBJECT_TYPE, ""));		
+			scList.add(scList.indexOf(sc)+1, new CodicologicalSearchCriterion(false));		
 	}
 	
 	public void addNewContextList(List<SearchCriterion> contextList)
