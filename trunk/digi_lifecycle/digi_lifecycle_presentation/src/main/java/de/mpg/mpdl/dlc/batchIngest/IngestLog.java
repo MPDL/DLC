@@ -391,7 +391,7 @@ public class IngestLog
 				try {
 					deleteDir(dir);
 				} catch (Exception e) {
-					logger.error("Error while deleting local Batch Ingest Data " + e.getMessage());
+					logger.error("Error while deleting local Batch Ingest Data " + e.getMessage(), e);
 					e.printStackTrace();
 				}
 			}
@@ -612,7 +612,7 @@ public class IngestLog
 						}
 					} catch (Exception e) {
 						String error = BatchIngestLogs.TEI_SYNTAX_ERROR;
-						logger.error(error + name);
+						logger.error(error + name, e);
 						item.getLogs().add(error);
 						items.remove(name);
 						errorItems.put(name, item);
@@ -994,7 +994,7 @@ public class IngestLog
 				}catch(IOException e)
 				{
 					out.close();
-					logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
+					logger.info("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage(), e);
 					if(logItem != null)
 					{
 						logItem.getLogs().add("Error while copying Image from FTP Server--Retry: " + i.getName() + " .(Message): " + e.getMessage());
@@ -1034,7 +1034,7 @@ public class IngestLog
 						{
 							logItemVolume.getLogs().add("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
 						}
-						logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage());
+						logger.error("Error while copying Image from FTP Server: " + i.getName() + " .(Message): " + e.getMessage(), e);
 						throw e;
 					}
 					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + i.getName() + " | Size: " + i.getFile().length());
@@ -1119,14 +1119,14 @@ public class IngestLog
 						{
 							logItemVolume.getLogs().add("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
 						}
-						logger.error("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage());
+						logger.error("Error while copying Footer from FTP Server: " + footer.getName() + " .(Message): " + e.getMessage(), e);
 						throw e;
 					}
 					logger.info("Retry--downloading image to " + dlcDirectory + " | Name: " + footer.getName() + " | Size: " + footer.getFile().length());
 				}
 			}
 		}catch(Exception e){
-			logger.error("Exception while downloading images from FTP Server");
+			logger.error("Exception while downloading images from FTP Server", e);
 			throw e;
 		}
 		finally
@@ -1422,7 +1422,7 @@ public class IngestLog
         try {
 			ftp.logout();
 		} catch (IOException e) {
-			logger.error("FTP logout error: " + e.getMessage());
+			logger.error("FTP logout error: " + e.getMessage(), e);
 		}
 	    finally {
 	    	logger.info("FTP disconnected");
