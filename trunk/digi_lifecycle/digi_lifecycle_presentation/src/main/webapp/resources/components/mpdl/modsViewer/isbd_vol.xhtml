@@ -34,8 +34,8 @@
 	<h:outputText value=" : #{volumeUtilBean.getFirstPublisher(cc.attrs.parentVolume.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.parentVolume.modsMetadata).publisher}"/>
 	<h:outputText value=", #{volumeUtilBean.getFirstPublisher(cc.attrs.parentVolume.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.parentVolume.modsMetadata).dateIssued_425.date}"/>
 	<h:outputText value=". - #{volumeUtilBean.getMainNote(cc.attrs.parentVolume.modsMetadata).note}" rendered="#{not empty volumeUtilBean.getMainNote(cc.attrs.parentVolume.modsMetadata).note}"/>
-	<h:outputText value=". - #{volumeUtilBean.getSeries451(cc.attrs.parentVolume.modsMetadata).title}&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451(cc.attrs.parentVolume.modsMetadata).title}"/>
-	<h:outputText value=" #{volumeUtilBean.getSeries451a(cc.attrs.parentVolume.modsMetadata).title}&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451a(cc.attrs.parentVolume.modsMetadata).title}"/>
+	<h:outputText value=". - (#{volumeUtilBean.getSeries451(cc.attrs.parentVolume.modsMetadata).title})&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451(cc.attrs.parentVolume.modsMetadata).title}"/>
+	<h:outputText value=" (#{volumeUtilBean.getSeries451a(cc.attrs.parentVolume.modsMetadata).title})&lt;br /&gt;" escape="false" rendered="#{not empty volumeUtilBean.getSeries451a(cc.attrs.parentVolume.modsMetadata).title}"/>
 	<h:outputText value="#{volumeUtilBean.getNoteThesis(cc.attrs.parentVolume.modsMetadata).note}&lt;br /&gt;"  escape="false" rendered="#{not empty volumeUtilBean.getNoteThesis(cc.attrs.parentVolume.modsMetadata).note}"/>
 	<a4j:repeat var="footnote" value="#{volumeUtilBean.getFootNotes(cc.attrs.parentVolume.modsMetadata)}" rendered = "#{volumeUtilBean.getFootNotes(cc.attrs.parentVolume.modsMetadata).size() > 0}">
 		<h:outputText value="#{footnote.note}\n" escape="false" />
