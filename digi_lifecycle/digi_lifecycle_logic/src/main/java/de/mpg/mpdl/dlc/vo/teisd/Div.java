@@ -176,6 +176,22 @@ public class Div extends PbOrDiv {
 	public List<String> getHead() {
 		return head;
 	}
+	
+	public List<String> getHeadWithoutEmptyEntries() {
+		List<String> resList = new ArrayList<String>();
+		if(head!=null)
+		{
+			for(String h : head)
+			{
+				if(h!=null && !h.isEmpty())
+				{
+					resList.add(h);
+				}
+			}
+		}
+		
+		return resList;
+	}
 
 	public void setHead(List<String> head) {
 		this.head = head;

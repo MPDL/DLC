@@ -49,7 +49,7 @@
 	 
 	 
 	 <mapping name="div" class="de.mpg.mpdl.dlc.vo.teisd.Div" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
-	 	<collection field="head" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
+	 	<collection get-method="getHeadWithoutEmptyEntries" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
 	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
 	 	
@@ -81,8 +81,8 @@
 	 
 	  <mapping name="figure" class="de.mpg.mpdl.dlc.vo.teisd.Figure" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
 	 	
-	 	<collection get-method="getHead" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
-	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
+	 	<collection get-method="getHeadWithoutEmptyEntries" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional" item-type="java.lang.String">
+	 		<value style="element" name="head" type="java.lang.String" usage="optional" default=""/>
 	 	</collection>
 	 	
 	 	<structure name="figDesc" usage="optional" test-method="isNotEmptyFigDesc">
