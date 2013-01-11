@@ -224,5 +224,19 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 		this.stmt = stmt;
 	}
 
+	
+	public String deleteBatchLog(BatchLog batchLog)
+	{
+		logger.info("Trying to delete batch log " + batchLog.getId());
+		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+		BatchLog batchLogInDb = em.find(BatchLog.class, batchLog.getId());
+		em.getTransaction().begin();
+		em.remove(batchLogInDb);
+		em.getTransaction().commit();
+		em.close();
+		return "";
+	}
+	
+	
 
 }

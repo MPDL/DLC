@@ -63,6 +63,10 @@
 		        <ui:param name="backgroundStyle" value="#{log.errorLevel=='ERROR' ? 'eg3_error' :  log.errorLevel=='PROBLEM' ? 'eg3_problem' : log.step=='FINISHED' ? 'eg3_success': ''}"/>
 		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
             		<h2><h:outputText value="#{log.name}" /></h2>
+            		<h:form>
+            			<h:commandButton action="#{ingestLogBean.deleteBatchLog(log)}" value="#{lbl.ingestLog_btn_deleteLogEntry}" rendered="#{log.step == 'FINISHED'}"/>
+            			<h:commandButton action="#{ingestLogBean.deleteBatchLog(log)}" value="#{lbl.ingestLog_btn_deleteLogEntryForError}" rendered="#{log.step == 'STOPPED'}"/>
+            		</h:form>
        			</rich:column>
 		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
             		<h2><h:outputText value="#{log.step}"/></h2>

@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManager;
 
 import org.apache.log4j.Logger;
 
@@ -17,7 +18,9 @@ import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
 import de.escidoc.core.resources.aa.useraccount.Grant;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog;
+import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Status;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
@@ -279,6 +282,9 @@ public class BatchIngestBean {
 		this.protocol = protocol;
 	}
 
+	
+	
+	
 
 
 
