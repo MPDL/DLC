@@ -57,6 +57,7 @@ public class IngestLogBean extends BasePaginatorBean<BatchLog>{
 	public IngestLogBean()
 	{
 		super();
+		setElementsPerPage(6);
 	}
 	
 	@URLAction(onPostback=false)	
