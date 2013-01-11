@@ -181,7 +181,7 @@ public class Export {
 		PdfContentByte cb = writer.getDirectContent();
 		PdfOutline root = cb.getRootOutline();
 		writer.setViewerPreferences(PdfWriter.PageModeUseOutlines);
-		writer.setViewerPreferences(PdfWriter.PageLayoutTwoPageRight);
+		//writer.setViewerPreferences(PdfWriter.PageLayoutTwoPageRight);
 		document.setPageSize(PageSize.A4);
 		document.addCreator("DLC - Digital Libraries Connected");
 		
