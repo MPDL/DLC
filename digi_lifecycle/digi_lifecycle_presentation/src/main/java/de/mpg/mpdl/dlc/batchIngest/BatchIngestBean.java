@@ -158,7 +158,7 @@ public class BatchIngestBean {
 
 		clear();
 
-		return "pretty:batchIngest";
+		return "pretty:myItemsBatch";
 	}
 	
 
