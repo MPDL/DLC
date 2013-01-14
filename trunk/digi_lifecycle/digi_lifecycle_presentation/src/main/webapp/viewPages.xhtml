@@ -147,7 +147,7 @@
 			</style>
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 			<!-- SIDEBAR LEFT -->
-				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4">
+				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4" style="min-height:498px;">
 					<h:form styleClass="eg3_overflow_z50">
 						
 						<rich:tabPanel id="tabPanel" switchType="ajax">
@@ -158,7 +158,7 @@
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto eg3_toc" style="min-height:465px; min-height:447px\9;" id="tocTreeContainer">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto eg3_toc" style="min-height:470px; min-height:447px\9;" id="tocTreeContainer">
 									<ui:remove>
 									<rich:tree toggleType="ajax" var="divItem">
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.text.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
@@ -214,7 +214,7 @@
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 								</h:panelGroup>
-								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="min-height:500px;">
+								<h:panelGroup id="thumbnailContainer" layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto" style="min-height:470px; min-height:447px\9;">
 									<h:panelGroup  layout="block" styleClass="eg3_container_1 eg3_thumbContainer">
 										
 										<a4j:repeat var="var" value="#{viewPages.pageList}" rowKeyVar="rowKey">

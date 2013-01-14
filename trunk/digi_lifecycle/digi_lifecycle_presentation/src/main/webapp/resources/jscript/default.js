@@ -599,6 +599,7 @@ function eg3_initSidebar(evt) {
  */
 function eg3_resizeSidebar() {
 	var maxHeight = 0; //init a param for the greates height value of all available images
+	var sidebarHeight, contentDetailsHeight = 0;
 	
 	if (EG3_PAGE_IMG_OBJ == 'undefined' || EG3_PAGE_IMG_OBJ == undefined || EG3_PAGE_IMG_OBJ == null) {
 		eg3_definePageObjects();
@@ -638,26 +639,35 @@ function eg3_resizeSidebar() {
 			}
 			sdbPadBot = Math.round(Number(sdbPadBot));
 			
-			maxHeight = (maxHeight - sdbPadBot)+2;	//use the maxHeight variable for the new height of the sidebar
-			
 			var curTabCnt = sdb.find(".rf-tab-cnt:visible");
+			var cntDtlMinHeight = Number(curTabCnt.find(".eg3_contentDetails").css("min-height").replace("px", ""));
+			
+			sidebarHeight = (maxHeight - sdbPadBot)+2;	//use the maxHeight variable for the new height of the sidebar
+			contentDetailsHeight = sidebarHeight - icbHeight;
+			
+			if (sidebarHeight < cntDtlMinHeight) {
+				sidebarHeight = cntDtlMinHeight;
+				contentDetailsHeight = sidebarHeight - icbHeight;
+			}
+			
+			
 			
 			switch (EG3_PAGE) {
 				case '#editPage':
 					sdb.find('.eg3_editSidebarContent').css({
-						"height": maxHeight,
-						"max-height": maxHeight
+						"height": sidebarHeight,
+						"max-height": sidebarHeight
 					});
 					break;
 				case '#viewPage':
 				default:
-					curTabCnt.css({
-						"height":maxHeight, 
-						"max-height":maxHeight
-						});
+			/*		curTabCnt.css({
+						"height":sidebarHeight, 
+						"max-height":sidebarHeight
+						}); */
 					curTabCnt.find(".eg3_contentDetails").css({
-						"height": (maxHeight - icbHeight),
-						"max-height": (maxHeight - icbHeight)
+						"height": contentDetailsHeight,
+						"max-height": contentDetailsHeight
 					});
 					break;
 			}
