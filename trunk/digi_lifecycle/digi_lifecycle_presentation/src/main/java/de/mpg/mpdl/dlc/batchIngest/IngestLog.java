@@ -110,14 +110,14 @@ public class IngestLog
 		{
 			if(ftp)
 			{
-				if(ftpClient != null) ftpLogout(ftpClient);
-				this.ftpClient = ftpLogin(server, username, password);
+				
+				ftpLogin(server, username, password);
 				batchLog.getLogs().add(BatchIngestLogs.FTP_LOGIN);
 			}
 			else
 			{
-				if(ftpClient != null) ftpLogout(ftpClient);
-				this.ftpClient = ftpsLogin(server, username, password);
+
+				ftpsLogin(server, username, password);
 				batchLog.getLogs().add(BatchIngestLogs.FTPS_Login);
 			}
 		}catch(Exception e)
@@ -126,15 +126,12 @@ public class IngestLog
 				batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_RETRY);
 				if(ftp)
 				{
-					if(ftpClient != null) ftpLogout(ftpClient);
-					this.ftpClient = ftpLogin(server, username, password);
+					ftpLogin(server, username, password);
 					batchLog.getLogs().add(BatchIngestLogs.FTP_LOGIN);
-				}
+				} 
 				else
 				{
-					if(ftpClient != null) ftpLogout(ftpClient);
-					ftpLogout(ftpClient);
-					this.ftpClient = ftpsLogin(server, username, password);
+					ftpsLogin(server, username, password);
 					batchLog.getLogs().add(BatchIngestLogs.FTPS_Login);
 				}
 			}catch(Exception e1)
@@ -167,32 +164,71 @@ public class IngestLog
 		
 	}
 
-	public FTPClient ftpLogin(String server, String username, String password) throws IOException
+	
+	
+	public void ftpLogout()
 	{
+		if(ftpClient!=null)
+		{
+			try {
+				ftpClient.logout();
+				logger.info("logged out FTP Client ");
+			} catch (IOException e) {
+				
+			}
+
+	        if(ftpClient.isConnected()) {
+	          try 
+	          {
+	            ftpClient.disconnect();
+	            logger.info("disconnected FTP Client ");
+	          } catch(IOException ioe) 
+	          {
+	          }
+	        }
+
+		}
+	}
+	
+	public void ftpLogin(String server, String username, String password) throws IOException
+	{
+		//First, logout old FTP Clients and disconnect old connection
+		if(ftpClient!=null)
+		{
+			ftpLogout();
+		}
+
 		long start = System.currentTimeMillis();
 		
-		FTPClient ftp = new FTPClient();
+		ftpClient = new FTPClient();
 		//ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
-		ftp.setDataTimeout(300000);
-		ftp.setConnectTimeout(300);
-		ftp.connect(server);
-		logger.info("connected to server: "+server + " - reply code: "+ftp.getReplyCode() + " - " +ftp.getReplyString());
-        ftp.setControlKeepAliveTimeout(300);
-        ftp.setControlEncoding("UTF-8");
-		ftp.login(username, password);
-        if(!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
-        	ftp.disconnect();
-	        logger.error("FTP server refused connection with code " + ftp.getReplyCode() + " - " +  ftp.getReplyString());
+		ftpClient.setDataTimeout(300000);
+		ftpClient.setConnectTimeout(300);
+		ftpClient.connect(server);
+		logger.info("connected to server: "+server + " - reply code: "+ftpClient.getReplyCode() + " - " +ftpClient.getReplyString());
+		ftpClient.setControlKeepAliveTimeout(300);
+		ftpClient.setControlEncoding("UTF-8");
+		ftpClient.login(username, password);
+        if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode())) {
+        	ftpClient.disconnect();
+	        logger.error("FTP server refused connection with code " + ftpClient.getReplyCode() + " - " +  ftpClient.getReplyString());
 	    }
         
 		long time = System.currentTimeMillis()-start;
 		System.err.println("Time FTP Login: " + time);
         
-		return ftp;
+		//return ftpClient;
 	}
 	  
-	public FTPSClient ftpsLogin(String server, String username, String password) throws IOException
+	public void ftpsLogin(String server, String username, String password) throws IOException
 	{
+		//First, logout old FTP Clients and disconnect old connection
+		if(ftpClient!=null)
+		{
+			ftpLogout();
+		}
+		
+		
 		long start = System.currentTimeMillis();
 		logger.info("Connecting to FTPS Server");
 		boolean isImpicit = false;
@@ -229,7 +265,8 @@ public class IngestLog
 		long time = System.currentTimeMillis()-start;
 		System.err.println("Time FTPS Login: " + time);
 
-		return ftps;
+		ftpClient = ftps;
+		//return ftps;
 	}
 	
 	
@@ -450,12 +487,10 @@ public class IngestLog
  			logger.info("checking images");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-//				ftpClient.disconnect();
-				ftpLogout(ftpClient);
 				if(ftp)
-					this.ftpClient = ftpLogin(server, username, password);
+					ftpLogin(server, username, password);
 				else
-					this.ftpClient = ftpsLogin(server, username, password);
+					ftpsLogin(server, username, password);
 			}
 			FTPFile[] ds = ftpClient.listFiles(directory);
 			if(ds.length == 0)
@@ -534,11 +569,10 @@ public class IngestLog
  			logger.info("checking teis");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				ftpLogout(ftpClient);
 				if(ftp)
-					this.ftpClient = ftpLogin(server, username, password);
+					ftpLogin(server, username, password);
 				else
-					this.ftpClient = ftpsLogin(server, username, password);
+					ftpsLogin(server, username, password);
 			}
 			FTPFile[] filesList = ftpClient.listFiles(directory);
 			if(filesList.length == 0)
@@ -702,11 +736,10 @@ public class IngestLog
 	 			
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				ftpLogout(ftpClient);
 				if(ftp)
-					this.ftpClient = ftpLogin(server, username, password);
+					ftpLogin(server, username, password);
 				else
-					this.ftpClient = ftpsLogin(server, username, password);
+					ftpsLogin(server, username, password);
 			}
  			FTPFile[] filesList = ftpClient.listFiles(directory);
 			if(filesList.length == 0)
@@ -963,11 +996,10 @@ public class IngestLog
 				logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTPS);
 		}
 		try{
-			ftpLogout(ftpClient);
 			if(ftp)
-				this.ftpClient = ftpLogin(server, username, password);
+				ftpLogin(server, username, password);
 			else
-				this.ftpClient = ftpsLogin(server, username, password);	
+				ftpsLogin(server, username, password);	
 
 			for(IngestImage i : images)
 			{
@@ -1020,11 +1052,10 @@ public class IngestLog
 					}
 					try 
 					{
-						ftpLogout(ftpClient);
 						if(ftp)
-							this.ftpClient = ftpLogin(server, username, password);
+							ftpLogin(server, username, password);
 						else
-							this.ftpClient = ftpsLogin(server, username, password);
+							ftpsLogin(server, username, password);
 	
 						out = new FileOutputStream(i.getFile());
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -1074,11 +1105,12 @@ public class IngestLog
 					throw e2;
 				}
 				try {
-					ftpLogout(ftpClient);
+					/*
 					if(ftp)
-						this.ftpClient = ftpLogin(server, username, password);
+						ftpLogin(server, username, password);
 					else
-						this.ftpClient = ftpsLogin(server, username, password);
+						ftpsLogin(server, username, password);
+					*/
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.setDataTimeout(300000);
 					ftpClient.retrieveFile(imagesDirectory+"/"+ footer.getName(), out);
@@ -1111,11 +1143,10 @@ public class IngestLog
 						logItemVolume.getLogs().add("Error while copying Image from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
 					}
 					try {
-						ftpLogout(ftpClient);
 						if(ftp)
-							this.ftpClient = ftpLogin(server, username, password);
+							ftpLogin(server, username, password);
 						else
-							this.ftpClient = ftpsLogin(server, username, password);
+							ftpsLogin(server, username, password);
 	
 						out = new FileOutputStream(footer.getFile());
 						ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
@@ -1448,14 +1479,16 @@ public class IngestLog
 	{   
         try {
 			ftp.logout();
+			logger.info("logged out FTP Client ");
 		} catch (IOException e) {
 			logger.error("FTP logout error: " + e.getMessage(), e);
 		}
 	    finally {
-	    	logger.info("FTP disconnected");
+	    	
 	        if(ftp.isConnected()) {
 	          try {
 	            ftp.disconnect();
+	            logger.info("disconnected FTP Client");
 	          } catch(IOException ioe) {
 	          }
 	        }
