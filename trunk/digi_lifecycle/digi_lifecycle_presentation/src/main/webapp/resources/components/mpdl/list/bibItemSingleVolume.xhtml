@@ -54,7 +54,7 @@
 							<h:outputText value="#{volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title} " rendered="#{not empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}"/>
 							
 							<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
-								<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
+								<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
 							</h:panelGroup>
 						</pretty:link>
 						

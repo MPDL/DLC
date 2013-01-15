@@ -49,13 +49,13 @@
 								</ui:remove>
 								
 								<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
-									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
+									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
 								</h:panelGroup>
 							</a4j:commandLink>
 							
 							<a4j:commandLink value="#{lbl.na_no_volume_title}" execute="@this" render="mvPlayer" oncomplete="#{rich:component('popupMV')}.show()" rendered="#{empty volumeUtilBean.getTitle(cc.attrs.volume.modsMetadata).title}">
 								<h:panelGroup rendered="#{empty volumeUtilBean.getFirstAuthor(cc.attrs.volume.modsMetadata).name}">
-									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix}.)" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
+									<h:outputText value=" / #{volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})" rendered="#{not empty volumeUtilBean.getFirstEditor(cc.attrs.volume.modsMetadata).name}"/>
 								</h:panelGroup>
 							</a4j:commandLink>
 							

@@ -119,11 +119,11 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		{
 			if (selItem.getValue()==null || selItem.getValue().toString().trim().isEmpty())
 			{
-				enumSelectItems.add(new SelectItem("", InternationalizationHelper.getLabel("cdc_all")));
+				enumSelectItems.add(new SelectItem("", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
 			}
 			else
 			{
-				String label = InternationalizationHelper.getLabel("cdc_" + selItem.getValue().toString().replaceAll("\\s", "_"));
+				String label = InternationalizationHelper.getCodicologicalLabel("cdc_" + selItem.getValue().toString().replaceAll("\\s", "_"));
 				enumSelectItems.add(new SelectItem(selItem.getValue(), label));
 			}	
 		}
@@ -193,28 +193,28 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		{
 			for(Entry<String,CodicologicalSearchCriterion> csc : objectCdcMap.entrySet())
 			{
-				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getLabel("cdc_" + csc.getValue().getElementName())));
+				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getCodicologicalLabel("cdc_" + csc.getValue().getElementName())));
 			}
 		}
 		else if (superElementName.equals("bodyOfVolume"))
 		{
 			for(Entry<String,CodicologicalSearchCriterion> csc : bodyOfVolumeCdcMap.entrySet())
 			{
-				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getLabel("cdc_" + csc.getValue().getElementName())));
+				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getCodicologicalLabel("cdc_" + csc.getValue().getElementName())));
 			}
 		}
 		else if (superElementName.equals("provenance"))
 		{
 			for(Entry<String,CodicologicalSearchCriterion> csc : provenanceCdcMap.entrySet())
 			{
-				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getLabel("cdc_" + csc.getValue().getElementName())));
+				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getCodicologicalLabel("cdc_" + csc.getValue().getElementName())));
 			}
 		}
 		else if (superElementName.equals("binding"))
 		{
 			for(Entry<String,CodicologicalSearchCriterion> csc : bindingCdcMap.entrySet())
 			{
-				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getLabel("cdc_" + csc.getValue().getElementName())));
+				elementSelectItems.add(new SelectItem(csc.getValue().getElementName(), InternationalizationHelper.getCodicologicalLabel("cdc_" + csc.getValue().getElementName())));
 			}
 		}
 	}
@@ -325,12 +325,12 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		        						
 		        						if(choiceNode.getStringValue() == null  || choiceNode.getStringValue().trim().isEmpty())
 		        						{
-		        							cse.getEnumSelectItems().add(new SelectItem("", InternationalizationHelper.getLabel("cdc_all")));
+		        							cse.getEnumSelectItems().add(new SelectItem("", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
 		        							cse.setValue("");
 		        						}
 		        						else
 		        						{
-		        							String label = InternationalizationHelper.getLabel("cdc_" + choiceNode.getStringValue().replaceAll("\\s", "_"));
+		        							String label = InternationalizationHelper.getCodicologicalLabel("cdc_" + choiceNode.getStringValue().replaceAll("\\s", "_"));
 		        							cse.getEnumSelectItems().add(new SelectItem(choiceNode.getStringValue(), label));
 		        						}
 		        					}
