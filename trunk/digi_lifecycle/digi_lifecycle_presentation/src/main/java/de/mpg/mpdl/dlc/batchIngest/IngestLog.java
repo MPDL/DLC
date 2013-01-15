@@ -110,11 +110,13 @@ public class IngestLog
 		{
 			if(ftp)
 			{
+				if(ftpClient != null) ftpLogout(ftpClient);
 				this.ftpClient = ftpLogin(server, username, password);
 				batchLog.getLogs().add(BatchIngestLogs.FTP_LOGIN);
 			}
 			else
 			{
+				if(ftpClient != null) ftpLogout(ftpClient);
 				this.ftpClient = ftpsLogin(server, username, password);
 				batchLog.getLogs().add(BatchIngestLogs.FTPS_Login);
 			}
@@ -124,11 +126,14 @@ public class IngestLog
 				batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_RETRY);
 				if(ftp)
 				{
+					if(ftpClient != null) ftpLogout(ftpClient);
 					this.ftpClient = ftpLogin(server, username, password);
 					batchLog.getLogs().add(BatchIngestLogs.FTP_LOGIN);
 				}
 				else
 				{
+					if(ftpClient != null) ftpLogout(ftpClient);
+					ftpLogout(ftpClient);
 					this.ftpClient = ftpsLogin(server, username, password);
 					batchLog.getLogs().add(BatchIngestLogs.FTPS_Login);
 				}
@@ -445,7 +450,8 @@ public class IngestLog
  			logger.info("checking images");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
-				ftpClient.disconnect();
+//				ftpClient.disconnect();
+				ftpLogout(ftpClient);
 				if(ftp)
 					this.ftpClient = ftpLogin(server, username, password);
 				else
@@ -528,6 +534,7 @@ public class IngestLog
  			logger.info("checking teis");
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
+				ftpLogout(ftpClient);
 				if(ftp)
 					this.ftpClient = ftpLogin(server, username, password);
 				else
@@ -695,6 +702,7 @@ public class IngestLog
 	 			
 			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
 			{
+				ftpLogout(ftpClient);
 				if(ftp)
 					this.ftpClient = ftpLogin(server, username, password);
 				else
@@ -955,6 +963,7 @@ public class IngestLog
 				logItemVolume.getLogs().add(BatchIngestLogs.DOWNLOAD_IMAGES_FTPS);
 		}
 		try{
+			ftpLogout(ftpClient);
 			if(ftp)
 				this.ftpClient = ftpLogin(server, username, password);
 			else
@@ -977,9 +986,7 @@ public class IngestLog
 					}				
 					throw e;
 				}
-				try{
-				
-					
+				try{					
 					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 					ftpClient.setDataTimeout(300000);
 					ftpClient.retrieveFile(imagesDirectory+"/"+ i.getName(), out);
@@ -1013,6 +1020,7 @@ public class IngestLog
 					}
 					try 
 					{
+						ftpLogout(ftpClient);
 						if(ftp)
 							this.ftpClient = ftpLogin(server, username, password);
 						else
@@ -1066,7 +1074,7 @@ public class IngestLog
 					throw e2;
 				}
 				try {
-	
+					ftpLogout(ftpClient);
 					if(ftp)
 						this.ftpClient = ftpLogin(server, username, password);
 					else
@@ -1103,6 +1111,7 @@ public class IngestLog
 						logItemVolume.getLogs().add("Error while copying Image from FTP Server--Retry: " + footer.getName() + " .(Message): " + e.getMessage());
 					}
 					try {
+						ftpLogout(ftpClient);
 						if(ftp)
 							this.ftpClient = ftpLogin(server, username, password);
 						else
@@ -1436,7 +1445,7 @@ public class IngestLog
 	}
 	
 	public static void ftpLogout(FTPClient ftp)
-	{
+	{   
         try {
 			ftp.logout();
 		} catch (IOException e) {
