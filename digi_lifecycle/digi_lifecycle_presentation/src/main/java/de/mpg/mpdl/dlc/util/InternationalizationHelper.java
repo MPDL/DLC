@@ -283,6 +283,13 @@ public class InternationalizationHelper extends Observable
     	return getResource("Tooltips", name);
     }
 	
+	public static String getCodicologicalLabel (String name)
+    {
+    	return getResource("CodicologicalLabel", name);
+    }
+	
+	
+	
 	
 	 public static String getResource (String bundle, String name)
 	    {

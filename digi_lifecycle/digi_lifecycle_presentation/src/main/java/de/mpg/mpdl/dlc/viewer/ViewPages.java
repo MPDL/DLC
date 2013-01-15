@@ -888,7 +888,7 @@ public class ViewPages implements Observer{
 
 		                public XdmValue call(XdmValue[] arguments) throws SaxonApiException {
 		                    String arg = ((XdmAtomicValue)arguments[0].itemAt(0)).getStringValue();
-		                    String result = InternationalizationHelper.getLabel(arg);
+		                    String result = InternationalizationHelper.getCodicologicalLabel(arg);
 		                    return new XdmAtomicValue(result);
 		                }
 
