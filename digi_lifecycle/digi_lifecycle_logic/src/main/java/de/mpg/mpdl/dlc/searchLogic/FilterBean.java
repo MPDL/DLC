@@ -50,11 +50,13 @@ public class FilterBean {
 		}
 		logger.info("Filter query:" + query);
 		request.setQuery(query);
-		if(limit >0 && offset >0)
+		if(limit >0)
 		{
-		request.setMaximumRecords(new NonNegativeInteger(String.valueOf(limit)));
-		request.setStartRecord(new PositiveInteger(String.valueOf(offset)));
-		
+			request.setMaximumRecords(new NonNegativeInteger(String.valueOf(limit)));
+		}
+		if(offset >0)
+		{
+			request.setStartRecord(new PositiveInteger(String.valueOf(offset)));
 		}
 		SearchRetrieveResponse response  = client.retrieveItems(request);
 		
