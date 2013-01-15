@@ -3,7 +3,7 @@
          xmlns:xlink="http://www.w3.org/1999/xlink"
          datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes"
          ns="http://www.tei-c.org/ns/1.0"><!--
-Schema generated from ODD source 2012-11-07T13:45:11Z. 
+Schema generated from ODD source 2013-01-11T05:33:09Z. 
 Edition: 2.2.0. Last updated on 25th October 2012.
 Edition Location: http://www.tei-c.org/Vault/P5/2.2.0/
 
@@ -1255,17 +1255,20 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
       <choice>
          <ref name="tei_name"/>
          <ref name="tei_orgName"/>
+         <ref name="tei_persName"/>
       </choice>
    </define>
    <define name="tei_model.nameLike.agent_alternation">
       <choice>
          <ref name="tei_name"/>
          <ref name="tei_orgName"/>
+         <ref name="tei_persName"/>
       </choice>
    </define>
    <define name="tei_model.nameLike.agent_sequence">
       <ref name="tei_name"/>
       <ref name="tei_orgName"/>
+      <ref name="tei_persName"/>
    </define>
    <define name="tei_model.nameLike.agent_sequenceOptional">
       <optional>
@@ -1273,6 +1276,9 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
       </optional>
       <optional>
          <ref name="tei_orgName"/>
+      </optional>
+      <optional>
+         <ref name="tei_persName"/>
       </optional>
    </define>
    <define name="tei_model.nameLike.agent_sequenceOptionalRepeatable">
@@ -1282,6 +1288,9 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
       <zeroOrMore>
          <ref name="tei_orgName"/>
       </zeroOrMore>
+      <zeroOrMore>
+         <ref name="tei_persName"/>
+      </zeroOrMore>
    </define>
    <define name="tei_model.nameLike.agent_sequenceRepeatable">
       <oneOrMore>
@@ -1289,6 +1298,9 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
       </oneOrMore>
       <oneOrMore>
          <ref name="tei_orgName"/>
+      </oneOrMore>
+      <oneOrMore>
+         <ref name="tei_persName"/>
       </oneOrMore>
    </define>
    <define name="tei_model.segLike">
@@ -1569,6 +1581,8 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
          <ref name="tei_dimensions"/>
          <ref name="tei_locus"/>
          <ref name="tei_material"/>
+         <ref name="tei_origDate"/>
+         <ref name="tei_origPlace"/>
          <ref name="tei_watermark"/>
       </choice>
    </define>
@@ -2210,22 +2224,32 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
       </oneOrMore>
    </define>
    <define name="tei_model.stageLike">
-      <notAllowed/>
+      <choice>
+         <ref name="tei_caption"/>
+      </choice>
    </define>
    <define name="tei_model.stageLike_alternation">
-      <notAllowed/>
+      <choice>
+         <ref name="tei_caption"/>
+      </choice>
    </define>
    <define name="tei_model.stageLike_sequence">
-      <empty/>
+      <ref name="tei_caption"/>
    </define>
    <define name="tei_model.stageLike_sequenceOptional">
-      <empty/>
+      <optional>
+         <ref name="tei_caption"/>
+      </optional>
    </define>
    <define name="tei_model.stageLike_sequenceOptionalRepeatable">
-      <empty/>
+      <zeroOrMore>
+         <ref name="tei_caption"/>
+      </zeroOrMore>
    </define>
    <define name="tei_model.stageLike_sequenceRepeatable">
-      <notAllowed/>
+      <oneOrMore>
+         <ref name="tei_caption"/>
+      </oneOrMore>
    </define>
    <define name="tei_model.entryPart">
       <choice>
@@ -2256,6 +2280,11 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
          <ref name="tei_schemaSpec"/>
       </choice>
    </define>
+   <define name="tei_model.persStateLike">
+      <choice>
+         <ref name="tei_persName"/>
+      </choice>
+   </define>
    <define name="tei_model.personLike">
       <choice>
          <ref name="tei_person"/>
@@ -2263,6 +2292,7 @@ Sample values include: 1] duplicate; 2] duplicate-partial; 3] excessStart; 4] ex
    </define>
    <define name="tei_model.personPart">
       <choice>
+         <ref name="tei_model.persStateLike"/>
          <ref name="tei_bibl"/>
          <ref name="tei_idno"/>
       </choice>
@@ -3638,7 +3668,13 @@ Sample values include: 1] binding_recto; 2] interleaf; 3] titlePage_recto; 4] ti
          <ref name="tei_macro.paraContent"/>
          <ref name="tei_att.global.attributes"/>
          <ref name="tei_att.canonical.attributes"/>
-         <ref name="tei_att.typed.attributes"/>
+         <optional>
+            <attribute name="type">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">classifies the title according to some convenient typology.
+Sample values include: 1] main; 2] sub(subordinate) ; 3] alt(alternate) ; 4] short; 5] desc(descriptive) </a:documentation>
+               <ref name="tei_data.enumerated"/>
+            </attribute>
+         </optional>
          <optional>
             <attribute name="level">
                <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">indicates the bibliographic level for a title, that is, whether
@@ -6831,6 +6867,20 @@ witness.</a:documentation>
          <empty/>
       </element>
    </define>
+   <define name="tei_persName">
+      <element name="persName">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(personal name) contains a proper noun or proper-noun phrase referring to a
+  person, possibly including one or more of
+  the person's forenames, surnames, honorifics, added names, etc. [13.2.1. ]</a:documentation>
+         <ref name="tei_macro.phraseSeq"/>
+         <ref name="tei_att.global.attributes"/>
+         <ref name="tei_att.datable.attributes"/>
+         <ref name="tei_att.editLike.attributes"/>
+         <ref name="tei_att.personal.attributes"/>
+         <ref name="tei_att.typed.attributes"/>
+         <empty/>
+      </element>
+   </define>
    <define name="tei_placeName">
       <element name="placeName">
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">contains an absolute or relative place name.  [13.2.3. ]</a:documentation>
@@ -7016,16 +7066,6 @@ Suggested values include: 1] social; 2] personal; 3] other</a:documentation>
             <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">supplies a name for the kind of relationship of which this is an instance.</a:documentation>
             <ref name="tei_data.enumerated"/>
          </attribute>
-         <optional>
-            <attribute name="passive">
-               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">identifies the passive participants in a non-mutual relationship.</a:documentation>
-               <list>
-                  <oneOrMore>
-                     <ref name="tei_data.pointer"/>
-                  </oneOrMore>
-               </list>
-            </attribute>
-         </optional>
          <choice>
             <optional>
                <attribute name="active">
@@ -7049,6 +7089,16 @@ Suggested values include: 1] social; 2] personal; 3] other</a:documentation>
                </attribute>
             </optional>
          </choice>
+         <optional>
+            <attribute name="passive">
+               <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">identifies the passive participants in a non-mutual relationship.</a:documentation>
+               <list>
+                  <oneOrMore>
+                     <ref name="tei_data.pointer"/>
+                  </oneOrMore>
+               </list>
+            </attribute>
+         </optional>
          <empty/>
       </element>
    </define>
@@ -7261,6 +7311,39 @@ perpendicular to the spine of a book or codex.  [10.3.4. ]</a:documentation>
          <ref name="tei_macro.phraseSeq"/>
          <ref name="tei_att.global.attributes"/>
          <ref name="tei_att.canonical.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="tei_origDate">
+      <element name="origDate">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(origin date) contains any form of date, used to
+  identify the date of origin for a manuscript or manuscript part.
+   [10.3.1. ]</a:documentation>
+         <zeroOrMore>
+            <choice>
+               <text/>
+               <ref name="tei_model.gLike"/>
+               <ref name="tei_model.phrase"/>
+               <ref name="tei_model.global"/>
+            </choice>
+         </zeroOrMore>
+         <ref name="tei_att.global.attributes"/>
+         <ref name="tei_att.datable.attributes"/>
+         <ref name="tei_att.editLike.attributes"/>
+         <ref name="tei_att.typed.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="tei_origPlace">
+      <element name="origPlace">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(origin place) contains any form of place name, used to identify the
+place of origin for a manuscript or manuscript part.  [10.3.1. ]</a:documentation>
+         <ref name="tei_macro.phraseSeq"/>
+         <ref name="tei_att.global.attributes"/>
+         <ref name="tei_att.naming.attributes"/>
+         <ref name="tei_att.datable.attributes"/>
+         <ref name="tei_att.editLike.attributes"/>
+         <ref name="tei_att.typed.attributes"/>
          <empty/>
       </element>
    </define>
@@ -7705,9 +7788,24 @@ describing the full history of a manuscript or manuscript part. [10.8. ]</a:docu
             <oneOrMore>
                <ref name="tei_model.pLike"/>
             </oneOrMore>
-            <empty/>
+            <group>
+               <optional>
+                  <ref name="tei_origin"/>
+               </optional>
+            </group>
          </choice>
          <ref name="tei_att.global.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="tei_origin">
+      <element name="origin">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">contains any descriptive or other information
+concerning the origin of  a manuscript or manuscript part.  [10.8. ]</a:documentation>
+         <ref name="tei_macro.specialPara"/>
+         <ref name="tei_att.global.attributes"/>
+         <ref name="tei_att.editLike.attributes"/>
+         <ref name="tei_att.datable.attributes"/>
          <empty/>
       </element>
    </define>
@@ -9145,6 +9243,15 @@ not expected to do so except for correction of any errors.</a:documentation>
          <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">(value) contains a single value for some property, attribute, or other
   analysis.</a:documentation>
          <ref name="tei_macro.xtext"/>
+         <ref name="tei_att.global.attributes"/>
+         <empty/>
+      </element>
+   </define>
+   <define name="tei_caption">
+      <element name="caption">
+         <a:documentation xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">contains the text of a caption or other text displayed as part of
+a film script or screenplay. [7.3.1.  7.3. ]</a:documentation>
+         <ref name="tei_macro.paraContent"/>
          <ref name="tei_att.global.attributes"/>
          <empty/>
       </element>
