@@ -646,7 +646,7 @@ function eg3_resizeSidebar() {
 			contentDetailsHeight = sidebarHeight - icbHeight;
 			
 			if (sidebarHeight < cntDtlMinHeight) {
-				sidebarHeight = cntDtlMinHeight;
+				sidebarHeight = cntDtlMinHeight+(25); //sidebar height is the min height of the content detailed container plus 25 pixel for the scrolling buttons
 				contentDetailsHeight = sidebarHeight - icbHeight;
 			}
 			
@@ -661,10 +661,10 @@ function eg3_resizeSidebar() {
 					break;
 				case '#viewPage':
 				default:
-			/*		curTabCnt.css({
+					curTabCnt.css({
 						"height":sidebarHeight, 
 						"max-height":sidebarHeight
-						}); */
+						}); 
 					curTabCnt.find(".eg3_contentDetails").css({
 						"height": contentDetailsHeight,
 						"max-height": contentDetailsHeight
