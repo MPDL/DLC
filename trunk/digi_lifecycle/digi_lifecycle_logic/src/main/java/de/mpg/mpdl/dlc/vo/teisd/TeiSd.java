@@ -4,6 +4,7 @@ package de.mpg.mpdl.dlc.vo.teisd;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,18 @@ public class TeiSd {
 	
 	//private List<PbOrDiv> pbOrDiv = new ArrayList<PbOrDiv>();
 	private Text text = new Text();
+	
+	private String mainTitle;
+	
+	private String subTitle;
+	
+	private String author;
+	
+	//private String editor;
+	
+	private Date date;
+	
+	private String sourceDesc;
 
 	/**
 	 * Helper Maps for working with structural Links
@@ -149,6 +162,59 @@ public class TeiSd {
 	}
 
 
+	public String getAuthor() {
+		return author;
+	}
+
+
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+
+	public Date getDate() {
+		return date;
+	}
+
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+
+	public String getSourceDesc() {
+		return sourceDesc;
+	}
+
+
+	public void setSourceDesc(String sourceDesc) {
+		this.sourceDesc = sourceDesc;
+	}
+
+
+
+
+
+	public String getSubTitle() {
+		return subTitle;
+	}
+
+
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
+	}
+
+
+	public String getMainTitle() {
+		return mainTitle;
+	}
+
+
+	public void setMainTitle(String mainTitle) {
+		this.mainTitle = mainTitle;
+	}
+
+
 
 /*
 	public List<PbOrDiv> getPbOrDiv() {
@@ -162,6 +228,18 @@ public class TeiSd {
 		this.pbOrDiv = pageOrDiv;
 	}
 	*/
+	
+	public boolean isNotEmptyMainTitle()
+	{
+		return mainTitle!=null && !mainTitle.isEmpty();
+		
+	}
+	
+	public boolean isNotEmptySubTitle()
+	{
+		return subTitle!=null && !subTitle.isEmpty();
+		
+	}
 
 	
 	

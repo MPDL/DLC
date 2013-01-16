@@ -5,6 +5,35 @@
 	<mapping name="TEI" class="de.mpg.mpdl.dlc.vo.teisd.TeiSd">
 		
 
+
+		<structure name="teiHeader" usage="optional" flexible="true" ordered="false">
+			<structure name="fileDesc" usage="optional" flexible="true" ordered="false">
+
+				<structure name="titleStmt" usage="optional">
+					<structure name="title" usage="optional">
+						<value style="attribute" name="type" usage="optional" constant="main"/>
+						<value style="text" field="mainTitle" usage="optional" default=""/>
+					</structure>
+					<structure name="title" usage="optional" test-method="isNotEmptySubTitle">
+						<value style="attribute" name="type" usage="optional" constant="sub"/>
+						<value style="text" field="subTitle" usage="optional" default=""/>
+					</structure>
+					<value style="element" name="author" field="author" usage="optional" default=""/>
+				</structure>
+				
+				<structure name="publicationStmt" usage="optional" flexible="true" ordered="false">
+					<structure name="date" usage="optional" flexible="true" ordered="false">
+						<value style="attribute" name="when" field="date" usage="optional"/>
+					</structure>
+				</structure>
+				
+				<structure name="sourceDesc" usage="optional" flexible="true" ordered="false">
+					<value style="element" name="p" field="sourceDesc" usage="optional" default=""/>
+				</structure>
+			</structure>
+			
+		</structure>
+
 		 <structure field="text" map-as="de.mpg.mpdl.dlc.vo.teisd.Text">
 		 </structure>
 		<!-- 
