@@ -619,25 +619,17 @@ public class StructuralEditorBean implements Observer {
 			if(volume.getRelatedParentVolume()!=null)
 			{
 				teiSd.setMainTitle(VolumeUtilBean.getTitle(volume.getRelatedParentVolume().getModsMetadata()).getTitle());
-				String firstAuthor = VolumeUtilBean.getFirstAuthor(volume.getModsMetadata()).getName();
+				String firstAuthor = VolumeUtilBean.getFirstAuthor(volume.getRelatedParentVolume().getModsMetadata()).getName();
 				if(firstAuthor!=null && !firstAuthor.isEmpty())
 				{
 					teiSd.setAuthor(firstAuthor);
 				}
 				else
 				{
-					teiSd.setAuthor(VolumeUtilBean.getFirstEditor(volume.getModsMetadata()).getName());
+					teiSd.setAuthor(VolumeUtilBean.getFirstEditor(volume.getRelatedParentVolume().getModsMetadata()).getName());
 				}
 			}
-			if(VolumeUtilBean.getPart_089(volume.getModsMetadata()) != null)
-			{
-				teiSd.setSubTitle(VolumeUtilBean.getPart_089(volume.getModsMetadata())+ ". ");
-			}
-			String mainTitle =  VolumeUtilBean.getMainTitle(volume.getModsMetadata()).getTitle();
-			if( mainTitle != null && !mainTitle.isEmpty())
-			{
-				teiSd.setSubTitle(teiSd.getSubTitle() + mainTitle);
-			}
+			teiSd.setSubTitle(VolumeUtilBean.getVolumeShortTitleView(volume));
 			
 			
 			
@@ -677,7 +669,8 @@ public class StructuralEditorBean implements Observer {
 				volume.setTeiSdXml(doc);
 				
 				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
-				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
+				//volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
 				
@@ -734,7 +727,8 @@ public class StructuralEditorBean implements Observer {
 				
 				this.volume = createVolServiceBean.updateVolume(volume, getLoginBean().getUserHandle(), null, null, true);
 				this.volume = createVolServiceBean.releaseVolume(volume.getItem().getObjid(), getLoginBean().getUserHandle());
-				volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
+				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
+				//volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
 				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedAndReleasedSuccessfully"));
