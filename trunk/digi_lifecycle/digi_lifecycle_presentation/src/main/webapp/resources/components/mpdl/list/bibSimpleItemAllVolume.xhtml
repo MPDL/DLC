@@ -80,7 +80,7 @@
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
 						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}"/>
-						<h:outputText value="&#160;#{volumeUtilBean.getVolumeSubTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+						<h:outputText value="#{volumeUtilBean.getVolumeSubTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
 					</h:panelGroup>
 				</h:panelGroup>
 				
