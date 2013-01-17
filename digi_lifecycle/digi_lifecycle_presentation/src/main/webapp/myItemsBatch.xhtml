@@ -113,7 +113,8 @@
        			
        			
  			    <rich:column colspan="13" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
-					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="client" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_9_10 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
+					<h:form>
+					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="ajax" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_9_10 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
 						<rich:dataTable var="logItem" value="#{ingestLogBean.getLogItems(log)}" style="vertical-align:top;" styleClass="eg3_container_1">
 							<f:facet name="header">
 					            <rich:columnGroup>
@@ -253,7 +254,7 @@
 			       				</rich:collapsibleSubTableToggler>
 								</ui:remove>
 								
-								<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="client" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_1 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
+								<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="ajax" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_1 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
 									<rich:dataTable var="logItemVolume" id="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" rowKeyVar="rowKey" style="vertical-align:top;" styleClass="eg3_container_1">
 									
 									
@@ -368,6 +369,7 @@
 							</rich:dataTable>
 							
 						</rich:collapsiblePanel>
+						</h:form>
 				</rich:column>
 					        
      	
