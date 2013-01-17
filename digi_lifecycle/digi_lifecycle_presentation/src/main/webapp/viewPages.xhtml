@@ -200,6 +200,17 @@
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.head)}" rendered="#{(treeElement.element.localName=='div' or treeElement.element.localName=='figure') and not empty treeElement.head}" />
 													
 													<h:outputText value=" #{volumeUtilBean.replaceLineBreaksWithBlanks(treeElement.docTitle)}" rendered="#{treeElement.element.localName=='titlePage'}"/>
+													
+													<!-- Page number -->
+													<h:outputText value=", #{lbl.view_treePageNumber} "/>
+													<h:outputText value="#{treeElement.startPage.order+1}" rendered="#{empty treeElement.startPage.orderLabel}"/>
+													<h:outputText value="#{treeElement.startPage.orderLabel}" rendered="#{not empty treeElement.startPage.orderLabel}"/>
+													<h:outputText value="-" />
+													<h:outputText value="#{treeElement.endPage.order+1}" rendered="#{empty treeElement.endPage.orderLabel}"/>
+													<h:outputText value="#{treeElement.endPage.orderLabel}" rendered="#{not empty treeElement.endPage.orderLabel}"/>
+													<h:outputText value="." />
+													
+													
 													<f:ajax render=":viewPage :citationOverlayArea"/>
 												</h:commandLink>		
 											</rich:treeNode>

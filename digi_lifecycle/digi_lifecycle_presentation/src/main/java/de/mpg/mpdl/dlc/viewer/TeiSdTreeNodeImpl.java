@@ -6,14 +6,20 @@ import java.util.List;
 
 
 
+import org.apache.log4j.Logger;
 import org.richfaces.model.TreeNodeImpl;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.mets.Page;
+
 public class TeiSdTreeNodeImpl {
 	
+	private Logger logger = Logger.getLogger(TeiSdTreeNodeImpl.class);
 	
 	private static String[] doRender = new String[]{"figure", "div", "titlePage", "group", "text", "front", "body", "back"};
 	
@@ -25,15 +31,39 @@ public class TeiSdTreeNodeImpl {
 	private boolean render = false;
 	
 	public List<TeiSdTreeNodeImpl> children;
+
+	private Page startPage;
+	private Page endPage;
 	
-	public TeiSdTreeNodeImpl(Element el)
+	public TeiSdTreeNodeImpl(Element el, Volume vol, VolumeServiceBean volServiceBean)
 	{
+		
+		this.setElement(el);
+		this.setId(el.getAttributeNS("http://www.w3.org/XML/1998/namespace", "id"));
+		
 		if(doRenderList.contains(el.getLocalName()))
 		{
 			render=true;
+			
+			if(this.id!=null && !this.id.isEmpty())
+			{
+				try {
+					this.setStartPage(volServiceBean.getPageForDiv(vol, this.getId()));
+				} catch (Exception e) {
+					startPage = vol.getPages().get(0);
+				}
+				try {
+					this.setEndPage(volServiceBean.getEndPageForDiv(vol, this.getId()));
+				} catch (Exception e) {
+					setEndPage(vol.getPages().get(0));
+				}
+			}
 		}
-		this.setElement(el);
-		this.setId(el.getAttributeNS("http://www.w3.org/XML/1998/namespace", "id"));
+		
+		
+		
+		
+		
 		
 		children = new ArrayList<TeiSdTreeNodeImpl>();
 		
@@ -41,7 +71,7 @@ public class TeiSdTreeNodeImpl {
 		{
 			if (n.getNodeType()==Node.ELEMENT_NODE)
 			{
-				children.add(new TeiSdTreeNodeImpl((Element) n));
+				children.add(new TeiSdTreeNodeImpl((Element) n, vol, volServiceBean));
 			}
 		}
 		
@@ -129,6 +159,22 @@ public class TeiSdTreeNodeImpl {
 
 	public void setRender(boolean render) {
 		this.render = render;
+	}
+
+	public Page getStartPage() {
+		return startPage;
+	}
+
+	public void setStartPage(Page startPage) {
+		this.startPage = startPage;
+	}
+
+	public Page getEndPage() {
+		return endPage;
+	}
+
+	public void setEndPage(Page endPage) {
+		this.endPage = endPage;
 	}
 	
 	
