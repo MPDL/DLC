@@ -182,7 +182,7 @@ public class ViewPages implements Observer{
 					{
 						if (n.getNodeType()==Node.ELEMENT_NODE && n.getLocalName().equals("text"))
 						{
-							teiSdRoots.add(new TeiSdTreeNodeImpl((Element) n));
+							teiSdRoots.add(new TeiSdTreeNodeImpl((Element) n, volume, volServiceBean));
 						}
 					}
 					

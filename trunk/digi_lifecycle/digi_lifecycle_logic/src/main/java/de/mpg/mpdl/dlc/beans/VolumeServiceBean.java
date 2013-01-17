@@ -1702,6 +1702,45 @@ public class VolumeServiceBean {
 	}
 	
 	
+	public  Page getEndPageForDiv(Volume v, String  divId) throws Exception
+	{
+
+		String pageId = "";
+		Processor proc = new Processor(false);
+        XPathCompiler xpath = proc.newXPathCompiler();
+        xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+        XPathExecutable xx = xpath.compile("//tei:*[@xml:id='"+ divId+ "']/descendant::tei:pb[last()]/@xml:id");
+        // Run the XPath Expression
+        XPathSelector selector = xx.load();
+        
+        net.sf.saxon.s9api.DocumentBuilder db = proc.newDocumentBuilder();
+        XdmNode xdmDoc = db.wrap(v.getTeiSdXml());
+        selector.setContextItem(xdmDoc);
+        
+        //if no pb is found as chil, use start pb
+        if(!selector.iterator().hasNext())
+        {
+        	xx = xpath.compile("//tei:*[@xml:id='"+ divId+ "']/preceding::tei:pb[1]/@xml:id");
+       	 	selector = xx.load();
+            selector.setContextItem(xdmDoc);
+        }
+        
+
+        for(XdmItem item : selector) {
+            XdmNode node = (XdmNode)item;
+            Node attribute = (org.w3c.dom.Node)node.getExternalNode();
+            pageId = attribute.getTextContent();
+        }
+        
+		Page page = new Page();
+		page.setId(pageId);
+        int pageIndex = v.getMets().getPages().indexOf(page);
+        return v.getMets().getPages().get(pageIndex);
+		
+	
+	}
+	
+	
 	public String getDivForPage(Volume v, Page p) throws Exception
 	{
 		logger.debug("Finding structural element for pagebreak " + p.getId());
