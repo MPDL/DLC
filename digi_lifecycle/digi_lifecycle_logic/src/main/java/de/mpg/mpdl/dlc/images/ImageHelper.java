@@ -1,9 +1,14 @@
 package de.mpg.mpdl.dlc.images;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 import java.awt.RenderingHints;
+import java.awt.color.ColorSpace;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.awt.image.BufferedImage;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
 import java.awt.image.RenderedImage;
 import java.awt.image.renderable.ParameterBlock;
 import java.io.File;
@@ -345,17 +350,28 @@ public class ImageHelper{
 	    	long time = System.currentTimeMillis() - startTime;
 	    	System.err.println("Conversion time jpegToPng: "  + time);
 	        return tmpFile;
-	    } 
+	    }    
 	    
 	    public static File pngToJpeg(File pngFile, String name) 
-	    {
-	    	
+	    {	
 	    	File tmpFile = null;
 	    	try{
+  
+	    		tmpFile = File.createTempFile(name, "jpg.tmp");
+	    		BufferedImage image = ImageIO.read(pngFile);
+	    		BufferedImage bufferedImage = new BufferedImage(image.getWidth(),image.getHeight(), BufferedImage.TYPE_INT_RGB);
+			    Graphics2D g = bufferedImage.createGraphics();
+			    //Color.WHITE estes the background to white. You can use any other color
+			    g.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), Color.WHITE, null);
+			    ImageIO.write(bufferedImage,"JPEG", tmpFile); 
+
+			    
+/*		    	
+ * Problem with transparent png Files	
 	    		tmpFile = File.createTempFile(name, "jpg.tmp");
 		    	SeekableStream s = new FileSeekableStream(pngFile);
 		    	PNGDecodeParam param = new PNGDecodeParam();
-		        ImageDecoder dec = ImageCodec.createImageDecoder("png", s, param);
+		        ImageDecoder dec = ImageCodec.createImageDecoder("png", s, param);		        
 		        RenderedImage ri = dec.decodeAsRenderedImage(0);
 		        
 		        FileOutputStream fos = new FileOutputStream(tmpFile);
@@ -365,6 +381,8 @@ public class ImageHelper{
 		        imageEncoder.encode(ri);
 		        fos.flush();
 		        fos.close();
+*/		        
+		        
 	    	}catch(Exception e)
 	    	{
 	    		logger.error("cann not convert png to jpeg. Error: " + e.getMessage());
@@ -476,6 +494,22 @@ public class ImageHelper{
     		}
     	}
 	}
+	
+	 public static File ToJpeg(File pngFile) throws IOException
+	 {
+		 File jpgFile = new File("C:\\Users\\yu\\Desktop\\test.jpeg");
+		 BufferedImage image = ImageIO.read(pngFile);
+		 
+	     BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+	     Graphics2D g = bufferedImage.createGraphics();
+	     //Color.WHITE estes the background to white. You can use any other color
+	     g.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), Color.WHITE, null);
+	     ImageIO.write(bufferedImage,"JPEG", jpgFile);      
+
+	     return jpgFile;
+	 }
+	
+	
     public static void main(String[] arg) throws Exception
     {
     	/*
@@ -499,12 +533,9 @@ public class ImageHelper{
 //    	String outputDic = "C://Doku//dlc//TEST_MPDL//ROM//batch//jpegimages//Va6400-1990a"; 
 //    	convertTiffToJpeg(inputDic, outputDic);   
     	
-
-
-
-
-
- 		
+    	File pngFile = new File("C:\\Users\\yu\\Desktop\\minilouge3_300dpi_16bit_adobergb.tif");
+    	File jpeg = ToJpeg(pngFile);
+    			
     }
    
     
