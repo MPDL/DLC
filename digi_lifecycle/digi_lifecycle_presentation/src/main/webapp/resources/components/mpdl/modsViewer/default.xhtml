@@ -587,7 +587,7 @@
 						</h:panelGroup>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-						<h:outputText value="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata)}" />
+						<h:outputText value="#{volumeUtilBean.getSecPublisherForTitle(cc.attrs.modsMetadata)}" />
 					</h:panelGroup>
 				</ui:fragment>
 				<ui:fragment rendered="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata) != ''}">
@@ -687,14 +687,14 @@
 			</h:panelGroup>
 			
 			<!-- 47 digital master 647 -->
-			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_signature_646(cc.attrs.modsMetadata).sec_signature_646}">
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_digitalMaster_647(cc.attrs.modsMetadata).note}">
 				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 						<h:outputText value="#{lbl.mods_sec_digital_master}"/>
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-					<h:outputText value="#{volumeUtilBean.getSec_signature_646(cc.attrs.modsMetadata).sec_signature_646}" />
+					<h:outputText value="#{volumeUtilBean.getSec_digitalMaster_647(cc.attrs.modsMetadata).note}" />
 				</h:panelGroup>				
 			</h:panelGroup>
 			

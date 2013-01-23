@@ -1203,7 +1203,7 @@ public class IngestLog
 	}
 	
 	private void saveItems(HashMap<String, BatchIngestItem> items)
-	{
+	{  
 		batchLog.setStep(Step.STARTED);
 		batchLog.getLogs().add("INGEST PROZESS STARTED");
 		update(batchLog);
@@ -1220,8 +1220,7 @@ public class IngestLog
 			BatchIngestItem bi = (BatchIngestItem) item.getValue();
 
 			
-			try {
-				
+			try {				
 				TypedQuery<BatchLogItem> query = em.createNamedQuery(BatchLogItem.ITEM_BY_ID, BatchLogItem.class);
 				query.setParameter("id", bi.getDbID());				
 				BatchLogItem logItem = query.getSingleResult();
@@ -1271,7 +1270,7 @@ public class IngestLog
 					Volume mv;  
 					CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
 					try{
-						mv = cvsb.createNewMultiVolume(operation, PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
+						mv = cvsb.createNewMultiVolume("save", PropertyReader.getProperty("dlc.content-model.multivolume.id"), contextId, userHandle, bi.getModsMetadata());
 						logItem.setEscidocId(mv.getItem().getObjid());
 						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(mv));
 						logItem.setSubTitle(VolumeUtilBean.getSubTitleView(mv));
@@ -1335,9 +1334,9 @@ public class IngestLog
 							volumeService.updateMultiVolumeFromId(mv.getItem().getObjid(), volIds, userHandle);
 							logItem.setStep(Step.FINISHED);
 							if(operation.equalsIgnoreCase("release"))
-								cvsb.releaseVolume(mv.getItem().getObjid(), operation);
+								cvsb.releaseVolume(mv.getItem().getObjid(), userHandle);
 						}
-						logItem.setEndDate(new Date());
+						
 						
 					}catch(Exception e)
 					{
@@ -1349,7 +1348,7 @@ public class IngestLog
 						update(batchLog);
 					}
 				} 
-
+				logItem.setEndDate(new Date());
 			}catch (Exception e) {
 				batchLog.setErrorLevel(ErrorLevel.PROBLEM);
 			} 

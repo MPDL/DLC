@@ -636,7 +636,7 @@
 								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.publisher}">
 				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
 				 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
-											<h:outputText value="#{lbl.mods_publisher}"/>
+											<h:outputText value="#{lbl.mods_publisher_sec}"/>
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
@@ -652,14 +652,14 @@
 											<h:inputText value="#{sec_publisher.place}" title="#{sec_publisher.place}" />
 										</h:panelGroup>
 									</h:panelGroup>
-									<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.dateIssued_425}">
+									<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.dateCaptured}">
 										<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 											<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 												<h:outputText value="#{lbl.mods_publisherDateIssued}"/>
 											</h:panelGroup>
 										</h:panelGroup>
 										<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-											<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
+											<h:inputText value="#{sec_publisher.dateCaptured}" title="#{sec_publisher.dateCaptured}" />
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.edition}">
@@ -669,7 +669,7 @@
 											</h:panelGroup>
 										</h:panelGroup>
 										<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-											<h:inputText value="#{sec_publisher.edition}" title="#{publisher.edition}" />
+											<h:inputText value="#{sec_publisher.edition}" title="#{sec_publisher.edition}" />
 										</h:panelGroup>
 									</h:panelGroup>
 								</h:panelGroup>

@@ -375,6 +375,15 @@ public class VolumeUtilBean {
 		return new ModsLocationSEC();
 	}
 	
+	public static ModsNote getSec_digitalMaster_647(ModsMetadata md)
+	{
+		for(ModsRelatedItem ri: md.getRelatedItems())
+		{
+			if(ri.getSec_notes() != null && "digital master".equalsIgnoreCase(ri.getSec_notes().getType()))
+				return ri.getSec_notes();
+		}
+		return new ModsNote();
+	}
 	
 	public static ModsIdentifier getDigitalISBN(ModsMetadata md)
 	{
@@ -707,7 +716,7 @@ public class VolumeUtilBean {
 			String  title, dateIssued;
 			title = dateIssued = null;
 		
-			if(modsTitle!=null)
+			if(modsTitle!=null && modsTitle.getTitle() != null)
 			{
 				title = modsTitle.getTitle();
 			}
@@ -722,11 +731,11 @@ public class VolumeUtilBean {
 			
 			if(!isEmpty(part))
 			{
-				sb.append(part + ". ");
+				sb.append(part + ".");
 			}
 			if(!isEmpty(title))
 			{
-				sb.append(title);
+				sb.append(" " + title +".");
 			}
 			
 			return sb.toString();
@@ -762,11 +771,11 @@ public class VolumeUtilBean {
 		
 		if(!isEmpty(subTitle))
 		{
-			return shortTitle + ". - " + subTitle + ".";
+			return shortTitle + " - " + subTitle;
 		}
 		else
 		{
-			return shortTitle + ".";
+			return shortTitle;
 		}
 	}
 	
