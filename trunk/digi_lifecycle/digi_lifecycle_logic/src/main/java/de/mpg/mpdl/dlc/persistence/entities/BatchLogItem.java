@@ -52,7 +52,6 @@ public class BatchLogItem {
 	@Column(name="name")
 	private String name;
 	
-	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
 	
