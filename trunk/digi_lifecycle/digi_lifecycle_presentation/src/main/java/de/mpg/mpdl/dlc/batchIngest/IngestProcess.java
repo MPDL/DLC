@@ -30,6 +30,7 @@ public class IngestProcess extends Thread{
 	private String images;
 	private String mab;
 	private String tei;
+	private String cdc;
 	
 	private String userName;
 	private String password;
@@ -39,7 +40,7 @@ public class IngestProcess extends Thread{
 	private BatchLog batchLog;
 	private EntityManager em;
 	
-	public IngestProcess(String name, String action, String contextId, String userHandle, String server, boolean ftp, String userName, String password, String mab, String tei, String images, BatchLog batchLog) 
+	public IngestProcess(String name, String action, String contextId, String userHandle, String server, boolean ftp, String userName, String password, String images, String mab, String tei, String cdc, BatchLog batchLog) 
 	{
 
 		this.logName = name;
@@ -53,6 +54,7 @@ public class IngestProcess extends Thread{
 		this.mab = mab;
 		this.tei = tei;
 		this.images = images;
+		this.cdc = cdc;
 		this.batchLog = batchLog;
 		saveLog(batchLog);
 		
@@ -76,7 +78,7 @@ public class IngestProcess extends Thread{
 		log = new IngestLog_NFS_Backup(logName, step, action, errorLevel, userId, contextId, images, mab, tei,  userHandle);
 		*/
 		try {  
-			log = new IngestLog(logName, action, contextId, userHandle, server, ftp, userName, password, images, mab, tei, batchLog);
+			log = new IngestLog(logName, action, contextId, userHandle, server, ftp, userName, password, images, mab, tei, cdc, batchLog);
 
 			if(log.ftpCheck())
 			{

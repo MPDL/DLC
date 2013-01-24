@@ -39,6 +39,7 @@ public class BatchIngestBean {
 	private String images;
 	private String mab;
 	private String tei;
+	private String cdc;
 
 	private String server;
 	private String user;
@@ -139,6 +140,8 @@ public class BatchIngestBean {
 			mab = mab.substring(1);
 		if(tei != "" && tei.startsWith("/"))
 			tei = tei.substring(1);
+		if(cdc != "" && cdc.startsWith("/") )
+			cdc = cdc.substring(1);
 		
 		BatchLog batchLog = new BatchLog();
 		batchLog.setName(name);
@@ -153,7 +156,7 @@ public class BatchIngestBean {
 		batchLog.setContextId(selectedContextId);
 		batchLog.setContextName(selecetedContextName);
 		
-		ingestProcess = new IngestProcess(name, action, selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, mab, tei, images, batchLog);
+		ingestProcess = new IngestProcess(name, action, selectedContextId, loginBean.getUserHandle(), server, protocol, user, password, images, mab, tei, cdc, batchLog);
 		ingestProcess.start();
 		
 
@@ -199,6 +202,15 @@ public class BatchIngestBean {
 	}
 
 
+	
+
+	public String getCdc() {
+		return cdc;
+	}
+
+	public void setCdc(String cdc) {
+		this.cdc = cdc;
+	}
 
 	public String getImages() {
 		return images;

@@ -6,11 +6,15 @@ public final class BatchIngestLogs {
     
     public static final String TEI_SYNTAX_ERROR = "Error: cannot read the tei File ";
     
+    public static final String CDC_SYNTAX_ERROR = "Error: cannot read the codicological File ";
+    
     public static final String MAB_TRANSFORM_ERROR = "Error: can not  transform the MAB file";
     
     public static final String NOMAB_ERROR ="Error: find volume without mab file";
     
     public static final String SINGLE_TEI_ERROR= "Error: tei File without images";
+    
+    public static final String SINGLE_CDC_ERROR= "Error: codicological File without images";
     
     public static final String SINGLE_MULTIVOLUME_ERROR = "Error: this Multivolume has no volume";
     
@@ -30,9 +34,11 @@ public final class BatchIngestLogs {
     
     public static final String IMAGE_DIRECTORY_ERROR = "Error: check images directory";
     
-    public static final String TEI_DIRECTORY_ERROR ="Error: check tei directory";
-    
     public static final String MAB_DIRECTORYE_RROR ="Error: check mab directory";
+    
+    public static final String TEI_DIRECTORY_ERROR ="Error: check tei directory";    
+    
+    public static final String CDC_DIRECTORY_ERROR ="Error: check Codicological files directory";
     
     public static final String DOWNLOAD_IMAGES_FTP="downloading images from FTP Server";
     
