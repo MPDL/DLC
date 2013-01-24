@@ -15,6 +15,7 @@ public class BatchIngestItem {
 	private String dlcDirectory;
 	private ModsMetadata modsMetadata;
 	private IngestImage teiFile;
+	private IngestImage codicologicalFile;
 	private int teiPbs;
 	private List<IngestImage> imageFiles = new ArrayList<IngestImage>();
 	private int imageNr;
@@ -30,13 +31,14 @@ public class BatchIngestItem {
 
 	}
 	
-	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, IngestImage teiFile, ArrayList<IngestImage> imageFiles, IngestImage footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
+	public BatchIngestItem(String contentModel, String name, ModsMetadata modsMetadata, IngestImage teiFile, IngestImage codicologicalFile, ArrayList<IngestImage> imageFiles, IngestImage footer, String parentId, List<BatchIngestItem> volumes, ArrayList<String> logs)
 	{
 		
 		this.contentModel = contentModel;
 		this.name = name;
 		this.modsMetadata = modsMetadata;
 		this.teiFile = teiFile;
+		this.codicologicalFile = codicologicalFile;
 		this.imageFiles = imageFiles;
 		this.footer = footer;
 		this.parentId = parentId;
@@ -172,6 +174,14 @@ public class BatchIngestItem {
 
 	public void setDbID(Long dbID) {
 		this.dbID = dbID;
+	}
+
+	public IngestImage getCodicologicalFile() {
+		return codicologicalFile;
+	}
+
+	public void setCodicologicalFile(IngestImage codicologicalFile) {
+		this.codicologicalFile = codicologicalFile;
 	}
 
 

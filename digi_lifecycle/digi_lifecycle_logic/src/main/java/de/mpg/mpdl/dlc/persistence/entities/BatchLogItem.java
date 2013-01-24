@@ -82,6 +82,8 @@ public class BatchLogItem {
 	
 	private String teiFileName;
 	
+	private String codicologicalFileName;
+	
 	private int volumes_nr;
 	
 	private int finished_volumes_nr;
@@ -277,6 +279,14 @@ public class BatchLogItem {
 
 	public void setFinished_volumes_nr(int finished_volumes_nr) {
 		this.finished_volumes_nr = finished_volumes_nr;
+	}
+
+	public String getCodicologicalFileName() {
+		return codicologicalFileName;
+	}
+
+	public void setCodicologicalFileName(String codicologicalFileName) {
+		this.codicologicalFileName = codicologicalFileName;
 	}
 
 
