@@ -600,7 +600,7 @@ public class IngestBean{
 		{
 			try {
 				
-				CreateVolumeServiceBean.validateTei(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
+				CreateVolumeServiceBean.validateTeiAndPb(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
 				teiPbFacsValues = VolumeServiceBean.getAllPbs(new StreamSource(recentlyUpladedTeiFile.getStoreLocation()));
 				this.teiFile = recentlyUpladedTeiFile;
 			} catch (Exception e) {

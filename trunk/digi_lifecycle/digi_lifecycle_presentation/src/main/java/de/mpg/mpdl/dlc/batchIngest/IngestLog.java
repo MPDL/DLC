@@ -735,7 +735,7 @@ public class IngestLog
 					logger.info("read tei for " + name);
 					try {
 						//InputStream teiIs = new FileInputStream(tFile);
-						CreateVolumeServiceBean.validateTei(new StreamSource(tFileF));
+						CreateVolumeServiceBean.validateTeiAndPb(new StreamSource(tFileF));
 						List<XdmNode> pbList = VolumeServiceBean.getAllPbs(new StreamSource(tFileF));
 						item.setImageFiles(sortImagesByTeiFile(item.getImageFiles(), pbList));
 						int numberOfTeiPbs = pbList.size();

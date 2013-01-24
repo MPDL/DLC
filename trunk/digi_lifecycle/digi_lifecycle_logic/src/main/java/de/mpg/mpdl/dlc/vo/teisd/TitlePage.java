@@ -26,6 +26,14 @@ public class TitlePage extends Div {
 		super(ElementType.TITLE_PAGE);
 	}
 	
+	
+	public TitlePage(Div original)
+	{
+		super(original);
+		this.setElementType(ElementType.TITLE_PAGE);
+		
+	}
+	
 	public TitlePage(TitlePage original)
 	{
 		super(original);

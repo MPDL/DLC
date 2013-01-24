@@ -1089,7 +1089,9 @@ public class CreateVolumeServiceBean {
 
 	}
 
-	public static void validateTei(Source tei) throws Exception {
+	public static void validateTeiAndPb(Source tei) throws Exception {
+		
+		
 		String teiSd = transformTeiToTeiSd(tei);
 
 		List<XdmNode> pbsInTei = VolumeServiceBean.getAllPbs(tei);
@@ -1101,6 +1103,21 @@ public class CreateVolumeServiceBean {
 					+ pbsInTei.size() + " pagebreaks vs. " + pbsInTeiSd.size()
 					+ " pagebreaks)");
 		}
+
+		SchemaFactory factory = SchemaFactory.newInstance(
+				"http://relaxng.org/ns/structure/1.0",
+				"com.thaiopensource.relaxng.jaxp.XMLSyntaxSchemaFactory", null);
+		URL url = VolumeServiceBean.class.getClassLoader().getResource(
+				"schemas/DLC-TEI.rng");
+		Schema schema = factory.newSchema(new File(url.toURI()));
+		Validator validator = schema.newValidator();
+		validator.validate(tei);
+	}
+	
+	
+	
+	public static void validateTei(Source tei) throws Exception {
+		
 
 		SchemaFactory factory = SchemaFactory.newInstance(
 				"http://relaxng.org/ns/structure/1.0",
