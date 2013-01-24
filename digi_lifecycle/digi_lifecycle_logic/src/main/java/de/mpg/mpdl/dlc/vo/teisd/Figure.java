@@ -20,6 +20,12 @@ public class Figure extends Div {
 	public Figure() {
 		super(ElementType.FIGURE);
 	}
+	
+	public Figure(Div original)
+	{
+		super(original);
+		this.setElementType(ElementType.FIGURE);
+	}
 
 	public Figure(Figure original)
 	{

@@ -1,7 +1,9 @@
 package de.mpg.mpdl.dlc.editor;
 
+import java.io.ByteArrayInputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -21,6 +23,7 @@ import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.SelectItem;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.jibx.runtime.BindingDirectory;
@@ -29,6 +32,7 @@ import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import com.ocpsoft.pretty.faces.annotation.URLAction;
@@ -48,11 +52,13 @@ import de.mpg.mpdl.dlc.util.RomanNumberConverter;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
 import de.mpg.mpdl.dlc.vo.mets.Page;
+import de.mpg.mpdl.dlc.vo.teisd.Back;
 import de.mpg.mpdl.dlc.vo.teisd.Body;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
 import de.mpg.mpdl.dlc.vo.teisd.DocTitle;
 import de.mpg.mpdl.dlc.vo.teisd.Figure;
+import de.mpg.mpdl.dlc.vo.teisd.Front;
 import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
 import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv.ElementType;
@@ -262,8 +268,12 @@ public class StructuralEditorBean implements Observer {
 		{
 			//create a new TEI SD with Pagebreaks only
 			TeiSd teiSd = new TeiSd();
+			Front front = new Front();
+			teiSd.getText().getPbOrDiv().add(front);
 			Body body = new Body();
 			teiSd.getText().getPbOrDiv().add(body);
+			Back back = new Back();
+			teiSd.getText().getPbOrDiv().add(back);
 			for(Page p : volume.getMets().getPages())
 			{
 				Pagebreak pb = new Pagebreak();
@@ -462,14 +472,14 @@ public class StructuralEditorBean implements Observer {
 	{
 		List<TeiElementWrapper> flatTeiElementList = new ArrayList<TeiElementWrapper>();
 		List<TeiElementWrapper> pbList = new ArrayList<TeiElementWrapper>();
-		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getText().getPbOrDiv(), v, pbList, new ArrayList<TeiElementWrapper>());
+		recursiveTeiSdToFlat(flatTeiElementList, teiSd.getText().getPbOrDiv(), v, pbList, new ArrayList<TeiElementWrapper>(), null);
 		String[] s = new String[2];
 		return new List[]{flatTeiElementList, pbList};
 		
 	}
 	
 
-	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, List<TeiElementWrapper> pbList, List<TeiElementWrapper> subList)
+	private static void recursiveTeiSdToFlat(List<TeiElementWrapper> flatTeiElementList, List<PbOrDiv> currentTeiElementList, Volume volume, List<TeiElementWrapper> pbList, List<TeiElementWrapper> subList, TeiElementWrapper lastFrontBodyBack)
 	{
 		for(PbOrDiv currentTeiElement : currentTeiElementList)
 		{
@@ -477,7 +487,7 @@ public class StructuralEditorBean implements Observer {
 			flatTeiElementList.add(currentTeiStartElementWrapper);
 			currentTeiStartElementWrapper.setTeiElement(currentTeiElement);
 			
-			
+			//TeiElementWrapper lastFrontBodyBack = null;
 			
 			
 			if (!ElementType.PB.equals(currentTeiElement.getElementType()))
@@ -488,6 +498,18 @@ public class StructuralEditorBean implements Observer {
 				{
 					currentTeiStartElementWrapper.setPagebreakWrapper(pbList.get(pbList.size()-1));
 					//currentTeiStartElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+				}
+				
+				if((ElementType.FRONT.equals(currentTeiStartElementWrapper.getTeiElement().getElementType()) ||
+						ElementType.BODY.equals(currentTeiStartElementWrapper.getTeiElement().getElementType()) ||
+						ElementType.BACK.equals(currentTeiStartElementWrapper.getTeiElement().getElementType())))
+				{
+					
+						lastFrontBodyBack = currentTeiStartElementWrapper;
+						lastFrontBodyBack.setPagebreakWrapper(null);
+					
+					
+					
 				}
 			}
 			else
@@ -526,6 +548,12 @@ public class StructuralEditorBean implements Observer {
 				pbList.add(currentTeiStartElementWrapper);
 				
 				//If the last element was one of Front, Body or Back, then set this pagebreak as this element's page.
+				
+				if(lastFrontBodyBack!=null && lastFrontBodyBack.getPagebreakWrapper()==null)
+				{
+					lastFrontBodyBack.setPagebreakWrapper(currentTeiStartElementWrapper);
+				}
+				/*
 				if(flatTeiElementList.size()>=2)
 				{
 					TeiElementWrapper lastElement = flatTeiElementList.get(flatTeiElementList.size()-2);
@@ -539,7 +567,7 @@ public class StructuralEditorBean implements Observer {
 				
 					}
 				}
-				
+				*/
 				
 				
 			}
@@ -555,7 +583,7 @@ public class StructuralEditorBean implements Observer {
 			*/
 			
 			
-			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbList, subList);
+			recursiveTeiSdToFlat(flatTeiElementList, currentTeiElement.getPbOrDiv(), volume, pbList, subList, lastFrontBodyBack);
 			
 			if(PositionType.START.equals(currentTeiStartElementWrapper.getPositionType()))
 			{
@@ -573,7 +601,39 @@ public class StructuralEditorBean implements Observer {
 					TeiElementWrapper lastPb = pbList.get(pbList.size()-1);
 					currentTeiEndElementWrapper.setPagebreakWrapper(lastPb);
 					//currentTeiEndElementWrapper.setPagebreakId(lastPb.getTeiElement().getId());
+					
+					
+					
+					
+					if((ElementType.FRONT.equals(currentTeiEndElementWrapper.getTeiElement().getElementType()) ||
+							ElementType.BODY.equals(currentTeiEndElementWrapper.getTeiElement().getElementType()) ||
+							ElementType.BACK.equals(currentTeiEndElementWrapper.getTeiElement().getElementType())))
+					{
+						
+							
+							if (flatTeiElementList.indexOf(lastPb) > flatTeiElementList.indexOf(currentTeiEndElementWrapper.getPartnerElement()))
+							{
+								currentTeiEndElementWrapper.setPagebreakWrapper(lastPb);
+							}
+							else
+							{
+								currentTeiEndElementWrapper.setPagebreakWrapper(null);
+							}
+						
+						
+					}
+					
+					
 				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				//subList.add(currentTeiEndElementWrapper);
 				
@@ -650,6 +710,7 @@ public class StructuralEditorBean implements Observer {
 		}
 		else
 		{
+			
 			try {
 				
 				flatTeiElementListToTeiSd(flatTeiElementList, teiSd);
@@ -660,6 +721,8 @@ public class StructuralEditorBean implements Observer {
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(teiSd, "utf-8", null, sw);
 				sw.flush();
+				
+				CreateVolumeServiceBean.validateTei(new StreamSource(new StringReader(sw.toString())));
 				
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
@@ -683,19 +746,30 @@ public class StructuralEditorBean implements Observer {
 			
 			/*
 			try {
+				
+				
+				
 				TeiSd teiToSave = new TeiSd();
 				flatTeiElementListToTeiSd(flatTeiElementList, teiToSave);
+				updateMetadata(teiToSave);
 				IBindingFactory bfactTei = BindingDirectory.getFactory(TeiSd.class);
 				IMarshallingContext mc = bfactTei.createMarshallingContext();
 				mc.setIndent(3);
 				StringWriter sw = new StringWriter();
 				mc.marshalDocument(teiToSave, "utf-8", null, sw);
+				sw.flush();
+				sw.close();
+				String teiString = sw.toString();
 				
-				System.out.println(sw.toString());
+				System.out.println(teiString);
 				
-			} catch (JiBXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				CreateVolumeServiceBean.validateTei(new StreamSource(new ByteArrayInputStream(teiString.getBytes("UTF-8"))));
+				
+				
+				
+			} catch (Exception e) {
+				logger.error("Error while creating teiSd", e);
+				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_invalidTei") + "\n " + e.getMessage());
 			}
 			*/
 		}
@@ -718,6 +792,7 @@ public class StructuralEditorBean implements Observer {
 				StringWriter sw = new StringWriter();
 				marshContext.marshalDocument(teiSd, "utf-8", null, sw);
 				sw.flush();
+				CreateVolumeServiceBean.validateTei(new StreamSource(new StringReader(sw.toString())));
 				
 				DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
 				fac.setNamespaceAware(true);
@@ -1311,6 +1386,7 @@ public class StructuralEditorBean implements Observer {
 	{
 		flatTeiElementList.remove(elementToDelete);
 		flatTeiElementList.remove(elementToDelete.getPartnerElement());
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 		rerenderThumbnailPage(new TeiElementWrapper[]{elementToDelete.getPagebreakWrapper()});
 	}
@@ -1504,7 +1580,7 @@ public class StructuralEditorBean implements Observer {
 		//Add end element directly before end of parent
 		//int lastParentIndex = flatTeiElementList.indexOf(parent.getPartnerElement());
 		
-		
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 
 	}
@@ -1627,6 +1703,7 @@ public class StructuralEditorBean implements Observer {
 			endElement.setPagebreakWrapper(lastSiblingEndElement.getPagebreakWrapper());
 		}
 		*/
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 		rerenderThumbnailPage(new TeiElementWrapper[]{startElementWrapper.getPagebreakWrapper(), oldPagebreakWrapper});
 	}
@@ -1649,6 +1726,7 @@ public class StructuralEditorBean implements Observer {
 		flatTeiElementList.add(endIndex+1, siblingBeforeWrapperEnd);
 		TeiElementWrapper oldPagebreakWrapper = siblingBeforeWrapperEnd.getPagebreakWrapper();
 		siblingBeforeWrapperEnd.setPagebreakWrapper(startElementWrapper.getPartnerElement().getPagebreakWrapper());
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 		rerenderThumbnailPage(new TeiElementWrapper[]{startElementWrapper.getPagebreakWrapper(), oldPagebreakWrapper});
 	}
@@ -1664,6 +1742,7 @@ public class StructuralEditorBean implements Observer {
 		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		List<TeiElementWrapper> pbThumbnailsToBeUpdated = new ArrayList<TeiElementWrapper>();
 		//if element has a sibling before
+	
 		if(indexInParent > 0)
 		{
 			TeiElementWrapper siblingBeforeWrapper = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(indexInParent - 1).getTeiElementWrapper();
@@ -1746,8 +1825,40 @@ public class StructuralEditorBean implements Observer {
 			}
 			
 		}
+		else if (indexInParent==0)
+		{
+			//Only for front body back
+			ElementType parentType = startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper().getTeiElement().getElementType();
+			if(ElementType.BODY.equals(parentType) || ElementType.BACK.equals(parentType) )
+			{
+				TeiElementWrapper parentStartElement =  startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper();
+				TeiElementWrapper frontBodyEndBefore = flatTeiElementList.get(flatTeiElementList.indexOf(parentStartElement)-1);
+				
+				flatTeiElementList.remove(parentStartElement);
+				flatTeiElementList.remove(frontBodyEndBefore);
+				
+				int endIndex = flatTeiElementList.indexOf(startElementWrapper.getPartnerElement());
+				flatTeiElementList.add(endIndex+1, parentStartElement);
+				flatTeiElementList.add(endIndex+1,frontBodyEndBefore);
+				
+				/*
+				frontBodyEndBefore.setPagebreakWrapper(startElementWrapper.getPartnerElement().getPagebreakWrapper());
+				
+				int endPbWrapperIndex = pbList.indexOf(startElementWrapper.getPartnerElement().getPagebreakWrapper());
+				if(endPbWrapperIndex + 1 < pbList.size())
+				{
+					TeiElementWrapper nextPb = pbList.get(endPbWrapperIndex + 1);
+					parentStartElement.setPagebreakWrapper(nextPb);
+				}
+				else
+				{
+					parentStartElement.setPagebreakWrapper(null);
+				}
+				*/
+			}
+		}
 		
-		
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 		
 		rerenderThumbnailPage(pbThumbnailsToBeUpdated.toArray(new TeiElementWrapper[0]));
@@ -1784,14 +1895,112 @@ public class StructuralEditorBean implements Observer {
 		int indexInParent = startElementWrapper.getTreeWrapperNode().getParent().getChildren().indexOf(startElementWrapper.getTreeWrapperNode());
 		
 		//if node has sibling after
-		if(indexInParent + 1 <= startElementWrapper.getTreeWrapperNode().getParent().getChildren().size())
+		if(indexInParent + 1 < startElementWrapper.getTreeWrapperNode().getParent().getChildren().size())
 		{
 			TeiElementWrapper siblingAfter = startElementWrapper.getTreeWrapperNode().getParent().getChildren().get(indexInParent + 1).getTeiElementWrapper();
 			
 			//move up sibling-after
 			moveElementUp(siblingAfter);
 		}
+		else
+		{
+			//Only if parent is FRONT or BODY
+			ElementType parentType = startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper().getTeiElement().getElementType();
+			if(ElementType.FRONT.equals(parentType) || ElementType.BODY.equals(parentType) )
+			{
+				//Get end element of FRONT or BODY and following start element of BODY/BACK
+				TeiElementWrapper parentEndElement =  startElementWrapper.getTreeWrapperNode().getParent().getTeiElementWrapper().getPartnerElement();
+				TeiElementWrapper bodyBackyStartAfter = flatTeiElementList.get(flatTeiElementList.indexOf(parentEndElement)+1);
+				
+				
+				//Remove these elements and add them before startElement
+				flatTeiElementList.remove(parentEndElement);
+				flatTeiElementList.remove(bodyBackyStartAfter);
+				
+				int startIndex = flatTeiElementList.indexOf(startElementWrapper);
+				if(startIndex-1 >= 0)
+				{
+					//if element before start div is a pagebreak, also move this down
+					TeiElementWrapper elementBeforeStart = flatTeiElementList.get(startIndex-1);
+					if(ElementType.PB.equals(elementBeforeStart.getTeiElement().getElementType()))
+					{
+						flatTeiElementList.add(startIndex-1, bodyBackyStartAfter);
+						flatTeiElementList.add(startIndex-1, parentEndElement);
+					}
+					else
+					{
+						flatTeiElementList.add(startIndex, bodyBackyStartAfter);
+						flatTeiElementList.add(startIndex, parentEndElement);
+					}
+				}
+				
+				
+				
+				//Set the new pages
+				/*
+				bodyBackyStartAfter.setPagebreakWrapper(startElementWrapper.getPagebreakWrapper());
+				
+				int startPbWrapperIndex = pbList.indexOf(startElementWrapper.getPagebreakWrapper());
+				if(startPbWrapperIndex>0 && startPbWrapperIndex < pbList.size())
+				{
+					TeiElementWrapper lastPb = pbList.get(startPbWrapperIndex - 1);
+					parentEndElement.setPagebreakWrapper(lastPb);
+				}
+				else
+				{
+					parentEndElement.setPagebreakWrapper(null);
+				}
+				*/
+				updatePagebreaksForFrontBodyBack();
+				updateTree();
+				
+			}
+		}
 
+	}
+	
+	
+	private void updatePagebreaksForFrontBodyBack()
+	{
+		boolean startSet = false;
+		
+		TeiElementWrapper lastFrontBodyBackStart = null;
+		
+		TeiElementWrapper lastPb = null;
+		
+		for(TeiElementWrapper wrapper : flatTeiElementList)
+		{
+			ElementType type = wrapper.getTeiElement().getElementType();
+			if(ElementType.FRONT.equals(type) ||
+				ElementType.BODY.equals(type) ||
+				ElementType.BACK.equals(type)	)
+			{
+				if(PositionType.START.equals(wrapper.getPositionType()))
+				{
+					wrapper.setPagebreakWrapper(null);
+					lastPb = null;
+					lastFrontBodyBackStart = wrapper;
+					startSet = false;
+				}
+				else if (PositionType.END.equals(wrapper.getPositionType()))
+				{
+					
+					wrapper.setPagebreakWrapper(lastPb);
+				}
+				
+			}
+			
+			if(ElementType.PB.equals(type))
+			{
+				lastPb = wrapper;
+				
+				if(lastFrontBodyBackStart!=null && !startSet)
+				{
+					lastFrontBodyBackStart.setPagebreakWrapper(wrapper);
+					startSet = true;
+				}
+			}
+		}
 	}
 	
 	
@@ -1857,44 +2066,108 @@ public class StructuralEditorBean implements Observer {
 		List<SelectItem> list = new ArrayList<SelectItem>();
 		
 		int currentEndIndex = flatTeiElementList.indexOf(startTeiElementWrapper.getPartnerElement());
+		int currentStartIndex = flatTeiElementList.indexOf(startTeiElementWrapper);
 		
-		
-		//Add pages before
-		for(int i = currentEndIndex - 1; i>=0; i--)
+
+		if(ElementType.FRONT.equals(startTeiElementWrapper.getTeiElement().getElementType()) || ElementType.BODY.equals((startTeiElementWrapper.getTeiElement().getElementType())))
 		{
-			TeiElementWrapper wrapper =  flatTeiElementList.get(i);
-			if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+			if(ElementType.FRONT.equals(startTeiElementWrapper.getTeiElement().getElementType()))
 			{
-				break;
+				list.add(new SelectItem(null, "X"));
 			}
-			else if(ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+
+			TeiElementWrapper bodyBackAfter = flatTeiElementList.get(currentEndIndex+1);
+			
+			int currentStartIndexOfElementAfter = flatTeiElementList.indexOf(bodyBackAfter);
+			int currentEndIndexOfElementAfter = flatTeiElementList.indexOf(bodyBackAfter.getPartnerElement());
+			
+			List<TeiElementWrapper> pbsToAdd = new ArrayList<TeiElementWrapper>();
+			
+			//Add pages before
+			int balanceCounter = 0;
+			for(int i = currentStartIndex + 1; i<currentEndIndexOfElementAfter; i++)
 			{
-				TeiElementWrapper lastPb = wrapper.getLastPagebreak();
-				if(lastPb != null)
+				
+				TeiElementWrapper wrapper =  flatTeiElementList.get(i);
+				
+				if(!ElementType.BODY.equals(wrapper.getTeiElement().getElementType())
+						&& !ElementType.BACK.equals(wrapper.getTeiElement().getElementType()) && !ElementType.FRONT.equals(wrapper.getTeiElement().getElementType()))
 				{
-					list.add(0, getSelectItemForPb(lastPb));
+					
+				
+					if(PositionType.START.equals(wrapper.getPositionType()))
+					{
+						balanceCounter ++;
+					}
+					else if(PositionType.END.equals(wrapper.getPositionType()))
+					{
+						balanceCounter --;
+					}
+					//System.out.println(balanceCounter);
+					
 				}
 				
+				if(balanceCounter==0)
+				{
+					
+					//System.out.println("Add pb" + wrapper.getTeiElement().getId());
+					if(wrapper.getPagebreakWrapper()!=null && !pbsToAdd.contains(wrapper.getPagebreakWrapper()))
+					{
+						pbsToAdd.add(wrapper.getPagebreakWrapper());
+					}
+					
+					
+					
+				}
+			}
+			for(TeiElementWrapper wrapper : pbsToAdd)
+			{
+				list.add(getSelectItemForPb(wrapper));
 			}
 		}
-		
-		//Add current page
-		TeiElementWrapper currentPb = startTeiElementWrapper.getPartnerElement().getPagebreakWrapper();
-		list.add(getSelectItemForPb(currentPb));
-
-		//Add pages after
-		for(int i = currentEndIndex + 1; i<flatTeiElementList.size(); i++)
+		else
 		{
-			TeiElementWrapper wrapper =  flatTeiElementList.get(i);
-			if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+		
+		
+		
+		
+			//Add pages before
+			for(int i = currentEndIndex - 1; i>=0; i--)
 			{
-				break;
+				TeiElementWrapper wrapper =  flatTeiElementList.get(i);
+				if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+				{
+					break;
+				}
+				else if(ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+				{
+					TeiElementWrapper lastPb = wrapper.getLastPagebreak();
+					if(lastPb != null)
+					{
+						list.add(0, getSelectItemForPb(lastPb));
+					}
+					
+				}
 			}
-			else if(ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+			
+			//Add current page
+			TeiElementWrapper currentPb = startTeiElementWrapper.getPartnerElement().getPagebreakWrapper();
+			list.add(getSelectItemForPb(currentPb));
+	
+			//Add pages after
+			for(int i = currentEndIndex + 1; i<flatTeiElementList.size(); i++)
 			{
-				
-				list.add(getSelectItemForPb(wrapper));
-
+				TeiElementWrapper wrapper =  flatTeiElementList.get(i);
+				if(PositionType.START.equals(wrapper.getPositionType()) || PositionType.END.equals(wrapper.getPositionType()))
+				{
+					break;
+				}
+				else if(ElementType.PB.equals(wrapper.getTeiElement().getElementType()))
+				{
+					
+					list.add(getSelectItemForPb(wrapper));
+	
+				}
 			}
 		}
 
@@ -1930,6 +2203,84 @@ public class StructuralEditorBean implements Observer {
 		*/
 		return list;
 	}
+	
+	
+	
+	
+	
+	
+	
+	public List<SelectItem> getStartPagesSelectItemsForElement(TeiElementWrapper startTeiElementWrapper)
+	{
+		
+		//only possible for BODY and BACK
+		
+		List<SelectItem> list = new ArrayList<SelectItem>();
+		
+		if(ElementType.BODY.equals(startTeiElementWrapper.getTeiElement().getElementType()) || ElementType.BACK.equals((startTeiElementWrapper.getTeiElement().getElementType())))
+		{
+			if(ElementType.BACK.equals(startTeiElementWrapper.getTeiElement().getElementType()))
+			{
+				list.add(new SelectItem(null, "X"));
+			}
+			
+			int currentStartIndex = flatTeiElementList.indexOf(startTeiElementWrapper);
+			int currentEndIndex = flatTeiElementList.indexOf(startTeiElementWrapper.getPartnerElement());
+			
+			
+			TeiElementWrapper frontBodyBackBefore = flatTeiElementList.get(currentStartIndex-1);
+			
+			int currentStartIndexOfElementBefore = flatTeiElementList.indexOf(frontBodyBackBefore.getPartnerElement());
+			
+			List<TeiElementWrapper> pbsToAdd = new ArrayList<TeiElementWrapper>();
+			//Add pages before
+			int balanceCounter = 0;
+			for(int i = currentStartIndexOfElementBefore + 1; i<currentEndIndex; i++)
+			{
+				
+				TeiElementWrapper wrapper =  flatTeiElementList.get(i);
+				
+				if(!ElementType.BODY.equals(wrapper.getTeiElement().getElementType())
+						&& !ElementType.BACK.equals(wrapper.getTeiElement().getElementType()) && !ElementType.FRONT.equals(wrapper.getTeiElement().getElementType()))
+				{
+					
+				
+					if(PositionType.START.equals(wrapper.getPositionType()))
+					{
+						balanceCounter ++;
+					}
+					else if(PositionType.END.equals(wrapper.getPositionType()))
+					{
+						balanceCounter --;
+					}
+					
+				}
+				if(balanceCounter==0)
+				{
+					
+					//System.out.println("Add pb" + wrapper.getTeiElement().getId());
+					if(wrapper.getPagebreakWrapper()!=null && !pbsToAdd.contains(wrapper.getPagebreakWrapper()))
+					{
+						pbsToAdd.add(wrapper.getPagebreakWrapper());
+					}
+					
+					
+					
+				}
+			}
+			for(TeiElementWrapper wrapper : pbsToAdd)
+			{
+				list.add(getSelectItemForPb(wrapper));
+			}
+		}
+		
+		return list;
+	}
+	
+	
+	
+	
+	
 	
 	/**
 	 * Returns the last pagebreak before the currently selectedPage, which has a structural element applied
@@ -2077,9 +2428,71 @@ public class StructuralEditorBean implements Observer {
 			}
 			
 		}
+		
+		updatePagebreaksForFrontBodyBack();
 		updateTree();
 	
 	}
+	
+	
+	
+	
+	public void moveStartPageTo(TeiElementWrapper startElementWrapper, String pageBreakToMoveToId)
+	{
+		logger.debug("Move structural element end page" + startElementWrapper.getTeiElement().getType() + " to page "  + pageBreakToMoveToId);
+		
+		TeiElementWrapper endElement = startElementWrapper.getPartnerElement();
+		TeiElementWrapper pageBreakToMoveTo = getPbWrapperforId(pageBreakToMoveToId);
+		
+		
+		
+		endElement.setPagebreakWrapper(pageBreakToMoveTo);
+		int startElementIndex = flatTeiElementList.indexOf(startElementWrapper.getPagebreakWrapper());
+		
+		
+		flatTeiElementList.remove(endElement);
+		
+		int balanceCounter = 0;
+		boolean set = false;
+		boolean started = false;
+		for(int i = startElementIndex; i<flatTeiElementList.size(); i++)
+		{
+			TeiElementWrapper currentTeiElementWrapper = flatTeiElementList.get(i);
+			if(currentTeiElementWrapper.equals(startElementWrapper))
+			{
+				
+				started=true;
+				balanceCounter--;
+			}
+			
+			if(currentTeiElementWrapper.equals(pageBreakToMoveTo))
+			{
+				set=true;
+			}
+			else if (started && PositionType.START.equals(currentTeiElementWrapper.getPositionType()))
+			{
+				balanceCounter++;
+			}
+			else if (started && PositionType.END.equals(currentTeiElementWrapper.getPositionType()))
+			{
+				balanceCounter--;
+			}
+			
+			if(started && set && balanceCounter==0)
+			{
+				System.out.println("Set end element to pos " + i+1);
+				flatTeiElementList.add(i+1, endElement);
+				//endElement.s
+				break;
+			}
+			
+		}
+		updatePagebreaksForFrontBodyBack();
+		updateTree();
+	
+	}
+	
+	
 	/*
 	public TreeWrapperNode getSubTreeForPb(TeiElementWrapper pbWrapper)
 	{
@@ -2143,9 +2556,13 @@ public class StructuralEditorBean implements Observer {
 		//setSelectedStructuralElement(elementWrapper);
 		//if(selectedStructuralElement.getPagebreakWrapper()!= selectedPb)
 		//{
+		if(elementWrapper.getPagebreakWrapper()!=null)
+		{
 			TeiElementWrapper oldSelectedPb = selectedPb;
 			setSelectedPb(elementWrapper.getPagebreakWrapper());
 			rerenderThumbnailPage(new TeiElementWrapper[]{oldSelectedPb, selectedPb});
+		}
+		
 		//}
 
 	}

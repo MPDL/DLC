@@ -34,6 +34,8 @@ public class TeiElementWrapper {
 	//The pagebreak id this element should belong to, automatically set when pagebreak wrapper is set
 	private String pagebreakIdToMoveTo;
 	
+	
+	
 	//For Pagebreaks:
 	//Link to METS page element, if a pagebreak 
 	private Page page;
@@ -123,7 +125,15 @@ public class TeiElementWrapper {
 
 	public void setPagebreakWrapper(TeiElementWrapper pagebreakWrapper) {
 		this.pagebreakWrapper = pagebreakWrapper;
-		this.pagebreakIdToMoveTo = pagebreakWrapper.getTeiElement().getId();
+		if(pagebreakWrapper!=null)
+		{
+			this.pagebreakIdToMoveTo = pagebreakWrapper.getTeiElement().getId();
+		}
+		else
+		{
+			this.pagebreakIdToMoveTo=null;
+		}
+		
 		
 	}
 
