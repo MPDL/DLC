@@ -626,13 +626,13 @@ public class IngestLog_NFS_Backup
 				}
 				if(vols.size() > 0)
 				{
-					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null, null, vols, null);
+					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null,null,  null, null, vols, null);
 					items.put(catalogueId, newItem);
 				}
 				else
 				{
 					String errorMessage = BatchIngestLogs.SINGLE_MULTIVOLUME_ERROR;
-					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null, null, null, null);
+					BatchIngestItem newItem = new BatchIngestItem(PropertyReader.getProperty("dlc.content-model.multivolume.id"), catalogueId, md, null, null, null,null, null, null, null);
 					logger.error(errorMessage);
 					newItem.getLogs().add(errorMessage);
 					errorItems.put(name, newItem);

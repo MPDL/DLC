@@ -59,9 +59,10 @@ public class IngestLog
     private int id;
 	private String userHandle;
 
+	private String images;
 	private String mab;
 	private String tei;
-	private String images;
+	private String cdc;
 	
 	private String server;
 	private boolean ftp;
@@ -94,7 +95,7 @@ public class IngestLog
     }
 
 
-	public IngestLog(String name, String action, String contextId, String userHandle, String server, boolean ftp, String username, String password, String images, String mab, String tei, BatchLog batchLog) 
+	public IngestLog(String name, String action, String contextId, String userHandle, String server, boolean ftp, String username, String password, String images, String mab, String tei, String cdc, BatchLog batchLog) 
 	{
 		this.contextId = contextId;
 		this.userHandle = userHandle;
@@ -105,6 +106,7 @@ public class IngestLog
 		this.images = images;
 		this.mab = mab;
 		this.tei = tei;  
+		this.cdc = cdc;
 		this.batchLog = batchLog;
 		try
 		{
@@ -308,9 +310,9 @@ public class IngestLog
 			batchLog.getLogs().add("CHECK DATA");
 			ftpCheckImages(itemsForBatchIngest, this.images);		
 			if(!"".equals(tei))
-				{
-					ftpReadTeiFiles(itemsForBatchIngest, errorItems, this.tei);
-				}
+				ftpReadTeiFiles(itemsForBatchIngest, errorItems, this.tei);
+			if(!"".equals(cdc))
+				ftpReadCodicologicalFiles(itemsForBatchIngest, errorItems, this.cdc);
 			ftpReadMabFiles(itemsForBatchIngest, errorItems, this.mab);
 	
 			int totalItems = 0;
@@ -561,7 +563,102 @@ public class IngestLog
 		}
 	}
 	
-	private void ftpReadTeiFiles(HashMap<String, BatchIngestItem> items, HashMap<String, BatchIngestItem> errorItems,String directory)
+	private void ftpReadCodicologicalFiles(HashMap<String, BatchIngestItem> items, HashMap<String, BatchIngestItem> errorItems,String directory)
+	{		
+ 		try {
+			batchLog.getLogs().add("CHECK Codicological FILES");
+ 			batchLog.getLogs().add("Codicological FILES directory: " + directory);
+ 			logger.info("checking Codicological FILES");
+			if(!FTPReply.isPositiveCompletion(ftpClient.getReplyCode()))
+			{
+				if(ftp)
+					ftpLogin(server, username, password);
+				else
+					ftpsLogin(server, username, password);
+			}
+			FTPFile[] filesList = ftpClient.listFiles(directory);
+			if(filesList.length == 0)
+			{
+				batchLog.getLogs().add(BatchIngestLogs.CDC_DIRECTORY_ERROR);
+				batchLog.setErrorLevel(ErrorLevel.ERROR);
+			}
+
+			for(FTPFile tmpFile : filesList)
+			{
+				if(tmpFile.isDirectory())
+					continue;
+				
+				String name = splitSuffix(tmpFile.getName());
+				BatchIngestItem item = items.get(name);
+
+				if(item == null)
+				{
+					item = new BatchIngestItem();
+					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					new File(dlcDirectory).mkdir();
+					item.setName(name);
+					item.setDlcDirectory(dlcDirectory);
+
+					File cdcFileF = File.createTempFile(tmpFile.getName(), ".cdc.xml", new File(dlcDirectory));
+					IngestImage cdcFile = new IngestImage(cdcFileF);
+					cdcFile.setName(tmpFile.getName());
+					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(cdcFileF);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					ftpClient.setDataTimeout(300000);
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
+					out.flush();
+					out.close();
+					item.setCodicologicalFile(cdcFile);
+					String errorMessage = BatchIngestLogs.SINGLE_CDC_ERROR;
+					logger.error(errorMessage + name);
+					item.getLogs().add(errorMessage);
+					errorItems.put(cdcFile.getName(), item);
+				}
+				else 
+				{
+					String dlcDirectory = item.getDlcDirectory();
+					File cdcFileF = File.createTempFile(tmpFile.getName(), ".cdc.xml", new File(dlcDirectory));
+					IngestImage cdcFile = new IngestImage(cdcFileF);
+					cdcFile.setName(tmpFile.getName());
+					//File tFile = new File(dlcDirectory + "/"+ tmpFile.getName());
+					FileOutputStream out = new FileOutputStream(cdcFileF);
+					ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+					ftpClient.setDataTimeout(300000);
+					ftpClient.retrieveFile(directory+"/"+tmpFile.getName(), out);
+					out.flush();
+					out.close();
+					item.setCodicologicalFile(cdcFile);
+
+					logger.info("read cdc for " + name);
+					try {
+						CreateVolumeServiceBean.validateCodicologicalMd(new StreamSource(cdcFileF));
+					} catch (Exception e) {
+						String error = BatchIngestLogs.CDC_SYNTAX_ERROR;
+						logger.error(error + name, e);
+						item.getLogs().add(error);
+						items.remove(name);
+						errorItems.put(name, item);
+					} 
+	
+				}
+
+			}
+
+		}catch (Exception e) {
+			logger.error("Error while checking tei files ", e);
+			batchLog.setErrorLevel(ErrorLevel.ERROR);
+			batchLog.setStep(Step.STOPPED);
+			batchLog.getLogs().add(BatchIngestLogs.FTP_CONNECT_ERROR);
+		}
+		finally
+		{
+			update(batchLog);
+		}
+		
+	}
+	
+	private void ftpReadTeiFiles(HashMap<String, BatchIngestItem> items, HashMap<String, BatchIngestItem> errorItems, String directory)
 	{		
  		try {
 			batchLog.getLogs().add("CHECK TEI FILES");
@@ -1236,7 +1333,7 @@ public class IngestLog
 	
 						CreateVolumeServiceBean cvsb = new CreateVolumeServiceBean(logItem, em);
 						Volume vol = new Volume();
-						vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter(), bi.getTeiFile(), null);
+						vol = cvsb.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.monograph.id"), contextId, null, userHandle, bi.getModsMetadata(), bi.getImageFiles(), bi.getFooter(), bi.getTeiFile(), bi.getCodicologicalFile());
 						logItem.setEscidocId(vol.getItem().getOriginObjid());
 						logItem.setShortTitle(VolumeUtilBean.getShortTitleView(vol));
 						logItem.setSubTitle(VolumeUtilBean.getSubTitleView(vol));
@@ -1294,7 +1391,7 @@ public class IngestLog
 								update(logItemVolume);								
 								String mvId = mv.getItem().getObjid();
 								CreateVolumeServiceBean cvsb2 = new CreateVolumeServiceBean(logItemVolume, em);
-								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter(), vol.getTeiFile(), null);
+								Volume v = cvsb2.createNewItem(operation, PropertyReader.getProperty("dlc.content-model.volume.id"), contextId, mvId, userHandle, vol.getModsMetadata(), vol.getImageFiles(), vol.getFooter(), vol.getTeiFile(), vol.getCodicologicalFile());
 								volIds.add(v.getItem().getObjid());
 								logItem.setFinished_volumes_nr(volIds.size());
 								logItemVolume.setEscidocId(v.getItem().getObjid());
@@ -1390,6 +1487,7 @@ public class IngestLog
 				else
 					logItem.setVolumes_nr(bi.getVolumes().size());
 				logItem.setTeiFileName((bi.getTeiFile() != null) ? bi.getTeiFile().getName() : null);
+				logItem.setCodicologicalFileName((bi.getCodicologicalFile() != null) ? bi.getCodicologicalFile().getName() : null);
 				logItem.setfFileName((bi.getFooter() != null) ? bi.getFooter().getName() : null);
 				
 				addNewLogItem(logItem);
@@ -1409,6 +1507,7 @@ public class IngestLog
 						logItemVolume.setContent_model(vol.getContentModel());
 						logItemVolume.setImages_nr(vol.getImageNr());
 						logItemVolume.setTeiFileName((vol.getTeiFile() != null) ? vol.getTeiFile().getName() : null);
+						logItemVolume.setCodicologicalFileName((vol.getCodicologicalFile() != null) ? vol.getCodicologicalFile().getName() : null);
 						logItemVolume.setfFileName((vol.getFooter()!=null)? vol.getFooter().getName() : null);
 						
 						addNewLogItemVolume(logItem, logItemVolume);
@@ -1575,6 +1674,10 @@ public class IngestLog
 	public String getImages() {
 		return images;
 	}
+	
+
+
+
 	public void setImages(String images) {
 		this.images = images;
 	}
