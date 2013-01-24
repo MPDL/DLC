@@ -109,7 +109,7 @@ public class ContextServiceBean {
 			}
 			else
 			{
-				req.setQuery(req.getQuery() + " sortby \"/sort/properties/creation-date\" /sort.descending");
+				req.setQuery(req.getQuery() + " sortby \"/sort/admin-descriptors/admin-descriptor/description\"");
 			}
 			response = contextClient.retrieveContexts(req);
 			for(SearchResultRecord rec : response.getRecords())
