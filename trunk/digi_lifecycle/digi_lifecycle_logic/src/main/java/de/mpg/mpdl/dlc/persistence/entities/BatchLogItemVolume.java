@@ -74,20 +74,6 @@ public class BatchLogItemVolume {
 	@Column(columnDefinition="TEXT")
 	private String subTitle;
 	
-	public Step getStep() {
-		return step;
-	}
-
-
-	public void setStep(Step step) {
-		this.step = step;
-	}
-
-
-	public void setErrorLevel(ErrorLevel errorLevel) {
-		this.errorLevel = errorLevel;
-	}
-
 
 	private String content_model;
 	
@@ -96,6 +82,8 @@ public class BatchLogItemVolume {
 	private String fFileName;
 	
 	private String teiFileName;
+	
+	private String codicologicalFileName;
 	
 //	@PrePersist
 //	@PreUpdate
@@ -144,6 +132,18 @@ public class BatchLogItemVolume {
 	public void setErrorlevel(ErrorLevel errorLevel) {
 		this.errorLevel = errorLevel;
 	}
+	
+
+	public Step getStep() {
+		return step;
+	}
+
+
+	public void setStep(Step step) {
+		this.step = step;
+	}
+
+
 
 
 	public Date getStartDate() {
@@ -244,7 +244,13 @@ public class BatchLogItemVolume {
 		this.subTitle = subTitle;
 	}
 
+	public String getCodicologicalFileName() {
+		return codicologicalFileName;
+	}
 
+	public void setCodicologicalFileName(String codicologicalFileName) {
+		this.codicologicalFileName = codicologicalFileName;
+	}
 
 
 	
