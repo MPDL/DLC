@@ -205,41 +205,45 @@
 									<f:param value="1"/>
 									<h:outputText value="#{logItem.shortTitle}"/>
 								</pretty:link>
-							</rich:column>
-							
+							</rich:column>						
 							<rich:column style="vertical-align:top;" rendered="#{not empty logItem.escidocId and logItem.content_model == applicationBean.cmMultiVol}" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.shortTitle}"/>
 							</rich:column>
-
-							
 							<rich:column rendered="#{empty logItem.escidocId}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value=""/>
 							</rich:column>
 							
-					        <rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+					        <rich:column rendered="#{logItem.content_model == applicationBean.cmMono}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 			            		<h:outputText value="#{lbl.monograph}"/>
 			       			</rich:column>
 			       			<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 			            		<h:outputText value="#{lbl.multivolume}"/>
 			       			</rich:column>
+			       			<rich:column rendered="#{logItem.content_model == applicationBean.cmVolume}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+			            		<h:outputText value="#{lbl.volume}"/>
+			       			</rich:column>
+			       			
 							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.images_nr}"/>
 							</rich:column>
 							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value=""/>
 							</rich:column>
+							
 							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value=""/>
 							</rich:column>
 							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.volumes_nr}"/>
 							</rich:column>
+							
 							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value=""/>
 							</rich:column>
 							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.finished_volumes_nr}"/>
 							</rich:column>
+							
 							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.fFileName}"/>
 							</rich:column>
@@ -248,8 +252,7 @@
 							</rich:column>
 							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
 								<h:outputText value="#{logItem.codicologicalFileName}" />
-							</rich:column>
-							
+							</rich:column>							
 
 
 							<rich:column colspan="14" breakRowBefore="true"  rendered="#{logItem.content_model == applicationBean.cmMultiVol and logItem.volumes_nr > 0}">
@@ -302,6 +305,9 @@
 								                <rich:column>
 								                    <h:outputText value="#{lbl.batch_ingest_log_tei}"/>
 								                </rich:column>
+								                <rich:column>
+					                    			<h:outputText value="#{lbl.batch_ingest_log_cdc}"/>
+					                			</rich:column>
 							           		</rich:columnGroup>
 						       			 </f:facet>    	
 									
