@@ -224,7 +224,8 @@ public class InternationalizationHelper extends Observable
 		List<SelectItem> itemList = new ArrayList<SelectItem>();
 		
 		
-		itemList.add(new SelectItem("TITLE_PAGE", getLabel("edit_elementType_title_page")));
+		//itemList.add(new SelectItem("TITLE_PAGE", getLabel("edit_elementType_title_page")));
+		itemList.add(new SelectItem("titlepage", getLabel("edit_elementType_title_page")));
 		itemList.add(new SelectItem("FIGURE", getLabel("edit_elementType_figure")));
 		itemList.add(new SelectItem("acknowledgement", getLabel("structuretype_acknowledgement")));
 		itemList.add(new SelectItem("additional", getLabel("structuretype_additional")));
