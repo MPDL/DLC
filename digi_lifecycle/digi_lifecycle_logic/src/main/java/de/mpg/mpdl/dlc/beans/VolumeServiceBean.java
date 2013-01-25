@@ -1361,7 +1361,7 @@ public class VolumeServiceBean {
 		
 		//System.out.println(pagedTeiResult);
 		
-		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/dlc-tei-xsl-6.15/xml/tei/profiles/dlc/html/to.xsl");
+		URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/dlc-tei-xsl-6.26/xml/tei/profiles/dlc/html/to.xsl");
 		//URL url = MabXmlTransformation.class.getClassLoader().getResource("xslt/teiToXhtml/tei2html.xsl");
 		
 		Source xsltSource = new StreamSource(url.toExternalForm());
