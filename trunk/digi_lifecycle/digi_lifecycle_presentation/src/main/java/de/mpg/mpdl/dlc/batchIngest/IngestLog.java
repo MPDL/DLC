@@ -345,18 +345,14 @@ public class IngestLog
 					Entry item = (Entry) i.next();
 					BatchIngestItem bi = (BatchIngestItem) item.getValue();
 					
-					if(bi.getContentModel()==null)
-					{
-						totalItems ++;
-					}
-					else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.monograph.id")))
-					{
-						totalItems ++;
-					}
-					else if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
+					if(bi.getContentModel().equals(PropertyReader.getProperty("dlc.content-model.multivolume.id")))
 					{
 						totalItems ++;
 						totalItems = totalItems + bi.getVolumes().size();
+					}
+					else
+					{
+						totalItems ++;
 					}
 				}
 				errorItems = saveLogItems(errorItems, ErrorLevel.ERROR);
@@ -822,7 +818,7 @@ public class IngestLog
 	
 	private void ftpReadMabFiles(HashMap<String, BatchIngestItem> items, HashMap<String, BatchIngestItem> errorItems, String directory)
 	{
-		
+		 
 //		ftp.changeWorkingDirectory(directory);
  		try {
  			batchLog.getLogs().add("CHECK MAB FILES");
