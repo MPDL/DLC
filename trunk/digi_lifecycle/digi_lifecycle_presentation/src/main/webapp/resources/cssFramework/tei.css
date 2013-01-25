@@ -1309,10 +1309,19 @@ span.numberParagraph {
     color: grey;
 }
 
-
+.textfloat,
 .teidiv1,
-.teidiv2 {
+.teidiv2,
+.teidiv3,
+.teidiv4,
+.teidiv5,
+.teidiv6, 
+.teidiv7,
+.teidiv8,
+.teidiv9
+{
 	width:100%;
+	font-size: 1em;
 }
 
 
@@ -1332,36 +1341,47 @@ span.numberParagraph {
 }
 #fulltext .no_ind {
 	text-indent: none;
+	font-size: 1em;
 }
 #fulltext .ind-1 {
 	text-indent: -1em;
+	font-size: 1em;
 }
 #fulltext .ind-2 {
 	text-indent: -2em;
+	font-size: 1em;
 }
 #fulltext .ind-3 {
 	text-indent: -3em;
+	font-size: 1em;
 }
 #fulltext .ind {
 	text-indent: 1em;
+	font-size: 1em;
 }
 #fulltext .r {
 	text-align: right;
+	font-size: 1em;
 }
 #fulltext .l {
 	text-align: left;
+	font-size: 1em;
 }
 #fulltext .l1em {
 	margin-left: 1em;
+	font-size: 1em;
 }
 #fulltext .l2em {
 	margin-left: 2em;
+	font-size: 1em;
 }
 #fulltext .l3em {
 	margin-left: 3em;
+	font-size: 1em;	
 }
 #fulltext .r1em {
 	margin-right: 1em;
+	font-size: 1em;
 }
 #fulltext .hidden {
 	display: none;
@@ -1386,18 +1406,23 @@ span.numberParagraph {
 }
 #fulltext .smcap {
 	font-variant: 1em;
+	font-size: 1em;	
 }
 #fulltext .i {
-	font-style: italic
+	font-style: italic;
+	font-size: 1em;	
 }
 #fulltext .b {
-	font-weight: bold
+	font-weight: bold;
+	font-size: 1em;	
 }
 #fulltext .rom {
-	/*font-family: "times new roman", times, serif;*/
+	font-family: "times new roman", times, serif;
+	font-size: 1em;	
 }
 #fulltext .goth {
-	/*font-family: "times new roman", times, serif;*/
+	font-family: "times new roman", times, serif;
+	font-size: 1em;	
 }
 #fulltext .sup {
 	font-size: 0.8em; vertical-align: super;
@@ -1406,31 +1431,32 @@ span.numberParagraph {
 	font-size: 0.8em; vertical-align: sub;
 }
 #fulltext .ul {
-	text-decoration: underline
+	text-decoration: underline;
+	font-size: 1em;	
 }
 
 #fulltext h1 {
-   font-weight: bold;
+   font-weight: normal;
    font-size: 1em;
 }
 
 #fulltext h2 {
-   font-weight: bold;
+   font-weight: normal;
    font-size: 1em;
 }
 
 #fulltext h3 {
-   font-weight: bold;
+   font-weight: normal;
    font-size: 1em;
 }
 
 #fulltext h4 {
-   font-weight: bold;
+   font-weight: normal;
    font-size: 1em;
 }
 
 #fulltext h5 {
-   font-weight: bold;
+   font-weight: normal;
    font-size: 1em;
 }
 
