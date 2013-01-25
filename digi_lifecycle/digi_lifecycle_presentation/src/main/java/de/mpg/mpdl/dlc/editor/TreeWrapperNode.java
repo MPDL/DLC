@@ -92,12 +92,6 @@ public class TreeWrapperNode {
 						siblingBefore.getPartnerElement().getPagebreakWrapper().equals(this.getTeiElementWrapper().getPagebreakWrapper());
 				
 			}
-			else 
-			{
-				//or if there is no sibling, return true if parent is BODY or BACK
-				ElementType parentElementType = parent.getTeiElementWrapper().getTeiElement().getElementType();
-				return ElementType.BODY.equals(parentElementType) || ElementType.BACK.equals(parentElementType);
-			}
 			
 			
 		}
@@ -110,15 +104,11 @@ public class TreeWrapperNode {
 		
 		if(parent!=null)
 		{
-			
-			ElementType parentElementType = parent.getTeiElementWrapper().getTeiElement().getElementType();
-			
-			int indexInParent = parent.getChildren().indexOf(this);
-			//if there's a sibling after
-			if(indexInParent + 1 < parent.getChildren().size())
+			if(this.getTeiElementWrapper().getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper()))
 			{
-
-				if(this.getTeiElementWrapper().getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper()))
+				
+				int indexInParent = parent.getChildren().indexOf(this);
+				if(indexInParent + 1 < parent.getChildren().size())
 				{
 					TeiElementWrapper siblingAfter = parent.getChildren().get(indexInParent + 1).getTeiElementWrapper();
 					return siblingAfter.getPagebreakWrapper().equals(this.getTeiElementWrapper().getPartnerElement().getPagebreakWrapper());
@@ -126,14 +116,6 @@ public class TreeWrapperNode {
 				}
 				
 			}
-			//else if front or body is the parent
-			else if (ElementType.FRONT.equals(parentElementType) || ElementType.BODY.equals(parentElementType))
-			{
-
-				return true; 
-			}
-			
-			
 		}
 		
 
@@ -152,7 +134,7 @@ public class TreeWrapperNode {
 		
 		return (
 				
-				(ElementType.TITLE_PAGE.equals(elType) && (ElementType.FIGURE.equals(parentElType) || ElementType.DIV.equals(parentElType) || ElementType.BODY.equals(parentElType) || ElementType.BACK.equals(parentElType)) || 
+				(ElementType.TITLE_PAGE.equals(elType) && (ElementType.FIGURE.equals(parentElType) || ElementType.DIV.equals(parentElType)) || 
 				
 				(ElementType.DIV.equals(elType) && (ElementType.FIGURE.equals(parentElType) || ElementType.TITLE_PAGE.equals(parentElType)))));
 	}

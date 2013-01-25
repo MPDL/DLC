@@ -1576,7 +1576,7 @@ public class VolumeServiceBean {
 		Processor proc = new Processor(false);
         XPathCompiler xpath = proc.newXPathCompiler();
         xpath.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
-        XPathExecutable xx = xpath.compile("//tei:titlePage[1]/preceding::tei:pb[1]");
+        XPathExecutable xx = xpath.compile("//tei:titlePage[1]/preceding::tei:pb[1]|//tei:div[@type='titlepage'][1]/preceding::tei:pb[1]");
         // Run the XPath Expression
         XPathSelector selector = xx.load();
         
