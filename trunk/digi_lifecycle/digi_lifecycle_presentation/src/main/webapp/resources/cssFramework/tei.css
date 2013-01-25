@@ -1314,3 +1314,123 @@ span.numberParagraph {
 .teidiv2 {
 	width:100%;
 }
+
+
+/*AW: 24.01.2013 */
+#fulltext {
+   font-size: 12pt;
+}
+
+
+#fulltext .w {
+	letter-spacing: 2pt;
+	font-size: 1em;
+}
+#fulltext .c {
+	text-align: center;
+	font-size: 1em;
+}
+#fulltext .no_ind {
+	text-indent: none;
+}
+#fulltext .ind-1 {
+	text-indent: -1em;
+}
+#fulltext .ind-2 {
+	text-indent: -2em;
+}
+#fulltext .ind-3 {
+	text-indent: -3em;
+}
+#fulltext .ind {
+	text-indent: 1em;
+}
+#fulltext .r {
+	text-align: right;
+}
+#fulltext .l {
+	text-align: left;
+}
+#fulltext .l1em {
+	margin-left: 1em;
+}
+#fulltext .l2em {
+	margin-left: 2em;
+}
+#fulltext .l3em {
+	margin-left: 3em;
+}
+#fulltext .r1em {
+	margin-right: 1em;
+}
+#fulltext .hidden {
+	display: none;
+}
+#fulltext .s {
+	font-size: 1em;
+}
+#fulltext .x-s {
+	font-size: 1em;
+}
+#fulltext .xx-s {
+	font-size: 1em;
+}
+#fulltext .lar {
+	font-size: 1em;
+}
+#fulltext .x-lar {
+	font-size: 1em;
+}
+#fulltext .xx-lar {
+	font-size: 1em;
+}
+#fulltext .smcap {
+	font-variant: 1em;
+}
+#fulltext .i {
+	font-style: italic
+}
+#fulltext .b {
+	font-weight: bold
+}
+#fulltext .rom {
+	/*font-family: "times new roman", times, serif;*/
+}
+#fulltext .goth {
+	/*font-family: "times new roman", times, serif;*/
+}
+#fulltext .sup {
+	font-size: 0.8em; vertical-align: super;
+}
+#fulltext .sub {
+	font-size: 0.8em; vertical-align: sub;
+}
+#fulltext .ul {
+	text-decoration: underline
+}
+
+#fulltext h1 {
+   font-weight: bold;
+   font-size: 1em;
+}
+
+#fulltext h2 {
+   font-weight: bold;
+   font-size: 1em;
+}
+
+#fulltext h3 {
+   font-weight: bold;
+   font-size: 1em;
+}
+
+#fulltext h4 {
+   font-weight: bold;
+   font-size: 1em;
+}
+
+#fulltext h5 {
+   font-weight: bold;
+   font-size: 1em;
+}
+
