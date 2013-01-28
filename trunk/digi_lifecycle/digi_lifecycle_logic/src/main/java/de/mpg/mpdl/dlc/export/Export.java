@@ -44,6 +44,7 @@ import com.lowagie.text.pdf.PdfDestination;
 import com.lowagie.text.pdf.PdfOutline;
 import com.lowagie.text.pdf.PdfWriter;
 
+import de.escidoc.core.common.exceptions.remote.application.notfound.ResourceNotFoundException;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.component.Component;
@@ -117,7 +118,7 @@ public class Export {
 	 * @return byte array of the item in mets/mods format (xml)
 	 * @throws Exception
 	 */
-	public byte[] metsModsExport(String itemId) throws Exception
+	public byte[] metsModsExport(String itemId) throws Exception, ResourceNotFoundException
 	{
         String xsltUri ="export/dlczvddmets.xsl";
         String itemXml;

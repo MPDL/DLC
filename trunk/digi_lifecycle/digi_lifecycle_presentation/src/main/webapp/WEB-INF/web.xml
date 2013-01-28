@@ -79,14 +79,22 @@
 		<servlet-name>Image Servlet</servlet-name>
 		<url-pattern>/images/*</url-pattern>
 	</servlet-mapping>
-	 <servlet>
-  <servlet-name>Export Servlet</servlet-name>
-	<servlet-class>de.mpg.mpdl.dlc.export.ExportServlet</servlet-class>
+  <servlet>
+  		<servlet-name>Export Servlet</servlet-name>
+		<servlet-class>de.mpg.mpdl.dlc.export.ExportServlet</servlet-class>
   </servlet>
-	<servlet-mapping>
+  <servlet-mapping>
 		<servlet-name>Export Servlet</servlet-name>
 		<url-pattern>/export/*</url-pattern>
-	</servlet-mapping>
+  </servlet-mapping>
+  <servlet>
+  		<servlet-name>OAI Servlet</servlet-name>
+		<servlet-class>de.mpg.mpdl.dlc.export.OaiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+		<servlet-name>OAI Servlet</servlet-name>
+		<url-pattern>/oai/*</url-pattern>
+  </servlet-mapping>
   <session-config>
     <session-timeout>180</session-timeout>
   </session-config>
