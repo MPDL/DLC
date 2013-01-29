@@ -118,9 +118,17 @@ public class Export {
 	 * @return byte array of the item in mets/mods format (xml)
 	 * @throws Exception
 	 */
-	public byte[] metsModsExport(String itemId) throws Exception, ResourceNotFoundException
+	public byte[] metsModsExport(String itemId, boolean oai) throws Exception, ResourceNotFoundException
 	{
-        String xsltUri ="export/dlczvddmets.xsl";
+		String xsltUri = "";
+		if (oai)
+		{
+			xsltUri ="export/dlczvddmets_oai.xsl";
+		}
+		else
+		{
+			xsltUri ="export/dlczvddmets.xsl";
+		}
         String itemXml;
 		try {
 			itemXml = this.getEscidocItem(itemId);
@@ -146,6 +154,10 @@ public class Export {
             transformer.setParameter("metsUrl",PropertyReader.getProperty("escidoc.common.framework.url")+metsUrl);
             transformer.setParameter("imageUrl", PropertyReader.getProperty("image-upload.url.download")); 
             transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            //For oai export
+            transformer.setParameter("itemDate", vol.getItem().getProperties().getCreationDate()); 
+            transformer.setParameter("itemCollection", "context_"+vol.getItem().getProperties().getContext().getObjid().replace(":", "_"));  
+            
             
             StringReader xmlSource = (new StringReader(itemXml));
             transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
