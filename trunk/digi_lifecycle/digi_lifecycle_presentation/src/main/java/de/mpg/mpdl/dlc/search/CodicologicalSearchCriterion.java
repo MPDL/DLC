@@ -137,6 +137,16 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 	
 	public void superElementNameChanged()
 	{
+		try {
+			objectCdcMap = CodicologicalSearchCriterion.getMap("object");
+			bodyOfVolumeCdcMap = CodicologicalSearchCriterion.getMap("bodyOfVolume");
+			provenanceCdcMap = CodicologicalSearchCriterion.getMap("provenance");
+			bindingCdcMap = CodicologicalSearchCriterion.getMap("binding");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		if (superElementName.equals("object") && objectCdcMap!=null && objectCdcMap.size()>0)
 		{
 			cloneValues(objectCdcMap.entrySet().iterator().next().getValue());
@@ -310,6 +320,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 	    			
 	    			if(childNode.getNodeKind().equals(XdmNodeKind.ELEMENT))
 	    			{
+	    				//element/choice
 		    			if(childNode.getNodeName().getLocalName().equals("choice"))
 		    			{
 		    				cse.setType(Type.ENUM);
@@ -340,6 +351,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		    			}
 						
 					
+		    			// element/data or attribute/data
 		    			else if(childNode.getNodeName().getLocalName().equals("data"))
 		    			{
 		    				String dataType = childNode.getAttributeValue(new QName("type"));
@@ -353,8 +365,12 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		    					cse.setValue("false");
 		    				}
 		    			}
+		    			
+		    			//element/optional/attribute
 		    			else if(childNode.getNodeName().getLocalName().equals("optional"))
 		    			{
+		    				//Currently uncommented, because it should not be possible to search fpr attributes
+		    				
 		    				for(Iterator<XdmItem> iterAttr = childNode.axisIterator(Axis.CHILD); iterAttr.hasNext();)
 		    				{
 		    					XdmItem attributeItem = iterAttr.next();
@@ -374,12 +390,19 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		    					}
 		    					
 		    				}
+		    				
 		    			}
 	    			}
 	    			
 				}
 			
 	        }
+        	//Remove criterion if it has no valid type
+        	if(cse.getType()==null)
+        	{
+        		cdcList.remove(cse.getElementName());
+        		//logger.info("Removing element " + cse.getElementName());
+        	}
         
 
         }
