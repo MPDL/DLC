@@ -140,10 +140,10 @@ public class OaiServlet extends HttpServlet
         URLConnection conn = null;
         
         //Set url of escidoc oai provider
-		String context = "/oai/?";
+		String context = "oai/?";
 		String base ="";
 		try {
-			base = PropertyReader.getProperty("dlc.instance.url");
+			base = PropertyReader.getProperty("escidoc.common.login.url");
 			//base = "http://dlc.mpdl.mpg.de:8080";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
