@@ -517,7 +517,7 @@
 										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
-									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn">
 										<f:param value="#{viewPages.volumeId}"/>
 										<f:param value="#{viewPages.viewTypeText}"/>
 										<f:param value="#{viewPages.selectedPageNumber}"/>
@@ -542,7 +542,7 @@
 										<f:ajax render=":viewPage :citationOverlayArea"/>
 									</h:commandLink>
 									
-									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn" title="#{tlt.paginator_switchToFullscreen}">
+									<pretty:link mappingId="fullScreen" styleClass="eg3_modusBtn">
 										<f:param value="#{viewPages.volumeId}"/>
 										<f:param value="#{viewPages.viewTypeText}"/>
 										<f:param value="#{viewPages.selectedPageNumber}"/>
@@ -568,11 +568,11 @@
 									<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
 										<!-- pagination buttons for previous -->
 										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
-											<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+											<h:commandLink action="#{viewPages.goToFirstPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+											<h:commandLink action="#{viewPages.goToPreviousPage}">
 												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
@@ -589,11 +589,11 @@
 										
 										<!-- pagination buttons for next -->
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-											<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
+											<h:commandLink action="#{viewPages.goToNextPage}">
 												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+											<h:commandLink action="#{viewPages.goToLastPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
@@ -624,11 +624,11 @@
 									<!-- pagination buttons for previous -->
 									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight">
 										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
-											<h:commandLink action="#{viewPages.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+											<h:commandLink action="#{viewPages.goToFirstPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+											<h:commandLink action="#{viewPages.goToPreviousPage}">
 												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 													<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
@@ -666,11 +666,11 @@
 								   	<!-- pagination buttons for next -->
 								   	<h:panelGroup styleClass="eg3_floatLeft">
 										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-											<h:commandLink action="#{viewPages.goToNextPage}" title="#{tlt.paginator_goToNextPage}">
+											<h:commandLink action="#{viewPages.goToNextPage}">
 												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 												<f:ajax render=":viewPage :citationOverlayArea"/>
 											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+											<h:commandLink action="#{viewPages.goToLastPage}">
 												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 		
 												<f:ajax render=":viewPage :citationOverlayArea"/>
