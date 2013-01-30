@@ -1703,6 +1703,19 @@ body .eg3_id_siteTitle {
 	width:85.9%;
 }
 
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemHeadline {
+	width:93.41%;
+	padding:0.083333em 1.6% 0.1666em 0; 
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemHeadline .eg3_itemTitle {
+	font-weight:bold;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemLabelArea {
+	line-height: 145%;
+    padding: 0 0.8% 0 0;
+    width: 63.41%;
+}
+
 .eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemHeadline {
 	width:93.41%;
 	padding:0.083333em 1.6% 0.1666em 1.6%; 
