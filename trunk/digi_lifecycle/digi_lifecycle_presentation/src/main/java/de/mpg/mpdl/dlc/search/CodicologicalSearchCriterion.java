@@ -357,7 +357,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		    			else if(childNode.getNodeName().getLocalName().equals("data"))
 		    			{
 		    				String dataType = childNode.getAttributeValue(new QName("type"));
-		    				if(dataType.equals("token"))
+		    				if(dataType.equals("token") || dataType.equals("short"))
 		    				{
 		    					cse.setType(Type.TEXT);
 		    				}
