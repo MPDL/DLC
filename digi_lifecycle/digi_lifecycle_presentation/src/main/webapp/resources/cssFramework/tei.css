@@ -1180,11 +1180,12 @@ li.showall, li.showall a:visited,li.showall a:link {
 * html .index li {
     margin: 0.2em 0.2em;
 }
+/*
 ul.index li a:hover {
     background-color: #93D1E4;
     color: #fff;
     text-decoration: underline;
-}
+}*/
 div.atozwrapper {
    float: left;
    width: 70%;
@@ -1309,27 +1310,31 @@ span.numberParagraph {
     color: grey;
 }
 
-.textfloat,
-.teidiv1,
-.teidiv2,
-.teidiv3,
-.teidiv4,
-.teidiv5,
-.teidiv6, 
-.teidiv7,
-.teidiv8,
-.teidiv9
-{
-	width:100%;
-	font-size: 1em;
-}
-
-
 /*AW: 24.01.2013 */
 #fulltext {
    font-size: 12pt;
 }
 
+#fulltext .textfloat,
+#fulltext .notes,
+#fulltext .docImprint,
+#fulltext .teidiv1,
+#fulltext .teidiv2,
+#fulltext .teidiv3,
+#fulltext .teidiv4,
+#fulltext .teidiv5,
+#fulltext .teidiv6, 
+#fulltext .teidiv7,
+#fulltext .teidiv8,
+#fulltext .teidiv9
+{
+	width:100%;
+	font-size: 1em;
+}
+
+#fulltext span.noteLabel {
+	float: left;
+}
 
 #fulltext .w {
 	letter-spacing: 2pt;
@@ -1338,6 +1343,7 @@ span.numberParagraph {
 #fulltext .c {
 	text-align: center;
 	font-size: 1em;
+	width:100%;
 }
 #fulltext .no_ind {
 	text-indent: none;
@@ -1458,5 +1464,15 @@ span.numberParagraph {
 #fulltext h5 {
    font-weight: normal;
    font-size: 1em;
+}
+
+#fulltext a.link_ptr,
+#fulltext a.link_ref {
+   color: #EA7125;
+}
+
+#fulltext a.link_ptr:hover
+#fulltext a.link_ref:hover {
+   color: black;
 }
 

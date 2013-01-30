@@ -50,6 +50,7 @@ of this software, even if advised of the possibility of such damage.
   <xsl:param name="urlMarkup">span</xsl:param>
   <xsl:param name="linkAttributeNamespace">http://www.w3.org/1999/xlink</xsl:param>
   <xsl:param name="outputSuffix">freddy</xsl:param>
+  <xsl:param name="linkTarget">target</xsl:param> <!-- AW: 29.01.2013 -->
   <doc xmlns="http://www.oxygenxml.com/ns/doc/xsl">
       <desc>Process element  in xref mode</desc>
    </doc>
@@ -427,6 +428,7 @@ of this software, even if advised of the possibility of such damage.
                <xsl:value-of select="@type"/>
             </xsl:attribute>
          </xsl:if>
+         <xsl:attribute name="{$linkTarget}" >_blank</xsl:attribute> <!-- AW: 29.01.2013 -->	 
          <xsl:attribute name="{$linkAttribute}" namespace="{$linkAttributeNamespace}">
             <xsl:value-of select="$dest"/>
             <xsl:if test="contains(@from,'id (')">

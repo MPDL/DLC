@@ -16,6 +16,23 @@
 
 ######################################################################
 
+Korrekturen 2013/01/28
+	Alt (falsch):
+		"value: Andere Variante – siehe Details"
+	Neu (richtig):
+		"value: Andere Variante - siehe Details"
+	
+	+ Spelling Korrektur "Zeitungsartikel"
+	- entfernt: "value: Fore-edge-painting"
+	- entfernt: "value: Goldprägung"
+	- entfernt: "value: verschobener Schnitt"
+
+Korrekturen 2013/01/29
+	- entfernt: "value: Wildschweinledereinband" (A.C)
+	- entfernt: "value: Wildschweinleder auf Holz" (A.C.)
+	- entfernt: "value: Wildschweinleder auf Pappe" (A.C.)
+	+ wieder hinzugefügt: "value: verschobener Schnitt" (A.C.)
+
 Erste Diskussionsvorschlge zur Optimierung:
 	- Boolean Elemente in die Attribute (oder auch raus)
 	- "Detail-Freitextfelder" nicht für jedes einzelne Thema als EInzelelement,
@@ -273,7 +290,7 @@ Sonstige Hinweise:
 										<value>Oblate</value>
 										<value>Devotionalie</value>
 										<value>Notizblatt</value>
-										<value>Zeitungsartitek</value>
+										<value>Zeitungsartikel</value>
 										<value>Katalogartikel Verkaufskatalog</value>
 										<value></value>
 									</choice>
@@ -388,7 +405,6 @@ Sonstige Hinweise:
 									<value>Goldschnitt punziert</value>
 									<value>bei Neubindung beschnitten</value>
 									<value>Blätter unbeschnitten</value>
-									<value>Fore-edge-painting</value>
 									<value>unaufgeschnitten</value>
 									<value>teilweise unaufgeschnitten</value>
 									<value>aufgeschnitten</value>
@@ -763,9 +779,6 @@ Sonstige Hinweise:
 									<value>Schweinsledereinband</value>
 									<value>Schweinsleder auf Holz</value>
 									<value>Schweinsleder auf Pappe</value>
-									<value>Wildschweinledereinband</value>
-									<value>Wildschweinleder auf Holz</value>
-									<value>Wildschweinleder auf Pappe</value>
 									<value>Kalbsledereinband</value>
 									<value>Kalbsleder auf Holz</value>
 									<value>Kalbsleder auf Pappe</value>
@@ -853,7 +866,6 @@ Sonstige Hinweise:
 									<value>Blindstempelung - Rollenstempel</value>
 									<value>Blindstempelung - Plattenstempel</value>
 									<value>Blindstempelung - Goldstempeleinband</value>
-									<value>Goldprägung</value>
 									<value>Streicheisenlinien</value>
 									<value>Lederschnitt</value>
 									<value>Goldschnitt punziert</value>
