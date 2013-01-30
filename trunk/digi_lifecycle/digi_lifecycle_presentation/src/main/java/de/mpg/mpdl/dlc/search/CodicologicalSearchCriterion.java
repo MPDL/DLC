@@ -137,6 +137,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 	
 	public void superElementNameChanged()
 	{
+		/*
 		try {
 			objectCdcMap = CodicologicalSearchCriterion.getMap("object");
 			bodyOfVolumeCdcMap = CodicologicalSearchCriterion.getMap("bodyOfVolume");
@@ -146,6 +147,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
 		if (superElementName.equals("object") && objectCdcMap!=null && objectCdcMap.size()>0)
 		{
