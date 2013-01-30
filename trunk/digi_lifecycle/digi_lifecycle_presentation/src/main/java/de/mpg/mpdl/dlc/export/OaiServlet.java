@@ -77,7 +77,7 @@ public class OaiServlet extends HttpServlet
 	        	else
 	        	{
 	        		Export export = new Export();
-	        		this.content = export.metsModsExport(id.replace("oai:escidoc.org:", ""));
+	        		this.content = export.metsModsExport(id.replace("oai:escidoc.org:", ""), true);
 	        		this.status = 200;
 	        		this.contentType ="application/xml";
 	        	}

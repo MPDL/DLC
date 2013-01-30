@@ -77,7 +77,7 @@ public class ExportServlet extends HttpServlet
 	        if (valid && format.equalsIgnoreCase(ExportTypes.MODS.toString()))
 	        {
 	        	this.contentType ="application/xml";
-	        	this.content = export.metsModsExport(identifier);	        	
+	        	this.content = export.metsModsExport(identifier, false);	        	
 	        }
 	        if (valid && format.equalsIgnoreCase(ExportTypes.TEI.toString()))
 	        {
