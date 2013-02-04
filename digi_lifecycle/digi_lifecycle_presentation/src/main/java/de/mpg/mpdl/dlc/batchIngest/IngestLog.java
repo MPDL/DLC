@@ -500,7 +500,7 @@ public class IngestLog
 			{
 				if(d.isDirectory() && !".".equals(d.getName()) && !"..".equals(d.getName()))
 				{
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					String dlcDirectory = VolumeServiceBean.tmpDir + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					
 					String name = d.getName();
@@ -590,7 +590,7 @@ public class IngestLog
 				if(item == null)
 				{
 					item = new BatchIngestItem();
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					String dlcDirectory = VolumeServiceBean.tmpDir + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					item.setName(name);
 					item.setDlcDirectory(dlcDirectory);
@@ -692,7 +692,7 @@ public class IngestLog
 				if(item == null)
 				{
 					item = new BatchIngestItem();
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					String dlcDirectory = VolumeServiceBean.tmpDir + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					item.setName(name);
 					item.setDlcDirectory(dlcDirectory);
@@ -938,7 +938,7 @@ public class IngestLog
 				{
 					item = new BatchIngestItem();
 					
-					String dlcDirectory = System.getProperty("java.io.tmpdir") + "/" +  UUID.randomUUID().toString();
+					String dlcDirectory = VolumeServiceBean.tmpDir + "/" +  UUID.randomUUID().toString();
 					new File(dlcDirectory).mkdir();
 					item.setName(name);
 					item.setDlcDirectory(dlcDirectory);

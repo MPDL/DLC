@@ -16,6 +16,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -146,6 +147,8 @@ public class VolumeServiceBean {
 	public static IBindingFactory bfactTei;
 	//private static IBindingFactory bfactMods;
 	
+	 public static String tmpDir;
+	
 
 	public static TransformerFactory transfFact;
 	
@@ -201,6 +204,12 @@ public class VolumeServiceBean {
 			transfFact = TransformerFactory.newInstance("net.sf.saxon.TransformerFactoryImpl", null);
 			//transfFact = TransformerFactory.newInstance();
 					
+		}
+		
+		try {
+			tmpDir =  PropertyReader.getProperty("image-upload.tmpDir");
+		} catch (Exception e) {
+			logger.error("Cannot find tmpDir", e);
 		}
 	}
 	

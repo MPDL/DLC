@@ -40,6 +40,8 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
 
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+
 /**
  * The MultipartMap. It simulates the <code>HttpServletRequest#getParameterXXX()</code> methods to
  * ease the processing in <code>@MultipartConfig</code> servlets. You can access the normal request
@@ -132,7 +134,7 @@ public class MultipartMap extends HashMap<String, Object> {
         /** NEW */
         try {
 			DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
-			diskFileItemFactory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+			diskFileItemFactory.setRepository(new File(VolumeServiceBean.tmpDir));
 			diskFileItemFactory.setSizeThreshold(0);
 			
 			//System.out.println("Detected Multipart Request. Saving temp files to " +System.getProperty("java.io.tmpdir"));
