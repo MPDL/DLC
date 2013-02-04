@@ -37,10 +37,8 @@ import com.lowagie.text.Image;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
-import com.lowagie.text.Section;
 import com.lowagie.text.pdf.PdfAction;
 import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfDestination;
 import com.lowagie.text.pdf.PdfOutline;
 import com.lowagie.text.pdf.PdfWriter;
 
@@ -53,9 +51,14 @@ import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.mets.Page;
+import de.mpg.mpdl.dlc.vo.mods.ModsLocationSEC;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 import de.mpg.mpdl.dlc.vo.mods.ModsName;
+import de.mpg.mpdl.dlc.vo.mods.ModsPart;
+import de.mpg.mpdl.dlc.vo.mods.ModsPublisher;
+import de.mpg.mpdl.dlc.vo.mods.ModsRelatedItem;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 import de.mpg.mpdl.dlc.vo.teisd.Div;
 import de.mpg.mpdl.dlc.vo.teisd.DocAuthor;
@@ -160,6 +163,40 @@ public class Export {
             
             
             StringReader xmlSource = (new StringReader(itemXml));
+            transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
+        }
+        catch (TransformerException e)
+        {
+            logger.error("An error occurred during the export format transformation.", e);
+            throw new RuntimeException("An error occurred during the export format transformation.", e);
+        }
+        
+        return writer.toString().getBytes("UTF-8");
+	}
+	
+	/**
+	 * Export item in mets/mods format, using an xslt transformation
+	 * @param itemId
+	 * @return byte array of the item in mets/mods format (xml)
+	 * @throws Exception
+	 */
+	public byte[] oaiSetExport(String dcXml) throws Exception, ResourceNotFoundException
+	{
+		String xsltUri ="export/oai_listRecords_zvdd.xsl";
+        
+        TransformerFactory factory = new TransformerFactoryImpl();
+        StringWriter writer = new StringWriter();
+        
+        try
+        {
+            ClassLoader cl = this.getClass().getClassLoader();
+            InputStream in = cl.getResourceAsStream(xsltUri);
+            Transformer transformer = factory.newTransformer(new StreamSource(in));
+   
+            transformer.setParameter("imageUrl", PropertyReader.getProperty("image-upload.url.download")); 
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            
+            StringReader xmlSource = (new StringReader(dcXml));
             transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
         }
         catch (TransformerException e)
@@ -298,10 +335,10 @@ public class Export {
 		Phrase phrase2 = new Phrase();
 		
 		//Set md link for outline
-		document.add(new Chunk("Title information").setLocalDestination("md"));
-		document.add(Chunk.NEWLINE);
-		document.add(Chunk.NEWLINE);
-		PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("md", false), "Title information");
+//		document.add(new Chunk("Title information").setLocalDestination("md"));
+//		document.add(Chunk.NEWLINE);
+//		document.add(Chunk.NEWLINE);
+//		PdfOutline tocout = new PdfOutline(root, PdfAction.gotoLocalPage("md", false), "Title information");
 		
 		try {
 			Image ou;
@@ -322,165 +359,344 @@ public class Export {
 		fontColor.setColor(Color.decode("#EA7125"));
 		Font fontitalic = FontFactory.getFont("Verdana", 12, Font.ITALIC);
 		
-		//write metadata to pdf
-		if (md.getTitles() != null && md.getTitles().size() > 0)
-		{
-			if (md.getTitles().get(0) != null && md.getTitles().get(0).getTitle() != null)
-			{
-				document.addTitle(md.getTitles().get(0).getTitle());
-				para = new Paragraph(md.getTitles().get(0).getTitle(),FontFactory.getFont("Verdana", 16, Font.BOLD));
-				para.setAlignment(Element.ALIGN_CENTER);
-				document.add(para);
-			}
-		}
-		para = new Paragraph("Collection: " + context.getProperties().getName(), fontColor);
+		//write metadata to pdf		
+		para = new Paragraph("Sammlung: " + context.getProperties().getName(), fontColor);
 		para.setAlignment(Element.ALIGN_CENTER);
 		document.add(para);
 		
-		if (vol.getRelatedParentVolume() != null) //Item is a volume (not monograph)
+		document.add(plain);
+		document.add(plain);
+
+		//Write bibl. md for volume
+		if (vol.getRelatedParentVolume() != null) 
 		{
-			if (vol.getRelatedParentVolume().getModsMetadata() != null &&
-					vol.getRelatedParentVolume().getModsMetadata().getTitles() != null &&
-					vol.getRelatedParentVolume().getModsMetadata().getTitles().size() > 0 &&
-					vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle() != null)
-			{
-				phrase1 = new Phrase("Multivolume: ", fontbold);
-				phrase2 = new Phrase(vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle());
-				para = new Paragraph();
-				para.add(phrase1);
-				para.add(phrase2);
-				document.add(para);
-			}
+			document = this.mdVolume(document, vol, md);
 		}
-		document.add(new Paragraph(" "));
-		if (md.getCatalogueId_001() != null)
+		//Write bibl. md for monograph
+		else
 		{
-			phrase1 = new Phrase("Catalog id: ", fontbold);
-			phrase2 = new Phrase(md.getCatalogueId_001());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
+			document = this.mdMonograph(document, vol, md);
 		}
-		if (md.getSignature_544() != null)
-		{	
-			phrase1 = new Phrase("Signature: ", fontbold);
-			phrase2 = new Phrase(md.getSignature_544());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getNames() != null && md.getNames().size() > 0)
-		{
-			phrase1 = new Phrase("Author(s): ", fontbold);
-			phrase2 = new Phrase(md.getSignature_544());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-			document.add(new Paragraph( ));
-			for (int i = 0; i< md.getNames().size(); i++)
-			{
-					ModsName mn = md.getNames().get(i);
-					if (mn.getDisplayLabel() != null)
-					{para = new Paragraph("          " + mn.getDisplayLabel(),fontbold); document.add(para);}
-					if (mn.getMabId() != null)
-					{para = new Paragraph("          MAB id: " + mn.getMabId(),fontitalic); document.add(para);}
-					if (mn.getType() != null)
-					{para = new Paragraph("          Type: " + mn.getType(),fontitalic); document.add(para);}
-					if (mn.getName() != null)
-					{para = new Paragraph("          Name: " + mn.getName(),fontitalic); document.add(para);}
-					if (mn.getRole() != null)
-					{para = new Paragraph("          Role: " + mn.getRole(),fontitalic); document.add(para);}
-					if (mn.getRole() != null)
-					{para = new Paragraph("          Authority: " + mn.getRole(),fontitalic); document.add(para);}
-				
-			}
-			document.add(plain);
-		}		
-		if (md.getTitles()!= null && md.getTitles().size() > 1 && md.getTitles().get(1) != null && md.getTitles().get(1).getSubTitle() != null)
-		{			
-			phrase1 = new Phrase("Subtitle: ", fontbold);
-			phrase2 = new Phrase(md.getTitles().get(1).getSubTitle());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getNotes() != null && md.getNotes().size() > 0 && md.getNotes().get(0).getNote()!= null)
-		{
-			phrase1 = new Phrase("Statement of responsibility: ", fontbold);
-			phrase2 = new Phrase(md.getNotes().get(0).getNote());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getPublishers() != null && md.getPublishers().size() >0 && md.getPublishers().get(0).getPlace() != null)
-		{
-			phrase1 = new Phrase("Publishing Place: ", fontbold);
-			phrase2 = new Phrase(md.getPublishers().get(0).getPlace());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getPublishers() != null && md.getPublishers().size() >0 && md.getPublishers().get(0).getPublisher() != null)
-		{
-			phrase1 = new Phrase("Publisher: ", fontbold);
-			phrase2 = new Phrase(md.getPublishers().get(0).getPublisher());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getLanguage_037() !=null && md.getLanguage_037().getLanguage() != null)
-		{
-			phrase1 = new Phrase("Language: ", fontbold);
-			phrase2 = new Phrase(md.getLanguage_037().getLanguage());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getPhysicalDescriptions() != null && md.getPhysicalDescriptions().size()>0 && md.getPhysicalDescriptions().get(0) != null)
-		{
-			if (md.getPhysicalDescriptions().get(0).getExtent() != null)
-			{
-				phrase1 = new Phrase("Extents: ", fontbold);
-				phrase2 = new Phrase("" + md.getPhysicalDescriptions().get(0).getExtent());
-				para = new Paragraph();
-				para.add(phrase1);
-				para.add(phrase2);
-				document.add(para);
-			}
-		}
-		if(vol.getMets().getPages() != null && vol.getMets().getPages().size() > 0)
-		{
-			phrase1 = new Phrase("Number of Scans: ", fontbold);
-			phrase2 = new Phrase("" + vol.getMets().getPages().size());
-			para = new Paragraph();
-			para.add(phrase1);
-			para.add(phrase2);
-			document.add(para);
-		}
-		if (md.getKeywords() != null && md.getKeywords().size() > 0)
-		{
-			phrase1 = new Phrase("Keywords: ", fontbold);		
-			para = new Paragraph();
-			para.add(phrase1);
-			for (int i = 0; i<md.getKeywords().size(); i++)
-			{
-				phrase2 = new Phrase("          " + md.getKeywords().get(i));
-				para.add(phrase2);
-			}	
-			document.add(para);	
-		}
-		
+
 		return document;
 	}
 	
+	/**
+	 * TODO
+	 * @param doc
+	 * @param vol
+	 * @param volMd
+	 * @return
+	 * @throws DocumentException
+	 */
+	private Document mdMonograph (Document doc, Volume vol, ModsMetadata volMd) throws DocumentException
+	{
+		Font fontbold = FontFactory.getFont("Verdana", 12, Font.BOLD);	
+		Phrase phrase1 = new Phrase();
+		Phrase phrase2 = new Phrase();
+		Paragraph para1 = new Paragraph();
+		Paragraph para2 = new Paragraph();
+		
+		//Authors
+		if (volMd.getNames() != null && volMd.getNames().size() > 0)
+		{
+			String name = "";
+			for(ModsName mn : volMd.getNames())
+			{
+				if("author1".equalsIgnoreCase(mn.getDisplayLabel()))
+					name = mn.getName();
+			}
+			
+			if (name != "")
+			{
+				phrase1 = new Phrase("Autor", fontbold);
+				phrase2 = new Phrase(name);
+				para1 = new Paragraph();
+				para2 = new Paragraph();
+				para1.add(phrase1);
+				para2.add(phrase2);
+				doc.add(para1);
+				doc.add(para2);
+				//doc.add(new Paragraph( ));
+			}
+		}		
+		//Title
+		if (volMd.getTitles() != null && volMd.getTitles().size() > 0 &&
+			volMd.getTitles().get(0).getTitle() != null)
+		{
+			phrase1 = new Phrase("Titel", fontbold);
+			phrase2 = new Phrase(volMd.getTitles().get(0).getTitle());
+			para1 = new Paragraph();
+			para2 = new Paragraph();
+			para1.add(phrase1);
+			para2.add(phrase2);
+			doc.add(para1);
+			doc.add(para2);
+		}
+		//Band Impressum
+		if (volMd.getPublishers() != null && volMd.getPublishers().size() >0
+				&& volMd.getPublishers().get(0) != null)
+		{
+			String output = "";
+			if(volMd.getPublishers().size() >0)
+			{
+				for(ModsPublisher publisher : volMd.getPublishers())
+				{
+					if(publisher.getDisplayLabel().startsWith("publisher"))
+					{
+						if(publisher.getPlace() != null)
+							output += publisher.getPlace() + " : ";
+						if(publisher.getPublisher() != null)
+							output += publisher.getPublisher() + ", ";
+						if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
+							output += publisher.getDateIssued_425().getDate();
+					}
+				}
+			}
+			
+			phrase1 = new Phrase("Impressum: ", fontbold);
+			phrase2 = new Phrase( output);
+			para1 = new Paragraph();
+			para2 = new Paragraph();
+			para1.add(phrase1);
+			para2.add(phrase2);
+			doc.add(para1);
+			doc.add(para2);
+		}
+		//Impressum Digitalisat (secondary edition)
+		if (volMd.getRelatedItems() != null)
+		{
+			String output = "";
+			for(ModsRelatedItem ri : volMd.getRelatedItems())
+			{
+				for(ModsPublisher publisher : ri.getSec_Publisher())
+				{
+					if("publisher3".equalsIgnoreCase(publisher.getDisplayLabel()))
+					{
+						if(publisher.getPlace() != null)
+							output += publisher.getPlace() + " : ";
+						if(publisher.getPublisher() != null)
+							output += publisher.getPublisher() + ", ";
+						if(publisher.getDateCaptured()!=null )
+							output += publisher.getDateCaptured();
+					}
+				}
+			}
+
+			if (output != "")
+			{
+				phrase1 = new Phrase("Impressum (Digitalisat)", fontbold);
+				phrase2 = new Phrase( output);
+				para1 = new Paragraph();
+				para2 = new Paragraph();
+				para1.add(phrase1);
+				para2.add(phrase2);
+				doc.add(para1);
+				doc.add(para2);
+			}
+		}
+		//Provenance
+		if (volMd.getRelatedItems() != null)
+		{
+			String loc = "";
+			for(ModsRelatedItem ri : volMd.getRelatedItems())
+			{
+				for(ModsLocationSEC sec_location : ri.getSec_location())
+				{
+					if(sec_location.getSec_signature_646() != null)
+						loc = sec_location.getSec_signature_646();
+				}
+			}
+				
+			if (loc != "")
+			{
+				phrase1 = new Phrase("Besitznachweis der Digitalisierungsvorlage", fontbold);
+				phrase2 = new Phrase(loc);
+				para1 = new Paragraph();
+				para2 = new Paragraph();
+				para1.add(phrase1);
+				para2.add(phrase2);
+				doc.add(para1);
+				doc.add(para2);
+			}
+		}
+	
+		
+		return doc;
+	}
+	
+	/**
+	 * TODO
+	 * @param doc
+	 * @param vol
+	 * @param volMd
+	 * @return
+	 * @throws DocumentException
+	 */
+	private Document mdVolume (Document doc, Volume vol, ModsMetadata volMd) throws DocumentException
+	{
+		Font fontbold = FontFactory.getFont("Verdana", 12, Font.BOLD);	
+		Phrase phrase1 = new Phrase();
+		Phrase phrase2 = new Phrase();
+		Paragraph para1 = new Paragraph();
+		Paragraph para2 = new Paragraph();
+		
+		Volume parentVol = vol.getRelatedParentVolume();
+		ModsMetadata parentVolMd = parentVol.getModsMetadata();
+		
+		//Title
+		if (parentVol.getModsMetadata() != null &&
+			parentVol.getModsMetadata().getTitles() != null &&
+			parentVol.getModsMetadata().getTitles().size() > 0 &&
+			parentVol.getModsMetadata().getTitles().get(0).getTitle() != null)
+		{
+			phrase1 = new Phrase("Titel: ", fontbold);
+			phrase2 = new Phrase(vol.getRelatedParentVolume().getModsMetadata().getTitles().get(0).getTitle());
+			para1 = new Paragraph();
+			para2 = new Paragraph();
+			para1.add(phrase1);
+			para2.add(phrase2);
+			doc.add(para1);
+			doc.add(para2);
+		}		
+		//Impressum
+		if (parentVolMd.getPublishers() != null && parentVolMd.getPublishers().size() >0
+				&& parentVolMd.getPublishers().get(0) != null)
+		{
+			String publisher = "";
+			String place = "";
+			String date = "";
+			
+			if (parentVolMd.getPublishers().get(0).getPublisher() != null)
+			{
+				publisher = parentVolMd.getPublishers().get(0).getPublisher();
+				publisher += ", ";
+			}
+			if (parentVolMd.getPublishers().get(0).getPlace() != null)
+			{
+				place = parentVolMd.getPublishers().get(0).getPlace();
+				place += ", ";
+			}
+			if (parentVolMd.getPublishers().get(0).getDateIssued_425() != null)
+			{
+				date = parentVolMd.getPublishers().get(0).getDateIssued_425().getDate();
+			}
+			
+			phrase1 = new Phrase("Impressum: ", fontbold);
+			phrase2 = new Phrase( place + publisher + date);
+			para1 = new Paragraph();
+			para2 = new Paragraph();
+			para1.add(phrase1);
+			para2.add(phrase2);
+			doc.add(para1);
+			doc.add(para2);
+		}
+		//Band
+		String volNr = "";
+		for(ModsPart mp : volMd.getParts())
+			if(mp.getVolumeDescriptive_089()!="" || mp.getVolumeDescriptive_089()!=null)
+				volNr = mp.getVolumeDescriptive_089();
+			
+		phrase1 = new Phrase("Band: ", fontbold);
+		phrase2 = new Phrase(volNr);
+		para1 = new Paragraph();
+		para2 = new Paragraph();
+		para1.add(phrase1);
+		para2.add(phrase2);
+		doc.add(para1);
+		doc.add(para2);
+		
+		//Band Impressum
+		if (volMd.getPublishers() != null && volMd.getPublishers().size() >0
+				&& volMd.getPublishers().get(0) != null)
+		{
+			String output = "";
+			if(volMd.getPublishers().size() >0)
+			{
+				for(ModsPublisher publisher : volMd.getPublishers())
+				{
+					if(publisher.getDisplayLabel().startsWith("publisher"))
+					{
+						if(publisher.getPlace() != null)
+							output += publisher.getPlace() + " : ";
+						if(publisher.getPublisher() != null)
+							output += publisher.getPublisher() + ", ";
+						if(publisher.getDateIssued_425()!=null && publisher.getDateIssued_425().getDate() != null)
+							output += publisher.getDateIssued_425().getDate();
+					}
+				}
+			}
+			
+			phrase1 = new Phrase("Impressum: ", fontbold);
+			phrase2 = new Phrase( output);
+			para1 = new Paragraph();
+			para2 = new Paragraph();
+			para1.add(phrase1);
+			para2.add(phrase2);
+			doc.add(para1);
+			doc.add(para2);
+		}
+		//Impressum Digitalisat (secondary edition)
+		if (volMd.getRelatedItems() != null)
+		{
+			String output = "";
+			for(ModsRelatedItem ri : volMd.getRelatedItems())
+			{
+				for(ModsPublisher publisher : ri.getSec_Publisher())
+				{
+					if("publisher3".equalsIgnoreCase(publisher.getDisplayLabel()))
+					{
+						if(publisher.getPlace() != null)
+							output += publisher.getPlace() + " : ";
+						if(publisher.getPublisher() != null)
+							output += publisher.getPublisher() + ", ";
+						if(publisher.getDateCaptured()!=null )
+							output += publisher.getDateCaptured();
+					}
+				}
+			}
+
+			if (output != "")
+			{
+				phrase1 = new Phrase("Impressum (Digitalisat)", fontbold);
+				phrase2 = new Phrase( output);
+				para1 = new Paragraph();
+				para2 = new Paragraph();
+				para1.add(phrase1);
+				para2.add(phrase2);
+				doc.add(para1);
+				doc.add(para2);
+			}
+		}
+		//Provenance
+		if (volMd.getRelatedItems() != null)
+		{
+			String loc = "";
+			for(ModsRelatedItem ri : volMd.getRelatedItems())
+			{
+				for(ModsLocationSEC sec_location : ri.getSec_location())
+				{
+					if(sec_location.getSec_signature_646() != null)
+						loc = sec_location.getSec_signature_646();
+				}
+			}
+				
+			if (loc != "")
+			{
+				phrase1 = new Phrase("Besitznachweis der Digitalisierungsvorlage", fontbold);
+				phrase2 = new Phrase(loc);
+				para1 = new Paragraph();
+				para2 = new Paragraph();
+				para1.add(phrase1);
+				para2.add(phrase2);
+				doc.add(para1);
+				doc.add(para2);
+			}
+		}
+		
+		
+		return doc;
+	}
 	
 	/**
 	 * Generates the table of contents for the pdf export
