@@ -31,7 +31,6 @@ public class OaiServlet extends HttpServlet
 {
 	private static Logger logger = Logger.getLogger(OaiServlet.class);
 	private static final long serialVersionUID = 1L;
-	private String contentType = "";
 	private int status = 404;
 	private byte[] content = null;
 	private OutputStream outStream = null;
@@ -48,7 +47,7 @@ public class OaiServlet extends HttpServlet
     }
 
     /**
-     * Http post method for export interface.
+     * Http post method for oai export interface.
      * @param request
      * @param response
      */
@@ -58,41 +57,46 @@ public class OaiServlet extends HttpServlet
         String query = request.getQueryString();
         String format = request.getParameter("metadataPrefix");
         String id = request.getParameter("identifier");
-        String verb = request.getParameter("verb");    
+        String verb = request.getParameter("verb");   
+        String resp = "";
 		
 		try 
-		{
-	    	
+		{	    	
 	        if (format != null && format.equalsIgnoreCase("zvdd"))
 	        {
-	        	//Simply make a request for oai_dc format, as all records can be retrieved in zvdd and 
-	        	//oai_dc format, but escidoc oai provider only knows oai_dc format.
+	        	//retrieve result from escidoc oai provider and transform to mets/mods records
 	        	if (verb != null && verb.equals("ListRecords"))
 	        	{
+	        		OaiParser parser = new OaiParser();
 	        		query = query.replace("zvdd", "oai_dc");
-			        this.content = getFromEscidocOaiProvider(query).getBytes("UTF-8");
-			        this.contentType ="application/xml";
+	        		resp = getFromEscidocOaiProvider(query);
+	        		//Check if oai response from escidoc oai provider contains error message
+	        		if (!resp.contains("</error>"))
+	        		{
+		        		this.content = parser.parseListRecords(resp).getBytes("UTF-8");
+	        		}
+	        		else
+	        		{	
+	        			this.content = (resp).getBytes("UTF-8");	        			
+	        		}
 	        	}
-	        	
+	        	//Create mets/mods record from item
 	        	else
 	        	{
 	        		Export export = new Export();
 	        		this.content = export.metsModsExport(id.replace("oai:escidoc.org:", ""), true);
-	        		this.status = 200;
-	        		this.contentType ="application/xml";
 	        	}
 	        }
-	        
+	        //Take response from escidoc oai provider as is
 	        else
 	        {
 		        this.content = getFromEscidocOaiProvider(query).getBytes("UTF-8");
-		        this.contentType ="application/xml";
 	        }
 
-			response.setContentType(this.contentType);
 			response.setCharacterEncoding("UTF-8");			
 			outStream = response.getOutputStream();
-			response.setStatus(this.status);			
+			response.setStatus(this.status);	
+			response.setContentType("application/xml");
             outStream.write(this.content);
             outStream.flush();
             outStream.close();
@@ -144,7 +148,7 @@ public class OaiServlet extends HttpServlet
 		String base ="";
 		try {
 			base = PropertyReader.getProperty("escidoc.common.login.url");
-			//base = "http://dlc.mpdl.mpg.de:8080";
+			//base = "http://dlc.mpdl.mpg.de:8080/";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -42,6 +42,7 @@
 >
 
 	<xsl:output method="xml" encoding="UTF-8" indent="yes"/>
+	
 
 	<xsl:param name="itemId" select="'not defined'"/>
 	<xsl:param name="teiUrl" select="'not defined'"/>
