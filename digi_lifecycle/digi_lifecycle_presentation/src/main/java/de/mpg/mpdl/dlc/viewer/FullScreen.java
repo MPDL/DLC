@@ -56,7 +56,7 @@ public class FullScreen {
 	
 
 	
-	@ManagedProperty("#{sessionBean}")
+	@ManagedProperty("#{sessionBean}") 
 	private SessionBean sessionBean;
 	
 	private Context context;
