@@ -151,7 +151,7 @@ public class Export {
             ClassLoader cl = this.getClass().getClassLoader();
             InputStream in = cl.getResourceAsStream(xsltUri);
             Transformer transformer = factory.newTransformer(new StreamSource(in));
-                              
+
             transformer.setParameter("itemId", itemId);  
             transformer.setParameter("teiUrl",PropertyReader.getProperty("escidoc.common.framework.url")+teiUrl); 
             transformer.setParameter("metsUrl",PropertyReader.getProperty("escidoc.common.framework.url")+metsUrl);
@@ -163,40 +163,6 @@ public class Export {
             
             
             StringReader xmlSource = (new StringReader(itemXml));
-            transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
-        }
-        catch (TransformerException e)
-        {
-            logger.error("An error occurred during the export format transformation.", e);
-            throw new RuntimeException("An error occurred during the export format transformation.", e);
-        }
-        
-        return writer.toString().getBytes("UTF-8");
-	}
-	
-	/**
-	 * Export item in mets/mods format, using an xslt transformation
-	 * @param itemId
-	 * @return byte array of the item in mets/mods format (xml)
-	 * @throws Exception
-	 */
-	public byte[] oaiSetExport(String dcXml) throws Exception, ResourceNotFoundException
-	{
-		String xsltUri ="export/oai_listRecords_zvdd.xsl";
-        
-        TransformerFactory factory = new TransformerFactoryImpl();
-        StringWriter writer = new StringWriter();
-        
-        try
-        {
-            ClassLoader cl = this.getClass().getClassLoader();
-            InputStream in = cl.getResourceAsStream(xsltUri);
-            Transformer transformer = factory.newTransformer(new StreamSource(in));
-   
-            transformer.setParameter("imageUrl", PropertyReader.getProperty("image-upload.url.download")); 
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            
-            StringReader xmlSource = (new StringReader(dcXml));
             transformer.transform(new StreamSource(xmlSource), new StreamResult(writer));
         }
         catch (TransformerException e)
