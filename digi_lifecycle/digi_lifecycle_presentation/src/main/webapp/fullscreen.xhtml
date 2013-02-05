@@ -30,11 +30,11 @@
 								<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
 									
 									<ui:fragment rendered="#{fullScreen.selectedPageNumber > 1}">
-										<h:commandLink action="#{fullScreen.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+										<h:commandLink action="#{fullScreen.goToFirstPage}">
 											<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 											<f:ajax render=":fullScreen"/>
 										</h:commandLink>
-										<h:commandLink action="#{fullScreen.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+										<h:commandLink action="#{fullScreen.goToPreviousPage}">
 											<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 											<f:ajax render=":fullScreen"/>
 										</h:commandLink>
@@ -49,11 +49,11 @@
 									</ui:fragment>
 									
 									<ui:fragment rendered="#{fullScreen.selectedPageNumber lt fullScreen.volume.pages.size()}">
-										<h:commandLink action="#{fullScreen.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+										<h:commandLink action="#{fullScreen.goToNextPage}">
 											<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 											<f:ajax render=":fullScreen"/>
 										</h:commandLink>
-										<h:commandLink action="#{fullScreen.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+										<h:commandLink action="#{fullScreen.goToLastPage}">
 											<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 											<f:ajax render=":fullScreen"/>
 										</h:commandLink>
@@ -69,11 +69,11 @@
 							<h:panelGroup styleClass="eg3_quickPagination">
 								
 								<ui:fragment rendered="#{fullScreen.selectedPageNumber > 1}">
-									<h:commandLink action="#{fullScreen.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}">
+									<h:commandLink action="#{fullScreen.goToFirstPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":fullScreen"/>
 									</h:commandLink>
-									<h:commandLink action="#{fullScreen.goToPreviousPage}" title="#{tlt.paginator_goToPreviousPage}">
+									<h:commandLink action="#{fullScreen.goToPreviousPage}">
 										<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":fullScreen"/>
 									</h:commandLink>
@@ -97,11 +97,11 @@
 						   		</h:panelGroup>
 						   		
 						   		<ui:fragment rendered="#{fullScreen.selectedPageNumber lt fullScreen.volume.pages.size()}">
-									<h:commandLink action="#{fullScreen.goToNextPage}" title="#{tlt.paginator_goToNextPage}" >
+									<h:commandLink action="#{fullScreen.goToNextPage}">
 										<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":fullScreen"/>
 									</h:commandLink>
-									<h:commandLink action="#{fullScreen.goToLastPage}" title="#{tlt.paginator_goToLastPage}">
+									<h:commandLink action="#{fullScreen.goToLastPage}">
 										<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
 										<f:ajax render=":fullScreen"/>
 									</h:commandLink>
