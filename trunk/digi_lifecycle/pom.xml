@@ -472,6 +472,8 @@
 				<!-- digi_lifecycle URLs -->
 				<escidoc.virr.instance.url>http://localhost:8080</escidoc.virr.instance.url>
 				<escidoc.virr.instance.context.path>/virr</escidoc.virr.instance.context.path>
+				
+				<image-upload.tmpDir>${java.io.tmpdir}</image-upload.tmpDir>
 			</properties>
 
 			<distributionManagement>
