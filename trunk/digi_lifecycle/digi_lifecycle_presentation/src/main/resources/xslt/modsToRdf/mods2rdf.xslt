@@ -1,33 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--+
-    | This stylesheet converts MODS/XML data to MODS/RDF/XML 
-    |
-    |  Author: Stefano Mazzocchi 
-    |  Date: 22 January 2006
-    +-->
-
-<!DOCTYPE xsl:stylesheet [    <!ENTITY xsl      'http://www.w3.org/1999/XSL/Transform'>	    <!ENTITY xlink    'http://www.w3.org/1999/xlink'>	    <!ENTITY mods     'http://www.loc.gov/mods/v3'>	
-    <!ENTITY marc     'http://www.loc.gov/MARC21/slim'>    <!ENTITY xsd      'http://www.w3.org/2001/XMLSchema'>    <!ENTITY rdf      'http://www.w3.org/1999/02/22-rdf-syntax-ns#'>    <!ENTITY rdfs     'http://www.w3.org/2000/01/rdf-schema#'>
-    <!ENTITY owl      'http://www.w3.org/2002/07/owl#'>    <!ENTITY dc       'http://purl.org/dc/elements/1.1/'>
-    <!ENTITY dcterms  'http://purl.org/dc/terms/'>
-    <!ENTITY modsrdf  'http://simile.mit.edu/2006/01/ontologies/mods3#'>
-    <!ENTITY base     'http://simile.mit.edu/2006/01/'>
-    <!ENTITY role     'http://simile.mit.edu/2006/01/roles#'>
-    <!ENTITY barton   'http://libraries.mit.edu/barton/'>
-]>
-
-<xsl:stylesheet version="1.0"     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:xsd="&xsd;"    xmlns:xlink="&xlink;" 
-    xmlns:mods="&mods;" 
-    xmlns:marc="&marc;"    xmlns:rdf="&rdf;"
-    xmlns:owl="&owl;"
-    xmlns:dc="&dc;"
-    xmlns:dcterms="&dcterms;"    xmlns:modsrdf="&modsrdf;"
-    xmlns:role="&role;"
-    exclude-result-prefixes="mods marc xlink xsd" 
->
-
+<!--
+  CDDL HEADER START
+  The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+  
+  You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+  See the License for the specific language governing permissions and limitations under the License.
+  
+  When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+  CDDL HEADER END
+  
+  Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+  All rights reserved. Use is subject to license terms.
+-->
     <xsl:output method="xml" indent="yes" encoding="UTF-8"/>
 
     <!-- ====================== Named Templates ============================== -->
