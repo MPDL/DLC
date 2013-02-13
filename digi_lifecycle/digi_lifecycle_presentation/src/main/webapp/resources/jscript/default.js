@@ -647,10 +647,14 @@ function eg3_resizeSidebar() {
 			}
 			sdbPadBot = Math.round(Number(sdbPadBot));
 			
-			var curTabCnt = sdb.find(".rf-tab-cnt:visible");
-			var cntDtlMinHeight = Number(curTabCnt.find(".eg3_contentDetails").css("min-height").replace("px", ""));
-			
 			sidebarHeight = (maxHeight - sdbPadBot)+2;	//use the maxHeight variable for the new height of the sidebar
+			
+			var curTabCnt = sdb.find(".rf-tab-cnt:visible");
+			var cntDtlMinHeight = (curTabCnt.length > 0) ? Number(curTabCnt.find(".eg3_contentDetails").css("min-height").replace("px", "")) : 0;
+			
+			
+			
+			
 			contentDetailsHeight = sidebarHeight - icbHeight;
 			
 			if (sidebarHeight < cntDtlMinHeight) {
