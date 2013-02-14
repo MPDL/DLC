@@ -545,7 +545,7 @@
 				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
 				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
 				<dlc.instance.url>http://dev-dlc.mpdl.mpg.de</dlc.instance.url>
-				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
+				<image-upload.url.upload>http://localhost:7070/image-upload/</image-upload.url.upload>
 				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
 				<image-upload.username>to-be-added-to-continuum-settings.xml</image-upload.username>
 				<image-upload.password>to-be-added-to-continuum-settings.xml</image-upload.password>
@@ -555,7 +555,7 @@
 				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
 				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
 				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
-				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://dev-dlc.mpdl.mpg.de:5432/batchingest</dlc.batch_ingest.database.connection.url>
+				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://localhost:5432/batchingest</dlc.batch_ingest.database.connection.url>
 				<dlc.batch_ingest.database.admin_user.name>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.name>
 				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.password>
 				
