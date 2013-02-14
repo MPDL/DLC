@@ -20,6 +20,7 @@
   </parent>
   <groupId>de.mpg.escidoc.digi_lifecycle</groupId>
   <artifactId>digi_lifecycle_logic</artifactId>
+  <name>digi_lifecycle_logic</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
