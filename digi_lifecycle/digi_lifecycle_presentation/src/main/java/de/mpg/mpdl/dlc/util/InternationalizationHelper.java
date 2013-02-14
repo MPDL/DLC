@@ -154,8 +154,12 @@ public class InternationalizationHelper extends Observable
             {
                 selectedHelpPage = HELP_PAGE_EN;
             }
-            super.setChanged();
-            super.notifyObservers();
+            try {
+				super.setChanged();
+				super.notifyObservers();
+			} catch (Exception e) {
+				logger.warn("Could not notify bean about language change", e);
+			}
     	}
     }
 
