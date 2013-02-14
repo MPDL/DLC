@@ -34,7 +34,7 @@
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>digi_lifecycle</name>
-	<url>http://escidoc1.escidoc.mpg.de/projects/digi_lifecycle</url>
+	<url>http://dlc.mpdl.mpg.de/dlc/</url>
 	<description>
 		
 	</description>
@@ -129,15 +129,6 @@
         </developer>
 	</developers>
 
-	<mailingLists>
-		<mailingList>
-			<name>Infolist about build-failures, source-code changes etc.</name>
-			<subscribe>https://listserv.gwdg.de/mailman/listinfo/escidoc-code</subscribe>
-			<unsubscribe>https://listserv.gwdg.de/mailman/listinfo/escidoc-code</unsubscribe>
-			<post>escidoc-code@gwdg.de</post>
-			<archive>https://listserv.gwdg.de/mailman/private/escidoc-code/</archive>
-		</mailingList>
-	</mailingLists>
 
 	<ciManagement>
 		<system>Continuum</system>
@@ -146,21 +137,22 @@
 			<notifier>
 				<type>mail</type>
 				<configuration>
-					<address>escidoc-code@gwdg.de</address>
+					<address>dlc@mpdl.mpg.de</address>
 				</configuration>
 			</notifier>
 		</notifiers>
 	</ciManagement>
 
 	<modules>
+		<module>image-upload</module>
 		<module>digi_lifecycle_logic</module>
 		<module>digi_lifecycle_presentation</module>
 	</modules>
 
 	<scm>
-		<connection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr</connection>
-		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr</developerConnection>
-		<url>https://zim02.gwdg.de/repos/virr/</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
 	</scm>
 
 
@@ -396,9 +388,48 @@
 		</plugins>
 	</reporting>
 
-	<!-- properties valid for all profiles -->
+	<!-- properties valid for all profiles, except overriden by individual values -->
 	<properties>
-		<organization.logo>http://www.mpdl.mpg.de/mpdl/sys/css/screen/images/logo.gif</organization.logo>
+		<!-- the jdk version to use -->
+		<jdk.version>1.6</jdk.version>
+		
+		<escidoc.common.framework.url>http://url-to-escidoc:8080/</escidoc.common.framework.url>
+		<escidoc.common.login.url>http://url-to-escidoc:8080/</escidoc.common.login.url>
+		
+		<dlc.instance.url>http://localhost:8080</dlc.instance.url>
+		<dlc.app.title>Digital Libraries Connected</dlc.app.title>
+		<dlc.context.path>dlc</dlc.context.path>
+		
+		<digilib.scaler.url>http://localhost:8080/digitallibrary/servlet/Scaler</digilib.scaler.url>
+		
+		<image-upload.url.upload>http://localhost:8080/image-upload/</image-upload.url.upload>
+		<image-upload.url.download>http://localhost:8080/image-upload/</image-upload.url.download>
+		<image-upload.username>image-uploader</image-upload.username>
+		<image-upload.password>XXXX</image-upload.password>
+		<image-upload.tmpDir>${java.io.tmpdir}</image-upload.tmpDir>
+		<image-upload.destDir>${user.home}/dlc_images</image-upload.destDir>
+		
+		<dlc.pid.handle.registration>false</dlc.pid.handle.registration>
+		
+		<escidoc.role.system.admin>escidoc:role-system-administrator</escidoc.role.system.admin>
+
+		<escidoc.role.ou.admin>escidoc:role-ou-administrator</escidoc.role.ou.admin>
+		<escidoc.role.context.admin>escidoc:role-context-administrator</escidoc.role.context.admin>
+		<escidoc.role.userAccount.admin>escidoc:role-user-account-administrator</escidoc.role.userAccount.admin>
+
+		<escidoc.role.user.depositor>escidoc:role-depositor</escidoc.role.user.depositor>
+		<escidoc.role.user.moderator>escidoc:role-moderator</escidoc.role.user.moderator>
+		<escidoc.role.user.md-editor>escidoc:role-md-editor</escidoc.role.user.md-editor>
+
+		<dfg.viewer.baseurl>http://dfg-viewer.de/demo/viewer/?set[mets]=</dfg.viewer.baseurl>
+		
+		<dlc.content-model.monograph.id>escidoc-content-model-id-for-monographs</dlc.content-model.monograph.id>
+		<dlc.content-model.multivolume.id>escidoc-content-model-id-for-multivolumes</dlc.content-model.multivolume.id>
+		<dlc.content-model.volume.id>escidoc-content-model-id-for-volumes</dlc.content-model.volume.id>
+		
+		<dlc.batch_ingest.database.connection.url>jdbc:postgresql://localhost:5432/dlc</dlc.batch_ingest.database.connection.url>
+		<dlc.batch_ingest.database.admin_user.name>ingestAdmin</dlc.batch_ingest.database.admin_user.name>
+		<dlc.batch_ingest.database.admin_user.password>XXXX</dlc.batch_ingest.database.admin_user.password>		
 	</properties>
 
 	<profiles>
@@ -431,9 +462,8 @@
                </plugins>
            </build> 
 			<properties>
-				<!-- the jdk version to use -->
-				<jdk.version>1.6</jdk.version>
-
+				<!-- CURRENTLY NOT USED FROM HERE ... !!!!!!!!!!!!!!!!!!!!!! -->
+				
 				<!-- used by the cargo plugin to run a jboss server for integration-testing /goal: cargo:start-->
 				<cargo.port>8080</cargo.port>
 				<cargo.rmi.port>1099</cargo.rmi.port>
@@ -452,28 +482,22 @@
 				<!-- the ears are deployed to this server using jboss:harddeploy -->
 				<jboss.install.dir>${user.home}/jboss/server_eclipse/jboss-4.2.2.GA/jboss-4.2.2.GA</jboss.install.dir>
 
-				<!-- URL of the FIZ framework instance -->
-				<escidoc.framework_access.framework.url>http://dev-coreservice.mpdl.mpg.de:80</escidoc.framework_access.framework.url>
 
-				<!--  Due to a historical defect, QName was released with multiple 
-					serialVersionUID values even though its serialization was the
-					same.
-					To workaround this issue, serialVersionUID is set with either
-					a default value or a compatibility value.  To use the
-					compatibility value you have to set the following property to "1.0". -->
-				<com.sun.xml.namespace.QName.useCompatibleSerialVersionUID>1.0</com.sun.xml.namespace.QName.useCompatibleSerialVersionUID>
-
-				<!-- RE Pattern for retrieving determinators from item xml -->
-				<escidoc.content.type.pattern>:content-model objid=\"([^\"]*)\"</escidoc.content.type.pattern>
-				<escidoc.context.pattern>:context objid=\"([^\"]*)\"</escidoc.context.pattern>
+				<!-- ...UNTIL HERE  -->
 				
-				<escidoc.toc.content.model>escidoc:36001</escidoc.toc.content.model>
+				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
+				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<image-upload.password>to-be-added-to-personal-settings.xml</image-upload.password>
+				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
+				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
+				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
+				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://dev-dlc.mpdl.mpg.de:5432/batchingest</dlc.batch_ingest.database.connection.url>
+				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-personal-settings.xml</dlc.batch_ingest.database.admin_user.password>
 				
-				<!-- digi_lifecycle URLs -->
-				<escidoc.virr.instance.url>http://localhost:8080</escidoc.virr.instance.url>
-				<escidoc.virr.instance.context.path>/virr</escidoc.virr.instance.context.path>
-				
-				<image-upload.tmpDir>${java.io.tmpdir}</image-upload.tmpDir>
+				<tomcat.install.dir>${user.home}/apache-tomcat-7.0.29</tomcat.install.dir>
 			</properties>
 
 			<distributionManagement>
@@ -491,8 +515,7 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<!-- the jdk version to use -->
-				<jdk.version>1.5</jdk.version>
+				<!-- CURRENTLY NOT USED FROM HERE ... !!!!!!!!!!!!!!!!!!!!!! -->
 
 				<!-- used by the cargo plugin to run a jboss server for integration-testing -->
 				<cargo.port>8080</cargo.port>
@@ -514,28 +537,23 @@
                 <jboss.property.1>pubman.properties.file=./pubman.properties</jboss.property.1>
                 <jboss.property.2>com.sun.xml.namespace.QName.useCompatibleSerialVersionUID=1.0</jboss.property.2>
 
-				<!-- URL of the FIZ framework instance -->
-				<escidoc.framework_access.framework.url>http://dev-coreservice.mpdl.mpg.de:80</escidoc.framework_access.framework.url>
 
-				<!--  Due to a historical defect, QName was released with multiple 
-					serialVersionUID values even though its serialization was the
-					same.
-					To workaround this issue, serialVersionUID is set with either
-					a default value or a compatibility value.  To use the
-					compatibility value you have to set the following property to "1.0". -->
-				<com.sun.xml.namespace.QName.useCompatibleSerialVersionUID>1.0</com.sun.xml.namespace.QName.useCompatibleSerialVersionUID>
-
-				<!-- Used for validation initialization -->
-				<framework.admin.username>roland</framework.admin.username>
-				<framework.admin.password>Shibboleth-Handle-1</framework.admin.password>
-	
-				<escidoc.toc.content.model>escidoc:36001</escidoc.toc.content.model>
-	
-				<!-- Virr URLs -->
-				<escidoc.virr.instance.url>http://dev-virr.mpdl.mpg.de:8080</escidoc.virr.instance.url>
-				<escidoc.virr.instance.context.path>/virr</escidoc.virr.instance.context.path>
+				<!-- ...UNTIL HERE -->
 				
-				<image-upload.password>test</image-upload.password>
+				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
+				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<image-upload.password>to-be-added-to-continuum-settings.xml</image-upload.password>
+				<image-upload.destDir>/data/dlc_images</image-upload.destDir>
+				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
+				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
+				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
+				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://dev-dlc.mpdl.mpg.de:5432/batchingest</dlc.batch_ingest.database.connection.url>
+				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.password>
+				
+				<tomcat.install.dir>/mnt/tomcat/dev-dlc</tomcat.install.dir>
 			</properties>
 
 			<distributionManagement>
@@ -547,18 +565,7 @@
 			</distributionManagement>		
 
 		</profile>
-		<profile>
-			<id>env-production-escidoc2</id>
-
-		</profile>
-		<profile>
-			<id>env-production-escidoc3</id>
-
-		</profile>
-		<profile>
-			<id>env-production-escidoc4</id>
-
-		</profile>
+		
 		<profile>
 			<!-- this profile gets activated if os is windows -->
 			<id>Windows</id>

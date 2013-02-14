@@ -26,9 +26,9 @@
 	<packaging>war</packaging>
 	
 	<scm>
-		<connection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</connection>
-		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</developerConnection>
-		<url>https://zim02.gwdg.de/repos/virr/</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/image-upload</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/image-upload</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
 	</scm>
 	<properties>
                 <project.warName>image-upload</project.warName>
@@ -156,5 +156,61 @@
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
+	
+	
+	<profiles>
+		<profile>
+			<id>tomcat7</id>
+			<build>
+				<plugins>
+				
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>copy-to-tomcat</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+
+								<configuration>
+									<tasks>
+										<!-- copy over the configuration file -->
+										<delete quiet="true"
+											file="${tomcat.install.dir}/webapps/${project.warName}.war" />
+										<delete quiet="true"
+											dir="${tomcat.install.dir}/webapps/${project.warName}" />
+
+
+										<copy overwrite="true"
+											file="${project.build.directory}/classes/image-upload.properties"
+											todir="${tomcat.install.dir}/conf">
+										</copy>
+
+
+										<copy overwrite="true"
+											file="${project.build.directory}/${project.warName}.${project.packaging}"
+											todir="${tomcat.install.dir}/webapps">
+										</copy>
+
+									</tasks>
+								</configuration>
+
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-trax</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 	
 </project>

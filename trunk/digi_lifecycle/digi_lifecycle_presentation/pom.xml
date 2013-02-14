@@ -25,12 +25,12 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<scm>
-		<connection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</connection>
-		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_presentation</developerConnection>
-		<url>https://zim02.gwdg.de/repos/virr/</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_presentation</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_presentation</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
 	</scm>
 	<properties>
-		<project.warName>dlc</project.warName>
+		<project.warName>${dlc.context.path}</project.warName>
 	</properties>
 	<build>
 
@@ -57,34 +57,9 @@
 			</plugin>
       		
 
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
-				<version>2.4</version> <executions> <execution> <id>unpack</id> <phase>package</phase> 
-				<goals> <goal>unpack</goal> </goals> <configuration> <artifactItems> <artifactItem> 
-				<groupId>de.mpg.escidoc.digi_lifecycle</groupId> <artifactId>digi_lifecycle_logic</artifactId> 
-				<version>1.0-SNAPSHOT</version> <type>jar</type> <overWrite>false</overWrite> 
-				<outputDirectory>${project.build.directory}</outputDirectory> </artifactItem> 
-				</artifactItems> <outputDirectory>${project.build.directory}/wars</outputDirectory> 
-				<overWriteReleases>false</overWriteReleases> <overWriteSnapshots>true</overWriteSnapshots> 
-				</configuration> </execution> </executions> </plugin> -->
-			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>tomcat-maven-plugin</artifactId> 
-				<version>1.1</version> <configuration> <warFile>${project.build.directory}/${project.warName}.war</warFile> 
-				<url>http://localhost:8080/manager</url> <path>/dlc</path> </configuration> 
-				</plugin> -->
-
-			<!-- <plugin> <groupId>org.jvnet.jaxb2.maven2</groupId> <artifactId>maven-jaxb2-plugin</artifactId> 
-				<version>0.7.4</version> <executions> <execution> <goals> <goal>generate</goal> 
-				</goals> </execution> </executions> <configuration> <includeBindings> <includeBinding>*.xjb</includeBinding> 
-				</includeBindings> </configuration> </plugin> -->
-			<!-- <plugin> <artifactId>maven-war-plugin</artifactId> <version>2.1.1</version> 
-				<configuration> <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes> 
-				<archive> <manifest> <addClasspath>true</addClasspath> <classpathPrefix>lib/</classpathPrefix> 
-				</manifest> </archive> </configuration> </plugin> -->
+			
 		</plugins>
 	</build>
-	<!-- <dependencyManagement> <dependencies> <dependency> <groupId>org.richfaces</groupId> 
-		<artifactId>richfaces-bom</artifactId> <version>4.0.0.20110209-M6</version> 
-		<scope>import</scope> <type>pom</type> </dependency> </dependencies> </dependencyManagement> -->
-
 
 	<dependencyManagement>
 		<dependencies>
@@ -100,29 +75,15 @@
 
 	<dependencies>
 
-
 		<dependency>
 			<groupId>org.richfaces.ui</groupId>
 			<artifactId>richfaces-components-ui</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.richfaces.core</groupId>
 			<artifactId>richfaces-core-impl</artifactId>
 		</dependency>
-
-
-
-
-		<!-- <dependency> <groupId>de.mpg.escidoc.services</groupId> <artifactId>framework_access</artifactId> 
-			<version>1.0.60-SNAPSHOT</version> <scope>provided</scope> </dependency> -->
-		<!-- <dependency> <groupId>org.richfaces.framework</groupId> <artifactId>richfaces-impl-jsf2</artifactId> 
-			<version>3.3.3.Final</version> </dependency> <dependency> <groupId>org.richfaces.ui</groupId> 
-			<artifactId>richfaces-ui</artifactId> <version>3.3.3.Final</version> </dependency> 
-			<dependency> <groupId>com.sun.facelets</groupId> <artifactId>jsf-facelets</artifactId> 
-			<version>1.1.15</version> </dependency> -->
-		<!-- <dependency> <groupId>org.glassfish</groupId> <artifactId>javax.faces</artifactId> 
-			<version>2.0.8</version> </dependency> <dependency> <groupId>javax.faces</groupId> 
-			<artifactId>javax.faces-api</artifactId> <version>2.1.6</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.glassfish</groupId>
@@ -130,44 +91,18 @@
 			<version>2.1.11</version>
 		</dependency>
 
-		<!-- <dependency> <groupId>com.sun.faces</groupId> <artifactId>jsf-impl</artifactId> 
-			<version>2.1.6</version> </dependency> <dependency> <groupId>com.sun.faces</groupId> 
-			<artifactId>jsf-api</artifactId> <version>2.1.6</version> </dependency> -->
-
-
-		<!-- <dependency> <groupId>de.mpg.escidoc.services</groupId> <artifactId>framework_access</artifactId> 
-			<version>1.0.58</version> <exclusions> <exclusion> <groupId>javaee</groupId> 
-			<artifactId>javaee</artifactId> </exclusion> </exclusions> </dependency> -->
-
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.1</version>
 		</dependency>
 
-		
-
-		<!-- <dependency> <groupId>org.jboss.jbossas</groupId> <artifactId>jboss-as-client</artifactId> 
-			<type>pom</type> <version>6.0.0.Final</version> <scope>provided</scope> </dependency> -->
-		<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-6.0</artifactId> 
-			<version>1.0.0.Final</version> <type>pom</type> <scope>provided</scope> </dependency> -->
-
-		<!-- <dependency> <groupId>com.sleepycat</groupId> <artifactId>server_db</artifactId> 
-			<version>4.8.26</version> </dependency> <dependency> <groupId>com.sleepycat</groupId> 
-			<artifactId>server_dbxml</artifactId> <version>2.5.16</version> </dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.1</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- <dependency> <groupId>org.primefaces</groupId> <artifactId>primefaces</artifactId> 
-			<version>3.0.M3</version> </dependency> -->
-
-
-		<!-- <dependency> <groupId>com.sun.xml.bind</groupId> <artifactId>jaxb-impl</artifactId> 
-			<version>2.1.13</version> </dependency> -->
 
 		<dependency>
 			<groupId>com.ocpsoft</groupId>
@@ -189,41 +124,25 @@
 			<version>1.0.4</version>
 		</dependency>
 
-
-
-
-
 		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-web-api</artifactId>
 			<version>6.0</version>
 			<scope>provided</scope>
 		</dependency>
-		<!-- <dependency> <groupId>javax.el</groupId> <artifactId>javax.el-api</artifactId> 
-			<version>2.2.1</version> </dependency> -->
+	
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
 
-		
 		<dependency>
 		  	<groupId>org.owasp.antisamy</groupId>
 		  	<artifactId>antisamy</artifactId>
 		  	<version>1.4.5</version>
 		</dependency>
-		
-		
-		<!-- 
-		<dependency>
-        	<groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-jdbc</artifactId>
-            <version>7.0.29</version>
-            <scope>provided</scope>
-        </dependency> 
-        -->
-        
+	
         <dependency>
 			<groupId>net.sf.uadetector</groupId>
 			<artifactId>uadetector-resources</artifactId>
@@ -234,25 +153,16 @@
 
 	<profiles>
 		<profile>
-			<id>jboss42</id>
+			<id>tomcat7</id>
 			<build>
 				<plugins>
-					<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jboss-maven-plugin</artifactId> 
-						<configuration> <jbossHome>${jboss.install.dir}</jbossHome> <deployDir>${jboss.install.dir}/standalone/deployments</deployDir> 
-						<hostName>${jboss.deploy.host}</hostName> <port>${jboss.deploy.port}</port> 
-						</configuration> </plugin> -->
-					<!-- <plugin> <groupId>org.codehaus.cargo</groupId> <artifactId>cargo-maven2-plugin</artifactId> 
-						<configuration> <container> <containerId>jboss7x</containerId> <home>${jboss.install.dir}</home> 
-						</container> <configuration> <properties> </properties> </configuration> 
-						</configuration> </plugin> -->
-
-
+				
 					<plugin>
 						<artifactId>maven-antrun-plugin</artifactId>
 						<version>1.1</version>
 						<executions>
 							<execution>
-								<id>copy-to-jboss</id>
+								<id>copy-to-tomcat</id>
 								<phase>install</phase>
 								<goals>
 									<goal>run</goal>
