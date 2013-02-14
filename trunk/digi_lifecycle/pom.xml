@@ -137,7 +137,7 @@
 			<notifier>
 				<type>mail</type>
 				<configuration>
-					<address>dlc@mpdl.mpg.de</address>
+					<address>escidoc-code@gwdg.de</address>
 				</configuration>
 			</notifier>
 		</notifiers>
