@@ -12,9 +12,9 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<scm>
-		<connection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_ear</connection>
-		<developerConnection>scm:svn:https://zim02.gwdg.de/repos/virr/trunk/virr/virr_ear</developerConnection>
-		<url>https://zim02.gwdg.de/repos/virr/</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_ear</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_ear</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
 	</scm>
 
 	<build>
