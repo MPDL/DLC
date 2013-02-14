@@ -505,7 +505,7 @@
 			<distributionManagement>
 				<site>
 					<id>website</id>
-					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/digi_lifecycle</url>
+					<url>scp://dlc.mpdl.mpg.de:/srv/www/staging/projects/dlc</url>
 				</site>
 			</distributionManagement>			
 
@@ -544,6 +544,7 @@
 				
 				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
 				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<dlc.instance.url>http://dev-dlc.mpdl.mpg.de</dlc.instance.url>
 				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
 				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
 				<image-upload.username>to-be-added-to-continuum-settings.xml</image-upload.username>
@@ -561,10 +562,12 @@
 				<tomcat.install.dir>/mnt/tomcat/dev-dlc</tomcat.install.dir>
 			</properties>
 
+			
+
 			<distributionManagement>
 				<site>
 					<id>website</id>
-					<url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/digi_lifecycle</url>
+					<url>scp://dlc.mpdl.mpg.de:/srv/www/staging/projects/dlc</url>
 					<!--url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/virr</url-->
 				</site>
 			</distributionManagement>		

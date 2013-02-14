@@ -55,8 +55,6 @@
 					<warName>${project.warName}</warName>
 				</configuration>
 			</plugin>
-      		
-
 			
 		</plugins>
 	</build>
