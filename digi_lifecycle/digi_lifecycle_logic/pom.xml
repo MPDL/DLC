@@ -16,17 +16,17 @@
   <parent>
     <artifactId>digi_lifecycle</artifactId>
     <groupId>de.mpg.escidoc.digi_lifecycle</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
   <groupId>de.mpg.escidoc.digi_lifecycle</groupId>
   <artifactId>digi_lifecycle_logic</artifactId>
   <name>digi_lifecycle_logic</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
   <scm>
-		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_logic</connection>
-		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_logic</developerConnection>
-		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0/digi_lifecycle_logic</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0/digi_lifecycle_logic</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0/dlc</url>
   </scm>
   
   <!-- Creates a client.jar file, maybe activate this later -->
@@ -78,7 +78,7 @@
     								</goals>
     							</pluginExecutionFilter>
     							<action>
-    								<ignore></ignore>
+    								<ignore />
     							</action>
     						</pluginExecution>
     					</pluginExecutions>
