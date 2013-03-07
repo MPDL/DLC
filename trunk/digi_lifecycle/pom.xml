@@ -32,7 +32,7 @@
 	<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
 	<artifactId>digi_lifecycle</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>digi_lifecycle</name>
 	<url>http://dlc.mpdl.mpg.de/dlc/</url>
 	<description>
@@ -161,9 +161,9 @@
 	</modules>
 
 	<scm>
-		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</connection>
-		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</developerConnection>
-		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc/tags/digi_lifecycle-1.0</url>
 	</scm>
 
 
@@ -300,7 +300,7 @@
 			            		</goals>
 			            	</pluginExecutionFilter>
 			            	<action>
-			            		<ignore></ignore>
+			            		<ignore />
 			            	</action>
 			            </pluginExecution>
 			          </pluginExecutions>
