@@ -271,7 +271,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>
-					<version>2.1</version>
+					<version>3.0.4</version>
 					<configuration>
 						<!-- send an announcement email on release -->
 						<!-- <preparationGoals>changes:announcement-mail</preparationGoals> -->
