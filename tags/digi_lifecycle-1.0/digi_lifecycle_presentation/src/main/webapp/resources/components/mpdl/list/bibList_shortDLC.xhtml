@@ -1,0 +1,58 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+	<!-- INTERFACE -->
+	<cc:interface></cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<script type="text/javascript">
+			var hideAllText='#{lbl.list_NavElem_HideAllVolumes}';
+			var showAllText='#{lbl.list_NavElem_ShowAllVolumes}';
+			var showItemText='#{lbl.list_NavElem_More}';
+			var hideItemText='#{lbl.list_NavElem_Less}';
+			var showMediumViewText = '#{lbl.sc_show_allHits}';
+			var showShortViewText = '#{lbl.sc_show_threeHits}';
+			var hideMediumViewText = '#{lbl.sc_hide_allHits}';
+			var hideRelatedPublications = '#{lbl.list_NavElem_HideRelatedPublications}';
+			var showRelatedPublications = '#{lbl.list_NavElem_ShowRelatedPublications}';
+		</script>
+		<h:panelGroup layout="block" styleClass="eg3_bibList">
+			<h:panelGroup layout="block" styleClass="eg3_listBody">
+				<cc:insertChildren></cc:insertChildren>
+			</h:panelGroup>
+		</h:panelGroup>
+		<script type="text/javascript">
+			var toggleAll = $(".eg3_itemDetailAction_js, .eg3_showHideMediumView_js");
+			toggleAll.unbind("click");
+			toggleAll.click(function(ev){
+				eg3_bibListToggleItemMediumView(this);
+			})
+		</script>
+	</cc:implementation>
+</html>

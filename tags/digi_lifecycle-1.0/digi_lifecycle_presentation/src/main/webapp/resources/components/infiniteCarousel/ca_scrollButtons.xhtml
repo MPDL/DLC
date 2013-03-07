@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<!-- INTERFACE -->
+<cc:interface>
+	<cc:attribute name="images" required="true" />
+</cc:interface>
+
+<!-- IMPLEMENTATION -->
+<cc:implementation>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" />
+	<h:outputScript library="components/infiniteCarousel" name="ca_scrollButtons.js"></h:outputScript>
+	<h:outputStylesheet library="components/infiniteCarousel" name="ca_scrollButtons.css"/>
+
+
+	<h:panelGroup layout="block" class="infinitaCarousel">
+		<h:panelGroup layout="block" class="wrapper">
+			<ul>
+				<ui:repeat id="image" value="#{cc.attrs.images}" var="img">
+					<li><h:graphicImage value="#{img}" width="75" height="75">
+						</h:graphicImage></li>
+				</ui:repeat>
+			</ul>
+		</h:panelGroup>
+	</h:panelGroup>
+</cc:implementation>
+
+
+</html>

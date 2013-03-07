@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+
+<f:view encoding="UTF-8" locale="#{internationalizationHelper.userLocaleString}"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+
+	<f:loadBundle var="lbl" basename="Label" />
+	<f:loadBundle var="msg" basename="Messages" />
+	<f:loadBundle var="tlt" basename="Tooltips" />
+	<f:loadBundle var="cdcLbl" basename="CodicologicalLabel" />
+
+	<html xmlns="http://www.w3.org/1999/xhtml">
+		<h:head>
+			
+			<title><h:outputText value="#{browserTitle} | #{applicationBean.appTitle}" /></title>
+			<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+			<meta http-equiv="pragma" content="no-cache" />
+			<meta http-equiv="cache-control" content="no-cache" />
+			<meta http-equiv="expires" content="-1" />
+			
+			<ui:fragment rendered="#{utilBean.userAgent.family == 'IE' and utilBean.userAgent.versionNumber.groups[0] lt 10}">
+				<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+			</ui:fragment>
+			
+			<h:outputStylesheet library="cssFramework" name="standard.css"/>
+			<link href="#{facesContext.externalContext.requestContextPath}/resources/cssFramework/themes/skin_DLC/appearance.css" type="text/css" rel="stylesheet" />
+			<h:outputScript library="javax.faces" name="jsf.js" target="head"/>
+			<h:outputScript library="components/ajaxThrobber" name="busyStatus.js" target="head"/>
+			
+			
+			<link rel="icon" type="image/ico" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+			<link rel="shortcut icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+			<link rel="apple-touch-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon_apple.png"/>
+			<link rel="icon" type="image/image/vnd.microsoft.icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+			<link rel="icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+		</h:head>
+
+		<h:body lang="#{internationalizationHelper.userLocaleString}">
+			<h:outputScript library="jscript" name="jquery-ui-1.8.21.min.js" target="head"/>
+			
+			<h:panelGroup rendered="#{loginBean.loginState}"/>
+			
+			<!-- Refresh userhandle every 15 minutes -->
+			<a4j:region>
+				<a4j:poll id="poll" interval="900000" action="#{loginBean.renewUserHandle}" enabled="#{loginBean.login}" limitRender="true"/>
+			</a4j:region>
+				
+			<h:panelGroup layout="block" styleClass="eg3_id_wrapper">
+				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<div class="eg3_id_header" rel="section">
+					<!-- import header -->
+					<ui:include src="../headerPages/header.xhtml" />
+				</div>
+				<ui:remove>
+				<ui:insert name="breadcrumbTitle">&#160;</ui:insert>
+				</ui:remove>
+				<ui:remove>
+				<!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<ui:remove>
+				<div class="eg3_id_mainMenu" rel="section">
+					<ui:include src="../menu/mainMenu.xhtml" />
+				</div>
+				</ui:remove>
+				
+				<ui:insert name="citationLinkContent"/>
+				
+				<h:panelGroup id="messages">
+					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
+						<h:panelGroup layout="block" styleClass="eg3_messageArea">
+							<h:commandButton type="button" styleClass="eg3_messageCloseBtn eg3_icon_delete_16_16" onclick="$(this).parent().parent().hide(1000);" title=""/>
+							<ui:remove>
+							<input type="button" style="float: right; margin-right: -1%;" value="x" class="eg3_borderradius_5 eg3_messageCloseBtn" onclick="$(this).parent().parent().hide(1000);"/>
+							</ui:remove>
+							<h:panelGroup layout="block" styleClass="eg3_messageText">
+								<rich:messages layout="list" showDetail="true" showSummary="false" ajaxRendered="true" 
+									errorClass="eg3_messageError" fatalClass="eg3_messageFatal" warnClass="eg3_messageWarning" infoClass="eg3_messageSuccess"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<script type="text/javascript">
+							eg3_checkMessageContent();
+						</script>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				
+				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<div class="eg3_id_content eg3_container_1" rel="section">		
+					<!-- Main Content -->
+					<ui:insert name="mainContent">&#160;</ui:insert>
+				</div>
+				
+				<ui:remove><!--  use div instead of h:panelGroup because of rel="section" - HTML5 Attribute  --></ui:remove>
+				<div class="eg3_id_footer eg3_container_1" rel="section"> 
+					<div class="eg3_footer_content">
+						<!-- <ui:include src="../footerPages/footer.xhtml" />-->
+						<h:form>
+							<h:commandLink id="lnkLogin" title="#{tlt.meta_login}" 
+								value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+							</h:commandLink>
+					
+							<h:commandLink id="lnkLogout" title="#{tlt.meta_logout}" 
+								value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+							</h:commandLink> 
+						</h:form>
+						
+						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+						
+						<h:outputLink id="lnkCopyright"
+							value="http://dlcproject.wordpress.com/terms-of-use/" target="_blank">
+							<h:outputText value="#{lbl.header_lnk_copyright}" />
+						</h:outputLink> 
+						
+						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+						<h:outputLink id="lnkImpress"
+							value="http://dlcproject.wordpress.com/imprint/" target="_blank">
+							<h:outputText value="#{lbl.footer_impress}" />
+						</h:outputLink> 
+						
+						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+						<h:outputLink id="lnkContact"
+								value="http://dlcproject.wordpress.com/contact/" target="_blank">
+								<h:outputText value="#{lbl.footer_contact}" />
+						</h:outputLink> 
+						
+					</div>
+				</div>
+			</h:panelGroup>
+			
+			
+			<h:outputScript library="jscript" name="default.js" target="head"/>
+		</h:body>
+	</html>
+</f:view>

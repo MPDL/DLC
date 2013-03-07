@@ -1,0 +1,124 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="modsMetadata" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+		<h:panelGroup layout="block" id="editorVolume" styleClass="eg3_container_1 eg3_metadataInformation">
+		<!-- names -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_names}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}" rowKeyVar="rowKey">
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+							<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_main_color eg3_container_1_3">
+								<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_content_bgColor">
+									<span class="eg3_selectionText"></span>
+								</h:panelGroup>
+								<h:selectOneMenu value="#{name.displayLabel}">
+									<f:selectItem itemLabel="author" itemValue="author"/>
+									<f:selectItem itemLabel="editor" itemValue="editor"/>
+									<f:selectItem itemLabel="body" itemValue="body"/>
+								</h:selectOneMenu>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+								<h:inputText value="#{name.name}" styleClass="eg3_container_9_10"/>
+							</h:panelGroup>
+							
+							<h:panelGroup styleClass="eg3_floatRight">
+								<h:commandButton action="#{volumeUtilBean.addNewModsName(rowKey, cc.attrs.modsMetadata.names)}" value=" " title="#{tlt.edit_add_item}#{lbl.mods_names}" styleClass="eg3_ico_add_16">
+									 <f:ajax render=":#{cc.attrs.clientId}:editorVolume" execute="@form"/>
+								</h:commandButton>
+								<h:commandButton action="#{volumeUtilBean.removeListMember(rowKey, cc.attrs.modsMetadata.names)}" value=" " title="#{tlt.edit_remove_item}#{lbl.mods_names}" styleClass="eg3_ico_remove_16" rendered="#{cc.attrs.modsMetadata.names.size() gt 1}">
+									 <f:ajax render=":#{cc.attrs.clientId}:editorVolume" execute="@form"/>
+								</h:commandButton>
+							</h:panelGroup>
+						</h:panelGroup>
+					</a4j:repeat>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- title -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_title}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText id="title_Vol" value="#{cc.attrs.modsMetadata.titles[0].title}" styleClass="eg3_container_4_5"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- band -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_band}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText id="band" value="#{cc.attrs.modsMetadata.parts[0].volumeDescriptive_089}" styleClass="eg3_container_4_5"/>
+					<h:message for="band" styleClass="eg3_messageError"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- sortField -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_sortField}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.parts[1].value}" styleClass="eg3_container_4_5"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- publisher date -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_publisher_date}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.publishers[0].dateIssued_425.date}" styleClass="eg3_container_4_5"/>
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+		<!-- freeText -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:outputText value="#{lbl.mods_freeText}"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+					<h:inputText value="#{cc.attrs.modsMetadata.freeText}" styleClass="eg3_container_4_5"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		
+	<!-- END OF editorVolume -->
+		</h:panelGroup>
+		
+	</cc:implementation>
+</html>

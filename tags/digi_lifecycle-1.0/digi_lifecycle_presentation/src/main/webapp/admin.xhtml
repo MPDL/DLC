@@ -1,0 +1,204 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<ui:composition template="templates/template_v3.xhtml">
+	
+		<ui:define name="mainContent">
+			<style type="text/css">
+				.eg3_adminPage .eg3_submitPanel {
+					margin-top:2em;
+				}
+				.eg3_adminPage .eg3_submitPanel input[type=submit] {
+					background-color:transparent;
+					margin-left:1em;
+					border-bottom:0.0833333em solid #2F2F2F;
+				}
+				.eg3_adminPage .eg3_submitPanel input[type=submit]:hover {
+					text-decoration:none;
+					border-bottom:0.0833333em solid #EA7125;
+				}
+			</style>
+			<h:form>
+				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter eg3_adminPage">
+				
+					<rich:tabPanel switchType="ajax">
+						<rich:tab label="createdOUs" id="createdOUs" header="#{lbl.admin_ou_header}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}">
+							<a4j:repeat value="#{loginBean.user.createdOrgas}" var="orga">
+								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
+									<pretty:link mappingId="ou">
+										<f:param value="#{orga.id}"/>
+										<h:outputText value="#{orga.escidocMd.title}"/>
+										
+										<h:panelGroup styleClass="eg3_floatRight">
+											<a4j:commandButton title="#{lbl.button_command_delete}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmOrgaPane')}.show()">
+												<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}"/>
+											</a4j:commandButton>
+											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+												<a4j:param value="#{orga.id}" assignTo="#{adminBean.editOrgaId}"/>
+												<f:setPropertyActionListener target="#{adminBean.orga}" value="#{orga}"/>
+											</a4j:commandButton>
+										</h:panelGroup>
+									</pretty:link>
+								</h:panelGroup>
+							</a4j:repeat>
+							
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
+								<a4j:commandButton execute="@this" value="#{lbl.admin_ou_createNew}" styleClass="eg3_borderradius_5" render="editOrga" oncomplete="#{rich:component('popup')}.show()">
+									<f:setPropertyActionListener target="#{adminBean.orga}" value="#{adminBean.newEmptyOrga}"/>
+								</a4j:commandButton>
+							</h:panelGroup>
+							
+							<rich:popupPanel id="confirmOrgaPane" autosized="true">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+									<h:outputText value="#{msg.admin_confirmCloseOu}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+									<a4j:commandButton value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmOrgaPane')}.hide(); return false;" styleClass="eg3_borderradius_5"/>
+									<a4j:commandButton value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.closeOrganization}" styleClass="eg3_floatRight eg3_borderradius_5"/>
+								</h:panelGroup>
+							</rich:popupPanel>
+							
+							<mpdl:ouEditor target="popup" organization="#{adminBean.orga}" command="#{adminBean.editOrga}"/>
+						</rich:tab>
+
+
+						
+						<rich:tab label="createdContexts" id="createdContexts" header="#{lbl.admin_context_header}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}" >
+							<a4j:repeat value="#{loginBean.user.createdCollections}" var="collection">
+								<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1">
+									<pretty:link mappingId="volumes">
+										<f:param value="#{collection.id}"/>
+										<h:outputText value="#{collection.name}"/>
+										
+										<h:panelGroup styleClass="eg3_floatRight">
+											<a4j:commandButton title="#{lbl.button_command_close}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmCollectionPane')}.show()">
+												<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}"/>
+											</a4j:commandButton>
+											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+												<a4j:param value="#{collection.id}" assignTo="#{adminBean.editCollectionId}"/>
+												<f:setPropertyActionListener target="#{adminBean.collection}" value="#{collection}"/>
+											</a4j:commandButton>
+										</h:panelGroup>
+									</pretty:link>
+								</h:panelGroup>
+							</a4j:repeat>
+							
+							<rich:popupPanel id="confirmCollectionPane" autosized="true">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+				    				<h:outputText value="#{msg.admin_confirmCloseCollection}"/>
+				    			</h:panelGroup>
+				    			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+				    				<a4j:commandButton value="#{lbl.button_command_cancel}" styleClass="eg3_borderradius_5" onclick="#{rich:component('confirmCollectionPane')}.hide(); return false;"/>
+				    				<a4j:commandButton value="#{lbl.button_command_close}" styleClass="eg3_floatRight eg3_borderradius_5" execute="@this" action="#{adminBean.closeCollection}"/>
+				    			</h:panelGroup>
+				    		</rich:popupPanel>
+				   
+				    		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
+					    		<a4j:commandButton execute="@this" value="#{lbl.admin_context_createNew}" styleClass="eg3_borderradius_5" render="editCollection" oncomplete="#{rich:component('popupContext')}.show()">
+					    			<f:setPropertyActionListener target="#{adminBean.collection}" value="#{adminBean.newEmptyCollection}"/>
+					    		</a4j:commandButton>
+				    		</h:panelGroup>
+				    		
+				    		<mpdl:contextEditor target="popupContext" title="#{lbl.admin_context_createNew}" collection="#{adminBean.collection}"/>
+						</rich:tab>
+						
+						
+						<rich:tab label="createdUAs"  header="#{lbl.admin_user_header}" rendered="true">
+							<h:panelGroup id="createdUAs">
+								<a4j:repeat value="#{loginBean.user.createdUsers}" var="user">
+									<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_container_1" style="#{user.userAccount.properties.active ? '' : 'color:lightgrey;'}">
+										<h:outputText value=" #{lbl.admin_user_loginname} #{user.loginName} "/>
+										<h:outputText value=" (#{lbl.admin_user_name} #{user.name}) "/>
+										
+										<h:panelGroup styleClass="eg3_floatRight" rendered="#{user.userAccount.properties.active}">
+											<a4j:commandButton title="#{lbl.admin_btn_deactivate_user}" value=" " styleClass="eg3_icon_delete_16_16" execute="@this" render="@none" oncomplete="#{rich:component('confirmUserPane')}.show()">
+												<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
+											</a4j:commandButton>
+											
+											<a4j:commandButton title="#{lbl.button_command_edit}" value=" " styleClass="eg3_icon_editBtni_16_16" execute="@this" render="test editUser" oncomplete="#{rich:component('popupUser')}.show()">
+												<a4j:param value="#{user.id}" assignTo="#{adminBean.editUserId}"/>
+												<f:setPropertyActionListener target="#{adminBean.user}" value="#{user}"/>
+											</a4j:commandButton>
+										</h:panelGroup>
+										
+										
+										
+										<h:panelGroup styleClass="eg3_floatRight" rendered="#{!user.userAccount.properties.active}">
+											<h:outputText value="#{lbl.admin_user_inactive}"/>
+										</h:panelGroup>
+					               	</h:panelGroup> 
+								</a4j:repeat>
+							</h:panelGroup>
+							
+							<rich:popupPanel id="confirmUserPane" autosized="true">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_messageError">
+				    				<h:outputText value="#{msg.admin_confirmCloseUser}"/>
+				    			</h:panelGroup>
+				    			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel eg3_popup">
+									<a4j:commandButton title="#{lbl.button_command_cancel}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_cancel}" onclick="#{rich:component('confirmUserPane')}.hide(); return false;"/>
+									<a4j:commandButton title="#{lbl.button_command_delete}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.button_command_delete}" execute="@this" action="#{adminBean.deleteUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-system-administrator'}"/>
+									<a4j:commandButton title="#{lbl.admin_btn_deactivate_user}" styleClass="eg3_floatRight eg3_borderradius_5" render="createdUAs :messages" oncomplete="#{rich:component('confirmUserPane')}.hide(); return false;" value="#{lbl.admin_btn_deactivate_user}" execute="@this" action="#{adminBean.deactivateUser}" rendered="#{loginBean.login and loginBean.user.grants[0].properties.role.objid == 'escidoc:role-ou-administrator'}"/>
+								</h:panelGroup>
+							</rich:popupPanel>
+							
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_submitPanel">
+								<a4j:commandButton execute="@this" value="#{lbl.admin_user_createNew}" styleClass="eg3_borderradius_5" render="editUser" oncomplete="#{rich:component('popupUser')}.show()">
+									<f:setPropertyActionListener target="#{adminBean.user}" value="#{adminBean.newEmptyUser}"/>
+								</a4j:commandButton>
+							</h:panelGroup>
+							
+							<mpdl:userEditor target="popupUser" title="#{lbl.admin_user_createNew}" user="#{adminBean.user}"/>
+							
+						</rich:tab>
+					</rich:tabPanel>
+					
+				</h:panelGroup>
+				<style type="text/css">
+					div.rf-pp-hdr {
+						background-image:none;
+						background-color:#CACA86;
+						min-height:1em;
+					}
+					div.rf-pp-cntr {
+						background-color:#2F2F2F; 
+					}
+					div.rf-pp-cnt-scrlr {
+						width:100%;
+						background-color:transparent;
+						overflow:auto;
+					}
+					div.rf-pp-cnt {
+						width:95%;
+						background-color:transparent;
+						overflow:auto;
+					}
+					div.rf-pp-cnt table {
+						height:100%;
+					}
+					div.rf-pp-cnt textarea {
+						resize:vertical;
+					}
+				</style>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

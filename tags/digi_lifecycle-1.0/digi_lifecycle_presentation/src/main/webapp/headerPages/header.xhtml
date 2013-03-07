@@ -1,0 +1,136 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html [
+<!ENTITY nbsp "&#160;">
+]>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+	<h:panelGroup layout="block" styleClass="eg3_standardHeader">
+	
+		<h:panelGroup layout="block" styleClass="eg3_id_headerMetaMenu">
+			<menu class="eg3_metaMenu">
+				<nav>
+					<pretty:link mappingId="user" rendered="#{loginBean.login}" title="#{tlt.meta_userprofile}">
+						<h:outputText id="txtAccountUserName" value="#{loginBean.user.loginName}"/>
+					</pretty:link>
+					
+					<h:panelGroup styleClass="eg3_separator" rendered="#{loginBean.login}">&#160;</h:panelGroup>
+					
+					<h:outputLink id="lnkDlc"
+						value="#{applicationBean.domain}/#{applicationBean.contextPath}/">
+						<h:outputText value="#{lbl.header_lnk_dlc}"/>
+					</h:outputLink> 
+										
+					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+					<h:form>
+						<h:outputLink title="#{tlt.meta_lastSearchResult}" rendered="#{sessionBean.latestCql!= null}"
+							value="#{applicationBean.domain}/#{applicationBean.contextPath}/searchresult?q=#{sessionBean.latestCql}">
+							<h:outputText value="#{lbl.header_lastSearchResult}"/>
+						</h:outputLink> 
+					
+						<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}"/>
+						<ui:remove>
+							<h:panelGroup styleClass="eg3_searchTooltip">
+								<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->
+							</h:panelGroup>
+						</ui:remove>
+						<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+						<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; position:absolute; top:-30px;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+						<script type="text/javascript">
+							$('.eg3_id_headerMetaMenu .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+						</script>
+					</h:form>
+					
+					<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch">
+						<h:outputText value="#{lbl.header_advancedSearch}"/>
+					</pretty:link>
+					
+					<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
+					<h:outputLink id="lnkHelp" value="#{internationalizationHelper.selectedHelpPage}##{prettyContext.currentMapping.id}" target="_blank">
+						<h:outputText value="#{lbl.header_lnk_help}"/>
+					</h:outputLink>
+					
+					
+					<h:form>
+						<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+							<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+								<span class="eg3_selectionText"></span>
+							</h:panelGroup>
+							<h:selectOneMenu id="selSelectLocale" value="#{internationalizationHelper.userLocaleString}" immediate="true" 
+								valueChangeListener="#{internationalizationHelper.changeLanguage}" title="#{tlt.meta_language}">
+								<f:selectItem itemValue="de" itemLabel="#{lbl.ENUM_LANGUAGE_DE}"/>
+								<f:selectItem itemValue="en" itemLabel="#{lbl.ENUM_LANGUAGE_EN}"/>
+								<f:selectItem itemValue="es" itemLabel="#{lbl.ENUM_LANGUAGE_ES}"/>
+								<f:selectItem itemValue="fr" itemLabel="#{lbl.ENUM_LANGUAGE_FR}"/>
+								<f:selectItem itemValue="it" itemLabel="#{lbl.ENUM_LANGUAGE_IT}"/>
+								<f:ajax event="change" execute="@all" render="@all"/>
+							</h:selectOneMenu> 
+						</h:panelGroup>
+					</h:form>
+					
+					
+					
+					
+				</nav>
+			</menu>
+		</h:panelGroup>
+		
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1_4 eg3_solutionLogo">
+			<h:outputLink value="#{sessionBean.logoLink}" title="#{sessionBean.logoTlt}">		
+				<h:graphicImage id="mainLogo" value="#{sessionBean.logoUrl}" alt="main logo"/>
+			</h:outputLink>
+		</h:panelGroup>
+
+		
+		<ui:fragment rendered="#{loginBean.login}">
+			<div class="eg3_container_1_2 eg3_id_mainMenu" rel="section">
+				<ui:include src="../menu/mainMenu.xhtml"/>
+			</div>
+		</ui:fragment>
+		
+		<ui:insert name="separateContentHeader">&#160;</ui:insert>
+		<ui:remove>
+			<h:panelGroup layout="block" styleClass="eg3_id_siteSearchMenu eg3_floatRight">
+				<div class="eg3_floatRight">
+					<pretty:link mappingId="advancedSearch" id="lnkAdvancedSearch" title="#{tlt.meta_advsearch}">
+						<h:outputText value="#{lbl.header_advancedSearch}"/>
+					</pretty:link>
+				</div>
+				
+				<div class="eg3_floatRight">
+					<h:form styleClass="eg3_container_4_5" style="display:inline;">
+						<h:inputText type="text" id="quickSearchString" styleClass="eg3_container_3_5 eg3_borderradius_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}"/>
+						<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+					</h:form>
+					<br />
+					<div class="eg3_textLeft eg3_container_4_5 eg3_floatRight" style="margin-top:0.25em;" onmouseover="$(this).find('.eg3_lastSearchBtn').show();" onmouseout="$(this).find('.eg3_lastSearchBtn').hide();">
+						<a href="#" class="eg3_lastSearchBtn" style="display:none;">
+							<h:outputText value="#{lbl.header_lastSearchResult}"/>
+						</a>
+						&#160;
+					</div>
+				</div>
+			</h:panelGroup>
+		</ui:remove>
+		<ui:insert name="citationLink">&#160;</ui:insert>
+		
+	</h:panelGroup>
+	
+</ui:composition>

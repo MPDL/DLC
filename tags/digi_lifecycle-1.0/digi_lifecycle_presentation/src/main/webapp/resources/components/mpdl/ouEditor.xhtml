@@ -1,0 +1,89 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+	
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="target" required="true"/>
+		<cc:attribute name="title" requied="false"/>
+		<cc:attribute name="organization" required="true"/>
+		<cc:attribute name="command"  method-signature="java.lang.String action()" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<rich:popupPanel id="#{cc.attrs.target}" domElementAttachment="form" modal="true" resizeable="true" onmaskclick="#{rich:component('popup')}.hide()" width="600" height="400" headerClass="eg3_container_1" styleClass="eg3_borderradius_5 eg3_pageEditingContainer" style="color:#FFFFFF;">
+			<f:facet name="header">
+				<h:outputText value="#{cc.attrs.title}"/>
+			</f:facet>
+			<f:facet name="controls">
+				<h:outputLink value="#" onclick="#{rich:component('popup')}.hide(); return false;">
+					<h:outputText value=" " styleClass="eg3_icon_delete_16_16" style="display:inline-block;"/>
+				</h:outputLink>
+			</f:facet>
+			
+			<h:panelGroup id="editOrga">
+				<h:panelGrid columns="2" styleClass="eg3_container_1">
+					<h:outputText value="#{lbl.admin_ou_name} *"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.title}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_alternativeTitle}"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.alternativeTitle}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_description}"/>
+					<h:inputTextarea value="#{cc.attrs.organization.escidocMd.description}" styleClass="eg3_container_1" rows="10"/>
+					
+					<h:outputText value="#{lbl.admin_ou_logoUrl}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imgURL}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_homepageUrl}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.homePageURL}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_contact}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.contact}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_cataloguePrefix}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.cataloguePrefix}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_imprint}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.imprint}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_support}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.support}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_usageRequirement}"/>
+					<h:inputText value="#{cc.attrs.organization.dlcMd.foafOrganization.usageRequirement}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_country}"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.country}" styleClass="eg3_container_1"/>
+					
+					<h:outputText value="#{lbl.admin_ou_city}"/>
+					<h:inputText value="#{cc.attrs.organization.escidocMd.city}" styleClass="eg3_container_1"/>
+				</h:panelGrid>
+				<h:panelGroup layout="block" styleClass="eg3_submitPanel eg3_container_1">
+					<a4j:commandButton value="#{lbl.button_command_save}" action="#{cc.attrs.command}" execute="@form" styleClass="eg3_borderradius_5"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</rich:popupPanel>
+	</cc:implementation>
+</html>

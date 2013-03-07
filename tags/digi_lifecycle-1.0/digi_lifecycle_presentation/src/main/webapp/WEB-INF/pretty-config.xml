@@ -1,0 +1,157 @@
+<!--
+  CDDL HEADER START
+  The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+  
+  You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+  See the License for the specific language governing permissions and limitations under the License.
+  
+  When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+  CDDL HEADER END
+  
+  Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+  All rights reserved. Use is subject to license terms.
+-->
+<pretty-config
+	xmlns="http://ocpsoft.com/prettyfaces-xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
+	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
+	
+	<url-mapping id="home">
+		<pattern>/</pattern>
+		<view-id>/Welcome.xhtml</view-id>
+	</url-mapping>
+
+	
+
+	
+	
+	
+	
+	
+	<url-mapping id="browseListPagination">
+		<pattern>/browse/#{BookPaginatorListSessionBean.elementsPerPage}/#{BookPaginatorListSessionBean.currentPageNumber}</pattern>
+		<view-id>/faces/MultiVolList.xhtml</view-id>
+	</url-mapping>
+	
+	<url-mapping id="browseList">
+		<pattern>/browse</pattern>
+		<view-id>/faces/MultiVolList.xhtml</view-id>
+		<action>#{BookPaginatorListSessionBean.reset}</action>
+	</url-mapping>
+	
+	<url-mapping id="descriptionISBD">
+		<pattern>/view/#{ViewPages.selectedBookId}/description/ISBD</pattern>
+		<view-id>/faces/ViewMDISBD.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="descriptionList">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/description/list
+		</pattern>
+		<view-id>/faces/ViewMD.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="browseImage">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/image/#{TocEditingSessionBean.currentPhysicalPageNumber}
+		</pattern>
+		<view-id>/faces/ViewImage.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="browseOutline">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/outline/#{TocEditingSessionBean.currentPhysicalPageNumber}
+		</pattern>
+		<view-id>/faces/ViewOutline.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<!-- Show Image and Outline, starting with given page -->
+	<url-mapping id="browseImageAndOutline">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/image-outline/#{TocEditingSessionBean.currentPhysicalPageNumber}
+		</pattern>
+		<view-id>/faces/ViewImageAndOutline.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<!-- Show Image and Outline, starting with title page -->
+	<url-mapping id="browseImageAndOutlineTitlePage">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/image-outline
+		</pattern>
+		<view-id>/faces/ViewImageAndOutline.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+		<action>#{ViewPages.initTitlePage}</action>
+	</url-mapping>
+	
+	<url-mapping id="browseDetails">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/details/#{TocEditingSessionBean.currentPhysicalPageNumber}
+		</pattern>
+		<view-id>/faces/ViewOutlineAndDetails.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="export">
+		<pattern>
+			/view/#{ViewPages.selectedBookId}/export
+		</pattern>
+		<view-id>/faces/Export.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editPagination">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/pagination/
+		</pattern>
+		<view-id>/faces/EditPagination.xhtml</view-id>
+		<action>#{TocEditingSessionBean.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editOutline">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/outline/
+		</pattern>
+		<view-id>/faces/EditOutline.xhtml</view-id>
+		<action>#{TocEditingSessionBean.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editDetails">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/details/
+		</pattern>
+		<view-id>/faces/EditStructDetails.xhtml</view-id>
+		<action>#{TocEditingSessionBean.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editAssignPages">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/pageAssignment/
+		</pattern>
+		<view-id>/faces/EditAssign.xhtml</view-id>
+		<action>#{TocEditingSessionBean.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editPublish">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/publish/
+		</pattern>
+		<view-id>/faces/Publish.xhtml</view-id>
+		<action>#{TocEditingSessionBean.initNewBook}</action>
+	</url-mapping>
+	
+	<url-mapping id="editMetadata">
+		<pattern>
+			/edit/#{ViewPages.selectedBookId}/description/
+		</pattern>
+		<view-id>/faces/EditMD.xhtml</view-id>
+		<action>#{ViewPages.initNewBook}</action>
+		<action>#{EditMetadata.initNewBook}</action>
+	</url-mapping>
+	
+</pretty-config>
