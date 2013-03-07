@@ -170,15 +170,15 @@
 
 	<repositories>
 		<repository>
-            <id>central</id>
-            <url>http://central</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+			<id>nexus</id>
+			<url>http://rd.mpdl.mpg.de/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
         <repository>
     		<id>eclipse</id>
     		<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
@@ -269,19 +269,6 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-release-plugin</artifactId>
-					<version>3.0.4</version>
-					<configuration>
-						<!-- send an announcement email on release -->
-						<!-- <preparationGoals>changes:announcement-mail</preparationGoals> -->
-						<!-- all the submodules inherit the version of the project -->
-						<autoVersionSubmodules>false</autoVersionSubmodules>
-						<!-- snaphots identified by timestamp are allowed -->
-						<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
-					</configuration>
-				</plugin>
-				<plugin>
 			      <groupId>org.eclipse.m2e</groupId>
 			      <artifactId>lifecycle-mapping</artifactId>
 			      <version>1.0.0</version>
@@ -336,6 +323,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4</version>
 				<configuration>
 					<!-- send an announcement email on release -->
 					<!-- <preparationGoals>changes:announcement-mail</preparationGoals> -->
