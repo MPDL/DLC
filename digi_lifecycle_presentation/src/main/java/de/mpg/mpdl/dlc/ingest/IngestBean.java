@@ -799,10 +799,6 @@ public class IngestBean{
 			return VolumeServiceBean.createModsMetadataFromXml(new FileInputStream(modsFile));
 		}
 		return null;
-		
-		
-		
-		
 	}
 
 	public String indexOfFile(FileItem f)
