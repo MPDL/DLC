@@ -1,0 +1,100 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:param name="browserTitle" value="#{volumeUtilBean.getFirstNamePart(viewMultiVol.volume.modsMetadata).name}"/>
+	
+	<ui:param name="descriptionSelected" value="#{viewMultiVol.viewType == 'LIST' or viewMultiVol.viewType == 'ISBD'}"/>
+	
+	<ui:define name="contentMenu">			
+		<h:outputText id="lblDescription" styleClass="free_area0" value="#{lbl.menu_description}" rendered="#{descriptionSelected}" />
+	</ui:define>
+	
+<ui:remove>	
+	<ui:define name="actionsMenu">
+		<div class="free_area0 sub action">
+			<h:panelGroup rendered="#{descriptionSelected}">
+				<h:commandButton value="#{lbl.menu_list}" action="#{viewMultiVol.setViewType('LIST')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
+				<h:outputText id="lblList" value="#{lbl.menu_list}" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
+				<h:panelGroup styleClass="seperator" rendered="true" />
+				<h:commandButton value="#{lbl.menu_ISBD}" action="#{viewMultiVol.setViewType('ISBD')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
+				<h:outputText id="lblISBD" value="#{lbl.menu_ISBD}" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
+				<h:panelGroup styleClass="seperator" rendered="true" />
+			</h:panelGroup>
+		</div>
+	</ui:define>
+</ui:remove>	
+	<ui:define name="mainContent">
+		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+		
+			<mpdl:header volume="#{viewMultiVol.volume}" />
+			
+			<div id="viewBiblMD" class="full_area0 itemBlock">
+				<h:panelGroup styleClass="xLarge_area0 blockHeader endline" >
+					<h:outputText value="#{lbl.view_dtls_biblMD}" />&#160;
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				
+	<h:commandButton value="#{lbl.button_command_isbd}">
+		<rich:componentControl target="isbdPopup" operation="show" />
+	</h:commandButton>
+	
+    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
+        <f:facet name="controls">
+            <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>
+        </f:facet>
+			<modsViewer:isbd modsMetadata="#{viewMultiVol.volume.modsMetadata}" />
+			<a4j:repeat var="vol" value="#{viewMultiVol.volume.relatedChildVolumes}">
+				<modsViewer:isbd_vol modsMetadata="#{vol.modsMetadata}" />
+			</a4j:repeat>
+    </rich:popupPanel>					
+				
+				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
+					<mpdl:biblMD volume="#{viewMultiVol.volume}" rendered="#{not empty viewMultiVol.volume.relatedChildVolumes}"/>
+				</h:panelGroup>
+			</div>
+
+
+			<h:panelGroup layout="block" class="full_area0 itemBlock" id="viewVolumes" rendered="#{not empty viewMultiVol.volume.relatedChildVolumes}">
+				<h:panelGroup styleClass="xLarge_area0 blockHeader endline">
+					<h:outputText value="#{lbl.view_dtls_volumes_txt}" />&#160;
+				</h:panelGroup>
+				<h:panelGroup styleClass="seperator" />
+				<h:panelGroup styleClass="free_area0 itemBlockContent endline" >			
+					<list:bibItemVolume volumes="#{viewMultiVol.volume.relatedChildVolumes}" />
+				</h:panelGroup>
+			</h:panelGroup>
+
+			
+		</h:panelGroup>
+	</ui:define>
+
+</ui:composition>
+
+
+</html>

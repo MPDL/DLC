@@ -1,0 +1,85 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view">
+
+<ui:composition template="templates/template_v3.xhtml">
+	
+	<ui:param name="browserTitle" value="#{lbl.HomePage}"/>
+	<ui:param name="headline" value="#{lbl.HomePage}"/>
+	
+	<ui:define name="mainContent">
+		<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_welcomePage">
+			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon eg3_textRight">
+				<h:panelGroup layout="block" styleClass="eg3_furtherInformation eg3_floatRight">
+					<h:outputLink value="http://dlcproject.wordpress.com/about-2" target="_blank" title="#{lbl.HomePage_title_projectdescription}"><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h:outputLink>
+					<h:outputLink value="http://dlcproject.wordpress.com/guidelines/" target="_blank" title="#{lbl.HomePage_title_guideline}"><h:outputText value="#{lbl.HomePage_title_guideline}"/></h:outputLink>
+					<!-- h:outputLink value="#" target="_blank" title="#{lbl.HomePage_title_install}"><h:outputText value="#{lbl.HomePage_title_install}"/></h:outputLink -->
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_startpageTitle">
+				<h1><h:outputText value="#{lbl.HomePage_title_projectdescription}"/></h1>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_1" style="padding-left:1em;">
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_2" style="max-width:82em;">
+					<p style="font-size:110%; width:98%; max-width:70em; line-height:145%; margin-bottom:2em;">
+						Digital Libraries Connected (DLC)  ist eine Publikationsplattform für digitale Dokumente und Sammlungen aus den Bibliotheken der Max-Planck-Gesellschaft und kooperierender Institutionen. Über die Portalfunktion hinaus dient sie auch als webbasiertes Werkzeug für die Veröffentlichung und Bearbeitung digitaler Ressourcen. Hierzu gehören das Anreichern der Dokumente mit Transkriptionen, das Auszeichnen von Bildquellen, das Abbilden der Strukturelemente mithilfe eines eigenen Editors u.a.m.  Sammlungsübergreifende Suchfunktionalitäten erleichtern die wissenschaftliche Nutzung.
+					</p>
+					<p style="font-size:110%; width:98%; max-width:70em; line-height:145%; margin-bottom:2em;">
+						Digital Libraries Connected (DLC) is a publication platform for digital works and collections from Libraries of the Max Planck Society and cooperating institutions. Beyond serving as a portal, DLC offers web-based tools to support the publication and editing of digitized copies on the internet, including enrichment of documents by transcriptions, tagging of illustrations, and creation of navigable electronic tables of content, etc. Data- and collection-spanning search functions facilitate the scientific use of digitized copies.
+					</p>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_overflow">
+						<h:form>
+							<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput eg3_container_2_5" name="simpleSearchstring" autocomplete="on" value="#{quickSearchBean.searchString}" title="#{tlt.meta_quicksearch_placeholder}" style="font-size:120%;"/>
+							<h:panelGroup styleClass="eg3_searchTooltip">
+								<h:outputText value="#{tlt.meta_quicksearch_placeholder}"/><!-- TODO tooltip labeling -->
+							</h:panelGroup>
+							<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+							<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; position:absolute; top:-30px;" id="btnQuickSearchStart" title="#{tip.adv_search_btStart}" action="#{quickSearchBean.startSearch}" value="&#160;"/>
+							<script type="text/javascript">
+								$('.eg3_welcomePage .eg3_quickSearchInput').attr("placeholder", "#{lbl.header_simpleSearch_placeholder}");
+							</script>
+						</h:form>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_1" style="margin-top:2em;">
+						<view:infoPanel descriptionTitle="#{lbl.HomePage_title_provider}" list="#{applicationBean.ous}" isProviderList="true"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" style="margin-right:12.8%;">
+					<h:panelGroup layout="block" styleClass="eg3_container_1">
+						<img src="#{facesContext.externalContext.requestContextPath}/resources/images/mirror.png" width="100%"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		</h:panelGroup>
+	</ui:define>
+
+</ui:composition>
+
+</html>

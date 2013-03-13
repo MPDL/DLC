@@ -1,0 +1,209 @@
+<!--
+  CDDL HEADER START
+  The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+  
+  You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+  See the License for the specific language governing permissions and limitations under the License.
+  
+  When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+  CDDL HEADER END
+  
+  Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+  All rights reserved. Use is subject to license terms.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>digi_lifecycle</artifactId>
+		<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
+		<version>1.1-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
+	<artifactId>image-upload</artifactId>
+	<name>image-upload</name>
+	<version>1.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	
+	<scm>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/image-upload</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/image-upload</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+	</scm>
+	<properties>
+                <project.warName>image-upload</project.warName>
+     </properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<configuration>
+					<wtpversion>1.5</wtpversion>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-war-plugin</artifactId>
+		        <version>2.1.1</version>
+		        <configuration>
+		        	<!-- Exclude dlc.properties from war file, because it should be copied to tomcat conf directory -->
+		        	<packagingExcludes>**/image-upload.properties</packagingExcludes>
+		        	<warName>${project.warName}</warName>
+		        </configuration> 
+		    </plugin>
+			<!-- 
+			<plugin>
+				<groupId>org.jvnet.jaxb2.maven2</groupId>
+				<artifactId>maven-jaxb2-plugin</artifactId>
+				<version>0.7.4</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+
+				</executions>
+				
+				<configuration>
+					<includeBindings>
+						<includeBinding>*.xjb</includeBinding>
+					</includeBindings>
+				</configuration> 
+				
+			</plugin> 
+			 -->
+			<!-- 
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					
+					<packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+	<dependencies>
+
+		<dependency>
+    		<groupId>commons-fileupload</groupId>
+    		<artifactId>commons-fileupload</artifactId>
+    		<version>1.2.1</version>
+		</dependency>
+		<dependency>
+    		<groupId>commons-httpclient</groupId>
+    		<artifactId>commons-httpclient</artifactId>
+    		<version>3.1</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.commons</groupId>
+    		<artifactId>commons-io</artifactId>
+    		<version>1.3.2</version>
+		</dependency>
+		<!-- 
+		<dependency> 
+			<groupId>org.jboss.jbossas</groupId>
+			<artifactId>jboss-as-client</artifactId> 
+			<type>pom</type>
+			<version>6.0.0.Final</version>
+			<scope>provided</scope>
+		</dependency> 
+		<dependency> 
+			<groupId>org.jboss.jbossas</groupId>
+			<artifactId>jboss-as-server</artifactId> 
+			<type>pom</type>
+			<version>6.0.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		--> 
+		
+		<dependency>
+		    <groupId>org.jboss.spec</groupId>
+		    <artifactId>jboss-javaee-6.0</artifactId>
+		    <version>1.0.0.Final</version>
+		    <type>pom</type>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- 
+		<dependency>
+			<groupId>javaee</groupId>
+  			<artifactId>javaee</artifactId>
+  			<version>1.5</version>
+  			<scope>provided</scope>
+		</dependency>
+		-->
+	    <dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+	
+	
+	<profiles>
+		<profile>
+			<id>tomcat7</id>
+			<build>
+				<plugins>
+				
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>copy-to-tomcat</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+
+								<configuration>
+									<tasks>
+										<!-- copy over the configuration file -->
+										<delete quiet="true" file="${tomcat.install.dir}/webapps/${project.warName}.war" />
+										<delete quiet="true" dir="${tomcat.install.dir}/webapps/${project.warName}" />
+
+
+										<copy overwrite="true" file="${project.build.directory}/classes/image-upload.properties" todir="${tomcat.install.dir}/conf">
+										</copy>
+
+
+										<copy overwrite="true" file="${project.build.directory}/${project.warName}.${project.packaging}" todir="${tomcat.install.dir}/webapps">
+										</copy>
+
+									</tasks>
+								</configuration>
+
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-trax</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+</project>

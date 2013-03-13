@@ -1,0 +1,262 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="target" required="true"/>
+		<cc:attribute name="vol" required="true"/>
+	</cc:interface>	
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>	
+		<style type="text/css">
+			.modalDialog {
+				position:absolute;
+				top:0;
+				margin:0 auto;
+				width:100%;
+				height:100%;
+				display:none;
+			}
+			.popup {
+				position:fixed;
+				float:none;
+				margin:0 auto;
+				height:100%;
+				width:100%;
+				z-index:5000;
+				top:0;
+				left:0;
+			}
+			.popup.shadow {
+				position:fixed;
+				opacity:0.4;
+				-moz-opacity: 0.4;
+				filter: alpha(opacity=40);
+			}
+			.popupCont {
+				float:none;
+				width:50%;
+				padding:1%;
+				margin:0 auto;
+				height:98%;
+				overflow:auto;
+			}
+			.popupCntrl {
+				position:absolute;
+				top:0;
+				width:100%;
+				height:2.5%;
+				margin-left:-2%;
+				z-index:50;
+			}
+			.popupCnt {
+				position:absolute;
+				top:0;
+				height:91.5%;
+				padding-bottom:2.5%;
+				padding-top:1.5%;
+				margin-top:2.5%;
+				width:96%;
+				overflow:auto !important;
+				z-index:49;
+			}
+			
+			.metadataSet {
+				width:98%;
+				padding:0 1%;
+				margin-bottom:0.75em;
+			}
+		</style>
+		
+		<h:panelGroup id="#{cc.attrs.target}" layout="block" styleClass="modalDialog">
+			<h:panelGroup layout="block" styleClass="popup shadow eg3_content_bgColor">&#160;</h:panelGroup>
+			<h:panelGroup layout="block" id="popup" styleClass="popup">
+				
+				<h:panelGroup layout="block" styleClass="popupCont eg3_content_bgColor_3">
+					<h:panelGroup layout="block" styleClass="popupCntrl">
+						<input type="button" class="eg3_floatRight eg3_icon_delete_16_16" onclick="eg3_unloadPopup();"/>
+					</h:panelGroup>
+					
+					<h:panelGroup layout="block" id="mvPlayer" styleClass="popupCnt eg3_content_bgColor">
+						
+						<ui:remove>
+							<h:outputText value="id"/>
+							<h:outputText value="#{cc.attrs.vol.item.objid}"/>
+						</ui:remove>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_editor}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getFirstEditor(cc.attrs.vol.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_title}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.vol.modsMetadata).title}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty volumeUtilBean.getSubTitle(cc.attrs.vol.modsMetadata).subTitle}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_subTitle}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getSubTitle(cc.attrs.vol.modsMetadata).subTitle}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty volumeUtilBean.getNoteSOR(cc.attrs.vol.modsMetadata).note}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_SOR}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getNoteSOR(cc.attrs.vol.modsMetadata).note}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty volumeUtilBean.getMainPublisher(cc.attrs.vol.modsMetadata).publisher}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_publisher}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getMainPublisher(cc.attrs.vol.modsMetadata).publisher}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty volumeUtilBean.getMainNote(cc.attrs.vol.modsMetadata).note}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_mainNote}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{volumeUtilBean.getMainNote(cc.attrs.vol.modsMetadata).note}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3" rendered="#{cc.attrs.vol.modsMetadata.keywords.size()>0}">
+								<h:outputText value="#{lbl.mods_keywords}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<a4j:repeat var="keyword" value="#{cc.attrs.vol.modsMetadata.keywords}" rowKeyVar="rowKey">
+									<h:outputText value="#{keyword} "/>
+								</a4j:repeat>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty cc.attrs.vol.modsMetadata.catalogueId_001}">
+							<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+								<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+								<h:outputText value="#{cc.attrs.vol.modsMetadata.catalogueId_001}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<ui:remove>
+						<h:outputText value="size #{cc.attrs.vol.item.objid}" />
+						</ui:remove>
+						
+						
+						<a4j:repeat var="v" value="#{cc.attrs.vol.relatedChildVolumes}" rowKeyVar="rowKey" rendered = "#{cc.attrs.vol.relatedChildVolumes.size()>0}">
+							<h:panelGroup id="v" layout="block" styleClass="eg3_container_1" style="margin:0.75em 0;">
+								<h:panelGroup layout="block" styleClass="metadataSet">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.list_volume}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+											<f:param value="#{v.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:outputText value="#{volumeUtilBean.getPart_089(v.modsMetadata)} "/>
+										</pretty:link>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="metadataSet" rendered="#{not empty volumeUtilBean.getMainTitle(v.modsMetadata).title}">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.mods_title}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+											<f:param value="#{v.objidAndVersion}"/>
+											<f:param value="recto-verso"/>
+											<h:outputText value="#{volumeUtilBean.getMainTitle(v.modsMetadata).title}"/>
+										</pretty:link>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="metadataSet">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.mods_publisherDateIssued}" rendered="#{not empty volumeUtilBean.getPublisher(v.modsMetadata).dateIssued_425.date}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<h:outputText value="#{volumeUtilBean.getPublisher(v.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getPublisher(v.modsMetadata).dateIssued_425.date}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="metadataSet">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.mods_language_037}" rendered = "#{not empty v.modsMetadata.language_037}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<h:outputText value="#{v.modsMetadata.language_037.language}" rendered = "#{not empty v.modsMetadata.language_037}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="metadataSet">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.mods_signature_544}" rendered = "#{not empty v.modsMetadata.signature_544}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<h:outputText value="#{v.modsMetadata.signature_544}" rendered = "#{not empty v.modsMetadata.signature_544}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<h:panelGroup layout="block" styleClass="metadataSet">
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+										<h:outputText value="#{lbl.mods_catalogueId_001}" rendered="#{not empty v.modsMetadata.catalogueId_001}"/>
+									</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_container_2_3">
+										<h:outputText value="#{v.modsMetadata.catalogueId_001}" rendered="#{not empty v.modsMetadata.catalogueId_001}"/>
+									</h:panelGroup>
+								</h:panelGroup>
+							</h:panelGroup>
+						</a4j:repeat>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		
+	</cc:implementation>
+	
+</html>

@@ -1,0 +1,238 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="paginatorBean" required="true" />
+		<cc:attribute name="bottomPaginator" default="true" /> 
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+
+
+
+	<div id="#{cc.clientId}" class="eg3_container_1">
+		
+		<h:outputText id="initBlock" value="#{cc.attrs.paginatorBean.init}"/>
+		
+		<h:panelGroup layout="block" styleClass="eg3_paginatorWave">
+			<h:panelGroup layout="block" styleClass="eg3_rangeSelector">
+				<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+					<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+						<h:panelGroup styleClass="eg3_selectionText"></h:panelGroup>
+					</h:panelGroup>
+					<h:form>
+						<h:selectOneMenu id="extSelectTop" value="#{cc.attrs.paginatorBean.elementsPerPageTop}"  title="#{tlt.list_hitsPerPage}">
+				 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
+				 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
+				 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+				 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+				 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+				 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+				 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
+				 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageTop}" render=":#{cc.clientId}"/>
+				 		</h:selectOneMenu>
+			 		</h:form>
+				</h:panelGroup>
+				<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_numberOfpages}"/>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_pageBrowser">
+				<ui:fragment rendered="#{cc.attrs.paginatorBean.paginatorPageSize gt 1}">
+				<nav>
+					<h:form>
+						<h:commandLink id="btList_lkFirstTop" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">
+				 				&#160;
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		<h:commandLink id="btList_lkPreviousTop" title="#{tlt.paginator_goToPreviousPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_backward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		<a4j:repeat id="paginatorTop" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
+				 			<h:commandLink id="btPageNumberTop" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage} #{paginatorPage.number}">
+				 				<h:panelGroup styleClass="eg3_pageNumber #{
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'eg3_next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'eg3_neighbour' : ''}">
+				 					<h:outputText value="#{paginatorPage.number}"  />
+				 				</h:panelGroup>
+				 				<f:ajax render=":#{cc.clientId}"/>
+				 			</h:commandLink>
+				 		</a4j:repeat>
+		
+						<h:commandLink id="btList_lkNextTop" title="#{tlt.paginator_goToNextPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_forward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		<h:commandLink id="btLinkForLastPageTop" title="#{tlt.paginator_goToLastPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">
+				 				<ui:remove>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="&#160;" title="#{tlt.paginator_goToLastPage}"/>
+				 				</ui:remove>
+				 				&#160;
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+					</h:form>
+				</nav>
+				</ui:fragment>
+				<ui:fragment rendered="#{cc.attrs.paginatorBean.paginatorPageSize lt 2}">
+					<h:outputText value="&#160;"/>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_gotoBox">
+				<h:form>
+					<h:inputText type="text" id="inpGoToPageTop" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
+					<h:outputLabel id="lblItemListPageSizeTop" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+					
+					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+					<h:commandButton type="submit" id="btList_btGoTop" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageTop}">
+				 		<f:ajax event="action" render=":#{cc.clientId}" execute="@form"/>
+				 	</h:commandButton>
+				</h:form>
+			</h:panelGroup>
+		
+		</h:panelGroup>
+		
+		
+		<cc:insertChildren/>
+
+		
+		<!-- Bottom Paginator -->
+		<h:panelGroup layout="block" styleClass="eg3_paginatorWave" rendered="#{cc.attrs.bottomPaginator}">
+			
+			<h:panelGroup layout="block" styleClass="eg3_rangeSelector">
+				<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
+					<h:panelGroup layout="block" styleClass="eg3_selectionContent">
+						<h:panelGroup styleClass="eg3_selectionText"></h:panelGroup>
+					</h:panelGroup>
+					<h:form>
+						<h:selectOneMenu id="extSelectBottom" value="#{cc.attrs.paginatorBean.elementsPerPageBottom}">
+				 			<f:selectItem itemValue="1" itemLabel="1"></f:selectItem>
+				 			<f:selectItem itemValue="6" itemLabel="6"></f:selectItem>
+				 			<f:selectItem itemValue="12" itemLabel="12"></f:selectItem>
+				 			<f:selectItem itemValue="24" itemLabel="24"></f:selectItem>
+				 			<f:selectItem itemValue="60" itemLabel="60"></f:selectItem>
+				 			<f:selectItem itemValue="90" itemLabel="90"></f:selectItem>
+				 			<f:selectItem itemValue="240" itemLabel="240"></f:selectItem>
+				 			<f:ajax event="change" listener="#{cc.attrs.paginatorBean.changeElementsPerPageBottom}" render=":#{cc.clientId}"/>
+				 		</h:selectOneMenu>
+			 		</h:form>
+				</h:panelGroup>
+				<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_numberOfpages}"/>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_pageBrowser">
+				<ui:fragment rendered="#{cc.attrs.paginatorBean.paginatorPageSize gt 1}">
+				<nav>
+					<h:form>
+						<h:commandLink id="btList_lkFirstBottom" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToFirstPage}" title="#{tlt.paginator_goToFirstPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">
+				 				<ui:remove>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="todo" title="#{tlt.paginator_goToFirstPage}"/>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="&#160;" title="#{tlt.Pag_First}"/>
+				 				</ui:remove>
+				 				&#160;
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		<h:commandLink id="btList_lkPreviousBottom" title="#{tlt.paginator_goToPreviousPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == 1}" action="#{cc.attrs.paginatorBean.goToPreviousPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_backward_16_16">
+				 				<h:outputText value="&#160;" />
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+			 			
+				 		<a4j:repeat id="paginatorBottom" var="paginatorPage" value="#{cc.attrs.paginatorBean.paginatorPages}" first="#{cc.attrs.paginatorBean.firstPaginatorPageNumber - 1}" rows="7">
+				 			<h:commandLink id="btPageNumberBottom" action="#{paginatorPage.goToPage}" disabled="#{paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber}" title="#{tlt.paginator_goToPage} #{paginatorPage.number}">
+				 				<h:panelGroup styleClass="eg3_pageNumber #{
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber ? 'eg3_active' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 1 ? 'eg3_prev' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 1 ? 'eg3_next' : 
+						 			paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber + 2 or paginatorPage.number == cc.attrs.paginatorBean.currentPageNumber - 2 ? 'eg3_neighbour' : ''}">
+				 					<h:outputText value="#{paginatorPage.number}" />
+				 				</h:panelGroup>
+				 				<f:ajax render=":#{cc.clientId}"/>
+				 			</h:commandLink>
+				 		</a4j:repeat>
+		
+						<h:commandLink id="btList_lkNextBottom" title="#{tlt.paginator_goToNextPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToNextPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_forward_16_16">
+				 				<h:outputText value="&#160;"/>
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+				 		
+				 		<h:commandLink id="btLinkForLastPageBottom" title="#{tlt.paginator_goToLastPage}" disabled="#{cc.attrs.paginatorBean.currentPageNumber == cc.attrs.paginatorBean.paginatorPageSize}" action="#{cc.attrs.paginatorBean.goToLastPage}" styleClass="eg3_noDecoration">
+				 			<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">
+				 				<ui:remove>
+				 					<h:outputLabel styleClass="eg3_iconActionLabel" value="#{tlt.Pag_Last}" title="#{tlt.Pag_Last}"/>
+				 				</ui:remove>
+				 				&#160;
+				 			</h:panelGroup>
+				 			<f:ajax render=":#{cc.clientId}"/>
+				 		</h:commandLink>
+					</h:form>
+				</nav>
+				</ui:fragment>
+				<ui:fragment rendered="#{cc.attrs.paginatorBean.paginatorPageSize lt 2}">
+					<h:outputText value="&#160;"/>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_gotoBox">
+				<h:form>
+					<h:inputText type="text" id="inpGoToPageBottom" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageBottom}" maxlength="5" />
+					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+					<h:commandButton type="submit" id="btList_btGoBottom" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageBottom}">
+				 		<f:ajax execute="@form" event="action" render=":#{cc.clientId}"/>
+				 	</h:commandButton>
+				</h:form>
+			</h:panelGroup>
+			
+		</h:panelGroup>
+		
+		
+		<script type="text/javascript">
+			resizeSelectBox();
+		</script>
+		
+	</div>
+</cc:implementation>
+</html>

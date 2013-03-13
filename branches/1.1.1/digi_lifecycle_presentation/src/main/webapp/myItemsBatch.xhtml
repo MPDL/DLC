@@ -1,0 +1,416 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:ca="http://java.sun.com/jsf/composite/components/infiniteCarousel"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:define name="mainContent">
+	<style type="text/css">
+    	.noBackground { background-image:none !important; background-color:transparent !important; border:none;}
+    	.noPaddingTop {padding-top:0 !important;}
+    	.eg3_error {background-color:red;}
+    	.eg3_success {background-color:#CACA86;}
+    	.eg3_problem {background-color:#EA7125;}
+    	.multivolumeStyle {border-bottom: none;}
+     </style>
+	<mpdl:paginator paginatorBean="#{ingestLogBean}">
+		<h:panelGroup layout="block">
+		    <rich:dataTable var="log" value="#{ingestLogBean.logs}"  styleClass="eg3_container_1" rendered="#{not empty ingestLogBean.logs}">
+		        <f:facet name="header">
+		            <rich:columnGroup>
+		                <rich:column>
+		                	<h:outputText value="#{lbl.batch_ingest_log_name}"/>
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_step}"/>
+		                </rich:column>
+
+		                <rich:column >
+		                    <h:outputText value="#{lbl.batch_ingest_log_errorlevel}"/>
+		                </rich:column>
+		                <rich:column >
+		                    <h:outputText value="#{lbl.batch_ingest_log_logs}"/>
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_startdate}"/>
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_enddate}"/>
+		                </rich:column>
+		                <rich:column >
+		                    <h:outputText value="#{lbl.batch_ingest_log_context}"/>
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_totalItems}"/>
+		                </rich:column>		                
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_finished_items}"/>		             
+		                </rich:column>
+		                <rich:column>
+		                    <h:outputText value="#{lbl.batch_ingest_log_action}"/>
+		                </rich:column>	                	             
+		            </rich:columnGroup>
+		        </f:facet>
+		        
+		        <ui:param name="backgroundStyle" value="#{log.errorLevel=='ERROR' ? 'eg3_error' :  log.errorLevel=='PROBLEM' ? 'eg3_problem' : log.step=='FINISHED' ? 'eg3_success': ''}"/>
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
+            		<h2><h:outputText value="#{log.name}" /></h2>
+            		<h:form>
+            			<h:commandButton action="#{ingestLogBean.deleteBatchLog(log)}" value="#{lbl.ingestLog_btn_deleteLogEntry}" rendered="#{log.step == 'FINISHED'}"/>
+            			<h:commandButton action="#{ingestLogBean.deleteBatchLog(log)}" value="#{lbl.ingestLog_btn_deleteLogEntryForError}" rendered="#{log.step == 'STOPPED'}"/>
+            		</h:form>
+       			</rich:column>
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
+            		<h2><h:outputText value="#{log.step}"/></h2>
+       			</rich:column>
+		        <rich:column style="vertical-align:top;" styleClass="#{backgroundStyle}">
+            		<h2><h:outputText value="#{log.errorLevel}" /></h2>           		
+       			</rich:column>
+ 		       	
+ 		       	<rich:column style="vertical-align:top;" rendered="#{not empty log.logs}">
+		       		<span onclick="$(this).next().toggle();">
+		       			<h:outputText value="#{lbl.batch_ingest_show_hide_logs}" />
+		       		</span>
+		       		<div style="display:none; width:100%; clear:both;">
+ 		        	<a4j:repeat value= "#{log.logs}" var="logLog" >
+            			<h:outputText value="#{logLog}&lt;br /&gt;" escape="false" >
+            				<br/>
+            			</h:outputText>  
+            		</a4j:repeat>
+            		</div>
+       			</rich:column>
+       			
+       			<rich:column style="vertical-align:top;" rendered="#{empty log.logs}">
+       				<h:outputText value="" />
+       			</rich:column>
+       			  			
+       			<rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.startDate}"/></h2>
+       			</rich:column>
+		        <rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.endDate}"/></h2>
+       			</rich:column>
+       			<rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.contextName}"/></h2>
+       			</rich:column>
+       			<rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.totalItems}"/></h2>
+       			</rich:column>
+		        <rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.finishedItems}"/></h2>
+       			</rich:column>
+       			<rich:column style="vertical-align:top;">
+            		<h2><h:outputText value="#{log.status}"/></h2>
+       			</rich:column>
+       			
+       			
+ 			    <rich:column colspan="14" breakRowBefore="true" style="padding-top:0; padding-bottom:0.5em;" rendered="#{log.totalItems > 0}">
+					<h:form>
+					<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="ajax" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_9_10 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
+						<rich:dataTable var="logItem" value="#{ingestLogBean.getLogItems(log)}" style="vertical-align:top;" styleClass="eg3_container_1">
+							<f:facet name="header">
+					            <rich:columnGroup>
+									<rich:column>
+					                	<h:outputText value="#{lbl.batch_ingest_log_name}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_step}"/>
+					                </rich:column>
+					                <rich:column >
+					                    <h:outputText value="#{lbl.batch_ingest_log_errorlevel}"/>
+					                </rich:column>
+					                <rich:column >
+					                    <h:outputText value="#{lbl.batch_ingest_log_logs}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_startdate}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_enddate}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_title}"/>
+					                </rich:column>			                
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_content_model}"/>
+					                </rich:column>		                
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_imagesNr}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_volumes_nr}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_finished_volumes_nr}"/>
+					                </rich:column>					                
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_footer}"/>
+					                </rich:column>
+					                <rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_tei}"/>
+					                </rich:column>
+					               	<rich:column>
+					                    <h:outputText value="#{lbl.batch_ingest_log_cdc}"/>
+					                </rich:column>
+					            </rich:columnGroup>
+					        </f:facet>    	
+					         <ui:param name="backgroundStyleSubItem" value="#{logItem.errorLevel=='ERROR' ? 'eg3_error' :  logItem.errorLevel=='PROBLEM' ? 'eg3_problem' : logItem.step=='FINISHED' ? 'eg3_success': ''}"/>
+					         <ui:param name="batchRowStyle" value="#{logItem.content_model == applicationBean.cmMultiVol ? 'multivolumeStyle' : ''}"/>
+					        <rich:column breakRowBefore="true" style="vertical-align:top;" styleClass="#{backgroundStyleSubItem} #{batchRowStyle}">
+								<h:outputText value="#{logItem.name}"/>
+							</rich:column>
+							
+							<rich:column style="vertical-align:top;" styleClass="#{backgroundStyleSubItem} #{batchRowStyle}">
+								<h:outputText value="#{logItem.step}" />
+							</rich:column>
+							
+							<rich:column style="vertical-align:top;"  styleClass="#{backgroundStyleSubItem} #{batchRowStyle}">
+								<h:outputText value="#{logItem.errorLevel}" />
+							</rich:column>
+							
+							<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItem.logs}" styleClass="#{batchRowStyle}">
+					       		<span onclick="$(this).next().toggle();">
+					       			<h:outputText value="#{lbl.batch_ingest_show_hide_logs}" />
+					       		</span>
+								<div style="display:none; width:100%; clear:both;">
+									<a4j:repeat value= "#{logItem.logs}" var="logItemLog" >
+										<h:outputText value="#{logItemLog}&lt;br /&gt;" escape="false"/>
+									</a4j:repeat>
+								</div>
+							</rich:column>
+							
+							<rich:column style="vertical-align:top; width:30%;" rendered="#{empty logItem.logs}" styleClass="#{batchRowStyle}">
+								<h:outputText value=""/>
+							</rich:column>
+							
+							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.startDate}"/>
+							</rich:column>
+							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.endDate}"/>
+							</rich:column>
+
+							<rich:column style="vertical-align:top; width:5em;" rendered="#{not empty logItem.escidocId and logItem.content_model != applicationBean.cmMultiVol}" styleClass="#{batchRowStyle}">
+								<pretty:link mappingId = "viewPages">
+									<f:param value="#{logItem.escidocId}"/>
+									<f:param value="recto-verso"/>
+									<f:param value="1"/>
+									<h:outputText value="#{logItem.shortTitle}"/>
+								</pretty:link>
+							</rich:column>						
+							<rich:column style="vertical-align:top;" rendered="#{not empty logItem.escidocId and logItem.content_model == applicationBean.cmMultiVol}" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.shortTitle}"/>
+							</rich:column>
+							<rich:column rendered="#{empty logItem.escidocId}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value=""/>
+							</rich:column>
+							
+					        <rich:column rendered="#{logItem.content_model == applicationBean.cmMono}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+			            		<h:outputText value="#{lbl.monograph}"/>
+			       			</rich:column>
+			       			<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+			            		<h:outputText value="#{lbl.multivolume}"/>
+			       			</rich:column>
+			       			<rich:column rendered="#{logItem.content_model == applicationBean.cmVolume}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+			            		<h:outputText value="#{lbl.volume}"/>
+			       			</rich:column>
+			       			
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.images_nr}"/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value=""/>
+							</rich:column>
+							
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value=""/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.volumes_nr}"/>
+							</rich:column>
+							
+							<rich:column rendered="#{logItem.content_model != applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value=""/>
+							</rich:column>
+							<rich:column rendered="#{logItem.content_model == applicationBean.cmMultiVol}" style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.finished_volumes_nr}"/>
+							</rich:column>
+							
+							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.fFileName}"/>
+							</rich:column>
+							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.teiFileName}" />
+							</rich:column>
+							<rich:column style="vertical-align:top;" styleClass="#{batchRowStyle}">
+								<h:outputText value="#{logItem.codicologicalFileName}" />
+							</rich:column>							
+
+
+							<rich:column colspan="14" breakRowBefore="true"  rendered="#{logItem.content_model == applicationBean.cmMultiVol and logItem.volumes_nr > 0}">
+			       				
+			       				<ui:remove>
+			       				<rich:collapsibleSubTableToggler for="logItemVolume" colspan="16">
+			       					<h:outputText value="#{lbl.batch_ingest_log_show_hide_items}"/>
+			       				</rich:collapsibleSubTableToggler>
+								</ui:remove>
+								
+								<rich:collapsiblePanel id="colPan" header="#{lbl.batch_ingest_log_show_hide_items}" switchType="ajax" expanded="false" styleClass="eg3_container_1 noBackground" bodyClass="eg3_container_1 noPaddingTop" headerClass="noPaddingTop eg3_container_1 noBackground" style="padding-top:0;">
+									<rich:dataTable var="logItemVolume" id="logItemVolume" value="#{ingestLogBean.getLogItemVolumes(logItem)}" rowKeyVar="rowKey" style="vertical-align:top;" styleClass="eg3_container_1">
+									
+									
+										<f:facet name="header">
+							            	<rich:columnGroup>
+												<rich:column>
+								                	<h:outputText value="#{lbl.batch_ingest_log_name}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_step}"/>
+								                </rich:column>
+								                <rich:column >
+								                    <h:outputText value="#{lbl.batch_ingest_log_errorlevel}"/>
+								                </rich:column>
+								                <rich:column >
+								                    <h:outputText value="#{lbl.batch_ingest_log_logs}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_startdate}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_enddate}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_title}"/>
+								                </rich:column>			                
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_content_model}"/>
+								                </rich:column>		                
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_imagesNr}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_footer}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_tei}"/>
+								                </rich:column>
+								                <rich:column>
+								                    <h:outputText value="#{lbl.batch_ingest_log_tei}"/>
+								                </rich:column>
+								                <rich:column>
+					                    			<h:outputText value="#{lbl.batch_ingest_log_cdc}"/>
+					                			</rich:column>
+							           		</rich:columnGroup>
+						       			 </f:facet>    	
+									
+									
+									
+									
+									
+									
+										<ui:param name="backgroundStyleVolumeItem" value="#{logItemVolume.errorLevel=='ERROR' ? 'eg3_error' :  logItemVolume.errorLevel=='PROBLEM' ? 'eg3_problem' : logItemVolume.step=='FINISHED' ? 'eg3_success': ''}"/>
+										
+										<rich:column breakRowBefore="true" style="vertical-align:top" styleClass="#{backgroundStyleVolumeItem}">
+											<h:outputText value="#{logItemVolume.name}"/>
+										</rich:column>
+										
+										<rich:column style="vertical-align:top" styleClass="#{backgroundStyleVolumeItem}">
+											<h:outputText value="#{logItemVolume.step}"/>
+										</rich:column>
+										
+										<rich:column style="vertical-align:top;" styleClass="#{backgroundStyleVolumeItem}">
+											<h:outputText value="#{logItemVolume.errorLevel}"/>
+										</rich:column>
+										
+										<rich:column style="vertical-align:top; width:30%;" rendered="#{not empty logItemVolume.logs}">
+								       		<span onclick="$(this).next().toggle();">
+								       			<h:outputText value="#{lbl.batch_ingest_show_hide_logs}" />
+								       		</span>
+											<div style="display:none; width:100%; clear:both;">
+												<a4j:repeat value= "#{logItemVolume.logs}" var="logItemVolumeLog" >
+													<h:outputText value="#{logItemVolumeLog}&lt;br /&gt;" escape="false"/>
+												</a4j:repeat>
+											</div>
+										</rich:column>
+										
+										<rich:column style="vertical-align:top; width:30%;" rendered="#{empty logItemVolume.logs}">
+											<h:outputText value=""/>
+										</rich:column>
+										
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.startDate}"/>
+										</rich:column>
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.endDate}"/>
+										</rich:column>
+		
+										<rich:column rendered="#{not empty logItemVolume.escidocId}" style="vertical-align:top;">
+											<pretty:link mappingId = "viewPages">
+												<f:param value="#{logItemVolume.escidocId}"/>
+												<f:param value="recto-verso"/>
+												<f:param value="1"/>
+												<h:outputText value="#{logItemVolume.shortTitle}"/>
+											</pretty:link>
+										</rich:column>
+										<rich:column rendered="#{empty logItemVolume.escidocId}" style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.escidocId}"/>
+										</rich:column>
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{lbl.volume}"/>
+										</rich:column>
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.images_nr}"/>
+										</rich:column>
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.fFileName}"/>
+										</rich:column>
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.teiFileName}"/>
+										</rich:column>		
+										<rich:column style="vertical-align:top;">
+											<h:outputText value="#{logItemVolume.codicologicalFileName}"/>
+										</rich:column>						
+									</rich:dataTable>
+								</rich:collapsiblePanel>
+								
+								
+				       			</rich:column>
+	
+							</rich:dataTable>
+							
+						</rich:collapsiblePanel>
+						</h:form>
+				</rich:column>
+					        
+     	
+
+
+				
+			</rich:dataTable>
+		</h:panelGroup>
+	</mpdl:paginator>
+	</ui:define>
+</ui:composition>
+
+</html>

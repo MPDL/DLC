@@ -1,0 +1,86 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:modsEditor="http://java.sun.com/jsf/composite/components/mpdl/modsEditor"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+
+	<ui:define name="mainContent">
+		<h:panelGroup layout="block">
+			<h:form id="form2">
+			
+				<h:panelGrid columns="2">
+					<h:outputText value="#{lbl.batchIngest_name} "/>
+					<h:inputText value ="#{batchIngestBean.name}" />
+					
+					<h:outputText value="#{lbl.batchIngest_protocol} "/>
+					<h:selectOneRadio value="#{batchIngestBean.protocol}">
+   						<f:selectItem itemValue="true" itemLabel="FTP" />
+   						<f:selectItem itemValue="false" itemLabel="FTPS" />
+					</h:selectOneRadio>
+					
+					<h:outputText value="#{lbl.admin_upload_collection} "/>
+					<h:selectOneMenu id="contextId" value="#{batchIngestBean.selectedContextId}">
+						<f:selectItems value="#{batchIngestBean.contextSelectItems}" />
+					</h:selectOneMenu>
+					
+					<h:outputText value="#{lbl.batchIngest_directory_server}" />
+					<h:inputText value="#{batchIngestBean.server}" style="width:500px"/>					
+					
+					<h:outputText value="#{lbl.batchIngest_directory_images}" />
+					<h:inputText value="#{batchIngestBean.images}" style="width:500px"/>				
+					
+					<h:outputText value="#{lbl.batchIngest_directory_mab}" />
+					<h:inputText value="#{batchIngestBean.mab}" style="width:500px"/>
+					
+					<h:outputText value="#{lbl.batchIngest_directory_tei}" />
+					<h:inputText value="#{batchIngestBean.tei}" style="width:500px"/>
+					
+					<h:outputText value="#{lbl.batchIngest_directory_cdc}" />
+					<h:inputText value="#{batchIngestBean.cdc}" style="width:500px"/>
+					
+					<h:outputText value="#{lbl.batch_account_username}" />
+					<h:inputText value="#{batchIngestBean.user}" />
+					
+					<h:outputText value="#{lbl.batch_account_password}" />
+					<h:inputSecret value="#{batchIngestBean.password}" />
+					
+					
+				</h:panelGrid>
+				
+				<br/>
+				<a4j:commandButton action="#{batchIngestBean.clear}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_clear}" render="messages">
+					<f:ajax render="form2" />
+				</a4j:commandButton>
+				
+				<a4j:commandButton action="#{batchIngestBean.save('save')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save}" render="messages" execute="@form">
+				</a4j:commandButton>
+				
+				<a4j:commandButton action="#{batchIngestBean.save('release')}" styleClass="eg3_borderradius_5" value="#{lbl.button_command_save_and_release}" render="messages" execute="@form">
+				</a4j:commandButton>
+
+				
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+</ui:composition>
+</html>

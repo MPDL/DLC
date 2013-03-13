@@ -1,0 +1,155 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j">
+	
+	<!-- INTERFACE -->
+	<cc:interface componentType="de.mpg.mpdl.jsf.components.FileUploadComponent">
+		<cc:attribute name="fileUploadListener" method-signature="void method(de.mpg.mpdl.jsf.components.fileUpload.FileUploadEvent)" required="true"/>
+		<cc:attribute name="onUploadCompleteAction" method-signature="java.lang.String method()"/>
+		<cc:attribute name="rerender" type="java.lang.String"/>
+		<cc:attribute name="execute" type="java.lang.String"/>
+		<cc:attribute name="pluploadFileNames"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<h:outputStylesheet library="components/fileUpload/plupload/img"/>
+		
+		<!-- Load source versions of the plupload script files -->
+		<h:outputScript library="components/fileUpload/plupload" name="plupload.full.js" target="head"/>
+		<h:outputScript library="components/fileUpload/plupload/jquery.plupload.queue" name="jquery.plupload.queue.js" target="head"/>
+		<h:outputScript library="components/fileUpload/plupload/i18n" name="#{internationalizationHelper.userLocaleString}.js" target="head" rendered="#{internationalizationHelper.userLocaleString != 'en'}"/>
+	    <h:outputScript library="components/fileUpload" name="plupload_custom.js" target="head"/>
+	    
+		<style type="text/css">
+			#pluploader {
+				float:none;
+				width:100%;
+			}
+			
+			#pluploader .plupload_filelist {
+				height:38em;
+				max-height:38em;
+				width:100%;
+				background-color:#E4E4E4;
+				overflow:auto;
+			}
+			#pluploader div {
+				float:none;
+			}
+			#pluploader .plupload_file_name {
+				float:left;
+				width:50%;
+			}
+			#pluploader .plupload_file_size {
+				float:left;
+				width:20%;
+				text-align:right;
+			}
+			#pluploader .plupload_file_status {
+				float:left;
+				width:10%;
+				text-align:right;
+			}
+			#pluploader .plupload_file_action {
+				float:left;
+				width:20%;
+			}
+			#pluploader .plupload_filelist_header {
+				margin-top:0.5em;
+			}
+			#pluploader .plupload_filelist_footer  .plupload_file_name {
+				float:left;
+				width:70%;
+			}
+			#pluploader .plupload_filelist_footer .plupload_start {
+				margin-left:1em;
+			}
+			#pluploader .plupload_filelist_footer .plupload_upload_status {
+				display:block;
+				width:100%;
+				text-align:center;
+			}
+		</style>
+
+		<script type="text/javascript">
+			function getViewState() {
+				if($('input[name=javax\\.faces\\.ViewState]').first()) {
+					var viewStateValue = encodeURI($('input[name=javax\\.faces\\.ViewState]').first().val());
+					var regExp = new RegExp('\\+','g');
+					var encodedViewState = viewStateValue.replace(regExp, '\%2B');
+					return encodedViewState;
+				} else {
+					return '';
+				}
+			}
+			
+			$(function(e) {
+				//console.log("initUploader" + getViewState());
+				initUploader('#{cc.clientId}', 
+					'#{cc.attrs.rerender}',
+					getViewState(),
+					'#{session.id}',
+					'#{facesContext.externalContext.request.contextPath}#{facesContext.viewRoot.viewId}',
+					'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.flash.swf',
+					'#{facesContext.externalContext.request.contextPath}/resources/components/fileUpload/plupload/plupload.silverlight.xap');
+			});
+		</script>
+		
+		<div id="#{cc.clientId}" style="width:100%;">
+			
+			<div id="pluploader" style="height:47em;">You browser doesn't support HTML5 or Flash. Please upgrade to a newer version or install Adobe Flash Player.</div>
+			<h:commandButton  id="hiddenUploadCompleteButton" styleClass="hiddenUploadCompleteButton" action="#{cc.attrs.onUploadCompleteAction}" style="visibility:hidden; display:none;">
+				<a4j:ajax execute="#{cc.attrs.execute} uploadedFilesByPlupload"  render="#{cc.attrs.rerender} uploadedFilesByPlupload"/>
+			</h:commandButton>
+			
+			<h:inputHidden id="uploadedFilesByPlupload" styleClass="uploadedFilesByPlupload" value="#{cc.attrs.pluploadFileNames}"/>
+			
+			<style type="text/css">
+				.ui-dialog div {
+					float: none;
+				}
+			</style>
+			
+			<div id="modalUploadDialog" title="#{lbl.ingest_uploadInProgress}">
+				<p><h:outputText value="#{lbl.ingest_pleaseWait}" /></p>
+				<div id="progressBar"></div>
+			</div>
+			<script type="text/javascript">
+
+				$(function() {
+					$(".ui-dialog #modalUploadDialog").remove();
+					
+					$( "#modalUploadDialog" ).dialog({
+						modal:true,
+						autoOpen:false,
+						resizable:false,
+						open: function(event, ui) { $(this).closest('.ui-dialog').find('.ui-dialog-titlebar-close').hide();}
+					});
+					$( "#progressBar" ).progressbar({
+						value: 0
+					});
+				});
+			</script>
+		</div>
+	</cc:implementation>
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+    http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+
+  <persistence-unit name="dlc" transaction-type="RESOURCE_LOCAL">
+    <!-- <provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+    <!-- <non-jta-data-source>java:/comp/env/jdbc/DlcIngest</non-jta-data-source>
+    -->
+    <class>de.mpg.mpdl.dlc.persistence.entities.DatabaseItem</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.IngestLogMessage</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.CarouselItem</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLog</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLogItem</class>
+    <class>de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume</class>
+
+    
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+    	<!-- 
+		<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+		<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dlc.mpdl.mpg.de:5432/dlc"/>
+		<property name="javax.persistence.jdbc.user" value="ingestAdmin"/>
+		<property name="javax.persistence.jdbc.password" value="ingestAdmin"/>
+		-->
+		<property name="eclipselink.logging.level" value="INFO" />
+		<property name="eclipselink.ddl-generation" value="create-tables"/>
+		<property name="eclipselink.jpa.uppercase-column-names" value="true"/>
+	</properties>
+      
+    
+    <!-- 
+    <properties>
+      <property name="hibernate.cache.provider_class" value="org.hibernate.cache.HashtableCacheProvider" />
+      <property name="hibernate.format_sql" value="true" />
+      <property name="hibernate.show_sql" value="false" />
+      <property name="hibernate.jdbc.batch_size" value="20" />
+      <property name="hibernate.cache.use_query_cache" value="false" />
+   
+      <property name="hibernate.cache.use_second_level_cache" value="false"/>
+    </properties>
+     -->
+  </persistence-unit>
+
+</persistence>

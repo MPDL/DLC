@@ -1,0 +1,786 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="modsMetadata" required="true"/>
+		<cc:attribute name="volumeOu" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1">
+		
+		<!-- show all bib. MD, see specification  http://colab.mpdl.mpg.de/mediawiki/images/a/a7/Anzeige_BibMDnew.pdf-->
+		
+
+		
+		<!-- names -->
+
+		<!-- 1 authors -->	
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getAuthorsForTitle(cc.attrs.modsMetadata)}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_author}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getAuthorsForTitle(cc.attrs.modsMetadata)}" />	
+				</h:panelGroup>               
+			</h:panelGroup>
+			
+		<!-- 2 editors -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getEditorsForTitle(cc.attrs.modsMetadata)}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_editor}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getEditorsForTitle(cc.attrs.modsMetadata)}" />	
+				</h:panelGroup>               
+			</h:panelGroup>
+		<!-- 3 4 bodys -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getBodiesForTitle(cc.attrs.modsMetadata)}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_body}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getBodiesForTitle(cc.attrs.modsMetadata)}" />	
+				</h:panelGroup>               
+			</h:panelGroup>
+			
+		<!-- 5 gefeierte Person -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getGefeiertePerson(cc.attrs.modsMetadata)}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_gefeiertePerson}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getGefeiertePerson(cc.attrs.modsMetadata)}" />					
+				</h:panelGroup>
+			</h:panelGroup>
+
+			
+		<!-- titles -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}">
+				<!-- 6 alternative title 310 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_alternativeTitel}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title}">
+				<!-- 7 main title 331 -->	
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_title}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).title}">
+				<!-- 8 subtitle 335 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_subTitle}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- notes -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}">
+				<!-- 9 subseries 360 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_subSeries}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}">
+				<!-- 10 statement of responsibility 359 -->	
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_SOR}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>		
+			
+		<!-- parts -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getPart_089(cc.attrs.modsMetadata)}">
+				<ui:remove>
+					<ui:fragment rendered="#{not empty part.value}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_sortField}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+							<h:outputText value="#{part.value}" />
+						</h:panelGroup>
+					</ui:fragment>
+				</ui:remove>
+				<!-- 11 volume 89 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_band}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getPart_089(cc.attrs.modsMetadata)}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+		<!-- publishers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getPublisherForTitle(cc.attrs.modsMetadata) != ''}">
+				<!-- 12 publishers -->
+				<ui:fragment>
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_publisher}"/>
+					</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getPublisherForTitle(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>	
+				<ui:fragment rendered="#{volumeUtilBean.getPublisherEdition(cc.attrs.modsMetadata) != ''}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getPublisherEdition(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>					
+			</h:panelGroup>
+			
+
+			<!-- 13 printers -->	
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getPrinterForTitle(cc.attrs.modsMetadata) != ''}">
+				<!-- 12 publishers -->
+				<ui:fragment>
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_publisher}"/>
+					</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getPrinterForTitle(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>	
+				<ui:fragment rendered="#{volumeUtilBean.getPublisherEdition(cc.attrs.modsMetadata) != ''}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getPublisherEdition(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>					
+			</h:panelGroup>
+
+		<!-- physicalDescriptions -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getCollationsForTitle(cc.attrs.modsMetadata) != ''}">
+			<!-- 14 collations -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_extent}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getCollationsForTitle(cc.attrs.modsMetadata)}" />	
+				</h:panelGroup>               
+			</h:panelGroup>		
+			
+		<!-- relatedItems -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getRelatedItemSource(cc.attrs.modsMetadata).title}">
+			<!-- 15 source -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_source}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getRelatedItemSource(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getRelatedItemSeries(cc.attrs.modsMetadata).size() > 0}">
+				<a4j:repeat var="ri" value="#{volumeUtilBean.getRelatedItemSeries(cc.attrs.modsMetadata)}">
+					<!-- 16 Series -->
+					<ui:fragment rendered="#{ri.type == 'series'}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_seriesTitle}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+							<h:outputText value="#{ri.title}" />
+						</h:panelGroup>
+					</ui:fragment>				
+				</a4j:repeat>
+			</h:panelGroup>
+
+		<!-- notes -->		
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}">
+			<!-- 17 thesis 519 -->				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_thesis}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+		<!-- identifiers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}">
+				<!-- 18 isbn 1 540a -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_isbn_1}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getISBN2(cc.attrs.modsMetadata).value}">
+				<!-- 19 isbn 2 540b -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_isbn_2}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getISBN2(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}">
+				<!-- 20 issn 1 542a -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_issn_1}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getISSN2(cc.attrs.modsMetadata).value}">
+				<!-- 21 issn 2 542b -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_issn_2}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getISSN2(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+		
+		<!-- notes -->	
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getMainNote(cc.attrs.modsMetadata).note}">
+				<!-- 22 note 501 -->		
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_annotation}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getMainNote(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- titles -->	
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title}">
+				<!-- 23 paralleltitle 341 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_parallelTitle}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+					
+		<!-- notes -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteSOV(cc.attrs.modsMetadata).note}">
+				<!-- 24 summary of volumes thesis 432 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_SOV}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteSOV(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 25 subject completeness 429 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteSC(cc.attrs.modsMetadata).note}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_subjectCompleteness}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteSC(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteIndexes(cc.attrs.modsMetadata).note}">
+				<!-- 26 indexes 431 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_indexes}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNoteSC(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- identifiers -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getIdentifierZDB(cc.attrs.modsMetadata).value}">
+				<!-- 27 zdb-id 025z -->			
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_zdb}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getIdentifierZDB(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getIdentifierOtherID(cc.attrs.modsMetadata).value}">
+				<!-- 28 other id 580 -->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_zdb}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getIdentifierOtherID(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 29 doi 552a -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getIdentifierDOI(cc.attrs.modsMetadata).value}">		
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_zdb}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getIdentifierDOI(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 30 urn 552b -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getIdentifierURN(cc.attrs.modsMetadata).value}">		
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_zdb}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getIdentifierURN(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+		<!-- titles -->	
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getUniformTitle(cc.attrs.modsMetadata).title}">
+				<!-- 31 uniform 304 -->			
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_uniformTitle}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getUniformTitle(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>
+					
+				<ui:remove>
+					<ui:fragment rendered="#{title.displayLabel == 'NEB follow the title'}" >
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_uniformTitle}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+							<h:outputText value="#{title.title}" />
+						</h:panelGroup>
+					</ui:fragment>
+					
+					<ui:fragment rendered="#{title.displayLabel == 'NEB with the title'}" >
+						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.mods_uniformTitle}"/>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+							<h:outputText value="#{title.title}" />
+						</h:panelGroup>
+					</ui:fragment>
+				</ui:remove>
+
+			</h:panelGroup>	
+			
+		<!-- parts -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getPart_361(cc.attrs.modsMetadata).subseries_361}">
+			<!-- 32 subseries 361 -->				
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_attachTitle}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getPart_361(cc.attrs.modsMetadata).subseries_361}"/>
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+		<!-- notes -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNote_365(cc.attrs.modsMetadata).note}">
+				<!-- 33 remainder of title for whole item 365-->
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_remainderOfTitleForWholeItem}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNote_365(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+			<!-- 34  reponsibility for whole item 369-->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNote_369(cc.attrs.modsMetadata).note}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_note_remainderOfTitleForWholeItem}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getNote_369(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>
+			</h:panelGroup>	
+			
+		<!-- 35 keywords -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
+				<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_keywords}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{keyword}" />
+					</h:panelGroup>
+				</a4j:repeat>
+			</h:panelGroup>		
+			
+			<!-- 36 material -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getMaterialDesignation_334(cc.attrs.modsMetadata).pdForm}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_materialDesignation_334}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getMaterialDesignation_334(cc.attrs.modsMetadata).pdForm.value}" />
+				</h:panelGroup>
+			</h:panelGroup>				
+			
+		<!-- 37 language_037 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.language_037}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_language_037}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.language_037.language}" />
+				</h:panelGroup>
+			</h:panelGroup>
+
+		<!-- 38 catalogueId_001 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.catalogueId_001}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.catalogueId_001}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- 39 signature_544 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.signature_544}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_signature_544}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.signature_544}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!-- 40 freeText -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty cc.attrs.modsMetadata.freeText}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_freeText}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{cc.attrs.modsMetadata.freeText}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+		<!--  Sekundärausgabe -->
+			<!-- 41publisher 3 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getSecPublisherForTitle(cc.attrs.modsMetadata)!=''}">
+				<ui:fragment rendered="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata) != ''}">
+ 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+ 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisher_sec}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecPublisherForTitle(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+				<ui:fragment rendered="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata) != ''}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+			</h:panelGroup>
+			
+		<!-- 42 manufacturer -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getSecManufacturerForTitle(cc.attrs.modsMetadata)!=''}">
+				<ui:fragment rendered="#{not empty volumeUtilBean.getSecManufacturerForTitle(cc.attrs.modsMetadata) != ''}">
+ 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+ 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisher}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecManufacturerForTitle(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+				<ui:fragment rendered="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata) != ''}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<!-- 43 creator -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getSecCreatorForTitle(cc.attrs.modsMetadata)!=''}">
+				<ui:fragment rendered="#{not empty volumeUtilBean.getSecCreatorForTitle(cc.attrs.modsMetadata)}">
+ 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
+ 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisher}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecCreatorForTitle(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+				<ui:fragment rendered="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata) != ''}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+							<h:outputText value="#{lbl.mods_publisherEditionStatement}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSecPublisherEdition(cc.attrs.modsMetadata)}" />
+					</h:panelGroup>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<!-- 44 isbn 634 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getDigitalISBN(cc.attrs.modsMetadata).value}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_isbn_digital}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getDigitalISBN(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 45 issn 635 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getDigitalISSN(cc.attrs.modsMetadata).value}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_identifier_isbn_digital}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getDigitalISSN(cc.attrs.modsMetadata).value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 46 signature 646 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_signature_646(cc.attrs.modsMetadata).sec_signature_646}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_signature_646}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_signature_646(cc.attrs.modsMetadata).sec_signature_646}" />
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<!-- 47 digital master 647 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_digitalMaster_647(cc.attrs.modsMetadata).note}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_digital_master}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_digitalMaster_647(cc.attrs.modsMetadata).note}" />
+				</h:panelGroup>				
+			</h:panelGroup>
+			
+			<!-- 48 context 621 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_relatedItems(cc.attrs.modsMetadata).title}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_collection}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_relatedItems(cc.attrs.modsMetadata).title}" />
+				</h:panelGroup>				
+			</h:panelGroup>
+			
+			<!-- 49 copyright 659 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{volumeUtilBean.getSec_copyright(cc.attrs.modsMetadata)!=''}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_copyright}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_copyright(cc.attrs.modsMetadata)}" />
+				</h:panelGroup>				
+			</h:panelGroup>
+			
+			<!-- 50 technical indication 653 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_technicalInput(cc.attrs.modsMetadata).pdForm}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_technicalInput}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_technicalInput(cc.attrs.modsMetadata).pdForm.value}" />
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+			<!-- 51 extent 637 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_coverage(cc.attrs.modsMetadata).extent}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_coverage}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_coverage(cc.attrs.modsMetadata).extent}" />
+				</h:panelGroup>	
+			</h:panelGroup>
+			
+			<!-- 52 url 655 -->
+			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSec_url(cc.attrs.modsMetadata).sec_url}">
+				<h:panelGroup layout="block" styleClass="eg3_container_1_3">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_sec_url}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+					<h:outputText value="#{volumeUtilBean.getSec_url(cc.attrs.modsMetadata).sec_url.value}" />
+				</h:panelGroup>
+			</h:panelGroup>
+		
+	<!-- END OF metadata container -->
+	
+	
+			<ui:fragment rendered="#{not empty cc.attrs.volumeOu.dlcMd.foafOrganization.cataloguePrefix and not empty cc.attrs.modsMetadata.catalogueId_001}">
+				<br/>
+				<h:outputLink value="#{cc.attrs.volumeOu.dlcMd.foafOrganization.cataloguePrefix}#{cc.attrs.modsMetadata.catalogueId_001}" target="_blank" styleClass="eg3_opacLink">
+					<h:outputText value="#{lbl.link_external_opac}"/>
+				</h:outputLink>
+			</ui:fragment>
+		</h:panelGroup>
+		
+	</cc:implementation>
+</html>
