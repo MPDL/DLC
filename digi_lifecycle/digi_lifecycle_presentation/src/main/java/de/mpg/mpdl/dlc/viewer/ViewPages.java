@@ -924,7 +924,7 @@ public class ViewPages implements Observer{
 				this.codicologicalXhtml = VolumeServiceBean.transformCodicologicalToHtml(new StreamSource(new StringReader(volume.getCodicological())), i18n);
 			}
 		} catch (Exception e) {
-			logger.error("error while transforming codicological md to xhtml");
+			logger.error("error while transforming codicological md to xhtml", e);
 		}
 		
 		return codicologicalXhtml;
