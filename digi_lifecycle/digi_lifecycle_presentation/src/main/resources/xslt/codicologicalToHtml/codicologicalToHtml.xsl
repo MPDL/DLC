@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
   CDDL HEADER START
   The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
@@ -11,7 +12,6 @@
   Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
   All rights reserved. Use is subject to license terms.
 -->
-﻿<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  version="1.0" xmlns:dlc="http://dlc.mpdl.mpg.de">
     <xsl:output encoding="UTF-8" indent="yes" method="html" media-type="application/xhtml+xml" omit-xml-declaration="yes" />
    
