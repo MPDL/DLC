@@ -84,8 +84,8 @@ public class SortCriterion {
 		STATUS("", "/properties/public-status"),
 		LAST_MODIFIED("", "/sort/last-modification-date"),
 		
-		VOLUME_ORDER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/order"),
-		VOLUME_PARTNUMBER("sort.escidoc.part", "/sort/md-records/md-record/mods/part/detail/number"),
+		VOLUME_ORDER("sort.escidoc.part.order", "/sort/md-records/md-record/mods/part/order"),
+		VOLUME_PARTNUMBER("sort.escidoc.number", "/sort/md-records/md-record/mods/part/detail/number"),
 		VOLUME_PARTTITLE("sort.escidoc.part", "/sort/md-records/md-record/mods/part/detail/title");
 		
 		private String searchIndexName;
