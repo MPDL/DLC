@@ -43,12 +43,24 @@
 				<xsl:for-each select="key('fields', '037')">
 					<xsl:call-template name="mab037ToLanguage"/>
 				</xsl:for-each>
-				<xsl:for-each select="key('fields', '089')">
-					<xsl:call-template name="mab089ToPart"/>
-				</xsl:for-each>
-				<xsl:for-each select="key('fields', '090')">
-					<xsl:call-template name="mab090ToPart"/>
-				</xsl:for-each>
+				
+				<xsl:if test="//mab:feld[@nr='089'] or //mab:feld[@nr='090']">
+					<xsl:element name="mods:part">
+						<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
+						<xsl:if test="//mab:feld[@nr='090']">
+							<xsl:attribute name="order"><xsl:value-of select="//mab:feld[@nr='090']"/></xsl:attribute>
+						</xsl:if>
+						<xsl:if test="//mab:feld[@nr='089']">
+							<xsl:element name="mods:detail">
+								<xsl:element name="mods:number">
+									<xsl:value-of select="//mab:feld[@nr='089']"/>
+								</xsl:element>
+							</xsl:element>
+						</xsl:if>
+					</xsl:element>
+				</xsl:if>
+				
+				
 				<xsl:for-each select="key('fields', '100')">
 					<xsl:call-template name="mab100ToName"/>
 				</xsl:for-each>
@@ -298,27 +310,7 @@
 		</xsl:element>
 	</xsl:template>	
 	
-	<xsl:template name="mab089ToPart">
-		<xsl:element name="mods:part">
-			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
-			<xsl:attribute name="order"><xsl:value-of select="."/></xsl:attribute>
-			<xsl:element name="mods:detail">
-				<xsl:element name="mods:number">
-					<xsl:value-of select="."/>
-				</xsl:element>
-			</xsl:element>
-		</xsl:element>
-	</xsl:template>	
-	
-	<xsl:template name="mab090ToPart">
-		<xsl:element name="mods:part">
-			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
-			<xsl:attribute name="type"><xsl:value-of select="'host'"/></xsl:attribute>
-			<xsl:attribute name="order"><xsl:value-of select="."/></xsl:attribute>
-			<xsl:value-of select="."/>
-		</xsl:element>
-	</xsl:template>	
+
 	
 	<xsl:template name="mab100ToName">
 		<xsl:element name="mods:name">
@@ -912,13 +904,7 @@
 		</xsl:element>
 	</xsl:template>
 	
-	
-	
-	
-	
-	
-	
-	
+
 	<xsl:template name="mab902ToSubject">
 		<xsl:element name="mods:subject">
 			<xsl:attribute name="ID"><xsl:value-of select="concat($IDPREFIX, @nr)"/></xsl:attribute>
