@@ -280,14 +280,14 @@ All rights reserved. Use is subject to license terms.
 		<!-- parts -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.parts.size() > 0}">
 				<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
-					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty part.value}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty part.order}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_sortField}"/>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-							<h:inputText value="#{part.value}" title="#{part.value}" />
+							<h:inputText value="#{part.order}" title="#{part.order}" />
 						</h:panelGroup>
 					</h:panelGroup>
 					<!-- 11 volume 89 -->
