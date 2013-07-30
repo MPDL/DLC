@@ -1900,7 +1900,7 @@ public class VolumeServiceBean {
 		{
 			if(v.getRelatedVolumes() != null)
 			{
-				if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId) ||v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
+				if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
 				{
 //					volumeIds.addAll(v.getRelatedVolumes());
 					scList.add(new SearchCriterion(Operator.OR, SearchType.RELATION_ID, v.getItem().getOriginObjid()));
