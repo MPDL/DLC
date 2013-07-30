@@ -60,7 +60,8 @@ public class SearchCriterion extends Criterion{
 		
 		
 		PUBLIC_STATUS(null, new String[]{"/properties/public-status"}),
-		VERSION_STATUS(null, new String[]{"/properties/version/status"});
+		VERSION_STATUS(null, new String[]{"/properties/version/status"}),
+		RELATION_ID(null, new String[]{"/relations/relation/id"});
 		
 		private String[] searchIndexNames;
 		private String[] filterIndexNames;
@@ -165,6 +166,16 @@ public class SearchCriterion extends Criterion{
 		else return null;
 				
 	}
+	
+	public String[] getFilterIndexes()
+	{
+		if(getSearchType() != null)
+		{
+			return getSearchType().getFilterIndexNames();
+		}
+		else return null;
+	}
+	
 	public static String toCql(List<SearchCriterion> cList, boolean filter ) {
 		{
 			  

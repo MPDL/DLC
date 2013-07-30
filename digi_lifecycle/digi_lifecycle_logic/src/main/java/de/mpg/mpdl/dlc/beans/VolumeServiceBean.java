@@ -1890,7 +1890,7 @@ public class VolumeServiceBean {
 		
 		
 		
-		List<String> volumeIds= new ArrayList<String>();
+//		List<String> volumeIds= new ArrayList<String>();
 		Map<String, Volume> mvMap = new HashMap<String, Volume>();
 		StringBuffer volumeQuery = new StringBuffer();
 		
@@ -1898,44 +1898,48 @@ public class VolumeServiceBean {
 		
 		for(Volume v : volumeList)
 		{
-			if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId) ||
-				v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId)	)
+			if(v.getRelatedVolumes() != null)
 			{
-				if(v.getRelatedVolumes()!=null)
+				if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId) ||v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
 				{
-					volumeIds.addAll(v.getRelatedVolumes());
-					mvMap.put(v.getItem().getOriginObjid(), v);
+//					volumeIds.addAll(v.getRelatedVolumes());
+					scList.add(new SearchCriterion(Operator.OR, SearchType.RELATION_ID, v.getItem().getOriginObjid()));
+					mvMap.put(v.getItem().getOriginObjid(), v);				
 				}
-				
+				else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
+				{
+					scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, v.getItem().getOriginObjid()));
+				}
 			}
+
 			
 			
 		}
 		
-		
-		for(int i=0; i<volumeIds.size(); i++)
-		{
-			
-			scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, volumeIds.get(i)));
-				/*
-				if(filter)
-				{
-					volumeQuery.append("\"/id\"=" + volumeIds.get(i));
-				}
-				else
-				{
-					volumeQuery.append("escidoc.objid=" + volumeIds.get(i));
-				}
-				
-				if(i<volumeIds.size() -1)
-				{
-					volumeQuery.append(" or ");
-				}
-				
-			*/
-			
-		}
-		
+	
+//		for(int i=0; i<volumeIds.size(); i++)
+//		{
+//			
+//			scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, volumeIds.get(i)));
+//				/*
+//				if(filter)
+//				{
+//					volumeQuery.append("\"/id\"=" + volumeIds.get(i));
+//				}
+//				else
+//				{
+//					volumeQuery.append("escidoc.objid=" + volumeIds.get(i));
+//				}
+//				
+//				if(i<volumeIds.size() -1)
+//				{
+//					volumeQuery.append(" or ");
+//				}
+//				
+//			*/
+//			
+//		}
+//		
 		if(!scList.isEmpty())
 		{
 			SearchBean sb = new SearchBean();

@@ -102,7 +102,7 @@ public class FilterBean {
 		List<SearchCriterion> listWithoutEmptyEntries = new ArrayList<SearchCriterion>();
 		for(SearchCriterion fc : clonedFcList)
 		{
-			if(fc.getValue()!=null && !fc.getValue().isEmpty() && fc.getSearchIndexes()!=null)
+			if(fc.getValue()!=null && !fc.getValue().isEmpty() && (fc.getSearchIndexes()!=null) || fc.getFilterIndexes() != null)
 			{
 				listWithoutEmptyEntries.add(fc);
 			}
