@@ -1892,12 +1892,14 @@ public class VolumeServiceBean {
 		
 //		List<String> volumeIds= new ArrayList<String>();
 		Map<String, Volume> mvMap = new HashMap<String, Volume>();
-		StringBuffer volumeQuery = new StringBuffer();
+		Map<String, Volume> vMap = new HashMap<String, Volume>();
+//		StringBuffer volumeQuery = new StringBuffer();
 		
 		List<SearchCriterion> scList = new ArrayList<SearchCriterion>();
 		
 		for(Volume v : volumeList)
 		{
+		
 			if(v.getRelatedVolumes() != null)
 			{
 				if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
@@ -1908,15 +1910,14 @@ public class VolumeServiceBean {
 				}
 				else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
 				{
-					scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, v.getItem().getOriginObjid()));
+					scList.add(new SearchCriterion(Operator.OR, SearchType.OBJECT_ID, v.getRelatedVolumes().get(0)));
+					vMap.put(v.getItem().getOriginObjid(), v);
 				}
-			}
-
-			
+			}			
 			
 		}
 		
-	
+		
 //		for(int i=0; i<volumeIds.size(); i++)
 //		{
 //			
@@ -1939,7 +1940,7 @@ public class VolumeServiceBean {
 //			*/
 //			
 //		}
-//		
+		
 		if(!scList.isEmpty())
 		{
 			SearchBean sb = new SearchBean();
@@ -1974,14 +1975,16 @@ public class VolumeServiceBean {
 				{
 					if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
 					{
-						String volId = v.getRelatedVolumes().get(0);
-						Volume mv = mvMap.get(volId);
+						String mvId = v.getRelatedVolumes().get(0);
+						Volume mv = mvMap.get(mvId);
+
 						if(mv.getRelatedChildVolumes()==null)
 						{
 							mv.setRelatedChildVolumes(new ArrayList<Volume>());
 						}
 						mv.getRelatedChildVolumes().add(v);
 						v.setRelatedParentVolume(mv);
+
 					}
 					else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
 					{
@@ -1991,7 +1994,7 @@ public class VolumeServiceBean {
 						}
 						for(String subVolId: v.getRelatedVolumes())
 						{
-							Volume subVol = mvMap.get(subVolId);
+							Volume subVol = vMap.get(subVolId);
 							if(subVol !=null)
 							{ 
 								subVol.setRelatedParentVolume(v);
