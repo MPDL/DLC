@@ -181,6 +181,9 @@ public class ImageHelper{
     	ImageIO.write(scaledImage, "JPG", output);
     	output.flush();
     	output.close();
+    	scaledImage.flush();
+    	inputImage.flush();
+    	
     	return tmpFile;
 		             
         
@@ -265,6 +268,8 @@ public class ImageHelper{
 		        	finalImg.createGraphics().drawImage(scanBI,0,0, null);
 		        	finalImg.createGraphics().drawImage(footerBI,0, scanHeight, null);
 		            ImageIO.write(finalImg, "JPG", inputFile);
+		            scanBI.flush();
+		            footerBI.flush();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
