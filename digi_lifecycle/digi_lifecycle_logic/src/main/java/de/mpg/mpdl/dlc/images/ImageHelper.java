@@ -359,7 +359,7 @@ public class ImageHelper{
 		        //imageEncoder.encode(ri);
 		        ImageIO.write(bufferedImage, "png", tmpFile);
 		        
-		        
+		        bufferedImage.flush();
 	    	}catch(Exception e)
 	    	{
 	    		logger.error("cann not convert tiff to jpeg. Error: " + e.getMessage() + " | Size = " + tmpFile.length());
@@ -382,6 +382,8 @@ public class ImageHelper{
 			    //Color.WHITE estes the background to white. You can use any other color
 			    g.drawImage(image, 0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), Color.WHITE, null);
 			    ImageIO.write(bufferedImage,"JPEG", tmpFile); 
+			    image.flush();
+			    bufferedImage.flush();
 
 			    
 /*		    	
