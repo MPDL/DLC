@@ -170,7 +170,10 @@ public class IngestBean{
 				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
 				//if(mabFile == null)
 				
-				this.modsMetadata = retrieveModsMetadata(volume.getModsMetadata());
+				if("".equalsIgnoreCase(volume.getModsMetadata().getCatalogueId_001()) || volume.getModsMetadata().getCatalogueId_001() == null)
+					this.modsMetadata = retrieveModsMetadata(volume.getModsMetadata());
+				else
+					this.modsMetadata = volume.getModsMetadata();
 				if(volume.getMets()!=null)
 				{
 					for(Page p : volume.getMets().getPages())
