@@ -610,7 +610,7 @@ All rights reserved. Use is subject to license terms.
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
 				<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">	
 					<!-- 15 source -->				
-					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ri.type == 'host' and empty ri.displayLabel}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ri.type == 'host' and empty ri.displayLabel and not empty ri.title}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 								<h:outputText value="#{lbl.mods_source}"/>
