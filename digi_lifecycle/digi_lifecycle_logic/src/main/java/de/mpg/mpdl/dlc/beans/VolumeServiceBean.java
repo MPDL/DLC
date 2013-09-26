@@ -1959,11 +1959,11 @@ public class VolumeServiceBean {
 			VolumeSearchResult volumeResult;
 			if(filter)
 			{
-				volumeResult = fb.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME}, versionStatus, publicStatus, scList, CombinedSortCriterion.VOLUME.getScList(), 500, 1, userHandle);
+				volumeResult = fb.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME}, versionStatus, publicStatus, scList, CombinedSortCriterion.VOLUME.getScList(), 5000, 1, userHandle);
 			}
 			else
 			{
-				volumeResult = fb.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, scList, CombinedSortCriterion.VOLUME.getScList(), 500, 0, null);
+				volumeResult = fb.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, scList, CombinedSortCriterion.VOLUME.getScList(), 5000, 0, null);
 				//volumeResult = sb.search(new VolumeTypes[]{VolumeTypes.VOLUME}, scList, CombinedSortCriterion.VOLUME.getScList(), 500, 0);
 			}
 
