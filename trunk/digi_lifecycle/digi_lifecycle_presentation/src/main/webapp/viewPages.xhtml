@@ -284,10 +284,10 @@ All rights reserved. Use is subject to license terms.
 										<f:facet name="controls">
 											<h:commandButton onclick="#{rich:component('isbdPopup')}.hide(); return false;" value=" " styleClass="eg3_icon_close_16_16"/>
 										</f:facet>
-										<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2001'}">
+										<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == applicationBean.cmMono}">
 											<modsViewer:isbd modsMetadata="#{viewPages.volume.modsMetadata}"/>
 										</h:panelGroup>
-										<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == 'escidoc:2003'}">
+										<h:panelGroup rendered="#{viewPages.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
 											<modsViewer:isbd_vol parentVolume="#{viewPages.volume.relatedParentVolume}" modsMetadata="#{viewPages.volume.modsMetadata}"/>
 										</h:panelGroup>
 									</rich:popupPanel>
