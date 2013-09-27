@@ -82,7 +82,7 @@ public class VolumeUtilBean {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
 			String url = null; 
 			if(p.getContentIds()!=null)
-				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getContentIds(), "UTF-8") + "&dh=" + height + "&dw=" + width;
+				url = digilibUrl + "?fn=" + URLEncoder.encode(p.getContentIds(), "UTF-8").replace("+", "%20") + "&dh=" + height + "&dw=" + width;
 			if(additionalQuery!=null)
 			{
 				url += additionalQuery;
@@ -108,7 +108,7 @@ public class VolumeUtilBean {
 			String digilibUrl = PropertyReader.getProperty("digilib.scaler.url");
 			String url = null;
 			if(pb.getFacs()!=null)
-				url = digilibUrl + "?fn=" + URLEncoder.encode(pb.getFacs(), "UTF-8") + "&dh=" + height + "&dw=" + width;
+				url = digilibUrl + "?fn=" + URLEncoder.encode(pb.getFacs(), "UTF-8").replace("+", "%20") + "&dh=" + height + "&dw=" + width;
 			return url;
 		} catch (Exception e) {
 			logger.error("Error getting URL for page " + pb + "(" + width + "," + height + ")", e);
@@ -118,7 +118,7 @@ public class VolumeUtilBean {
 	
 	public static String getImageServerUrl(String subUrl, String type)
 	{
-		return ImageHelper.getFullImageUrl(subUrl, Type.valueOf(type));
+		return ImageHelper.getFullImageUrl(subUrl.replace(" ", "%20"), Type.valueOf(type));
 	}
 	
 	public static String getDigilibJQueryUrlForPage(Page p)
