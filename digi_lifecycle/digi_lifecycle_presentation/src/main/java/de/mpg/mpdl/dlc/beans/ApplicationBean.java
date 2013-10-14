@@ -64,6 +64,7 @@ public class ApplicationBean
     private String cmMultiVol;
     private String cmVolume;
     private String cmMono;
+    private String footerSnippet;
 
 
 	//TODO help_page
@@ -144,6 +145,7 @@ public class ApplicationBean
 	    	this.cmMono = PropertyReader.getProperty("dlc.content-model.monograph.id");
 	    	this.cmMultiVol = PropertyReader.getProperty("dlc.content-model.multivolume.id");
 	    	this.cmVolume = PropertyReader.getProperty("dlc.content-model.volume.id");
+	    	this.footerSnippet = PropertyReader.getProperty("dlc.footer.snippet");
 		} catch (Exception e) {
 			logger.error("Cannot get OUs: " + e.getMessage());
 		}      
@@ -285,6 +287,14 @@ public class ApplicationBean
 
 	public void setUploadThreads(HashMap<Long, Thread> uploadThreads) {
 		this.uploadThreads = uploadThreads;
+	}
+
+	public String getFooterSnippet() {
+		return footerSnippet;
+	}
+
+	public void setFooterSnippet(String footerSnippet) {
+		this.footerSnippet = footerSnippet;
 	}
     
 
