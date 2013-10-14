@@ -80,6 +80,8 @@ All rights reserved. Use is subject to license terms.
 				</div>
 			</h:panelGroup>
 			
+			
+			<h:outputText value="#{applicationBean.footerSnippet}" escape="false" rendered="#{not empty applicationBean.footerSnippet}"/>
 			<h:outputScript library="jscript" name="default.js" target="head"/>
 		</h:body>
 	</html>
