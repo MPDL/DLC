@@ -254,14 +254,14 @@
 				<xsl:attribute name="ADMID"><xsl:value-of select="'amd0'"/></xsl:attribute>
 				<xsl:attribute name="TYPE"><xsl:value-of select="'Monograph'"/></xsl:attribute>
 				<!-- All logical elements with its original ids, labels and structural types -->
-				<xsl:for-each select="$teiXml/tei:TEI//tei:head">
+				<xsl:for-each select="$teiXml/tei:TEI//tei:div">
 					<xsl:element name="mets:div">
-						<xsl:attribute name="ID"><xsl:value-of select="../@xml:id"/></xsl:attribute>
-						<xsl:attribute name="LABEL"><xsl:value-of select="."/></xsl:attribute>
-						<xsl:if test="../@type!=''">
-							<xsl:attribute name="TYPE"><xsl:value-of select="../@type"/></xsl:attribute>
+						<xsl:attribute name="ID"><xsl:value-of select="@xml:id"/></xsl:attribute>
+						<xsl:attribute name="LABEL"><xsl:value-of select="tei:head"/></xsl:attribute>
+						<xsl:if test="@type">
+							<xsl:attribute name="TYPE"><xsl:value-of select="@type"/></xsl:attribute>
 						</xsl:if>
-						<xsl:if test="../@type=''">
+						<xsl:if test="not @type">
 							<xsl:attribute name="TYPE"><xsl:value-of select="'chapter'"/></xsl:attribute>
 						</xsl:if>
 		      		</xsl:element>
@@ -275,7 +275,18 @@
 		<xsl:element name="mets:structLink">
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 				<xsl:element name="mets:smLink">
-					<xsl:attribute name="xlink:from"><xsl:value-of select="../@xml:id"/></xsl:attribute>
+					
+					<xsl:choose>
+						<xsl:when test="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div">
+							<xsl:attribute name="xlink:from"><xsl:value-of select="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div/@xml:id"/></xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="xlink:from"><xsl:value-of select="ancestor::tei:div[last()]/@xml:id"/></xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
+					
+					
+					
 					<xsl:attribute name="xlink:to"><xsl:value-of select="@xml:id"/></xsl:attribute>				
 	      		</xsl:element>
       		</xsl:for-each>
