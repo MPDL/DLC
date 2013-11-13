@@ -275,11 +275,12 @@
 		<xsl:element name="mets:structLink">
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 				<xsl:element name="mets:smLink">
-					
+					<!-- If pagebreak is directly followed by div, use the following div -->
 					<xsl:choose>
 						<xsl:when test="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div">
 							<xsl:attribute name="xlink:from"><xsl:value-of select="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div/@xml:id"/></xsl:attribute>
 						</xsl:when>
+						<!-- ... else use the first parent div -->
 						<xsl:otherwise>
 							<xsl:attribute name="xlink:from"><xsl:value-of select="ancestor::tei:div[last()]/@xml:id"/></xsl:attribute>
 						</xsl:otherwise>
