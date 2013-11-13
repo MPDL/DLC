@@ -261,7 +261,7 @@
 						<xsl:if test="@type">
 							<xsl:attribute name="TYPE"><xsl:value-of select="@type"/></xsl:attribute>
 						</xsl:if>
-						<xsl:if test="not @type">
+						<xsl:if test="not(@type)">
 							<xsl:attribute name="TYPE"><xsl:value-of select="'chapter'"/></xsl:attribute>
 						</xsl:if>
 		      		</xsl:element>
