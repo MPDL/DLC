@@ -274,22 +274,14 @@
 	<xsl:template name="link">
 		<xsl:element name="mets:structLink">
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
-				<xsl:element name="mets:smLink">
-					<!-- If pagebreak is directly followed by div, use the following div -->
-					<xsl:choose>
-						<xsl:when test="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div">
-							<xsl:attribute name="xlink:from"><xsl:value-of select="(following::*|following::text()[normalize-space(.)!=''])[1]/self::tei:div/@xml:id"/></xsl:attribute>
-						</xsl:when>
-						<!-- ... else use the first parent div -->
-						<xsl:otherwise>
-							<xsl:attribute name="xlink:from"><xsl:value-of select="ancestor::tei:div[last()]/@xml:id"/></xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
-					
-					
-					
-					<xsl:attribute name="xlink:to"><xsl:value-of select="@xml:id"/></xsl:attribute>				
-	      		</xsl:element>
+				<xsl:variable name="currentPb" select="."/>
+				<!-- Select parent div and all divs until next pagebreak -->
+				<xsl:for-each select="ancestor::tei:div[1]|(following::tei:div except following::tei:pb[1]/following::tei:div)">
+					<xsl:element name="mets:smLink">
+						<xsl:attribute name="xlink:from"><xsl:value-of select="@xml:id"/></xsl:attribute>
+						<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
+					</xsl:element>
+				</xsl:for-each>
       		</xsl:for-each>
 		</xsl:element>					
 	</xsl:template>		
