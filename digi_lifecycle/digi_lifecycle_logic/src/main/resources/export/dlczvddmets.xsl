@@ -120,7 +120,7 @@
 						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
 						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="ID">file_default_<xsl:value-of select="@xml:id"/></xsl:attribute>
 								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
@@ -134,7 +134,7 @@
 						<xsl:attribute name="USE">MIN</xsl:attribute>
 						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="ID">file_min_<xsl:value-of select="@xml:id"/></xsl:attribute>
 								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
@@ -150,7 +150,7 @@
 						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
 						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of select="@ID"/></xsl:attribute>
+								<xsl:attribute name="ID">file_default_<xsl:value-of select="@ID"/></xsl:attribute>
 								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
@@ -164,7 +164,7 @@
 						<xsl:attribute name="USE">MIN</xsl:attribute>
 						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of select="@ID"/></xsl:attribute>
+								<xsl:attribute name="ID">file_min_<xsl:value-of select="@ID"/></xsl:attribute>
 								<xsl:attribute name="MIMETYPE"><xsl:value-of select="'image/jpeg'"/></xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
@@ -208,9 +208,13 @@
 							</xsl:attribute>
 							<xsl:attribute name="TYPE"><xsl:value-of select="'page'"/></xsl:attribute>  
 							<xsl:element name="mets:fptr">
-								<xsl:attribute name="FILEID">div<xsl:value-of select="@xml:id"/></xsl:attribute>
-								</xsl:element> 
-							</xsl:element>			
+								<xsl:attribute name="FILEID">file_min_<xsl:value-of select="@xml:id"/></xsl:attribute>
+							</xsl:element> 
+							<xsl:element name="mets:fptr">
+								<xsl:attribute name="FILEID">file_default_<xsl:value-of select="@xml:id"/></xsl:attribute>
+							</xsl:element> 
+						</xsl:element>	
+									
 				      </xsl:for-each>
 			  	</xsl:when>
 			      			
@@ -234,8 +238,11 @@
 							</xsl:attribute>
 							<xsl:attribute name="TYPE"><xsl:value-of select="'page'"/></xsl:attribute>  
 							<xsl:element name="mets:fptr">
-								<xsl:attribute name="FILEID">div<xsl:value-of select="@ID"/></xsl:attribute>
-							</xsl:element> 
+								<xsl:attribute name="FILEID">file_min_<xsl:value-of select="@ID"/></xsl:attribute>
+							</xsl:element>
+							<xsl:element name="mets:fptr">
+								<xsl:attribute name="FILEID">file_default_<xsl:value-of select="@ID"/></xsl:attribute>
+							</xsl:element>  
 						</xsl:element>			
 				      </xsl:for-each>
 				</xsl:otherwise>
@@ -256,7 +263,7 @@
 				<!-- All logical elements with its original ids, labels and structural types -->
 				<xsl:for-each select="$teiXml/tei:TEI//tei:div">
 					<xsl:element name="mets:div">
-						<xsl:attribute name="ID"><xsl:value-of select="@xml:id"/></xsl:attribute>
+						<xsl:attribute name="ID">log_<xsl:value-of select="@xml:id"/></xsl:attribute>
 						<xsl:attribute name="LABEL"><xsl:value-of select="tei:head"/></xsl:attribute>
 						<xsl:if test="@type">
 							<xsl:attribute name="TYPE"><xsl:value-of select="@type"/></xsl:attribute>
@@ -276,12 +283,26 @@
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 				<xsl:variable name="currentPb" select="."/>
 				<!-- Select parent div and all divs until next pagebreak -->
-				<xsl:for-each select="ancestor::tei:div[1]|(following::tei:div except following::tei:pb[1]/following::tei:div)">
-					<xsl:element name="mets:smLink">
-						<xsl:attribute name="xlink:from"><xsl:value-of select="@xml:id"/></xsl:attribute>
-						<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
-					</xsl:element>
-				</xsl:for-each>
+				<xsl:variable name="divsForPb" select="ancestor::tei:div[1]|(following::tei:div except following::tei:pb[1]/following::tei:div)"/>
+				<xsl:choose>
+					<xsl:when test="$divsForPb">
+						<xsl:for-each select="$divsForPb">
+							<xsl:element name="mets:smLink">
+								<xsl:attribute name="xlink:from">log_<xsl:value-of select="@xml:id"/></xsl:attribute>
+								<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
+							</xsl:element>
+						</xsl:for-each>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:element name="mets:smLink">
+								<xsl:attribute name="xlink:from"><xsl:value-of select="'log0'"/></xsl:attribute>
+								<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
+						</xsl:element>
+					</xsl:otherwise>
+				
+				</xsl:choose>
+
+				
       		</xsl:for-each>
 		</xsl:element>					
 	</xsl:template>		
