@@ -197,15 +197,12 @@
 							<xsl:attribute name="CONTENTIDS"><xsl:value-of select="@facs"/></xsl:attribute>
 							<!--  <xsl:attribute name="ORDERLABEL"><xsl:value-of select="'???'"/></xsl:attribute> -->
 							<xsl:attribute name="ORDER">
-								<xsl:choose>
-									<xsl:when test="@n">
-										<xsl:value-of select="@n"/>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div[@ID=$vID]/@ORDER"/>
-									</xsl:otherwise>
-								</xsl:choose>						
+									<xsl:value-of select="position()"/>				
 							</xsl:attribute>
+							
+							<xsl:attribute name="ORDERLABEL">
+								<xsl:value-of select="@n"/>			
+							</xsl:attribute>	
 							<xsl:attribute name="TYPE"><xsl:value-of select="'page'"/></xsl:attribute>  
 							<xsl:element name="mets:fptr">
 								<xsl:attribute name="FILEID">file_min_<xsl:value-of select="@xml:id"/></xsl:attribute>
@@ -261,16 +258,26 @@
 				<xsl:attribute name="ADMID"><xsl:value-of select="'amd0'"/></xsl:attribute>
 				<xsl:attribute name="TYPE"><xsl:value-of select="'Monograph'"/></xsl:attribute>
 				<!-- All logical elements with its original ids, labels and structural types -->
-				<xsl:for-each select="$teiXml/tei:TEI//tei:div">
+				<xsl:for-each select="$teiXml/tei:TEI//(tei:div|tei:titlePage)">
 					<xsl:element name="mets:div">
 						<xsl:attribute name="ID">log_<xsl:value-of select="@xml:id"/></xsl:attribute>
-						<xsl:attribute name="LABEL"><xsl:value-of select="tei:head"/></xsl:attribute>
-						<xsl:if test="@type">
-							<xsl:attribute name="TYPE"><xsl:value-of select="@type"/></xsl:attribute>
+						
+						<xsl:if test="self::tei:div">
+							<xsl:attribute name="LABEL"><xsl:value-of select="tei:head"/></xsl:attribute>
+							<xsl:if test="@type">
+								<xsl:attribute name="TYPE"><xsl:value-of select="@type"/></xsl:attribute>
+							</xsl:if>
+							<xsl:if test="not(@type)">
+								<xsl:attribute name="TYPE"><xsl:value-of select="'chapter'"/></xsl:attribute>
+							</xsl:if>
 						</xsl:if>
-						<xsl:if test="not(@type)">
-							<xsl:attribute name="TYPE"><xsl:value-of select="'chapter'"/></xsl:attribute>
+						
+						<xsl:if test="self::tei:titlePage">
+							<xsl:attribute name="TYPE"><xsl:value-of select="'title_page'"/></xsl:attribute>
+							<xsl:attribute name="LABEL"><xsl:value-of select="//tei:docTitle"/></xsl:attribute>
 						</xsl:if>
+						
+						
 		      		</xsl:element>
 	      		</xsl:for-each>
       		</xsl:element>
@@ -282,27 +289,14 @@
 		<xsl:element name="mets:structLink">
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 				<xsl:variable name="currentPb" select="."/>
-				<!-- Select parent div and all divs until next pagebreak -->
-				<xsl:variable name="divsForPb" select="ancestor::tei:div[1]|(following::tei:div except following::tei:pb[1]/following::tei:div)"/>
-				<xsl:choose>
-					<xsl:when test="$divsForPb">
+				<!-- Select parent div and all divs/titlePage until next pagebreak -->
+				<xsl:variable name="divsForPb" select="(ancestor::tei:div|ancestor::tei:titlePage)[1]|((following::tei:div|following::tei:titlePage) except (following::tei:pb[1]/(following::tei:div|following::tei:titlePage)))"/>
 						<xsl:for-each select="$divsForPb">
 							<xsl:element name="mets:smLink">
 								<xsl:attribute name="xlink:from">log_<xsl:value-of select="@xml:id"/></xsl:attribute>
 								<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
 							</xsl:element>
 						</xsl:for-each>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:element name="mets:smLink">
-								<xsl:attribute name="xlink:from"><xsl:value-of select="'log0'"/></xsl:attribute>
-								<xsl:attribute name="xlink:to"><xsl:value-of select="$currentPb/@xml:id"/></xsl:attribute>	
-						</xsl:element>
-					</xsl:otherwise>
-				
-				</xsl:choose>
-
-				
       		</xsl:for-each>
 		</xsl:element>					
 	</xsl:template>		
