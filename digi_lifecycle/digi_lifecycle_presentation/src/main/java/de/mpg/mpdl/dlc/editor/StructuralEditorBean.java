@@ -1337,7 +1337,30 @@ public class StructuralEditorBean implements Observer {
 		//this.currentTeiElementEditType = elementToEdit.getTeiElement().getElementType();
 		if(ElementType.DIV.equals(elementToEdit.getTeiElement().getElementType()))
 		{
-			this.selectedStructuralEditType = elementToEdit.getTeiElement().getType();
+			
+			//Check if type attribute is known or if it is freetext
+			boolean freetext = true;
+			for(SelectItem si : getStructureTypeSelectItems())
+			{
+				if(si.getValue()!=null && si.getValue().equals(elementToEdit.getTeiElement().getType()))
+				{
+					freetext = false;
+					break;
+				}
+			}
+			
+			if(!freetext)
+			{
+				this.selectedStructuralEditType = elementToEdit.getTeiElement().getType();
+			}
+			else
+			{
+				this.selectedStructuralEditType = "free";
+			}
+			
+			
+			
+			
 		}
 		else
 		{
