@@ -1079,6 +1079,9 @@ public class VolumeServiceBean {
 		//Unmarshaller unmarshaller = JaxBWrapper.getInstance("", schemaLocation)
 		ModsMetadata md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
 		
+		//Clear md-record in order to keep size of Volume object (and therefore of the session) smaller
+		item.getMetadataRecords().get("escidoc").setContent(null);
+		
 		if(oldVol==null){
 			vol = new Volume();
 		}
@@ -1115,6 +1118,9 @@ public class VolumeServiceBean {
 			
 			long time = System.currentTimeMillis()-start;
 			//System.out.println("Time METS: " + time);
+			
+			//Clear md-record in order to keep size of Volume object (and therefore of the session) smaller
+			item.getMetadataRecords().get("mets").setContent(null);
 		}
 		
 		

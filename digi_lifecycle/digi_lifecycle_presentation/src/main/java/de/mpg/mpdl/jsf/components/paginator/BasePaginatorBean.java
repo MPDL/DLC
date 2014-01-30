@@ -74,7 +74,7 @@ public abstract class BasePaginatorBean<ListElementType>
      * The list containing the current elements of the displayed list
      */
     private List<ListElementType> currentPartList;
-    private List<ListElementType> previousPartList;
+    //private List<ListElementType> previousPartList;
     /**
      * The current number of elements per page
      */
@@ -158,9 +158,12 @@ public abstract class BasePaginatorBean<ListElementType>
                 setCurrentPageNumber(1);
             }   
             // logger.info("No List update: "+noListUpdate);
+            
+            /*
             previousPartList = new ArrayList<ListElementType>();
             if(currentPartList != null)
             	previousPartList.addAll(currentPartList);
+            */
             currentPartList = retrieveList(getOffset(), elementsPerPage);
             totalNumberOfElements = getTotalNumberOfRecords();
             // reset current page and reload list if list is shorter than the given current page number allows
