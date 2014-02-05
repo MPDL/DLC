@@ -481,7 +481,7 @@ div.noteBody {
 div.note {
    margin-left: 1em; 
    margin-bottom: 4pt; 
-   text-indent: -1em;
+   text-indent: 1em;
 }
 
 span.noteLabel {
