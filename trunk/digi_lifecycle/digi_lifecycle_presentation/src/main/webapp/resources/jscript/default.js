@@ -865,7 +865,7 @@ function eg3_ie9_addHoverColor() {
 
 
 /**
- * Ajax laods children of a multivolume
+ * Ajax load for children of a multivolume
  * @param data
  */
 function showChildren(data, toggle)
@@ -876,6 +876,7 @@ function showChildren(data, toggle)
 	if(data.status=='begin')
 	{
 		caller.hide();
+		//show throbber
 		caller.after('<img src="/dlc/resources/images/ajax-loader.gif"/>' );
 	}
 	else if(data.status=='success')
