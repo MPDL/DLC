@@ -1049,17 +1049,19 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public static void importVolumeIntoVolume(Volume volWithData, Volume volumeWithoutData, String userHandle)throws Exception
+	public static void importVolumeIntoVolume(Volume volWithData, Volume volumeWithoutData, String userHandle) throws Exception
 	{
-		createVolumeFromItem(volWithData.getItem(), userHandle, volumeWithoutData);
+		createVolumeFromItem(volWithData.getItem(), userHandle, volumeWithoutData, volWithData);
 	}
 	
 	public static Volume createVolumeFromItem(Item item, String userHandle) throws Exception
 	{
-		return createVolumeFromItem(item, userHandle, null);
+		return createVolumeFromItem(item, userHandle, null, null);
 	}
 	
-	public static Volume createVolumeFromItem(Item item, String userHandle, Volume oldVol ) throws Exception
+	
+	
+	public static Volume createVolumeFromItem(Item item, String userHandle, Volume oldVol, Volume volWithData ) throws Exception
 	{
 		//MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
 //		ItemHandlerClient client = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1077,7 +1079,17 @@ public class VolumeServiceBean {
 		Unmarshaller modsUnmarshaller = jaxbModsContext.createUnmarshaller();
 
 		//Unmarshaller unmarshaller = JaxBWrapper.getInstance("", schemaLocation)
-		ModsMetadata md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
+		
+		ModsMetadata md;
+		if(oldVol==null)
+		{
+			md = (ModsMetadata)modsUnmarshaller.unmarshal(item.getMetadataRecords().get("escidoc").getContent());
+		}
+		else
+		{
+			md = volWithData.getModsMetadata();
+		}
+		
 		
 		//Clear md-record in order to keep size of Volume object (and therefore of the session) smaller
 		item.getMetadataRecords().get("escidoc").setContent(null);
@@ -1097,30 +1109,38 @@ public class VolumeServiceBean {
 		
 		if(item.getMetadataRecords().get("mets")!=null)
 		{
-			long start = System.currentTimeMillis();
 			
-			IUnmarshallingContext uctx = bfactMets.createUnmarshallingContext();
-			  
-		    DOMSource source = new DOMSource(item.getMetadataRecords().get("mets").getContent());  
-		    StringWriter xmlAsWriter = new StringWriter();  
-		    StreamResult result = new StreamResult(xmlAsWriter);  
-		    TransformerFactory.newInstance().newTransformer().transform(source, result); 
-		    //System.out.println(xmlAsWriter.toString());
-		      
-		    // write changes  
-		    InputStream inputStream = new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8"));  
-			vol.setMets((Mets) uctx.unmarshalDocument(inputStream, null));
-			
-			/* 
-			 Unmarshaller metsUnmarshaller = jaxbMetsContext.createUnmarshaller();
-			vol.setMets((Mets)metsUnmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent()));
-			*/
-			
-			long time = System.currentTimeMillis()-start;
-			//System.out.println("Time METS: " + time);
-			
-			//Clear md-record in order to keep size of Volume object (and therefore of the session) smaller
-			item.getMetadataRecords().get("mets").setContent(null);
+			if(oldVol ==null)
+			{
+				long start = System.currentTimeMillis();
+				
+				IUnmarshallingContext uctx = bfactMets.createUnmarshallingContext();
+				  
+			    DOMSource source = new DOMSource(item.getMetadataRecords().get("mets").getContent());  
+			    StringWriter xmlAsWriter = new StringWriter();  
+			    StreamResult result = new StreamResult(xmlAsWriter);  
+			    TransformerFactory.newInstance().newTransformer().transform(source, result); 
+			    //System.out.println(xmlAsWriter.toString());
+			      
+			    // write changes  
+			    InputStream inputStream = new ByteArrayInputStream(xmlAsWriter.toString().getBytes("UTF-8"));  
+				vol.setMets((Mets) uctx.unmarshalDocument(inputStream, null));
+				
+				/* 
+				 Unmarshaller metsUnmarshaller = jaxbMetsContext.createUnmarshaller();
+				vol.setMets((Mets)metsUnmarshaller.unmarshal(item.getMetadataRecords().get("mets").getContent()));
+				*/
+				
+				long time = System.currentTimeMillis()-start;
+				//System.out.println("Time METS: " + time);
+				
+				//Clear md-record in order to keep size of Volume object (and therefore of the session) smaller
+				item.getMetadataRecords().get("mets").setContent(null);
+			}
+			else
+			{
+				vol.setMets(volWithData.getMets());
+			}
 		}
 		
 		
@@ -1196,6 +1216,8 @@ public class VolumeServiceBean {
 		
 		return vol;
 	}
+	
+	
 	
 	
 	public String loadTei(Volume vol, String userHandle) throws Exception
@@ -1834,7 +1856,7 @@ public class VolumeServiceBean {
 				{
 					List<Volume> volList = new ArrayList<Volume>();
 					volList.add(volume);
-					loadVolumesForMultivolume(volList, userHandle, true, null, null);
+					loadVolumesForMultivolume(volList, userHandle, true, null, null, false);
 					
 					/*
 					volume.setRelatedChildVolumes(new ArrayList<Volume>());
@@ -1879,7 +1901,7 @@ public class VolumeServiceBean {
 	}
 	
 	
-	public void loadVolumesForMultivolume(List<Volume> volumeList, String userHandle, boolean filter, VolumeStatus[] versionStatus, VolumeStatus[] publicStatus) throws Exception
+	public void loadVolumesForMultivolume(List<Volume> volumeList, String userHandle, boolean filter, VolumeStatus[] versionStatus, VolumeStatus[] publicStatus, boolean parentOnly) throws Exception
 	{
 		
 		ItemHandlerClient ihc = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
@@ -1908,11 +1930,14 @@ public class VolumeServiceBean {
 		
 			if(v.getRelatedVolumes() != null)
 			{
-				if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
+				
+				if(!parentOnly && v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.multivolumeContentModelId))
 				{
 //					volumeIds.addAll(v.getRelatedVolumes());
+					v.setRelatedChildVolumes(null);
 					scList.add(new SearchCriterion(Operator.OR, SearchType.RELATION_ID, v.getItem().getOriginObjid()));
-					mvMap.put(v.getItem().getOriginObjid(), v);				
+					mvMap.put(v.getItem().getOriginObjid(), v);
+					
 				}
 				else if(v.getItem().getProperties().getContentModel().getObjid().equals(VolumeServiceBean.volumeContentModelId))
 				{
@@ -1988,7 +2013,10 @@ public class VolumeServiceBean {
 						{
 							mv.setRelatedChildVolumes(new ArrayList<Volume>());
 						}
-						mv.getRelatedChildVolumes().add(v);
+						if(!parentOnly)
+						{
+							mv.getRelatedChildVolumes().add(v);
+						}
 						v.setRelatedParentVolume(mv);
 
 					}
@@ -2004,7 +2032,10 @@ public class VolumeServiceBean {
 							if(subVol !=null)
 							{ 
 								subVol.setRelatedParentVolume(v);
-								v.getRelatedChildVolumes().add(subVol);
+								if(!parentOnly)
+								{
+									v.getRelatedChildVolumes().add(subVol);
+								}
 							}
 							else
 							{

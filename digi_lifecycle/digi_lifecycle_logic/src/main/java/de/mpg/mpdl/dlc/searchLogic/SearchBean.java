@@ -218,9 +218,9 @@ public class SearchBean {
 	
 	
 	
-	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset) throws Exception
+	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset, boolean loadVolumesIntoMultivolumes) throws Exception
 	{
-		return searchByCql(cql, sortList, limit, offset, dlcIndexName, true, null);
+		return searchByCql(cql, sortList, limit, offset, dlcIndexName, loadVolumesIntoMultivolumes, null);
 	}
 	
 	public VolumeSearchResult searchByCql(String cql, List<SortCriterion> sortList, int limit, int offset, String index, boolean loadVolumesIntoMultivolumes, String userHandle) throws Exception
@@ -257,10 +257,9 @@ public class SearchBean {
 		} 
 		
 		//Add volumes to multivolume
-		if(loadVolumesIntoMultivolumes)
-		{
-			volServiceBean.loadVolumesForMultivolume(volumeResult, null, false, null, null);
-		}
+		
+		volServiceBean.loadVolumesForMultivolume(volumeResult, null, false, null, null, !loadVolumesIntoMultivolumes);
+		
 
 		//long time = System.currentTimeMillis() - start;
 		//System.out.println("Time search: " + time );

@@ -81,11 +81,13 @@ All rights reserved. Use is subject to license terms.
 				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
 					<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_totalNumberOfHits} #{cc.attrs.paginatorBean.totalNumberOfRecords}"/>
 				</h:panelGroup>
+				<h:form>
 				<list:bibList_shortDLC rendered="#{advancedSearchResultBean.currentPartList.size() > 0}">
 					<a4j:repeat var="volume" value="#{advancedSearchResultBean.currentPartList}">
-						<list:bibSimpleItemAllVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}"/>
+						<list:bibSimpleItemAllVolume volume="#{volume}" fulltextHits="#{advancedSearchResultBean.fulltextSearchStringsAsQueryParam}" searchBean="#{advancedSearchResultBean}"/>
 					</a4j:repeat>
 				</list:bibList_shortDLC>
+				</h:form>
 				
 				<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{empty advancedSearchResultBean.currentPartList}">
 					<h:panelGroup styleClass="eg3_startpageTitle">

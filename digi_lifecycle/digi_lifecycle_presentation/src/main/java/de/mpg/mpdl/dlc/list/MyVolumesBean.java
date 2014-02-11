@@ -48,7 +48,6 @@ import de.mpg.mpdl.dlc.editor.StructuralEditorBean;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
-
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
@@ -278,7 +277,8 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		em.close();
 		*/
 		
-		volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus);
+		
+		//volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus);
 			
 			
 		
@@ -289,7 +289,37 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		return res.getVolumes();
 	}
 
-
+	@Override
+	public void loadSubvolumes(Volume v) {
+		VolumeStatus[] volVersionStatus = new VolumeStatus[]{};
+		VolumeStatus[] volPublicStatus = new VolumeStatus[]{};
+		if("all".equals(filterItemState))
+		{
+			volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
+			volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
+		}
+		else if("submitted".equals(filterItemState))
+		{
+			volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted,};
+			volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
+		}
+		else if("released".equals(filterItemState))
+		{
+			volVersionStatus = new VolumeStatus[]{VolumeStatus.released};
+			volPublicStatus = new VolumeStatus[]{VolumeStatus.released};
+		}
+		else if("withdrawn".equals(filterItemState))
+		{
+			volPublicStatus = new VolumeStatus[]{VolumeStatus.withdrawn};
+		}
+		try {
+			List<Volume> volList = new ArrayList<Volume>();
+			volList.add(v);
+			volServiceBean.loadVolumesForMultivolume(volList, loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus, false);
+		} catch (Exception e) {
+			logger.error("could not load volumes for multivolume", e);
+		}
+	}
 
 	public int getTotalNumberOfRecords() 
 	{

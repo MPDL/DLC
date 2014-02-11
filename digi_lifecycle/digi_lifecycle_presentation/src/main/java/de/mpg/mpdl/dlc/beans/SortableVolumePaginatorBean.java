@@ -78,6 +78,9 @@ public abstract class SortableVolumePaginatorBean extends BasePaginatorBean<Volu
 	
 	
 	
+	public abstract void loadSubvolumes(Volume v);
+	
+	
 	
 
 	
