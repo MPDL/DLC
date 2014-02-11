@@ -113,7 +113,7 @@ All rights reserved. Use is subject to license terms.
 				<h:form id="volumes">
 					<list:bibList_shortDLC>
 						<a4j:repeat var="volume" value="#{allVolumesBean.currentPartList}">
-							<list:bibSimpleItemAllVolume volume="#{volume}"/>
+							<list:bibSimpleItemAllVolume volume="#{volume}" searchBean="#{allVolumesBean}"/>
 						</a4j:repeat>
 					</list:bibList_shortDLC>
 				</h:form>

@@ -759,7 +759,7 @@ function eg3_unloadPopup() {
 	EG3_MODALPOPUP.remove();
 }
 function eg3_listenMultiVolume() {
-	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemHeadline .eg3_itemTitle");
+	var multiVolumeLink = jQuery('.eg3_itemContent .modalDialog').parent().find(".eg3_itemHeadline .eg3_itemTitle, .eg3_parentItemHeadline .eg3_itemTitle");
 	multiVolumeLink.click(function(e) {
 		eg3_stopDefaultAction(e);
 		eg3_loadPopup(this);
@@ -861,3 +861,36 @@ function eg3_ie9_addHoverColor() {
 		eg3_removeAttributeValue($(this), "style", "border-color");
 	});
 } 
+
+
+
+/**
+ * Ajax laods children of a multivolume
+ * @param data
+ */
+function showChildren(data, toggle)
+{
+	var caller = $('#' + data.source.id.replace(/:/g,'\\:'));
+	console.log(data.status);
+	
+	if(data.status=='begin')
+	{
+		caller.hide();
+		caller.after('<img src="/dlc/resources/images/ajax-loader.gif"/>' );
+	}
+	else if(data.status=='success')
+	{
+		
+		
+		//Remove throbber
+		caller.next().remove();
+		
+		//show toggle link
+		if(toggle)
+		{
+			caller.prev().show();
+			eg3_bibListToggleItemMediumView(caller);
+		}
+		
+	}
+}

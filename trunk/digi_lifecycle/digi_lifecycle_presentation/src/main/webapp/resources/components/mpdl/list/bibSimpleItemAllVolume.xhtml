@@ -33,6 +33,7 @@ All rights reserved. Use is subject to license terms.
 		<cc:attribute name="volumes" required="false"/>
 		<cc:attribute name="rendered" required="false"/>
 		<cc:attribute name="fulltextHits"/>
+		<cc:attribute name="searchBean" type="de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean"/>
 	</cc:interface>
 	
 	<!-- IMPLEMENTATION -->
@@ -97,13 +98,13 @@ All rights reserved. Use is subject to license terms.
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
-					<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
+					<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}" searchBean="#{cc.attrs.searchBean}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
 					<h:panelGroup layout="block" styleClass="eg3_parentItemLabelArea">
 						<h:outputText value="#{lbl.list_parent} "/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_parentItemHeadline">
 						<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-							<h:outputLink  rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
+							<h:outputLink>
 								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}"/>
 							</h:outputLink>
 							<h:outputText value="ERROR! No Multivolume found!" rendered="#{empty cc.attrs.volume.relatedParentVolume}"/>
@@ -350,7 +351,7 @@ All rights reserved. Use is subject to license terms.
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" id="multiItemContent" styleClass="eg3_itemContent">
-				<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume}"/>
+				<mpdl:mvPlayer id="popupMultivolume" target="popupMV" vol="#{cc.attrs.volume}" searchBean="#{cc.attrs.searchBean}"/>
 				
 				<!-- START eg3_itemHeadline -->
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
@@ -434,15 +435,20 @@ All rights reserved. Use is subject to license terms.
 						
 					</ui:fragment> <!-- END volumes and my data -->
 					
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedChildVolumes.size() gt 0}">
-						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedVolumes.size() gt 0}">
+						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js" style="display:none;">
 							<h:panelGroup layout="block">
 								<label class="eg3_iconActionLabel eg3_noMarginLeft">
 									<h:outputText value="#{lbl.list_NavElem_ShowRelatedPublications}"/>
 								</label>
 							</h:panelGroup>
 						</h:panelGroup>
+						<h:commandLink value="#{lbl.list_NavElem_ShowRelatedPublications}" action="#{cc.attrs.searchBean.loadSubvolumes(cc.attrs.volume)}">
+									<f:ajax render="childVolumes popupMultivolume:childVolumes popupMultivolume:showChildButtons" onevent="function(data) {showChildren(data, true);}"/>
+						</h:commandLink>
 					</h:panelGroup>
+					
+					
 					
 					<ui:fragment rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemDetailAction_js">
@@ -460,7 +466,7 @@ All rights reserved. Use is subject to license terms.
 				
 			
 				<!-- START mediumView -->
-				<h:panelGroup layout="block" styleClass="eg3_mediumView_js">
+				<h:panelGroup layout="block" styleClass="eg3_mediumView_js" id="childVolumes">
 					
 					<!-- multi volume childs -->
 					<a4j:repeat var="child_volume" value="#{cc.attrs.volume.relatedChildVolumes}">

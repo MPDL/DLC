@@ -48,7 +48,6 @@ import de.mpg.mpdl.dlc.editor.StructuralEditorBean;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem;
 import de.mpg.mpdl.dlc.persistence.entities.DatabaseItem.IngestStatus;
 import de.mpg.mpdl.dlc.searchLogic.FilterBean;
-
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
@@ -201,7 +200,7 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 		
 		res = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, null);
-		volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released});
+		//volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released});
 		//res = searchBean.advancedSearchVolumes(scList, getSortCriterionList(), limit, offset);
 		
 		this.totalNumberOfRecords = res.getNumberOfRecords();
@@ -209,7 +208,19 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 		
 		return res.getVolumes();
 	}
-
+	
+	
+	@Override
+	public void loadSubvolumes(Volume v) {
+		
+		try {
+			List<Volume> volList = new ArrayList<Volume>();
+			volList.add(v);
+			volServiceBean.loadVolumesForMultivolume(volList, loginBean.getUserHandle(), true, new VolumeStatus[]{VolumeStatus.released}, new VolumeStatus[]{VolumeStatus.released}, false);
+		} catch (Exception e) {
+			logger.error("could not load volumes for multivolume", e);
+		}
+	}
 
 
 	public int getTotalNumberOfRecords() 
@@ -365,6 +376,9 @@ public class AllVolumesBean extends SortableVolumePaginatorBean {
 	{
 		this.sessionBean = sessionBean;
 	}
+
+
+
 
 	
 }

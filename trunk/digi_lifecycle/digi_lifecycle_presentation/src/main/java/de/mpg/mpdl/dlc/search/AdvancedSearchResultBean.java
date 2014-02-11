@@ -33,6 +33,8 @@ import com.ocpsoft.pretty.faces.annotation.URLQueryParameter;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
 import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
+import de.mpg.mpdl.dlc.beans.VolumeServiceBean.VolumeStatus;
 import de.mpg.mpdl.dlc.searchLogic.SearchBean;
 import de.mpg.mpdl.dlc.searchLogic.SearchCriterion;
 import de.mpg.mpdl.dlc.searchLogic.SortCriterion;
@@ -98,10 +100,24 @@ public class AdvancedSearchResultBean extends SortableVolumePaginatorBean {
 	
 	@Override
 	public List<Volume> retrieveList(int offset, int limit) throws Exception {
-		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, getSortCriterionList(), limit, offset);
+		VolumeSearchResult res = searchBean.searchByCql(cqlQuery, getSortCriterionList(), limit, offset, false);
 		this.totalNumberOfRecords = res.getNumberOfRecords();
 
 		return res.getVolumes();
+	}
+	
+	
+	@Override
+	public void loadSubvolumes(Volume v) {
+		
+		try {
+			VolumeServiceBean volServiceBean = new VolumeServiceBean();
+			List<Volume> volList = new ArrayList<Volume>();
+			volList.add(v);
+			volServiceBean.loadVolumesForMultivolume(volList, null, false, null,null, false);
+		} catch (Exception e) {
+			logger.error("could not load volumes for multivolume", e);
+		}
 	}
 
 	@Override
