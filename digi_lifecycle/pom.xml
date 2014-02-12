@@ -218,7 +218,7 @@
 	    <repository>  
 	        <id>escidoc-artifactory</id>  
 	        <name>eSciDoc Artifactory</name>  
-	        <url>http://www.escidoc.org/artifactory/simple/libs-release-local</url>  
+	        <url>https://www.escidoc.org/artifactory/anonymous-repo</url>  
 	        <layout>default</layout>  
 	    </repository>  
 	</repositories>
