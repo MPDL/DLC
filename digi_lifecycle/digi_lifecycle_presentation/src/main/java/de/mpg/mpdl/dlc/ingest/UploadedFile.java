@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemHeaders;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
@@ -122,6 +123,18 @@ public class UploadedFile implements FileItem{
 	public OutputStream getOutputStream() throws IOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public FileItemHeaders getHeaders() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setHeaders(FileItemHeaders arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 
