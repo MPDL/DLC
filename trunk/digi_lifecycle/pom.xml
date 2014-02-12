@@ -439,7 +439,7 @@
 		<escidoc.role.user.moderator>escidoc:role-moderator</escidoc.role.user.moderator>
 		<escidoc.role.user.md-editor>escidoc:role-md-editor</escidoc.role.user.md-editor>
 
-		<dfg.viewer.baseurl>http://dfg-viewer.de/demo/viewer/?set[mets]=</dfg.viewer.baseurl>
+		<dfg.viewer.baseurl>http://dfg-viewer.de/show/?set[mets]=</dfg.viewer.baseurl>
 		
 		<dlc.content-model.monograph.id>escidoc-content-model-id-for-monographs</dlc.content-model.monograph.id>
 		<dlc.content-model.multivolume.id>escidoc-content-model-id-for-multivolumes</dlc.content-model.multivolume.id>
