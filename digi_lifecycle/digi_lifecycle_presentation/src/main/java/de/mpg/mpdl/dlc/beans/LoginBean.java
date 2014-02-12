@@ -13,14 +13,8 @@
  ******************************************************************************/
 package de.mpg.mpdl.dlc.beans;
 
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -33,8 +27,6 @@ import org.richfaces.event.ItemChangeEvent;
 
 import com.ocpsoft.pretty.PrettyContext;
 
-import de.escidoc.core.client.UserAccountHandlerClient;
-import de.escidoc.core.client.interfaces.UserAccountHandler;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
