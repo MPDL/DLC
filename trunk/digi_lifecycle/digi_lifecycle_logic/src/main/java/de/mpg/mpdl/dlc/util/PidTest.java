@@ -14,7 +14,6 @@
 package de.mpg.mpdl.dlc.util;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -26,17 +25,11 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLEventWriter;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 import javax.xml.xquery.XQConnection;
 import javax.xml.xquery.XQDataSource;
 import javax.xml.xquery.XQException;
 import javax.xml.xquery.XQExpression;
 import javax.xml.xquery.XQItemType;
-import javax.xml.xquery.XQMetaData;
 import javax.xml.xquery.XQResultSequence;
 import javax.xml.xquery.XQStaticContext;
 
@@ -51,7 +44,6 @@ import de.escidoc.core.client.exceptions.EscidocException;
 import de.escidoc.core.client.exceptions.InternalClientException;
 import de.escidoc.core.client.exceptions.TransportException;
 import de.escidoc.core.client.exceptions.application.security.AuthenticationException;
-import de.escidoc.core.om.ContextHandler;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.common.MetadataRecords;
 import de.escidoc.core.resources.common.Result;

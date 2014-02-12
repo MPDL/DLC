@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.log4j.Logger;
 
-import de.escidoc.core.common.exceptions.remote.application.notfound.ResourceNotFoundException;
+import de.escidoc.core.client.exceptions.application.notfound.ResourceNotFoundException;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 

@@ -138,6 +138,8 @@
 			<artifactId>uadetector-resources</artifactId>
 			<version>2012.11</version>
 		</dependency>
+		
+
 
 	</dependencies>
 

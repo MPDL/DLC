@@ -693,7 +693,7 @@ public class CreateVolumeServiceBean {
 				pagedTeiComponent.getProperties().setVisibility("public");
 				ComponentContent pagedTeiContent = new ComponentContent();
 				pagedTeiComponent.setContent(pagedTeiContent);
-				pagedTeiComponent.getContent().setStorage(
+				pagedTeiComponent.getContent().setStorageType(
 						StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(pagedTeiComponent);
 				pagedTeiComponent.getContent().setXLinkHref(
@@ -717,7 +717,7 @@ public class CreateVolumeServiceBean {
 				teiComponent.getProperties().setFileName(teiFile.getName());
 				ComponentContent teiContent = new ComponentContent();
 				teiComponent.setContent(teiContent);
-				teiComponent.getContent().setStorage(
+				teiComponent.getContent().setStorageType(
 						StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(teiComponent);
 				teiComponent.getContent().setXLinkHref(
@@ -792,7 +792,7 @@ public class CreateVolumeServiceBean {
 				teiSdComponent.getProperties().setVisibility("public");
 				ComponentContent teiSdContent = new ComponentContent();
 				teiSdComponent.setContent(teiSdContent);
-				teiSdComponent.getContent().setStorage(
+				teiSdComponent.getContent().setStorageType(
 						StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(teiSdComponent);
 				teiSdComponent.getContent().setXLinkHref(
@@ -823,7 +823,7 @@ public class CreateVolumeServiceBean {
 					pagedTeiComponent.getProperties().setVisibility("public");
 					ComponentContent pagedTeiContent = new ComponentContent();
 					pagedTeiComponent.setContent(pagedTeiContent);
-					pagedTeiComponent.getContent().setStorage(
+					pagedTeiComponent.getContent().setStorageType(
 							StorageType.INTERNAL_MANAGED);
 
 					volume.getItem().getComponents().add(pagedTeiComponent);
@@ -857,7 +857,7 @@ public class CreateVolumeServiceBean {
 				cdcComponent.getProperties().setFileName(cdcFile.getName());
 				ComponentContent cdcContent = new ComponentContent();
 				cdcComponent.setContent(cdcContent);
-				cdcComponent.getContent().setStorage(
+				cdcComponent.getContent().setStorageType(
 						StorageType.INTERNAL_MANAGED);
 				volume.getItem().getComponents().add(cdcComponent);
 				cdcComponent.getContent().setXLinkHref(
@@ -1517,16 +1517,21 @@ public class CreateVolumeServiceBean {
 		logger.info("Trying to remove relation from Multivolume item"
 				+ multiVol.getProperties().getVersion().getObjid());
 
-		String oldStatus = multiVol.getItem().getProperties().getVersion()
-				.getStatus();
-
 		ItemHandlerClient client = new ItemHandlerClient(new URL(
 				PropertyReader.getProperty("escidoc.common.framework.url")));
 		client.setHandle(userHandle);
+		
+		Item multiVolItem = client.retrieve(multiVol.getItem().getOriginObjid()); 
+		
+		
+		String oldStatus = multiVolItem.getProperties().getVersion()
+				.getStatus();
 
-		for (Relation rel : multiVol.getItem().getRelations()) {
+		
+
+		for (Relation rel : multiVolItem.getRelations()) {
 			if (rel.getObjid().equals(relationId)) {
-				multiVol.getItem().getRelations().remove(rel);
+				multiVolItem.getRelations().remove(rel);
 				break;
 			}
 		}
@@ -1538,10 +1543,10 @@ public class CreateVolumeServiceBean {
 		 * "<predicate>http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart</predicate>"
 		 * + "</relation>" + "</param>";
 		 */
-		Item updatedItem = client.update(multiVol.getItem().getOriginObjid(),
-				multiVol.getItem());
+		Item updatedItem = client.update(multiVolItem.getOriginObjid(),
+				multiVolItem);
 		logger.info("Removed relation from multivolume "
-				+ multiVol.getItem().getOriginObjid());
+				+ multiVolItem.getOriginObjid());
 
 		Volume updatedVol = VolumeServiceBean.createVolumeFromItem(updatedItem,
 				userHandle);

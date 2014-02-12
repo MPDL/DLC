@@ -55,7 +55,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfOutline;
 import com.lowagie.text.pdf.PdfWriter;
 
-import de.escidoc.core.common.exceptions.remote.application.notfound.ResourceNotFoundException;
+import de.escidoc.core.client.exceptions.application.notfound.ResourceNotFoundException;
 import de.escidoc.core.resources.common.MetadataRecord;
 import de.escidoc.core.resources.om.context.Context;
 import de.escidoc.core.resources.om.item.component.Component;
@@ -64,7 +64,6 @@ import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;
-import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsLocationSEC;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;

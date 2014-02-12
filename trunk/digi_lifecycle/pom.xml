@@ -215,6 +215,12 @@
 	        <url>http://repository.prime.com.tr</url>  
 	        <layout>default</layout>  
 	    </repository>  
+	    <repository>  
+	        <id>escidoc-artifactory</id>  
+	        <name>eSciDoc Artifactory</name>  
+	        <url>http://www.escidoc.org/artifactory/simple/libs-release-local</url>  
+	        <layout>default</layout>  
+	    </repository>  
 	</repositories>
 
    <pluginRepositories>

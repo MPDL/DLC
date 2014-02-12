@@ -26,7 +26,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.escidoc.core.common.exceptions.remote.application.notfound.ResourceNotFoundException;
+import de.escidoc.core.client.exceptions.application.notfound.ResourceNotFoundException;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.vo.Volume;

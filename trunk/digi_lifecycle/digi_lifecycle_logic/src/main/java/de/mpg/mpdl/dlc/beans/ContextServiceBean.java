@@ -95,8 +95,12 @@ public class ContextServiceBean {
 			if(userHandle!=null)
 				contextClient.setHandle(userHandle);
 			context = contextClient.retrieve(contextId);
+			
+			/*
 			if("CLOSED".equals(context.getProperties().getPublicStatus().name()))
 				return null;
+				*/
+			
         }catch(Exception e)
         {
         	logger.error("Error while retrieving Context", e);

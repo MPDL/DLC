@@ -278,7 +278,7 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		*/
 		
 		
-		//volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, volVersionStatus, volPublicStatus);
+		volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, null, null, true);
 			
 			
 		
