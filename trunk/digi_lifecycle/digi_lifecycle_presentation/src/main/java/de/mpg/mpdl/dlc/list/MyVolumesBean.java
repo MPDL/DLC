@@ -257,36 +257,30 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 			volPublicStatus = new VolumeStatus[]{VolumeStatus.withdrawn};
 			volTypes = new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
 		}
-		
-		res = filterBean.itemFilter(volTypes, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
-		
-		
-		/*
-		//Add items which are currently uploading
-		VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
-		res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
-		res.setNumberOfRecords(res.getNumberOfRecords() + resultVolumesInProgress.getNumberOfRecords());
-		*/
-		
-		/*
-		EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
-		TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
-		query.setParameter("userId", loginBean.getUser().getId());
-		List<DatabaseItem> resList = query.getResultList();
-		this.uploadedItems = resList;
-		em.close();
-		*/
-		
-		
-		volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, null, null, true);
+		if(fcList.size()>0)
+		{
+			res = filterBean.itemFilter(volTypes, volVersionStatus, volPublicStatus, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			/*
+			//Add items which are currently uploading
+			VolumeSearchResult resultVolumesInProgress = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MONOGRAPH}, new VolumeStatus[]{VolumeStatus.pending}, new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, fcList, getSortCriterionList(), limit, offset, loginBean.getUserHandle());
+			res.getVolumes().addAll(0, resultVolumesInProgress.getVolumes());
+			res.setNumberOfRecords(res.getNumberOfRecords() + resultVolumesInProgress.getNumberOfRecords());
+			*/
 			
-			
-		
-		
-		this.totalNumberOfRecords = res.getNumberOfRecords();
-		
-		
-		return res.getVolumes();
+			/*
+			EntityManager em = VolumeServiceBean.getEmf().createEntityManager();
+			TypedQuery<DatabaseItem> query = em.createNamedQuery(DatabaseItem.ALL_ITEMS_BY_USER_ID, DatabaseItem.class);
+			query.setParameter("userId", loginBean.getUser().getId());
+			List<DatabaseItem> resList = query.getResultList();
+			this.uploadedItems = resList;
+			em.close();
+			*/
+			volServiceBean.loadVolumesForMultivolume(res.getVolumes(), loginBean.getUserHandle(), true, null, null, true);
+			this.totalNumberOfRecords = res.getNumberOfRecords();
+			return res.getVolumes();
+		}
+		else
+			return null;
 	}
 
 	@Override
