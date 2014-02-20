@@ -105,7 +105,8 @@ public class UserAccountServiceBean {
 			user.setName(ua.getProperties().getName());
 			user.setLoginName(ua.getProperties().getLoginName());
 			Grants gs = client.retrieveCurrentGrants(ua.getObjid());
-			for(Grant grant : client.retrieveCurrentGrants(ua.getObjid()))
+
+			for(Grant grant : gs)
 			{
 				//			user.getGrants().add(grant);
 				if(grant.getProperties().getRole().getObjid().equals(PropertyReader.getProperty("escidoc.role.system.admin")))
