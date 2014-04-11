@@ -48,11 +48,11 @@ public class OaiParser {
 	 */
 	public String parseListRecords(String oaiDcXml)
 	{
-		String oaiZvddXml = "";
+		StringBuffer oaiZvddXml = new StringBuffer();
 		NodeList ids = null;
 		Volume volume = null;
 		
-		oaiZvddXml += this.getOaiStart();
+		oaiZvddXml.append(this.getOaiStart());
 		
 		try {
 			//1. Parse the xml for the dc entries
@@ -63,16 +63,16 @@ public class OaiParser {
 			{
 				String id = ids.item(i).getTextContent();
 				volume = this.getVolumeById(id);
-				oaiZvddXml += this.getOaiRecord(volume);
+				oaiZvddXml.append(this.getOaiRecord(volume));
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 		
-		oaiZvddXml += this.getOaiEnd();
+		oaiZvddXml.append(this.getOaiEnd());
 		
-		return oaiZvddXml;
+		return oaiZvddXml.toString();
 	}
 	
 	/**
@@ -113,19 +113,20 @@ public class OaiParser {
 	 */
 	private String getOaiRecord(Volume volume)
 	{
-		String record = "<record xmlns=\"http://www.openarchives.org/OAI/2.0/\">" +
+		StringBuffer record = new StringBuffer();
+		record.append("<record xmlns=\"http://www.openarchives.org/OAI/2.0/\">" +
 							"<header>" + 
 								"<identifier>"+ "oai:escidoc.org:"+ volume.getItem().getObjid() +"</identifier>" +
 								"<datestamp>"+ volume.getItem().getProperties().getCreationDate() +"</datestamp>" + 
 								"<setSpec>"+ "context_" + volume.getProperties().getContext().getObjid().replace(":", "_") +"</setSpec>" +
 								"</header>" +
-								"<metadata>";
+								"<metadata>");
 		//get mods metadata
 		Export export = new Export();
 		try {
 			String md = new String (export.metsModsExport(volume.getItem().getObjid(), false));
 			md = md.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
-			record += md;
+			record.append(md);
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,10 +135,10 @@ public class OaiParser {
 			e.printStackTrace();
 		}
 		
-		record += 		"</metadata>" +
-					"</record>";
+		record.append("</metadata>" +
+					"</record>");
 		
-		return record;
+		return record.toString();
 	}
 	
 	private Volume getVolumeById(String id)
