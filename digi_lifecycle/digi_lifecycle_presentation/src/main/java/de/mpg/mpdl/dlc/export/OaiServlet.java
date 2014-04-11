@@ -45,8 +45,8 @@ public class OaiServlet extends HttpServlet
 	private static Logger logger = Logger.getLogger(OaiServlet.class);
 	private static final long serialVersionUID = 1L;
 	private int status = 404;
-	private byte[] content = null;
-	private OutputStream outStream = null;
+	//private byte[] content = null;
+	//private OutputStream outStream = null;
 	private String OAI_URL= null; 
 
 	/**
@@ -72,6 +72,7 @@ public class OaiServlet extends HttpServlet
         String id = request.getParameter("identifier");
         String verb = request.getParameter("verb");   
         String resp = "";
+        byte[] content = null;
 		
 		try 
 		{	    	
@@ -86,31 +87,31 @@ public class OaiServlet extends HttpServlet
 	        		//Check if oai response from escidoc oai provider contains error message
 	        		if (!resp.contains("</error>"))
 	        		{
-		        		this.content = parser.parseListRecords(resp).getBytes("UTF-8");
+		        		content = parser.parseListRecords(resp).getBytes("UTF-8");
 	        		}
 	        		else
 	        		{	
-	        			this.content = (resp).getBytes("UTF-8");	        			
+	        			content = (resp).getBytes("UTF-8");	        			
 	        		}
 	        	}
 	        	//Create mets/mods record from item
 	        	else
 	        	{
 	        		Export export = new Export();
-	        		this.content = export.metsModsExport(id.replace("oai:escidoc.org:", ""), true);
+	        		content = export.metsModsExport(id.replace("oai:escidoc.org:", ""), true);
 	        	}
 	        }
 	        //Take response from escidoc oai provider as is
 	        else
 	        {
-		        this.content = getFromEscidocOaiProvider(query).getBytes("UTF-8");
+		        content = getFromEscidocOaiProvider(query).getBytes("UTF-8");
 	        }
 
 			response.setCharacterEncoding("UTF-8");			
-			outStream = response.getOutputStream();
+			OutputStream outStream = response.getOutputStream();
 			response.setStatus(this.status);	
 			response.setContentType("application/xml");
-            outStream.write(this.content);
+            outStream.write(content);
             outStream.flush();
             outStream.close();
 		} 
@@ -151,7 +152,7 @@ public class OaiServlet extends HttpServlet
      */
 	private String getFromEscidocOaiProvider(String query) throws MalformedURLException, IOException, URISyntaxException 
 	{
-		String resultXml = "";
+		StringBuffer resultXml = new StringBuffer();
 		InputStreamReader isReader;
 		BufferedReader bReader;
         URLConnection conn = null;
@@ -183,11 +184,11 @@ public class OaiServlet extends HttpServlet
             String line = "";
             while ((line = bReader.readLine()) != null)
             {
-            	resultXml += line + "\n";
+            	resultXml.append(line + "\n");
             }
             httpConn.disconnect(); 			
             break;
         }    
-		return resultXml;
+		return resultXml.toString();
 	}
 }
