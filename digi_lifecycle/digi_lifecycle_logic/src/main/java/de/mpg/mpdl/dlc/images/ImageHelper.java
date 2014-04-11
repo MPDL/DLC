@@ -171,6 +171,7 @@ public class ImageHelper{
 
     	BufferedImage scaledImage = scaleImage(inputImage, width, height);
 
+    	
     	Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
     	ImageWriter writer = (ImageWriter)iter.next();
     	ImageWriteParam param = writer.getDefaultWriteParam();
@@ -183,6 +184,7 @@ public class ImageHelper{
     	output.close();
     	scaledImage.flush();
     	inputImage.flush();
+    	writer.dispose();
     	
     	return tmpFile;
 		             
@@ -441,6 +443,7 @@ public class ImageHelper{
 			       ParameterBlock pb = new ParameterBlock();
 			       pb.addSource(renderedImage);
 			       RenderedImage renderedOp = JAI.create("format", pb, hints);
+			       reader.dispose();
 			       return renderedOp;
 
 			   }
