@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CDDL HEADER START
+  The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+  
+  You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+  See the License for the specific language governing permissions and limitations under the License.
+  
+  When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+  CDDL HEADER END
+  
+  Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+  All rights reserved. Use is subject to license terms.
+-->
+<binding>
+	<mapping name="mets" class="de.mpg.mpdl.dlc.vo.mets.Mets">
+		<namespace uri="http://www.loc.gov/METS/" prefix="mets" default="elements"/>
+		<structure name="structMap">
+			<value style="attribute" name="TYPE" constant="physical"/>
+			
+			<structure name="div">
+				<value style="attribute" name="DMDID" constant="dmd_0"/>
+				<collection field="pages" factory = "de.mpg.mpdl.dlc.vo.mets.Mets.pageListFactory">
+					<structure name="div" type="de.mpg.mpdl.dlc.vo.mets.Page">
+						<value style="attribute" name="ID" field="id" usage="optional"/>
+						<value style="attribute" name="TYPE" field="type" usage="optional"/>
+						<value style="attribute" name="ORDER" field="order" usage="optional"/>
+						
+						<value style="attribute" name="ORDERLABEL" field="orderLabel" usage="optional"/>
+						<value style="attribute" name="LABEL" field="label" usage="optional"/>
+						<value style="attribute" name="CONTENTIDS" field="contentIds" usage="optional"/>
+					
+					</structure>
+				
+				</collection>
+			</structure>
+		
+		</structure>
+	</mapping>
+
+
+
+</binding>
+
+
+

@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	
+	CDDL HEADER START
+	
+	The contents of this file are subject to the terms of the
+	Common Development and Distribution License, Version 1.0 only
+	(the "License"). You may not use this file except in compliance
+	with the License.
+	
+	You can obtain a copy of the license at license/ESCIDOC.LICENSE
+	or http://www.escidoc.de/license.
+	See the License for the specific language governing permissions
+	and limitations under the License.
+	
+	When distributing Covered Code, include this CDDL HEADER in each
+	file and include the License file at license/ESCIDOC.LICENSE.
+	If applicable, add the following below this CDDL HEADER, with the
+	fields enclosed by brackets "[]" replaced with your own identifying
+	information: Portions Copyright [yyyy] [name of copyright owner]
+	
+	CDDL HEADER END
+	
+	
+	Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft
+	für wissenschaftlich-technische Information mbH and Max-Planck-
+	Gesellschaft zur Förderung der Wissenschaft e.V.
+	All rights reserved. Use is subject to license terms.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.mpg.escidoc.digi_lifecycle</groupId>
+	<artifactId>digi_lifecycle</artifactId>
+	<packaging>pom</packaging>
+	<version>1.1-SNAPSHOT</version>
+	<name>digi_lifecycle</name>
+	<url>http://dlc.mpdl.mpg.de/dlc/</url>
+	<description>
+		
+	</description>
+	<licenses>
+		<license>
+			<name>Common Development And Distribution License</name>
+			<url>http://www.sun.com/cddl/cddl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>Max Planck Digital Library</name>
+		<url>http://www.mpdl.mpg.de/</url>
+	</organization>
+
+	<issueManagement>
+		<system>Jira</system>
+		<url>http://jira.mpdl.mpg.de/browse/VIRRBUG</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>wfrank</id>
+			<name>Wilhelm Frank</name>
+			<email>frank@mpdl.mpg.de</email>
+			<roles>
+				<role>Software developer</role>
+			</roles>
+			<organization>Max Planck Digital Library</organization>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>koller</id>
+			<name>Kristina Koller</name>
+			<email>koller@mpdl.mpg.de</email>
+			<roles>
+				<role>Service management</role>
+			</roles>
+			<organization>Max Planck Digital Library</organization>
+			<timezone>+2</timezone>
+		</developer>
+		<developer>
+			<id>kulas</id>
+			<name>Andrea Kulas</name>
+			<email>kulas@mpdl.mpg.de</email>
+			<roles>
+				<role>Project coordination</role>
+			</roles>
+			<organization>Max Planck Digital Library</organization>
+			<timezone>+2</timezone>
+		</developer>
+        <developer>
+          <id>haarlaender</id>
+            <name>Markus Haarlaender</name>
+            <email>haarlaender@mpdl.mpg.de</email>
+            <roles>
+                <role>Software developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+		<developer>
+          <id>yu</id>
+            <name>Lu Yu</name>
+            <email>yu@mpdl.mpg.de</email>
+            <roles>
+                <role>Software developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+        <developer>
+          <id>kleinfercher</id>
+            <name>Friederike Kleinfercher</name>
+            <email>kleinfercher@mpdl.mpg.de</email>
+            <roles>
+                <role>Software developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+        <developer>
+          <id>schlender</id>
+            <name>Marco Schlender</name>
+            <email>schlender@mpdl.mpg.de</email>
+            <roles>
+                <role>GUI developer</role>
+            </roles>
+            <organization>Max Planck Digital Library</organization>
+            <timezone>+2</timezone>
+        </developer>
+	</developers>
+
+
+	<mailingLists>
+		<mailingList>
+			<name>Infolist about build-failures, source-code changes etc.</name>
+			<subscribe>https://listserv.gwdg.de/mailman/listinfo/escidoc-code</subscribe>
+			<unsubscribe>https://listserv.gwdg.de/mailman/listinfo/escidoc-code</unsubscribe>
+			<post>escidoc-code@gwdg.de</post>
+			<archive>
+				https://listserv.gwdg.de/mailman/private/escidoc-code/
+			</archive>
+		</mailingList>
+	</mailingLists>
+	<ciManagement>
+		<system>Continuum</system>
+		<url>http://continuum.mpdl.mpg.de/continuum</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<configuration>
+					<address>escidoc-code@gwdg.de</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+
+	<modules>
+		<module>image-upload</module>
+		<module>digi_lifecycle_logic</module>
+		<module>digi_lifecycle_presentation</module>
+	</modules>
+
+	<scm>
+		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</connection>
+		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</developerConnection>
+		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+	</scm>
+
+
+
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<url>http://rd.mpdl.mpg.de/nexus/content/groups/public</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+        <repository>
+    		<id>eclipse</id>
+    		<url>http://download.eclipse.org/rt/eclipselink/maven.repo</url>
+		</repository>
+        
+        <!-- 
+         <repository>
+	        <id>escidoc.org</id>
+	        <name>escidoc.org-releases</name>
+	        <url>https://www.escidoc.org/artifactory/libs-releases-local</url>
+	        <releases>
+	            <enabled>true</enabled>
+	            <updatePolicy>never</updatePolicy>
+	        </releases>
+	    </repository>
+	-->
+        <repository>
+	          <id>codehouse-repository</id>
+	          <name>Codehouse Repository</name>
+	          <url>http://repository.codehaus.org/</url>
+	          <layout>default</layout>
+	          <releases>
+	            <enabled>true</enabled>
+	            <updatePolicy>never</updatePolicy>
+	          </releases>
+	          <snapshots>
+	            <enabled>true</enabled>
+	            <updatePolicy>never</updatePolicy>
+	          </snapshots>
+        </repository>
+        <repository>  
+	        <id>prime-repo</id>  
+	        <name>Prime Technology Maven Repository</name>  
+	        <url>http://repository.prime.com.tr</url>  
+	        <layout>default</layout>  
+	    </repository>  
+	    <repository>  
+	        <id>escidoc-artifactory</id>  
+	        <name>eSciDoc Artifactory</name>  
+	        <url>https://www.escidoc.org/artifactory/anonymous-repo</url>  
+	        <layout>default</layout>  
+	    </repository>  
+	</repositories>
+
+   <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>http://central</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+    
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Nexus Managed Releases</name>
+            <url>http://rd.mpdl.mpg.de/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Nexus Managed Snapshots</name>
+            <url>http://rd.mpdl.mpg.de/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+	   
+    </distributionManagement>
+   
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+			</testResource>
+		</testResources>
+		<extensions>
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+			</extension>
+		</extensions>
+		<!-- if no tests are present don't fail the complete package process -->
+		<pluginManagement>
+			<plugins>
+				<plugin>
+			      <groupId>org.eclipse.m2e</groupId>
+			      <artifactId>lifecycle-mapping</artifactId>
+			      <version>1.0.0</version>
+			      <configuration>
+			        <lifecycleMappingMetadata>
+			          <pluginExecutions>
+			            <pluginExecution>
+			              <pluginExecutionFilter>
+			                <groupId>*</groupId>
+			                <artifactId>*</artifactId>
+			                <versionRange>[1.0.0,)</versionRange>
+			                <goals>
+			                  <goal>some-goal</goal>
+			                </goals>
+			              </pluginExecutionFilter>
+			              <action>
+			                <ignore />
+			              </action>
+			            </pluginExecution>
+			            <pluginExecution>
+			            	<pluginExecutionFilter>
+			            		<groupId>org.zeroturnaround</groupId>
+			            		<artifactId>
+			            			javarebel-maven-plugin
+			            		</artifactId>
+			            		<versionRange>[1.0.5,)</versionRange>
+			            		<goals>
+			            			<goal>generate</goal>
+			            		</goals>
+			            	</pluginExecutionFilter>
+			            	<action>
+			            		<ignore />
+			            	</action>
+			            </pluginExecution>
+			          </pluginExecutions>
+			        </lifecycleMappingMetadata>
+			      </configuration>
+			    </plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						 <!--  if there are no tests, don't bail out -->
+						<failIfNoTests>false</failIfNoTests>
+						<!-- avoid the outofmemory exception thrown in some test scenarios-->
+						<argLine>-Xmx1000M</argLine>
+					</configuration>
+				</plugin>
+				
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<!-- send an announcement email on release -->
+					<!-- <preparationGoals>changes:announcement-mail</preparationGoals> -->
+					<!-- all the submodules inherit the version of the project -->
+					<autoVersionSubmodules>false</autoVersionSubmodules>
+					<!-- snaphots identified by timestamp are allowed -->
+					<allowTimestampedSnapshots>true</allowTimestampedSnapshots>
+				</configuration>
+			</plugin>
+
+		      <plugin>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <configuration>
+		          <source>1.6</source>
+		          <target>1.6</target>
+		        </configuration>
+		      </plugin>
+		      <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-ejb-plugin</artifactId>
+	            <configuration>
+	                <ejbVersion>3.0</ejbVersion>
+	            </configuration>
+        	  </plugin>
+
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>taglist-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<configuration>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.5</targetJdk>
+				</configuration>
+			</plugin>
+			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>changelog-maven-plugin</artifactId>
+            </plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <configuration>
+                <configLocation>http://escidoc1.escidoc.mpg.de/resources/checkstyle/checkstyle.xml</configLocation>
+            </configuration>
+        </plugin>
+        <plugin>
+                <!-- JavaNCSS - A Source Measurement Suite for Java
+                    http://www.kclee.de/clemens/java/javancss/ -->
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>javancss-maven-plugin</artifactId>
+        </plugin>
+        <plugin>
+                <!-- A Java package dependency analyzer that generates
+                      design quality metrics http://clarkware.com/software/JDepend.html -->
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jdepend-maven-plugin</artifactId>
+        </plugin>
+		</plugins>
+	</reporting>
+
+	<!-- properties valid for all profiles, except overriden by individual values -->
+	<properties>
+		<!-- the jdk version to use -->
+		<jdk.version>1.6</jdk.version>
+		
+		<escidoc.common.framework.url>http://url-to-escidoc:8080/</escidoc.common.framework.url>
+		<escidoc.common.login.url>http://url-to-escidoc:8080/</escidoc.common.login.url>
+		
+		<dlc.instance.url>http://localhost:8080</dlc.instance.url>
+		<dlc.app.title>Digital Libraries Connected</dlc.app.title>
+		<dlc.context.path>dlc</dlc.context.path>
+		
+		<digilib.scaler.url>http://localhost:8080/digitallibrary/servlet/Scaler</digilib.scaler.url>
+		
+		<image-upload.url.upload>http://localhost:8080/image-upload/</image-upload.url.upload>
+		<image-upload.url.download>http://localhost:8080/image-upload/</image-upload.url.download>
+		<image-upload.username>image-uploader</image-upload.username>
+		<image-upload.password>XXXX</image-upload.password>
+		<image-upload.tmpDir>${java.io.tmpdir}</image-upload.tmpDir>
+		<image-upload.destDir>${user.home}/dlc_images</image-upload.destDir>
+		
+		<dlc.pid.handle.registration>false</dlc.pid.handle.registration>
+		
+		<escidoc.role.system.admin>escidoc:role-system-administrator</escidoc.role.system.admin>
+
+		<escidoc.role.ou.admin>escidoc:role-ou-administrator</escidoc.role.ou.admin>
+		<escidoc.role.context.admin>escidoc:role-context-administrator</escidoc.role.context.admin>
+		<escidoc.role.userAccount.admin>escidoc:role-user-account-administrator</escidoc.role.userAccount.admin>
+
+		<escidoc.role.user.depositor>escidoc:role-depositor</escidoc.role.user.depositor>
+		<escidoc.role.user.moderator>escidoc:role-moderator</escidoc.role.user.moderator>
+		<escidoc.role.user.md-editor>escidoc:role-md-editor</escidoc.role.user.md-editor>
+
+		<dfg.viewer.baseurl>http://dfg-viewer.de/show/?set[mets]=</dfg.viewer.baseurl>
+		
+		<dlc.content-model.monograph.id>escidoc-content-model-id-for-monographs</dlc.content-model.monograph.id>
+		<dlc.content-model.multivolume.id>escidoc-content-model-id-for-multivolumes</dlc.content-model.multivolume.id>
+		<dlc.content-model.volume.id>escidoc-content-model-id-for-volumes</dlc.content-model.volume.id>
+		
+		<dlc.batch_ingest.database.connection.url>jdbc:postgresql://localhost:5432/dlc</dlc.batch_ingest.database.connection.url>
+		<dlc.batch_ingest.database.admin_user.name>ingestAdmin</dlc.batch_ingest.database.admin_user.name>
+		<dlc.batch_ingest.database.admin_user.password>XXXX</dlc.batch_ingest.database.admin_user.password>		
+	</properties>
+
+	<profiles>
+		<!-- this profile is used by developers -->
+		<profile>
+			<id>env-development</id>
+			<build>
+               <plugins>
+                   <plugin>
+                       <groupId>org.zeroturnaround</groupId>
+                       <artifactId>javarebel-maven-plugin</artifactId>
+                       <executions>
+                           <execution>
+                               <id>generate-rebel-xml</id>
+                               <phase>process-resources</phase>
+                               <goals>
+                                   <goal>generate</goal>
+                               </goals>
+                           </execution>
+                       </executions>
+						<dependencies>
+							<dependency>
+								<groupId>org.codehaus.plexus</groupId>
+								<artifactId>plexus-utils</artifactId>
+								<version>1.4.1</version>
+								<scope>runtime</scope>
+							</dependency>
+						</dependencies>		                       
+                   </plugin>
+               </plugins>
+           </build> 
+			<properties>
+				<!-- CURRENTLY NOT USED FROM HERE ... !!!!!!!!!!!!!!!!!!!!!! -->
+				
+				<!-- used by the cargo plugin to run a jboss server for integration-testing /goal: cargo:start-->
+				<cargo.port>8080</cargo.port>
+				<cargo.rmi.port>1099</cargo.rmi.port>
+				<cargo.log>high</cargo.log>
+				<cargo.jvmargs>-Dcom.sun.xml.namespace.QName.useCompatibleSerialVersionUID=1.0 -Dpubman.properties.file=./pubman.properties</cargo.jvmargs>
+				<!-- this path is used as root for all jboss installations -->
+				<cargo.install.dir>${user.home}/jboss</cargo.install.dir>
+				<!-- fetch the jboss from this url -->
+				<cargo.jboss.url>http://heanet.dl.sourceforge.net/sourceforge/jboss/jboss-4.2.2.GA.zip</cargo.jboss.url>
+				<!-- local intallation of the jboss for integration-tests -->
+				<cargo.jboss.install.dir>${user.home}/jboss/jboss-4.2.2.GA/jboss-4.2.2.GA</cargo.jboss.install.dir>
+
+				<!-- deploy the pubman ear to this server and port via jmx /goal: jboss:deploy -->
+				<jboss.deploy.host>localhost</jboss.deploy.host>
+				<jboss.deploy.port>8080</jboss.deploy.port>
+				<!-- the ears are deployed to this server using jboss:harddeploy -->
+				<jboss.install.dir>${user.home}/jboss/server_eclipse/jboss-4.2.2.GA/jboss-4.2.2.GA</jboss.install.dir>
+
+
+				<!-- ...UNTIL HERE  -->
+				
+				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
+				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<image-upload.username>to-be-added-to-personal-settings.xml</image-upload.username>
+				<image-upload.password>to-be-added-to-personal-settings.xml</image-upload.password>
+				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
+				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
+				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
+				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://dev-dlc.mpdl.mpg.de:5432/batchingest</dlc.batch_ingest.database.connection.url>
+				<dlc.batch_ingest.database.admin_user.name>to-be-added-to-personal-settings.xml</dlc.batch_ingest.database.admin_user.name>
+				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-personal-settings.xml</dlc.batch_ingest.database.admin_user.password>
+				
+				<tomcat.install.dir>${user.home}/apache-tomcat-7.0.29</tomcat.install.dir>
+			</properties>
+
+			<distributionManagement>
+				<site>
+					<id>website</id>
+					<url>scp://dlc.mpdl.mpg.de:/srv/www/staging/projects/dlc</url>
+				</site>
+			</distributionManagement>			
+
+
+		</profile>
+		<profile>
+			<id>env-testing-continuum</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<!-- CURRENTLY NOT USED FROM HERE ... !!!!!!!!!!!!!!!!!!!!!! -->
+
+				<!-- used by the cargo plugin to run a jboss server for integration-testing -->
+				<cargo.port>8080</cargo.port>
+				<cargo.rmi.port>1099</cargo.rmi.port>
+				<cargo.log>high</cargo.log>
+				<cargo.jvmargs>-Dcom.sun.xml.namespace.QName.useCompatibleSerialVersionUID=1.0 -Dpubman.properties.file=./pubman.properties</cargo.jvmargs>
+				<!-- this path is used as root for all jboss installations -->
+				<cargo.install.dir>${user.home}/jboss</cargo.install.dir>
+				<!-- fetch the jboss from this url -->
+				<cargo.jboss.url>http://heanet.dl.sourceforge.net/sourceforge/jboss/jboss-4.2.2.GA.zip</cargo.jboss.url>
+				<!-- local intallation of the jboss for integration-tests -->
+				<cargo.jboss.install.dir />
+
+                <!-- deploy the digi_lifecycle ear to this server -->
+                <jboss.deploy.host>localhost</jboss.deploy.host>
+                <jboss.deploy.port>8889</jboss.deploy.port>
+                <!-- the ears are deployed to this server using jboss:harddeploy -->
+                <jboss.install.dir>/mnt/jboss/dev-digi_lifecycle</jboss.install.dir>
+                <jboss.property.1>pubman.properties.file=./pubman.properties</jboss.property.1>
+                <jboss.property.2>com.sun.xml.namespace.QName.useCompatibleSerialVersionUID=1.0</jboss.property.2>
+
+
+				<!-- ...UNTIL HERE -->
+				
+				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<dlc.instance.url>http://dev-dlc.mpdl.mpg.de</dlc.instance.url>
+				<image-upload.url.upload>http://localhost:7070/image-upload/</image-upload.url.upload>
+				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<image-upload.username>to-be-added-to-continuum-settings.xml</image-upload.username>
+				<image-upload.password>to-be-added-to-continuum-settings.xml</image-upload.password>
+				<image-upload.destDir>/data/dlc_images</image-upload.destDir>
+				<image-upload.tmpDir>/tmp</image-upload.tmpDir>
+				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
+				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
+				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
+				<dlc.batch_ingest.database.connection.url>jdbc:postgresql://localhost:5432/batchingest</dlc.batch_ingest.database.connection.url>
+				<dlc.batch_ingest.database.admin_user.name>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.name>
+				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.password>
+				
+				<tomcat.install.dir>/mnt/tomcat/dev-dlc</tomcat.install.dir>
+			</properties>
+
+			
+
+			<distributionManagement>
+				<site>
+					<id>website</id>
+					<url>scp://dlc.mpdl.mpg.de:/srv/www/staging/projects/dlc</url>
+					<!--url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/virr</url-->
+				</site>
+			</distributionManagement>		
+
+		</profile>
+		
+		<profile>
+			<!-- this profile gets activated if os is windows -->
+			<id>Windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<!-- windows needs an extra slash in jboss-service.xml -->
+				<jboss.pathcorrection>/</jboss.pathcorrection>
+			</properties>
+		</profile>
+		<profile>
+			<!-- this profile gets activated if os is linux -->
+			<id>Linux</id>
+			<activation>
+				<os>
+					<name>Linux</name>
+					<family>linux</family>
+				</os>
+			</activation>
+			<properties>
+				<!-- linux doesn't need the extra slash like windows does -->
+				<jboss.pathcorrection />
+			</properties>
+		</profile>
+	</profiles>
+</project>

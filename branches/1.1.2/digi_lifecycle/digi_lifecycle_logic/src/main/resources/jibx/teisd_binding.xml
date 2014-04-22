@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CDDL HEADER START
+  The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+  
+  You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+  See the License for the specific language governing permissions and limitations under the License.
+  
+  When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+  CDDL HEADER END
+  
+  Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+  All rights reserved. Use is subject to license terms.
+-->
+<binding>
+	<namespace uri="http://www.tei-c.org/ns/1.0" prefix="tei" default="elements"/>
+	<mapping name="TEI" class="de.mpg.mpdl.dlc.vo.teisd.TeiSd">
+		
+
+
+		<structure name="teiHeader" usage="optional" flexible="true" ordered="false">
+			<structure name="fileDesc" usage="optional" flexible="true" ordered="false">
+
+				<structure name="titleStmt" usage="optional">
+					<structure name="title" usage="optional">
+						<value style="attribute" name="type" usage="optional" constant="main"/>
+						<value style="text" field="mainTitle" usage="optional" default=""/>
+					</structure>
+					<structure name="title" usage="optional" test-method="isNotEmptySubTitle">
+						<value style="attribute" name="type" usage="optional" constant="sub"/>
+						<value style="text" field="subTitle" usage="optional" default=""/>
+					</structure>
+					<value style="element" name="author" field="author" usage="optional" default=""/>
+				</structure>
+				
+				<structure name="publicationStmt" usage="optional" flexible="true" ordered="false">
+					<structure name="date" usage="optional" flexible="true" ordered="false">
+						<value style="attribute" name="when" field="date" usage="optional"/>
+					</structure>
+				</structure>
+				
+				<structure name="sourceDesc" usage="optional" flexible="true" ordered="false">
+					<value style="element" name="p" field="sourceDesc" usage="optional" default=""/>
+				</structure>
+			</structure>
+			
+		</structure>
+
+		 <structure field="text" map-as="de.mpg.mpdl.dlc.vo.teisd.Text">
+		 </structure>
+		<!-- 
+		<structure name="text">
+				<collection field="pbOrDiv" factory="de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
+					<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" usage="optional" flexible="true" ordered="false"/>
+				</collection>
+		</structure>
+		-->
+
+	 </mapping>
+	 
+
+	 <mapping class="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" abstract="true">
+	 	<value style="attribute" name="id" ns="http://www.w3.org/XML/1998/namespace" field="id" usage="optional" default=""/>
+	 	<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
+	 	<value style="attribute" name="type" field="type" usage="optional" default=""/>
+	 	<collection field="pbOrDiv" factory = "de.mpg.mpdl.dlc.vo.teisd.TeiSd.pbOrDivListFactory">
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 	</collection>
+	 </mapping>
+	 
+	 <mapping name="front" class="de.mpg.mpdl.dlc.vo.teisd.Front" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv">
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="body" class="de.mpg.mpdl.dlc.vo.teisd.Body" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv">
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="back" class="de.mpg.mpdl.dlc.vo.teisd.Back" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="text" class="de.mpg.mpdl.dlc.vo.teisd.Text" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 <mapping name="group" class="de.mpg.mpdl.dlc.vo.teisd.Group" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" >
+			<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 
+	 <mapping name="div" class="de.mpg.mpdl.dlc.vo.teisd.Div" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 	<collection get-method="getHeadWithoutEmptyEntries" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional">
+	 		<value name="head" type="java.lang.String" usage="optional" default=""/>
+	 	</collection>
+	 	
+	 	<!-- 
+	 	<value style="attribute" name="author1" field="author1" usage="optional" whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2" field="author2" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3" field="author3" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author1inv" field="author1inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2inv" field="author2inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3inv" field="author3inv" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author1pnd" field="author1pnd" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author2pnd" field="author2pnd" usage="optional"  whitespace="trim" default=""/>
+	 	<value style="attribute" name="author3pnd" field="author3pnd" usage="optional"  whitespace="trim" default=""/>
+	 	-->
+	 	<structure name="byline" usage="optional" test-method="isNotEmptyDocAuthors">
+	 	<collection field="docAuthors" item-type="de.mpg.mpdl.dlc.vo.teisd.DocAuthor" factory="de.mpg.mpdl.dlc.vo.teisd.Div.docAuthorListFactory" usage="optional">		
+			<structure name="docAuthor" usage="optional">
+				<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
+				<value style="attribute" name="key" field="key" usage="optional" default=""/>
+				<value style="attribute" name="ana" field="invertedAuthor" usage="optional" default=""/>
+				<value style="text" field="author" usage="optional" default=""/>
+			</structure>
+	 	</collection>
+	 	
+	 	</structure>
+	 	
+	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	  <mapping name="figure" class="de.mpg.mpdl.dlc.vo.teisd.Figure" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 	
+	 	<collection get-method="getHeadWithoutEmptyEntries" set-method="setHead" factory="de.mpg.mpdl.dlc.vo.teisd.Div.headListFactory" usage="optional" item-type="java.lang.String">
+	 		<value style="element" name="head" type="java.lang.String" usage="optional" default=""/>
+	 	</collection>
+	 	
+	 	<structure name="figDesc" usage="optional" test-method="isNotEmptyFigDesc">
+	 		<value style="text" field="figDesc" type="java.lang.String" usage="optional" default=""/>
+	 		<collection field="persNames" item-type="de.mpg.mpdl.dlc.vo.teisd.PersName" factory="de.mpg.mpdl.dlc.vo.teisd.Figure.persNameListFactory" usage="optional">
+		 		<structure name="persName" usage="optional">
+		 			<value style="attribute" name="n" field="numeration" usage="optional" default=""/>
+					<value style="attribute" name="key" field="key" usage="optional" default=""/>
+					<value style="attribute" name="ana" field="invertedAuthor" usage="optional" default=""/>
+					<value style="text" field="author" usage="optional" default=""/>
+				</structure>
+	 		</collection>		
+	 		
+	 	</structure>
+		<value style="element" name="caption" field="caption" type="java.lang.String" usage="optional" default=""/>
+	 	<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	 <mapping name="pb" class="de.mpg.mpdl.dlc.vo.teisd.Pagebreak" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false"> 
+	 		<value style="attribute" name="facs" field="facs" usage="optional" default=""/>
+	 		<value style="attribute" name="next" field="next" usage="optional" default=""/>
+	 		<value style="attribute" name="prev" field="prev" usage="optional" default=""/>
+	 		<value style="attribute" name="subtype" field="subtype" usage="optional" default=""/>
+	 		<value style="attribute" name="rend" field="rend" usage="optional" default=""/>
+	 
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 
+	 </mapping>
+	 
+	  <mapping name="titlePage" class="de.mpg.mpdl.dlc.vo.teisd.TitlePage" extends="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" ordered="false">
+	 		<structure name="docTitle" ordered="false" usage="optional">
+	 			<collection field="docTitles" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
+	 				
+	 				<structure name="titlePart" usage="optional">
+		 				<value style="attribute" name="type" field="type" usage="optional" default=""/>
+		 				<value style="text" field="title" usage="optional" default=""/>
+	 				</structure>
+	 			</collection>
+	 			
+	 		</structure>
+	 		
+	 		
+ 			<collection field="titleParts" item-type="de.mpg.mpdl.dlc.vo.teisd.DocTitle" factory="de.mpg.mpdl.dlc.vo.teisd.TitlePage.docTitleListFactory" usage="optional">
+ 				<structure name="titlePart" usage="optional">
+	 				<value style="attribute" name="type" field="type" usage="optional" default=""/>
+	 				<value style="text" field="title" usage="optional" default=""/>
+ 				</structure>
+ 			</collection>
+
+	 		<structure map-as="de.mpg.mpdl.dlc.vo.teisd.PbOrDiv" flexible="true" ordered="false" usage="optional"/>
+	 </mapping>
+	 
+	
+	 
+
+</binding>
+
+
+

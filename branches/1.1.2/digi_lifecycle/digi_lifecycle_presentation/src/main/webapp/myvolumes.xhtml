@@ -1,0 +1,127 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
+
+
+<ui:composition template="templates/template_v3.xhtml">
+	<ui:param name="headline" value="#{myVolumesBean.collection.name}" />
+	
+	
+	
+	<ui:define name="mainContent">
+		<mpdl:paginator paginatorBean="#{myVolumesBean}">
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5">
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+					<h:outputText value="#{lbl.list_sortCriterion} "/>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+					
+					<h:form>
+						<h:panelGroup layout="block" styleClass="eg3_container_1">
+								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+										<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
+											<span class="eg3_selectionText"></span>
+										</h:panelGroup>
+										<h:selectOneMenu value="#{myVolumesBean.selectedSortCriterion}">
+											<f:selectItems value="#{myVolumesBean.sortIndicesMenu}"/>
+											<f:ajax event="change" listener="#{myVolumesBean.changeSortCriteria}" render="@all"/>
+										</h:selectOneMenu>
+									</h:panelGroup>
+								</h:panelGroup>
+						</h:panelGroup>
+					</h:form>
+				</h:panelGroup>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+						<h:outputText value="#{lbl.list_stateFilter} "/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+						<h:form>
+							<h:panelGroup layout="block" styleClass="eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
+											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
+												<span class="eg3_selectionText"></span>
+											</h:panelGroup>
+											<h:selectOneMenu value="#{myVolumesBean.filterItemState}">
+												<f:selectItem itemLabel="#{lbl.list_statefilter_allExceptWithdrawn}" itemValue="all"/>
+												<f:selectItem itemLabel="#{lbl.list_statefilter_submitted}" itemValue="submitted"/>
+												<f:selectItem itemLabel="#{lbl.list_statefilter_released}" itemValue="released"/>
+												<f:selectItem itemLabel="#{lbl.list_statefilter_withdrawn}" itemValue="withdrawn"/>
+												<f:ajax event="change" listener="#{myVolumesBean.filterResults}" render="@all"/>
+											</h:selectOneMenu>
+										</h:panelGroup>
+									</h:panelGroup>
+							</h:panelGroup>
+						</h:form>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" style="margin-top:2em;">
+						<h:outputText value="#{lbl.list_filter} "/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
+						<h:form>
+							<h:panelGroup layout="block" styleClass="eg3_container_1">
+									<h:panelGroup layout="block" styleClass="eg3_container_3_4">
+										<h:panelGroup layout="block" styleClass="eg3_container_1">
+											
+											<h:inputText value="#{myVolumesBean.filterString}"/>
+											<h:commandButton styleClass="eg3_borderradius_5" action="#{myVolumesBean.filterResults}" value="OK"/>
+											<h:commandButton styleClass="eg3_borderradius_5" action="#{myVolumesBean.resetFilter}" value="X" rendered="#{not empty myVolumesBean.filterString}"/>
+											
+										</h:panelGroup>
+									</h:panelGroup>
+							</h:panelGroup>
+						</h:form>
+					</h:panelGroup>
+				
+				
+			</h:panelGroup>
+			
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
+					<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_totalNumberOfHits} #{cc.attrs.paginatorBean.totalNumberOfRecords}"/>
+				</h:panelGroup>
+				<h:form id="volumes">
+					<list:bibList_shortDLC>
+						<a4j:repeat var="volume" value="#{myVolumesBean.currentPartList}">
+							<list:bibSimpleItemAllVolume volume="#{volume}" searchBean="#{myVolumesBean}"/>
+						</a4j:repeat>
+					</list:bibList_shortDLC>
+				</h:form>
+				<script type="text/javascript">
+					$(document).ready(function(){eg3_addDisplayControl('.listItemMultiVolume'); eg3_listenMultiVolume();});
+				</script>
+			</h:panelGroup>
+		</mpdl:paginator>
+	</ui:define>
+</ui:composition>
+
+</html>

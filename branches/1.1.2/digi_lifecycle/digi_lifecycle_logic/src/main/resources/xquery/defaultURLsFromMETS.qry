@@ -1,0 +1,3 @@
+for $filegroup in collection('###collection###')/mets:mets[@ID = '###objid###']/mets:fileSec/mets:fileGrp[@USE = 'DEFAULT']
+let $href := $filegroup/mets:file/mets:FLocat/@xlink:href
+return distinct-values($href)

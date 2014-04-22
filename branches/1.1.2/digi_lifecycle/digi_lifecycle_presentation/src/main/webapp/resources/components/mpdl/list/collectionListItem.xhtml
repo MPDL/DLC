@@ -1,0 +1,99 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list">
+	
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="item" required="true"/>
+		<cc:attribute name="titleLinkID" required="true"/>
+		<cc:attribute name="searchInput" />
+		<cc:attribute name="searchAction" method-signature="java.lang.String method()" />
+		<cc:attribute name="searchParam" />
+		<cc:attribute name="hideTitle" type="java.lang.Boolean" required="false"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		
+
+		<h:panelGroup layout="block" styleClass="eg3_collectionItem eg3_overflow">
+			<h:panelGroup layout="block" styleClass="eg3_itemHeader" rendered="#{not empty cc.attrs.item.properties.name and !hideTitle}">
+				<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+					<ui:fragment rendered="#{not empty cc.attrs.item.properties.name and (empty cc.attrs.item.objid or empty cc.attrs.titleLinkID)}">
+						<h2><h:outputText value="#{cc.attrs.item.properties.name}"/></h2>
+					</ui:fragment>
+					<ui:fragment rendered="#{not empty cc.attrs.item.objid and not empty cc.attrs.titleLinkID}">
+						<h2>
+							<pretty:link mappingId="#{cc.attrs.titleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
+								<f:param value="#{cc.attrs.item.objid}"/>
+								<h:outputText value="#{cc.attrs.item.properties.name}"/>
+							</pretty:link>
+						</h2>
+					</ui:fragment>
+				</h:panelGroup>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" styleClass="eg3_itemBody">
+				<h:panelGroup layout="block" styleClass="eg3_itemNavigation">
+					<h3>
+						<pretty:link mappingId="volumes">
+							<f:param value="#{cc.attrs.item.objid}"/>
+							<h:outputText value="#{lbl.view_ou_ColLink}" styleClass="eg3_titleListLink"/>
+						</pretty:link>
+						
+						<h:panelGroup styleClass="eg3_floatRight eg3_container_1_3" style="display:inline-block;">
+							<h:form>
+								<h:inputText type="text" id="quickSearchString" styleClass="eg3_quickSearchInput eg3_container_1" name="simpleSearchstring" autocomplete="on" value="#{cc.attrs.searchInput}" title="#{tlt.col_quicksearch}"/>
+								<h:panelGroup styleClass="eg3_searchTooltip">
+									<h:outputText value="#{tlt.col_quicksearch}"/>
+								</h:panelGroup>
+								<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+								<h:commandButton action="#{cc.attrs.searchAction}" value="Go" style="position:absolute; top:-100000em;">
+									<f:param name="searchParam" value="#{cc.attrs.searchParam}"/>
+								</h:commandButton>
+							</h:form>
+						</h:panelGroup>
+					</h3>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_itemDescription">
+					<p>
+						<h:outputText value="#{utilBean.cleanHtml(utilBean.getShortenedText(cc.attrs.item.adminDescriptors[0].content.textContent, 500))}" escape="false"/>
+						
+						<pretty:link mappingId="#{cc.attrs.titleLinkID}" title="#{tlt.collection_goToCollectionStartPageLnk}">
+							<f:param value="#{cc.attrs.item.objid}"/>
+							<h:outputText value=" ..."/>
+							<h:panelGroup styleClass="eg3_icon_forwardi_16_16">
+								<h:outputText value="&#160;"/>
+							</h:panelGroup>
+						</pretty:link>
+					</p>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+	</cc:implementation>
+</html>

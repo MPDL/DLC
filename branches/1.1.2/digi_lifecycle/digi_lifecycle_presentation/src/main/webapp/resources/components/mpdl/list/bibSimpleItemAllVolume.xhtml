@@ -1,0 +1,597 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="volumes" required="false"/>
+		<cc:attribute name="rendered" required="false"/>
+		<cc:attribute name="fulltextHits"/>
+		<cc:attribute name="searchBean" type="de.mpg.mpdl.dlc.beans.SortableVolumePaginatorBean"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+	<h:panelGroup id="bibSimpleItemAllVolumes">
+		<h:panelGroup id="simpleAllVolume" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and not empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+			
+			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+				<h:panelGroup layout="block" styleClass="eg3_itemMediabar" rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+					<h:panelGroup layout="block" styleClass="eg3_itemMediabarThumb">
+						<pretty:link mappingId="viewPagesWithoutNumber">
+							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+							<f:param value="recto-verso"/>
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
+							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(cc.attrs.volume).contentIds, 'THUMBNAIL')}" alt="" title="#{lbl.view_browse}" rendered="#{cc.attrs.volume.pages[0] != null}"/>
+						</pretty:link>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
+								<a title="#{lbl.status_pending}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_privateDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and not empty cc.attrs.volume.item.properties.latestRelease}">
+								<a title="#{lbl.status_inProgress}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_progressDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='released'}">
+								<a title="#{lbl.status_released}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_publishDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+						</ui:fragment>
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='withdrawn'}">
+							<a title="#{lbl.status_withdrawn}" disabled="disabled">
+								<h:panelGroup styleClass="eg3_icon_withdrawnDocument_32_32">&nbsp;</h:panelGroup>
+							</a>
+						</ui:fragment>
+					</h:panelGroup>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" id="simpleItemContent" styleClass="eg3_itemContent">
+				<h:panelGroup layout="block" styleClass="eg3_itemHeadline" >
+					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+						<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+							<f:param value="recto-verso"/>
+							<f:param name="fm" value="#{cc.attrs.fulltextHits}"/>
+							<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}"/>
+							<h:outputText value="#{volumeUtilBean.getVolumeFullTitleView(cc.attrs.volume)}" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}"/>
+						</pretty:link>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1" rendered="#{cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmVolume}">
+						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}" />
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
+					<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}" searchBean="#{cc.attrs.searchBean}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
+					<h:panelGroup layout="block" styleClass="eg3_parentItemLabelArea">
+						<h:outputText value="#{lbl.list_parent} "/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_parentItemHeadline">
+						<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+							<h:outputLink>
+								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
+							</h:outputLink>
+							<h:outputText value="ERROR! No Multivolume found!" rendered="#{empty cc.attrs.volume.relatedParentVolume}"/>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+					
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastModified}"/></h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+							<f:param value="recto-verso"/>
+							<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date.toDate()}">
+								<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+							</h:outputText>
+							<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
+						</pretty:link>
+						
+						<h:panelGroup id="releaseButton" rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
+							<h:commandButton action="#{myVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
+								<f:ajax render="simpleAllVolume :messages"/>
+ 							</h:commandButton>
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<ui:fragment rendered="#{not empty cc.attrs.volume.item.properties.latestRelease}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<pretty:link mappingId="viewPagesWithoutNumber">
+							<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}"/>
+							<f:param value="recto-verso"/>
+						
+							<h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date.toDate()}"> 
+								<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+							</h:outputText>
+							<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/>
+						</pretty:link>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+					
+					<ui:fragment rendered="#{loginBean.user.structureEditable(cc.attrs.volume)}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<h:commandLink action="#{myVolumesBean.editStructure(cc.attrs.volume)}" styleClass="eg3_icon_editBtni_16_16">
+								<h:outputText value="#{lbl.list_EditStruct}"/>
+							</h:commandLink>
+							<ui:remove>
+							<pretty:link mappingId="structuralEditor" styleClass="eg3_icon_editBtni_16_16">
+								<f:param value="#{cc.attrs.volume.item.originObjid}"/>
+								<h:outputText value="#{lbl.list_EditStruct}"/>
+							</pretty:link>
+							</ui:remove>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					<ui:fragment rendered="#{loginBean.user.mdEditable(cc.attrs.volume)}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<pretty:link mappingId="upload" styleClass="eg3_icon_editBtni_16_16">
+								<f:param value="#{cc.attrs.volume.item.originObjid}"/>
+								<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
+							</pretty:link>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume)}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
+ 							</h:commandButton>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					<ui:fragment rendered="#{loginBean.user.withdrawable(cc.attrs.volume)}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
+ 							</h:commandButton>
+						</h:panelGroup>
+					</ui:fragment>
+					
+					
+				</h:panelGroup>
+				
+				<!-- START shortView for SEARCH -->
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult'}">
+					<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+					
+
+					<ui:fragment rendered="#{(not empty cc.attrs.fulltextHits) and cc.attrs.volume.searchResultHighlightSize>0}">
+						
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<h:outputText value="#{lbl.sc_number_results} "/>
+							<h:outputText value="#{cc.attrs.volume.searchResultHighlightSize}"/>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+						
+						<ui:remove>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="#{lbl.list_fulltextSearchResults}"/>
+							</h:panelGroup>
+						</ui:remove>
+						
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" rows="3">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_fullTextSearchItem" rendered="#{highlight.type=='FULLTEXT'}">
+									<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
+									<ui:param name="page" value="#{volumeUtilBean.getPageForPageId(cc.attrs.volume, highlight.objid)}"/>
+									
+									<pretty:link mappingId="viewPages" title="#{tlt.list_goToPageLnk}">
+										<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+										<f:param value="fulltext"/>
+										<f:param value="#{pageNumber}"/>
+										<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+										<h:outputText value="#{lbl.list_Page} #{page.orderLabel}" rendered="#{not empty page.orderLabel}"/>
+										<h:outputText value="#{lbl.list_Scan} #{pageNumber}" rendered="#{empty page.orderLabel}"/>
+									</pretty:link>
+									
+									<a4j:repeat var="textFragment" value="#{highlight.textFragments}">
+										<h:panelGroup layout="block" styleClass="eg3_container_1">
+											<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'eg3_searchHit')}" escape="false"/>
+										</h:panelGroup>
+									</a4j:repeat>
+								</h:panelGroup>
+							</a4j:repeat>
+						</h:panelGroup>
+					</ui:fragment>
+				</h:panelGroup>
+				
+				<!-- START mediumView for SEARCH -->
+				<h:panelGroup layout="block" styleClass="eg3_mediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_showHideMediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<a title="#{lbl.sc_show_allHits}" class="eg3_icon_forwardi_16_16">
+								<h:panelGroup styleClass="eg3_iconActionLabel"><h:outputText value="#{lbl.sc_show_allHits}"/></h:panelGroup>
+							</a>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+					</h:panelGroup>
+					
+					
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<a4j:repeat value="#{cc.attrs.volume.searchResultHighlight}" var="highlight" first="3">
+							<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_fullTextSearchItem" rendered="#{highlight.type=='FULLTEXT'}">
+								<ui:param name="pageNumber" value="#{volumeUtilBean.getPageNumberForPageId(cc.attrs.volume, highlight.objid)}"/>
+								<ui:param name="page" value="#{volumeUtilBean.getPageForPageId(cc.attrs.volume, highlight.objid)}"/>
+								
+								<pretty:link mappingId="viewPages" title="#{tlt.list_goToPageLnk}">
+									<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+									<f:param value="fulltext"/>
+									<f:param value="#{pageNumber}"/>
+									<f:param name="fm" value="#{cc.attrs.fulltextHits}" rendered="#{not empty cc.attrs.fulltextHits}"/>
+									<h:outputText value="#{lbl.list_Page} #{page.orderLabel} / " rendered="#{not empty page.orderLabel}"/>
+									<h:outputText value="#{lbl.list_Scan} #{pageNumber}"/>
+								</pretty:link>
+								
+								<a4j:repeat var="textFragment" value="#{highlight.textFragments}">
+									<h:panelGroup layout="block" styleClass="eg3_container_1">
+										<h:outputText value="#{volumeUtilBean.emphasizeWordsinTextFragment(textFragment, 'eg3_searchHit')}" escape="false"/>
+									</h:panelGroup>
+								</a4j:repeat>
+							</h:panelGroup>
+						</a4j:repeat>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_showHideMediumView_js" rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+					<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+						<a title="#{lbl.sc_show_allHits}" class="eg3_icon_forwardi_16_16">
+							<h:panelGroup styleClass="eg3_iconActionLabel"><h:outputText value="#{lbl.sc_show_allHits}"/></h:panelGroup>
+						</a>
+					</h:panelGroup>
+				</h:panelGroup>
+			<!-- END itemContent -->
+			</h:panelGroup>
+		</h:panelGroup>
+		
+		
+		<!-- volumes which are in ingest process -->
+		<ui:remove>
+		<h:panelGroup id="volumeUpload" layout="block" styleClass="eg3_listItemSimpleAllVolume" style="background-color: #EA7125;" rendered="#{cc.attrs.rendered and empty cc.attrs.volume.mets and cc.attrs.volume.item.properties.contentModel.objid != applicationBean.cmMultiVol}">
+			<!-- update items which are in upload automatically every 30 seconds -->
+			
+			<a4j:region>
+				 <a4j:poll id="poll" interval="30000" render="poll bibSimpleItemAllVolumes messages" action="#{myVolumesBean.checkUploadComplete(cc.attrs.volume)}"/>
+			</a4j:region>
+			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+				<h:panelGroup layout="block" styleClass="eg3_itemMediabar">
+					<h:panelGroup styleClass="eg3_itemStatusTitle">
+						<h:outputText value="#{lbl.list_uploadInProgress}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" id="simpleItemContentProgress" styleClass="eg3_itemContent">
+				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
+					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+						<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)} (#{cc.attrs.volume.objidAndVersion})"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_itemPublishingInformation eg3_container_1">
+						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		</ui:remove>
+		
+		
+		<!-- following code only for multiVolumes -->
+		<h:panelGroup id="simpleAllVolumeMulti" layout="block" styleClass="eg3_listItemSimpleAllVolume" rendered="#{cc.attrs.rendered and cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmMultiVol}">
+			
+			<h:panelGroup layout="block" styleClass="eg3_itemStatusArea">
+				<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+					<h:panelGroup layout="block" styleClass="eg3_clearBoth eg3_itemMediabar">
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and empty cc.attrs.volume.item.properties.latestRelease}">
+								<a title="#{lbl.status_pending}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_privateDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='submitted' and not empty cc.attrs.volume.item.properties.latestRelease}">
+								<a title="#{lbl.status_inProgress}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_progressDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+							<ui:fragment rendered="#{cc.attrs.volume.item.properties.version.status=='released'}">
+								<a title="#{lbl.status_released}" disabled="disabled">
+									<h:panelGroup styleClass="eg3_icon_publishDocument_32_32">&nbsp;</h:panelGroup>
+								</a>
+							</ui:fragment>
+						</ui:fragment>
+						<ui:fragment rendered="#{cc.attrs.volume.item.properties.publicStatus.xmlValue=='withdrawn'}">
+							<a title="#{lbl.status_withdrawn}" disabled="disabled">
+								<h:panelGroup styleClass="eg3_icon_withdrawnDocument_32_32">&nbsp;</h:panelGroup>
+							</a>
+						</ui:fragment>
+					</h:panelGroup>
+				</ui:fragment>
+			</h:panelGroup>
+			
+			<h:panelGroup layout="block" id="multiItemContent" styleClass="eg3_itemContent">
+				<mpdl:mvPlayer id="popupMultivolume" target="popupMV" vol="#{cc.attrs.volume}" searchBean="#{cc.attrs.searchBean}"/>
+				
+				<!-- START eg3_itemHeadline -->
+				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
+					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
+						<h:outputLink>
+							<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}" title="#{tlt.list_goToVolumeLnk}"/>
+						</h:outputLink>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemPublishingInformation">
+						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
+					</h:panelGroup>
+				</h:panelGroup> <!-- END eg3_itemHeadline -->
+				
+				<!-- START shortView -->
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js">
+					
+					<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+						<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+						
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastModified}"/></h:panelGroup>
+						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<pretty:link mappingId="viewPagesWithoutNumber">
+								<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
+								<f:param value="recto-verso"/>
+								<h:outputText value="#{cc.attrs.volume.item.properties.latestVersion.date.toDate()}">
+									<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+								</h:outputText>
+								<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestVersion.number})"/>
+							</pretty:link>
+							
+							<h:panelGroup rendered="#{loginBean.user.releasable(cc.attrs.volume)}">
+								<h:commandButton action="#{myVolumesBean.release(cc.attrs.volume)}" value="#{lbl.button_command_release}" styleClass="eg3_borderradius_5">
+									<f:ajax render="simpleAllVolumeMulti :messages"/>
+								</h:commandButton>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup rendered="#{not empty cc.attrs.volume.item.properties.latestRelease}">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+							<pretty:link mappingId="viewPagesWithoutNumber">
+								<f:param value="#{cc.attrs.volume.item.properties.latestRelease.objid}"/>
+								<f:param value="recto-verso"/>
+								
+								<h:outputText value="#{cc.attrs.volume.item.properties.latestRelease.date.toDate()}"> 
+									<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+								</h:outputText>
+								<h:outputText value=" (Version #{cc.attrs.volume.item.properties.latestRelease.number})"/>
+							</pretty:link>
+							</h:panelGroup>
+						</h:panelGroup>
+						
+						<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+						
+						<!-- update dataset -->
+						<ui:fragment rendered="#{loginBean.user.mdEditable(cc.attrs.volume)}">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+								<pretty:link mappingId="upload" styleClass="eg3_icon_editBtni_16_16">
+									<f:param value="#{cc.attrs.volume.item.originObjid}"/>
+									<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
+								</pretty:link>
+							</h:panelGroup>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume) and empty cc.attrs.volume.relatedVolumes}">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+								<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
+	 							</h:commandButton>
+							</h:panelGroup>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{loginBean.user.withdrawable(cc.attrs.volume) and empty cc.attrs.volume.relatedVolumes}">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+								<h:commandButton action="#{myVolumesBean.withdraw(cc.attrs.volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
+	 							</h:commandButton>
+							</h:panelGroup>
+						</ui:fragment>
+						
+					</ui:fragment> <!-- END volumes and my data -->
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedVolumes.size() gt 0}">
+						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js" style="display:none;">
+							<h:panelGroup layout="block">
+								<label class="eg3_iconActionLabel eg3_noMarginLeft">
+									<h:outputText value="#{lbl.list_NavElem_ShowRelatedPublications}"/>
+								</label>
+							</h:panelGroup>
+						</h:panelGroup>
+						<h:commandLink value="#{lbl.list_NavElem_ShowRelatedPublications}" action="#{cc.attrs.searchBean.loadSubvolumes(cc.attrs.volume)}">
+									<f:ajax render="childVolumes popupMultivolume:childVolumes popupMultivolume:showChildButtons" onevent="function(data) {showChildren(data, true);}"/>
+						</h:commandLink>
+					</h:panelGroup>
+					
+					
+					
+					<ui:fragment rendered="#{prettyContext.currentMapping.id == 'searchResult' and cc.attrs.volume.searchResultHighlightSize gt 3}">
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemDetailAction_js">
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
+								<h:outputText value="&#160;"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+								<a title="#{lbl.sc_show_allHits}" class="eg3_icon_forwardi_16_16">
+									<h:panelGroup styleClass="eg3_iconActionLabel"><h:outputText value="#{lbl.sc_show_allHits}"/></h:panelGroup>
+								</a>
+							</h:panelGroup>
+						</h:panelGroup>
+					</ui:fragment>
+   				</h:panelGroup> <!-- END eg3_shortView_js -->
+				
+			
+				<!-- START mediumView -->
+				<h:panelGroup layout="block" styleClass="eg3_mediumView_js" id="childVolumes">
+					
+					<!-- multi volume childs -->
+					<a4j:repeat var="child_volume" value="#{cc.attrs.volume.relatedChildVolumes}">
+						<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1 eg3_multiVolumeItem#{(prettyContext.currentMapping.id == 'myVolumes') ? ' eg3_itemInclusiveAction' : ''}">
+							<h:panelGroup layout="block" styleClass="eg3_itemSubTitle eg3_container_1">
+								<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}" rendered="#{child_volume.pages[0] != null and child_volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+									<f:param value="#{child_volume.objidAndVersion}"/>
+									<f:param value="recto-verso"/>
+									<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(child_volume).contentIds, 'THUMBNAIL')}" alt="" title="#{lbl.view_browse}"/>
+								</pretty:link>
+								
+								<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+									<f:param value="#{child_volume.objidAndVersion}"/>
+									<f:param value="recto-verso"/>
+									<h:outputText value="#{volumeUtilBean.getVolumeShortTitleView(child_volume)}"/>
+									<h:outputText value="&#160;#{volumeUtilBean.getVolumeSubTitleView(child_volume)}"/>
+								</pretty:link>
+							</h:panelGroup>
+							
+							<ui:fragment rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+								<h:panelGroup layout="block" styleClass="eg3_clearLeft eg3_itemMetaLabel">
+									<h:outputText value="#{lbl.list_lastModified}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+									<pretty:link mappingId="viewPages">
+										<f:param value="#{child_volume.objidAndVersion}"/>
+										<f:param value="recto-verso"/>
+										<f:param value="1"/>
+										<h:outputText value="#{child_volume.item.properties.latestVersion.date.toDate()}">
+											<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+										</h:outputText>
+										<h:outputText value=" (Version #{child_volume.item.properties.latestVersion.number})"/>
+									</pretty:link>
+									
+									<h:panelGroup rendered="#{loginBean.user.releasable(child_volume) and cc.attrs.volume.item.properties.publicStatus.xmlValue=='released'}">
+										<h:commandButton action="#{myVolumesBean.release(child_volume)}" value=" #{lbl.button_command_release}">
+											<f:ajax render="child_volume :messages"/>
+										</h:commandButton>
+									</h:panelGroup>
+								</h:panelGroup>
+								
+								<ui:fragment rendered="#{not empty child_volume.item.properties.latestRelease}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel"><h:outputText value="#{lbl.list_lastReleased}"/></h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<pretty:link mappingId="viewPages">
+											<f:param value="#{child_volume.item.properties.latestRelease.objid}"/>
+											<f:param value="recto-verso"/>
+											<f:param value="1"/>
+											<h:outputText value="#{child_volume.item.properties.latestRelease.date.toDate()}"> 
+												<f:convertDateTime pattern="#{utilBean.standardDateTimePattern}"/>
+											</h:outputText>
+									 		<h:outputText value=" (Version #{child_volume.item.properties.latestRelease.number})"/>
+										</pretty:link>
+									</h:panelGroup>
+								</ui:fragment>
+								<h:panelGroup styleClass="eg3_verticalSpace_row_1"><h:outputText value="&#160;"/></h:panelGroup>
+								
+								<ui:fragment rendered="#{loginBean.user.structureEditable(child_volume)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<h:commandLink action="#{myVolumesBean.editStructure(child_volume)}" styleClass="eg3_icon_editBtni_16_16">
+											<h:outputText value="#{lbl.list_EditStruct}"/>
+										</h:commandLink>
+										<ui:remove>
+										<pretty:link mappingId="structuralEditor" styleClass="eg3_icon_editBtni_16_16">
+											<f:param value="#{child_volume.item.originObjid}"/>
+											<h:outputText value="#{lbl.list_EditStruct}"/>
+										</pretty:link>
+										</ui:remove>
+									</h:panelGroup>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{loginBean.user.mdEditable(cc.attrs.volume)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<pretty:link mappingId="upload" styleClass="eg3_icon_editBtni_16_16">
+											<f:param value="#{child_volume.item.originObjid}"/>
+											<h:outputText value="#{lbl.list_NavElem_Edit} #{list_NavElem_Reingest}"/>
+										</pretty:link>
+									</h:panelGroup>
+								</ui:fragment>
+								
+								<!-- Currently volumes cannot be deleted due to eSciDoc Bug https://www.escidoc.org/jira/browse/INFR-1527 -->
+								<ui:remove>
+								<ui:fragment rendered="#{loginBean.user.deletable(child_volume)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<h:commandButton action="#{myVolumesBean.delete(child_volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
+			 							</h:commandButton>
+									</h:panelGroup>
+								</ui:fragment>
+								</ui:remove>
+								
+								<ui:fragment rendered="#{loginBean.user.withdrawable(child_volume)}">
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
+									<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
+										<h:commandButton action="#{myVolumesBean.withdraw(child_volume)}" value="#{lbl.button_command_withdraw}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmWithdraw}');">
+			 							</h:commandButton>
+									</h:panelGroup>
+								</ui:fragment>
+							</ui:fragment><!-- END my volumes -->
+						</h:panelGroup>
+					</a4j:repeat>
+					
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemContentOptions" rendered="#{cc.attrs.volume.relatedChildVolumes.size() gt 0}">
+						<h:panelGroup layout="block" styleClass="eg3_itemDetailAction_js">
+							<h:panelGroup layout="block">
+								<label class="eg3_iconActionLabel eg3_noMarginLeft">
+									<h:outputText value="#{lbl.list_NavElem_ShowRelatedPublications}"/>
+								</label>
+								<script type="text/javascript">
+									var toggle = $(".eg3_itemDetailAction_js");
+									toggle.unbind("click");
+									toggle.click(function(e){
+										eg3_bibListToggleItemMediumView(this);
+									});
+								</script>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup> <!-- END eg3_mediumView_js -->
+				
+			</h:panelGroup> <!-- END mulitItemContent -->
+			
+		</h:panelGroup> <!-- END for MULTIVOLUMES -->
+		</h:panelGroup>
+</cc:implementation>
+</html>

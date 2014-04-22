@@ -1,0 +1,3159 @@
+/*
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+*/
+@charset "UTF-8";
+
+/*****************************************************************************************************************
+ * 							declarations for IE7
+ */
+*:first-child+html input {
+	border: solid 0.08333em #B2B2B2;
+	padding:0 0.1666em;
+}
+*:first-child+html input[type="button"] {
+	border:none !important;
+}
+*:first-child+html input[type="submit"] {
+	border:none !important;
+}
+*:first-child+html input[type="radio"] {
+	border:none !important;
+}
+*:first-child+html input[type="checkbox"] {
+	border:none !important;
+}
+*:first-child+html .eg3_standardHeader .eg3_id_siteSearchMenu input[type="radio"] {
+	margin-top:-0.16666em;
+	margin-left:-0.25em;
+}
+*:first-child+html .eg3_standardHeader .eg3_id_siteSearchMenu input[type="checkbox"] {
+	margin-top:-0.16666em;
+	margin-left:-0.25em;
+}
+*:first-child+html .eg3_optionBox .eg3_optionBoxLabel {
+	margin:0 0 1em 0;
+}
+*:first-child+html .eg3_optionBox li {
+	clear:left;
+}
+*:first-child+html .eg3_optionBox li a{
+	margin:0 0 0.75% 0;
+}
+
+
+/*main menu */
+*:first-child+html .eg3_menuBox {
+	padding-bottom: 2em;
+}
+*:first-child+html label.eg3_menuLevel1Menu {
+	float:none;
+	clear:both;
+	display: block;
+}
+*:first-child+html label.eg3_menuLevel1Label {
+	float:none;
+	clear:both;
+	display: block;
+}
+*:first-child+html .eg3_menuLevel2 {
+	float:none;
+	clear:both;
+	left:0;
+	width:95%;
+}
+*:first-child+html .eg3_menuLevel3 {
+	width:95%;
+}
+*:first-child+html .eg3_menuLevel3 li {
+	padding:0;
+	margin:0;
+	height:120%;
+	padding-left:0.5em;
+}
+
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top {
+	*padding-right:0.5em;
+}
+
+/*****************************************************************************************************************
+ * 							declarations for all other browser
+ */
+
+/***              ***
+ * font size base = 12px
+ * 1em = 12px -> line-height / row-height: 1.66666667em;
+ */
+body {
+	font-size:75%;
+	font-family:Arial, Helvetica, Verdana, sans-serif;
+	color:#555555;
+	z-index:0;
+}
+
+a {
+	color:#000000;
+	text-decoration:none;
+}
+a:hover {
+	color:#EA7125;
+}
+a.eg3_active {
+	color:#EA7125;
+}
+a[disabled] {
+	color:#999999;
+}
+*[disabled] {
+	color:#999999;
+}
+*[onclick] {
+	color:#000000;
+	text-decoration:none;
+}
+*[onclick]:hover {
+	color:#EA7125;
+}
+*[onclick]:eg3_active {
+	color:#EA7125;
+}
+*[onclick].eg3_active {
+	color:#EA7125;
+}
+*[type="submit"]:hover {
+	color:#EA7125;
+/*	text-decoration:underline; */
+}
+*[type="submit"]:disabled {
+	color:#EA7125;
+	text-decoration:none;
+}
+*[type="reset"] {
+	cursor:pointer;
+}
+*[type="reset"]:hover {
+	color:#EA7125;
+}
+*[type="reset"]:disabled {
+	cursor:auto;
+	color:#999999;
+	text-decoration:none;
+}
+h1 {
+	font-weight:normal;
+}
+h2 {
+	font-weight:normal;
+}
+h3 {
+	font-weight:normal;
+}
+h4 {
+	font-weight:normal;
+}
+h5 {
+	font-weight:normal;
+}
+h6 {
+	font-weight:normal;
+}
+
+input[type="search"] {
+	border:none;
+	padding:0 0.1666em;
+}
+input[type="text"] {
+	border:none;
+	padding:0 0.1666em;
+}
+input[type="number"] {
+	border:none;
+	padding:0 0.1666em;
+}
+select {
+	padding:0;
+	border:none;
+}
+button:disabled {
+	color:#EA7125;
+}
+/***              ***
+ * global id-class and class declarations
+ */
+body .eg3_id_wrapper {
+	min-width:83.3333em; /* 1000px */
+	width:100%;		/* the result of width + padding = sum of width = 100% */
+	margin:0;
+	background-color:#F0F0F0;
+	overflow:hidden;
+}
+body .eg3_id_header {
+	width:100%;
+	background-image:url("image/image_headerBackground_1280_217.png");
+	background-position:top;
+	background-repeat:repeat;
+	background-color:#D1D0B5; /* background-color with a color of the image */
+}
+body .eg3_id_headerMetaMenu {
+	width:100%;
+}
+body div.eg3_id_headerMetaMenu {
+	overflow:visible;
+}
+body .eg3_id_mainMenu {
+/*	width:80%; */
+	margin-top:1em;
+	margin-bottom:1em;
+	overflow: visible !important;
+	z-index:12;
+}
+body .eg3_id_mainMenu * {
+	overflow: visible !important;
+}
+body .eg3_id_optionBox { /* options for the current page eg3_content, e.eg3_g. Order by, Filter by, Download, Export, ... */
+	width:100%;
+	padding:0 0 0 0.83333%;
+}
+body .eg3_id_optionBox.eg3_vertikal { /* conditions for vertical option menu */
+	padding:0 0 0 0.16666%;
+}
+body .eg3_id_wrapper .eg3_id_contentDescription {
+	width:100%;
+	overflow:visible;
+}
+body .eg3_id_siteTitle {
+	float:right;
+	padding:0 1.6%;
+	font-size:150%;
+	background-color:#EEF2F0;
+}
+
+
+.eg3_border_1 {
+	border-width:0.0909em;
+}
+.eg3_border_1_right {
+	border-right-width:0.0909em; /* the value must be round up for browser as chrome with webkit engine */
+}
+.eg3_borderstyle_1 {
+	border-color:#B2B2B2;
+	border-style:solid;
+}
+.eg3_borderstyle_2 {
+	border-color:#FFFFFF;
+	border-style:solid;
+}
+
+.eg3_opacLink {
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.eg3_ribbon {
+	min-height:2.75em;
+}
+
+.eg3_ribbon a {
+	color:#FFFFFF;
+}
+.eg3_ribbon a:hover {
+	color:#EA7125;
+}
+.eg3_ribbon .eg3_furtherInformation {
+	margin-top:0.75em;
+	margin-right:2%;
+}
+.eg3_ribbon .eg3_furtherInformation a {
+	margin-left:2em;
+}
+
+.eg3_verticalSpace_row_1 {
+	clear:both;
+	float:left;
+	height:1.33333333em;
+	width:100%;
+	display:block;
+}
+
+.eg3_id_contentDescription .eg3_messageCloseBtn {
+	float: right;
+	margin-right: -0.75%;
+}
+
+.eg3_id_wrapper .eg3_searchHit {
+	background-color:#99BBEE;
+}
+
+.eg3_id_sidebarLeft {
+	background-color:#F0F0F0;
+	padding-bottom:0.466666em;
+}
+.eg3_id_sidebarLeft.eg3_expand {
+	overflow:visible;
+}
+.eg3_id_sidebarLeft .eg3_modusBtn {
+	margin-right:0.5em;
+	padding:0.25em 0.25em;
+}
+.eg3_id_sidebarLeft .eg3_modusBtn:disabled {
+	color:#EA7125;
+}
+.eg3_id_sidebarLeft .eg3_iconBar {
+	background-color:#F0F0F0;
+}
+.eg3_id_sidebarLeft .eg3_floatRight.eg3_iconBar {
+	padding-right:0.25em;
+}
+
+.eg3_id_sidebarLeft .eg3_sidebarThumbnail {
+	display:inline-block;
+	width:48%;
+	margin-right:1%;
+}
+.eg3_id_sidebarLeft .eg3_thumbnailDescription {
+	float:none;
+	display:inline-block;
+	clear:right;
+	vertical-align: top;
+	width:49%;
+	padding-top:0.166666em;
+}
+.eg3_id_sidebarLeft .eg3_editSidebarContent {
+	overflow:auto;
+}
+
+.eg3_id_sidebarLeft .eg3_editSidebarContentItem {
+	margin-bottom:0.25em;
+	background-color:transparent;
+}
+.eg3_id_sidebarLeft .eg3_editSidebarContentItem.eg3_active {
+	background-color:#EA7125;
+}
+.eg3_id_sidebarLeft .eg3_sidebarEmptyContentHeader {
+	background-color:#2F2F2F;
+	height:2.166666667em;
+	border-bottom:0.08333333em solid #F0F0F0;
+}
+.eg3_id_sidebarLeft .eg3_metadataInformation {
+	width:95%;
+	padding-left:2.5%;
+	padding-right:2.5%;
+}
+
+.eg3_id_sidebarLeft .eg3_contentDetails {
+	background-color:#F0F0F0;
+}
+.eg3_id_sidebarLeft .eg3_contentDetails .eg3_importantButton {
+	margin-bottom:1.5em;
+	background-color:transparent;
+}
+
+
+.eg3_id_wrapper .eg3_id_content {
+	overflow:visible;
+	min-height:38.66666em;
+}
+.eg3_id_content form {
+	display:inline;
+}
+.eg3_id_wrapper .eg3_id_footer {
+	background-color:#E9E9E9;
+	color:#000000;
+}
+.eg3_id_footer a {
+	color:#000000;
+}
+.eg3_id_footer form {
+	display:inline;
+}
+.eg3_id_footer .eg3_separator {
+	margin:0 1em;
+	width:0.083333333em;
+	display:inline-block;
+}
+.eg3_id_footer .eg3_footer_content {
+	float:right;
+	margin-right:2%;
+	padding:0.75% 0;
+}
+
+
+.eg3_separator {
+	width:0.08333em;
+	height:1.3333em;
+	background-color:#7F7F7F;
+}
+
+
+.eg3_fiveRows {  /* 1row = 0,166666667em */
+	height:6em;
+}
+
+.eg3_id_wrapper input+.eg3_searchTooltip {
+	position:absolute;
+	left:0;
+	top:1.5833333em;
+	z-index:20;
+	display:none;
+	background-color:#CACA86;
+	padding:0 0.5em;
+}
+.eg3_id_wrapper input:focus+.eg3_searchTooltip {
+	display:inline;
+}
+.eg3_id_wrapper h3 input+.eg3_searchTooltip {
+	font-size:90%;
+	margin-top:-0.16666666em;
+}
+/*****************************************************************************************************************
+ * 							declarations for components
+ */
+
+
+/*****************************************************************************************************************
+ ******************************				dynamic selectbox with JS functions		******************************
+ ******************************					with no maximum width				******************************
+ *****************************************************************************************************************/
+.eg3_dynamicSelectBox_js {
+	height:1.41833333em;
+	padding:0;
+	padding-right:1.5em;
+	font-size:95%;
+	background-image:url('image/btn_descending_deactivated_16_16.png'); 
+	background-position:right top;
+	text-align: left;
+	background-color:#FFFFFF;
+}
+.eg3_dynamicSelectBox_js:hover {
+	background-image:url('image/btn_descending_hover_16_16.png');
+} 
+.eg3_dynamicSelectBox_js * {
+	cursor: pointer;
+}
+.eg3_dynamicSelectBox_js *[disabled] {
+	cursor: default;
+}
+.eg3_dynamicSelectBox_js .eg3_selectionContent {
+	padding:0.1666666em 0 0 0.6666em;
+	font-size: 95.5%;
+	height: 1.16666em;
+	width:97%;
+	border:0 none;
+}
+.eg3_dynamicSelectBox_js .eg3_selectionText {
+	display:block;
+	overflow:hidden;
+	white-space:nowrap;
+	text-align: left;
+	
+}
+.eg3_dynamicSelectBox_js select {
+	float:left;
+	clear:left;
+	margin-top:-1em;
+	
+	/* set the selectbox invisible to show the selectionContent container */
+	opacity: 0;
+	-moz-opacity: 0;
+	filter: alpha(opacity=0); /* for IE 7 & IE 8 necessary */
+}
+
+
+
+
+
+
+/*********************************************************************************************************
+ ******************************				.eg3_standardHeader .eg3_id_headerMetaMenu .eg3_metaMenu		******************************
+ *********************************************************************************************************/
+.eg3_id_headerMetaMenu .eg3_metaMenu {
+	float:right;
+	margin-top:0.25em;
+	margin-right:2%;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu * {
+	float:left;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu a {
+	margin:0.08333em 2em 0.3333em 2em;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu form {
+	display:inline;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu .eg3_separator+form {
+	padding-left:0em;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu nav {
+	padding:0;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu select {
+	padding:0;
+}
+.eg3_id_headerMetaMenu .eg3_metaMenu option {
+	float:none;
+}
+.eg3_id_headerMetaMenu .eg3_icon_quickSearch_16_16 {
+	background-image: url("image/ico_search_static_16_16.png");
+	width:1.3333333em;
+	height:1.3333333em;
+	margin-right:0.16666666em;
+}
+
+.eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
+	background-color:#FFFFFF;
+}
+.eg3_metaMenu .eg3_separator {
+	padding:0;
+	margin:0 2em;
+}
+.eg3_metaMenu .eg3_separator+a {
+	margin-left:0;
+}
+.eg3_metaMenu a+.eg3_separator {
+	margin-left:0;
+}
+.eg3_metaMenu .eg3_userDetail {
+	font-style:italic;
+	font-size:75%;
+	padding: 0.16666em 1.91666em 0.3333em 1.91666em;
+}
+.eg3_metaMenu .eg3_dynamicSelectBox_js {
+	height:1.33333em;
+}
+.eg3_metaMenu .eg3_dynamicSelectBox_js .eg3_selectionContent {
+	padding-top:0.0833333em;
+}
+
+/*********************************************************************************************************************************
+ ******************************				.eg3_standardHeader											******************************
+ ******************************		includes solutionLogo, metaMenu, simple Search, eg3_headerNav		****************************** 
+ *********************************************************************************************************************************/
+.eg3_standardHeader {
+	width:100%;
+	padding-bottom:0.33333em;
+}
+.eg3_standardHeader .eg3_solutionLogo {
+	float: left;
+	margin-left:1em;
+	margin-top: 1em;
+	margin-bottom: 2em;
+}
+.eg3_standardHeader .eg3_solutionLogo img {
+	height:6em;
+}
+
+/*****************************************************************************************************************
+ ******************************				.eg3_standardHeader .eg3_id_siteSearchMenu		******************************
+ *****************************************************************************************************************/
+.eg3_standardHeader .eg3_id_siteSearchMenu {
+	float: right;
+	margin-top:1%;
+	margin-right:2%;
+	text-align:right;
+}
+.eg3_id_siteSearchMenu .eg3_icon_quickSearch_16_16 {
+	background-image: url("images/All_Search_LensStart_15_Static.png");
+	width:1.333333em;
+	height:1.333333em;
+	margin-right: 8%;
+}
+
+.eg3_id_siteSearchMenu .eg3_lastSearchBtn {
+	 padding-left:0.333333em;
+}
+
+.eg3_simpleSearch label {
+	float: left; 
+	margin:0 1.3333em 0 0.5em; 
+}
+.eg3_simpleSearch input {
+	float: left;
+}
+.eg3_simpleSearch input[type="radio"] {
+	margin: 0.16666em 0 0 0;
+}
+.eg3_simpleSearch input[type="submit"] {
+	margin-left:0.75em;
+	padding:0 0.25em;
+}
+
+/*********************************************************************************************************
+ ******************************				.eg3_standardHeader .eg3_headerNav		******************************
+ *********************************************************************************************************/
+.eg3_standardHeader .eg3_headerNav {
+	float:right;
+	margin-top: 2.083333%;
+	text-align: right;
+}
+.eg3_standardHeader .eg3_headerNav a.eg3_navEntry {
+	float:none;
+	margin-left: 1.3333em;
+	word-break: keep-all; /* for chinese, korean, and other asian languages - no line breaking */
+	white-space:nowrap;
+}
+
+
+/*************************************************************************************************************
+ ******************************				.eg3_id_mainMenu						******************************
+ ******************************		includes a simple menu with 1 level		 		****************************** 
+ *************************************************************************************************************/
+.eg3_simpleMenu {
+	margin-left:0.75em;
+	min-width:100%;
+	margin-bottom:0.75em;
+}
+.eg3_simpleMenu ul li {
+	float:left;
+}
+.eg3_simpleMenu {
+	text-transform:uppercase;
+}
+.eg3_simpleMenu .eg3_menuEntry {
+/*	padding:0.416666667em 0.583333333em 0.166666667em 0.583333333em; */
+	padding:0 0.583333333em 0 0.583333333em;
+} 
+
+/*************************************************************************************************************************
+ ******************************				eg3_id_optionBox									******************************
+ ******************************			includes: options & actions for current context		******************************
+ *************************************************************************************************************************/
+.eg3_id_optionBox.eg3_vertikal .eg3_optionBox { /* conditions for eg3_optionBox in vertical option menu */
+	clear:both;
+	float:none;
+	margin-top:1em;
+}
+.eg3_id_optionBox.eg3_vertikal .eg3_optionBox+.eg3_optionBox { /* conditions for eg3_optionBox in vertical option menu */
+	clear:both;
+	float:none;
+	margin-left:0;
+}
+.eg3_id_optionBox.eg3_vertikal menu menu { /* conditions for sub-menu in vertical option menu */
+	padding:0 0 0 0.16666%;
+}
+.eg3_optionBox {
+	padding:0;
+	margin:0 0 1.5em 1.6%;
+}
+.eg3_optionBox .eg3_optionBoxLabel {
+	display: block;
+	margin-bottom:1em;
+	padding:0 1.3333em;
+}
+.eg3_optionBox menu menu {
+	padding:0 1.3333em;
+}
+.eg3_optionBox:first-child {
+	display:block;
+	margin-left:0%;
+}
+.eg3_optionBox label {
+	display:block;
+}
+
+.eg3_optionBox li a {
+	float:left;
+	clear:left;
+	display:block;
+	margin-bottom:0.5em;
+}
+.eg3_optionBox a+a {
+	clear:none;
+	margin-left:1.3333em;
+}
+.eg3_optionBox .eg3_dynamicSelectBox_js {
+	display:block;
+	float:none;
+	margin-bottom:1em;
+}
+.eg3_optionBox select option[selected] {
+	color:#00AA11;
+}
+.eg3_optionBox .eg3_active {
+	color:#00AA11;
+}
+
+
+
+/*************************************************************************************************************
+ ******************************				MessageArea							******************************
+ ******************************			for: error, warning, success, info		******************************
+ *************************************************************************************************************/
+.eg3_messageArea {
+	position:fixed;
+	left:25%;
+	top:8em;
+	width:48.7%;
+	max-width:38em;
+	padding:0.5% 0.8%;
+	z-index:20;
+	background-color:#3d3d3d; /*2F2F2F*/
+	color:#FFFFFF;
+	cursor:move;
+}
+.eg3_messageArea .eg3_messageText {
+	width:96.4%;
+	background-color:#636363; /*292929*/
+}
+.eg3_messageArea span {
+	display:block;
+}
+.eg3_messageError {
+	color:#DD1111;
+	background-color:#DDDDDD;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
+}
+.eg3_messageWarning {
+	color:#FF5555;
+	background-color:#FFFFFF;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
+}
+.eg3_messageSuccess {
+	color:#00CC00;
+	background-color:#606060;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
+}
+.eg3_messageInfo {
+	color:#333333;
+	background-color:#EEEEEE;
+	font-style:italic;
+	padding-bottom: 0.25em;
+	padding-top: 0.25em;
+}
+/*************************************************************************************************************
+ ******************************				eg3_breadcrump & siteTitle				******************************
+ ******************************													******************************
+ *************************************************************************************************************/
+.eg3_breadTitle {
+    /* (class which includes the eg3_breadcrump and siteTitle) */
+    /*width:46.7%; */
+    padding:0.5% 1.6% 0.25% 1.6%;
+    /* text-align:right;*/
+}
+.eg3_breadTitle a {
+	color:#F0F0F0;
+}
+.eg3_breadTitle a:hover {
+	color:#EA7125;;
+}
+.eg3_breadcrump {
+	line-height:150%;
+}
+
+
+/*************************************************************************************************************
+ ******************************				eg3_welcome... Page					******************************
+ ******************************													******************************
+ *************************************************************************************************************/
+
+.eg3_welcomeProjectInfo {
+	margin-bottom:2em;
+}
+
+/*************************************************************************************************************
+ ******************************				eg3_organization... Page			******************************
+ ******************************													******************************
+ *************************************************************************************************************/
+.eg3_organizationUnitStartpage .eg3_organizationDescriptionContainer {
+	width:92%;
+}
+.eg3_organizationUnitStartpage .eg3_organizationDescriptionContainer p {
+	width:100%; 
+	max-width:70em; 
+	margin-bottom:2em;
+	font-size:110%;
+	line-height:145%; 
+}
+
+.eg3_organizationUnitStartpage .eg3_organizationCollectionOverview {
+	width:92%;
+}
+
+/*****************************************************************************************************************************
+ ******************************				PAGINATOR											******************************
+ ******************************		includes eg3_paginatorWave										****************************** 
+ *****************************************************************************************************************************/
+.eg3_paginatorWave {
+	width: 100%;
+	min-height:2.5em;
+	margin:0 0 0.2% 0;
+	padding-top:0.25em;
+	color:#F0F0F0;
+	background-color:#2F2F2F;
+}
+.eg3_paginatorWave * {
+	text-align: center;
+}
+.eg3_paginatorWave .eg3_iconActionLabel {
+	margin-left:0.5em;
+	margin-right:0.5em;
+	cursor: pointer;
+}
+.eg3_paginatorWave .eg3_rangeSelector {
+	width:14.38%;
+	padding:0.5em 0 0 1.6%;
+}
+.eg3_paginatorWave .eg3_rangeSelector .eg3_dynamicSelectBox_js {
+	margin:0.08333em 0 0;
+}
+.eg3_paginatorWave .eg3_rangeSelector .eg3_selectionText {
+	float:left;
+	color:#000000;
+	margin-top:0.08333333em;
+}
+.eg3_paginatorWave .eg3_rangeSelector .eg3_selectLabel {
+	float:left;
+	margin-top:0.25em;
+	margin-left:0.91666em;
+}
+.eg3_paginatorWave .eg3_rangeSelector select {
+	width:3.5em;
+}
+.eg3_paginatorWave .eg3_pageBrowser {
+	width:66.6%
+}
+.eg3_paginatorWave .eg3_pageBrowser a {
+	cursor: pointer;
+}
+.eg3_paginatorWave .eg3_pageBrowser *:disabled {
+	cursor: default;
+}
+.eg3_pageBrowser .eg3_separator {
+	max-width:0.09em;
+	width:0.09em;
+	padding:0;
+	margin:0 0.9090em;
+	display:inline-block;
+	background-color:#F0F0F0;
+}
+.eg3_paginatorWave a {
+	color:#F0F0F0;
+}
+.eg3_paginatorWave a:hover {
+	color:#EA7125;
+}
+
+.eg3_id_wrapper .eg3_icon_skipTofirst_16_16 {
+	background-image: url("image/btn_first_static_16_16.png");
+	background-position: right;
+	text-align:left;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTofirst_16_16:hover {
+	background-image: url("image/btn_first_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_skipTofirsti_16_16 {
+	background-image: url("image/btn_first_deactivated_16_16.png");
+	background-position: right;
+	text-align:left;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTofirsti_16_16.eg3_disabled:hover {
+	cursor:default;
+	background-image: url("image/btn_first_deactivated_16_16.png");
+}
+
+
+.eg3_id_wrapper .eg3_icon_backward_16_16 {
+	background-image: url("image/btn_previous_static_16_16.png");
+	background-position: right;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_backward_16_16:hover {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper a:hover .eg3_icon_backward_16_16 {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16 {
+	background-image: url("image/btn_previous_deactivated_16_16.png");
+	background-position: right;
+	padding:0.0833em 1.3333em 0.0833em 0;
+	margin-right:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16:hover {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_backwardi_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_previous_deactivated_16_16.png");
+	cursor:default;
+}
+.eg3_id_wrapper a:hover .eg3_icon_backwardi_16_16 {
+	background-image: url("image/btn_previous_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_forward_16_16 {
+	background-image: url("image/btn_next_static_16_16.png");
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_forward_16_16:hover {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper a:hover .eg3_icon_forward_16_16 {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_forwardi_16_16 {
+	background-image: url("image/btn_next_deactivated_16_16.png");
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_forwardi_16_16:hover {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_forwardi_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_next_deactivated_16_16.png");
+	cursor:default;
+}
+.eg3_id_wrapper a:hover .eg3_icon_forwardi_16_16 {
+	background-image: url("image/btn_next_hover_16_16.png");
+}
+.eg3_id_wrapper .eg3_icon_skipTolast_16_16 {
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	background-image: url("image/btn_last_static_16_16.png");
+	text-align:left;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTolast_16_16:hover {
+	background-image: url("image/btn_last_hover_16_16.png");
+}
+.eg3_icon_skipTolast_16_16:hover .eg3_iconActionLabel {
+/*	color:#EA7125; */
+}
+.eg3_id_wrapper .eg3_icon_skipTolasti_16_16 {
+	padding:0.0833em 0 0.0833em 1.3333em;
+	margin-left:0.166667em;
+	background-image: url("image/btn_last_deactivated_16_16.png");
+	text-align:left;
+	cursor:pointer;
+}
+.eg3_id_wrapper .eg3_icon_skipTolasti_16_16:hover.eg3_disabled {
+	background-image: url("image/btn_last_deactivated_16_16.png");
+	cursor:default;
+}
+.eg3_paginatorWave .eg3_pageNumber {
+	margin:0 0.1666667em;
+}
+.eg3_paginatorWave .eg3_pageNumber.eg3_active {
+	font-size: 200%;
+	color:#EA7125;
+}
+.eg3_paginatorWave .eg3_pageNumber.eg3_prev {
+	font-size: 150%;
+}
+.eg3_paginatorWave .eg3_pageNumber.eg3_next {
+	font-size: 150%;
+}
+.eg3_paginatorWave .eg3_pageNumber.eg3_neighbour {
+	font-size: 125%;
+}
+.eg3_paginatorWave .eg3_gotoBox {
+	width:16.6%;
+	padding:0.5em 0 0 0;
+}
+.eg3_paginatorWave .eg3_gotoInput {
+	width:23%;
+	padding:0 0.2%;
+}
+.eg3_paginatorWave .eg3_inputLabel {
+	margin-left:0.16666em;
+}
+
+
+/* for smallest pageBrowser */
+.eg3_paginatorWave .eg3_pageBrowserMin {
+	width:66.6%;
+}
+.eg3_paginatorWave .eg3_pageBrowserMin * {
+	cursor: pointer;
+}
+.eg3_paginatorWave .eg3_pageBrowserMin *:disabled {
+	cursor: default;
+}
+.eg3_pageBrowserMin .eg3_icon_backward_16_16 {
+	margin-right:1em;
+}
+.eg3_pageBrowserMin .eg3_icon_forward_16_16 {
+	margin-left:1em;
+}
+
+/*************************************************************************************************************************
+ ******************************				vertical tab menu with content right			******************************
+ *************************************************************************************************************************/
+.eg3_instituteShortcut {
+	border:0.09em solid #2F2F2F;
+	border-left:none;
+}
+
+.eg3_instituteMenuTab {
+	background-color:#2F2F2F;
+	padding:2% 4%;
+	border-top:0.09em solid #F0F0F0;
+}
+.eg3_instituteMenuTab a {
+	color:#F0F0F0;
+}
+.eg3_instituteMenuTab:hover a {
+	color:#EA7125;
+}
+.eg3_instituteMenuTab a:hover {
+	color:#EA7125;
+}
+.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active {
+	background-color:#F0F0F0;
+	border-left:0.09em solid #2F2F2F;
+	border-bottom:0.09em solid #2F2F2F;
+}
+.eg3_tabMenuVertical .eg3_instituteMenuTab.eg3_active a {
+	color:#EA7125;
+}
+/*****************************************************************************************************
+ ******************************				bibliographic list			******************************
+ ******************************				list with different 		****************************** 
+ *****************************************************************************************************/
+.eg3_startpageTitle {
+	display:block;
+	margin-left:1em;
+	margin-top:1em;
+	margin-bottom:1em;
+}
+.eg3_startpageTitle h1 {
+	font-weight: bold;
+}
+.eg3_logoImage {
+	margin-top:3em;
+}
+.eg3_logoImage .eg3_imageContainer {
+/*	float:right; */
+	margin-left:5em;
+	margin-right:1em;
+}
+.eg3_logoImage img {
+	width:100%;
+}
+.eg3_logoImageInfotext {
+	margin-top:3em;
+}
+.eg3_logoImageInfotext p {
+	max-width:50em;
+}
+
+
+
+
+
+
+
+
+/*****************************************************************************************************
+ ******************************				bibliographic list			******************************
+ ******************************		list with different 		****************************** 
+ *****************************************************************************************************/
+.eg3_bibList {
+	width:99.8%;
+	min-height:30em;
+}
+.eg3_bibList .eg3_iconActionLabel {
+	margin-left:0.8333em;
+	margin-right:0.8333em;
+	cursor: pointer;
+}
+
+.eg3_bibList .eg3_icon_collapse_16_16 {
+	height:1.3333em;
+	padding-top:0.2%;
+	padding-left:1.3333em;
+	background-image: url("image/ico_triangleclose_success_16_16.png");
+	cursor: pointer;
+}
+.eg3_bibList .eg3_icon_collapse_16_16:hover {
+	background-image: url("image/ico_triangleclose_hover_16_16.png");
+}
+.eg3_bibList .eg3_icon_collapse_16_16:hover .eg3_iconActionLabel {
+	color:#EA7125;
+}
+
+.eg3_bibList .eg3_icon_expand_16_16 {
+	height:1.3333em;
+	padding-top:0.2%;
+	padding-left:1.3333em;
+	background-image: url("image/ico_triangleopen_success_16_16.png");
+	cursor: pointer;
+}
+.eg3_bibList .eg3_icon_expand_16_16:hover {
+	background-image: url("image/ico_triangleopen_hover_16_16.png");
+}
+.eg3_bibList .eg3_icon_expand_16_16:hover .eg3_iconActionLabel {
+	color:#EA7125;
+}
+
+/*****************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listHeader		******************************
+ *****************************************************************************************************/
+.eg3_bibList .eg3_listHeader {
+	width:100%;
+	height:2.08333em;
+}
+.eg3_bibList .eg3_listHeader .eg3_selectArea {
+	width:22.95%;
+	padding:0.3% 1% 0 1%;
+	height:100%;
+}
+.eg3_bibList .eg3_listHeader .eg3_content {
+	width:47.47%;
+	padding:0.3% 1.2% 0 1.2%;
+	height:100%;
+}
+.eg3_bibList .eg3_listHeader .eg3_showHideAll_js {
+	cursor:pointer;
+}
+
+.eg3_bibList .eg3_listHeader .eg3_mediabarActionArea {
+	width:25%;
+	padding-left:0.1%;
+	padding-top:0.3%;
+	background-color:#EEEEEE;
+	height:100%;
+}
+.eg3_bibList .eg3_listHeader .eg3_toggleListItemVolume_js {
+	cursor:pointer;
+	margin-left:0.8333em;
+}
+/*********************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody				******************************
+ ******************************			global definitions for eg3_bibList		******************************
+ *********************************************************************************************************/
+.eg3_bibList .eg3_listBody {
+	width:100%;
+}
+.eg3_bibList .eg3_itemTitle {
+	max-width: 70em;
+	font-size:115%;
+	line-height: 145%;
+}
+.eg3_bibList .eg3_itemHeadline .eg3_itemTitle {
+	font-weight:bold;
+}
+.eg3_bibList .eg3_itemSubTitle,
+.eg3_bibList .eg3_itemPublishingInformation {
+	font-size:115%;
+	line-height: 145%;
+	font-weight:normal;
+	max-width:60em;
+}
+.eg3_bibList .eg3_itemPublishingInformation {
+	clear:left;
+}
+.eg3_bibList .eg3_itemHeadline .eg3_itemMultiTitle {
+	max-width: 60em;
+	font-size: 166%;
+	line-height: 145%;
+}
+.eg3_bibList .eg3_shortView_js {
+	width:100%;
+	margin-top:0.41666em;
+}
+.eg3_bibList .eg3_mediumView_js {
+	width:100%;
+	display:none;
+	margin-top:0.41666em;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_backwardi_16_16 {
+	background-position:left;
+	padding-left: 0.5em;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_forwardi_16_16 {
+	background-position:right;
+	padding-right: 0.5em;
+	padding-left:0;
+	margin-left:0;
+}
+.eg3_bibList .eg3_itemContent .eg3_icon_forwardi_16_16 .eg3_iconActionLabel {
+	margin-left:0;
+}
+.eg3_bibList .eg3_itemMediabarThumb img {
+	height:6.5em;
+}
+
+.eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory {
+	padding-left:1.8333em;
+	background-image: url("image/ico_triangleclose_success_16_16.png");
+	margin-bottom:0.25em;
+}
+.eg3_bibList .eg3_itemMediabar .eg3_itemMediabarCategory:hover {
+	background-image: url("image/ico_triangleclose_hover_16_16.png");
+}
+
+.eg3_bibList .eg3_itemMetaValue .eg3_icon_editBtni_16_16 {
+	margin-left:0;
+	padding-left:1.3333em;
+}
+.eg3_bibList .eg3_itemMetaValue .eg3_icon_editBtni_16_16:hover {
+/*	text-decoration:underline; */
+}
+.eg3_bibList .eg3_itemMetaValue input[type="submit"] {
+	margin-left:2%;
+	border-bottom:0.083333em solid #2F2F2F;
+	background-color:transparent;
+}
+.eg3_bibList .eg3_itemMetaValue input[type="submit"]:hover {
+	border-bottom:0.083333em solid #EA7125;
+	text-decoration:none;
+}
+.eg3_bibList .eg3_fullTextSearchItem {
+	margin-bottom:1.5em;
+}
+
+.eg3_bibList .eg3_icon_withdrawnDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_remove_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_privateDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_private_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_progressDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_rework_doc_x_deactivated_32_32.png");
+}
+.eg3_bibList .eg3_icon_publishDocument_32_32 {
+	width:2.6666em;
+	height:2.6666em;
+	background-image: url("image/ico_submit_doc_x_deactivated_32_32.png");
+}
+
+/*****************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItem			******************************
+ *****************************************************************************************************************/
+.eg3_bibList .eg3_listItem {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+}
+.eg3_bibList .eg3_listItem:hover .eg3_itemContent {
+	background-color:#EEF2F0;
+}
+
+.eg3_bibList .eg3_listItem .eg3_itemContent {
+	width:100%;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+.eg3_bibList .eg3_listItem .eg3_itemSelectArea {
+	width:22.58%;
+	text-align:right;
+	padding:1% 1.2% 0 1.2%;
+}
+.eg3_bibList .eg3_listItem .eg3_itemHeadline {
+	width:72.4%;
+	padding:0.1666em 1.2% 0.1666em 1.2%; 
+}
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea {
+	width:22.88%;
+	text-align:right;
+	padding:0 1% 0 1%;
+}
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItem .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.5%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItem .eg3_itemContentOptions {
+	width:72.4%;
+	padding:0 1.3%;
+}
+.eg3_bibList .eg3_listItem .eg3_itemDetailAction_js {
+	margin-top:0.75%; 
+}
+
+.eg3_bibList .eg3_listItem .eg3_itemMetaLabel {
+	width:22.8%;
+	text-align:right;
+	padding:0 1% 0 1%;
+}
+.eg3_bibList .eg3_listItem .eg3_itemMetaValue {
+	width:72.4%;
+	padding:0 1.3% 0 1.3%; 
+}
+
+/*************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMediaAcc			******************************
+ *************************************************************************************************************************/
+.eg3_bibList .eg3_listItemMediaAcc {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemMediaAcc:hover {
+	background-color:#EEEEEE;
+}
+.eg3_bibList .eg3_listItemMediaAcc:hover .eg3_itemContentBg {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemMediaAcc:hover * .eg3_itemMediabar_js {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContent {
+	width:74.88%;
+	padding-bottom:0.5em;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContentBg {
+	position:absolute;
+	width:74.88%;
+	height:100%;
+	background-color:#FFFFFF;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemSelectArea {
+	width:30.08%;
+	text-align:right;
+	padding:1% 1.6% 0 1.6%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemHeadline {
+	width:63.41%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemContentOptions {
+	width:63.41%;
+	padding:0 1.6%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemDetailAction_js {
+	margin-top:1.25%; 
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMetaLabel {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMetaValue {
+	width:63.41%;
+	padding:0 1.6% 0 1.6%; 
+}
+
+/*****************************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMediaAcc .eg3_itemMediabar_js			******************************
+ *****************************************************************************************************************************************/
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js {
+	width:25%;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js div {
+	width:100%;
+	padding-left:2.66666em;
+	padding-bottom:0.08333em;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-accordion-header  {
+	float:left;
+	width:100%;
+	margin-left:0.1%;
+	padding-left:0.8333em;
+	padding-top:0.1666em;
+	padding-bottom: 0.16666em;
+	cursor:pointer;
+	background-color:#B8B8B8;
+/* start css3 enhancements */
+	/* Background-Gradient */
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#ffffff',EndColorStr='#aaddff'); 
+	background:
+		linear-gradient(top, #fff, #B8B8B8);
+	background: 
+		-ms-linear-gradient(top, #fff, #B8B8B8);
+	background:
+		-moz-linear-gradient(left, #EEF2F0, #CCCCCC);
+	background:
+		-webkit-gradient(linear, left top, left bottom, from(#fff), to(#adf)); 
+	background:
+		-webkit-linear-gradient(top, #fff, #B8B8B8);
+	background:
+		-o-linear-gradient(top, #fff, #B8B8B8);
+/* stop css3 enhancements */
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-icon {
+	float: left;
+	background: url("image/ico_triangleclose_success_16_16.png") no-repeat 0 0.1666em;
+	background-position:left top;
+	display: block;
+    width: 1.25em;
+    height: 1.25em;
+    margin-right:0.8333em;
+}
+.eg3_bibList .eg3_listItemMediaAcc .eg3_itemMediabar_js span.eg3_ui-icon:hover {
+	background: url("image/ico_triangleclose_hover_16_16.png") no-repeat 0 0.1666em;
+}
+
+
+
+/*********************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume	COLORIZING		******************************
+ ******************************					multiVolumeBG == multi volume background			******************************
+ *********************************************************************************************************************************/
+
+.eg3_multiVolumeBG_1 {
+	background-color:#CACA86;
+}
+.eg3_multiVolumeBG_2 {
+	background-color:#99BBEE;
+}
+
+.eg3_multiVolumeBG_3 {
+	background-color:#A193F7;
+}
+.eg3_multiVolumeBG_4 {
+	background-color:#EED299;
+}
+/* .eg3_multiVolumeBG_1:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_2:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_3:hover {
+	background-color:#EA7125;
+}
+.eg3_multiVolumeBG_4:hover {
+	background-color:#EA7125;
+}*/ 
+
+
+
+
+
+
+
+
+
+
+/*************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume			******************************
+ *************************************************************************************************************************/
+.eg3_bibList .eg3_listItemMultiVolume {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+}
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemContent {
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemContentBg {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemMultiVolume:hover .eg3_itemMediabar {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContent {
+	width:99%;
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContentBg {
+	position:absolute;
+	width:75.5%;
+	height:100%;
+	background-color:#FFFFFF;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemContentData {
+	width:75.5%;
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+}
+
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea {
+	width:31%;
+	text-align:right;
+	padding:0.5em 1.2% 0 1.2%;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemHeadline {
+	width:63.1%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMetaLabel {
+	width:31%;
+	text-align:right;
+	padding:0 1.2%;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMetaValue {
+	width:63.1%;
+	padding:0 1.6% 0.1666em 1.6%; 
+}
+.eg3_listItemMultiVolume .eg3_itemTitle a:hover {
+	text-decoration:none;
+}
+/*****************************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemMultiVolume .eg3_itemMediabar			******************************
+ *****************************************************************************************************************************************/
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar {
+	padding-top:0.75em;
+	padding-left:0.8333em;
+	width:22%;
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar div {
+	width:100%;
+	padding-bottom:0.08333em;
+}
+.eg3_bibList .eg3_listItemMultiVolume .eg3_itemMediabar .eg3_itemContentOptions {
+	margin-bottom:1em;
+}
+
+
+
+/*************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemVolume			******************************
+ *************************************************************************************************************************/
+.eg3_bibList .eg3_listItemVolume {
+	width:100%;
+	padding-top:0.3333em;
+	padding-bottom:0.16666em;
+	display:none;
+}
+
+.eg3_bibList .eg3_listItemVolume+.eg3_listItemVolume {
+	padding-top:0.16666em;
+}
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContent {
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContentData {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemMediabar {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemVolume:hover .eg3_itemContentBg {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemContent {
+	width:99%;
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemContentBg {
+	position:absolute; 
+	width:75.5%;
+	height:100%; 
+	background-color:#FFFFFF;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemContentData {
+	width:75.5%;
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+	background-color:#FFFFFF;
+}
+
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea {
+	width:31%;
+	text-align:right;
+	padding:0.5em 1.2% 0 1.2%;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemHeadline {
+	width:63.1%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemMetaLabel {
+	width:31%;
+	text-align:right;
+	padding:0 1.2%;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemMetaValue {
+	width:63.1%;
+	padding:0 1.6% 0.1666em 1.6%; 
+}
+
+/******************************		.eg3_bibList .eg3_listBody .eg3_listItemVolume .eg3_itemMediabar	******************************/
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabar {
+	padding-top:1.25em;
+	padding-bottom:0.5em;
+	width:24.5%;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabarThumb {
+	margin-bottom:0.5em;
+	margin-left:0.8333em;
+}
+.eg3_bibList .eg3_listItemVolume .eg3_itemMediabarCategory {
+	margin-left:0.8333em;
+	width:100%;
+}
+
+
+/*****************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemSingleVolume			******************************
+ *****************************************************************************************************************************/
+.eg3_bibList .eg3_listItemSingleVolume {
+	width:100%;
+	border-top:0.08333em solid #7F7F7F;
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemSingleVolume:hover {
+	background-color:#EEF2F0;
+}
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemContent {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemMediabar {
+	background-color:transparent;
+}
+.eg3_bibList .eg3_listItemSingleVolume:hover .eg3_itemContentBg {
+	background-color:transparent;
+}
+
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemContent {
+	padding-top:0.75em;
+	padding-bottom:0.5em;
+	width:74.82%;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemContentBg {
+	position:absolute; 
+	height:100%; 
+	width:74.82%;
+	background-color:#FFFFFF;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemHeadline {
+	width:63.41%;
+	padding:0.1666em 1.6% 0.1666em 1.6%; 
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea {
+	width:30.08%;
+	text-align:right;
+	padding:0.5em 1.6% 0 1.6%;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMetaLabel {
+	width:30.08%;
+	text-align:right;
+	padding:0 1.6%;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMetaValue {
+	width:63.41%;
+	padding:0 1.6% 0 1.6%; 
+}
+
+/******************************		.eg3_bibList .eg3_listBody .eg3_listItemSingleVolume .eg3_itemMediabar	******************************/
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabar {
+	padding-top:1.25em;
+	padding-bottom:0.5em; 
+	width:25%;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabarThumb {
+	margin-bottom:0.5em;
+	margin-left:0.8333em;
+}
+.eg3_bibList .eg3_listItemSingleVolume .eg3_itemMediabarCategory {
+	margin-left:0.8333em;
+	width:100%;
+}
+
+
+
+/*****************************************************************************************************************************
+ ******************************				.eg3_bibList .eg3_listBody .eg3_listItemSimpleAllVolume			******************************
+ *****************************************************************************************************************************/
+.eg3_bibList .eg3_listItemSimpleAllVolume {
+	width:100%;
+/*	border-top:0.08333em solid #7F7F7F; */
+/*	background-color:#EEF2F0; */
+	margin-bottom:2.5em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume:hover {
+	background-color:#E9E9E9;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemDetailAction_js:hover {
+	color:#EA7125;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemContent {
+	padding-top:0.25em;
+	padding-bottom:0.25em;
+	width:85.9%;
+}
+
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemHeadline {
+	width:93.41%;
+	padding:0.083333em 1.6% 0.1666em 0; 
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemHeadline .eg3_itemTitle {
+	font-weight:bold;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_parentItemLabelArea {
+	line-height: 145%;
+    padding: 0 0.8% 0 0;
+    width: 63.41%;
+}
+
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemHeadline {
+	width:93.41%;
+	padding:0.083333em 1.6% 0.1666em 1.6%; 
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemStatusArea {
+	width:10.08%;
+	text-align:right;
+	padding:0.5em 1.6% 0 1.6%;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemStatusArea * {
+	float: right;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemStatusArea .eg3_itemStatusTitle {
+	margin-top:2.75%;
+	margin-right:5%;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMetaLabel {
+	width:20.08%;
+	text-align:right;
+	padding:0 0.8%;
+	line-height:145%;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMetaValue {
+	width:63.41%;
+	padding:0 0.8%;
+	line-height:145%; 
+}
+
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js .eg3_itemInclusiveAction .eg3_itemSubTitle {
+	margin-bottom:0.5em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemContentOptions {
+	margin-top:0.75em;
+	margin-bottom:1em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js .eg3_itemContentOptions {
+	margin-top:1em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_shortView_js,
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_mediumView_js {
+	padding-left:1.6%;
+	padding-right:1.6%;
+}
+
+/******************************		.eg3_bibList .eg3_listBody .eg3_listItemSimpleAllVolume .eg3_itemMediabar	******************************/
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMediabar {
+	padding-bottom:0.5em; 
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMediabarThumb img {
+	height:4em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_itemMediabarCategory {
+	margin-left:0.8333em;
+	width:100%;
+}
+
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem {
+	padding-top:0.1666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem img{
+	float: left;
+	height: 4em;
+	max-height: 4em;
+	margin-left:0.166666666em;
+	margin-right: 1.25em;
+	margin-bottom:0.16666666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem.eg3_itemInclusiveAction {
+	margin-bottom:2em;
+	padding-bottom:0.1666666em;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem.eg3_itemInclusiveAction:last-child {
+	margin-bottom:0;
+}
+.eg3_bibList .eg3_listItemSimpleAllVolume .eg3_multiVolumeItem:hover {
+	background-color:#B7B7B7;
+}
+
+
+
+/*****************************************************************************************************
+ ******************************				tiled list						******************************
+ ******************************			list with dynamic width				****************************** 
+ *****************************************************************************************************/
+/* used in thumbnails.xthml */
+.eg3_tiledList {
+	width:100%; 
+	padding:0 1.6%;
+}
+.eg3_tiledList .eg3_listHeader {
+	width:100%;
+}
+.eg3_tiledList .eg3_listBody {
+	width:100%;
+}
+.eg3_tiledList li.eg3_listItem {
+	float:left;
+	padding:0.5em 1.6% 1em 1.6%;
+	width:13.25%; 
+	max-width:13.916667em;
+}
+.eg3_tiledList .eg3_listItem:hover {
+	background-color:#EA7125;
+}
+
+.eg3_tiledList .eg3_itemContent {
+	width:100%;  
+}/*
+.eg3_tiledList .eg3_itemContent:hover {
+	background-color:#DDDDDD; 
+} */
+.eg3_tiledList .eg3_itemIconArea {
+	width:100%;  
+	margin-bottom:0.25em;
+}
+.eg3_tiledList .eg3_itemIconArea img {
+	width:100%;
+}
+.eg3_tiledList .eg3_itemIconBorder {
+	display:block;
+	width:94.75%;
+	padding:0.3333em 0.3333em 0.25em 0.3333em; 
+	background-color:#F0F0F0;
+}
+.eg3_tiledList .eg3_itemContentData {
+	width:100%;
+}
+.eg3_tiledList .eg3_itemControlArea {
+	width:100%;
+}
+
+
+/*************************************************************************************************************
+ ******************************				item detail view		******************************
+ ******************************				header					****************************** 
+ *************************************************************************************************************/
+.eg3_detailItemHeader {
+	width:98%;
+}
+.eg3_detailItemHeader .eg3_icon_multiVolume_32_32 {
+	float:left;
+	display:block;
+	background-image:url("./image/icon_sample_multivolume.gif");
+	width:2.583333333em;
+	height:2.583333333em;
+	margin-right:0.833333333em;
+}
+
+
+
+/*************************************************************************************************************************
+ ******************************		item detail view / image view single / recto verso		******************************
+ ******************************					view with paginator							****************************** 
+ *************************************************************************************************************************/
+.eg3_id_wrapper .eg3_viewPageHeader {
+	margin-top:1%;
+}
+.eg3_viewPageHeader .eg3_volumeTitle {
+	max-width:40em;
+}
+
+.eg3_standardHeader .eg3_citationLinkArea {
+	padding-right:2%;
+	margin-top:3.5em;
+	width:17%;
+}
+.eg3_standardHeader .eg3_citationLinkArea input[type="button"] {
+	margin-left:2%; 
+	background-color:transparent;
+}
+.eg3_standardHeader .eg3_citationLinkArea input:hover {
+	color:#EA7125;
+}
+.eg3_standardHeader .eg3_citationLink {
+	display:none;
+	background-color:transparent;
+	width:96%;
+	padding:0 1.5%;
+}
+.eg3_citationOverlayArea {
+	position:absolute; 
+	right:0; 
+	width:50%;
+	width:40em\9; /* fix width for IE8 */
+	max-width:40em;
+	min-height:5em; 
+	padding:0 1em;
+	display:none;
+	background-color: rgb(240,240,240); /* color: 2f2f2f */
+/*	background-color: rgba(240,240,240, 0.95); 
+	background-color:transparent\9; */
+	/* the first 2 chars defines the transparency in hexa decimal of the following color value - F2 = 5% transparency */ 
+/*	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#F2F0F0F0,endColorstr=#F2F0F0F0); */
+	zoom:1; 
+	z-index:500;
+}
+.eg3_citationOverlayArea input[readonly] {
+	margin-top:0.25em;
+	margin-bottom:1.25em;
+}
+.eg3_citationOverlayArea input[readonly].eg3_container_1 {
+	width:98.75%;
+}
+.eg3_citationOverlayArea button {
+	margin-bottom:1em;
+}
+.eg3_citationOverlayArea label {
+	margin-right:1em;
+	cursor:pointer;
+}
+.eg3_markTextButton {
+	cursor:pointer;
+}
+.eg3_markTextButton:hover {
+	color:#EA7125;
+}
+.eg3_markTextButton.eg3_disabled,
+.eg3_markTextButton[disabled] {
+	cursor:default;
+}
+.eg3_markTextButton:hover.eg3_disabled,
+.eg3_markTextButton[disabled]:hover {
+	cursor:default;
+	color:#2F2F2F;
+}
+
+
+.eg3_id_wrapper .eg3_viewPageContainer {
+	overflow:visible;
+}
+
+
+.eg3_viewPage .eg3_viewPageMenu,
+.eg3_editPage .eg3_viewPageMenu {
+	width:99%;
+	padding:0.5em 0.5%;
+	margin-bottom:0.083333333em;
+	background-color:#2F2F2F;
+	color:#F0F0F0;
+	font-size:0.9090em;
+}
+.eg3_viewPage .eg3_viewPageMenu *:hover,
+.eg3_editPage .eg3_viewPageMenu *:hover {
+	text-decoration:none;
+}
+.eg3_viewPageMenu .eg3_quickPagination {
+	display:none; 
+	padding-top:0.25em;
+}
+.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionContent {
+	padding-top:0;
+}
+.eg3_viewPageMenu .eg3_quickPagination .eg3_selectionText {
+	color:#2F2F2F;
+	font-size:108%;
+}
+.eg3_viewPageMenu form {
+	display:inline;
+}
+.eg3_viewPageMenu .eg3_viewModusContainer {
+	margin-top:0.5%;
+}
+.eg3_viewPageMenu .eg3_modusBtn {
+	padding-left:0.83333em;
+	padding-right:0.83333em;
+	background-color:transparent;
+}
+.eg3_viewPageMenu .eg3_modusBtn:hover {
+	color:#EA7125;
+}
+.eg3_viewPageMenu .eg3_modusBtn[disabled],
+.eg3_viewPageMenu span.eg3_modusBtn {
+	color:#999999;
+}
+.eg3_viewPageMenu .eg3_modusBtn[disabled]:hover,
+.eg3_viewPageMenu span.eg3_modusBtn:hover {
+	color:#999999;
+}
+
+.eg3_viewPageMenu .eg3_modusBtn.eg3_active,
+.eg3_viewPageMenu span.eg3_modusBtn.eg3_active {
+	color:#EA7125;
+}
+.eg3_viewPageMenu .eg3_modusBtn.eg3_active:hover,
+.eg3_viewPageMenu span.eg3_modusBtn.eg3_active:hover {
+	color:#EA7125;
+}
+
+.eg3_viewPageMenu a.eg3_modusBtn {
+	color:#ffffff;
+}
+.eg3_viewPageMenu a.eg3_modusBtn:hover {
+	color:#EA7125;
+}
+
+.eg3_viewPageMenu .eg3_pagePaginationLabel {
+	padding-top:0.166666666em;
+}
+.eg3_viewPageMenu .eg3_paginationButtons {
+	width:10em;
+	margin:-0.25em 0.25em 0 0.25em;
+}
+
+.eg3_viewPage .eg3_viewPage_imgContainer {
+	min-height:41.5em;
+}
+
+
+.eg3_viewPage .eg3_singleView {
+	width:100%;
+}
+.eg3_viewPage .eg3_singleView .eg3_viewPage_imgContainer {
+	float:none;
+	width:50%;
+	margin:0 auto;
+}
+.eg3_viewPage .eg3_singleView .eg3_viewPage_imgContainer img {
+	width:100%;
+}
+.eg3_viewPage .eg3_singleView div.digilib div.scaler {
+	width:100% !important;
+	height:auto !important;
+}
+
+
+
+.eg3_viewPage .eg3_dualView {
+	width:100%;
+}
+.eg3_viewPage .eg3_dualView .eg3_viewPage_imgContainer {
+	width:49.99%;
+}
+.eg3_viewPage .eg3_dualView .eg3_viewPage_imgContainer img {
+	width:100%;
+}
+.eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .eg3_viewPage_fulltextContent {
+	width:95%;
+	padding:0 2.49% 1% 2.49%;
+	overflow:auto;
+	font-size:80%;
+}
+.eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .stdheader {
+	width:100%;
+}
+.eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .stdfooter {
+	clear:both;
+	width:100%;
+}
+
+.eg3_viewPage_fulltext h3 {
+	margin-right:0.25em;
+}
+
+.eg3_editPage .eg3_singleEdit {
+	width:100%;
+}
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer {
+	min-height:66.5em;
+	zoom:1;
+}
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer .scaler { /* digilib container */
+	min-height:66.5em !important;
+	width:100% !important;
+	background-color:transparent;
+}
+.eg3_editPage .eg3_singleEdit .eg3_editPage_imgContainer img {
+	width:100%;
+}
+
+.eg3_editPage .eg3_submitPanel {
+	background-color:#CACA86;
+	border:none;
+	padding:0.25em 0;
+}
+.eg3_editPage .eg3_submitPanel input[type=submit] {
+	float:left;
+	margin:0 0.25em 0 0;
+	padding:0.25em 0.75em;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_editPage .eg3_submitPanel input[type=submit]:hover {
+	color:#EA7125;
+	text-decoration:none;
+}
+#editPopup .eg3_submitPanel input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+#editPopup .eg3_submitPanel input[type=button]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+#editPopup .eg3_submitPanel input[type="submit"].eg3_floatRight {
+	margin-top:0;
+}
+
+
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree {
+	height:33.33333333em;
+	overflow:auto;
+}
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree a, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree *[onclick] {
+	/* color:#F2F2F2; */
+}
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel {
+	color:#000000;
+}
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel a, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree .rf-trn-sel *[onclick] {
+	color:#000000;
+}
+
+.eg3_editPage .eg3_singleEdit .eg3_editorStructureTree a:hover, .eg3_editPage .eg3_singleEdit .eg3_editorStructureTree *[onclick]:hover {
+	color:#EA7125;
+}
+.eg3_pageEditingContainer .eg3_editInputArea {
+	margin-right:0.5em;
+	margin-top:0.5em;
+}
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPageNumbers {
+	margin-top:1em;
+	margin-bottom:1em;
+}
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_currentPagination {
+	margin-top:1em;
+	margin-bottom:1em;
+}
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+	margin-right:3em;
+	margin-bottom:1em;
+}
+.eg3_editPage .eg3_singleEdit .eg3_pageEditingContainer .eg3_pageDisplayTypeInputArea {
+	margin-bottom:1em;
+}
+.eg3_pageEditingContainer input[type=submit] {
+	background-color:transparent;
+	color:#F0F0F0;
+	border-bottom:solid 0.083333em #F0F0F0;
+	margin:0.5em 0 0 0;
+	padding:0;
+}
+.eg3_pageEditingContainer input[type=submit]:hover {
+	color:#EA7125;
+	border-bottom:solid 0.083333em #EA7125;
+	text-decoration:none;
+	margin:0.5em 0 0 0;
+	padding:0;
+}
+.eg3_pageEditingContainer h3 {
+	color:#2F2F2F;
+	background-color:#CACA86;
+	padding-left:1%;
+	padding-right:1%;
+}
+.eg3_pageEditingContainer hr {
+	background-color:#F0F0F0; 
+	margin:1em 0; 
+	height:0.09em;
+}
+.eg3_pageEditingContainer hr.eg3_containerCenter {
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.eg3_singleEdit .eg3_editContent div.rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top {
+	background:none;
+	background-color:#2F2F2F;
+	border:none;
+}
+.eg3_singleEdit .eg3_editContent td.rf-tab-hdr {
+	color:#FFFFFF;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td.rf-tab-hdr-top {
+	background:none;
+	background-color:transparent;
+	vertical-align:middle;
+	border:none;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td.rf-tab-hdr-top.rf-tab-hdr-act {
+	color:#EA7125;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td:first-child+td .rf-tab-lbl, 
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-tabs td:first-child+td+td .rf-tab-lbl {
+	border:none;
+	padding-left:0;
+}
+.eg3_singleEdit .eg3_editContent span.rf-tab-lbl {
+    border-left: 1px solid #FFFFFF;
+    padding-left: 0.833333333em;
+}
+.eg3_singleEdit .eg3_editContent .rf-tab-hdr-brd {
+	border:none;
+}
+
+
+
+
+.eg3_fullscreenPage .eg3_viewPageMenu {
+	color:#F0F0F0;
+	background-color:#2F2F2F;
+}
+.eg3_fullscreenPage .eg3_ribbon {
+	padding-top:0.5em;
+	min-height:2em;
+}
+.eg3_fullscreenPage .eg3_viewPageMenu a:hover {
+	text-decoration:none;
+}
+.eg3_fullscreenPage .eg3_viewPageMenu .eg3_icon_closei_16_16 {
+	cursor:pointer;
+	margin-right:0.5em;
+}
+
+/*************************************************************************************************************
+ ******************************				overlay menu with tabs				******************************
+ *************************************************************************************************************/
+.eg3_menuTabHorzOverlay {
+	width:100%;
+	z-index:50;
+	overflow:visible !important;
+	background-color:#2F2F2F;
+}
+.eg3_menuTabHorzOverlay .eg3_menuHeader {
+	
+}
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab {
+	float:left;
+	border-bottom:solid 0.09em #000000;
+}
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab.eg3_active {
+	background-color:#000000; 
+	color:#FFFFFF;
+}
+.eg3_menuTabHorzOverlay .eg3_menuHeader .eg3_horizontalTab .eg3_menuEntry {
+	margin-left:0.5em;
+	padding-top:0.5em;
+}
+
+.eg3_menuTabHorzOverlay .eg3_menuBody {
+	position:absolute;
+	width:100%;
+	margin-top:1.25em;
+}
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_menuTabContent .eg3_menuTabBg {
+	position:absolute; 
+	min-height:100%;
+	width:100%; 
+	background-color:#CCCCCC;
+	opacity:1; 
+	-moz-opacity:1;
+	-o-opacity:1;
+	filter: Alpha(opacity=100);
+}
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_pageNumber.eg3_active {
+	margin:0;
+}
+.eg3_menuTabHorzOverlay .eg3_menuTabContent {
+	float:none;
+	margin:0 auto;
+	display:none;
+}
+.eg3_menuTabHorzOverlay .eg3_menuBody .eg3_menuTabContent.eg3_active {
+	display:block;
+}
+.eg3_menuTabHorzOverlay .eg3_paginatorWave .eg3_pageBrowserMin {
+	width:100%;
+}
+
+.eg3_menuTabHorzOverlay .eg3_gotoBox {
+	width:100%;
+	text-align:center;
+	display:none;
+	padding-top:0.3333em;
+	padding-bottom:0.5em;
+}
+.eg3_menuTabHorzOverlay .eg3_gotoBox input[type="number"] {
+	max-width:25%;
+	text-align:center;
+}
+.eg3_menuTabHorzOverlay.eg3_twoRows .eg3_menuHeader li { /* used in pageView */
+	height:1.75em;
+	max-height:1.75em;
+	padding-top:0.5em;
+}
+.eg3_menuTabHorzOverlay.eg3_twoRows .eg3_menuBody { /* used in pageView */
+	margin-top:2.25em;
+}
+
+/*****************************************************************************************************
+ ******************************				overlay box - universal			**************************
+ *****************************************************************************************************/
+.eg3_id_wrapper .eg3_overlayBox { /*overflow:visible;*/ }
+.eg3_overlayBox .eg3_overlayHeader { padding:7%; }
+.eg3_overlayBox .eg3_overlayBody { position:absolute; padding:0.33333em 0.66666em; display:none; background-color:#2F2F2F; margin-right:-0.5em; }
+.eg3_overlayBox .eg3_overlayBody a { color:#FFFFFF; }
+.eg3_overlayBox .eg3_overlayBody a:hover { color:#EA7125; }
+.eg3_overlayBox .eg3_overlayBody.eg3_posRight { right:0; }
+.eg3_overlayBox .eg3_overlayBody.eg3_posBottom { bottom:0; }
+/* .eg3_overlayBox .eg3_overlayHeader:hover+.eg3_overlayBody { display:block; } */
+.eg3_overlayBox .eg3_overlayBody:hover { display:block; }
+.eg3_overlayBox .eg3_overlayBody .eg3_selectionText, .eg3_overlayBox .eg3_overlayHeader a.eg3_selectionText { white-space:nowrap; line-height:2em; color:#FFFFFF; }
+.eg3_overlayBox .eg3_overlayBody .eg3_selectionText:hover, .eg3_overlayBox .eg3_overlayHeader a.eg3_selectionText:hover { color:#EA7125; }
+
+
+
+/*****************************************************************************************************
+ *******************************					infoPanel				**************************
+ *****************************************************************************************************/
+.eg3_infoPanel {
+	width:80%;
+	max-width:70em;
+	margin-bottom:2em;
+	display:block;
+	overflow-x:visible;
+}
+.eg3_infoPanel h2 {
+	font-weight:bold;
+	line-height:145%;
+}
+.eg3_infoPanel p {
+	margin-top:1%;
+	line-height:145%;
+	max-width:70em;
+}
+.eg3_infoPanel .eg3_providerList li {
+	line-height:145%;
+	margin-bottom:0.3333333em;
+}
+.eg3_inline_searchBox {
+	position: absolute; 
+	right: 0px; 
+	top: 0px;
+	white-space:nowrap;
+}
+.eg3_inline_searchBox h3 {
+	line-height:145%;
+}
+.eg3_infoPanel .eg3_inline_searchBox {
+	margin-right: -13%;
+}
+.eg3_inline_searchBox input {
+	text-align:center;
+}
+.eg3_inline_searchBox input:focus {
+	text-align:left;
+}
+.eg3_inline_searchBox .searchCollectionInput {
+	margin-right:0.25em;
+}
+
+/*****************************************************************************************************
+ *******************************					category				**************************
+ used by searchPage etc. to organize the different types
+ *****************************************************************************************************/
+.eg3_id_content .eg3_category {
+	margin-bottom:1em;
+}
+
+.eg3_category .eg3_container_1 {
+	margin-bottom:0.1666666em;
+}
+
+.eg3_ingestPage .eg3_category:hover {
+	background-color:#434343;
+}
+
+
+/*****************************************************************************************************
+ *******************************					criterion				**************************
+ used by searchPage etc. to organize the different types
+ *****************************************************************************************************/
+.eg3_searchCriterion {
+	margin-bottom:0.75em;
+}
+
+/*****************************************************************************************************
+ *******************************					submitPanel				**************************
+ used by editing, search, admin, ...
+ *****************************************************************************************************/
+.eg3_submitPanel.eg3_popup input[type=submit] {
+	background-color:transparent;
+	margin-left:1em;
+	margin-top:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=submit]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_submitPanel.eg3_popup input[type=reset] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=reset]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_submitPanel.eg3_popup input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	color:#FFFFFF;
+	border-bottom:0.0833333em solid #FFFFFF;
+}
+.eg3_submitPanel.eg3_popup input[type=button]:hover {
+	text-decoration:none;
+	color:#EA7125;
+	border-bottom:0.0833333em solid #EA7125;
+}
+
+ 
+.eg3_searchPage .eg3_submitPanel input[type=submit] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=submit]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_searchPage .eg3_submitPanel input[type=reset] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=reset]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+.eg3_searchPage .eg3_submitPanel input[type=button] {
+	background-color:transparent;
+	margin-left:1em;
+	border-bottom:0.0833333em solid #2F2F2F;
+}
+.eg3_searchPage .eg3_submitPanel input[type=button]:hover {
+	text-decoration:none;
+	border-bottom:0.0833333em solid #EA7125;
+}
+
+
+.eg3_sumOfSearchResult {
+	padding:0.75em 0 0.75em 0;
+}
+
+.eg3_ingestPage .rf-p 
+{
+	float:none;
+	max-width:97%;
+	margin:0 2%;
+}
+.eg3_ingestPage .rf-p-hdr
+{
+	float:none;
+}
+.eg3_ingestPage .rf-dg-c {
+	border:none;
+}
+
+
+.eg3_ingestPage .rf-p.eg3_submitPanel {
+	background-color:#CACA86;
+	border:none;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel .rf-p-b {
+	width:96%;
+	padding:1% 1.9999% 2.2%;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel input[type=submit] {
+	float:left;
+	margin:0 0.25em 0 0;
+	padding:0.25em 0.75em;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p.eg3_submitPanel input[type=submit]:hover {
+	color:#EA7125;
+	text-decoration:none;
+}
+
+.eg3_ingestPage .eg3_uploadContainer {
+	padding:0;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-hdr {
+	width:96%;
+	padding:1.75% 1.9999% 1.75%;
+	margin:0;
+	border:none;
+	font-size:150%;
+	color:#2F2F2F;
+	background-color:#CACA86;
+	background-image:none;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b {
+	width:96%;
+	padding:1.99999%;
+	color:#FFFFFF;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist {
+	color:#000000;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a {
+	color:#FFFFFF;
+	font-size:120%;
+}
+.eg3_ingestPage .eg3_uploadContainer .rf-p-b .plupload_filelist_footer a:hover {
+	color:#EA7125;
+}
+
+.eg3_ingestPage .rf-p {
+	border:none;
+	color:#FFFFFF;
+	background-color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p-hdr {
+	font-size:120%;
+	margin:0 1%;
+	padding:1em 1% 0.25em 1%;
+	background-color:#CACA86;
+	background-image:none;
+	border:none;
+	color:#2F2F2F;
+}
+.eg3_ingestPage .rf-p-b {
+	font-size:110%;
+	color:#FFFFFF;
+	width:96%;
+}
+.eg3_ingestPage input[type="text"] {
+	background-color:#F0F0F0;
+	color:#2F2F2F;
+	margin-left:0;
+}
+.eg3_ingestPage input[type="text"]:focus {
+	background-color:#FFFFFF;
+	color:#000000;
+}
+
+.eg3_ingestPage .eg3_uploadTypePanel {
+	background-color:#2F2F2F;
+	border:none;
+}
+.eg3_ingestPage .eg3_uploadTypePanel .rf-p-b {
+	padding-top:0;
+	color:#FFFFFF;
+}
+
+.eg3_ingestPage .eg3_metadataPanel table table {
+	border-collapse:collapse
+}
+.eg3_ingestPage tr td {
+	vertical-align:top;
+	padding-bottom:0.25em;
+}
+.eg3_ingestPage .eg3_metadataPanel tr:hover {
+	background-color:#434343;
+}
+.eg3_ingestPage .eg3_metadataPanel tr:hover table tr:hover {
+	background-color:#EA7125;
+}
+.eg3_ingestPage table input[type="text"] {
+	width:100%;
+}
+
+.rf-p.eg3_completeUploadedImages .rf-p-b {
+	max-height:20em;
+	width:96.5%;
+	padding:0;
+	margin:1.7%;
+	overflow:auto;
+}
+.eg3_ingestPage .eg3_completeUploadedImages .rf-dg-r {
+	float:left;
+}
+
+.eg3_ingestPage .eg3_itemMetaLabel {
+	width:92%;
+	margin:0 3.9999%;
+}
+.eg3_ingestPage .eg3_itemMetaValue input {
+	width:88%;
+	margin:0 5.99999%;
+}
+.eg3_ingestPage .eg3_itemMetaValue input:focus {
+	width:100%;
+	margin:0;
+}
+
+
+
+
+
+
+/*****************************************************************************************************
+ ******************************				simpleCollectionList			**************************
+ *****************************************************************************************************/
+
+.eg3_simpleCollectionList {
+	width:100%;
+}
+.eg3_simpleCollectionList .eg3_listBody {
+	width:100%;
+}
+.eg3_simpleCollectionList .eg3_collectionItem {
+	width:100%;
+}
+.eg3_collectionItem .eg3_itemHeader {
+	width:100%;
+}
+.eg3_collectionItem .eg3_itemBody {
+	width:100%;
+	overflow:visible;	/* needed for overlay tooltips */
+}
+.eg3_collectionItem .eg3_itemNavigation {
+	width:100%;
+	overflow:visible;	/* needed for overlay tooltips */
+	margin:1em 0;
+}
+.eg3_collectionItem .eg3_itemDescription {
+	width:100%;
+}
+.eg3_collectionItem .eg3_itemDescription p {
+	width:98%; 
+	max-width:70em; 
+	font-size:110%;
+	line-height:145%; 
+	margin-bottom:2em;
+}
+.eg3_collectionItem .eg3_itemTitle,
+.eg3_collectionItem .eg3_itemTitle h2 {
+	font-weight:bold;
+}
+.eg3_collectionItem .eg3_titleListLink {
+	font-weight:bold;
+}
+.eg3_collectionItem h3 .eg3_searchTooltip {
+	font-size:85%;
+}
+
+
+
+/*****************************************************************************************************
+ ******************************				global button elements			**************************
+ *****************************************************************************************************/
+.eg3_icon_annotation_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_annotation_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_annotation_16_16.eg3_active {
+	background-image:url(image/ico_annotation_hover_16_16.png);
+}
+.eg3_icon_annotation_16_16:hover {
+	background-image:url(image/ico_annotation_hover_16_16.png);
+}
+
+.eg3_icon_viewer_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_dlc_viewer_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_viewer_16_16.eg3_active {
+	background-image:url(image/ico_dlc_viewer_hover_16_16.png);
+}
+.eg3_icon_viewer_16_16:hover {
+	background-image:url(image/ico_dlc_viewer_hover_16_16.png);
+}
+
+.eg3_icon_close_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_close_deactivated_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_close_16_16:hover {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+}
+button:hover .eg3_icon_close_16_16 {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+} 
+.eg3_icon_closei_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_close_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_closei_16_16:hover {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_editBtn_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_edit_static_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_editBtn_16_16:hover {
+	background-image:url(image/ico_edit_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_editBtni_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_edit_deactivated_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_editBtni_16_16:hover {
+	background-image:url(image/ico_edit_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_delete_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_close_error_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_delete_16_16:hover {
+	background-image:url(image/ico_close_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_resizeSmall_24_24 {
+	width:2em;
+	height:2em;
+	margin-left:0.33333em;
+	background-image:url(image/icon_resize_small_static_24_24.png);
+	background-color:transparent;
+}
+.eg3_icon_resizeMedium_24_24 {
+	width:2em;
+	height:2em;
+	margin-left:0.33333em;
+	background-image:url(image/icon_resize_full_static_24_24.png);
+	background-color:transparent;
+}
+.eg3_icon_resizeSmall_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_resize_small_2_deactivated_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_resizeSmall_16_16:hover {
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_resizeSmall_16_16[disabled] {
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+}
+.eg3_icon_resizeSmall_16_16[disabled]:hover {
+	background-image:url(image/ico_resize_small_2_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_resizeMedium_16_16 {
+	width:1.3333em;
+	height:1.3333em;
+	margin-left:0.33333em;
+	background-image:url(image/ico_resize_medium_2_deactivated_16_16.png);
+	background-color:transparent;
+}
+.eg3_icon_resizeMedium_16_16:hover {
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_icon_resizeMedium_16_16[disabled] {
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+}
+.eg3_icon_resizeMedium_16_16[disabled]:hover {
+	background-image:url(image/ico_resize_medium_2_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_add_16 {
+	background-image:url(image/ico_window_plus_static_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_add_16:hover {
+	background-image:url(image/ico_window_plus_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_remove_16 {
+	background-image:url(image/ico_window_minus_static_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_remove_16:hover {
+	background-image:url(image/ico_window_minus_hover_16_16.png);
+	text-decoration:none;
+}
+/* invert colored icons */
+.eg3_ico_addi_16 {
+	background-image:url(image/ico_window_plus_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_addi_16:hover {
+	background-image:url(image/ico_window_plus_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_removei_16 {
+	background-image:url(image/ico_window_minus_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_removei_16:hover {
+	background-image:url(image/ico_window_minus_hover_16_16.png);
+	text-decoration:none;
+}
+
+.eg3_ico_sortASC_16 {
+	background-image:url(image/ico_top_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_sortASC_16:hover {
+	background-image:url(image/ico_top_hover_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_sortDESC_16 {
+	background-image:url(image/ico_bottom_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_sortDESC_16:hover {
+	background-image:url(image/ico_bottom_hover_16_16.png);
+	text-decoration:none;
+}
+
+.eg3_ico_moveUp_16_16 {
+	background-image:url(image/btn_ascending_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveUp_16_16:hover {
+	background-image:url(image/btn_ascending_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveDown_16_16 {
+	background-image:url(image/btn_descending_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveDown_16_16:hover {
+	background-image:url(image/btn_descending_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveLeft_16_16 {
+	background-image:url(image/btn_previous_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveLeft_16_16:hover {
+	background-image:url(image/btn_previous_active_16_16.png);
+	text-decoration:none;
+}
+.eg3_ico_moveRight_16_16 {
+	background-image:url(image/btn_next_deactivated_16_16.png);
+	background-color:transparent;
+	width:1.33333em;
+	height:1.33333em;
+}
+.eg3_ico_moveRight_16_16:hover {
+	background-image:url(image/btn_next_active_16_16.png);
+	text-decoration:none;
+}
+/*****************************************************************************************************
+ ******************************				image background color			**************************
+ *****************************************************************************************************/
+.eg3_image_bgColor_1 {
+	background-color:#000000;
+}
+
+/*****************************************************************************************************
+ ******************************				appearance coloring			**************************
+ *****************************************************************************************************/
+.eg3_main_color {
+	color:#2F2F2F;
+}
+.eg3_alternate_color_1 {
+	color:#FFFFFF;
+}
+.eg3_content_bgColor {
+	background-color:#F0F0F0;
+}
+.eg3_content_bgColor_2 {
+	background-color:#2F2F2F;
+}
+.eg3_content_bgColor_3 {
+	background-color:#CACA86;
+}
+
+/*********************************************************************************************************
+ *********************************************************************************************************
+ ******************************				EXTERNAL CLASS DEFINITIONS			**************************
+ *********************************************************************************************************
+ *********************************************************************************************************/
+ 
+ 
+/*****************************************************************************************************
+ ******************************				Richfaces Tree					**************************
+ ******************************				with MPDL extensions			**************************
+ *****************************************************************************************************/
+.rf-tbp {
+	width:100%;
+}
+.eg3_id_sidebarLeft .rf-tbp .rf-tab-hdr-brd {
+	display:none;
+}
+
+/* tab panels in header */
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td {
+	border-left:none !important;
+	padding-left:0;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top {
+	background:none;
+	background-color:transparent;
+	border:none;
+	color:#FFFFFF;
+	padding:0.1633333em 0 0 0;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl {
+	border-left:0.091em solid #ffffff;
+	padding:0 0.50em;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-inact.rf-tab-hdr-top:hover {
+	color:#EA7125;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-act.rf-tab-hdr-top {
+	background:none;
+	background-color:transparent;
+	border:none;
+	color:#EA7125;
+	padding:0.1633333em 0 0 0;
+}
+.eg3_id_sidebarLeft .rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl {
+	border-left:0.091em solid #ffffff;
+	padding:0 0.50em;
+}
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td.rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl, 
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td+td.rf-tab-hdr-act.rf-tab-hdr-top .rf-tab-lbl,
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td.rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl, 
+.eg3_id_sidebarLeft td.rf-tab-hdr-spcr:first-child+td+td.rf-tab-hdr-inact.rf-tab-hdr-top .rf-tab-lbl {
+	border-left:none !important;
+	padding-left:0;
+}
+
+
+.rf-tr div {
+	float:none;
+}
+.rf-tbp .rf-tab {
+	width:100%;
+	border:0;
+	z-index:50;
+}
+.rf-tbp .rf-tab #container { /* used by thumbnail viewPage */
+	height:100%;
+}
+.rf-tbp .rf-tab.eg3_overflow {
+	width:100%;
+	border:none;
+}
+.eg3_id_sidebarLeft .rf-tab-cnt {
+	border:none;
+	border-width:0;
+	padding:0;
+	width:100%;
+	margin:0;
+	background-color:transparent;
+	min-height:33.333333%;
+	height:100%;
+	max-height:100%;
+}
+
+.rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
+	text-align:center; 
+}
+
+.rf-tab-cnt .eg3_thumbnail img {
+	height:14.583333em;
+	padding:10% 10% 0 10%;
+	padding:1em 1em 0 1em\9;
+}
+
+.rf-tab-cnt .eg3_thumbnail.eg3_active {
+	background-color:#EA7125;
+}
+.rf-tab-cnt .eg3_thumbnail .eg3_thumbnailLabel {
+	display:block;
+	font-size:120%;
+}
+
+.rf-tbp .rf-tab-cnt.eg3_expand {
+	border:0;
+	background-color:#F0F0F0;
+}
+
+.eg3_id_sidebarLeft .rf-tab-hdr-tabline-vis.rf-tab-hdr-tabline-top { /* scan view */
+	width:100%;
+	background:none;
+	background-color:#2F2F2F;
+	border:none;
+	padding-top:0.5em;
+}
+
+.rf-trn {
+	white-space:normal;
+}
+span.rf-trn-ico-exp, span.rf-trn-ico-colps {
+	background:none;
+	width:0;
+}
+
+.eg3_id_sidebarLeft .rf-trn-cnt {
+	padding-right:1.5em;
+}
+.eg3_id_sidebarLeft .rf-trn-cnt .rf-trn-lbl {
+	padding-left:1em;
+	text-indent:-1em;
+}
+
+.rf-trn-lbl {
+	white-space:normal;
+}
+
+.eg3_editContent .rf-tab-cnt {
+	background-color:#2F2F2F;
+	color:#FFFFFF;
+	border:none;
+}
+
+
+
+
+/*****************************************************************************************************
+ **********************			richfaces messages			******************************************
+ *****************************************************************************************************/
+.rf-msg-inf.eg3_messageSuccess, .rf-msgs-inf.eg3_messageSuccess {
+	color:#00CC00;
+}
+
+
+
+/*****************************************************************************************************
+ ******************************						DIGILIB					**************************
+ ******************************				Buttonbar & Image				**************************
+ *****************************************************************************************************/
+
+.digilib .keep.buttons {
+	width:2.5em;
+	background-color:#FFFFFF !important;
+	padding:0.75em 0.25em !important;
+	cursor:move;
+}
+div.eg3_singleView div.digilib div.keep.buttons {
+	opacity: 1 !important;
+	-moz-opacity: 1 !important;
+	filter: alpha(opacity=100) !important; /* for IE 7 & IE 8 necessary */
+	right:-3.083333em !important;
+}
+.digilib .keep.buttons img.button:hover {
+	background-color:#CCCCCC !important;
+}
+.digilib img {
+	cursor:pointer;
+}
+/* annotation marker */
+div.digilib div.mark {
+	color:red !important;
+	font-size:1.25em !important;
+}
+
+.infiniteCarousel .arrow.forward {
+	background:url("image/ico_next_success_32_32.png") no-repeat;
+}
+.infiniteCarousel .arrow.forward:hover {
+	background:url("image/ico_next_hover_32_32.png") no-repeat;
+}
+
+.infiniteCarousel .arrow.back {
+	background:url("image/ico_previous_success_32_32.png") no-repeat;
+}
+.infiniteCarousel .arrow.back:hover {
+	background:url("image/ico_previous_hover_32_32.png") no-repeat;
+}
+
+
+
+
+
+
+@MEDIA print {
+	body { background-color:transparent !important; }
+	body * { background-color:transparent !important; }
+	.eg3_id_headerMetaMenu { display:none; }
+	.eg3_citationLinkArea { display:none; }
+	.eg3_id_footer { display:none; }
+	a.eg3_modusBtn { display:none; }
+	.eg3_iconBar { display:none; }
+	.rf-tab-hdr-inact { display:none; }
+	.rf-tab-cnt { overflow:hidden; }
+}

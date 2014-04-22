@@ -1,0 +1,12 @@
+declare updating function
+local:changeValue($node as attribute(), $value as xs:string)
+{
+	replace value of node $node with $value
+};
+for $doc in collection('DLC_All')/mets:mets[dbxml:metadata('srel:context')='/ir/context/dlc:ctx_KHI']
+for $num in (1 to 161)
+let $id := $doc/@ID
+return
+local:changeValue(
+	$id,
+	replace(distinct-values($id), "123456", string($num)))

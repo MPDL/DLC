@@ -1,0 +1,100 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="modsMetadata" required="true"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<h:outputText value="&lt;br/&gt;" escape="false"/>
+		<ui:fragment rendered="#{not empty volumeUtilBean.getFirstBody(cc.attrs.modsMetadata).name}">
+			<h:outputText value="#{volumeUtilBean.getFirstBody(cc.attrs.modsMetadata).name}:"/>
+			<br/>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}">
+			<h:outputText value="#{volumeUtilBean.getFirstAuthor(cc.attrs.modsMetadata).name}:"/>
+			<br/>
+		</ui:fragment>
+		
+		<h:outputText value="[#{volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}] " rendered="#{not empty volumeUtilBean.getAlternativeTitle(cc.attrs.modsMetadata).title}"/>
+		<h:outputText value="#{volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getMainTitle(cc.attrs.modsMetadata).title}"/>
+		<h:outputText value=" : #{volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).subTitle}" rendered="#{not empty volumeUtilBean.getSubTitle(cc.attrs.modsMetadata).subTitle}"/>
+		<h:outputText value=" = #{volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title}" rendered="#{not empty volumeUtilBean.getParallelTitle(cc.attrs.modsMetadata).title}"/>
+		<h:outputText value=" / #{volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}" rendered="#{not empty volumeUtilBean.getNoteSOR(cc.attrs.modsMetadata).note}"/>
+		<h:outputText value=". #{volumeUtilBean.getPart_361(cc.attrs.modsMetadata).subseries_361}" rendered="#{not empty volumeUtilBean.getPart_361(cc.attrs.modsMetadata).subseries_361}"/>
+		<h:outputText value=". #{volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}" rendered="#{not empty volumeUtilBean.getNoteSubseries(cc.attrs.modsMetadata).note}"/>
+		<h:outputText value=". - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).edition}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).edition}"/>
+		<h:outputText value=". - #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).place}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).place}"/>
+		<h:outputText value=" : #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).publisher}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).publisher}"/>
+		<h:outputText value=", #{volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).dateIssued_425.date}" rendered="#{not empty volumeUtilBean.getFirstPublisher(cc.attrs.modsMetadata).dateIssued_425.date}"/>
+		<h:outputText value=". - #{volumeUtilBean.getMainNote(cc.attrs.modsMetadata).note}" rendered="#{not empty volumeUtilBean.getMainNote(cc.attrs.modsMetadata).note}"/>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getSeries451(cc.attrs.modsMetadata).title}">
+			<h:outputText value=". - #{volumeUtilBean.getSeries451(cc.attrs.modsMetadata).title}"/>
+			<br/>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).title}">
+			<h:outputText value=" #{volumeUtilBean.getSeries451a(cc.attrs.modsMetadata).title}"/>
+			<br/>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}">
+			<h:outputText value="#{volumeUtilBean.getNoteThesis(cc.attrs.modsMetadata).note}"/>
+			<br/>
+		</ui:fragment>
+		
+		<a4j:repeat var="footnote" value="#{volumeUtilBean.getFootNotes(cc.attrs.modsMetadata)}" rendered="#{volumeUtilBean.getFootNotes(cc.attrs.modsMetadata).size() > 0}">
+			<h:outputText value="#{footnote.note}\n"/>
+		</a4j:repeat>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}">
+			<h:outputText value="#{volumeUtilBean.getISBN(cc.attrs.modsMetadata).value}"/>
+			<br/>
+		</ui:fragment>
+		
+		<ui:fragment rendered="#{not empty volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}">
+			<h:outputText value="#{volumeUtilBean.getISSN(cc.attrs.modsMetadata).value}"/>
+			<br/>
+		</ui:fragment>
+	
+		<ui:fragment rendered="#{cc.attrs.modsMetadata.keywords.size()>0}">
+			<br/>
+			<h:outputText value="Schlagwort"/>
+			<br/>
+		</ui:fragment>
+		
+		<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey" rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
+			<h:outputText value="#{keyword}" rendered="#{(rowKey+1) % 3 == 1}"/>
+			<h:outputText value=" / #{keyword}" rendered="#{(rowKey+1) % 3 == 2}"/>
+			<ui:fragment rendered="#{(rowKey+1) % 3 == 0}">
+				<h:outputText value=" / #{keyword}"/>
+				<br/>
+			</ui:fragment>
+		</a4j:repeat>	
+	</cc:implementation>
+</html>

@@ -1,0 +1,139 @@
+<xb:config xmlns:xb="http://xml.apache.org/xmlbeans/2004/02/xbean/config">
+
+  <xb:namespace uri="http://escidoc.de/core/01/properties/">
+    <xb:package>de.escidoc.core.properties</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://escidoc.de/core/01/properties/version/">
+    <xb:package>de.escidoc.core.properties.version</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://escidoc.de/core/01/properties/release/">
+    <xb:package>de.escidoc.core.properties.release</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://escidoc.de/core/01/structural-relations/">
+    <xb:package>de.escidoc.core.structuralrelations</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/attributes/0.1">
+    <xb:package>de.escidoc.schemas.attributes</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/commontypes/0.4">
+    <xb:package>de.escidoc.schemas.commontypes</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/components/0.9">
+    <xb:package>de.escidoc.schemas.components</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/container/0.9">
+    <xb:package>de.escidoc.schemas.container</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/containerlist/0.9">
+    <xb:package>de.escidoc.schemas.containerlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/contentmodel/0.1">
+    <xb:package>de.escidoc.schemas.contentmodel</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/content-relation/0.1">
+    <xb:package>de.escidoc.schemas.contentrelation</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/contentstreams/0.7">
+    <xb:package>de.escidoc.schemas.contentstreams</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/context/0.7">
+    <xb:package>de.escidoc.schemas.context</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/contextlist/0.7">
+    <xb:package>de.escidoc.schemas.contextlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/grants/0.5">
+    <xb:package>de.escidoc.schemas.grants</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/index-configuration/0.1">
+    <xb:package>de.escidoc.schemas.indexconfiguration</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/item/0.10">
+    <xb:package>de.escidoc.schemas.item</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/itemlist/0.10">
+    <xb:package>de.escidoc.schemas.itemlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/memberlist/0.10">
+    <xb:package>de.escidoc.schemas.memberlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/metadatarecords/0.5">
+    <xb:package>de.escidoc.schemas.metadatarecords</xb:package>
+  </xb:namespace>
+  
+   <xb:namespace uri="http://www.escidoc.de/schemas/organizationalunit/0.8">
+    <xb:package>de.escidoc.schemas.organizationalunit</xb:package>
+  </xb:namespace>
+  
+   <xb:namespace uri="http://www.escidoc.de/schemas/organizationalunitlist/0.8">
+    <xb:package>de.escidoc.schemas.organizationalunitlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/preferences/0.1">
+    <xb:package>de.escidoc.schemas.preferences</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/relations/0.3">
+    <xb:package>de.escidoc.schemas.relations</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/result/0.1">
+    <xb:package>de.escidoc.schemas.result</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/role/0.5">
+    <xb:package>de.escidoc.schemas.role</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/rolelist/0.5">
+    <xb:package>de.escidoc.schemas.rolelist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/searchresult/0.8">
+    <xb:package>de.escidoc.schemas.searchresult</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/stagingfile/0.3">
+    <xb:package>de.escidoc.schemas.stagingfile</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/structmap/0.4">
+    <xb:package>de.escidoc.schemas.structmap</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/useraccount/0.7">
+    <xb:package>de.escidoc.schemas.useraccount</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/useraccountlist/0.7">
+    <xb:package>de.escidoc.schemas.useraccountlist</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/usergroup/0.6">
+    <xb:package>de.escidoc.schemas.usergroup</xb:package>
+  </xb:namespace>
+  
+  <xb:namespace uri="http://www.escidoc.de/schemas/usergrouplist/0.6">
+    <xb:package>de.escidoc.schemas.usergrouplist</xb:package>
+  </xb:namespace>
+  
+</xb:config>
