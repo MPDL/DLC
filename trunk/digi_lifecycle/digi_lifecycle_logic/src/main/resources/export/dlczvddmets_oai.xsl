@@ -14,6 +14,11 @@
 	e.V. All rights reserved. Use is subject to license terms. -->
 <!-- Transformation from a dlc item xml to a zvdd conform mets xml Author: 
 	Friederike Kleinfercher (initial creation) -->
+	<!-- 
+	itemId = escidoc:7095
+	teiUrl = http://dlc.mpdl.mpg.de/ir/item/escidoc:7095/components/component/escidoc:7112/content
+	metsUrl = http://dlc.mpdl.mpg.de/ir/item/escidoc:7095/md-records/md-record/mets
+	-->
 
 <xsl:stylesheet version="2.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
