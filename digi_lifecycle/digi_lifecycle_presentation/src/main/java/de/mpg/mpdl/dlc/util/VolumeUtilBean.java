@@ -1056,13 +1056,16 @@ public class VolumeUtilBean {
 				StringBuffer wordWithDashMatches = new StringBuffer();
 				for(char c : word.toCharArray())
 				{
-					if(c != ' ')
+					if(c =='*')
+						wordWithDashMatches.append("\\w*");
+					else if(c != ' ')  
 					{
-						wordWithDashMatches.append(c + "(\\-<br\\s*/>){0,1}");
+						wordWithDashMatches.append(c + "(\\-<br\\s*/>){0,1}");					
 					}
-					else wordWithDashMatches.append(c);
+					else
+						wordWithDashMatches.append(c);
 				}
-				
+				    
 				word = wordWithDashMatches.toString();
 				
 				String[] splittedWords = word.split(" ");
@@ -1487,6 +1490,7 @@ public class VolumeUtilBean {
 		}
 		return new ModsLocationSEC();
 	}
+	
 	
 
 	
