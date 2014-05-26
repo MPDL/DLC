@@ -116,7 +116,7 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:panelGroup layout="block" styleClass="eg3_gotoBox">
 				<h:form>
-					<h:inputText type="text" id="inpGoToPageTop" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageTop}" maxlength="5" />
+					<h:inputText type="text" id="inpGoToPageTop" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
 					<h:outputLabel id="lblItemListPageSizeTop" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
 					
 					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
@@ -217,7 +217,7 @@ All rights reserved. Use is subject to license terms.
 			
 			<h:panelGroup layout="block" styleClass="eg3_gotoBox">
 				<h:form>
-					<h:inputText type="text" id="inpGoToPageBottom" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.goToPageBottom}" maxlength="5" />
+					<h:inputText type="text" id="inpGoToPageBottom" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
 					<h:outputLabel id="lblItemListPageSizeBottom" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
 					<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
 					<h:commandButton type="submit" id="btList_btGoBottom" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageBottom}">
