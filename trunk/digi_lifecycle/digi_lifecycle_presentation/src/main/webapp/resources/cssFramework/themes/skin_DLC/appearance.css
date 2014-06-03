@@ -3122,9 +3122,10 @@ div.eg3_singleView div.digilib div.keep.buttons {
 	cursor:pointer;
 }
 /* annotation marker */
-div.digilib div.mark {
-	color:red !important;
-	font-size:1.25em !important;
+body .eg3_id_content div.digilib div.mark {
+	color:red;
+	font-size:1.25em;
+	font-family: inherit;
 }
 
 .infiniteCarousel .arrow.forward {
