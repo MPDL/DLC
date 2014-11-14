@@ -20,15 +20,10 @@
 	metsUrl = http://dlc.mpdl.mpg.de/ir/item/escidoc:7095/md-records/md-record/mets
 	-->
 
-<xsl:stylesheet version="2.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink"
-	xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mets="http://www.loc.gov/METS/"
-	xmlns:oai="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd"
-	xmlns:escidocMetadataRecords="http://www.escidoc.de/schemas/metadatarecords/0.5"
-	xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:dv="http://dfg-viewer.de/">
-
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:mets="http://www.loc.gov/METS/" xmlns:oai="http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd" xmlns:escidocMetadataRecords="http://www.escidoc.de/schemas/metadatarecords/0.5" xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:dv="http://dfg-viewer.de/">
+	
 	<xsl:output method="xml" encoding="UTF-8" indent="yes" />
-
+	
 	<xsl:param name="itemId" select="'not defined'" />
 	<xsl:param name="teiUrl" select="'not defined'" />
 	<xsl:param name="metsUrl" select="'not defined'" />
@@ -37,21 +32,23 @@
 	<xsl:variable name="metsXml" select="document($metsUrl)" />
 	<xsl:param name="itemDate" select="'not defined'" />
 	<xsl:param name="itemCollection" select="'not defined'" />
-
+	
 	<xsl:template match="/">
-
-		<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/"
-			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
+		
+		<OAI-PMH xmlns="http://www.openarchives.org/OAI/2.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/
                              http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd">
 			<responseDate>
 				<xsl:value-of select="current-dateTime()" />
 			</responseDate>
 			<xsl:element name="request">
-				<xsl:attribute name="verb"><xsl:value-of select="'GetRecord'" /></xsl:attribute>
-				<xsl:attribute name="identifier">oai:escidoc.org:<xsl:value-of
-					select="$itemId" /></xsl:attribute>
-				<xsl:attribute name="metadataPrefix"><xsl:value-of select="'zvdd'" /></xsl:attribute>
+				<xsl:attribute name="verb">
+					<xsl:value-of select="'GetRecord'" />
+				</xsl:attribute>
+				<xsl:attribute name="identifier">oai:escidoc.org:<xsl:value-of select="$itemId" />
+				</xsl:attribute>
+				<xsl:attribute name="metadataPrefix">
+					<xsl:value-of select="'zvdd'" />
+				</xsl:attribute>
 			</xsl:element>
 			<GetRecord>
 				<record>
@@ -60,8 +57,12 @@
 							oai:escidoc.org:
 							<xsl:value-of select="$itemId" />
 						</oai:identifier>
-						<oai:datestamp><xsl:value-of select="$itemDate" /></oai:datestamp>
-						<oai:setSpec><xsl:value-of select="$itemCollection" /></oai:setSpec>
+						<oai:datestamp>
+							<xsl:value-of select="$itemDate" />
+						</oai:datestamp>
+						<oai:setSpec>
+							<xsl:value-of select="$itemCollection" />
+						</oai:setSpec>
 					</oai:header>
 					<metadata>
 						<xsl:element name="mets:mets">
@@ -74,42 +75,53 @@
 						</xsl:element>
 					</metadata>
 				</record>
-
+			
 			</GetRecord>
 		</OAI-PMH>
-
+	
 	</xsl:template>
 
 	<!-- The descriptive metadata of a dlc item -->
 	<xsl:template name="dmdsec">
 		<xsl:element name="mets:dmdSec">
-			<xsl:attribute name="ID"><xsl:value-of select="'dmd0'" /></xsl:attribute>
+			<xsl:attribute name="ID">
+				<xsl:value-of select="'dmd0'" />
+			</xsl:attribute>
 			<xsl:element name="mets:mdWrap">
 				<xsl:attribute name="MDTYPE">MODS</xsl:attribute>
 				<xsl:element name="mets:xmlData">
 					<!-- <xsl:copy-of select="escidocMetadataRecords:md-record/mods:mods"/> -->
 					<!-- need to adjust some elements in order to achieve compliance with 
 						ZVDD -->
-					<xsl:apply-templates select="escidocMetadataRecords:md-record/mods:mods"
-						mode="zvdd" />
+					<xsl:apply-templates select="escidocMetadataRecords:md-record/mods:mods" mode="zvdd" />
 				</xsl:element>
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
 
-	<!-- start of zvdd mode -->
-	<xsl:template match="node()|@*" mode="zvdd">
+	<!-- start of zvdd mode 
+	<xsl:template match="@*|node()" mode="zvdd">
 		<xsl:copy>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	-->
+	<xsl:template match="node()" mode="zvdd">
+		<xsl:copy>
+			<xsl:apply-templates select="@*,node()" mode="zvdd"/>
 		</xsl:copy>
 	</xsl:template>
 
+	<xsl:template match="@*" mode="zvdd">
+		<xsl:copy/>
+	</xsl:template>
+
 	<!-- this should fix the invalid date format as well ... -->
-	<xsl:template match="text()" mode="zvdd">
+	<xsl:template match="text()" mode="zvdd" priority="0">
 		<xsl:value-of select="normalize-space(.)" />
 	</xsl:template>
 	
-	<!-- do not copy empty elements, 'cause ZVDD will complain about  -->
+	<!-- do not copy empty elements, 'cause ZVDD will complain about  	 -->
 	<xsl:template match="*[not(node())] | *[not(node()[2]) and node()/self::text() and not(normalize-space()) ] " mode="zvdd" />
 
 	<!-- ZVDD expects dateIssued in originInfo -->
@@ -123,7 +135,7 @@
 					<xsl:value-of select="'2000'"/>
 				</mods:dateIssued>
 			</xsl:if>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
@@ -131,7 +143,7 @@
 	<xsl:template match="mods:titleInfo[position()>1]" mode="zvdd">
 		<xsl:copy>
 			<xsl:if test="not(@type)">
-				<xsl:attribute name ="type">
+				<xsl:attribute name="type">
 					<xsl:value-of select="'alternatve'"/>
 				</xsl:attribute>
 				<xsl:apply-templates select="@*" mode="#current" />
@@ -141,7 +153,7 @@
 					<xsl:value-of select="'4 the sake of zvdd'"/>
 				</mods:title>
 			</xsl:if>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
@@ -149,24 +161,24 @@
 	<xsl:template match="mods:identifier" mode="zvdd">
 		<xsl:copy>
 			<xsl:if test="not(@type)">
-				<xsl:attribute name ="type">
+				<xsl:attribute name="type">
 					<xsl:value-of select="'dlc'"/>
 				</xsl:attribute>
 				<xsl:apply-templates select="@*" mode="#current" />
 			</xsl:if>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
-
+	
 	<xsl:template match="mods:namePart" mode="zvdd">
 		<xsl:copy>
 			<xsl:attribute name="type">
 				<xsl:value-of select="'given'" />
 			</xsl:attribute>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
-
+	
 	<xsl:template match="mods:languageTerm/@authority" mode="zvdd">
 		<xsl:attribute name="authority">
 			<xsl:value-of select="'iso639-2b'" />
@@ -182,7 +194,7 @@
 					<xsl:value-of select="'4 the sake of zvdd'"/>
 				</mods:extent>
 			</xsl:if>
-			<xsl:apply-templates select="node()|@*" mode="#current" />
+			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
@@ -193,7 +205,9 @@
 	<!-- The administrative metadata of a dlc item -->
 	<xsl:template name="amdsec">
 		<xsl:element name="mets:amdSec">
-			<xsl:attribute name="ID"><xsl:value-of select="'amd0'" /></xsl:attribute>
+			<xsl:attribute name="ID">
+				<xsl:value-of select="'amd0'" />
+			</xsl:attribute>
 			<xsl:element name="mets:rightsMD">
 				<xsl:element name="mets:mdWrap">
 					<xsl:attribute name="MDTYPE">OTHER</xsl:attribute>
@@ -249,14 +263,16 @@
 						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
 						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of
-									select="@xml:id" /></xsl:attribute>
-								<xsl:attribute name="MIMETYPE"><xsl:value-of
-									select="'image/jpeg'" /></xsl:attribute>
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id" />
+								</xsl:attribute>
+								<xsl:attribute name="MIMETYPE">
+									<xsl:value-of select="'image/jpeg'" />
+								</xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-									<xsl:attribute name="xlink:href"><xsl:value-of
-										select="$imageUrl" />web/<xsl:value-of select="@facs" /></xsl:attribute>
+									<xsl:attribute name="xlink:href">
+										<xsl:value-of select="$imageUrl" />web/<xsl:value-of select="@facs" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
@@ -266,15 +282,16 @@
 						<xsl:attribute name="USE">MIN</xsl:attribute>
 						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of
-									select="@xml:id" /></xsl:attribute>
-								<xsl:attribute name="MIMETYPE"><xsl:value-of
-									select="'image/jpeg'" /></xsl:attribute>
+								<xsl:attribute name="ID">div<xsl:value-of select="@xml:id" />
+								</xsl:attribute>
+								<xsl:attribute name="MIMETYPE">
+									<xsl:value-of select="'image/jpeg'" />
+								</xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-									<xsl:attribute name="xlink:href"><xsl:value-of
-										select="$imageUrl" />thumbnails/<xsl:value-of
-										select="@facs" /></xsl:attribute>
+									<xsl:attribute name="xlink:href">
+										<xsl:value-of select="$imageUrl" />thumbnails/<xsl:value-of select="@facs" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
@@ -284,17 +301,18 @@
 					<!-- All files in webresolution -->
 					<xsl:element name="mets:fileGrp">
 						<xsl:attribute name="USE">DEFAULT</xsl:attribute>
-						<xsl:for-each
-							select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
+						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of
-									select="@ID" /></xsl:attribute>
-								<xsl:attribute name="MIMETYPE"><xsl:value-of
-									select="'image/jpeg'" /></xsl:attribute>
+								<xsl:attribute name="ID">div<xsl:value-of select="@ID" />
+								</xsl:attribute>
+								<xsl:attribute name="MIMETYPE">
+									<xsl:value-of select="'image/jpeg'" />
+								</xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-									<xsl:attribute name="xlink:href"><xsl:value-of
-										select="$imageUrl" />web/<xsl:value-of select="@CONTENTIDS" /></xsl:attribute>
+									<xsl:attribute name="xlink:href">
+										<xsl:value-of select="$imageUrl" />web/<xsl:value-of select="@CONTENTIDS" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
@@ -302,18 +320,18 @@
 					<!-- All files as thumbnails -->
 					<xsl:element name="mets:fileGrp">
 						<xsl:attribute name="USE">MIN</xsl:attribute>
-						<xsl:for-each
-							select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
+						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
 							<xsl:element name="mets:file">
-								<xsl:attribute name="ID">div<xsl:value-of
-									select="@ID" /></xsl:attribute>
-								<xsl:attribute name="MIMETYPE"><xsl:value-of
-									select="'image/jpeg'" /></xsl:attribute>
+								<xsl:attribute name="ID">div<xsl:value-of select="@ID" />
+								</xsl:attribute>
+								<xsl:attribute name="MIMETYPE">
+									<xsl:value-of select="'image/jpeg'" />
+								</xsl:attribute>
 								<xsl:element name="mets:FLocat">
 									<xsl:attribute name="LOCTYPE">URL</xsl:attribute>
-									<xsl:attribute name="xlink:href"><xsl:value-of
-										select="$imageUrl" />thumbnails/<xsl:value-of
-										select="@CONTENTIDS" /></xsl:attribute>
+									<xsl:attribute name="xlink:href">
+										<xsl:value-of select="$imageUrl" />thumbnails/<xsl:value-of select="@CONTENTIDS" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
@@ -325,14 +343,22 @@
 
 	<!-- The physical structmap of a dlc item -->
 	<xsl:template name="phys">
-
+		
 		<xsl:element name="mets:structMap">
 			<xsl:attribute name="TYPE">PHYSICAL</xsl:attribute>
 			<xsl:element name="mets:div">
-				<xsl:attribute name="ID"><xsl:value-of select="'phys0'" /></xsl:attribute>
-				<xsl:attribute name="TYPE"><xsl:value-of select="'physSequence'" /></xsl:attribute>
-				<xsl:attribute name="DMDID"><xsl:value-of select="'dmd0'" /></xsl:attribute>
-				<xsl:attribute name="ADMID"><xsl:value-of select="'amd0'" /></xsl:attribute>
+				<xsl:attribute name="ID">
+					<xsl:value-of select="'phys0'" />
+				</xsl:attribute>
+				<xsl:attribute name="TYPE">
+					<xsl:value-of select="'physSequence'" />
+				</xsl:attribute>
+				<xsl:attribute name="DMDID">
+					<xsl:value-of select="'dmd0'" />
+				</xsl:attribute>
+				<xsl:attribute name="ADMID">
+					<xsl:value-of select="'amd0'" />
+				</xsl:attribute>
 				<xsl:choose>
 					<xsl:when test="$teiXml">
 						<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
@@ -340,60 +366,64 @@
 								<xsl:variable name="vID">
 									<xsl:value-of select="@xml:id" />
 								</xsl:variable>
-								<xsl:attribute name="ID"><xsl:value-of
-									select="$vID" /></xsl:attribute>
-								<xsl:attribute name="CONTENTIDS"><xsl:value-of
-									select="@facs" /></xsl:attribute>
+								<xsl:attribute name="ID">
+									<xsl:value-of select="$vID" />
+								</xsl:attribute>
+								<xsl:attribute name="CONTENTIDS">
+									<xsl:value-of select="@facs" />
+								</xsl:attribute>
 								<!-- <xsl:attribute name="ORDERLABEL"><xsl:value-of select="'???'"/></xsl:attribute> -->
 								<xsl:attribute name="ORDER">
-								<xsl:choose>
-									<xsl:when test="@n">
-										<xsl:value-of select="@n" />
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of
-									select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div[@ID=$vID]/@ORDER" />
-									</xsl:otherwise>
-								</xsl:choose>						
-							</xsl:attribute>
-								<xsl:attribute name="TYPE"><xsl:value-of
-									select="'page'" /></xsl:attribute>
+									<xsl:choose>
+										<xsl:when test="@n">
+											<xsl:value-of select="@n" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div[@ID=$vID]/@ORDER" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:attribute name="TYPE">
+									<xsl:value-of select="'page'" />
+								</xsl:attribute>
 								<xsl:element name="mets:fptr">
-									<xsl:attribute name="FILEID">div<xsl:value-of
-										select="@xml:id" /></xsl:attribute>
+									<xsl:attribute name="FILEID">div<xsl:value-of select="@xml:id" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
 					</xsl:when>
-
+					
 					<xsl:otherwise>
 						<!-- <xsl:copy-of select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap"/> -->
-						<xsl:for-each
-							select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
+						<xsl:for-each select="$metsXml/escidocMetadataRecords:md-record/mets:mets/mets:structMap/mets:div/mets:div">
 							<xsl:element name="mets:div">
 								<xsl:variable name="vID">
 									<xsl:value-of select="@ID" />
 								</xsl:variable>
-								<xsl:attribute name="ID"><xsl:value-of
-									select="$vID" /></xsl:attribute>
-								<xsl:attribute name="CONTENTIDS"><xsl:value-of
-									select="@CONTENTIDS" /></xsl:attribute>
+								<xsl:attribute name="ID">
+									<xsl:value-of select="$vID" />
+								</xsl:attribute>
+								<xsl:attribute name="CONTENTIDS">
+									<xsl:value-of select="@CONTENTIDS" />
+								</xsl:attribute>
 								<!-- <xsl:attribute name="ORDERLABEL"><xsl:value-of select="'???'"/></xsl:attribute> -->
 								<xsl:attribute name="ORDER">
-								<xsl:choose>
-									<xsl:when test="@ORDER">
-										<xsl:value-of select="@ORDER" />
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="0" />
-									</xsl:otherwise>
-								</xsl:choose>						
-							</xsl:attribute>
-								<xsl:attribute name="TYPE"><xsl:value-of
-									select="'page'" /></xsl:attribute>
+									<xsl:choose>
+										<xsl:when test="@ORDER">
+											<xsl:value-of select="@ORDER" />
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="0" />
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:attribute name="TYPE">
+									<xsl:value-of select="'page'" />
+								</xsl:attribute>
 								<xsl:element name="mets:fptr">
-									<xsl:attribute name="FILEID">div<xsl:value-of
-										select="@ID" /></xsl:attribute>
+									<xsl:attribute name="FILEID">div<xsl:value-of select="@ID" />
+									</xsl:attribute>
 								</xsl:element>
 							</xsl:element>
 						</xsl:for-each>
@@ -408,25 +438,37 @@
 		<xsl:element name="mets:structMap">
 			<xsl:attribute name="TYPE">LOGICAL</xsl:attribute>
 			<xsl:element name="mets:div">
-				<xsl:attribute name="ID"><xsl:value-of select="'log0'" /></xsl:attribute>
-				<xsl:attribute name="DMDID"><xsl:value-of select="'dmd0'" /></xsl:attribute>
-				<xsl:attribute name="ADMID"><xsl:value-of select="'amd0'" /></xsl:attribute>
-				<xsl:attribute name="TYPE"><xsl:value-of select="'Monograph'" /></xsl:attribute>
+				<xsl:attribute name="ID">
+					<xsl:value-of select="'log0'" />
+				</xsl:attribute>
+				<xsl:attribute name="DMDID">
+					<xsl:value-of select="'dmd0'" />
+				</xsl:attribute>
+				<xsl:attribute name="ADMID">
+					<xsl:value-of select="'amd0'" />
+				</xsl:attribute>
+				<xsl:attribute name="TYPE">
+					<xsl:value-of select="'Monograph'" />
+				</xsl:attribute>
 				<!-- All logical elements with its original ids, labels and structural 
 					types -->
 				<xsl:for-each select="$teiXml/tei:TEI//tei:head">
 					<xsl:element name="mets:div">
-						<xsl:attribute name="ID"><xsl:value-of
-							select="../@xml:id" /></xsl:attribute>
-						<xsl:attribute name="LABEL"><xsl:value-of
-							select="." /></xsl:attribute>
+						<xsl:attribute name="ID">
+							<xsl:value-of select="../@xml:id" />
+						</xsl:attribute>
+						<xsl:attribute name="LABEL">
+							<xsl:value-of select="." />
+						</xsl:attribute>
 						<xsl:if test="../@type!=''">
-							<xsl:attribute name="TYPE"><xsl:value-of
-								select="../@type" /></xsl:attribute>
+							<xsl:attribute name="TYPE">
+								<xsl:value-of select="../@type" />
+							</xsl:attribute>
 						</xsl:if>
 						<xsl:if test="../@type=''">
-							<xsl:attribute name="TYPE"><xsl:value-of
-								select="'chapter'" /></xsl:attribute>
+							<xsl:attribute name="TYPE">
+								<xsl:value-of select="'chapter'" />
+							</xsl:attribute>
 						</xsl:if>
 					</xsl:element>
 				</xsl:for-each>
@@ -439,10 +481,12 @@
 		<xsl:element name="mets:structLink">
 			<xsl:for-each select="$teiXml/tei:TEI//tei:pb">
 				<xsl:element name="mets:smLink">
-					<xsl:attribute name="xlink:from"><xsl:value-of
-						select="../@xml:id" /></xsl:attribute>
-					<xsl:attribute name="xlink:to"><xsl:value-of
-						select="@xml:id" /></xsl:attribute>
+					<xsl:attribute name="xlink:from">
+						<xsl:value-of select="../@xml:id" />
+					</xsl:attribute>
+					<xsl:attribute name="xlink:to">
+						<xsl:value-of select="@xml:id" />
+					</xsl:attribute>
 				</xsl:element>
 			</xsl:for-each>
 		</xsl:element>
