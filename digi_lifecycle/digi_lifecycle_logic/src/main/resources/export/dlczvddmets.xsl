@@ -69,11 +69,115 @@
 			<xsl:element name="mets:mdWrap">
 				<xsl:attribute name="MDTYPE">MODS</xsl:attribute>
 				<xsl:element name="mets:xmlData">					
-					<xsl:copy-of select="escidocMetadataRecords:md-record/mods:mods"/>
+					<xsl:apply-templates select="escidocMetadataRecords:md-record/mods:mods" mode="zvdd"/>
 				</xsl:element>
 			</xsl:element>
 		</xsl:element>					
 	</xsl:template>	
+	
+		<!-- start of zvdd mode 
+	<xsl:template match="@*|node()" mode="zvdd">
+		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	-->
+	<xsl:template match="node()" mode="zvdd">
+		<xsl:copy>
+			<xsl:apply-templates select="@*,node()" mode="zvdd"/>
+		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="@*" mode="zvdd">
+		<xsl:copy/>
+	</xsl:template>
+
+	<!-- this should fix the invalid date format as well ... -->
+	<xsl:template match="text()" mode="zvdd" priority="0">
+		<xsl:value-of select="normalize-space(.)" />
+	</xsl:template>
+	
+	<!-- do not copy empty elements, 'cause ZVDD will complain about  	 -->
+	<xsl:template match="*[not(node())] | *[not(node()[2]) and node()/self::text() and not(normalize-space()) ] " mode="zvdd" />
+
+	<!-- ZVDD expects dateIssued in originInfo -->
+	<xsl:template match="mods:originInfo" mode="zvdd">
+		<xsl:copy>
+			<xsl:if test="not(mods:dateIssued)">
+				<mods:dateIssued>
+					<xsl:attribute name="encoding">
+						<xsl:value-of select="'w3cdtf'"/>
+					</xsl:attribute>
+					<xsl:value-of select="'2000'"/>
+				</mods:dateIssued>
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	
+	<!-- subsequent titleInfo elements require a type attribute and a title sub-element-->
+	<xsl:template match="mods:titleInfo[position()>1]" mode="zvdd">
+		<xsl:copy>
+			<xsl:if test="not(@type)">
+				<xsl:attribute name="type">
+					<xsl:value-of select="'alternatve'"/>
+				</xsl:attribute>
+				<xsl:apply-templates select="@*" mode="#current" />
+			</xsl:if>
+			<xsl:if test="not(mods:title)">
+				<mods:title>
+					<xsl:value-of select="'4 the sake of zvdd'"/>
+				</mods:title>
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	
+	<!-- identifier element must have type attribute -->
+	<xsl:template match="mods:identifier" mode="zvdd">
+		<xsl:copy>
+			<xsl:if test="not(@type)">
+				<xsl:attribute name="type">
+					<xsl:value-of select="'dlc'"/>
+				</xsl:attribute>
+				<xsl:apply-templates select="@*" mode="#current" />
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="mods:namePart" mode="zvdd">
+		<xsl:copy>
+			<xsl:attribute name="type">
+				<xsl:value-of select="'given'" />
+			</xsl:attribute>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="mods:languageTerm/@authority" mode="zvdd">
+		<xsl:attribute name="authority">
+			<xsl:value-of select="'iso639-2b'" />
+		</xsl:attribute>
+	</xsl:template>
+	
+	<!-- copy only the 1st occurrence of physicalDescription, 'cause ZVDD allows only one -->
+	<!-- in addition physicalDescription must contain either extent or digitalOrigin -->
+	<xsl:template match="mods:physicalDescription[position()=1]" mode="zvdd">
+		<xsl:copy>
+			<xsl:if test="not(mods:extent)">
+				<mods:extent>
+					<xsl:value-of select="'4 the sake of zvdd'"/>
+				</mods:extent>
+			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		</xsl:copy>
+	</xsl:template>
+	
+	<xsl:template match="mods:physicalDescription[position()>1]" mode="zvdd" />
+
+	<!-- end of zvdd mode -->
+	
 	
 	<!-- The administrative metadata of a dlc item -->
 	<xsl:template name="amdsec">
