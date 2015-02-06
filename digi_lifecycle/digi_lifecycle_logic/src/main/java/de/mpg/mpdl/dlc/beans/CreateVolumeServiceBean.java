@@ -1355,21 +1355,19 @@ public class CreateVolumeServiceBean {
 				if (item.getProperties().getPublicStatus()
 						.equals(PublicStatus.SUBMITTED)) {
 					logger.info("Assigning object pid " + id);
-
 					TaskParam tp1 = new TaskParam();
 					tp1.setLastModificationDate(item.getLastModificationDate());
-					tp1.setUrl(new URL(dlcUrlForHandle(id)));
+					tp1.setUrl(new URL(dlcUrlForHandle(id, item.getProperties().getContentModel().getObjid())));
 					Result oPidResult = client.assignObjectPid(id, tp1);
+					
 					logger.info("Assigning version pid " + id);
-
 					TaskParam tp2 = new TaskParam();
 					tp2.setLastModificationDate(oPidResult
 							.getLastModificationDate());
-					tp2.setUrl(new URL(dlcUrlForHandle(id.concat(":").concat(
-							item.getProperties().getVersion().getNumber()))));
+					tp2.setUrl(new URL(dlcUrlForHandle(id.concat(":").concat(item.getProperties().getVersion().getNumber()), item.getProperties().getContentModel().getObjid())));
 					Result vPidResult = client.assignVersionPid(id, tp2);
+					
 					logger.info("Releasing Volume " + id);
-
 					TaskParam taskParam = new TaskParam();
 					taskParam.setComment("Release Volume");
 					taskParam.setLastModificationDate(vPidResult
@@ -1377,15 +1375,14 @@ public class CreateVolumeServiceBean {
 					Result res = client.release(id, taskParam);
 					ilm.setIngestStatus(IngestStatus.READY);
 				} else {
+					
 					logger.info("Assigning version pid " + id);
-
 					TaskParam tp2 = new TaskParam();
 					tp2.setLastModificationDate(item.getLastModificationDate());
-					tp2.setUrl(new URL(dlcUrlForHandle(id.concat(":").concat(
-							item.getProperties().getVersion().getNumber()))));
+					tp2.setUrl(new URL(dlcUrlForHandle(id.concat(":").concat(item.getProperties().getVersion().getNumber()), item.getProperties().getContentModel().getObjid())));
 					Result vPidResult = client.assignVersionPid(id, tp2);
+					
 					logger.info("Releasing Volume " + id);
-
 					TaskParam taskParam = new TaskParam();
 					taskParam.setComment("Release Volume");
 					taskParam.setLastModificationDate(vPidResult
@@ -1681,19 +1678,28 @@ public class CreateVolumeServiceBean {
 
 	}
 
-	public static String dlcUrlForHandle(String id) {
+	public static String dlcUrlForHandle(String id, String contentModel) {
 		try {
-			String instance = PropertyReader.getProperty("dlc.instance.url");
-			String ctx_path = PropertyReader.getProperty("dlc.context.path");
-			return instance.concat("/" + ctx_path).concat("/view/").concat(id)
-					.concat("/recto-verso");
-		} catch (IOException e) {
+			
+			StringBuffer sb = new StringBuffer();
+			sb.append(PropertyReader.getProperty("dlc.instance.url"));
+			sb.append("/");
+			sb.append(PropertyReader.getProperty("dlc.context.path"));
+			
+			if(VolumeServiceBean.volumeContentModelId.equals(contentModel) || VolumeServiceBean.monographContentModelId.equals(contentModel))
+			{
+				sb.append("/view/" + id + "/recto-verso");
+			}
+			else if (VolumeServiceBean.volumeContentModelId.equals(contentModel))
+			{
+				sb.append("/viewMulti/" + id);
+			}
+			return sb.toString();
+			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		return null;
 	}
 
