@@ -100,14 +100,14 @@ All rights reserved. Use is subject to license terms.
 					<h:inputText id="bookmarkLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
 				</ui:fragment>
 				
-				<ui:remove>
-					<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
-						<h:outputLabel for="citFulltextPage" styleClass="eg3_markTextButton">
-							<h:outputText value="Handle-URL of page:"/> <!-- TODO: missing label -->
-						</h:outputLabel>
-						<h:inputText id="citFulltextPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
-					</ui:fragment>
-				</ui:remove>
+				
+				<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
+					<h:outputLabel for="citFulltextPage" styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_handle_single_mark}"/> <!-- TODO: missing label -->
+					</h:outputLabel>
+					<h:inputText id="citFulltextPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/fulltext/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
+				</ui:fragment>
+				
 				<script type="text/javascript">
 					$(function(){
 						if ($.browser.msie) {
