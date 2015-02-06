@@ -264,13 +264,7 @@
 				<filtering>true</filtering>
 			</testResource>
 		</testResources>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-webdav</artifactId>
-                <version>1.0-beta-2</version>
-			</extension>
-		</extensions>
+		
 		<!-- if no tests are present don't fail the complete package process -->
 		<pluginManagement>
 			<plugins>
@@ -282,24 +276,9 @@
 			        <lifecycleMappingMetadata>
 			          <pluginExecutions>
 			            <pluginExecution>
-			              <pluginExecutionFilter>
-			                <groupId>*</groupId>
-			                <artifactId>*</artifactId>
-			                <versionRange>[1.0.0,)</versionRange>
-			                <goals>
-			                  <goal>some-goal</goal>
-			                </goals>
-			              </pluginExecutionFilter>
-			              <action>
-			                <ignore />
-			              </action>
-			            </pluginExecution>
-			            <pluginExecution>
 			            	<pluginExecutionFilter>
 			            		<groupId>org.zeroturnaround</groupId>
-			            		<artifactId>
-			            			javarebel-maven-plugin
-			            		</artifactId>
+			            		<artifactId>javarebel-maven-plugin</artifactId>
 			            		<versionRange>[1.0.5,)</versionRange>
 			            		<goals>
 			            			<goal>generate</goal>
@@ -309,6 +288,21 @@
 			            		<ignore />
 			            	</action>
 			            </pluginExecution>
+			            <pluginExecution>
+    							<pluginExecutionFilter>
+    								<groupId>org.jibx</groupId>
+    								<artifactId>jibx-maven-plugin</artifactId>
+    								<versionRange>
+    									[1.2.3,)
+    								</versionRange>
+    								<goals>
+    									<goal>bind</goal>
+    								</goals>
+    							</pluginExecutionFilter>
+    							<action>
+    								<ignore />
+    							</action>
+    						</pluginExecution>
 			          </pluginExecutions>
 			        </lifecycleMappingMetadata>
 			      </configuration>
@@ -342,18 +336,13 @@
 
 		      <plugin>
 		        <artifactId>maven-compiler-plugin</artifactId>
+		        <version>3.1</version>
 		        <configuration>
-		          <source>1.6</source>
-		          <target>1.6</target>
+		          <encoding>UTF-8</encoding>
+		          <source>${jdk.version}</source>
+		          <target>${jdk.version}</target>
 		        </configuration>
 		      </plugin>
-		      <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-ejb-plugin</artifactId>
-	            <configuration>
-	                <ejbVersion>3.0</ejbVersion>
-	            </configuration>
-        	  </plugin>
 
 		</plugins>
 	</build>
@@ -362,46 +351,41 @@
 		<plugins>
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>taglist-maven-plugin</artifactId>
+				<version>2.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7.1</version>
 				<configuration>
 					<sourceEncoding>utf-8</sourceEncoding>
 					<minimumTokens>100</minimumTokens>
-					<targetJdk>1.5</targetJdk>
 				</configuration>
 			</plugin>
-			<plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>changelog-maven-plugin</artifactId>
-            </plugin>
-			<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-checkstyle-plugin</artifactId>
-            <configuration>
-                <configLocation>http://escidoc1.escidoc.mpg.de/resources/checkstyle/checkstyle.xml</configLocation>
-            </configuration>
-        </plugin>
+
         <plugin>
                 <!-- JavaNCSS - A Source Measurement Suite for Java
                     http://www.kclee.de/clemens/java/javancss/ -->
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>javancss-maven-plugin</artifactId>
+            <version>2.0</version>
         </plugin>
         <plugin>
                 <!-- A Java package dependency analyzer that generates
                       design quality metrics http://clarkware.com/software/JDepend.html -->
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>jdepend-maven-plugin</artifactId>
+            <version>2.0-beta-2</version>
         </plugin>
 		</plugins>
 	</reporting>
@@ -409,7 +393,8 @@
 	<!-- properties valid for all profiles, except overriden by individual values -->
 	<properties>
 		<!-- the jdk version to use -->
-		<jdk.version>1.6</jdk.version>
+		<jdk.version>1.7</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		
 		<escidoc.common.framework.url>http://url-to-escidoc:8080/</escidoc.common.framework.url>
 		<escidoc.common.login.url>http://url-to-escidoc:8080/</escidoc.common.login.url>
@@ -451,32 +436,39 @@
 	</properties>
 
 	<profiles>
+		
+		<profile>			
+			<id>env-jrebel-build</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.zeroturnaround</groupId>
+						<artifactId>jrebel-maven-plugin</artifactId>
+						<version>1.1.5</version>
+						<executions>
+							<execution>
+								<id>generate-rebel-xml</id>
+								<phase>process-resources</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		
+		
 		<!-- this profile is used by developers -->
 		<profile>
 			<id>env-development</id>
 			<build>
                <plugins>
-                   <plugin>
-                       <groupId>org.zeroturnaround</groupId>
-                       <artifactId>javarebel-maven-plugin</artifactId>
-                       <executions>
-                           <execution>
-                               <id>generate-rebel-xml</id>
-                               <phase>process-resources</phase>
-                               <goals>
-                                   <goal>generate</goal>
-                               </goals>
-                           </execution>
-                       </executions>
-						<dependencies>
-							<dependency>
-								<groupId>org.codehaus.plexus</groupId>
-								<artifactId>plexus-utils</artifactId>
-								<version>1.4.1</version>
-								<scope>runtime</scope>
-							</dependency>
-						</dependencies>		                       
-                   </plugin>
+                   
                </plugins>
            </build> 
 			<properties>
@@ -592,32 +584,6 @@
 
 		</profile>
 		
-		<profile>
-			<!-- this profile gets activated if os is windows -->
-			<id>Windows</id>
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-			<properties>
-				<!-- windows needs an extra slash in jboss-service.xml -->
-				<jboss.pathcorrection>/</jboss.pathcorrection>
-			</properties>
-		</profile>
-		<profile>
-			<!-- this profile gets activated if os is linux -->
-			<id>Linux</id>
-			<activation>
-				<os>
-					<name>Linux</name>
-					<family>linux</family>
-				</os>
-			</activation>
-			<properties>
-				<!-- linux doesn't need the extra slash like windows does -->
-				<jboss.pathcorrection />
-			</properties>
-		</profile>
+		
 	</profiles>
 </project>
