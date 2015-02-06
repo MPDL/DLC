@@ -20,19 +20,26 @@ import javax.faces.bean.ViewScoped;
 import com.ocpsoft.pretty.faces.annotation.URLAction;
 import com.ocpsoft.pretty.faces.annotation.URLMapping;
 
+import de.escidoc.core.resources.om.context.Context;
 import de.mpg.mpdl.dlc.beans.ApplicationBean;
+import de.mpg.mpdl.dlc.beans.ContextServiceBean;
 import de.mpg.mpdl.dlc.beans.LoginBean;
+import de.mpg.mpdl.dlc.beans.OrganizationalUnitServiceBean;
+import de.mpg.mpdl.dlc.beans.SessionBean;
 import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
 @ViewScoped
-@URLMapping(id = "viewMultiVol", pattern = "/viewMmulti/#{viewMultiVol.volumeId}", viewId = "/viewMultiVol.xhtml")
+@URLMapping(id = "viewMultiVol", pattern = "/viewMulti/#{viewMultiVol.volumeId}", viewId = "/viewMultiVol.xhtml")
 public class ViewMultiVol{
 
 	private VolumeServiceBean volServiceBean = new VolumeServiceBean();
+	private ContextServiceBean contextServiceBean = new ContextServiceBean();
+	private OrganizationalUnitServiceBean orgServiceBean = new OrganizationalUnitServiceBean();
 	
 	private String volumeId;
 	
@@ -43,12 +50,18 @@ public class ViewMultiVol{
 	@ManagedProperty("#{loginBean}")
 	private LoginBean loginBean;
 	
+	@ManagedProperty("#{sessionBean}")
+	private SessionBean sessionBean;
+	
 	enum ViewType
 	{
 		LIST, ISBD
 	}
 	
 	private ViewType viewType = ViewType.LIST;
+	private Context context;
+	private Organization volumeOu;
+
 	
 	
 	@URLAction(onPostback=false)
@@ -58,7 +71,13 @@ public class ViewMultiVol{
 		{   
 			try {
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
-				
+				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
+				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
+				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
+					{sessionBean.setLogoLink(volumeOu.getId());
+					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
+					sessionBean.setLogoTlt(InternationalizationHelper.getTooltip("main_home")
+							.replace("$1", volumeOu.getEscidocMd().getTitle()));}
 			} catch (Exception e) {
 				MessageHelper.errorMessage(InternationalizationHelper.getMessage("error_loadVolume"));
 			}
@@ -100,6 +119,30 @@ public class ViewMultiVol{
 
 	public void setLoginBean(LoginBean loginBean) {
 		this.loginBean = loginBean;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+	}
+
+	public Organization getVolumeOu() {
+		return volumeOu;
+	}
+
+	public void setVolumeOu(Organization volumeOu) {
+		this.volumeOu = volumeOu;
+	}
+
+	public SessionBean getSessionBean() {
+		return sessionBean;
+	}
+
+	public void setSessionBean(SessionBean sessionBean) {
+		this.sessionBean = sessionBean;
 	}
 	
 	

@@ -26,7 +26,7 @@ All rights reserved. Use is subject to license terms.
 
 	<!-- INTERFACE -->
 	<cc:interface>
-		<cc:attribute name="volume" required="true"/>
+		<cc:attribute name="volume"/>
 		<cc:attribute name="context" />
 	</cc:interface>
 	
@@ -36,24 +36,25 @@ All rights reserved. Use is subject to license terms.
 	<h:panelGroup layout="block" styleClass="eg3_detailItemHeader">
 
 		<h3 class="eg3_multiVolumeTitle">
-			<pretty:link mappingId="volumes" title="#{tlt.view_page_goToCollectionListLnk}">
-				<f:param value="#{cc.attrs.volume.item.properties.context.objid}"/>
+			<pretty:link mappingId="volumes" title="#{tlt.view_page_goToCollectionListLnk}" id="linkContext">
+				<f:param value="#{cc.attrs.context.objid}"/>
 				<h:outputText value="#{cc.attrs.context.properties.name}"/>
 			</pretty:link>
 		</h3>
 
 		<br/>
-		<h:panelGroup styleClass="eg3_floatLeft">
+		
+		<h:panelGroup styleClass="eg3_floatLeft" rendered="#{not empty cc.attrs.volume}">
 			<h:form>
 					<!-- Volume -->
 					<h:panelGroup rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
 						<!-- Multivolume title -->
 						<h3 class="eg3_volumeTitle">
 							<h:panelGroup rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
-								<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}"/>
-								<a4j:commandLink execute="@this" render="mvPlayer" oncomplete="eg3_loadPopup();">
+								<pretty:link mappingId="viewMultiVol" title="#{tlt.list_goToVolumeLnk}">
+									<f:param value="#{cc.attrs.volume.relatedParentVolume.objidAndVersion}"/>
 									<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
-								</a4j:commandLink>
+								</pretty:link>
 							</h:panelGroup>
 							<h:panelGroup rendered="#{empty cc.attrs.volume.relatedParentVolume}">
 								<h:outputText value="ERROR! No multivolume found" />

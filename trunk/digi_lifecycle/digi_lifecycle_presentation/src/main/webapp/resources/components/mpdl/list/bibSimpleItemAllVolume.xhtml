@@ -351,14 +351,15 @@ All rights reserved. Use is subject to license terms.
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" id="multiItemContent" styleClass="eg3_itemContent">
-				<mpdl:mvPlayer id="popupMultivolume" target="popupMV" vol="#{cc.attrs.volume}" searchBean="#{cc.attrs.searchBean}"/>
+				
 				
 				<!-- START eg3_itemHeadline -->
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline">
 					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-						<h:outputLink>
+						<pretty:link mappingId="viewMultiVol" title="#{tlt.list_goToVolumeLnk}">
+							<f:param value="#{cc.attrs.volume.objidAndVersion}"/>
 							<h:outputText value="#{volumeUtilBean.getShortTitleView(cc.attrs.volume)}" title="#{tlt.list_goToVolumeLnk}"/>
-						</h:outputLink>
+						</pretty:link>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_itemPublishingInformation">
 						<h:outputText value="#{volumeUtilBean.getSubTitleView(cc.attrs.volume)}"/>
@@ -444,7 +445,7 @@ All rights reserved. Use is subject to license terms.
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:commandLink value="#{lbl.list_NavElem_ShowRelatedPublications}" action="#{cc.attrs.searchBean.loadSubvolumes(cc.attrs.volume)}">
-									<f:ajax render="childVolumes popupMultivolume:childVolumes popupMultivolume:showChildButtons" onevent="function(data) {showChildren(data, true);}"/>
+									<f:ajax render="childVolumes" onevent="function(data) {showChildren(data, true);}"/>
 						</h:commandLink>
 					</h:panelGroup>
 					

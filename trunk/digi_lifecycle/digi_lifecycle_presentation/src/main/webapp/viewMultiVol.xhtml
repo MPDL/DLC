@@ -16,85 +16,225 @@ All rights reserved. Use is subject to license terms.
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
-	xmlns:rich="http://richfaces.org/rich"
-	xmlns:fu="http://java.sun.com/jsf/composite/components/fileUpload"
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
-	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
-	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
+	xmlns:rich="http://richfaces.org/rich"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:view="http://java.sun.com/jsf/composite/components/mpdl/view"
+	xmlns:list="http://java.sun.com/jsf/composite/components/mpdl/list"
 	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 
 <ui:composition template="templates/template_v3.xhtml">
-
-	<ui:param name="browserTitle" value="#{volumeUtilBean.getFirstNamePart(viewMultiVol.volume.modsMetadata).name}"/>
 	
-	<ui:param name="descriptionSelected" value="#{viewMultiVol.viewType == 'LIST' or viewMultiVol.viewType == 'ISBD'}"/>
-	
-	<ui:define name="contentMenu">			
-		<h:outputText id="lblDescription" styleClass="free_area0" value="#{lbl.menu_description}" rendered="#{descriptionSelected}" />
-	</ui:define>
-	
-<ui:remove>	
-	<ui:define name="actionsMenu">
-		<div class="free_area0 sub action">
-			<h:panelGroup rendered="#{descriptionSelected}">
-				<h:commandButton value="#{lbl.menu_list}" action="#{viewMultiVol.setViewType('LIST')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
-				<h:outputText id="lblList" value="#{lbl.menu_list}" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
-				<h:panelGroup styleClass="seperator" rendered="true" />
-				<h:commandButton value="#{lbl.menu_ISBD}" action="#{viewMultiVol.setViewType('ISBD')}" styleClass="large_imgBtn groupBtn" rendered="#{viewMultiVol.viewType == 'LIST'}"/>
-				<h:outputText id="lblISBD" value="#{lbl.menu_ISBD}" rendered="#{viewMultiVol.viewType == 'ISBD'}"/>
-				<h:panelGroup styleClass="seperator" rendered="true" />
-			</h:panelGroup>
-		</div>
-	</ui:define>
-</ui:remove>	
-	<ui:define name="mainContent">
-		<h:panelGroup layout="block" styleClass="full_area0 fullItem">
+	<ui:define name="separateContentHeader">
 		
-			<mpdl:header volume="#{viewMultiVol.volume}" />
-			
-			<div id="viewBiblMD" class="full_area0 itemBlock">
-				<h:panelGroup styleClass="xLarge_area0 blockHeader endline" >
-					<h:outputText value="#{lbl.view_dtls_biblMD}" />&#160;
-				</h:panelGroup>
-				<h:panelGroup styleClass="seperator" />
-				
-	<h:commandButton value="#{lbl.button_command_isbd}">
-		<rich:componentControl target="isbdPopup" operation="show" />
-	</h:commandButton>
-	
-    <rich:popupPanel id="isbdPopup" modal="false" autosized="true" >
-        <f:facet name="controls">
-            <h:outputLink value="#" onclick="#{rich:component('isbdPopup')}.hide(); return false;">  X </h:outputLink>
-        </f:facet>
-			<modsViewer:isbd modsMetadata="#{viewMultiVol.volume.modsMetadata}" />
-			<a4j:repeat var="vol" value="#{viewMultiVol.volume.relatedChildVolumes}">
-				<modsViewer:isbd_vol modsMetadata="#{vol.modsMetadata}" />
-			</a4j:repeat>
-    </rich:popupPanel>					
-				
-				<h:panelGroup styleClass="free_area0 itemBlockContent endline">			
-					<mpdl:biblMD volume="#{viewMultiVol.volume}" rendered="#{not empty viewMultiVol.volume.relatedChildVolumes}"/>
-				</h:panelGroup>
-			</div>
-
-
-			<h:panelGroup layout="block" class="full_area0 itemBlock" id="viewVolumes" rendered="#{not empty viewMultiVol.volume.relatedChildVolumes}">
-				<h:panelGroup styleClass="xLarge_area0 blockHeader endline">
-					<h:outputText value="#{lbl.view_dtls_volumes_txt}" />&#160;
-				</h:panelGroup>
-				<h:panelGroup styleClass="seperator" />
-				<h:panelGroup styleClass="free_area0 itemBlockContent endline" >			
-					<list:bibItemVolume volumes="#{viewMultiVol.volume.relatedChildVolumes}" />
-				</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
+			<h:panelGroup id="header" layout="block" styleClass="eg3_container_1">
+				<modsViewer:header context="#{viewMultiVol.context}"/>
 			</h:panelGroup>
+			<!-- TODO labels -->
+			<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewMultiVol.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
+		</h:panelGroup>
+	</ui:define>
+	
+	
+	<ui:define name="citationLink">
+		<script type="text/javascript">
+			function activateCitationContent() {
+				$('.eg3_citationOverlayArea').show(400);
+			}
+		</script>
+		<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea" rendered="#{viewMultiVol.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+			<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" title="#{tlt.view_page_showCitationLink}" onclick="activateCitationContent();"/>
+		</h:panelGroup>
+	</ui:define>
+	
+	<ui:define name="citationLinkContent">
+			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{viewMultiVol.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+				<button class="eg3_icon_close_16_16 eg3_floatRight" onclick="$(this).parent().hide('slow');">
+					<h:outputText value="&#160;"/>
+				</button>
+				<br/>
+				
+				<ui:fragment rendered="#{not empty viewMultiVol.volume.properties.pid}">
+					<h:outputLabel for="volumeHandle" styleClass="eg3_markTextButton">
+						<h:outputText value="#{lbl.citation_handle_volume_mark}"/>
+					</h:outputLabel>
+					<h:inputText id="volumeHandle" value="http://hdl.handle.net/#{viewMultiVol.volume.properties.pid}" readonly="true" styleClass="eg3_container_1"/>
+				</ui:fragment>
+				
+				<ui:fragment rendered="#{empty viewMultiVol.volume.properties.pid}">
+				<h:outputLabel for="volumeLink" styleClass="eg3_markTextButton">
+					<h:outputText value="#{lbl.citation_handle_title_mark}"/>
+				</h:outputLabel>
+				<h:inputText id="volumeLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/viewMulti/#{viewMultiVol.volumeId}" readonly="true" styleClass="eg3_container_1"/>
+				</ui:fragment>
+				<script type="text/javascript">
+					$(function(){
+						if ($.browser.msie) {
+							$('.eg3_markTextButton').bind("click", function(evt, btn){
+								$(this).next("input[id]").focus().select();
+							});
+						}
+					});
+				</script>
+			</h:panelGroup>
+		</ui:define>
+	
 
+	<ui:define name="mainContent">
+		
+		<h:panelGroup layout="block" styleClass="eg3_container_1">
+			
+			<h:panelGroup layout="block" styleClass="eg3_content_bgColor_2 eg3_container_1 eg3_ribbon">
+				
+			</h:panelGroup>
+			
+			
+		
+			<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_startpageTitle">
+				<h1><h:outputText value="#{volumeUtilBean.getFullTitleView(viewMultiVol.volume)}"/></h1>
+			</h:panelGroup>
+			
+			
+			
+			
+			
+			<h:panelGroup layout="block" styleClass="eg3_container_2_3" style="padding-left:1em">
+			
+			<modsViewer:default modsMetadata="#{viewMultiVol.volume.modsMetadata}" volumeOu="#{viewMultiVol.volumeOu}"/>
+			
+			<ui:remove>
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_editor}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getFirstEditor(viewMultiVol.volume.modsMetadata).name} (#{lbl.view_dtls_editor_suffix})"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_title}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getMainTitle(viewMultiVol.volume.modsMetadata).title}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getSubTitle(viewMultiVol.volume.modsMetadata).subTitle}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_subTitle}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getSubTitle(viewMultiVol.volume.modsMetadata).subTitle}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getNoteSOR(viewMultiVol.volume.modsMetadata).note}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_SOR}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getNoteSOR(viewMultiVol.volume.modsMetadata).note}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getMainPublisher(viewMultiVol.volume.modsMetadata).publisher}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_publisher}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getMainPublisher(viewMultiVol.volume.modsMetadata).publisher}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty volumeUtilBean.getMainNote(viewMultiVol.volume.modsMetadata).note}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_mainNote}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{volumeUtilBean.getMainNote(viewMultiVol.volume.modsMetadata).note}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel" rendered="#{viewMultiVol.volume.modsMetadata.keywords.size()>0}">
+						<h:outputText value="#{lbl.mods_keywords}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<a4j:repeat var="keyword" value="#{viewMultiVol.volume.modsMetadata.keywords}" rowKeyVar="rowKey">
+							<h:outputText value="#{keyword} "/>
+						</a4j:repeat>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{not empty viewMultiVol.volume.modsMetadata.catalogueId_001}">
+					<h:panelGroup layout="block" styleClass="eg3_container_1_8 eg3_itemMetaLabel">
+						<h:outputText value="#{lbl.mods_catalogueId_001}"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="eg3_container_7_8 eg3_itemMetaValue">
+						<h:outputText value="#{viewMultiVol.volume.modsMetadata.catalogueId_001}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+			
+
+				</ui:remove>
+
+				
+				<br/>
+				<br/>
+				<br/>
+				<h:panelGroup layout="block" id="childVolumes" styleClass="eg3_container_1 eg3_bibList" style="margin-top:">
+						<h2><h:outputText value="#{lbl.view_multivol_volumes}"/></h2>
+						<!-- multi volume childs -->
+						<a4j:repeat var="child_volume" value="#{viewMultiVol.volume.relatedChildVolumes}">
+							<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1_5" style="text-align:center;">
+								<h:panelGroup layout="block" styleClass="eg3_container_1 ">
+									<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}" rendered="#{child_volume.pages[0] != null and child_volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+										<f:param value="#{child_volume.objidAndVersion}"/>
+										<f:param value="recto-verso"/>
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(child_volume).contentIds, 'THUMBNAIL')}" alt="" title="#{lbl.view_browse}" style="height:14.5833em; padding: 10% 10% 2%;"/>
+									</pretty:link>
+								</h:panelGroup>
+								
+								<h:panelGroup styleClass="eg3_itemSubTitle">
+									<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">
+										<f:param value="#{child_volume.objidAndVersion}"/>
+										<f:param value="recto-verso"/>
+										<h:outputText value="#{volumeUtilBean.getVolumeShortTitleView(child_volume)}"/>
+										<h:outputText value="&#160;#{volumeUtilBean.getVolumeSubTitleView(child_volume)}"/>
+									</pretty:link>
+								</h:panelGroup>
+								
+							</h:panelGroup>
+							
+						</a4j:repeat>
+						
+					
+				</h:panelGroup> 
+			
+			
+			</h:panelGroup>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		</h:panelGroup>
 	</ui:define>
-
 </ui:composition>
-
 
 </html>
