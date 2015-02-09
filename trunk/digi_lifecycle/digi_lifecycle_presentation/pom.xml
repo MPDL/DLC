@@ -241,7 +241,7 @@
 							<dependency>
 								<groupId>jsch</groupId>
 								<artifactId>jsch</artifactId>
-								<version>0.1.42</version>
+								<version>0.1.25</version>
 							</dependency>
 						</dependencies>
 					</plugin>
