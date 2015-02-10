@@ -157,11 +157,26 @@ public class TeiSdTreeNodeImpl {
 	public List<Element> getDocAuthors()
 	{
 		List<Element> docAuthorList = new ArrayList<Element>();
-		NodeList nl = element.getElementsByTagNameNS("http://www.tei-c.org/ns/1.0", "docAuthor");
-		for(int i=0; i<nl.getLength();i++)
+		for(Node n = getElement().getFirstChild(); n!=null; n=n.getNextSibling())
 		{
-			docAuthorList.add((Element)nl.item(i));
+			if(n.getNodeType()==Node.ELEMENT_NODE)
+			{
+				if(n.getLocalName().equals("docAuthor"))
+				{
+					docAuthorList.add((Element)n);
+				}
+				else if (n.getLocalName().equals("byline"))
+				{
+					NodeList nl = element.getElementsByTagNameNS("http://www.tei-c.org/ns/1.0", "docAuthor");
+					for(int i=0; i<nl.getLength();i++)
+					{
+						docAuthorList.add((Element)nl.item(i));
+					}
+				}
+			}
+
 		}
+
 		return docAuthorList;
 		
 	}
