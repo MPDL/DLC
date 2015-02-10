@@ -246,6 +246,7 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		{
 			volVersionStatus = new VolumeStatus[]{VolumeStatus.submitted,};
 			volPublicStatus = new VolumeStatus[]{VolumeStatus.submitted, VolumeStatus.released};
+			volTypes = new VolumeTypes[]{VolumeTypes.VOLUME, VolumeTypes.MULTIVOLUME, VolumeTypes.MONOGRAPH};
 		}
 		else if("released".equals(filterItemState))
 		{
