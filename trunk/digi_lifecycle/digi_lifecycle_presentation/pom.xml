@@ -210,7 +210,7 @@
 								<configuration>
 									<tasks>
 									
-										<sshexec command="rm -r ${tomcat.install.dir}/webapps/${project.warName}.war ${tomcat.install.dir}/webapps/${project.warName}" host="dev-dlc.mpdl.mpg.de" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true"/>
+										<sshexec command="rm -r ${tomcat.install.dir}/webapps/${project.warName}.war ${tomcat.install.dir}/webapps/${project.warName}" username="tomcat" host="dev-dlc.mpdl.mpg.de" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true"/>
 										<scp file="${project.build.directory}/classes/dlc.properties" todir="tomcat@dev-dlc.mpdl.mpg.de:${tomcat.install.dir}/conf" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true" />
 										<scp file="${project.build.directory}/${project.warName}.${project.packaging}" todir="tomcat@dev-dlc.mpdl.mpg.de:${tomcat.install.dir}/webapps" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true" />
 									
