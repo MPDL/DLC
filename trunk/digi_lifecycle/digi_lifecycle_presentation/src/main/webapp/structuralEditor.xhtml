@@ -752,7 +752,7 @@ All rights reserved. Use is subject to license terms.
 													<h:outputText value="#{divItem.teiElementWrapper.pagebreakWrapper.page.order + 1}"/>
 													<h:outputText value=" / " rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
 												</h:panelGroup>
-												<h:outputText value="#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}"/>
+												<h:outputText value="#{divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.pagebreakWrapper.teiElement.numeration}" style="font-weight:bold;"/>
 												<h:outputText value=" - "/>
 												
 												<h:panelGroup rendered="#{divItem.teiElementWrapper.pagebreakWrapper != structuralEditorBean.selectedPb or divItem.teiElementWrapper.teiElement.elementType=='FRONT' or divItem.teiElementWrapper.teiElement.elementType=='BODY' or divItem.teiElementWrapper.teiElement.elementType=='BACK'}">
@@ -760,7 +760,7 @@ All rights reserved. Use is subject to license terms.
 														<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.page.order + 1}"/>
 														<h:outputText value=" / " rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
 													</h:panelGroup>
-													<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}"/>
+													<h:outputText value="#{divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" rendered="#{not empty divItem.teiElementWrapper.partnerElement.pagebreakWrapper.teiElement.numeration}" style="font-weight:bold;"/>
 												</h:panelGroup>
 												
 												<h:selectOneMenu value="#{divItem.teiElementWrapper.partnerElement.pagebreakIdToMoveTo}" rendered= "#{divItem.teiElementWrapper.pagebreakWrapper == structuralEditorBean.selectedPb and divItem.teiElementWrapper.teiElement.elementType!='FRONT' and divItem.teiElementWrapper.teiElement.elementType!='BODY' and divItem.teiElementWrapper.teiElement.elementType!='BACK'}">
