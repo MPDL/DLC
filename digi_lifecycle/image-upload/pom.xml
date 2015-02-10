@@ -192,7 +192,7 @@
 		</profile>
 		
 		
-				<profile>
+		<profile>
 			<id>env-testing-continuum</id>
 			<build>
 				<plugins>
