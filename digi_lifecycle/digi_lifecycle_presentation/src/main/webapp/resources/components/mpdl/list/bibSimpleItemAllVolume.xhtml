@@ -98,15 +98,16 @@ All rights reserved. Use is subject to license terms.
 				</h:panelGroup>
 				
 				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
-					<mpdl:mvPlayer target="popupMV" vol="#{cc.attrs.volume.relatedParentVolume}" searchBean="#{cc.attrs.searchBean}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
+					
 					<h:panelGroup layout="block" styleClass="eg3_parentItemLabelArea">
 						<h:outputText value="#{lbl.list_parent} "/>
 					</h:panelGroup>
 					<h:panelGroup layout="block" styleClass="eg3_parentItemHeadline">
 						<h:panelGroup layout="block" styleClass="eg3_itemTitle">
-							<h:outputLink>
-								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}"/>
-							</h:outputLink>
+							<pretty:link mappingId="viewMultiVol" title="#{tlt.list_goToVolumeLnk}" rendered="#{not empty cc.attrs.volume.relatedParentVolume}">
+								<f:param value="#{cc.attrs.volume.relatedParentVolume.objidAndVersion}"/>
+								<h:outputText value="#{volumeUtilBean.getFullTitleView(cc.attrs.volume.relatedParentVolume)}" />
+							</pretty:link>
 							<h:outputText value="ERROR! No Multivolume found!" rendered="#{empty cc.attrs.volume.relatedParentVolume}"/>
 						</h:panelGroup>
 					</h:panelGroup>
