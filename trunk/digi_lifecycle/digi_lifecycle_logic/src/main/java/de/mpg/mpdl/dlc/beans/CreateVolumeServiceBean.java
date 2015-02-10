@@ -568,7 +568,7 @@ public class CreateVolumeServiceBean {
 
 	public Volume update(Volume volume, String userHandle, String operation,
 			IngestImage teiFile, ModsMetadata modsMetadata,
-			List<IngestImage> images, IngestImage cdcFile) {
+			List<IngestImage> images, IngestImage cdcFile, IngestImage footer) {
 
 		ItemHandlerClient client;
 		try {
@@ -578,7 +578,7 @@ public class CreateVolumeServiceBean {
 			client.setHandle(userHandle);
 
 			if (images.size() > 0) {
-				uploadImagesAndCreateMets(images, null, volume.getItem()
+				uploadImagesAndCreateMets(images, footer, volume.getItem()
 						.getObjid(), volume, userHandle);
 			}
 
