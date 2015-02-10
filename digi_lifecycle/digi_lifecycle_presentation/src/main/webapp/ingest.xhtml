@@ -291,7 +291,7 @@ All rights reserved. Use is subject to license terms.
 					</rich:panel>
 					
 					
-					<rich:panel id="footer" rendered="#{ingestBean.volumeId == 'new' and ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
+					<rich:panel id="footer" rendered="#{ingestBean.selectedContentModel != applicationBean.cmMultiVol}">
 						<f:facet name="header">
 							<h:outputText value="#{lbl.admin_upload_footer}"/>
 						</f:facet>

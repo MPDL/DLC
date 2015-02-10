@@ -1156,7 +1156,12 @@ public class IngestBean{
 					if(mabFile == null && modsMetadata.getCatalogueId_001() == null)
 						modsMetadata = updateModsMetadata(modsMetadata);
 						
-					this.volume = createVolumeService.update(volume, loginBean.getUserHandle(),operation, new IngestImage(teiFile), modsMetadata, imageFiles, new IngestImage(codicologicalFile));
+					IngestImage ingestImageFooter = null;
+					if(footer!=null)
+					{
+						ingestImageFooter = new IngestImage(footer);
+					}
+					this.volume = createVolumeService.update(volume, loginBean.getUserHandle(),operation, new IngestImage(teiFile), modsMetadata, imageFiles, new IngestImage(codicologicalFile), ingestImageFooter);
 					
 				
 				Thread.sleep(3000);
