@@ -190,6 +190,50 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		
+				<profile>
+			<id>env-testing-continuum</id>
+			<build>
+				<plugins>
+				
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>copy-to-tomcat</id>
+								<phase>install</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+
+								<configuration>
+									<tasks>
+										<sshexec command="rm -r ${tomcat.install.dir}/webapps/${project.warName}.war ${tomcat.install.dir}/webapps/${project.warName}" username="tomcat" host="dev-dlc.mpdl.mpg.de" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true"/>
+										<scp file="${project.build.directory}/classes/image-upload.properties" todir="tomcat@dev-dlc.mpdl.mpg.de:${tomcat.install.dir}/conf" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true" />
+										<scp file="${project.build.directory}/${project.warName}.${project.packaging}" todir="tomcat@dev-dlc.mpdl.mpg.de:${tomcat.install.dir}/webapps" keyfile="${user.home}/.ssh/id_rsa" knownhosts="${user.home}/.ssh/known_hosts" passphrase="" trust="true" verbose="true" />
+									</tasks>
+								</configuration>
+
+							</execution>
+						</executions>
+						<dependencies>
+							<dependency>
+								<groupId>ant</groupId>
+								<artifactId>ant-jsch</artifactId>
+								<version>1.6.5</version>
+							</dependency>
+							<dependency>
+								<groupId>jsch</groupId>
+								<artifactId>jsch</artifactId>
+								<version>0.1.25</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 	
 </project>
