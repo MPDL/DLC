@@ -175,7 +175,8 @@ All rights reserved. Use is subject to license terms.
 						</h:panelGroup>
 					</ui:fragment>
 					
-					<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume)}">
+					<!-- Currently volumes cannot be deleted due to eSciDoc Bug https://www.escidoc.org/jira/browse/INFR-1527 -->
+					<ui:fragment rendered="#{loginBean.user.deletable(cc.attrs.volume) and cc.attrs.volume.item.properties.contentModel.objid == applicationBean.cmVolume}">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">&#160;</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaValue">
 							<h:commandButton action="#{myVolumesBean.delete(cc.attrs.volume)}" value="#{lbl.button_command_delete}" styleClass="eg3_borderradius_5" onclick="return confirm('#{lbl.list_confirmDelete}');">
