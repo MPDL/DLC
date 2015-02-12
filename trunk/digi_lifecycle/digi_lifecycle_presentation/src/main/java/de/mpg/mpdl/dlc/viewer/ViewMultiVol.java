@@ -30,6 +30,7 @@ import de.mpg.mpdl.dlc.beans.VolumeServiceBean;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
 
 @ManagedBean
@@ -59,7 +60,7 @@ public class ViewMultiVol{
 	}
 	
 	private ViewType viewType = ViewType.LIST;
-	private Context context;
+	private Collection collection;
 	private Organization volumeOu;
 
 	
@@ -71,8 +72,8 @@ public class ViewMultiVol{
 		{   
 			try {
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, loginBean.getUserHandle());
-				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
-				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
+				this.collection = contextServiceBean.retrieveCollection(volume.getItem().getProperties().getContext().getObjid(), null);
+				volumeOu = orgServiceBean.retrieveOrganization(this.collection.getContext().getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{sessionBean.setLogoLink(volumeOu.getId());
 					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
@@ -121,14 +122,6 @@ public class ViewMultiVol{
 		this.loginBean = loginBean;
 	}
 
-	public Context getContext() {
-		return context;
-	}
-
-	public void setContext(Context context) {
-		this.context = context;
-	}
-
 	public Organization getVolumeOu() {
 		return volumeOu;
 	}
@@ -143,6 +136,14 @@ public class ViewMultiVol{
 
 	public void setSessionBean(SessionBean sessionBean) {
 		this.sessionBean = sessionBean;
+	}
+
+	public Collection getCollection() {
+		return collection;
+	}
+
+	public void setCollection(Collection collection) {
+		this.collection = collection;
 	}
 	
 	

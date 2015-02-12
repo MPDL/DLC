@@ -24,6 +24,10 @@ All rights reserved. Use is subject to license terms.
 	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 	<ui:composition template="templates/template_fullscreen.xhtml">
+		<ui:param name="volumeBrowserTitle" value="#{fullScreen.volume.item.properties.contentModel.objid == applicationBean.cmMono ? volumeUtilBean.getShortTitleView(fullScreen.volume) : volumeUtilBean.getVolumeShortTitleView(fullScreen.volume)}"/>		
+		<ui:param name="multiVolBrowserTitle" value=" #{not empty fullScreen.volume.relatedParentVolume ? ' | ' : ''}#{not empty fullScreen.volume.relatedParentVolume ? volumeUtilBean.getShortTitleView(fullScreen.volume.relatedParentVolume) : ''}"/>		
+		<ui:param name="browserTitle" value="#{volumeBrowserTitle} #{multiVolBrowserTitle} | #{fullScreen.collection.name} | #{fullScreen.volumeOu.escidocMd.title}" />
+	
 		<ui:define name="mainContent">
 			<h:panelGroup id="fullScreen" styleClass="eg3_container_1 eg3_fullscreenPage">
 				

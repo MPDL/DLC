@@ -67,6 +67,7 @@ import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 import de.mpg.mpdl.dlc.util.VolumeUtilBean;
 import de.mpg.mpdl.dlc.vo.Volume;
+import de.mpg.mpdl.dlc.vo.collection.Collection;
 import de.mpg.mpdl.dlc.vo.mets.MetsDiv;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.organization.Organization;
@@ -106,7 +107,7 @@ public class ViewPages implements Observer{
 	private ApplicationBean appBean = new ApplicationBean();
 
 	
-	private Context context;
+	private Collection collection;
 	
 	private static Logger logger = Logger.getLogger(ViewPages.class);
 
@@ -176,10 +177,10 @@ public class ViewPages implements Observer{
 			try {
 				
 				this.volume = volServiceBean.loadCompleteVolume(volumeId, getLoginBean().getUserHandle());
-				this.context = contextServiceBean.retrieveContext(volume.getItem().getProperties().getContext().getObjid(), null);
+				this.collection = contextServiceBean.retrieveCollection(volume.getItem().getProperties().getContext().getObjid(), null);
 			
 				//Set the logo of application to collection logo
-				volumeOu = orgServiceBean.retrieveOrganization(this.context.getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
+				volumeOu = orgServiceBean.retrieveOrganization(this.collection.getContext().getProperties().getOrganizationalUnitRefs().getFirst().getObjid());
 				if (volumeOu.getDlcMd().getFoafOrganization().getImgURL() != null && !volumeOu.getDlcMd().getFoafOrganization().getImgURL().equals(""))
 					{sessionBean.setLogoLink(volumeOu.getId());
 					sessionBean.setLogoUrl(volumeOu.getDlcMd().getFoafOrganization().getImgURL());
@@ -753,14 +754,7 @@ public class ViewPages implements Observer{
 	}
 
 
-	public Context getContext() {
-		return context;
-	}
-
-
-	public void setContext(Context context) {
-		this.context = context;
-	}
+	
 
 	public String addToClientIdMap(String divId, String clientId)
 	{
@@ -950,6 +944,14 @@ public class ViewPages implements Observer{
 
 	public void setTeiSdRoots(List<TeiSdTreeNodeImpl> teiSdRoots) {
 		this.teiSdRoots = teiSdRoots;
+	}
+
+	public Collection getCollection() {
+		return collection;
+	}
+
+	public void setCollection(Collection collection) {
+		this.collection = collection;
 	}
 
 }

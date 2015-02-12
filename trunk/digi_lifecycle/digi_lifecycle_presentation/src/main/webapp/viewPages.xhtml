@@ -24,13 +24,16 @@ All rights reserved. Use is subject to license terms.
 	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
 
 	<ui:composition template="templates/template_v3.xhtml">
+		<ui:param name="volumeBrowserTitle" value="#{viewPages.volume.item.properties.contentModel.objid == applicationBean.cmMono ? volumeUtilBean.getShortTitleView(viewPages.volume) : volumeUtilBean.getVolumeShortTitleView(viewPages.volume)}"/>		
+		<ui:param name="multiVolBrowserTitle" value=" #{not empty viewPages.volume.relatedParentVolume ? ' | ' : ''}#{not empty viewPages.volume.relatedParentVolume ? volumeUtilBean.getShortTitleView(viewPages.volume.relatedParentVolume) : ''}"/>		
+		<ui:param name="browserTitle" value="#{volumeBrowserTitle} #{multiVolBrowserTitle} | #{viewPages.collection.name} | #{viewPages.volumeOu.escidocMd.title}" />
 		
 		<ui:define name="separateContentHeader">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
 	
 			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
 				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<modsViewer:header volume="#{viewPages.volume}" context="#{viewPages.context}"/>
+					<modsViewer:header volume="#{viewPages.volume}" context="#{viewPages.collection.context}"/>
 				</h:panelGroup>
 				<!-- TODO labels -->
 				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>

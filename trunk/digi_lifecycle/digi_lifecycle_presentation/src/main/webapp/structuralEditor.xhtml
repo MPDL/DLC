@@ -27,6 +27,10 @@ All rights reserved. Use is subject to license terms.
 	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 	<ui:composition template="templates/template_v3.xhtml">
+		
+		<ui:param name="browserTitle" value="#{lbl.list_EditStruct}"/>
+		
+		
 		<ui:define name="separateContentHeader">
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
 			<link href="#{facesContext.externalContext.request.contextPath}/resources/cssFramework/jquery-ui/jquery-ui-1.9.1.custom.css" type="text/css" rel="stylesheet"/>
