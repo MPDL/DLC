@@ -13,6 +13,8 @@
  ******************************************************************************/
 package de.mpg.mpdl.dlc.vo.collection;
 
+import de.escidoc.core.resources.om.context.Context;
+
 public class Collection {
 	private String id;
 	
@@ -27,6 +29,8 @@ public class Collection {
 	private String type;
 	
 	private DLCAdminDescriptor dlcAD;
+	
+	private Context context;
 
 	public String getId() {
 		return id;
@@ -84,6 +88,14 @@ public class Collection {
 
 	public void setOuTitle(String ouTitle) {
 		this.ouTitle = ouTitle;
+	}
+
+	public Context getContext() {
+		return context;
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
 	}
 	
 	

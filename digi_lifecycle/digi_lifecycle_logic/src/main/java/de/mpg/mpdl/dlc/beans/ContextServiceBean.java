@@ -70,6 +70,7 @@ public class ContextServiceBean {
 		collection.setOuId(context.getProperties().getOrganizationalUnitRefs().get(0).getObjid());
 		collection.setOuTitle(context.getProperties().getOrganizationalUnitRefs().get(0).getXLinkTitle());
 		collection.setType(context.getProperties().getType());
+		collection.setContext(context);
 		
 		return collection;
 	}

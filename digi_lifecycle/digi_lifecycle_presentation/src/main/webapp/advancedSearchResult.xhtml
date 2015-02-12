@@ -24,6 +24,7 @@ All rights reserved. Use is subject to license terms.
 
 
 <ui:composition template="templates/template_v3.xhtml">
+	<ui:param name="browserTitle" value="#{lbl.sc_searchResults}"/>
 	<ui:define name="mainContent">
 		<mpdl:paginator paginatorBean="#{advancedSearchResultBean}">
 			

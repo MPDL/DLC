@@ -25,7 +25,7 @@ All rights reserved. Use is subject to license terms.
 
 
 <ui:composition template="templates/template_v3.xhtml">
-	<ui:param name="headline" value="#{allVolumesBean.collection.name}" />
+	<ui:param name="browserTitle" value="#{allVolumesBean.collection.name} | #{allVolumesBean.collection.ouTitle}" />
 	
 	<ui:remove>
 		<ui:define name="breadcrumbTitle">
