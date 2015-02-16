@@ -658,9 +658,11 @@ public class VolumeUtilBean {
 			
 			ModsName firstModsEditor = VolumeUtilBean.getFirstEditor(vol.getModsMetadata());
 			
+			ModsNote modsNote = VolumeUtilBean.getNoteSOR(vol.getModsMetadata());
+			
 
-			String firstAuthor, title, firstEditor;
-			firstAuthor = title = firstEditor = null;
+			String firstAuthor, title, note_SOR;
+			firstAuthor = title = note_SOR = null;
 			
 			if(firstModsAuthor!=null)
 			{
@@ -670,9 +672,9 @@ public class VolumeUtilBean {
 			{
 				title = modsTitle.getTitle();
 			}
-			if(firstModsEditor!=null)
+			if(modsNote!=null)
 			{
-				firstEditor = firstModsEditor.getName();
+				note_SOR = modsNote.getNote();
 			}
 
 			//Verfasser 1
@@ -693,12 +695,12 @@ public class VolumeUtilBean {
 				sb.append(InternationalizationHelper.getLabel("na_no_volume_title"));
 			}
 			
-			//Herausgeber 1, falls kein Verfasser vorhanden
-			if(isEmpty(firstAuthor) && !isEmpty(firstEditor))
+			//Statement of Responsibility, falls kein Verfasser vorhanden
+			if(isEmpty(firstAuthor) && !isEmpty(note_SOR))
 			{
 				sb.append(" / ");
-				sb.append(firstEditor);
-				sb.append(" (" + InternationalizationHelper.getLabel("view_dtls_editor_suffix") + ")");
+				sb.append(note_SOR);
+				// sb.append(" (" + InternationalizationHelper.getLabel("view_dtls_editor_suffix") + ")");
 				
 			}
 			
