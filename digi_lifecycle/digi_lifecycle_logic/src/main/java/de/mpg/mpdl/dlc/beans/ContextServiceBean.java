@@ -111,7 +111,7 @@ public class ContextServiceBean {
 	
 	public List<Context> retrieveOUContexts(String id, boolean sortByName) 
 	{
-		logger.info("Retrieving OU contexts " + id);
+		logger.debug("Retrieving OU contexts " + id);
         List<Context> contextList = new ArrayList<Context>();
         try
         {
@@ -135,7 +135,7 @@ public class ContextServiceBean {
 				Context context = (Context)rec.getRecordData().getContent();
 				contextList.add(context);
 			}
-			logger.info("OU contexts retrieved " + id);
+			logger.debug("OU contexts retrieved " + id);
         }catch(Exception e)
         {
         	logger.error("Error while retrieving OU contexts", e);
