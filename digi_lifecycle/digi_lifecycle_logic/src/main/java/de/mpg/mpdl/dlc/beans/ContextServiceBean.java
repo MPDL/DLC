@@ -88,7 +88,7 @@ public class ContextServiceBean {
 	
 	public Context retrieveContext(String contextId, String userHandle)
 	{
-		logger.info("Retrieving Context " + contextId);
+		logger.debug("Retrieving Context " + contextId);
         Context context = new Context();
         try
         {
@@ -256,7 +256,7 @@ public class ContextServiceBean {
 	
 	public List<Context> retrieveAllcontexts()
 	{
-		logger.info("Retrieving all contexts");
+		logger.debug("Retrieving all contexts");
         List<Context> contextList = new ArrayList<Context>();
         try
         {
