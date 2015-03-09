@@ -65,7 +65,7 @@ public class OrganizationalUnitServiceBean {
 
 	public List<OrganizationalUnit> retrieveOUs()
 	{
-		logger.info("Retrieving OUs");
+		logger.debug("Retrieving OUs");
 		List<OrganizationalUnit> ous = new ArrayList<OrganizationalUnit>();
 		try
 		{
