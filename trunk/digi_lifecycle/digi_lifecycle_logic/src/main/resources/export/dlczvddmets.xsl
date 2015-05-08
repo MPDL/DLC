@@ -74,24 +74,15 @@
 			</xsl:element>
 		</xsl:element>					
 	</xsl:template>	
+
+	<!-- start of zvdd mode -->
 	
-		<!-- start of zvdd mode 
 	<xsl:template match="@*|node()" mode="zvdd">
 		<xsl:copy>
 			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
-	-->
-	<xsl:template match="node()" mode="zvdd">
-		<xsl:copy>
-			<xsl:apply-templates select="@*,node()" mode="zvdd"/>
-		</xsl:copy>
-	</xsl:template>
-
-	<xsl:template match="@*" mode="zvdd">
-		<xsl:copy/>
-	</xsl:template>
-
+	
 	<!-- this should fix the invalid date format as well ... -->
 	<xsl:template match="text()" mode="zvdd" priority="0">
 		<xsl:value-of select="normalize-space(.)" />
@@ -103,6 +94,8 @@
 	<!-- ZVDD expects dateIssued in originInfo -->
 	<xsl:template match="mods:originInfo" mode="zvdd">
 		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		
 			<xsl:if test="not(mods:dateIssued)">
 				<mods:dateIssued>
 					<xsl:attribute name="encoding">
@@ -111,7 +104,6 @@
 					<xsl:value-of select="'2000'"/>
 				</mods:dateIssued>
 			</xsl:if>
-			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
@@ -122,14 +114,15 @@
 				<xsl:attribute name="type">
 					<xsl:value-of select="'alternatve'"/>
 				</xsl:attribute>
-				<xsl:apply-templates select="@*" mode="#current" />
 			</xsl:if>
+			<xsl:apply-templates select="@*" mode="#current" />
+			
 			<xsl:if test="not(mods:title)">
 				<mods:title>
 					<xsl:value-of select="'4 the sake of zvdd'"/>
 				</mods:title>
 			</xsl:if>
-			<xsl:apply-templates select="@*|node()" mode="#current" />
+			<xsl:apply-templates select="node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
@@ -140,7 +133,6 @@
 				<xsl:attribute name="type">
 					<xsl:value-of select="'dlc'"/>
 				</xsl:attribute>
-				<xsl:apply-templates select="@*" mode="#current" />
 			</xsl:if>
 			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
@@ -165,12 +157,13 @@
 	<!-- in addition physicalDescription must contain either extent or digitalOrigin -->
 	<xsl:template match="mods:physicalDescription[position()=1]" mode="zvdd">
 		<xsl:copy>
+			<xsl:apply-templates select="@*|node()" mode="#current" />
+		
 			<xsl:if test="not(mods:extent)">
 				<mods:extent>
 					<xsl:value-of select="'4 the sake of zvdd'"/>
 				</mods:extent>
 			</xsl:if>
-			<xsl:apply-templates select="@*|node()" mode="#current" />
 		</xsl:copy>
 	</xsl:template>
 	
