@@ -521,17 +521,24 @@ public class VolumeUtilBean {
 	
 	public static ModsNote getNoteSOR(ModsMetadata md)
 	{
-		for(ModsNote mn : md.getNotes())
-			if("statement of responsibility".equalsIgnoreCase(mn.getType()))
-				return mn;
+		if(md.getNotes()!=null)
+		{
+			for(ModsNote mn : md.getNotes())
+				if("statement of responsibility".equalsIgnoreCase(mn.getType()))
+					return mn;
+		}
+
 		return new ModsNote();
 	}
 	
 	public static ModsNote getNoteSubseries(ModsMetadata md)
 	{
-		for(ModsNote mn : md.getNotes())
-			if("subseries".equalsIgnoreCase(mn.getType()))
-				return mn;
+		if(md.getNotes()!=null)
+		{
+			for(ModsNote mn : md.getNotes())
+				if("subseries".equalsIgnoreCase(mn.getType()))
+					return mn;
+		}
 		return new ModsNote();
 	}
 	
