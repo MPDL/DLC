@@ -94,6 +94,7 @@ import de.escidoc.core.resources.om.item.component.ComponentProperties;
 import de.mpg.mpdl.dlc.images.ImageController;
 import de.mpg.mpdl.dlc.images.ImageHelper;
 import de.mpg.mpdl.dlc.images.ImageHelper.Type;
+import de.mpg.mpdl.dlc.oai.DLCOAIProvider;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLog.Step;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItem;
 import de.mpg.mpdl.dlc.persistence.entities.BatchLogItemVolume;
@@ -1374,6 +1375,10 @@ public class CreateVolumeServiceBean {
 							.getLastModificationDate());
 					Result res = client.release(id, taskParam);
 					ilm.setIngestStatus(IngestStatus.READY);
+					if (Boolean.parseBoolean(PropertyReader.getProperty("oai.provider.enabled"))) {
+						DLCOAIProvider provider = new DLCOAIProvider();
+						provider.addOrUpdateOAIDataStore(item);
+					}
 				} else {
 					
 					logger.info("Assigning version pid " + id);
@@ -1389,6 +1394,10 @@ public class CreateVolumeServiceBean {
 							.getLastModificationDate());
 					Result res = client.release(id, taskParam);
 					ilm.setIngestStatus(IngestStatus.READY);
+					if (Boolean.parseBoolean(PropertyReader.getProperty("oai.provider.enabled"))) {
+						DLCOAIProvider provider = new DLCOAIProvider();
+						provider.addOrUpdateOAIDataStore(item);
+					}
 				}
 			} else {
 				logger.info("Releasing Volume " + id);
@@ -1399,6 +1408,10 @@ public class CreateVolumeServiceBean {
 						.getLastModificationDate());
 				Result res = client.release(id, taskParam);
 				ilm.setIngestStatus(IngestStatus.READY);
+				if (Boolean.parseBoolean(PropertyReader.getProperty("oai.provider.enabled"))) {
+					DLCOAIProvider provider = new DLCOAIProvider();
+					provider.addOrUpdateOAIDataStore(item);
+				}
 			}
 
 		} catch (Exception e) {
@@ -1491,6 +1504,10 @@ public class CreateVolumeServiceBean {
 			taskParam.setLastModificationDate(vol.getItem()
 					.getLastModificationDate());
 			itemHandler.withdraw(vol.getItem().getObjid(), taskParam);
+			if (Boolean.parseBoolean(PropertyReader.getProperty("oai.provider.enabled"))) {
+				DLCOAIProvider provider = new DLCOAIProvider();
+				provider.removeFromOAIDataStore(vol.getItem().getObjid());
+			}
 
 			if (!VolumeServiceBean.multivolumeContentModelId.equals(vol
 					.getItem().getProperties().getContentModel().getObjid())) {
