@@ -153,22 +153,18 @@
 		</xsl:attribute>
 	</xsl:template>
 	
-	<!-- copy only the 1st occurrence of physicalDescription, 'cause ZVDD allows only one -->
+	<!-- copy only the 1st occurrence of physicalDescription, 'cause ZVDD allows 
+		only one -->
 	<!-- in addition physicalDescription must contain either extent or digitalOrigin -->
-	<xsl:template match="mods:physicalDescription[position()=1]" mode="zvdd">
+	<!-- changed 2015/05/26: copy only the first physicalDescription that contains an extent 
+		subeöement -->
+	<xsl:template match="mods:physicalDescription[mods:extent][1]" mode="zvdd">
 		<xsl:copy>
-			<xsl:apply-templates select="@*|node()" mode="#current" />
-		
-			<xsl:if test="not(mods:extent)">
-				<mods:extent>
-					<xsl:value-of select="'4 the sake of zvdd'"/>
-				</mods:extent>
-			</xsl:if>
+			<xsl:apply-templates select="@*|node()" mode="zvdd" />
 		</xsl:copy>
 	</xsl:template>
+	<xsl:template match="mods:physicalDescription" mode="zvdd" />
 	
-	<xsl:template match="mods:physicalDescription[position()>1]" mode="zvdd" />
-
 	<!-- end of zvdd mode -->
 	
 	
