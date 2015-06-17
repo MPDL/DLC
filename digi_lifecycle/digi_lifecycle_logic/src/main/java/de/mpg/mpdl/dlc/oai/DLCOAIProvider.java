@@ -47,7 +47,7 @@ import de.mpg.mpdl.dlc.util.PropertyReader;
 
 public class DLCOAIProvider {
 	
-	private static Logger logger = Logger.getLogger(DLCOAIUtils.class);
+	private static Logger logger = Logger.getLogger(DLCOAIProvider.class);
 	private static DLCOAIUtils utils = new DLCOAIUtils();
 	
 	public DLCOAIProvider() {
