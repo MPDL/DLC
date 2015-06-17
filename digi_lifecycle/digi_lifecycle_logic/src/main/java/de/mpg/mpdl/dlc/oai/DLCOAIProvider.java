@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -42,7 +41,6 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import de.escidoc.core.resources.om.item.Item;
-import de.mpg.mpdl.dlc.util.OAI_Testing;
 import de.mpg.mpdl.dlc.util.PropertyReader;
 
 public class DLCOAIProvider {
