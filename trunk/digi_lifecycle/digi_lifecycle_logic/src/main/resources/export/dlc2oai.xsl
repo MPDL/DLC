@@ -74,6 +74,16 @@
                     <xsl:value-of select="$title"/>
                 </dc:title>
             </xsl:if>
+            
+            <!-- dc:title -->
+            <xsl:variable name="parentTitle" select="normalize-space(./mods:relatedItem[@type='host']/mods:titleInfo/mods:title)"/>
+            <xsl:variable name="partDetail" select="normalize-space(./mods:part[@type='host']/mods:detail/mods:number)"/>
+
+            <xsl:if test="($parentTitle != '') and ($partDetail != '')">
+                <dc:title>
+                    <xsl:value-of select="concat($parentTitle, ' - ', $partDetail)"/>
+                </dc:title>
+            </xsl:if>
 
             <!-- dc:language -->
             <xsl:for-each select="./mods:language/mods:languageTerm">
@@ -85,6 +95,9 @@
             </xsl:for-each>
 
             <!-- dc:identifiers -->
+            <dc:identifier>
+                    <xsl:value-of select="./mods:recordInfo/mods:recordIdentifier" />
+                </dc:identifier>
             <xsl:for-each select="./mods:identifier">
                 <dc:identifier>
                     <xsl:value-of select="." />
@@ -108,7 +121,7 @@
             </xsl:if>
 
             <!-- dc:relation -->
-            <xsl:variable name="relatedItem" select="./mods:relatedItem[@type='host']/mods:recordIdentifier" />
+            <xsl:variable name="relatedItem" select="./mods:relatedItem[@type='host']/mods:recordInfo/mods:recordIdentifier" />
             <xsl:if test="$relatedItem != ''">
 	        <dc:relation>
 	            <xsl:value-of select="$relatedItem" />
@@ -124,7 +137,7 @@
                 </xsl:if>
             </xsl:for-each>
             
-            <!-- dc:subject -->
+            <!-- dc:subject 
             <xsl:for-each select="./mods:subject/mods:topic">
                 <xsl:if test=". != ''">
                     <dc:subject>
@@ -132,7 +145,7 @@
                     </dc:subject>
                 </xsl:if>
             </xsl:for-each>
-
+            -->
         </oai_dc:dc>
     </xsl:template>
 
