@@ -72,11 +72,15 @@ public class DLCOAIProvider {
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
 		}
-		transform(xslt_path, source_path, result_path, map);
-		logger.info("added or updated file " + filename + " in OAI data store");
-		boolean setSpecExists = checkSetDefinition(item.getProperties().getContext().getObjid());
-		if (!setSpecExists) {
-			addSetDefinition(item);
+		if (map != null) {
+			transform(xslt_path, source_path, result_path, map);
+			logger.info("added or updated file " + filename + " in OAI data store");
+			boolean setSpecExists = checkSetDefinition(item.getProperties().getContext().getObjid());
+			if (!setSpecExists) {
+				addSetDefinition(item);
+			}
+		} else {
+			logger.error("file " + filename + " couldn't be added to OAI data store");
 		}
 	}
 	
@@ -94,7 +98,7 @@ public class DLCOAIProvider {
 				logger.info("Deleted file: " + filename + " from OAI data store");
 			}
 		} catch (IOException | URISyntaxException e) {
-			// TODO Auto-generated catch block
+			logger.error(e.getMessage(), e);
 			e.printStackTrace();
 		}
 	}
@@ -112,8 +116,13 @@ public class DLCOAIProvider {
 			logger.error(e.getMessage(), e);
 			e.printStackTrace();
 		}
-		transform(xslt_path, source_path, result_path, map);
-		logger.info("Added new set definition for " + map.get("ctxId"));
+		if (map != null) {
+			transform(xslt_path, source_path, result_path, map);
+			logger.info("Added new set definition for " + map.get("ctxId"));
+		} else {
+			logger.error("Couldn't add new set definition!");
+		}
+		
 	}
 	
 	public boolean checkSetDefinition(String ctx_id) {

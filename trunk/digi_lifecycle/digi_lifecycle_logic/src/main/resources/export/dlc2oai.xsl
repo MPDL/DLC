@@ -95,9 +95,12 @@
             </xsl:for-each>
 
             <!-- dc:identifiers -->
-            <dc:identifier>
+            <xsl:variable name="recordID" select="./mods:recordInfo/mods:recordIdentifier"/>
+            <xsl:if test="$recordID != ''">
+            	<dc:identifier>
                     <xsl:value-of select="./mods:recordInfo/mods:recordIdentifier" />
                 </dc:identifier>
+            </xsl:if>
             <xsl:for-each select="./mods:identifier">
                 <dc:identifier>
                     <xsl:value-of select="." />
