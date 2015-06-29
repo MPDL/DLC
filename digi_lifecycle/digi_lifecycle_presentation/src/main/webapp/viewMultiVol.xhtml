@@ -210,10 +210,10 @@ All rights reserved. Use is subject to license terms.
 						<a4j:repeat var="child_volume" value="#{viewMultiVol.volume.relatedChildVolumes}">
 							<h:panelGroup layout="block" id="child_volume" styleClass="eg3_container_1_5" style="text-align:center;" rendered="#{child_volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 ">
-									<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}" rendered="#{child_volume.pages[0] != null}">
+									<pretty:link mappingId="viewPagesWithoutNumber" rendered="#{child_volume.pages[0] != null}">
 										<f:param value="#{child_volume.objidAndVersion}"/>
 										<f:param value="recto-verso"/>
-										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(child_volume).contentIds, 'THUMBNAIL')}" alt="" title="#{lbl.view_browse}" style="height:14.5833em; padding: 10% 10% 2%;"/>
+										<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(volumeUtilBean.getTitlePage(child_volume).contentIds, 'THUMBNAIL')}" alt="" style="height:14.5833em; padding: 10% 10% 2%;"/>
 									</pretty:link>
 								</h:panelGroup>
 								
