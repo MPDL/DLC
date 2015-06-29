@@ -41,9 +41,12 @@ public class DLCOAIUtils {
 	public HashMap<String, String> itemParameterMap(Item item) {
 		HashMap<String, String> parameters = new HashMap<>();
 		
+		try {
 		parameters.put("itemId", item.getObjid());
 		
-		parameters.put("itemHdl", item.getProperties().getPid().replace("hdl:", "http://hdl.handle.net/"));
+		if (item.getProperties().getPid() != null) {
+			parameters.put("itemHdl", item.getProperties().getPid().replace("hdl:", "http://hdl.handle.net/"));
+		}
 		
 		String teiUri = null;
 		if (item.getComponents().size() > 0) {
@@ -99,6 +102,10 @@ public class DLCOAIUtils {
 
 
 		return parameters;
+		} catch (NullPointerException npe) {
+			logger.error(npe.getMessage(), npe);
+		}
+		return null;
 		
 	}
 	
@@ -110,12 +117,16 @@ public class DLCOAIUtils {
 	 */
 	public HashMap<String, String> ctxParameterMap(Item item) {
 		HashMap<String, String> parameters = new HashMap<>();
-		
+		try {
 		parameters.put("ctxId", item.getProperties().getContext().getObjid());
 
 		parameters.put("ctxName", item.getProperties().getContext().getXLinkTitle());
 
 		return parameters;
+		} catch (NullPointerException npe) {
+			logger.error(npe.getMessage(), npe);
+		}
+		return null;
 		
 	}
 	
@@ -123,6 +134,7 @@ public class DLCOAIUtils {
 		ItemHandlerClient ihc;
 		try {
 			ihc = new ItemHandlerClient(new URL(ESCIDOC_URL));
+			logger.info("trying to get " + id + " from " + ESCIDOC_URL);
 			Item item = ihc.retrieve(id);
 			return item;
 
