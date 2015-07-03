@@ -114,6 +114,9 @@
 					<xsl:attribute name="encoding">
 						<xsl:value-of select="'w3cdtf'" />
 					</xsl:attribute>
+					<xsl:attribute name="keyDate">
+						<xsl:value-of select="'yes'" />
+					</xsl:attribute>
 					<xsl:value-of select="'2000'" />
 				</mods:dateIssued>
 			</xsl:if>
