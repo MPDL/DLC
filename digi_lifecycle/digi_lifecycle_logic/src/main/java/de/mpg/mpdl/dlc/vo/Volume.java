@@ -1,29 +1,27 @@
 /*******************************************************************************
- * CDDL HEADER START
- * The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+ * CDDL HEADER START The contents of this file are subject to the terms of the Common Development
+ * and Distribution License, Version 1.0 only (the "License"). You may not use this file except in
+ * compliance with the License.
  * 
- * You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
- * See the License for the specific language governing permissions and limitations under the License.
+ * You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license.
+ * See the License for the specific language governing permissions and limitations under the
+ * License.
  * 
- * When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
- * CDDL HEADER END
+ * When distributing Covered Code, include this CDDL HEADER in each file and include the License
+ * file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with
+ * the fields enclosed by brackets "[]" replaced with your own identifying information: Portions
+ * Copyright [yyyy] [name of copyright owner] CDDL HEADER END
  * 
- * Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
- * All rights reserved. Use is subject to license terms.
+ * Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für
+ * wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der
+ * Wissenschaft e.V. All rights reserved. Use is subject to license terms.
  ******************************************************************************/
 package de.mpg.mpdl.dlc.vo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.eclipse.persistence.oxm.annotations.XmlPath;
 import org.w3c.dom.Document;
 
 import de.escidoc.core.resources.om.item.Item;
@@ -32,266 +30,240 @@ import de.escidoc.core.resources.sb.search.Highlight;
 import de.escidoc.core.resources.sb.search.SearchHit;
 import de.escidoc.core.resources.sb.search.Type;
 import de.mpg.mpdl.dlc.vo.mets.Mets;
-import de.mpg.mpdl.dlc.vo.mets.MetsFile;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
-import de.mpg.mpdl.dlc.vo.teisd.Div;
-import de.mpg.mpdl.dlc.vo.teisd.Pagebreak;
-import de.mpg.mpdl.dlc.vo.teisd.PbOrDiv;
-import de.mpg.mpdl.dlc.vo.teisd.TeiSd;
 
 
 public class Volume {
 
-	//@XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
-	private ModsMetadata modsMetadata;
-	
-	/*
-	@XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div")
-	private List<Page> pages = new ArrayList<Page>();
-	
-	@XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file")
-	private List<MetsFile> files = new ArrayList<MetsFile>();
-	*/
-	
-	private Mets mets;
-	
-	@XmlTransient
-	private ItemProperties properties;
-	
-	@XmlTransient
-	private Item item;
-	
-	@XmlTransient
-	private String tei;
-	
-	@XmlTransient
-	private String codicological;
-	
-	
-	//private TeiSd teiSd;
-	
+  // @XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
+  private ModsMetadata modsMetadata;
 
-	@XmlTransient
-	private Document teiSdXml;
+  /*
+   * @XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div") private
+   * List<Page> pages = new ArrayList<Page>();
+   * 
+   * @XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file") private List<MetsFile> files =
+   * new ArrayList<MetsFile>();
+   */
 
-	@XmlTransient
-	private String pagedTei;
-	
-	@XmlTransient
-	private List<String> relatedVolumes;
-	
-	@XmlTransient
-	private List<Volume> relatedChildVolumes;
-	
-	@XmlTransient
-	private Volume relatedParentVolume;
-	
-	@XmlTransient
-	private Highlight searchResultHighlight;
+  private Mets mets;
 
-	
-	public Volume ()
-	{
+  @XmlTransient
+  private ItemProperties properties;
 
-	}
-	
-	/*
-	public Volume (Item item) throws Exception
-	{
-		
-		this.item = item;
-		this.properties = item.getProperties();
-		
-		MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
-		MetsDocument metsDoc = MetsDocument.Factory.parse(mdRec.getContent());
-		
-		Node child = metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().getDomNode().getFirstChild();
-		
-		XmlCursor xmlDataCursor = metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().newCursor();
-		xmlDataCursor.toChild(0);
-		ModsDocument modsDoc = ModsDocument.Factory.parse(xmlDataCursor.getDomNode());
-		xmlDataCursor.dispose();
-		
-		JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class });
-		Unmarshaller um = ctx.createUnmarshaller();
-		this.setModsMetadata((ModsMetadata)um.unmarshal(modsDoc.getDomNode()));
-		
-		
-		Map<String, FileType> fileMap = new HashMap<String, FileType>();
-		
-		for(FileGrp fileGroup : metsDoc.getMets().getFileSec().getFileGrpArray())
-		{
-			if(fileGroup.getUSE().equals("scans"))
-			{
-				for(FileType fileType : fileGroup.getFileArray())
-				{
-					fileMap.put(fileType.getID(), fileType);
-				}
-				
-			}
-		}
-		
-		for(StructMapType structMap : metsDoc.getMets().getStructMapArray())
-		{
-			if(structMap.getTYPE().equals("physical"))
-			{
-				DivType mainDiv = structMap.getDiv();
-				for(DivType pageDiv : mainDiv.getDivArray())
-				{
-					FileType fileType = fileMap.get(pageDiv.getFptrArray(0).getFILEID());
-					Page p = new Page(pageDiv.getORDERLABEL(), fileType.getFLocatArray(0).getHref());
-					getPages().add(p);
-				}
-				
-			}
-		}
-		
-		
-	}
-	*/
+  @XmlTransient
+  private Item item;
 
-	
-	public void setProperties(ItemProperties properties) {
-		this.properties = properties;
-	}
+  @XmlTransient
+  private String tei;
 
-	public ItemProperties getProperties() {
-		return properties;
-	}
+  @XmlTransient
+  private String codicological;
 
-	public void setItem(Item item) {
-		this.item = item;
-	}
 
-	public Item getItem() {
-		this.item.getProperties().getContentModel().getObjid();
-		return item;
-	}
+  // private TeiSd teiSd;
 
-	public void setModsMetadata(ModsMetadata modsMetadata) {
-		this.modsMetadata = modsMetadata;
-	}
-   
-	public ModsMetadata getModsMetadata() {
-		return modsMetadata;
-	}
 
-	public String getTei() {
-		return this.tei;
-	}
+  @XmlTransient
+  private Document teiSdXml;
 
-	public void setTei(String tei) {
-		this.tei = tei;
-		
-	}
+  @XmlTransient
+  private String pagedTei;
 
-	public void setPagedTei(String pagedTei) {
-		this.pagedTei = pagedTei;
-		
-	}
-	
-	public String getPagedTei() {
-		return pagedTei;
-	}
+  @XmlTransient
+  private List<String> relatedVolumes;
 
-	/*
-	public TeiSd getTeiSd() {
-		return teiSd;
-	}
+  @XmlTransient
+  private List<Volume> relatedChildVolumes;
 
-	public void setTeiSd(TeiSd teiSd) {
-		this.teiSd = teiSd;
-	}
+  @XmlTransient
+  private Volume relatedParentVolume;
 
-	*/
-	
-	public Document getTeiSdXml() {
-		return teiSdXml;
-	}
+  @XmlTransient
+  private Highlight searchResultHighlight;
 
-	public void setTeiSdXml(Document teiSdXml) {
-		this.teiSdXml = teiSdXml;
-	}
+  private boolean directionRTL;
 
-	public List<String> getRelatedVolumes() {
-		return relatedVolumes;
-	}
 
-	public void setRelatedVolumes(List<String> relatedVolumes) {
-		this.relatedVolumes = relatedVolumes;
-	}
+  public Volume() {
+    this.directionRTL = false;
+  }
 
-	public Highlight getSearchResultHighlight() {
-		return searchResultHighlight;
-	}
+  /*
+   * public Volume (Item item) throws Exception {
+   * 
+   * this.item = item; this.properties = item.getProperties();
+   * 
+   * MetadataRecord mdRec = item.getMetadataRecords().get("escidoc"); MetsDocument metsDoc =
+   * MetsDocument.Factory.parse(mdRec.getContent());
+   * 
+   * Node child =
+   * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().getDomNode().getFirstChild();
+   * 
+   * XmlCursor xmlDataCursor =
+   * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().newCursor();
+   * xmlDataCursor.toChild(0); ModsDocument modsDoc =
+   * ModsDocument.Factory.parse(xmlDataCursor.getDomNode()); xmlDataCursor.dispose();
+   * 
+   * JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class }); Unmarshaller um
+   * = ctx.createUnmarshaller();
+   * this.setModsMetadata((ModsMetadata)um.unmarshal(modsDoc.getDomNode()));
+   * 
+   * 
+   * Map<String, FileType> fileMap = new HashMap<String, FileType>();
+   * 
+   * for(FileGrp fileGroup : metsDoc.getMets().getFileSec().getFileGrpArray()) {
+   * if(fileGroup.getUSE().equals("scans")) { for(FileType fileType : fileGroup.getFileArray()) {
+   * fileMap.put(fileType.getID(), fileType); }
+   * 
+   * } }
+   * 
+   * for(StructMapType structMap : metsDoc.getMets().getStructMapArray()) {
+   * if(structMap.getTYPE().equals("physical")) { DivType mainDiv = structMap.getDiv(); for(DivType
+   * pageDiv : mainDiv.getDivArray()) { FileType fileType =
+   * fileMap.get(pageDiv.getFptrArray(0).getFILEID()); Page p = new Page(pageDiv.getORDERLABEL(),
+   * fileType.getFLocatArray(0).getHref()); getPages().add(p); }
+   * 
+   * } }
+   * 
+   * 
+   * }
+   */
 
-	public void setSearchResultHighlight(Highlight searchResultHighlight) {
-		this.searchResultHighlight = searchResultHighlight;
-	}
-	
-	public int getSearchResultHighlightSize()
-	{
-		int size=0;
-		if(this.searchResultHighlight!=null)
-		{
-			for (SearchHit hit : this.searchResultHighlight)
-			{
-				if(hit.getTextFragments()!=null && hit.getType().equals(Type.FULLTEXT))
-				{
-					size += hit.getTextFragments().size();
-				}
-			}
-		}
-		return size;
-	}
 
-	public Mets getMets() {
-		return mets;
-	}
+  public void setProperties(ItemProperties properties) {
+    this.properties = properties;
+  }
 
-	public void setMets(Mets mets) {
-		this.mets = mets;
-	}
-	
-	public List<Page> getPages() {
-		return getMets().getPages();
-	}
+  public ItemProperties getProperties() {
+    return properties;
+  }
 
-	public List<Volume> getRelatedChildVolumes() {
-		return relatedChildVolumes;
-	}
+  public void setItem(Item item) {
+    this.item = item;
+  }
 
-	public void setRelatedChildVolumes(List<Volume> relatedChildVolumes) {
-		this.relatedChildVolumes = relatedChildVolumes;
-	}
+  public Item getItem() {
+    this.item.getProperties().getContentModel().getObjid();
+    return item;
+  }
 
-	public Volume getRelatedParentVolume() {
-		return relatedParentVolume;
-	}
+  public void setModsMetadata(ModsMetadata modsMetadata) {
+    this.modsMetadata = modsMetadata;
+  }
 
-	public void setRelatedParentVolume(Volume relatedParentVolume) {
-		this.relatedParentVolume = relatedParentVolume;
-	}
-	
-	
-	public String getObjidAndVersion()
-	{
-		return this.getItem().getOriginObjid() + ":" + this.getItem().getProperties().getVersion().getNumber();
-	}
+  public ModsMetadata getModsMetadata() {
+    return modsMetadata;
+  }
 
-	public String getCodicological() {
-		return codicological;
-	}
+  public String getTei() {
+    return this.tei;
+  }
 
-	public void setCodicological(String codicological) {
-		this.codicological = codicological;
-	}
-	
+  public void setTei(String tei) {
+    this.tei = tei;
 
-	
-	
-	
-	
-	
+  }
+
+  public void setPagedTei(String pagedTei) {
+    this.pagedTei = pagedTei;
+
+  }
+
+  public String getPagedTei() {
+    return pagedTei;
+  }
+
+  /*
+   * public TeiSd getTeiSd() { return teiSd; }
+   * 
+   * public void setTeiSd(TeiSd teiSd) { this.teiSd = teiSd; }
+   */
+
+  public Document getTeiSdXml() {
+    return teiSdXml;
+  }
+
+  public void setTeiSdXml(Document teiSdXml) {
+    this.teiSdXml = teiSdXml;
+  }
+
+  public List<String> getRelatedVolumes() {
+    return relatedVolumes;
+  }
+
+  public void setRelatedVolumes(List<String> relatedVolumes) {
+    this.relatedVolumes = relatedVolumes;
+  }
+
+  public Highlight getSearchResultHighlight() {
+    return searchResultHighlight;
+  }
+
+  public void setSearchResultHighlight(Highlight searchResultHighlight) {
+    this.searchResultHighlight = searchResultHighlight;
+  }
+
+  public int getSearchResultHighlightSize() {
+    int size = 0;
+    if (this.searchResultHighlight != null) {
+      for (SearchHit hit : this.searchResultHighlight) {
+        if (hit.getTextFragments() != null && hit.getType().equals(Type.FULLTEXT)) {
+          size += hit.getTextFragments().size();
+        }
+      }
+    }
+    return size;
+  }
+
+  public Mets getMets() {
+    return mets;
+  }
+
+  public void setMets(Mets mets) {
+    this.mets = mets;
+  }
+
+  public List<Page> getPages() {
+    return getMets().getPages();
+  }
+
+  public List<Volume> getRelatedChildVolumes() {
+    return relatedChildVolumes;
+  }
+
+  public void setRelatedChildVolumes(List<Volume> relatedChildVolumes) {
+    this.relatedChildVolumes = relatedChildVolumes;
+  }
+
+  public Volume getRelatedParentVolume() {
+    return relatedParentVolume;
+  }
+
+  public void setRelatedParentVolume(Volume relatedParentVolume) {
+    this.relatedParentVolume = relatedParentVolume;
+  }
+
+
+  public String getObjidAndVersion() {
+    return this.getItem().getOriginObjid() + ":"
+        + this.getItem().getProperties().getVersion().getNumber();
+  }
+
+  public String getCodicological() {
+    return codicological;
+  }
+
+  public void setCodicological(String codicological) {
+    this.codicological = codicological;
+  }
+
+
+  public boolean isDirectionRTL() {
+    return this.directionRTL;
+  }
+
+
+
 }
