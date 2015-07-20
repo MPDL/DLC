@@ -357,6 +357,9 @@ body .eg3_id_siteTitle {
 	background-color:transparent;
 }
 
+.eg3_id_sidebarLeft .eg3_dirRTL > div {
+	width: 100%;
+}
 
 .eg3_id_wrapper .eg3_id_content {
 	overflow:visible;
@@ -3001,6 +3004,10 @@ button:hover .eg3_icon_close_16_16 {
 	padding-left:0;
 }
 
+.eg3_id_sidebarLeft .eg3_dirRTL *.rf-tr-nd *.rf-tr-nd { /* use in special case when direction is right-to-left */
+	margin-left: 0;
+	margin-right: 16px;
+}
 
 .rf-tr div {
 	float:none;

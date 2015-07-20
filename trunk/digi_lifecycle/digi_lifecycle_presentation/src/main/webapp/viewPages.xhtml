@@ -178,7 +178,7 @@ All rights reserved. Use is subject to license terms.
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'toc');" value=" "/>
 								</h:panelGroup>
 								
-								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto eg3_toc" style="min-height:470px; min-height:447px\9;" id="tocTreeContainer">
+								<h:panelGroup layout="block" styleClass="eg3_contentDetails eg3_container_1 eg3_overflowAuto eg3_toc #{viewPages.volume.isDirectionRTL() ? 'eg3_dirRTL' : ''}" style="min-height:470px; min-height:447px\9;" id="tocTreeContainer">
 									<ui:remove>
 									<rich:tree toggleType="ajax" var="divItem">
 										<rich:treeModelRecursiveAdaptor roots="#{viewPages.volume.teiSd.text.pbOrDiv}" nodes="#{divItem.pbOrDiv}">
@@ -228,7 +228,6 @@ All rights reserved. Use is subject to license terms.
 													<h:outputText value="-" />
 													<h:outputText value="#{treeElement.endPage.order+1}" rendered="#{empty treeElement.endPage.orderLabel}"/>
 													<h:outputText value="#{treeElement.endPage.orderLabel}" rendered="#{not empty treeElement.endPage.orderLabel}"/>
-													
 													
 													<f:ajax render=":viewPage :citationOverlayArea"/>
 												</h:commandLink>		

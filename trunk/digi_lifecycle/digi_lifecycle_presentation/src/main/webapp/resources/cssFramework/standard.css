@@ -144,6 +144,9 @@ option {
 	margin:0 auto;
 }
 
+.eg3_dirRTL {
+	direction: rtl;
+}
 .eg3_textCenter {
 	text-align:center;
 }
