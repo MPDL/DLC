@@ -132,6 +132,7 @@ public class Volume {
    */
 
 
+
   public void setProperties(ItemProperties properties) {
     this.properties = properties;
   }
@@ -259,11 +260,20 @@ public class Volume {
     this.codicological = codicological;
   }
 
-
+  /**
+   * 
+   * @return boolean directionRTL
+   */
   public boolean isDirectionRTL() {
     return this.directionRTL;
   }
 
+  /**
+   * @param directionRTL the directionRTL to set
+   */
+  public void setDirectionRTL(boolean directionRTL) {
+    this.directionRTL = directionRTL;
+  }
 
 
 }
