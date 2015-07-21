@@ -503,19 +503,19 @@ All rights reserved. Use is subject to license terms.
 														
 														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_paginationInBrackets}"/>
+																<h:outputLabel for="paginationInBrackets" value="#{lbl.edit_paginationInBrackets}"/>
 															</h:panelGroup>
 															<h:panelGroup layout="block" styleClass="eg3_container_21_50">
-																<h:selectBooleanCheckbox value="#{structuralEditorBean.paginationInBrackets}"/>
+																<h:selectBooleanCheckbox id="paginationInBrackets" value="#{structuralEditorBean.paginationInBrackets}"/>
 															</h:panelGroup>
 														</h:panelGroup>
 														
 														<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
 															<h:panelGroup layout="block" styleClass="eg3_container_1_2">
-																<h:outputText value="#{lbl.edit_paginateEverySecondPage}"/>
+																<h:outputLabel for="paginateEverySecondPage" value="#{lbl.edit_paginateEverySecondPage}"/>
 															</h:panelGroup>
 															<h:panelGroup layout="block" styleClass="eg3_container_21_50">
-																<h:selectBooleanCheckbox value="#{structuralEditorBean.paginateEverySecondPage}"/>
+																<h:selectBooleanCheckbox id="paginateEverySecondPage" value="#{structuralEditorBean.paginateEverySecondPage}"/>
 															</h:panelGroup>
 														</h:panelGroup>
 														
@@ -693,6 +693,20 @@ All rights reserved. Use is subject to license terms.
 								</ui:remove>
 									
 									
+									
+									<rich:tab header="#{lbl.edit_tab_view_options}" label="{lbl.edit_tab_view_options}" id="viewOptions">
+									<!-- attributes of a4j:region = ajaxListener, binding, id, immediate, renderRegionOnly, rendered, selfRendered -->
+										<a4j:region>
+											<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+												<div class="eg3_container_1_2">
+													<h:outputLabel value="#{lbl.edit_right_aligned_contents}" for="directionRTL"/>
+												</div>
+												<div class="eg3_container_21_50">
+													<h:selectBooleanCheckbox id="directionRTL" value="#{structuralEditorBean.volume.directionRTL}"/>
+												</div>
+											</h:panelGroup>
+										</a4j:region>
+									</rich:tab>
 								</rich:tabPanel>
 							</h:form>
 								
