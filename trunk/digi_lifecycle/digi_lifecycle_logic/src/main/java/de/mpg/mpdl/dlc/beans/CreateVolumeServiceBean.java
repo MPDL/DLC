@@ -70,6 +70,7 @@ import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.IUnmarshallingContext;
 import org.joda.time.DateTime;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
 import de.escidoc.core.client.ItemHandlerClient;
@@ -81,12 +82,14 @@ import de.escidoc.core.resources.common.Relation;
 import de.escidoc.core.resources.common.Relations;
 import de.escidoc.core.resources.common.Result;
 import de.escidoc.core.resources.common.TaskParam;
+import de.escidoc.core.resources.common.properties.ContentModelSpecific;
 import de.escidoc.core.resources.common.properties.PublicStatus;
 import de.escidoc.core.resources.common.reference.ContentModelRef;
 import de.escidoc.core.resources.common.reference.ContextRef;
 import de.escidoc.core.resources.common.reference.ItemRef;
 import de.escidoc.core.resources.common.reference.Reference;
 import de.escidoc.core.resources.om.item.Item;
+import de.escidoc.core.resources.om.item.ItemProperties;
 import de.escidoc.core.resources.om.item.StorageType;
 import de.escidoc.core.resources.om.item.component.Component;
 import de.escidoc.core.resources.om.item.component.ComponentContent;
@@ -892,6 +895,29 @@ public class CreateVolumeServiceBean {
 						new StringReader(sw.toString())));
 				metsMdRec.setContent(metsDoc.getDocumentElement());
 			}
+			
+			// update ContentModelSpecific
+						
+	        Document cms_doc = builder.newDocument();
+			ItemProperties props = volume.getItem().getProperties();
+			ContentModelSpecific cms = new ContentModelSpecific();
+			ArrayList<Element> elems = new ArrayList<>();
+			Element revPag = cms_doc.createElement("reversePagination");
+			Element dirRTL = cms_doc.createElement("directionRTL");
+			if (volume.isReversePagination() != false) {
+				revPag.setTextContent(Boolean.toString(volume.isReversePagination()));
+			} else {
+				revPag.setTextContent("false");
+			}
+			if (volume.isDirectionRTL() != false) {
+				dirRTL.setTextContent(Boolean.toString(volume.isDirectionRTL()));
+			} else {
+				dirRTL.setTextContent("false");
+			}
+			elems.add(revPag);
+			elems.add(dirRTL);
+			cms.setContent(elems);
+			props.setContentModelSpecific(cms);
 
 			ItemHandlerClient client = new ItemHandlerClient(new URL(
 					PropertyReader.getProperty("escidoc.common.framework.url")));
