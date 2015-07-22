@@ -33,262 +33,245 @@ import de.mpg.mpdl.dlc.vo.mets.Mets;
 import de.mpg.mpdl.dlc.vo.mets.Page;
 import de.mpg.mpdl.dlc.vo.mods.ModsMetadata;
 
-
 public class Volume {
 
-  // @XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
-  private ModsMetadata modsMetadata;
+	// @XmlPath("mets:dmdSec[@ID='dmd_0']/mets:mdWrap[@MDTYPE='MODS']/mets:xmlData/mods:mods")
+	private ModsMetadata modsMetadata;
 
-  /*
-   * @XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div") private
-   * List<Page> pages = new ArrayList<Page>();
-   * 
-   * @XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file") private List<MetsFile> files =
-   * new ArrayList<MetsFile>();
-   */
+	/*
+	 * @XmlPath("mets:structMap[@TYPE='physical']/mets:div[@DMDID='dmd_0']/mets:div"
+	 * ) private List<Page> pages = new ArrayList<Page>();
+	 * 
+	 * @XmlPath("mets:fileSec/mets:fileGrp[@USE='scans']/mets:file") private
+	 * List<MetsFile> files = new ArrayList<MetsFile>();
+	 */
 
-  private Mets mets;
+	private Mets mets;
 
-  @XmlTransient
-  private ItemProperties properties;
+	@XmlTransient
+	private ItemProperties properties;
 
-  @XmlTransient
-  private Item item;
+	@XmlTransient
+	private Item item;
 
-  @XmlTransient
-  private String tei;
+	@XmlTransient
+	private String tei;
 
-  @XmlTransient
-  private String codicological;
+	@XmlTransient
+	private String codicological;
 
+	// private TeiSd teiSd;
 
-  // private TeiSd teiSd;
+	@XmlTransient
+	private Document teiSdXml;
 
+	@XmlTransient
+	private String pagedTei;
 
-  @XmlTransient
-  private Document teiSdXml;
+	@XmlTransient
+	private List<String> relatedVolumes;
 
-  @XmlTransient
-  private String pagedTei;
+	@XmlTransient
+	private List<Volume> relatedChildVolumes;
 
-  @XmlTransient
-  private List<String> relatedVolumes;
+	@XmlTransient
+	private Volume relatedParentVolume;
 
-  @XmlTransient
-  private List<Volume> relatedChildVolumes;
+	@XmlTransient
+	private Highlight searchResultHighlight;
 
-  @XmlTransient
-  private Volume relatedParentVolume;
+	private boolean reversePagination;
+	private boolean directionRTL;
 
-  @XmlTransient
-  private Highlight searchResultHighlight;
+	public Volume() {
 
-  private boolean reversePagination;
-  private boolean directionRTL;
+	}
 
+	/*
+	 * public Volume (Item item) throws Exception {
+	 * 
+	 * this.item = item; this.properties = item.getProperties();
+	 * 
+	 * MetadataRecord mdRec = item.getMetadataRecords().get("escidoc");
+	 * MetsDocument metsDoc = MetsDocument.Factory.parse(mdRec.getContent());
+	 * 
+	 * Node child =
+	 * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().
+	 * getDomNode().getFirstChild();
+	 * 
+	 * XmlCursor xmlDataCursor =
+	 * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().newCursor();
+	 * xmlDataCursor.toChild(0); ModsDocument modsDoc =
+	 * ModsDocument.Factory.parse(xmlDataCursor.getDomNode());
+	 * xmlDataCursor.dispose();
+	 * 
+	 * JAXBContext ctx = JAXBContext.newInstance(new Class[] {
+	 * ModsMetadata.class }); Unmarshaller um = ctx.createUnmarshaller();
+	 * this.setModsMetadata((ModsMetadata)um.unmarshal(modsDoc.getDomNode()));
+	 * 
+	 * 
+	 * Map<String, FileType> fileMap = new HashMap<String, FileType>();
+	 * 
+	 * for(FileGrp fileGroup : metsDoc.getMets().getFileSec().getFileGrpArray())
+	 * { if(fileGroup.getUSE().equals("scans")) { for(FileType fileType :
+	 * fileGroup.getFileArray()) { fileMap.put(fileType.getID(), fileType); }
+	 * 
+	 * } }
+	 * 
+	 * for(StructMapType structMap : metsDoc.getMets().getStructMapArray()) {
+	 * if(structMap.getTYPE().equals("physical")) { DivType mainDiv =
+	 * structMap.getDiv(); for(DivType pageDiv : mainDiv.getDivArray()) {
+	 * FileType fileType = fileMap.get(pageDiv.getFptrArray(0).getFILEID());
+	 * Page p = new Page(pageDiv.getORDERLABEL(),
+	 * fileType.getFLocatArray(0).getHref()); getPages().add(p); }
+	 * 
+	 * } }
+	 * 
+	 * 
+	 * }
+	 */
 
-  public Volume() {
-	  
-  }
+	public void setProperties(ItemProperties properties) {
+		this.properties = properties;
+	}
 
-  /*
-   * public Volume (Item item) throws Exception {
-   * 
-   * this.item = item; this.properties = item.getProperties();
-   * 
-   * MetadataRecord mdRec = item.getMetadataRecords().get("escidoc"); MetsDocument metsDoc =
-   * MetsDocument.Factory.parse(mdRec.getContent());
-   * 
-   * Node child =
-   * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().getDomNode().getFirstChild();
-   * 
-   * XmlCursor xmlDataCursor =
-   * metsDoc.getMets().getDmdSecArray(0).getMdWrap().getXmlData().newCursor();
-   * xmlDataCursor.toChild(0); ModsDocument modsDoc =
-   * ModsDocument.Factory.parse(xmlDataCursor.getDomNode()); xmlDataCursor.dispose();
-   * 
-   * JAXBContext ctx = JAXBContext.newInstance(new Class[] { ModsMetadata.class }); Unmarshaller um
-   * = ctx.createUnmarshaller();
-   * this.setModsMetadata((ModsMetadata)um.unmarshal(modsDoc.getDomNode()));
-   * 
-   * 
-   * Map<String, FileType> fileMap = new HashMap<String, FileType>();
-   * 
-   * for(FileGrp fileGroup : metsDoc.getMets().getFileSec().getFileGrpArray()) {
-   * if(fileGroup.getUSE().equals("scans")) { for(FileType fileType : fileGroup.getFileArray()) {
-   * fileMap.put(fileType.getID(), fileType); }
-   * 
-   * } }
-   * 
-   * for(StructMapType structMap : metsDoc.getMets().getStructMapArray()) {
-   * if(structMap.getTYPE().equals("physical")) { DivType mainDiv = structMap.getDiv(); for(DivType
-   * pageDiv : mainDiv.getDivArray()) { FileType fileType =
-   * fileMap.get(pageDiv.getFptrArray(0).getFILEID()); Page p = new Page(pageDiv.getORDERLABEL(),
-   * fileType.getFLocatArray(0).getHref()); getPages().add(p); }
-   * 
-   * } }
-   * 
-   * 
-   * }
-   */
+	public ItemProperties getProperties() {
+		return properties;
+	}
 
+	public void setItem(Item item) {
+		this.item = item;
+	}
 
+	public Item getItem() {
+		this.item.getProperties().getContentModel().getObjid();
+		return item;
+	}
 
-  public void setProperties(ItemProperties properties) {
-    this.properties = properties;
-  }
+	public void setModsMetadata(ModsMetadata modsMetadata) {
+		this.modsMetadata = modsMetadata;
+	}
 
-  public ItemProperties getProperties() {
-    return properties;
-  }
+	public ModsMetadata getModsMetadata() {
+		return modsMetadata;
+	}
 
-  public void setItem(Item item) {
-    this.item = item;
-  }
+	public String getTei() {
+		return this.tei;
+	}
 
-  public Item getItem() {
-    this.item.getProperties().getContentModel().getObjid();
-    return item;
-  }
+	public void setTei(String tei) {
+		this.tei = tei;
 
-  public void setModsMetadata(ModsMetadata modsMetadata) {
-    this.modsMetadata = modsMetadata;
-  }
+	}
 
-  public ModsMetadata getModsMetadata() {
-    return modsMetadata;
-  }
+	public void setPagedTei(String pagedTei) {
+		this.pagedTei = pagedTei;
 
-  public String getTei() {
-    return this.tei;
-  }
+	}
 
-  public void setTei(String tei) {
-    this.tei = tei;
+	public String getPagedTei() {
+		return pagedTei;
+	}
 
-  }
+	/*
+	 * public TeiSd getTeiSd() { return teiSd; }
+	 * 
+	 * public void setTeiSd(TeiSd teiSd) { this.teiSd = teiSd; }
+	 */
 
-  public void setPagedTei(String pagedTei) {
-    this.pagedTei = pagedTei;
+	public Document getTeiSdXml() {
+		return teiSdXml;
+	}
 
-  }
+	public void setTeiSdXml(Document teiSdXml) {
+		this.teiSdXml = teiSdXml;
+	}
 
-  public String getPagedTei() {
-    return pagedTei;
-  }
+	public List<String> getRelatedVolumes() {
+		return relatedVolumes;
+	}
 
-  /*
-   * public TeiSd getTeiSd() { return teiSd; }
-   * 
-   * public void setTeiSd(TeiSd teiSd) { this.teiSd = teiSd; }
-   */
+	public void setRelatedVolumes(List<String> relatedVolumes) {
+		this.relatedVolumes = relatedVolumes;
+	}
 
-  public Document getTeiSdXml() {
-    return teiSdXml;
-  }
+	public Highlight getSearchResultHighlight() {
+		return searchResultHighlight;
+	}
 
-  public void setTeiSdXml(Document teiSdXml) {
-    this.teiSdXml = teiSdXml;
-  }
+	public void setSearchResultHighlight(Highlight searchResultHighlight) {
+		this.searchResultHighlight = searchResultHighlight;
+	}
 
-  public List<String> getRelatedVolumes() {
-    return relatedVolumes;
-  }
+	public int getSearchResultHighlightSize() {
+		int size = 0;
+		if (this.searchResultHighlight != null) {
+			for (SearchHit hit : this.searchResultHighlight) {
+				if (hit.getTextFragments() != null
+						&& hit.getType().equals(Type.FULLTEXT)) {
+					size += hit.getTextFragments().size();
+				}
+			}
+		}
+		return size;
+	}
 
-  public void setRelatedVolumes(List<String> relatedVolumes) {
-    this.relatedVolumes = relatedVolumes;
-  }
+	public Mets getMets() {
+		return mets;
+	}
 
-  public Highlight getSearchResultHighlight() {
-    return searchResultHighlight;
-  }
+	public void setMets(Mets mets) {
+		this.mets = mets;
+	}
 
-  public void setSearchResultHighlight(Highlight searchResultHighlight) {
-    this.searchResultHighlight = searchResultHighlight;
-  }
+	public List<Page> getPages() {
+		return getMets().getPages();
+	}
 
-  public int getSearchResultHighlightSize() {
-    int size = 0;
-    if (this.searchResultHighlight != null) {
-      for (SearchHit hit : this.searchResultHighlight) {
-        if (hit.getTextFragments() != null && hit.getType().equals(Type.FULLTEXT)) {
-          size += hit.getTextFragments().size();
-        }
-      }
-    }
-    return size;
-  }
+	public List<Volume> getRelatedChildVolumes() {
+		return relatedChildVolumes;
+	}
 
-  public Mets getMets() {
-    return mets;
-  }
+	public void setRelatedChildVolumes(List<Volume> relatedChildVolumes) {
+		this.relatedChildVolumes = relatedChildVolumes;
+	}
 
-  public void setMets(Mets mets) {
-    this.mets = mets;
-  }
+	public Volume getRelatedParentVolume() {
+		return relatedParentVolume;
+	}
 
-  public List<Page> getPages() {
-    return getMets().getPages();
-  }
+	public void setRelatedParentVolume(Volume relatedParentVolume) {
+		this.relatedParentVolume = relatedParentVolume;
+	}
 
-  public List<Volume> getRelatedChildVolumes() {
-    return relatedChildVolumes;
-  }
+	public String getObjidAndVersion() {
+		return this.getItem().getOriginObjid() + ":"
+				+ this.getItem().getProperties().getVersion().getNumber();
+	}
 
-  public void setRelatedChildVolumes(List<Volume> relatedChildVolumes) {
-    this.relatedChildVolumes = relatedChildVolumes;
-  }
+	public String getCodicological() {
+		return codicological;
+	}
 
-  public Volume getRelatedParentVolume() {
-    return relatedParentVolume;
-  }
+	public void setCodicological(String codicological) {
+		this.codicological = codicological;
+	}
 
-  public void setRelatedParentVolume(Volume relatedParentVolume) {
-    this.relatedParentVolume = relatedParentVolume;
-  }
+	public boolean isDirectionRTL() {
+		return this.directionRTL;
+	}
 
+	public void setDirectionRTL(boolean directionRTL) {
+		this.directionRTL = directionRTL;
+	}
 
-  public String getObjidAndVersion() {
-    return this.getItem().getOriginObjid() + ":"
-        + this.getItem().getProperties().getVersion().getNumber();
-  }
+	public boolean isReversePagination() {
+		return reversePagination;
+	}
 
-  public String getCodicological() {
-    return codicological;
-  }
-
-  public void setCodicological(String codicological) {
-    this.codicological = codicological;
-  }
-
-  /**
-   * 
-   * @return boolean directionRTL
-   */
-  public boolean isDirectionRTL() {
-    return this.directionRTL;
-  }
-
-  /**
-   * @param directionRTL the directionRTL to set
-   */
-  public void setDirectionRTL(boolean directionRTL) {
-    this.directionRTL = directionRTL;
-  }
-
-/**
- * @return the reversePagination
- */
-public boolean isReversePagination() {
-	return reversePagination;
-}
-
-/**
- * @param reversePagination the reversePagination to set
- */
-public void setReversePagination(boolean reversePagination) {
-	this.reversePagination = reversePagination;
-}
-
+	public void setReversePagination(boolean reversePagination) {
+		this.reversePagination = reversePagination;
+	}
 
 }
