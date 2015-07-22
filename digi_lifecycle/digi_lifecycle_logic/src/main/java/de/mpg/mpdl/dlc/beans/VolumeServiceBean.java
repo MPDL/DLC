@@ -16,6 +16,7 @@ package de.mpg.mpdl.dlc.beans;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 
 
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -88,6 +89,7 @@ import org.jibx.runtime.IUnmarshallingContext;
 import org.jibx.runtime.JiBXException;
 import org.joda.time.DateTime;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 
@@ -1196,7 +1198,22 @@ public class VolumeServiceBean {
 			
 		}
 		
+		boolean reversePagination = false, directionRTL = false;
+		if (item.getProperties().getContentModelSpecific() != null) {
+			List<Element> elems = item.getProperties().getContentModelSpecific().getContent();
+			for (Node n : elems) {
+				if (n.getNodeType() == Node.ELEMENT_NODE) {
+					if (n.getNodeName().equalsIgnoreCase("reversePagination")) {
+						reversePagination = Boolean.valueOf(n.getTextContent());
+					} else if (n.getNodeName().equalsIgnoreCase("directionRTL")) {
+						directionRTL = Boolean.valueOf(n.getTextContent());
+					}
+				}
+			}
+		}
 		
+		vol.setReversePagination(reversePagination);
+		vol.setDirectionRTL(directionRTL);
 		vol.setItem(item);
 		vol.setProperties(item.getProperties());
 		//vol.setTeiSd(teiSd);
