@@ -83,11 +83,12 @@ public class Volume {
   @XmlTransient
   private Highlight searchResultHighlight;
 
+  private boolean reversePagination;
   private boolean directionRTL;
 
 
   public Volume() {
-    this.directionRTL = false;
+	  
   }
 
   /*
@@ -274,6 +275,20 @@ public class Volume {
   public void setDirectionRTL(boolean directionRTL) {
     this.directionRTL = directionRTL;
   }
+
+/**
+ * @return the reversePagination
+ */
+public boolean isReversePagination() {
+	return reversePagination;
+}
+
+/**
+ * @param reversePagination the reversePagination to set
+ */
+public void setReversePagination(boolean reversePagination) {
+	this.reversePagination = reversePagination;
+}
 
 
 }
