@@ -109,6 +109,17 @@ option {
 	overflow:hidden;
 }
 /*
+ * standardization classes for position
+ */
+.eg3_positionAbsolute {
+	position: absolute;
+}
+.eg3_positionAbsoluteTopRight {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+/*
  * standardization classes for floating
  */
 .eg3_floatNone {

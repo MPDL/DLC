@@ -1001,6 +1001,16 @@ body .eg3_id_siteTitle {
 }
 
 /*************************************************************************************************************************
+ ******************************					pageBrowser - defaultPagination				******************************
+ *************************************************************************************************************************/
+.eg3_pageBrowser ul.eg3_defaultPagination { 
+	list-style: none; 
+}
+.eg3_pageBrowser ul.eg3_defaultPagination li { 
+	display: inline-block; 
+}
+
+/*************************************************************************************************************************
  ******************************				vertical tab menu with content right			******************************
  *************************************************************************************************************************/
 .eg3_instituteShortcut {
@@ -1992,7 +2002,7 @@ body .eg3_id_siteTitle {
 	display:inline;
 }
 .eg3_viewPageMenu .eg3_viewModusContainer {
-	margin-top:0.5%;
+	margin-top:0.363636em;
 }
 .eg3_viewPageMenu .eg3_modusBtn {
 	padding-left:0.83333em;
@@ -2244,8 +2254,9 @@ body .eg3_id_siteTitle {
 	text-decoration:none;
 }
 .eg3_fullscreenPage .eg3_viewPageMenu .eg3_icon_closei_16_16 {
-	cursor:pointer;
+	display: inline-block;
 	margin-right:0.5em;
+	cursor:pointer;
 }
 
 /*************************************************************************************************************
