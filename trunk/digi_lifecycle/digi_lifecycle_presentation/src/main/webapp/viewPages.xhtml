@@ -52,77 +52,14 @@ All rights reserved. Use is subject to license terms.
 			</h:panelGroup>
 		</ui:define>
 		
+		
 		<ui:define name="citationLinkContent">
-			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-				<button class="eg3_icon_close_16_16 eg3_floatRight" onclick="$(this).parent().hide('slow');">
-					<h:outputText value="&#160;"/>
-				</button>
-				<br/>
-				
-				<ui:fragment rendered="#{not empty viewPages.volume.properties.pid}">
-					<h:outputLabel for="volumeHandle" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_volume_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="volumeHandle" value="http://hdl.handle.net/#{viewPages.volume.properties.pid}" readonly="true" styleClass="eg3_container_1"/>
-				</ui:fragment>
-				
-				<ui:fragment rendered="#{empty viewPages.volume.properties.pid}">
-				<h:outputLabel for="volumeLink" styleClass="eg3_markTextButton">
-					<h:outputText value="#{lbl.citation_handle_title_mark}"/>
-				</h:outputLabel>
-				<h:inputText id="volumeLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/recto-verso" readonly="true" styleClass="eg3_container_1"/>
-				</ui:fragment>
-				
-				<ui:fragment rendered="#{viewPages.viewType == 'SINGLE'}">
-					<h:outputLabel for="citSinglePage" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_single_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="citSinglePage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
-					
-					<h:outputLabel for="citDigiView" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_link_digilib_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="citDigiView" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
-				</ui:fragment>
-				
-				<ui:fragment rendered="#{viewPages.viewType == 'RECTO_VERSO'}">
-					<h:outputLabel for="citLeftPage" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_recto_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="citLeftPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage!=null}"/>
-					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedPage==null}"/>
-					
-					<h:outputLabel for="citRightPage" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_verso_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="citRightPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/single/#{viewPages.volume.pages.indexOf(viewPages.selectedRightPage)+1}" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage!=null}"/>
-					<h:inputText value="" readonly="true" styleClass="eg3_container_1" rendered="#{viewPages.selectedRightPage==null}"/>
-					
-					<h:outputLabel for="bookmarkLink" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_link_bookmark_mark}"/>
-					</h:outputLabel>
-					<h:inputText id="bookmarkLink" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/#{viewPages.viewTypeText}/#{viewPages.selectedPageNumber}" readonly="true" styleClass="eg3_container_1"/>
-				</ui:fragment>
-				
-				
-				<ui:fragment rendered="#{viewPages.viewType == 'FULLTEXT'}">
-					<h:outputLabel for="citFulltextPage" styleClass="eg3_markTextButton">
-						<h:outputText value="#{lbl.citation_handle_single_mark}"/> <!-- TODO: missing label -->
-					</h:outputLabel>
-					<h:inputText id="citFulltextPage" value="#{applicationBean.domain}/#{applicationBean.contextPath}/view/#{viewPages.volumeId}/fulltext/#{viewPages.volume.pages.indexOf(viewPages.selectedPage)+1}" readonly="true" styleClass="eg3_container_1"/>
-				</ui:fragment>
-				
-				<script type="text/javascript">
-					$(function(){
-						if ($.browser.msie) {
-							$('.eg3_markTextButton').bind("click", function(evt, btn){
-								$(this).next("input[id]").focus().select();
-							});
-						}
-					});
-				</script>
+			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{cc.attrs.citationBean.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+				<nav:citationBoxContent citationBean="#{viewPages}" rendered="#{!viewPages.volume.reversePagination}"/>
+				<nav:citationBoxContentRTL citationBean="#{viewPages}" rendered="#{viewPages.volume.reversePagination}"/>
 			</h:panelGroup>
 		</ui:define>
+		
 		
 		<ui:define name="mainContent">
 			<!-- START for codicologic styling -->
