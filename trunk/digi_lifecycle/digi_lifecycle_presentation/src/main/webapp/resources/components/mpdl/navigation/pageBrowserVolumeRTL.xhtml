@@ -1,0 +1,117 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:nav="http://java.sun.com/jsf/composite/components/mpdl/navigation">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="paginatorBean" required="true" />
+		<cc:attribute name="isSelectedRightPage" default="true" type="java.lang.Boolean"/>
+		<cc:attribute name="ajaxRenderID" default="" type="java.lang.String"/>
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
+			<h:form styleClass="eg3_pageBrowser">
+				
+				<!-- default paginator -->
+				<ul class="eg3_container_1 eg3_defaultPagination">
+					
+					<!-- left page number / label -->
+					<li class="eg3_container_21_50 eg3_textRight eg3_pagePaginationLabel">
+						<ui:fragment rendered="#{!cc.attrs.isSelectedRightPage}">
+							<h:outputText value="&#160;"/>
+						</ui:fragment>
+						<ui:fragment rendered="#{cc.attrs.isSelectedRightPage}">
+							<h:outputText value="&#160;" styleClass="eg3_pagePaginationLabel eg3_container_1_3 eg3_textRight" rendered="#{cc.attrs.paginatorBean.selectedPage == null}"/>
+							<ui:fragment rendered="#{not empty cc.attrs.paginatorBean.selectedRightPage.orderLabel and cc.attrs.paginatorBean.selectedRightPage != null}">
+								<h:outputText value="#{lbl.list_Page} #{cc.attrs.paginatorBean.selectedRightPage.orderLabel} / "/>
+							</ui:fragment>
+							<h:outputText value="#{lbl.list_Scan} #{cc.attrs.paginatorBean.selectedRightPage.order + 1}" rendered="#{cc.attrs.paginatorBean.viewType == 'RECTO_VERSO' and cc.attrs.paginatorBean.selectedRightPage!=null}"/>
+						</ui:fragment>
+					</li>
+					
+					
+					<!-- paginator arrows and switch button for quick paginator-->
+					<li class="eg3_textCenter eg3_paginationButtons">
+					
+						<!-- paginator buttons for next -->
+						<ui:fragment rendered="#{cc.attrs.paginatorBean.selectedPageNumber lt cc.attrs.paginatorBean.volume.pages.size()}">
+							<h:commandLink action="#{cc.attrs.paginatorBean.goToLastPage}">
+								<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
+								<f:ajax render="#{cc.attrs.ajaxRenderID}" rendered="#{cc.attrs.ajaxRenderID.trim().length() > 0}"/>
+							</h:commandLink>
+							<h:commandLink action="#{cc.attrs.paginatorBean.goToNextPage}">
+								<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
+								<f:ajax render="#{cc.attrs.ajaxRenderID}" rendered="#{cc.attrs.ajaxRenderID.trim().length() > 0}"/>
+							</h:commandLink>
+						</ui:fragment>
+						<ui:fragment rendered="#{cc.attrs.paginatorBean.selectedPageNumber >= cc.attrs.paginatorBean.volume.pages.size()}">
+							<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
+							<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+						</ui:fragment>
+					
+					
+						<!-- button to switch the inputType -->
+						<ui:fragment rendered="#{cc.attrs.paginatorBean.volume.pages.size() > 1}">
+							<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_defaultPagination', '.eg3_quickPagination', true, 'resizeSelectBox()');" class="eg3_icon_editBtn_16_16"/>
+						</ui:fragment>
+					
+					
+						<!-- buttons for previous page -->
+						<ui:fragment rendered="#{cc.attrs.paginatorBean.selectedPageNumber > 1}">
+							<h:commandLink action="#{cc.attrs.paginatorBean.goToPreviousPage}">
+								<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
+								<f:ajax render="#{cc.attrs.ajaxRenderID}" rendered="#{cc.attrs.ajaxRenderID.trim().length() > 0}"/>
+							</h:commandLink>
+							<h:commandLink action="#{cc.attrs.paginatorBean.goToFirstPage}">
+								<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
+								<f:ajax render="#{cc.attrs.ajaxRenderID}" rendered="#{cc.attrs.ajaxRenderID.trim().length() > 0}"/>
+							</h:commandLink>
+						</ui:fragment>
+						<ui:fragment rendered="#{cc.attrs.paginatorBean.selectedPageNumber lt 2}">
+							<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
+							<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
+						</ui:fragment>
+					
+					</li> <!-- end paginator buttons -->
+					
+					
+					
+					<!-- right page number / label -->
+					<li class="eg3_pagePaginationLabel">
+						<ui:fragment rendered="#{not empty cc.attrs.paginatorBean.selectedPage.orderLabel and cc.attrs.paginatorBean.selectedPage != null}">
+							<h:outputText value="#{lbl.list_Page} #{cc.attrs.paginatorBean.selectedPage.orderLabel} / " rendered="#{cc.attrs.paginatorBean.selectedPage != null}"/>
+						</ui:fragment>
+						<h:outputText value="#{lbl.list_Scan} #{cc.attrs.paginatorBean.selectedPage.order+1}" rendered="#{cc.attrs.paginatorBean.selectedPage != null}"/>
+						<h:outputText value="&#160;" rendered="#{cc.attrs.paginatorBean.selectedPage == null}"/>
+					</li>
+					
+				</ul> <!-- END OF defaultNavigation -->
+				
+				<!-- quick paginator with a selectbox -->
+				<nav:pageBrowserDropdownRTL paginatorBean="#{cc.attrs.paginatorBean}" ajaxRenderID="#{cc.attrs.ajaxRenderID}"/>
+				
+			</h:form>
+		</h:panelGroup>
+	</cc:implementation>
+</html>

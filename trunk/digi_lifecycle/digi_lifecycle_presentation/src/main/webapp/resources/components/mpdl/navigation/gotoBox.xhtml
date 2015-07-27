@@ -1,0 +1,44 @@
+<!--
+CDDL HEADER START
+The contents of this file are subject to the terms of the Common Development and Distribution License, Version 1.0 only (the "License"). You may not use this file except in compliance with the License.
+
+You can obtain a copy of the license at license/ESCIDOC.LICENSE or http://www.escidoc.de/license. 
+See the License for the specific language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
+CDDL HEADER END
+
+Copyright 2006-2013 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+All rights reserved. Use is subject to license terms.
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+	<!-- INTERFACE -->
+	<cc:interface>
+		<cc:attribute name="paginatorBean" required="true" />
+		<cc:attribute name="componentIDSuffix" required="true" />
+	</cc:interface>
+	
+	<!-- IMPLEMENTATION -->
+	<cc:implementation>
+		<h:panelGroup layout="block" styleClass="eg3_gotoBox">
+			<h:form>
+				<h:inputText type="text" id="inpGoToPage#{cc.attrs.componentIDSuffix}" styleClass="eg3_gotoInput" value="#{cc.attrs.paginatorBean.currentPageNumber}" maxlength="5" />
+				<h:outputLabel id="lblItemListPageSize#{cc.attrs.componentIDSuffix}" styleClass="eg3_inputLabel" value="#{lbl.paginator_of} #{cc.attrs.paginatorBean.paginatorPageSize}" />
+				<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
+				<h:commandButton type="submit" id="btList_btGo#{cc.attrs.componentIDSuffix}" style="position:absolute; top:-30em;" value="#{lbl.paginator_go}" title="#{tip.List_btGo}" action="#{cc.attrs.paginatorBean.goToPageBottom}">
+			 		<f:ajax execute="@form" event="action" render=":#{cc.clientId}"/>
+			 	</h:commandButton>
+			</h:form>
+		</h:panelGroup>
+	</cc:implementation>
+</html>

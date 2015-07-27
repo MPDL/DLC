@@ -21,7 +21,8 @@ All rights reserved. Use is subject to license terms.
 	xmlns:mpdl="http://java.sun.com/jsf/composite/components/mpdl"
 	xmlns:load="http://java.sun.com/jsf/composite/components/lazyLoad"
 	xmlns:pretty="http://ocpsoft.com/prettyfaces"
-	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer">
+	xmlns:modsViewer="http://java.sun.com/jsf/composite/components/mpdl/modsViewer"
+	xmlns:nav="http://java.sun.com/jsf/composite/components/mpdl/navigation">
 
 	<ui:composition template="templates/template_v3.xhtml">
 		<ui:param name="volumeBrowserTitle" value="#{viewPages.volume.item.properties.contentModel.objid == applicationBean.cmMono ? volumeUtilBean.getShortTitleView(viewPages.volume) : volumeUtilBean.getVolumeShortTitleView(viewPages.volume)}"/>		
@@ -124,6 +125,7 @@ All rights reserved. Use is subject to license terms.
 		</ui:define>
 		
 		<ui:define name="mainContent">
+			<!-- START for codicologic styling -->
 			<style type="text/css">
 				.cdcBlock {
 					
@@ -165,8 +167,11 @@ All rights reserved. Use is subject to license terms.
 					
 				}
 			</style>
+			
+			<!-- START MAIN CONTENT -->
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-			<!-- SIDEBAR LEFT -->
+				
+				<!-- SIDEBAR LEFT -->
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4" style="min-height:498px;">
 					<h:form styleClass="eg3_overflow_z50">
 						
@@ -511,7 +516,9 @@ All rights reserved. Use is subject to license terms.
 					
 					<!-- viewPageMenu -->
 					<h:panelGroup layout="block" styleClass="eg3_viewPageMenu eg3_overflow">
-						<h:panelGroup layout="block" styleClass="eg3_viewModusContainer eg3_container_1_4" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
+						
+						<!-- alteration switch for view modus -->
+						<h:panelGroup layout="block" styleClass="eg3_viewModusContainer eg3_container_1_4 eg3_positionAbsolute" rendered="#{viewPages.selectedPage != null or viewPages.selectedRightPage != null}">
 							<ui:fragment rendered="#{viewPages.selectedPage != null}">
 								<h:form>
 									<h:commandLink action="#{viewPages.switchViewType('SINGLE', viewPages.selectedPage)}" styleClass="eg3_border_1_right eg3_borderstyle_2 eg3_modusBtn#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" disabled="#{viewPages.viewType == 'SINGLE'}" title="#{tlt.view_page_single}">
@@ -565,139 +572,12 @@ All rights reserved. Use is subject to license terms.
 							<h:outputText value="&#160;" rendered="#{!viewPages.selectedPage.orderLabel}"/>
 						</h:panelGroup>
 						
-						<h:panelGroup id="pageBrowser" layout="block" styleClass="eg3_container_2_3">
-							<h:form styleClass="eg3_pageBrowser">
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_defaultPagination" style="margin-top:0.25em;">
-									<!-- left page number -->
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight eg3_pagePaginationLabel">
-										<ui:fragment rendered="#{not empty viewPages.selectedPage.orderLabel and viewPages.selectedPage != null}">
-											<h:outputText value="#{lbl.list_Page} #{viewPages.selectedPage.orderLabel} / " rendered="#{viewPages.selectedPage != null}"/>
-										</ui:fragment>
-										<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
-										<h:outputText value="&#160;" rendered="#{viewPages.selectedPage == null}"/>
-									</h:panelGroup>
-									
-									<h:panelGroup layout="block" styleClass="eg3_textCenter eg3_paginationButtons">
-										<!-- pagination buttons for previous -->
-										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
-											<h:commandLink action="#{viewPages.goToFirstPage}">
-												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToPreviousPage}">
-												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-										</ui:fragment>
-										<ui:fragment rendered="#{viewPages.selectedPageNumber lt 2}">
-											<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
-											<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
-										</ui:fragment>
-										
-										<!-- button to switch the inputType -->
-										<ui:fragment rendered="#{viewPages.volume.pages.size() > 1}">
-											<input type="button" onclick="eg3_switchInputType('.eg3_viewPageMenu .eg3_defaultPagination', '.eg3_quickPagination', true, 'resizeSelectBox()');" class="eg3_icon_editBtn_16_16"/>
-										</ui:fragment>
-										
-										<!-- pagination buttons for next -->
-										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-											<h:commandLink action="#{viewPages.goToNextPage}">
-												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToLastPage}">
-												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-										</ui:fragment>
-										<ui:fragment rendered="#{viewPages.selectedPageNumber >= viewPages.volume.pages.size()}">
-											<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
-											<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
-										</ui:fragment>
-									</h:panelGroup>
-									
-									<!-- right page number -->
-									<h:panelGroup layout="block" styleClass="eg3_pagePaginationLabel">
-										<ui:fragment rendered="#{not empty viewPages.selectedRightPage.orderLabel and viewPages.selectedRightPage != null}">
-											<h:outputText value="#{lbl.list_Page}  #{viewPages.selectedRightPage.orderLabel} / "/>
-										</ui:fragment>
-										<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
-									</h:panelGroup>
-									
-									<ui:remove>
-										<h:panelGroup style="margin-left:2%;" styleClass="eg3_floatRight">
-											<h:commandButton type="button" styleClass="eg3_icon_viewer_16_16#{(viewPages.viewType == 'SINGLE') ? ' eg3_active' : ''}" title="#{tlt.paginator_goToDLCViewer}"/>
-											<h:commandButton type="button" styleClass="eg3_icon_annotation_16_16" title="#{tlt.paginator_goToAnnotation}"/>
-										</h:panelGroup>
-									</ui:remove>
-								</h:panelGroup> <!-- END OF defaultNavigation -->
-								
-								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_quickPagination eg3_textCenter">
-									<!-- pagination buttons for previous -->
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_textRight">
-										<ui:fragment rendered="#{viewPages.selectedPageNumber > 1}">
-											<h:commandLink action="#{viewPages.goToFirstPage}">
-												<h:panelGroup styleClass="eg3_icon_skipTofirst_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToPreviousPage}">
-												<h:panelGroup styleClass="eg3_icon_backward_16_16">&#160;</h:panelGroup>
-													<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-										</ui:fragment>
-										<ui:fragment rendered="#{viewPages.selectedPageNumber lt 2}">
-											<h:panelGroup styleClass="eg3_icon_skipTofirsti_16_16 eg3_disabled">&#160;</h:panelGroup>
-											<h:panelGroup styleClass="eg3_icon_backwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
-										</ui:fragment>
-									</h:panelGroup>
-									
-									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3">
-										<h:panelGroup layout="block" styleClass="eg3_selectionContent">
-											<span class="eg3_selectionText">
-												<ui:fragment rendered="#{viewPages.selectedPage != null}">
-													<ui:fragment rendered="#{not empty viewPages.selectedPage.orderLabel and viewPages.selectedPage != null}">
-														<h:outputText value="#{lbl.list_Page} #{viewPages.selectedPage.orderLabel} / " rendered="#{viewPages.selectedPage != null}"/>
-													</ui:fragment>
-													<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedPage.order+1}" rendered="#{viewPages.selectedPage != null}"/>
-													<h:outputText value="&#160;" rendered="#{viewPages.selectedPage == null}"/>
-												</ui:fragment>
-												<ui:fragment rendered="#{viewPages.selectedPage == null}">
-													<ui:fragment rendered="#{not empty viewPages.selectedRightPage.orderLabel and viewPages.selectedRightPage != null}">
-														<h:outputText value="#{lbl.list_Page}  #{viewPages.selectedRightPage.orderLabel} / "/>
-													</ui:fragment>
-													<h:outputText value="#{lbl.list_Scan} #{viewPages.selectedRightPage.order + 1}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}"/>
-												</ui:fragment>
-											</span>
-										</h:panelGroup>
-										<h:selectOneMenu value="#{viewPages.selectedPageNumber}">
-								   			<f:ajax event="change" listener="#{viewPages.pageNumberChanged}" render=":viewPage :citationOverlayArea"/>
-								   			<f:selectItems value="#{viewPages.pageListMenu}"/>
-								   		</h:selectOneMenu>
-								   	</h:panelGroup>
-								   	
-								   	<!-- pagination buttons for next -->
-								   	<h:panelGroup styleClass="eg3_floatLeft">
-										<ui:fragment rendered="#{viewPages.selectedPageNumber lt viewPages.volume.pages.size()}">
-											<h:commandLink action="#{viewPages.goToNextPage}">
-												<h:panelGroup styleClass="eg3_icon_forward_16_16">&#160;</h:panelGroup>
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-											<h:commandLink action="#{viewPages.goToLastPage}">
-												<h:panelGroup styleClass="eg3_icon_skipTolast_16_16">&#160;</h:panelGroup>
-		
-												<f:ajax render=":viewPage :citationOverlayArea"/>
-											</h:commandLink>
-										</ui:fragment>
-										<ui:fragment rendered="#{viewPages.selectedPageNumber >= viewPages.volume.pages.size()}">
-											<h:panelGroup styleClass="eg3_icon_forwardi_16_16 eg3_disabled">&#160;</h:panelGroup>
-											<h:panelGroup styleClass="eg3_icon_skipTolasti_16_16 eg3_disabled">&#160;</h:panelGroup>
-										</ui:fragment>
-									</h:panelGroup>
-							   	</h:panelGroup>
-							</h:form>
-						</h:panelGroup>
+						<!-- page navigation elements -->
+						<nav:pageBrowserVolume paginatorBean="#{viewPages}" ajaxRenderID=":viewPage :citationOverlayArea" rendered="#{!viewPages.volume.reversePagination}"/>
+						<nav:pageBrowserVolumeRTL paginatorBean="#{viewPages}" ajaxRenderID=":viewPage :citationOverlayArea" rendered="#{viewPages.volume.reversePagination}"/>
 						
-						<h:panelGroup layout="block" styleClass="eg3_floatRight eg3_overflow_z20 eg3_main_color eg3_container_1_20 eg3_noWrap" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
+						<!-- export menu -->
+						<h:panelGroup layout="block" styleClass="eg3_positionAbsoluteTopRight eg3_overflow_z20 eg3_main_color eg3_container_1_20 eg3_noWrap" style="margin-top:0.272727em; margin-right:0.5%;" rendered="#{viewPages.volume.item.properties.version.status=='released'}">
 							<h:form>
 								<h:panelGroup layout="block" styleClass="eg3_overlayBox eg3_overflow_z20">
 									<h:panelGroup layout="block" styleClass="eg3_overlayHeader eg3_alternate_color_1">
@@ -733,6 +613,7 @@ All rights reserved. Use is subject to license terms.
 					</h:panelGroup>
 					
 					
+					<!-- START VIEW CONTAINER -->
 					<!--  SINGLE VIEW  -->
 					<h:panelGroup layout="block" styleClass="eg3_singleView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'SINGLE'}">
 						<h:outputScript library="components/digilib_jquery" name="jquery.digilib.js" target="head"/>
@@ -779,25 +660,26 @@ All rights reserved. Use is subject to license terms.
 					
 					<!-- RECTO VERSO VIEW -->
 					<h:panelGroup layout="block" styleClass="eg3_dualView eg3_image_bgColor_1" rendered="#{viewPages.viewType == 'RECTO_VERSO' or viewPages.viewType == 'FULLTEXT'}">
-						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer" rendered="#{viewPages.selectedPage!=null}">
+						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer #{viewPages.volume.reversePagination ? 'eg3_floatRight' : ''}" rendered="#{viewPages.selectedPage!=null}">
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
-						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer #{empty viewPages.selectedPage ? 'eg3_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
+						<h:panelGroup layout="block" styleClass="eg3_viewPage_imgContainer #{(empty viewPages.selectedPage and !viewPages.volume.reversePagination) ? 'eg3_floatRight' : ''}" rendered="#{viewPages.viewType == 'RECTO_VERSO' and viewPages.selectedRightPage!=null}">
 							<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(viewPages.selectedRightPage.contentIds, 'WEB')}"/>
 						</h:panelGroup>
 						
 						<h:panelGroup layout="block" styleClass="eg3_container_1_2 eg3_viewPage_fulltext eg3_content_bgColor" rendered="#{viewPages.viewType == 'FULLTEXT'}">
 							<h:outputStylesheet name="tei.css" library="cssFramework" target="head"/>
-							<h:panelGroup layout="block" id="fulltext" styleClass="eg3_viewPage_fulltextContent eg3_containerCenter">
+							<h:panelGroup layout="block" id="fulltext" styleClass="eg3_viewPage_fulltextContent eg3_containerCenter #{viewPages.volume.directionRTL ? 'eg3_dirRTL' : ''}">
 								<h:outputText value="#{volumeUtilBean.emphasizeWordsinHtml(viewPages.xhtmlForPage, viewPages.fulltextMatchesAsArray, 'eg3_searchHit')}" escape="false" rendered="#{viewPages.volume.teiSdXml!=null}"/>
 							</h:panelGroup>
 						</h:panelGroup>	
-
 					
 					<!-- END OF RECTO_VERSO & FULLTEXT -->
 					</h:panelGroup>
 					
-			<!-- END OF viewPage container -->	
+					<!-- ENDO OF VIEW CONTAINER -->
+					
+			<!-- END OF viewPage -->	
 				</h:panelGroup>
 				
 		<!-- end eg3_viewPageContainer -->
