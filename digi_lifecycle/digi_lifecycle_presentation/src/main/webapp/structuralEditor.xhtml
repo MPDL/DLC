@@ -705,6 +705,14 @@ All rights reserved. Use is subject to license terms.
 													<h:selectBooleanCheckbox id="directionRTL" value="#{structuralEditorBean.volume.directionRTL}"/>
 												</div>
 											</h:panelGroup>
+											<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1">
+												<div class="eg3_container_1_2">
+													<h:outputLabel value="#{lbl.edit_reverse_pagination}" for="reversePagination"/>
+												</div>
+												<div class="eg3_container_21_50">
+													<h:selectBooleanCheckbox id="reversePagination" value="#{structuralEditorBean.volume.reversePagination}"/>
+												</div>
+											</h:panelGroup>
 										</a4j:region>
 									</rich:tab>
 								</rich:tabPanel>
