@@ -2083,6 +2083,9 @@ body .eg3_id_siteTitle {
 	overflow:auto;
 	font-size:80%;
 }
+.eg3_viewPage_fulltextContent.eg3_dirRTL div {
+	float:right;
+}
 .eg3_viewPage .eg3_dualView .eg3_viewPage_fulltext .stdheader {
 	width:100%;
 }
