@@ -1733,7 +1733,7 @@ public class CreateVolumeServiceBean {
 			{
 				sb.append("/view/" + id + "/recto-verso");
 			}
-			else if (VolumeServiceBean.volumeContentModelId.equals(contentModel))
+			else if (VolumeServiceBean.multivolumeContentModelId.equals(contentModel))
 			{
 				sb.append("/viewMulti/" + id);
 			}
