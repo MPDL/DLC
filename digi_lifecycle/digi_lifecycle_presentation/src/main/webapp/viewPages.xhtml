@@ -180,7 +180,7 @@ All rights reserved. Use is subject to license terms.
 								</h:panelGroup>
 							</rich:tab>
 							
-							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="eg3_resizeSidebar();">
+							<rich:tab header="#{lbl.view_tab_thumbnails}" id="thumbs" oncomplete="eg3_resizeSidebar();" styleClass="#{viewPages.volume.reversePagination ? 'eg3_dirRTL' : ''}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_iconBar eg3_textRight">
 									<h:commandButton type="button" styleClass="eg3_collapseOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeMedium_24_24" style="display:none;" onclick="eg3_closeOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
 				     				<h:commandButton type="button" styleClass="eg3_expandOverlay eg3_modusBtn eg3_borderradius_5 eg3_icon_resizeSmall_24_24" onclick="eg3_openOverlay(this, 'thumbs'); scrollThumbs();" value=" "/>
