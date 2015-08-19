@@ -3053,6 +3053,9 @@ button:hover .eg3_icon_close_16_16 {
 .rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
 	text-align:center; 
 }
+.eg3_dirRTL .rf-tab-cnt .eg3_thumbContainer .eg3_thumbnail {
+	float: right;
+}
 
 .rf-tab-cnt .eg3_thumbnail img {
 	height:14.583333em;
