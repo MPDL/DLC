@@ -332,7 +332,17 @@
 								</h:panelGroup>
 							</h:panelGroup>
 						</h:panelGroup>
-						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow">
+
+
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow" rendered="#{empty advancedSearchBean.cdcSearchCriterionList}">
+								<h:commandLink type="button" action="#{volumeUtilBean.addNewCdcSearchCriterion(advancedSearchBean.cdcSearchCriterionList)}"  title="#{tlt.advancedSearch_addBtn}" value=" "  >
+									<f:ajax render="@form" execute="@form"/>
+									<h:panelGroup layout="block" styleClass="eg3_ico_addi_16"/>
+									<h:outputText value="#{lbl.sc_codicologicalDetails}"/>
+								</h:commandLink>
+						</h:panelGroup>
+								
+						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow" rendered="#{not empty advancedSearchBean.cdcSearchCriterionList}">
 							<a4j:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" rowKeyVar="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
@@ -407,7 +417,7 @@
 										<h:commandButton type="button" action="#{volumeUtilBean.addNewCdcSearchCriterion(sc, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
-										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16" rendered="#{utilBean.getListSize(advancedSearchBean.cdcSearchCriterionList)>1}">
+										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
 									</h:panelGroup>

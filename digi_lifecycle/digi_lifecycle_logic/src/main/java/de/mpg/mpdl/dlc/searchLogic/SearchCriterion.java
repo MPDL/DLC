@@ -229,6 +229,12 @@ public class SearchCriterion extends Criterion{
 					}
 					*/
 					
+					//Set connector to ">" if value equals * in order to search if this field exists or not
+					if("*".equals(sc.getValue()))
+					{
+						sc.setConnector(">");
+					}
+					
 					if(!filter)
 					{
 						cql += baseCqlBuilder(sc.getSearchIndexes(), sc.getValue(), sc.getConnector());
