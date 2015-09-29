@@ -969,8 +969,22 @@ public class VolumeUtilBean {
 	}
 	
 	public void addNewCdcSearchCriterion(SearchCriterion sc, List<SearchCriterion> scList)
-	{		
-			scList.add(scList.indexOf(sc)+1, new CodicologicalSearchCriterion(false));		
+	{	
+		if(sc==null)
+		{
+			scList.add(new CodicologicalSearchCriterion(false));
+		
+		}
+		else
+		{
+			scList.add(scList.indexOf(sc)+1, new CodicologicalSearchCriterion(false));
+		}
+			
+	}
+	
+	public void addNewCdcSearchCriterion(List<SearchCriterion> scList)
+	{	
+			scList.add(new CodicologicalSearchCriterion(false));
 	}
 	
 	public void addNewContextList(List<SearchCriterion> contextList)

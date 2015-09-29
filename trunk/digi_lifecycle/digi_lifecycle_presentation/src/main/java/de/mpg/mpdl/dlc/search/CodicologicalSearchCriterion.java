@@ -138,9 +138,9 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		
 		for(SelectItem selItem : toBeCloned.enumSelectItems)
 		{
-			if (selItem.getValue()==null || selItem.getValue().toString().trim().isEmpty())
+			if ("*".equals(selItem.getValue()) || selItem.getValue().toString().trim().isEmpty())
 			{
-				enumSelectItems.add(new SelectItem("", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
+				enumSelectItems.add(new SelectItem("*", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
 			}
 			else
 			{
@@ -149,9 +149,10 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 			}	
 		}
 		
-		if(this.type.equals(toBeCloned.type))
+		if((this.type==null && toBeCloned.type==null) || this.type.equals(toBeCloned.type))
 		{
 			this.value = toBeCloned.value;
+			
 		}
 		updateSelectItemsForSuperElement();
 	}
@@ -221,6 +222,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 	public void updateSelectItemsForSuperElement()
 	{
 		elementSelectItems.clear();
+		//elementSelectItems.add(new SelectItem("*", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
 		
 		if (superElementName.equals("object"))
 		{
@@ -293,6 +295,14 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 	{
 		Map<String, CodicologicalSearchCriterion> cdcList = new LinkedHashMap<String, CodicologicalSearchCriterion>();
 		
+		//Add an Criterion for "all" parts of a superElement
+		CodicologicalSearchCriterion allCse = new CodicologicalSearchCriterion(true);
+		allCse.setSuperElementName(superElement);
+		allCse.setElementName(superElement + "_all");
+		allCse.setType(null);
+		allCse.setValue("*");
+		cdcList.put(superElement + "_all", allCse);
+		
 		URL schemaUrl = CodicologicalSearchCriterion.class.getClassLoader().getResource("schemas/DLC-CDC.rng");
 		
 		Processor proc = new Processor(false);
@@ -359,8 +369,8 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		        						
 		        						if(choiceNode.getStringValue() == null  || choiceNode.getStringValue().trim().isEmpty())
 		        						{
-		        							cse.getEnumSelectItems().add(new SelectItem("", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
-		        							cse.setValue("");
+		        							cse.getEnumSelectItems().add(new SelectItem("*", InternationalizationHelper.getCodicologicalLabel("cdc_all")));
+		        							cse.setValue("*");
 		        						}
 		        						else
 		        						{
@@ -381,6 +391,7 @@ public class CodicologicalSearchCriterion extends SearchCriterion{
 		    				if(dataType.equals("token") || dataType.equals("short"))
 		    				{
 		    					cse.setType(Type.TEXT);
+		    					cse.setValue("*");
 		    				}
 		    				else if (dataType.equals("boolean"))
 		    				{
