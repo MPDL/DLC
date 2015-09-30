@@ -473,28 +473,28 @@
 	  			<xsl:call-template name="writeIndexField">
 	                <xsl:with-param name="context" select="'dlc.cdc'"/>
 	                <xsl:with-param name="fieldname" select="'object_all'"/>
-	                <xsl:with-param name="fieldvalue" select="$cdcData/objectDesc/objectDescMain/objectDataset/object/*"/>
+	                <xsl:with-param name="fieldvalue" select="string($cdcData/objectDesc/objectDescMain/objectDataset/object)"/>
 	                <xsl:with-param name="indextype">TOKENIZED</xsl:with-param>
 	                <xsl:with-param name="store" select="$STORE_FOR_SCAN"/>
 	            </xsl:call-template>
 	            <xsl:call-template name="writeIndexField">
 	                <xsl:with-param name="context" select="'dlc.cdc'"/>
 	                <xsl:with-param name="fieldname" select="'bodyOfVolume_all'"/>
-	                <xsl:with-param name="fieldvalue" select="$cdcData/objectDesc/objectDescMain/objectDataset/bodyOfVolume/*"/>
+	                <xsl:with-param name="fieldvalue" select="string($cdcData/objectDesc/objectDescMain/objectDataset/bodyOfVolume)"/>
 	                <xsl:with-param name="indextype">TOKENIZED</xsl:with-param>
 	                <xsl:with-param name="store" select="$STORE_FOR_SCAN"/>
 	            </xsl:call-template>
 	            <xsl:call-template name="writeIndexField">
 	                <xsl:with-param name="context" select="'dlc.cdc'"/>
 	                <xsl:with-param name="fieldname" select="'provenance_all'"/>
-	                <xsl:with-param name="fieldvalue" select="$cdcData/objectDesc/objectDescMain/objectDataset/provenance/*"/>
+	                <xsl:with-param name="fieldvalue" select="string($cdcData/objectDesc/objectDescMain/objectDataset/provenance)"/>
 	                <xsl:with-param name="indextype">TOKENIZED</xsl:with-param>
 	                <xsl:with-param name="store" select="$STORE_FOR_SCAN"/>
 	            </xsl:call-template>
 	            <xsl:call-template name="writeIndexField">
 	                <xsl:with-param name="context" select="'dlc.cdc'"/>
 	                <xsl:with-param name="fieldname" select="'binding_all'"/>
-	                <xsl:with-param name="fieldvalue" select="$cdcData/objectDesc/objectDescMain/objectDataset/binding/*"/>
+	                <xsl:with-param name="fieldvalue" select="string($cdcData/objectDesc/objectDescMain/objectDataset/binding)"/>
 	                <xsl:with-param name="indextype">TOKENIZED</xsl:with-param>
 	                <xsl:with-param name="store" select="$STORE_FOR_SCAN"/>
 	            </xsl:call-template>
