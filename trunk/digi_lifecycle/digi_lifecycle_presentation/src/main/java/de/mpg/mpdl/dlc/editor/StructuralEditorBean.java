@@ -1065,13 +1065,13 @@ public class StructuralEditorBean implements Observer {
 					String rectoVerso = "r";
 					if(PaginationType.RECTO_VERSO_ARABIC.equals(selectedPaginationType))
 					{
-						currentValue = Integer.parseInt(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
-						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+						currentValue = Integer.parseInt(String.valueOf(selectedPaginationStartValue.trim().substring(0, selectedPaginationStartValue.length() - 1)));
+						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(selectedPaginationStartValue.length() - 1));
 					}
 					else if(PaginationType.RECTO_VERSO_ROMAN.equals(selectedPaginationType))
 					{
-						currentValue =  RomanNumberConverter.convert(String.valueOf(selectedPaginationStartValue.trim().charAt(0)));
-						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(1));
+						currentValue =  RomanNumberConverter.convert(String.valueOf(selectedPaginationStartValue.trim().substring(0, selectedPaginationStartValue.length() - 1)));
+						rectoVerso = String.valueOf(selectedPaginationStartValue.trim().charAt(selectedPaginationStartValue.length() - 1));
 					}
 					else
 					{
