@@ -64,12 +64,16 @@
 				
 				<!-- view container -->
 				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor_2">
-						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(fullScreen.selectedPage.contentIds, 'WEB')}" styleClass="eg3_container_1"/>
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(fullScreen.selectedPage.contentIds, 'ORIGINAL')}" styleClass="eg3_container_1"/>
 					<ui:remove>
 						<h:graphicImage value="#{volumeUtilBean.getDigilibScalerUrlForPage(fullScreen.selectedPageNumber.contentIds, 1200, 1800)}"/>
 					</ui:remove>
 				</h:panelGroup>
-				
+				<ui:remove>
+				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_content_bgColor_2" rendered="#{fullScreen.volumeOu.id != 'escidoc:1004'}">
+						<h:graphicImage value="#{volumeUtilBean.getImageServerUrl(fullScreen.selectedPage.contentIds, 'WEB')}" styleClass="eg3_container_1"/>
+				</h:panelGroup>
+				</ui:remove>
 			<!-- END OF fullscreenPage -->
 			</h:panelGroup>
 		</ui:define>
