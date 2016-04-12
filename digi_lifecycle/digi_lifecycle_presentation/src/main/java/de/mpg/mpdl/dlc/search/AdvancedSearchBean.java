@@ -675,7 +675,7 @@ public class AdvancedSearchBean implements Observer {
 		this.cdcSearch = new SearchCriterion(SearchType.CODICOLOGICAL, "");
 		
 		this.cdcSearchCriterionList = new ArrayList<CodicologicalSearchCriterion>();
-		this.cdcSearchCriterionList.add(new CodicologicalSearchCriterion(false));
+		// this.cdcSearchCriterionList.add(new CodicologicalSearchCriterion(false));
 		
 		//Reset context
 		this.contextScElements.clear();
