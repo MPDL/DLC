@@ -45,7 +45,7 @@
 		<!-- names -->
 			<!-- 1 authors -->	
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.names.size()>0}">
-				<a4j:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
+				<ui:repeat var="name" value="#{cc.attrs.modsMetadata.names}">
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{name.displayLabel.startsWith('author')}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -89,13 +89,13 @@
 							<h:inputText value="#{name.name}" title="#{name.name}" />
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>		
 			
 		<!-- titles -->
 			<!-- 6 alternative title 310 -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.titles.size() > 0}">
-				<a4j:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
+				<ui:repeat var="title" value="#{cc.attrs.modsMetadata.titles}">
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{title.type == 'alternative' and empty title.displayLabel}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -170,13 +170,13 @@
 							<h:inputText value="#{title.title}" title="#{title.title}"/>
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>	
 
 		<!-- notes -->
 			<!-- 9 subseries 360 -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.notes.size() > 0}">
-				<a4j:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
+				<ui:repeat var="note" value="#{cc.attrs.modsMetadata.notes}">
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{note.type== 'subseries'}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -282,12 +282,12 @@
 							<h:inputText value="#{note.note}" title="#{note.note}" />
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>
 
 		<!-- parts -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.parts.size() > 0}">
-				<a4j:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
+				<ui:repeat var="part" value="#{cc.attrs.modsMetadata.parts}" rowKeyVar="rowKey">
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty part.order}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -320,12 +320,12 @@
 							<h:inputText value="#{part.subseries_361}"  title="#{part.subseries_361}"/>
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>	
 
 		<!-- publishers -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.publishers.size() > 0}">
-				<a4j:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
+				<ui:repeat var="publisher" value="#{cc.attrs.modsMetadata.publishers}">
 					<!-- 12 publishers -->
 					<ui:fragment rendered="#{publisher.displayLabel.startsWith('publisher')}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty publisher.publisher}">
@@ -419,12 +419,12 @@
 							</h:panelGroup>
 						</h:panelGroup>
 					</ui:fragment>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>
 
 		<!-- physicalDescriptions -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.physicalDescriptions.size() > 0}">
-				<a4j:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
+				<ui:repeat var="pd" value="#{cc.attrs.modsMetadata.physicalDescriptions}" rowKeyVar="rowKey">
 				<!-- 14 collations -->
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty pd.extent}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
@@ -447,13 +447,13 @@
 							<h:inputText value="#{pd.pdForm.value}" title="#{pd.pdForm.value}"/>
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>
 			
 		<!-- identifiers -->
 			<!-- 18 isbn 1 540a -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.identifiers.size() > 0}">
-				<a4j:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
+				<ui:repeat var="identifier" value="#{cc.attrs.modsMetadata.identifiers}">
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{identifier.type == 'isbn' and empty identifier.invalid}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 							<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -542,13 +542,13 @@
 							<h:inputText value="#{identifier.value}" title="#{identifier.value}" />
 						</h:panelGroup>
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>
 
 		<!-- keywords -->
 		<!-- 35 keywords -->
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.keywords.size() > 0}">
-				<a4j:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
+				<ui:repeat var="keyword" value="#{cc.attrs.modsMetadata.keywords}" rowKeyVar="rowKey">
 					<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 						<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
 							<h:outputText value="#{lbl.mods_keywords}"/>
@@ -557,7 +557,7 @@
 					<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
 						<h:inputText value="#{keyword}" title="#{keyword}" />
 					</h:panelGroup>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>
 			
 
@@ -616,7 +616,7 @@
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category" rendered="#{cc.attrs.modsMetadata.relatedItems.size() > 0}">
-				<a4j:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">	
+				<ui:repeat var="ri" value="#{cc.attrs.modsMetadata.relatedItems}">	
 					<!-- 15 source -->				
 					<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{ri.type == 'host' and empty ri.displayLabel and not empty ri.title}">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_3">
@@ -652,7 +652,7 @@
 			<!--  Sekundärausgabe -->					
 					<!-- 41publisher 3 -->
 					<ui:fragment rendered="#{ri.sec_Publisher.size() > 0}" >
-						<a4j:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
+						<ui:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
 							<ui:fragment rendered="#{sec_publisher.displayLabel == 'publisher3'}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.publisher}">
 				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
@@ -695,11 +695,11 @@
 									</h:panelGroup>
 								</h:panelGroup>
 							</ui:fragment>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					<!-- 42 manufacturer -->
 					<ui:fragment rendered="#{ri.sec_Publisher.size() > 0}" >
-						<a4j:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >							
+						<ui:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >							
 							<ui:fragment rendered="#{sec_publisher.displayLabel == 'manufacturer'}">
 				 				<h:panelGroup layout="block" styleClass="eg3_container_1" rendered = "#{not empty sec_publisher.publisher}">
 				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
@@ -728,7 +728,7 @@
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
+										<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{sec_publisher.dateIssued_425.date}" />
 									</h:panelGroup>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.edition}">
@@ -738,15 +738,15 @@
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:inputText value="#{sec_publisher.edition}" title="#{publisher.edition}" />
+										<h:inputText value="#{sec_publisher.edition}" title="#{sec_publisher.edition}" />
 									</h:panelGroup>
 								</h:panelGroup>
 							</ui:fragment>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					<!-- 43 creator -->
-					<ui:fragment rendered="#{ri.sec_Publisher.size() > 0}" >
-						<a4j:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
+					<h:panelGroup rendered="#{ri.sec_Publisher.size() > 0}" >
+						<ui:repeat var="sec_publisher" value ="#{ri.sec_Publisher}" >
 							<ui:fragment rendered="#{sec_publisher.displayLabel == 'creator'}">								
 								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered = "#{not empty sec_publisher.publisher}">
 				 					<h:panelGroup layout="block" styleClass="eg3_container_1_3" >
@@ -775,7 +775,7 @@
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{publisher.dateIssued_425.date}" />
+										<h:inputText value="#{sec_publisher.dateIssued_425.date}" title="#{sec_publisher.dateIssued_425.date}" />
 									</h:panelGroup>
 								</h:panelGroup>					
 								<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_publisher.edition}">
@@ -785,15 +785,15 @@
 										</h:panelGroup>
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
-										<h:inputText value="#{sec_publisher.edition}" title="#{publisher.edition}" />
+										<h:inputText value="#{sec_publisher.edition}" title="#{sec_publisher.edition}" />
 									</h:panelGroup>
 								</h:panelGroup>
 							</ui:fragment>
-						</a4j:repeat>
-					</ui:fragment>
+						</ui:repeat>
+					</h:panelGroup>
 					<!-- 44 isbn 634 -->					
 					<ui:fragment rendered="#{ri.sec_identifiers.size() > 0}">
-						<a4j:repeat var="sec_identifier" value="#{ri.sec_identifiers}">
+						<ui:repeat var="sec_identifier" value="#{ri.sec_identifiers}">
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{sec_identifier.type == 'isbn'}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -804,11 +804,11 @@
 									<h:inputText value="#{sec_identifier.value}" title="#{sec_identifier.value}" />
 								</h:panelGroup>
 							</h:panelGroup>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					<!-- 45 issn 635 -->
 					<ui:fragment rendered="#{ri.sec_identifiers.size() > 0}">	
-						<a4j:repeat var="sec_identifier" value="#{ri.sec_identifiers}">			
+						<ui:repeat var="sec_identifier" value="#{ri.sec_identifiers}">			
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{sec_identifier.type == 'issn'}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -819,11 +819,11 @@
 									<h:inputText value="#{sec_identifier.value}" title="#{sec_identifier.value}" />
 								</h:panelGroup>
 							</h:panelGroup>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					<!-- 46 signature 646 -->
 					<ui:fragment rendered="#{ri.sec_location.size()>0}">	
-						<a4j:repeat var="sec_location" value="#{ri.sec_location}">						
+						<ui:repeat var="sec_location" value="#{ri.sec_location}">						
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_location.sec_signature_646}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -834,7 +834,7 @@
 									<h:inputText value="#{sec_location.sec_signature_646}" title="#{sec_location.sec_signature_646}"/>
 								</h:panelGroup>
 							</h:panelGroup>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					
 					<!-- 47 digital master 647 -->
@@ -873,7 +873,7 @@
 					
 					<!-- 50 technical indication 653 -->
 					<ui:fragment rendered="#{ri.sec_physicalDescriptions.size() > 0}">
-						<a4j:repeat var="sec_pd" value="#{ri.sec_physicalDescriptions}"> 
+						<ui:repeat var="sec_pd" value="#{ri.sec_physicalDescriptions}"> 
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_pd.pdForm and empty sec_pd.pdForm.type}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -884,11 +884,11 @@
 									<h:inputText value="#{sec_pd.pdForm.value}" title="#{sec_pd.pdForm.value}"/>
 								</h:panelGroup>	
 							</h:panelGroup>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
 					<!-- 51 extent 637 -->
 					<ui:fragment rendered="#{ri.sec_physicalDescriptions.size() > 0}">
-						<a4j:repeat var="sec_pd" value="#{ri.sec_physicalDescriptions}"> 						
+						<ui:repeat var="sec_pd" value="#{ri.sec_physicalDescriptions}"> 						
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_pd.extent}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -899,11 +899,11 @@
 									<h:inputText value="#{sec_pd.extent}" title="#{sec_pd.extent}" />
 								</h:panelGroup>	
 							</h:panelGroup>
-						</a4j:repeat>			
+						</ui:repeat>			
 					</ui:fragment>					
 					<!-- 52 url 655 -->		
 					<ui:fragment rendered="#{ri.sec_location.size()>0}">
-						<a4j:repeat var="sec_location" value="#{ri.sec_location}">
+						<ui:repeat var="sec_location" value="#{ri.sec_location}">
 							<h:panelGroup layout="block" styleClass="eg3_container_1" rendered="#{not empty sec_location.sec_url}">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_3">
 									<h:panelGroup layout="block" styleClass="eg3_itemMetaLabel">
@@ -914,9 +914,9 @@
 									<h:inputText value="#{sec_location.sec_url.value}" title="#{sec_location.sec_url.value}" />
 								</h:panelGroup>
 							</h:panelGroup>
-						</a4j:repeat>
+						</ui:repeat>
 					</ui:fragment>
-				</a4j:repeat>
+				</ui:repeat>
 			</h:panelGroup>	
 
 	<!-- END OF metadata container -->
