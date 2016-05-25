@@ -95,7 +95,6 @@ digilib plugin stub
     };
 
     var handleUpdate = function (evt) {
-    	
     	////console.debug("dlcplugin: handleUpdate");
         
     	
@@ -163,6 +162,7 @@ digilib plugin stub
     };
 
     var handleRedisplay = function (evt) {
+    	console.log("handleRedisplay");
         var data = this;
     };
 

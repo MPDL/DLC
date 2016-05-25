@@ -59,6 +59,8 @@
 			<link rel="apple-touch-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon_apple.png"/>
 			<link rel="icon" type="image/image/vnd.microsoft.icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
 			<link rel="icon" type="image/x-icon" href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico"/>
+			
+			<ui:insert name="additionalHeadTags"></ui:insert>
 		</h:head>
 
 		<h:body lang="#{internationalizationHelper.userLocaleString}">

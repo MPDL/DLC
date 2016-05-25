@@ -37,39 +37,8 @@
 		<ui:param name="multiVolBrowserTitle" value=" #{not empty viewPages.volume.relatedParentVolume ? ' | ' : ''}#{not empty viewPages.volume.relatedParentVolume ? volumeUtilBean.getShortTitleView(viewPages.volume.relatedParentVolume) : ''}"/>		
 		<ui:param name="browserTitle" value="#{volumeBrowserTitle} #{multiVolBrowserTitle} | #{viewPages.collection.name} | #{viewPages.volumeOu.escidocMd.title}" />
 		
-		<ui:define name="separateContentHeader">
-			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
-	
-			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
-				<h:panelGroup layout="block" styleClass="eg3_container_1">
-					<modsViewer:header volume="#{viewPages.volume}" context="#{viewPages.collection.context}"/>
-				</h:panelGroup>
-				<!-- TODO labels -->
-				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
-			</h:panelGroup>
-		</ui:define>
+		<ui:define name="additionalHeadTags">
 		
-		<ui:define name="citationLink">
-			<script type="text/javascript">
-				function activateCitationContent() {
-					$('.eg3_citationOverlayArea').show(400);
-				}
-			</script>
-			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" title="#{tlt.view_page_showCitationLink}" onclick="activateCitationContent();"/>
-			</h:panelGroup>
-		</ui:define>
-		
-		
-		<ui:define name="citationLinkContent">
-			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{cc.attrs.citationBean.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
-				<nav:citationBoxContent citationBean="#{viewPages}" rendered="#{!viewPages.volume.reversePagination}"/>
-				<nav:citationBoxContentRTL citationBean="#{viewPages}" rendered="#{viewPages.volume.reversePagination}"/>
-			</h:panelGroup>
-		</ui:define>
-		
-		
-		<ui:define name="mainContent">
 			<!-- START for codicologic styling -->
 			<style type="text/css">
 				.cdcBlock {
@@ -113,6 +82,43 @@
 				}
 			</style>
 			
+		</ui:define>
+		
+		<ui:define name="separateContentHeader">
+			<link href="#{facesContext.externalContext.request.contextPath}/resources/components/digilib_jquery/jquery.digilib.css" type="text/css" rel="stylesheet"/>
+	
+			<h:panelGroup layout="block" styleClass="eg3_viewPageHeader eg3_container_1_2">
+				<h:panelGroup layout="block" styleClass="eg3_container_1">
+					<modsViewer:header volume="#{viewPages.volume}" context="#{viewPages.collection.context}"/>
+				</h:panelGroup>
+				<!-- TODO labels -->
+				<h:outputText value="#{msg.warning_itemWithdrawn}" style="color:red" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue=='withdrawn'}"/>
+			</h:panelGroup>
+		</ui:define>
+		
+		<ui:define name="citationLink">
+			<script type="text/javascript">
+				function activateCitationContent() {
+					$('.eg3_citationOverlayArea').show(400);
+				}
+			</script>
+			<h:panelGroup layout="block" styleClass="eg3_container_1_5 eg3_floatRight eg3_citationLinkArea" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+				<input type="button" class="eg3_floatRight" value="#{lbl.view_citationLink}" title="#{tlt.view_page_showCitationLink}" onclick="activateCitationContent();"/>
+			</h:panelGroup>
+		</ui:define>
+		
+		
+		<ui:define name="citationLinkContent">
+			<h:panelGroup id="citationOverlayArea" layout="block" styleClass="eg3_citationOverlayArea" rendered="#{cc.attrs.citationBean.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
+				<nav:citationBoxContent id="citationNormal" citationBean="#{viewPages}" rendered="#{!viewPages.volume.reversePagination}"/>
+				<nav:citationBoxContentRTL id="citationReverse" citationBean="#{viewPages}" rendered="#{viewPages.volume.reversePagination}"/>
+			</h:panelGroup>
+		</ui:define>
+		
+		
+		<ui:define name="mainContent">
+			
+			
 			<!-- START MAIN CONTENT -->
 			<h:panelGroup id="viewPageContainer" layout="block" styleClass="eg3_container_1 eg3_viewPageContainer eg3_content_bgColor_2" rendered="#{viewPages.volume.item.properties.publicStatus.xmlValue!='withdrawn'}">
 				
@@ -120,7 +126,7 @@
 				<h:panelGroup layout="block" styleClass="eg3_id_sidebarLeft eg3_container_1_4" style="min-height:498px;">
 					<h:form styleClass="eg3_overflow_z50">
 						
-						<rich:tabPanel id="tabPanel" switchType="ajax">
+						<rich:tabPanel id="tabPanel" switchType="ajax" >
 			     			
 			     			<rich:tab header="#{lbl.view_tab_structure}" rendered="#{viewPages.volume.teiSdXml != null}" id="toc" onenter="eg3_resizeSidebar();">
 				     			<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_iconBar eg3_textRight">
@@ -342,6 +348,7 @@
 						}
 						
 						function setViewPortHeight(set, obj) {
+							
 							var VPC;
 							if (obj) {
 								VPC = (typeof(obj) == "object") ? obj : $(obj);
@@ -358,13 +365,16 @@
 									break;
 								case 'true':
 								default:
+									
 									VPC.css({
 										"min-height": max,
 										"height":max,
 										"max-height":max
 									});
+									
 									break;
 							}
+							
 						}
 						
 						function checkActiveSidebarTab() {
@@ -444,6 +454,7 @@
 									//check if the e.source is part of the sidebar tab
 									if (e.source.name.match(/thumbs/gi) || e.source.name.match(/toc/gi) || e.source.name.match(/bibmd/gi) || e.source.name.match(/desc/gi)) {
 										//if a new sidebar tab content was loading, it's only necessary to resize the sidebar, but no img-listener is required
+										
 										if (startSidebarContent != checkActiveSidebarTab()) {
 											eg3_resizeSidebar();
 										}
@@ -574,8 +585,13 @@
 							<script type="text/javascript">
 							 /* <![CDATA[ */
 							 		
+							 		var citationLinkId = "#{!viewPages.volume.reversePagination ? 'citationNormal:citDigiView' : 'citationReverse:citDigiView'}";
+							 		citationLinkId = citationLinkId.replace(/:/, '\\:');
+							 		//console.log(citationLinkId);
+							 		//citationLinkId='citationNormal\\:citDigiView';
+							 		//console.log(citationLinkId);
 					                var opts = {
-							            'citationLinkIds' : ['citDigiView'],    
+							            'citationLinkIds' : [citationLinkId],    
 					                	'interactionMode' : 'embedded',
 					                    //scalerBaseUrl : 'http://latest-coreservice.mpdl.mpg.de/digitallibrary/servlet/Scaler', 
 					                    'showRegionNumbers' : true,
