@@ -615,6 +615,7 @@ function eg3_initSidebar(evt) {
  * @reference by eg3_initSidebar
  */
 function eg3_resizeSidebar() {
+	
 	var maxHeight = 0; //init a param for the greates height value of all available images
 	var sidebarHeight, contentDetailsHeight = 0;
 	
@@ -672,7 +673,7 @@ function eg3_resizeSidebar() {
 			}
 			
 			
-			
+			console.log("resize sidebar to " + sidebarHeight);
 			switch (EG3_PAGE) {
 				case '#editPage':
 					sdb.find('.eg3_editSidebarContent').css({

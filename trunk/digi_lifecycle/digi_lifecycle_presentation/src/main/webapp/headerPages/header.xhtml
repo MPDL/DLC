@@ -32,8 +32,9 @@
 	<h:panelGroup layout="block" styleClass="eg3_standardHeader">
 	
 		<h:panelGroup layout="block" styleClass="eg3_id_headerMetaMenu">
+			<nav>
 			<menu class="eg3_metaMenu">
-				<nav>
+				
 					<pretty:link mappingId="user" rendered="#{loginBean.login}" title="#{tlt.meta_userprofile}">
 						<h:outputText id="txtAccountUserName" value="#{loginBean.user.loginName}"/>
 					</pretty:link>
@@ -95,8 +96,9 @@
 					
 					
 					
-				</nav>
+				
 			</menu>
+			</nav>
 		</h:panelGroup>
 		
 		
