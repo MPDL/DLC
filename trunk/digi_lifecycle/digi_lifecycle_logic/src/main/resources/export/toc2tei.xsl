@@ -53,6 +53,7 @@
 		</tei:div>
 		</xsl:when>
 		<xsl:otherwise>
+		<xsl:if test="count($pages) &gt; 0">
 			<xsl:variable name="first_page_number" select="substring-after($pages[1]/toc:ptr/@xlink:href, '_')"></xsl:variable>
 			<xsl:variable name="first_page_in_mets" select="$metsXml/mets:mets/mets:structMap/mets:div/mets:div[@ID=$first_page_number]"></xsl:variable>
 				<tei:pb>
@@ -60,6 +61,7 @@
 					<xsl:attribute name="n"><xsl:value-of select="$first_page_in_mets/@ORDERLABEL"/></xsl:attribute>
 					<xsl:attribute name="xml:id"><xsl:value-of select="$first_page_number"/></xsl:attribute>
 				</tei:pb>
+				</xsl:if>
 			<tei:div>
 			<xsl:attribute name="xml:id"><xsl:value-of select="generate-id()"/></xsl:attribute>
 			<xsl:attribute name="type"><xsl:value-of select="./virr:virrelement/mods:mods/mods:genre"/></xsl:attribute>
