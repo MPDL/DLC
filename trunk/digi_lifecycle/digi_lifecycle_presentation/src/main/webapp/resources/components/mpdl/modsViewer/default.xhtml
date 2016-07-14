@@ -775,7 +775,12 @@
 					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_itemMetaValue">
+				<h:outputLink value="#{volumeUtilBean.getSec_url(cc.attrs.modsMetadata).sec_url.value}" target="_blank">
+					<h:outputText value="#{volumeUtilBean.getSec_url(cc.attrs.modsMetadata).sec_url.value}"/>
+				</h:outputLink>
+				<ui:remove>
 					<h:outputText value="#{volumeUtilBean.getSec_url(cc.attrs.modsMetadata).sec_url.value}" />
+				</ui:remove>
 				</h:panelGroup>
 			</h:panelGroup>
 		
