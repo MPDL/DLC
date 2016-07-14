@@ -8,7 +8,7 @@
  * When distributing Covered Code, include this CDDL HEADER in each file and include the License file at license/ESCIDOC.LICENSE. If applicable, add the following below this CDDL HEADER, with the fields enclosed by brackets "[]" replaced with your own identifying information: Portions Copyright [yyyy] [name of copyright owner]
  * CDDL HEADER END
  * 
- * Copyright 2011-2015 Fachinformationszentrum Karlsruhe Gesellschaft für wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur Förderung der Wissenschaft e.V.
+ * Copyright 2011-2015 Fachinformationszentrum Karlsruhe Gesellschaft fÃ¼r wissenschaftlich-technische Information mbH and Max-Planck-Gesellschaft zur FÃ¶rderung der Wissenschaft e.V.
  * All rights reserved. Use is subject to license terms.
  *
  * Initial Developer (as defined by CDDL 1.0) of the DLC-Software are five
