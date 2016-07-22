@@ -65,7 +65,7 @@ public class DLCOAIProvider {
 		String xslt_path = null;
 		String source_path = null;
 		String result_path = null;
-		String tmpString = item.getObjid().replace("escidoc:", "dlc_");
+		String tmpString = item.getObjid().replace("escidoc:", "dlc-");
 		if (tmpString.contains(":")) {
 			filename = tmpString.substring(0, tmpString.indexOf(":")) + ".xml";
 		} else {
@@ -94,7 +94,7 @@ public class DLCOAIProvider {
 	
 	public void removeFromOAIDataStore(String itemId) {
 		String filename = null;
-		String tmpString = itemId.replace("escidoc:", "dlc_");
+		String tmpString = itemId.replace("escidoc:", "dlc-");
 		if (tmpString.contains(":")) {
 			filename = tmpString.substring(0, tmpString.indexOf(":")) + ".xml";
 		} else {
