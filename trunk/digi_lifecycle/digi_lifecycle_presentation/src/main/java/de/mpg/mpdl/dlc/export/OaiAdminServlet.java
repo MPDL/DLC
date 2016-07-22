@@ -173,7 +173,7 @@ public class OaiAdminServlet extends HttpServlet {
 	private String checkOAIDataStore(String identifier) {
 		StringBuilder sb = null;
 		if (identifier != null) {
-			final String filename = identifier.replace("escidoc:", "dlc_") + ".xml";
+			final String filename = identifier.replace("escidoc:", "dlc-") + ".xml";
 			try {
 				File data_store = new File(PropertyReader.getProperty("oai.provider.data.store"));
 				FilenameFilter dlc_filter = new FilenameFilter()
@@ -203,7 +203,7 @@ public class OaiAdminServlet extends HttpServlet {
 		        {
 		            public boolean accept(File file, String name)
 		            {
-		                return name.startsWith("dlc_");
+		                return name.startsWith("dlc-");
 		            }
 		        };
 		        if (data_store.isDirectory()) {
