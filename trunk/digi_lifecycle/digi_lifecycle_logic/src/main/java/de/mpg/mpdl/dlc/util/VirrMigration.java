@@ -1,5 +1,6 @@
 package de.mpg.mpdl.dlc.util;
 
+import static java.nio.file.StandardCopyOption.*;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,6 +17,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -88,15 +91,34 @@ import de.mpg.mpdl.dlc.mods.MabXmlTransformation;
 public class VirrMigration {
 
 	public static void main(String... strings) {
-		String virr_cm = "vol";
-		String virr_id = "escidoc:352218";
-		//String dlc_id = "escidoc_69061";
-		String mab_id = "515618";
-		//String child_mab_id = "515631";
-		String image_mab_id = "042930";
-		String parent_id = "escidoc:69109";
+		// String virr_cm = "mono";
+		String virr_id = "escidoc_417464";
+		String dlc_id = "escidoc_68775";
+		String mab_id = "359290";
+		String child_mab_id = null;
+		// String image_mab_id = "escidoc_69052";
+		// String parent_id = "egal";	
+		
+		transformTOC2TEI(virr_id, dlc_id, mab_id, child_mab_id);
+		
+		try {
+			addComponents("escidoc:68775");
+		} catch (TransportException | MalformedURLException | EscidocException
+				| InternalClientException | FileNotFoundException
+				| XMLStreamException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		/*
-		String[] children = new String[]{"escidoc:69110", "escidoc:69111", "escidoc:69112", "escidoc:69113"};
+		String dlc_id = stepByStep1(virr_cm, mab_id, image_mab_id,  parent_id);
+		System.out.println("step 1: " + dlc_id);
+		
+		stepByStep2(dlc_id, virr_id, mab_id);
+		System.out.println("step 2: " + dlc_id);
+		*/
+		/*
+		String[] children = new String[]{"escidoc:68751", "escidoc:68752", "escidoc:68753", "escidoc:68754"};
 		List<String> list = Arrays.asList(children);
 		try {
 			adddChildRelations(parent_id, list);
@@ -112,77 +134,10 @@ public class VirrMigration {
 		for (String s : uniqueValues) {
 			System.out.println(s);
 		}
-		*/
-		ArrayList<String> pbs = collectCorruptedTEIs();
-		for (String s : pbs) {
-			//System.out.println(s);
-		}
-		/*
-		transformTOC2TEI(virr_id, dlc_id, mab_id, child_mab_id);
-		try {
-			addComponents(dlc_id.replace("_", ":"));
-		} catch (TransportException | MalformedURLException | EscidocException
-				| InternalClientException | FileNotFoundException
-				| XMLStreamException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		*/
-		/*
-		String dlc_id = stepByStep1(virr_cm, mab_id, image_mab_id,  parent_id);
-		System.out.println("step 1: " + dlc_id);
-		
-		stepByStep2(dlc_id, virr_id, mab_id);
-		System.out.println("step 2: " + dlc_id);
-		*/
+		*/	
+		//getallTEIs();
 	}
 	
-	private static ArrayList<String> collectVirrGenres() {
-		ArrayList<String> list = new ArrayList<>();
-		File tocDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/toc_xml");
-		Pattern pat = Pattern.compile("escidoc_[0-9]{6}.xml");
-		File[] tocs = tocDir.listFiles(new FilenameFilter() {
-			
-			@Override
-			public boolean accept(File dir, String name) {
-				// TODO Auto-generated method stub
-				return name.matches("escidoc_[0-9]{6}.xml");
-			}
-		});
-		ArrayList<String> genres;
-		for (File f : tocs) {
-			genres = EscidocExtractor.extractVirrStructElems(f.getAbsolutePath());
-			System.out.println(f.getName());
-			System.out.println(genres);
-			list.addAll(genres);
-		}
-		return list;
-	}
-	
-	private static ArrayList<String> collectCorruptedTEIs() {
-		ArrayList<String> list = new ArrayList<>();
-		File tocDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/toc_xml");
-		File metsDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/mets");
-		File[] tocs = tocDir.listFiles(new FilenameFilter() {
-			
-			@Override
-			public boolean accept(File dir, String name) {
-				// TODO Auto-generated method stub
-				return name.matches("escidoc_[0-9]{5}_tei.xml");
-			}
-		});
-		ArrayList<String> genres;
-		String pb_num, image_num;
-		Arrays.sort(tocs);
-		for (File f : tocs) {
-			pb_num = EscidocExtractor.extractXLink(f.getAbsolutePath(), "tei:pb");
-			image_num = EscidocExtractor.extractXLink(metsDir + "/" + f.getName().replace("_tei", ""), "mets:div/@LABEL");
-			System.out.println(f.getName() + " pbs " + pb_num + " pages " + image_num);
-			
-			//list.addAll(genres);
-		}
-		return list;
-	}
 	
 	private static String stepByStep1(String virr_cm, String virr_mab_id, String image_mab_id, String parent_id) {
 		try {
@@ -190,8 +145,8 @@ public class VirrMigration {
 			if (virr_cm.equalsIgnoreCase("multi")) {
 				
 			} else {
-			savaAllImages(virr_mab_id, image_mab_id);
-			renameFiles(virr_mab_id, dlc_id.replace(":", "_"));
+			// savaAllImages(virr_mab_id, image_mab_id);
+			renameFiles(image_mab_id, dlc_id.replace(":", "_"));
 			}
 			return dlc_id;
 		} catch (AuthenticationException | TransportException
@@ -217,6 +172,20 @@ public class VirrMigration {
 		
 	}
 	
+	private static void deleteComponents(String id) throws Exception {
+		Authentication auth = new Authentication(new URL(
+				"http://dlc.mpdl.mpg.de"), "virr_user", "migration");
+		ItemHandlerClient ihc = new ItemHandlerClient(new URL(
+				"http://dlc.mpdl.mpg.de"));
+		Components comps = new Components();
+		Item item = ihc.retrieve(id);
+		while (item.getComponents().size() > 0) {
+			item.getComponents().remove();
+		}
+		item = ihc.update(id, item);
+		System.out.println("removed TEIs from " + item.getObjid());
+	}
+	
 	private static void addComponents(String escidoc_id) throws TransportException, MalformedURLException, EscidocException, InternalClientException, FileNotFoundException, XMLStreamException {
 		
 		String file_id = escidoc_id.replace(":", "_");
@@ -224,10 +193,10 @@ public class VirrMigration {
 		File tei_paged = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/toc_xml/" + file_id + "_tei_paged.xml");
 
 		Authentication auth = new Authentication(new URL(
-				"http://dev-dlc.mpdl.mpg.de"), "virr", "migration");
+				"http://dlc.mpdl.mpg.de"), "virr_user", "migration");
 		ItemHandlerClient ihc = new ItemHandlerClient(new URL(
-				"http://dev-dlc.mpdl.mpg.de"));
-		StagingHandlerClient staging = new StagingHandlerClient(new URL("http://dev-dlc.mpdl.mpg.de"));
+				"http://dlc.mpdl.mpg.de"));
+		StagingHandlerClient staging = new StagingHandlerClient(new URL("http://dlc.mpdl.mpg.de"));
 		staging.setHandle(auth.getHandle());
 		
 		ihc.setHandle(auth.getHandle());
@@ -262,6 +231,7 @@ public class VirrMigration {
 		item.getComponents().add(paged);
 
 		item = ihc.update(escidoc_id, item);
+		System.out.println("added TEIs to " + item.getObjid());
 		/*
 		TaskParam param = new TaskParam();
 		param.setComment("submitted after adding comps");
@@ -567,16 +537,46 @@ private static void createMetsManually(String escidoc_id) {
 	private static void renameFiles(String mab_id, String escidoc_id) {
 		File imageDir = new File(
 				"/home/frank/data/wilhelm/misc_shit/virr2dlc/images");
-		File original_dir = new File(imageDir + "/" + "original");
-		File web_dir = new File(imageDir + "/" + "web");
-		File thumbnails_dir = new File(imageDir + "/" + "thumbnails");
-		;
+		File original_dir = new File(imageDir + "/" + "original" + "/" + mab_id);
+		File web_dir = new File(imageDir + "/" + "web"+ "/" + mab_id);
+		File thumbnails_dir = new File(imageDir + "/" + "thumbnails"+ "/" + mab_id);
+		Path renamed = null;
+		if (original_dir.exists()) {
+			try {
+				renamed = Files.move(Paths.get(original_dir.getAbsolutePath()), Paths.get(imageDir + "/original/" + escidoc_id), REPLACE_EXISTING);
+				System.out.println("renamed " + renamed.getFileName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (web_dir.exists()) {
+			try {
+				renamed = Files.move(Paths.get(web_dir.getAbsolutePath()), Paths.get(imageDir + "/web/" + escidoc_id), REPLACE_EXISTING);
+				System.out.println("renamed " + renamed.getFileName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		if (thumbnails_dir.exists()) {
+			try {
+				renamed = Files.move(Paths.get(thumbnails_dir.getAbsolutePath()), Paths.get(imageDir + "/thumbnails/" + escidoc_id), REPLACE_EXISTING);
+				System.out.println("renamed " + renamed.getFileName());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		/*
 		File virrDir = new File(imageDir + "/" + mab_id);
+		
 		boolean makeOriginal = new File(original_dir + "/" + escidoc_id)
 				.mkdir();
 		boolean makeWeb = new File(web_dir + "/" + escidoc_id).mkdir();
 		boolean makeThumb = new File(thumbnails_dir + "/" + escidoc_id).mkdir();
-
+	*/
+		/*
 		for (File f : virrDir.listFiles(new FilenameFilter() {
 
 			@Override
@@ -618,6 +618,7 @@ private static void createMetsManually(String escidoc_id) {
 				f.renameTo(renamed);
 			}
 		}
+		*/
 	}
 
 	private static Node stream2dom(XMLStreamReader reader) {
@@ -642,9 +643,9 @@ private static void createMetsManually(String escidoc_id) {
 			MalformedURLException, EscidocException, InternalClientException {
 
 			Authentication auth = new Authentication(new URL(
-					"http://dev-dlc.mpdl.mpg.de"), "virr", "migration");
+					"http://dlc.mpdl.mpg.de"), "virr_user", "migration");
 			ItemHandlerClient ihc = new ItemHandlerClient(new URL(
-					"http://dev-dlc.mpdl.mpg.de"));
+					"http://dlc.mpdl.mpg.de"));
 			ihc.setHandle(auth.getHandle());
 			Item item = ihc.retrieve(escidoc_id);
 			MetadataRecord mdRecord = new MetadataRecord("mets");
@@ -667,15 +668,44 @@ private static void createMetsManually(String escidoc_id) {
 			} 
 	}
 	
+	private static void updateMdRecord(String escidoc_id) throws TransportException,
+	MalformedURLException, EscidocException, InternalClientException {
+
+	Authentication auth = new Authentication(new URL(
+			"http://dev-dlc.mpdl.mpg.de"), "virr", "migration");
+	ItemHandlerClient ihc = new ItemHandlerClient(new URL(
+			"http://dev-dlc.mpdl.mpg.de"));
+	ihc.setHandle(auth.getHandle());
+	Item item = ihc.retrieve(escidoc_id);
+	MetadataRecord mdRecord = item.getMetadataRecords().get("mets");
+	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	DocumentBuilder db;
+	Document doc = null;
+	try {
+		db = dbf.newDocumentBuilder();
+		doc = db.parse(new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/mets/" + escidoc_id.replace(":", "_") + ".xml"));
+		mdRecord.setContent((Element) doc.getFirstChild());
+		//item.getMetadataRecords().add(mdRecord);
+		item = ihc.update(escidoc_id, item);
+		TaskParam param = new TaskParam();
+		param.setComment("submitted");
+		param.setLastModificationDate(item.getLastModificationDate());
+		Result result = ihc.submit(escidoc_id, param);
+	} catch (ParserConfigurationException | SAXException | IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+}
+	
 	private static void adddChildRelations(String escidoc_id, List<String> list) throws TransportException,
 	MalformedURLException, EscidocException, InternalClientException {
 		
 		String predicate = "http://www.escidoc.de/ontologies/mpdl-ontologies/content-relations#hasPart";
 
 	Authentication auth = new Authentication(new URL(
-			"http://dev-dlc.mpdl.mpg.de"), "virr", "migration");
+			"http://dlc.mpdl.mpg.de"), "virr_user", "migration");
 	ItemHandlerClient ihc = new ItemHandlerClient(new URL(
-			"http://dev-dlc.mpdl.mpg.de"));
+			"http://dlc.mpdl.mpg.de"));
 	ihc.setHandle(auth.getHandle());
 	Item item = ihc.retrieve(escidoc_id);
 	Relations relations = new Relations();
@@ -699,22 +729,22 @@ private static void createMetsManually(String escidoc_id) {
 			MalformedURLException {
 
 		Authentication auth = new Authentication(new URL(
-				"http://dev-dlc.mpdl.mpg.de"), "virr", "migration");
+				"http://dlc.mpdl.mpg.de"), "virr_user", "migration");
 		ItemHandlerClient ihc = new ItemHandlerClient(new URL(
-				"http://dev-dlc.mpdl.mpg.de"));
+				"http://dlc.mpdl.mpg.de"));
 		ihc.setHandle(auth.getHandle());
 
 		Item item = new Item();
 		ItemProperties props = new ItemProperties();
 		switch (cModel) {
 		case "mono":
-			props.setContentModel(new ContentModelRef("escidoc:1001"));
+			props.setContentModel(new ContentModelRef("escidoc:1"));
 			break;
 		case "multi":
-			props.setContentModel(new ContentModelRef("escidoc:1002"));
+			props.setContentModel(new ContentModelRef("escidoc:2"));
 			break;
 		case "vol":
-			props.setContentModel(new ContentModelRef("escidoc:1003"));
+			props.setContentModel(new ContentModelRef("escidoc:3"));
 			Relations rels = new Relations();
 			if (parent_id != null) {
 			Relation rel = new Relation(new ItemRef(parent_id));
@@ -724,7 +754,7 @@ private static void createMetsManually(String escidoc_id) {
 			}
 			break;
 		}
-		props.setContext(new ContextRef("escidoc:69019"));
+		props.setContext(new ContextRef("escidoc:68726"));
 		item.setProperties(props);
 		MetadataRecords mdRecords = new MetadataRecords();
 		MetadataRecord mdRecord = new MetadataRecord("escidoc");
@@ -752,8 +782,8 @@ private static void createMetsManually(String escidoc_id) {
 		Source XML = new StreamSource(new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/virr(48)/" + mab_id + ".mab.xml"));
 
 		
-			//File transformed = File.createTempFile("transformed", "xml");
-		File transformed = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/virr(48)/" + mab_id + ".mods.xml");
+			File transformed = File.createTempFile("transformed", "xml");
+			// File transformed = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/virr(48)/" + mab_id + ".mods.xml");
 			StreamResult  result = new StreamResult(new FileWriter(transformed));
 			TransformerFactory transfFactory = TransformerFactory.newInstance();
 			Transformer transformer = transfFactory.newTransformer(XSL);
@@ -877,4 +907,73 @@ private static void createMetsManually(String escidoc_id) {
 			}
 		}
 	}
+	
+	private static ArrayList<String> collectVirrGenres() {
+		ArrayList<String> list = new ArrayList<>();
+		File tocDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/toc_xml");
+		Pattern pat = Pattern.compile("escidoc_[0-9]{6}.xml");
+		File[] tocs = tocDir.listFiles(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				// TODO Auto-generated method stub
+				return name.matches("escidoc_[0-9]{6}.xml");
+			}
+		});
+		ArrayList<String> genres;
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/output.txt"));
+			for (File f : tocs) {
+				genres = EscidocExtractor.extractVirrStructElems(f.getAbsolutePath());
+				System.out.println(f.getName());
+				writer.append(f.getName() + "\n");
+				System.out.println(genres);
+				writer.append(genres + "\n");
+				list.addAll(genres);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				writer.flush();
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return list;
+	}
+	
+	private static ArrayList<String> collectCorruptedTEIs() {
+		ArrayList<String> list = new ArrayList<>();
+		File tocDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/toc_xml");
+		File metsDir = new File("/home/frank/data/wilhelm/misc_shit/virr2dlc/mets");
+		File[] tocs = tocDir.listFiles(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				// TODO Auto-generated method stub
+				return name.matches("escidoc_[0-9]{5}_tei.xml");
+			}
+		});
+		ArrayList<String> genres;
+		String pb_num, image_num;
+		Arrays.sort(tocs);
+		for (File f : tocs) {
+			
+			pb_num = EscidocExtractor.extractXLink(f.getAbsolutePath(), "tei:pb");
+			image_num = EscidocExtractor.extractXLink(metsDir + "/" + f.getName().replace("_tei", ""), "mets:div/@LABEL");
+			System.out.println(f.getName() + " pbs " + pb_num + " pages " + image_num);
+			/*
+			genres = EscidocExtractor.extractPageBreaks(f.getAbsolutePath());
+			System.out.println(f.getName() + "  " + genres);
+			*/
+		}
+		return list;
+	}
+
 }
