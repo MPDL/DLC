@@ -43,7 +43,7 @@ public class EscidocExtractor {
 	}
 	
 	private static XQStaticContext nameSpacees12(XQStaticContext context) throws XQException {
-		//context.setBaseURI("http://r-coreservice.mpdl.mpg.de");
+		context.setBaseURI("http://r-coreservice.mpdl.mpg.de");
 		context.declareNamespace("container", "http://www.escidoc.de/schemas/container/0.8");
 		context.declareNamespace("toc", "http://www.escidoc.de/schemas/tableofcontent/0.1");
 		context.declareNamespace("struct-map", "http://www.escidoc.de/schemas/structmap/0.4");
@@ -61,6 +61,7 @@ public class EscidocExtractor {
 		context.declareNamespace("file", "http://purl.org/escidoc/metadata/profiles/0.1/file");
 		context.declareNamespace("dc", "http://purl.org/dc/elements/1.1/");
 		context.declareNamespace("tei", "http://www.tei-c.org/ns/1.0");
+		context.declareNamespace("functx", "http://www.functx.com");
 		return context;
 	}
 	
@@ -112,10 +113,10 @@ public class EscidocExtractor {
 	      XQStaticContext context = conn.getStaticContext();
 	      conn.setStaticContext(nameSpacees12(context));
 	      XQExpression expr = conn.createExpression();
-	      String query = "let $genres := doc('" + doc + "')//mods:genre \n";
-	      query += "for $genre in distinct-values($genres)\n";
-	      //query += "where count($pbs[@xml:id eq $pb]) gt 1\n";
-	      query += "return $genre";
+	      String query = "let $genres := doc('" + doc + "')//mods:mods \n";
+	      //query += "for $genre in distinct-values($genres/descendant-or-self::*/local-name(.))\n";
+	      query += "for $part in $genres/mods:titleInfo/mods:subTitle\n";
+	      query += "return data($part)";
 	     // query += "return concat(data($div/toc:ptr[@LOCTYPE='URL']/@xlink:title), \"###\", $div/@ID, \"###\", $div/@ORDER, \"###\", $div/@ORDERLABEL)";
 	      Properties props = new Properties();
 	      props.setProperty("method", "xml");
@@ -193,8 +194,8 @@ public class EscidocExtractor {
 	      conn.setStaticContext(nameSpacees12(context));
 	      XQExpression expr = conn.createExpression();
 	      String query = "let $elems := doc('" + doc_string + "')//" + elements +"\n";
-	      //query += "return data($elems/@xlink:href)";
-	      query += "return count($elems)";
+	      query += "return data($elems/@xlink:href)";
+	      //query += "return count($elems)";
 	     // query += "return concat(data($div/toc:ptr[@LOCTYPE='URL']/@xlink:title), \"###\", $div/@ID, \"###\", $div/@ORDER, \"###\", $div/@ORDERLABEL)";
 	      Properties props = new Properties();
 	      props.setProperty("method", "xml");
