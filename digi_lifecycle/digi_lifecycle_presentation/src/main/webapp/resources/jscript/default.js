@@ -467,6 +467,8 @@ function eg3_openOverlay(listButton, cnt) {
 	/*$(listButton).attr('disabled', 'disabled');
 	curControlPanel.find('.eg3_collapseOverlay').removeAttr('disabled');*/
 	$(listButton).hide();
+	curTabPanelContent.find(".rf-trn-cnt .rf-trn-lbl").removeClass("eg3_noWrap");
+
 	curControlPanel.find('.eg3_collapseOverlay').show();
 }
 /**
