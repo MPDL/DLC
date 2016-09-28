@@ -59,13 +59,10 @@
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 								<h:outputText value="&#160;"/>
-								<ui:remove>							
-									<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_libraries}"></h:outputText></h2>
-								</ui:remove>
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup id="ouAndContext" layout="block" styleClass="eg3_container_3_4">
-							<a4j:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" rowKeyVar="rowKey">
+							<ui:repeat value="#{advancedSearchBean.contextScElements}" var="scElem" varStatus="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_1">
 									<h:panelGroup layout="block" styleClass="eg3_container_1_4">
 										<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1">
@@ -96,16 +93,16 @@
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_12">
 										<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
-											<h:commandButton type="button" action="#{advancedSearchBean.newContextScElement}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
+											<h:commandButton type="submit" action="#{advancedSearchBean.newContextScElement}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
 												<f:ajax render=":scForm" execute="@form"/>
 											</h:commandButton>
-											<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.contextScElements)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16" rendered="#{advancedSearchBean.contextScElements.size()>1}">
+											<h:commandButton type="submit" action="#{volumeUtilBean.removeListMember(rowKey.index, advancedSearchBean.contextScElements)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16" rendered="#{advancedSearchBean.contextScElements.size()>1}">
 												<f:ajax render=":scForm" execute="@form"/>
 											</h:commandButton>
 										</h:panelGroup>
 									</h:panelGroup>
 								</h:panelGroup>
-							</a4j:repeat>
+							</ui:repeat>
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -123,29 +120,8 @@
 							</h:panelGroup>
 						</h:panelGroup>
 					</h:panelGroup>
-		<ui:remove>
-		<!-- NEW 
-		CONNECTOR PLEASE MODIFY the selectOneMenu -->
-				<!-- locigal connector -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
-						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
-							<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
-								<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
-									<h:panelGroup layout="block" styleClass="eg3_selectionContent">
-										<span class="eg3_selectionText"></span>
-									</h:panelGroup>
-									<h:selectOneMenu value="">						
-										<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
-										<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
-										<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
-									</h:selectOneMenu>
-								</h:panelGroup>	
-							</h:panelGroup>
-						</h:panelGroup>
-					</h:panelGroup>
-			</ui:remove>
-				
-					
+
+
 				<!-- searchCriterionList -->
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
@@ -154,11 +130,11 @@
 							</h:panelGroup>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
-							<a4j:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" rowKeyVar="rowKey">
+							<ui:repeat value="#{advancedSearchBean.searchCriterionList}" var="sc" varStatus="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_searchCriterion">
 									
 									<h:panelGroup layout="block" styleClass="eg3_container_1_9">
-										<ui:fragment rendered="#{rowKey > 0}">
+										<ui:fragment rendered="#{rowKey.index > 0}">
 											<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js">
 												<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 													<span class="eg3_selectionText"></span>
@@ -170,7 +146,7 @@
 												</h:selectOneMenu>
 											</h:panelGroup>
 										</ui:fragment>
-										<ui:fragment rendered="#{rowKey lt 1}">
+										<ui:fragment rendered="#{rowKey.index lt 1}">
 											<h:outputText value="&#160;"/>
 										</ui:fragment>
 									</h:panelGroup>
@@ -200,15 +176,15 @@
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_1_12">
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
-										<h:commandButton type="button" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
+										<h:commandButton type="submit" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
-										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.searchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
+										<h:commandButton type="submit" action="#{volumeUtilBean.removeListMember(rowKey.index, advancedSearchBean.searchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
 									</h:panelGroup>
 								</h:panelGroup>
-							</a4j:repeat>
+							</ui:repeat>
 							
 						<!-- source year -->
 							<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">
@@ -335,7 +311,7 @@
 
 
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow" rendered="#{empty advancedSearchBean.cdcSearchCriterionList}">
-								<h:commandLink type="button" action="#{volumeUtilBean.addNewCdcSearchCriterion(advancedSearchBean.cdcSearchCriterionList)}"  title="#{tlt.advancedSearch_addBtn}" value=" "  >
+								<h:commandLink type="submit" action="#{volumeUtilBean.addNewCdcSearchCriterion(advancedSearchBean.cdcSearchCriterionList)}"  title="#{tlt.advancedSearch_addBtn}" value=" "  >
 									<f:ajax render="@form" execute="@form"/>
 									<h:panelGroup layout="block" styleClass="eg3_ico_addi_16"/>
 									<h:outputText value="#{lbl.sc_codicologicalDetails}"/>
@@ -343,7 +319,7 @@
 						</h:panelGroup>
 								
 						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow" rendered="#{not empty advancedSearchBean.cdcSearchCriterionList}">
-							<a4j:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" rowKeyVar="rowKey">
+							<ui:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" varStatus="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 										<h:outputText value="&#160;"/>											
@@ -414,16 +390,16 @@
 										<h:outputText value="&#160;"/>											
 									</h:panelGroup>
 									<h:panelGroup layout="block" styleClass="eg3_container_2_3 eg3_containerCenter">
-										<h:commandButton type="button" action="#{volumeUtilBean.addNewCdcSearchCriterion(sc, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
+										<h:commandButton type="submit" action="#{volumeUtilBean.addNewCdcSearchCriterion(sc, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_addBtn}" styleClass="eg3_ico_addi_16">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
-										<h:commandButton type="button" action="#{volumeUtilBean.removeListMember(rowKey, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16">
+										<h:commandButton type="submit" action="#{volumeUtilBean.removeListMember(rowKey.index, advancedSearchBean.cdcSearchCriterionList)}" value=" " title="#{tlt.advancedSearch_removeBtn}" styleClass="eg3_ico_removei_16">
 											<f:ajax render="@form" execute="@form"/>
 										</h:commandButton>
 									</h:panelGroup>
 								</h:panelGroup>
 								
-							</a4j:repeat>
+							</ui:repeat>
 						</h:panelGroup>
 					</h:panelGroup>
 					
@@ -437,7 +413,7 @@
 							<h:outputText value="&#160;"/>
 						</h:panelGroup>
 						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_submitPanel">
-								<h:commandButton type="button" value="#{lbl.advancedSearch_resetSearchBtn}" title="#{tlt.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
+								<h:commandButton type="submit" value="#{lbl.advancedSearch_resetSearchBtn}" title="#{tlt.advancedSearch_resetSearchBtn}" styleClass="eg3_borderradius_5" 
 												   action="#{advancedSearchBean.resetSearch}" >
 												   <f:ajax render="@all"/>
 								</h:commandButton>			
@@ -450,36 +426,6 @@
 			</h:panelGroup>
 		</ui:define>
 	</ui:composition>
-							<ui:remove>
-								<br/><br/>
-								<h:panelGroup layout="block" styleClass="eg3_container_1" >	
-										<h2><h:outputText value="#{lbl.sc_struct}"></h:outputText></h2>
-										<h:outputText value="#{lbl.sc_structTitle}"/>
-										<h:inputText value="TODO"/>
-										<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-										</h:commandButton>
-										<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-										</h:commandButton>
-										<br/><br/>
-										<h:outputText value="#{lbl.sc_structAuthor}"/>
-										<h:inputText value="TODO"/>
-										<h:commandButton type="button" value="+" action="#{volumeUtilBean.addNewSearchCriterion(sc, advancedSearchBean.searchCriterionList)}" >
-											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-										</h:commandButton>
-										<h:commandButton type="button" value="-" action="#{volumeUtilBean.removeListMember(sc, advancedSearchBean.searchCriterionList)}" rendered="#{utilBean.getListSize(advancedSearchBean.searchCriterionList)>1}">
-											<f:ajax render=":#{component.parent.parent.clientId}" execute="@form"/>
-										</h:commandButton>
-										<br/><br/>
-										<h:outputText value="#{lbl.sc_structType}"/>
-										<h:selectOneMenu value="TODO">				
-											<f:selectItem itemValue="#{'DIV'}" itemLabel="#{lbl.edit_elementType_div}"/>
-											<f:selectItem itemValue="#{'TITLE_PAGE'}" itemLabel="#{lbl.edit_elementType_title_page}"/>
-											<f:selectItem itemValue="#{'FIGURE'}" itemLabel="#{lbl.edit_elementType_figure}"/>			
-										</h:selectOneMenu>
-								</h:panelGroup>
-							</ui:remove>
 </html>
 
 

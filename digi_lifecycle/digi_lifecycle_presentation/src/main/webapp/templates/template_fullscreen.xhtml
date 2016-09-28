@@ -67,9 +67,6 @@
 					<h:panelGroup layout="block" styleClass="eg3_id_contentDescription" rendered="#{not empty facesContext.messageList}">
 						<h:panelGroup layout="block" styleClass="eg3_messageArea">
 							<h:commandButton type="button" styleClass="eg3_messageCloseBtn eg3_icon_delete_16_16" onclick="$(this).parent().parent().hide(1000);" title=""/>
-							<ui:remove>
-							<input type="button" style="float: right; margin-right: -1%;" value="x" class="eg3_borderradius_5 eg3_messageCloseBtn" onclick="$(this).parent().parent().hide(1000);"/>
-							</ui:remove>
 							<h:panelGroup layout="block" styleClass="eg3_messageText">
 								<rich:messages layout="list" showDetail="true" showSummary="false" ajaxRendered="true" 
 									errorClass="eg3_messageError" fatalClass="eg3_messageFatal" warnClass="eg3_messageWarning" infoClass="eg3_messageSuccess"/>
