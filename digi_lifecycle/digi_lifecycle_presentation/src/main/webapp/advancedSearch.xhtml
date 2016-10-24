@@ -54,6 +54,9 @@
 				</h:panelGroup>
 				
 				<h:form id="scForm">
+				<!-- hidden (style = display:none) to trigger search on ENTER -->
+				<h:commandButton type="submit" value="#{lbl.advancedSearch_startSearchBtn}" title="#{tlt.advancedSearch_startSearchBtn}" style="display: none" action="#{advancedSearchBean.startSearch}"/>
+				
 				<!-- libraries selection -->
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">

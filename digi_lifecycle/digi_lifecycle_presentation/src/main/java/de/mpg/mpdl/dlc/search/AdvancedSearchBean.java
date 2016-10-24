@@ -547,20 +547,31 @@ public class AdvancedSearchBean implements Observer {
 	 */
 	private void setCollectionSearch(List<SearchCriterion> scList)
 	{		
+		
+		List<ContextSearch> cleanedContextScElements = new ArrayList<ContextSearch>();
+		
+		for(ContextSearch cs : contextScElements)
+		{
+			if((cs.getOuId() != null && !cs.getOuId().equals("")) || (cs.getContextId() !=null && !cs.getContextId().equals("")))
+			{
+				cleanedContextScElements.add(cs);
+			}
+		}
+		
 		//Set context id
 		boolean start = false;
 		boolean end = false;
-		for(int i = 0; i < contextScElements.size(); i ++)
+		for(int i = 0; i < cleanedContextScElements.size(); i ++)
 		{
 			SearchCriterion scCon;
-			ContextSearch contextSearch = contextScElements.get(i);
+			ContextSearch contextSearch = cleanedContextScElements.get(i);
 			
-			if (i == contextScElements.size()-1) end = true;
+			if (i == cleanedContextScElements.size()-1) end = true;
 			
 			//Means, a specific context was selected
 			if (!contextSearch.getContextId().equals(""))
 			{
-				if(contextScElements.size()==1)
+				if(cleanedContextScElements.size()==1)
 				{
 					scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, contextSearch.getContextId(),1,1);
 					scList.add(scCon);
@@ -571,7 +582,7 @@ public class AdvancedSearchBean implements Observer {
 					scList.add(scCon);
 					start = true;
 				}
-				else if (i == contextScElements.size()-1 && end)
+				else if (i == cleanedContextScElements.size()-1 && end)
 				{
 					scCon = new SearchCriterion(Operator.OR, SearchType.CONTEXT_ID, contextSearch.getContextId(),0,1);
 					scList.add(scCon);
@@ -591,10 +602,15 @@ public class AdvancedSearchBean implements Observer {
 					//First elem is 'All collections'
 					for (int y = 1; y < contextSearch.getContextList().size(); y ++)
 					{
+
 						String currentContextId = contextSearch.getContextList().get(y).getValue().toString();
 						
-						
-						
+						if (y == 1 && !start && contextSearch.getContextList().size()==2) {
+							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,1);
+							scList.add(scCon);
+							start = true;
+
+						} else {
 						if (y == 1 && !start)
 						{
 							scCon = new SearchCriterion(Operator.AND, SearchType.CONTEXT_ID, currentContextId,1,0);
@@ -619,7 +635,7 @@ public class AdvancedSearchBean implements Observer {
 				}
 			}
 		}
-
+		}
 	}
 
 	/**
