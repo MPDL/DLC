@@ -525,7 +525,6 @@
 				<site>
 					<id>website</id>
 					<url>scp://dlc.mpdl.mpg.de:/srv/www/staging/projects/dlc</url>
-					<!--url>scp://escidoc1.escidoc.mpg.de:/srv/www/staging/projects/virr</url -->
 				</site>
 			</distributionManagement>
 
