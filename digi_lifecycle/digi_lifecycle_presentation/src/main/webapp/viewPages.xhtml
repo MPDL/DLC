@@ -181,10 +181,12 @@
 													<h:outputText value=", #{lbl.view_treePageNumber} "/>
 													<h:outputText value="#{treeElement.startPage.order+1}" rendered="#{empty treeElement.startPage.orderLabel}"/>
 													<h:outputText value="#{treeElement.startPage.orderLabel}" rendered="#{not empty treeElement.startPage.orderLabel}"/>
+													<!--  JIRA ticket DLC-96 -->
+													<!-- 
 													<h:outputText value="-" />
 													<h:outputText value="#{treeElement.endPage.order+1}" rendered="#{empty treeElement.endPage.orderLabel}"/>
 													<h:outputText value="#{treeElement.endPage.orderLabel}" rendered="#{not empty treeElement.endPage.orderLabel}"/>
-													
+													 -->
 													<f:ajax render=":viewPage :citationOverlayArea"/>
 												</h:commandLink>		
 											</rich:treeNode>
