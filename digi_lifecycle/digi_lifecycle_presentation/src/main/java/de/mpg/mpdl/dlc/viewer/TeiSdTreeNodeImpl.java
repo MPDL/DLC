@@ -175,7 +175,7 @@ public class TeiSdTreeNodeImpl {
 				}
 				else if (n.getLocalName().equals("byline"))
 				{
-					NodeList nl = element.getElementsByTagNameNS("http://www.tei-c.org/ns/1.0", "docAuthor");
+					NodeList nl = ((Element)n).getElementsByTagNameNS("http://www.tei-c.org/ns/1.0", "docAuthor");
 					for(int i=0; i<nl.getLength();i++)
 					{
 						docAuthorList.add((Element)nl.item(i));
