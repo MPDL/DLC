@@ -674,6 +674,9 @@ public class StructuralEditorBean implements Observer {
 		{
 			try {
 				
+				//Save old Pb
+				String oldSelectdPb = getSelectedPb().getTeiElement().getId();
+				
 				flatTeiElementListToTeiSd(flatTeiElementList, teiSd);
 				
 				updateMetadata(teiSd);
@@ -697,6 +700,19 @@ public class StructuralEditorBean implements Observer {
 				//volServiceBean.loadTeiSd(volume, loginBean.getUserHandle());
 				flatTeiElementList = null;
 				volumeLoaded();
+				
+				
+				//Restore old selected Pb
+				
+				for(TeiElementWrapper teiElWrapper : flatTeiElementList)
+				{
+					if(ElementType.PB.equals(teiElWrapper.getTeiElement().getElementType()) && oldSelectdPb.equals( teiElWrapper.getTeiElement().getId()))
+					{
+						selectPb(teiElWrapper);
+						break;
+					}
+				}
+				
 				
 				MessageHelper.infoMessage(InternationalizationHelper.getMessage("edit_savedSuccessfully"));
 			} catch (Exception e) {
@@ -2500,7 +2516,7 @@ public class StructuralEditorBean implements Observer {
 		{
 			for(TeiElementWrapper wrapper : pagesToRerender)
 			{
-				if(wrapper!=null && !fc.getPartialViewContext().getRenderIds().contains(wrapper.getTeiElement().getId()));
+				if(wrapper!=null && !fc.getPartialViewContext().getRenderIds().contains(wrapper.getTeiElement().getId()))
 				{
 					fc.getPartialViewContext().getRenderIds().add(clientIdMap.get(wrapper.getTeiElement().getId()));
 				}
