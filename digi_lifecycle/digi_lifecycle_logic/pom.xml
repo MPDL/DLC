@@ -32,9 +32,9 @@
 	<version>1.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<scm>
-		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_logic</connection>
-		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle/digi_lifecycle_logic</developerConnection>
-		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+		<connection>scm:git:git@github.com:MPDL/DLC/digi_lifecycle/digi_lifecycle_logic</connection>
+		<developerConnection>scm:git:git@github.com:MPDL/DLC/digi_lifecycle/digi_lifecycle_logic</developerConnection>
+		<url>https://github.com/MPDL/DLC</url>
 	</scm>
 
 	<!-- Creates a client.jar file, maybe activate this later -->

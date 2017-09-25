@@ -156,9 +156,9 @@
 	</modules>
 
 	<scm>
-		<connection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</connection>
-		<developerConnection>scm:svn:https://subversion.mpdl.mpg.de/repos/dlc/trunk/digi_lifecycle</developerConnection>
-		<url>https://subversion.mpdl.mpg.de/repos/dlc</url>
+		<connection>scm:git:git@github.com:MPDL/DLC.git</connection>
+		<developerConnection>scm:git:git@github.com:MPDL/DLC.git</developerConnection>
+		<url>https://github.com/MPDL/DLC</url>
 	</scm>
 
 
