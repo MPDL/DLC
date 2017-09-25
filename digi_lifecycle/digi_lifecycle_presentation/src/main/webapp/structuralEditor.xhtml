@@ -937,6 +937,19 @@
 					EG3_CALLBACK = new Array("resizeTreeContainer()", "scrollThumbsContainer()", "scrollTreeContainer()");
 					eg3_initSidebar(); //calls the defined EG3_CALLBACK functions at function end
 					eg3_initWindowResizeListener();
+					
+					
+					//Warning for unsaved changes before leaving page
+					window.onbeforeunload = function (e) {
+					    e = e || window.event;
+					    // For IE and Firefox prior to version 4
+					    if (e) {
+					        e.returnValue = 'Any string';
+					    }
+					    // For Safari
+					    return 'Any string';
+					};
+					
 				});
 				
 				jsf.ajax.addOnEvent(function(e) {
@@ -946,6 +959,8 @@
 						resizeSelectBox();
 					}
 				});
+				
+				
 				
 			</script>
 		</ui:define>
