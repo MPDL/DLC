@@ -148,6 +148,7 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		scMenuList.add(new SelectItem(CombinedSortCriterion.TITLE_YEAR_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_title_desc")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_year")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.YEAR_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_year_desc")));
+		scMenuList.add(new SelectItem(CombinedSortCriterion.SIGNATURE_ASC.name(), InternationalizationHelper.getLabel("sort_criterion_signature")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.NEWEST_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_newest")));
 		scMenuList.add(new SelectItem(CombinedSortCriterion.LAST_MODIFIED_DESC.name(), InternationalizationHelper.getLabel("sort_criterion_lastModified")));
 		

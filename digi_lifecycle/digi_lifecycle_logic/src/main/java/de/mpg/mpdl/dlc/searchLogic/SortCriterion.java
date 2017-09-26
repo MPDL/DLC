@@ -47,6 +47,7 @@ public class SortCriterion {
 				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
 		YEAR_DESC(new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)),
 		YEAR_ASC(new SortCriterion(SortIndices.YEAR, SortOrders.ASCENDING)),
+		SIGNATURE_ASC(new SortCriterion(SortIndices.SIGNATURE, SortOrders.ASCENDING)),
 		LAST_MODIFIED_DESC(new SortCriterion(SortIndices.LAST_MODIFIED, SortOrders.DESCENDING)),
 		NEWEST_DESC(new SortCriterion(SortIndices.NEWEST, SortOrders.DESCENDING)),
 		VOLUME(new SortCriterion[]{
@@ -89,6 +90,7 @@ public class SortCriterion {
 		TITLE("sort.dlc.title", "/sort/dlc/title"),
 		AUTHOR("sort.dlc.author", "/sort/dlc/author"),
 		YEAR("sort.dlc.year", "/sort/dlc/year"),
+		SIGNATURE("sort.escidoc.physicalLocation", "/sort/md-records/md-record/mods/location/physicalLocation"),
 		NEWEST("sort.escidoc.creation-date", "/sort/properties/creation-date"),
 		STATUS("", "/properties/public-status"),
 		LAST_MODIFIED("", "/sort/last-modification-date"),
