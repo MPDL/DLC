@@ -1272,7 +1272,41 @@
 					<xsl:value-of select="."/>
 				</element>
 			</xsl:for-each>
+			<!-- Volume title -->
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:part/mods:detail/mods:number">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:part/mods:detail/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+		</userdefined-index>
 		
+		<userdefined-index name="compound.author-title" context="dlc" xmlns:mods="http://www.loc.gov/mods/v3">
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:name[@type='personal']/mods:namePart">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:titleInfo/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<!-- Volume title -->
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:part/mods:detail/mods:number">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
+			<xsl:for-each select="$ITEM_METADATAPATH/mods:mods/mods:part/mods:detail/mods:title">
+				<element index="TOKENIZED">
+					<xsl:value-of select="."/>
+				</element>
+			</xsl:for-each>
 		</userdefined-index>
 
 		<userdefined-index name="place" context="dlc" xmlns:mods="http://www.loc.gov/mods/v3">

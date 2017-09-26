@@ -31,13 +31,14 @@ public class SortCriterion {
 
 	public enum CombinedSortCriterion
 	{
+		
+		
 		AUTHOR_TITLE_ASC(new SortCriterion[]{
-				new SortCriterion(SortIndices.AUTHOR, SortOrders.ASCENDING),
-				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
+				new SortCriterion(SortIndices.AUTHOR_TITLE_COMPOUND, SortOrders.ASCENDING),
 				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
 		AUTHOR_TITLE_DESC(new SortCriterion[]{
-				new SortCriterion(SortIndices.AUTHOR, SortOrders.DESCENDING),
-				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING)}),
+				new SortCriterion(SortIndices.AUTHOR_TITLE_COMPOUND, SortOrders.DESCENDING),
+				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
 		TITLE_YEAR_ASC(new SortCriterion[]{
 				new SortCriterion(SortIndices.TITLE, SortOrders.ASCENDING),
 				new SortCriterion(SortIndices.YEAR, SortOrders.DESCENDING)}),
@@ -91,6 +92,7 @@ public class SortCriterion {
 		NEWEST("sort.escidoc.creation-date", "/sort/properties/creation-date"),
 		STATUS("", "/properties/public-status"),
 		LAST_MODIFIED("", "/sort/last-modification-date"),
+		AUTHOR_TITLE_COMPOUND("sort.dlc.compound.author-title", "/sort/dlc/compound/author-title"),
 		
 		VOLUME_ORDER("sort.escidoc.part.order", "/sort/md-records/md-record/mods/part/order"),
 		VOLUME_PARTNUMBER("sort.escidoc.number", "/sort/md-records/md-record/mods/part/detail/number"),
