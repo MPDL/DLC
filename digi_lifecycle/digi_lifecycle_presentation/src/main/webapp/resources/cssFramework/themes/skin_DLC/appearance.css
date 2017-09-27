@@ -3176,7 +3176,15 @@ body .eg3_id_content div.digilib div.mark {
 }
 
 
-
+.eg3_buttonLined {
+	border-bottom:0.083333em solid #2F2F2F;
+	background-color:transparent;
+	border-radius:0.4166667em;
+	-webkit-border-radius:0.4166667em;
+	-moz-border-radius:0.4166667em;
+	-ms-border-radius:0.4166667em;
+	-o-border-radius:0.4166667em;
+}
 
 
 

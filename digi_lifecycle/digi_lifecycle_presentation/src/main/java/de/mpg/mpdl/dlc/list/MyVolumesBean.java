@@ -239,7 +239,9 @@ public class MyVolumesBean extends SortableVolumePaginatorBean {
 		{
 			fc = new SearchCriterion(Operator.AND, SearchType.TITLE, filterString, 1, 0);
 			fcList.add(fc);
-			fc = new SearchCriterion(Operator.OR, SearchType.AUTHOR, filterString, 0, 1);
+			fc = new SearchCriterion(Operator.OR, SearchType.AUTHOR, filterString, 0, 0);
+			fcList.add(fc);
+			fc = new SearchCriterion(Operator.OR, SearchType.SHELFMARK, filterString, 0, 1);
 			fcList.add(fc);
 		}
 		
