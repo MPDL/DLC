@@ -90,6 +90,11 @@
 			</h:panelGroup>
 			
 			<h:panelGroup layout="block" id="simpleItemContent" styleClass="eg3_itemContent">
+				<!-- Jira DLC-86 -->
+				<h:panelGroup layout="block" styleClass="eg3_shortView_js" rendered="#{prettyContext.currentMapping.id == 'myVolumes'}">
+				<h:outputText value="#{cc.attrs.volume.modsMetadata.signature_544}"/>
+				</h:panelGroup>
+				
 				<h:panelGroup layout="block" styleClass="eg3_itemHeadline" >
 					<h:panelGroup layout="block" styleClass="eg3_itemTitle">
 						<pretty:link mappingId="viewPagesWithoutNumber" title="#{tlt.list_goToVolumeLnk}">

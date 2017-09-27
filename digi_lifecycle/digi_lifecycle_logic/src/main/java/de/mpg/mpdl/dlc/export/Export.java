@@ -96,6 +96,7 @@ public class Export {
 	private static Logger logger = Logger.getLogger(Export.class);
 	public ExportTypes exportType;
 	public String level = "";
+	public PbOrDiv lastPb = null;
 	
 	public enum ExportTypes
 	{
@@ -703,6 +704,10 @@ public class Export {
 		
 		for (int i = 0; i < elems.size(); i++)
 		{
+			
+			if (elems.get(i).getElementType() == ElementType.PB) {
+				lastPb = elems.get(i);
+			}
 				//Create Outline and TOC for div and title elements
 				if (elems.get(i).getElementType() == ElementType.DIV || 
 						elems.get(i).getElementType() == ElementType.TITLE_PAGE)
@@ -802,7 +807,14 @@ public class Export {
 								}
 						}
 					}
+					
+					if (lastPb != null) {
+						para.add(" S. " + lastPb.getNumeration());
+					}
+
 				}
+				
+				
 				
 				//Create Outline and TOC for FIGURE elements
 				if (elems.get(i).getElementType() == ElementType.FIGURE)
@@ -820,6 +832,7 @@ public class Export {
 					oline = out;
 				}		
 				
+								
 			doc.add(para);
 			para = new Paragraph();
 			
