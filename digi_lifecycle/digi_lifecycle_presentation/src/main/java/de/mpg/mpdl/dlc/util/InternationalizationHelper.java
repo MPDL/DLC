@@ -200,8 +200,8 @@ public class InternationalizationHelper extends Observable
     public String getLabelForEnum(String prefix, String enumString)
     {
     	try {
-			enumString = enumString.toLowerCase().replaceAll("\\s", "_");
-			return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(prefix + enumString);
+			String normalizedEnumString = enumString.toLowerCase().replaceAll("\\s", "_");
+			return ResourceBundle.getBundle(this.getSelectedLabelBundle()).getString(prefix + normalizedEnumString);
 		} catch (Exception e) {
 			return enumString;
 		}
