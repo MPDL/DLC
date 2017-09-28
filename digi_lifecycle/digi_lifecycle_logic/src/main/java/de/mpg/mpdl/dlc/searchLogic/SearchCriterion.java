@@ -46,7 +46,8 @@ public class SearchCriterion extends Criterion{
 		ID(new String[]{"dlc.identifier"}, null), 
 		FULLTEXT(new String[]{"escidoc.fulltext"}, null),
 		CORPORATE(new String[]{"dlc.corporate"}, null),
-		SHELFMARK(new String[]{"escidoc.physicalLocation"}, new String[] {"/md-records/md-record/mods/location/physicalLocation"}), 
+		SHELFMARK(new String[]{"escidoc.physicalLocation"}, new String[] {"/md-records/md-record/mods/location/physicalLocation"}),
+		CONTENT_CATEGORY(new String[]{"escidoc.component.content-category"}, new String[] {"/components/component/properties/content-category"}),
 		
 		CONTEXT_ID(new String[]{"escidoc.context.objid"}, new String[]{"/properties/context/id"}),
 		CONTENT_MODEL_ID(new String[]{"escidoc.content-model.objid"}, new String[]{"/properties/content-model/id"}),

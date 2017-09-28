@@ -255,17 +255,27 @@
 					
 					
 				<!-- fullText -->
-					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category eg3_overflow">
+					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
 							<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter eg3_overflow">
 								<h2 class="eg3_headline"><h:outputText value="#{lbl.sc_fulltext}"/></h2>
 							</h:panelGroup> 
 						</h:panelGroup>
 						
-						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow">							
+						<h:panelGroup layout="block" styleClass="eg3_container_3_4 eg3_overflow ">							
 							<h:inputText type="text" id="fulltextSearchString" value="#{advancedSearchBean.fulltextSearch.value}" styleClass="eg3_container_1 eg3_quickSearchInput"/>
 							 <h:panelGroup styleClass="eg3_searchTooltip">
 								<h:outputText value="#{lbl.sc_fulltextInfo}"/>
+							</h:panelGroup>
+							
+							<h:panelGroup layout="block" styleClass="eg3_editInputArea eg3_container_1_2" style="margin-top: 0.3em;">
+								<h:panelGroup layout="block" styleClass="eg3_container_1_20">
+									<h:selectBooleanCheckbox id="paginationInBrackets" value="#{advancedSearchBean.searchOnlyWithFulltext}"/>
+								</h:panelGroup>
+								<h:panelGroup layout="block" styleClass="eg3_container_1_2">
+									<h:outputLabel for="paginationInBrackets" value="#{lbl.sc_searchOnlyFulltext}"/>
+								</h:panelGroup>
+
 							</h:panelGroup>
 						</h:panelGroup>
 						

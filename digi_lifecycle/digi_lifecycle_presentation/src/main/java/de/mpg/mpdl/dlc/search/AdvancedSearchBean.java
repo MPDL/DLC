@@ -73,6 +73,7 @@ public class AdvancedSearchBean implements Observer {
 	private SearchCriterion yearTo = null;
 	
 	private SearchCriterion fulltextSearch= null;
+	private boolean searchOnlyWithFulltext = false;
 	
 	private SearchCriterion cdcSearch= null;
 
@@ -521,6 +522,12 @@ public class AdvancedSearchBean implements Observer {
 				scList.add(this.fulltextSearch);
 			}
 			
+			
+			if(this.searchOnlyWithFulltext)
+			{
+				scList.add(new SearchCriterion(SearchType.CONTENT_CATEGORY, "tei"));
+			}
+			
 			//Set cdc search
 			if(!this.cdcSearch.getValue().trim().isEmpty())
 			{
@@ -817,6 +824,14 @@ public class AdvancedSearchBean implements Observer {
 
 	public void setCdcSearchCriterionList(List<CodicologicalSearchCriterion> cdcSearchCriterionList) {
 		this.cdcSearchCriterionList = cdcSearchCriterionList;
+	}
+
+	public boolean isSearchOnlyWithFulltext() {
+		return searchOnlyWithFulltext;
+	}
+
+	public void setSearchOnlyWithFulltext(boolean searchOnlyWithFulltext) {
+		this.searchOnlyWithFulltext = searchOnlyWithFulltext;
 	}
 
 	/*
