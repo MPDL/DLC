@@ -40,10 +40,13 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import de.escidoc.core.client.Authentication;
 import de.escidoc.core.client.ContextHandlerClient;
+import de.escidoc.core.client.ItemHandlerClient;
 import de.escidoc.core.client.exceptions.EscidocException;
 import de.escidoc.core.client.exceptions.InternalClientException;
 import de.escidoc.core.client.exceptions.TransportException;
+import de.escidoc.core.client.exceptions.application.security.AuthenticationException;
 import de.escidoc.core.client.exceptions.application.violated.ContextNameNotUniqueException;
 import de.escidoc.core.resources.common.TaskParam;
 import de.escidoc.core.resources.common.reference.OrganizationalUnitRef;
@@ -406,8 +409,14 @@ public class ContextServiceBean {
 		return context;
 	}
 	
-	public Context closeContext(String id, String userHandle) 
+	public Context closeContext(String id, String userHandle)  throws Exception
 	{
+		try {
+			checkIfAnyItems(id);
+		} catch (Exception e) {
+				throw new Exception(e.getMessage());
+		}
+		
 		logger.info("Closing new context");
 		Context c;
 		try
@@ -454,11 +463,40 @@ public class ContextServiceBean {
 		return c;
 	}
 	
+	public void checkIfAnyItems(String id) throws Exception   {
+		
+        SearchRetrieveResponse response = null;
+		SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+
+				Authentication auth;
+					try {
+						auth = new Authentication(new URL(PropertyReader.getProperty("escidoc.common.framework.url")),
+								PropertyReader.getProperty("admin-search.username"),
+								PropertyReader.getProperty("admin-search.password"));
+						ItemHandlerClient ihc = new ItemHandlerClient(new URL(PropertyReader.getProperty("escidoc.common.framework.url")));
+			    		ihc.setHandle(auth.getHandle());
+			    		request.setQuery("\"/properties/context/id\"=" + id + " not \"/properties/public-status\"=withdrawn");
+
+			    		request.setMaximumRecords(new NonNegativeInteger("10"));
+						response = ihc.retrieveItems(request);
+						System.out.println(response.getNumberOfRecords());
+						if (response.getNumberOfRecords() > 0) {
+							String message = "Collection contains items!   " +
+									"Please withdraw all items in this collection.";
+							throw new Exception(message);
+						}
+					} catch (TransportException | IOException | URISyntaxException | EscidocException | InternalClientException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						throw new Exception(e.getMessage(), e.getCause());
+					}
+					
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
 //		System.out.println(createContextAdminDescriptor());
 		
-
 		
 	}
 	

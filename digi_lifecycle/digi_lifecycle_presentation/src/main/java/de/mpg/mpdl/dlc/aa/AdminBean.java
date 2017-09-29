@@ -256,9 +256,13 @@ public class AdminBean{
 	 
 	public String closeCollection() throws Exception
 	{
-		Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
-		loginBean.getUser().getCreatedCollections().remove(collection);
-		init();
+		try {
+			Context c = contextServiceBean.closeContext(collection.getId(), loginBean.getUserHandle());
+			loginBean.getUser().getCreatedCollections().remove(collection);
+			init();
+		} catch (Exception e) {
+			MessageHelper.errorMessage(e.getMessage());
+		}
 		return "pretty:admin";
 	}
 	
