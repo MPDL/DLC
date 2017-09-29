@@ -100,8 +100,10 @@
 										<h:panelGroup layout="block" styleClass="eg3_container_1">
 											
 											<h:inputText value="#{myVolumesBean.filterString}"/>
-											<h:commandButton styleClass="eg3_borderradius_5" action="#{myVolumesBean.filterResults}" value="OK"/>
-											<h:commandButton styleClass="eg3_borderradius_5" action="#{myVolumesBean.resetFilter}" value="X" rendered="#{not empty myVolumesBean.filterString}"/>
+											&#160;
+											<h:commandButton styleClass="eg3_buttonLined " action="#{myVolumesBean.filterResults}" value="OK"/>
+											&#160;
+											<h:commandButton styleClass="eg3_buttonLined " action="#{myVolumesBean.resetFilter}" value="Reset" rendered="#{not empty myVolumesBean.filterString}"/>
 											
 										</h:panelGroup>
 									</h:panelGroup>

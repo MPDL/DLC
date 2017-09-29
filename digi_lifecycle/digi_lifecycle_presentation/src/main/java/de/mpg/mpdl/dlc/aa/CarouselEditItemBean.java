@@ -163,7 +163,7 @@ public class CarouselEditItemBean{
 				
 				
 				VolumeSearchResult res = fb.itemFilter(new VolumeTypes[]{VolumeTypes.MONOGRAPH, VolumeTypes.VOLUME}, new VolumeStatus[]{VolumeStatus.released},  new VolumeStatus[]{VolumeStatus.released}, 
-						scList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 1000, 1, loginBean.getUserHandle());
+						scList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 5000, 1, loginBean.getUserHandle());
 				 
 				this.volumeList = res.getVolumes();
 				 

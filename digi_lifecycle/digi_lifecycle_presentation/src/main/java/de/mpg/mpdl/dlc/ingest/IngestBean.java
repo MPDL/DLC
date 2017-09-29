@@ -290,7 +290,7 @@ public class IngestBean{
 	public void init()
 	{  
 		this.contextSelectItems.clear();
-		
+		this.contextSelectItems.add(new SelectItem(null, "---"));
 		
 		SelectItem item;
 		List<String> ids = new ArrayList();
@@ -334,8 +334,9 @@ public class IngestBean{
 					logger.error("Error while retrieving contexts", e);
 			}
 		}
-		if(contextSelectItems.size()>0)
-			this.selectedContextId = (String) contextSelectItems.get(0).getValue();	
+		
+		this.selectedContextId = null;
+		
 	}
 
 
@@ -989,6 +990,13 @@ public class IngestBean{
 	public String save(String operation) 
 	{            
 		logger.info("Reingest/update!!");
+		
+		if(getSelectedContextId()==null || getSelectedContextId().isEmpty())
+		{
+			MessageHelper.infoMessage(InternationalizationHelper.getMessage("error_ingest_nullCollection"));
+			return "";
+		}
+		
 		FacesContext context = FacesContext.getCurrentInstance();
 		AllVolumesBean allVolBean = (AllVolumesBean) context.getApplication().evaluateExpressionGet(context, "#{allVolumesBean}", AllVolumesBean.class);
 		ManualIngestLogBean ingestLogBean = (ManualIngestLogBean) context.getApplication().evaluateExpressionGet(context, "#{manualIngestLogBean}", ManualIngestLogBean.class);
@@ -1292,44 +1300,48 @@ public class IngestBean{
 
 	public List<SelectItem> getMultiVolItems() throws Exception{
 		multiVolItems.clear(); 
-		List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
-		SearchCriterion sc = null ;
-		if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
+		if(getSelectedContextId()!=null && !getSelectedContextId().isEmpty())
 		{
-			for(Collection c : loginBean.getUser().getModeratorCollections())
+			List<SearchCriterion> fcList = new ArrayList<SearchCriterion>();
+			SearchCriterion sc = null ;
+			if(loginBean.getUser().getModeratorCollections()!=null && loginBean.getUser().getModeratorCollections().size() > 0)
 			{
-				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
+				for(Collection c : loginBean.getUser().getModeratorCollections())
 				{
-					sc = new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId());
-					fcList.add(sc);
+					if(c.getId().equalsIgnoreCase(getSelectedContextId()))
+					{
+						sc = new SearchCriterion(SearchType.CONTEXT_ID, getSelectedContextId());
+						fcList.add(sc);
+					}
+				}
+
+			}
+			else if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
+			{
+				for(Collection c : loginBean.getUser().getDepositorCollections())
+				{
+					if(c.getId().equalsIgnoreCase(getSelectedContextId()))
+					{
+						sc = new SearchCriterion( SearchType.CREATED_BY, loginBean.getUser().getId());
+						fcList.add(sc);
+					}
+					
 				}
 			}
 
-		}
-		else if(loginBean.getUser().getDepositorCollections()!=null && loginBean.getUser().getDepositorCollections().size() > 0)
-		{
-			for(Collection c : loginBean.getUser().getDepositorCollections())
+
+			//		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, SortCriterion.getStandardSortCriteria(), 1000, 0);
+//			VolumeSearchResult vsr = volumeService.filterSearch(query, scList, limit, offset, index, userHandle);
+			VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, 
+					new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
+					new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
+					fcList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 1000, 0, loginBean.getUserHandle());
+			for(Volume vol : vsr.getVolumes())
 			{
-				if(c.getId().equalsIgnoreCase(getSelectedContextId()))
-				{
-					sc = new SearchCriterion( SearchType.CREATED_BY, loginBean.getUser().getId());
-					fcList.add(sc);
-				}
-				
+				multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
 			}
 		}
 
-
-		//		VolumeSearchResult vsr = searchBean.search(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, scList, SortCriterion.getStandardSortCriteria(), 1000, 0);
-//		VolumeSearchResult vsr = volumeService.filterSearch(query, scList, limit, offset, index, userHandle);
-		VolumeSearchResult vsr = filterBean.itemFilter(new VolumeTypes[]{VolumeTypes.MULTIVOLUME}, 
-				new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
-				new VolumeStatus[]{VolumeStatus.pending, VolumeStatus.submitted, VolumeStatus.released}, 
-				fcList, CombinedSortCriterion.AUTHOR_TITLE_ASC.getScList(), 1000, 0, loginBean.getUserHandle());
-		for(Volume vol : vsr.getVolumes())
-		{
-			multiVolItems.add(new SelectItem(vol.getItem().getObjid(), VolumeUtilBean.getMainTitle(vol.getModsMetadata()).getTitle()));
-		}
 		return multiVolItems;
 	}
 

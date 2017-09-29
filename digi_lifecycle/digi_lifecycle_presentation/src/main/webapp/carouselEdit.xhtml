@@ -67,29 +67,45 @@
 				<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter" rendered="#{not empty carouselEditItemBean.volumeList}">
 					
 						<h:panelGroup layout="block" styleClass="eg3_container_1">
-								<h:commandButton action="#{carouselEditItemBean.save}" value="#{lbl.button_command_save}" >
+								<h:commandButton action="#{carouselEditItemBean.save}" value="#{lbl.button_command_save}" styleClass="eg3_buttonLined">
 						
 								</h:commandButton>
 						</h:panelGroup>
+						
 	
 				</h:panelGroup>
 
 			</h:panelGroup>
 			
 		
+		<script>
+		
+		function uncheckAll(){
+			var checkboxes = $(".eg3_bibList input:checked");
+			checkboxes.prop("checked", false);
+			checkboxes.each(function() {$(this).parent().parent().css("background-color", "transparent")});
+		}
+		
+		</script>
 		
 		
 			<h:panelGroup layout="block" styleClass="eg3_container_4_5">
 				<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
 					<h:outputLabel styleClass="eg3_selectLabel" value="#{lbl.list_totalNumberOfHits} #{carouselEditItemBean.volumeList.size()}"/>
 				</h:panelGroup>
+				
+				
 				<h:form id="volumes">
 					<list:bibList_shortDLC>
-
+						<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_sumOfSearchResult">
+							<h:button onclick="uncheckAll(); return false;" value="Uncheck all" styleClass="eg3_buttonLined" rendered="#{carouselEditItemBean.volumeList.size() > 0}"></h:button>
+						</h:panelGroup>
 						<a4j:repeat var="volume" value="#{carouselEditItemBean.volumeList}" rowKeyVar="rowKey" >
-							<h:panelGroup layout="block"  styleClass="eg3_container_1">
+							<h:panelGroup id="carouselStatus" layout="block"  styleClass="eg3_container_1" style="background-color:#{carouselEditItemBean.checkedMap[volume.item.originObjid] ? '#CACA86;' : 'transparent'};">
 								<h:panelGroup layout="block" styleClass="eg3_container_1_20 eg3_textRight">
-									<h:selectBooleanCheckbox value="#{carouselEditItemBean.checkedMap[volume.item.originObjid]}" />
+									<h:selectBooleanCheckbox styleClass="checkbox_js" value="#{carouselEditItemBean.checkedMap[volume.item.originObjid]}" >
+									<f:ajax execute="@this" render="carouselStatus" event="change"/>
+									</h:selectBooleanCheckbox>
 								</h:panelGroup>
 								<h:panelGroup layout="block" styleClass="eg3_container_9_10">
 									<list:bibSimpleItemAllVolume volume="#{volume}"/>
