@@ -544,7 +544,7 @@
 				<dlc.batch_ingest.database.admin_user.name>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.name>
 				<dlc.batch_ingest.database.admin_user.password>to-be-added-to-continuum-settings.xml</dlc.batch_ingest.database.admin_user.password>
 
-				<tomcat.install.dir>/usr/share/tomcat7</tomcat.install.dir>
+				<tomcat.install.dir>/srv/web/tomcat8</tomcat.install.dir>
 			</properties>
 
 
