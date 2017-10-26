@@ -64,7 +64,8 @@
 					</ui:fragment>
 				</h:panelGroup>
 			</h:panelGroup>
-			
+			<!-- Jira DLC-105 -->
+				<!-- 
 			<h:panelGroup layout="block" styleClass="eg3_itemBody">
 				<h:panelGroup layout="block" styleClass="eg3_itemNavigation">
 					<h3>
@@ -79,7 +80,6 @@
 								<h:panelGroup styleClass="eg3_searchTooltip">
 									<h:outputText value="#{tlt.col_quicksearch}"/>
 								</h:panelGroup>
-								<!-- Do not use visibility:hidden, because then IE does not activate the button on pressing enter -->
 								<h:commandButton action="#{cc.attrs.searchAction}" value="Go" style="position:absolute; top:-100000em;">
 									<f:param name="searchParam" value="#{cc.attrs.searchParam}"/>
 								</h:commandButton>
@@ -87,8 +87,6 @@
 						</h:panelGroup>
 					</h3>
 				</h:panelGroup>
-				<!-- Jira DLC-90 -->
-				<!-- 
 				<h:panelGroup layout="block" styleClass="eg3_itemDescription">
 					<p>
 						<h:outputText value="#{utilBean.cleanHtml(utilBean.getShortenedText(cc.attrs.item.adminDescriptors[0].content.textContent, 500))}" escape="false"/>
@@ -102,8 +100,8 @@
 						</pretty:link>
 					</p>
 				</h:panelGroup>
-				 -->
 			</h:panelGroup>
+			-->
 		</h:panelGroup>
 	</cc:implementation>
 </html>

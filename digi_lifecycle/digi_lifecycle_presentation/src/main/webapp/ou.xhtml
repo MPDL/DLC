@@ -65,6 +65,7 @@
 							<h:panelGroup layout="block" styleClass="eg3_listBody">
 								<a4j:repeat value="#{viewOU.collections}" var="context" rowKeyVar="rowKey">
 									<list:collectionListItem item="#{context}" titleLinkID="collection" searchInput="#{viewOU.collectionSearchStrings[rowKey]}" searchAction="#{viewOU.searchInCollection}" searchParam="#{rowKey}"/>
+									<br/><br/>
 								</a4j:repeat>
 							</h:panelGroup>
 						</h:panelGroup>
