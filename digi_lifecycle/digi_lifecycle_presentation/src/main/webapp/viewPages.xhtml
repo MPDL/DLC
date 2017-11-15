@@ -182,8 +182,8 @@
 													<!-- 
 													<h:outputText value=", #{lbl.view_treePageNumber} "/>
 													-->
-													<h:outputText style="font-weight:bolder" value="#{treeElement.startPage.order+1}" rendered="#{empty treeElement.startPage.orderLabel}"/>
-													<h:outputText style="font-weight:bolder" value="#{treeElement.startPage.orderLabel}" rendered="#{not empty treeElement.startPage.orderLabel}"/>
+													<h:outputText style="font-weight:bolder" value=" #{treeElement.startPage.order+1}" rendered="#{empty treeElement.startPage.orderLabel}"/>
+													<h:outputText style="font-weight:bolder" value=" #{treeElement.startPage.orderLabel}" rendered="#{not empty treeElement.startPage.orderLabel}"/>
 													<!--  JIRA ticket DLC-96 -->
 													<!-- 
 													<h:outputText value="-" />
