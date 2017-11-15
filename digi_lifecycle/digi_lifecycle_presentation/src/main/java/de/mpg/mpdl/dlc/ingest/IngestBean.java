@@ -991,7 +991,7 @@ public class IngestBean{
 	{            
 		logger.info("Reingest/update!!");
 		
-		if(getSelectedContextId()==null || getSelectedContextId().isEmpty())
+		if(volume==null && (getSelectedContextId()==null || getSelectedContextId().isEmpty()))
 		{
 			MessageHelper.infoMessage(InternationalizationHelper.getMessage("error_ingest_nullCollection"));
 			return "";
