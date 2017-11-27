@@ -42,6 +42,9 @@ public class ModsName {
 	@XmlAttribute(name="displayLabel")
 	private String displayLabel;
 	
+	@XmlAttribute(name="valueURI")
+	private String valueURI;
+	
 	@XmlPath("mods:role/mods:roleTerm[@type='code']/@authority")
 	private String roleTermAuthority="marcrelator";
 	
@@ -98,6 +101,16 @@ public class ModsName {
 
 	public void setDisplayLabel(String displayLabel) {
 		this.displayLabel = displayLabel;
+	}
+
+
+	public String getValueURI() {
+		return valueURI;
+	}
+
+
+	public void setValueURI(String valueURI) {
+		this.valueURI = valueURI;
 	}
 
 
