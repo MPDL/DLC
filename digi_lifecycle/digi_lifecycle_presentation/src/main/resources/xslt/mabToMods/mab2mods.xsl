@@ -53,7 +53,7 @@
 			<xsl:for-each select="key('fields', '037')">
 				<xsl:call-template name="mab037ToLanguage"/>
 			</xsl:for-each>
-				
+			
 			<xsl:if test="//mab:feld[@nr='089'] or //mab:feld[@nr='090']">
 				<xsl:element name="mods:part">
 					<xsl:attribute name="type">
@@ -74,7 +74,7 @@
 				</xsl:element>
 			</xsl:if>
 				
-				
+			
 			<xsl:for-each select="key('fields', '100')">
 				<xsl:call-template name="mab100ToName"/>
 			</xsl:for-each>
@@ -141,7 +141,7 @@
 						checks for 403 and 425
 					-->
 			</xsl:for-each>
-				
+			
 			<xsl:for-each select="key('fields', '415')">
 				<xsl:call-template name="mab415ToOriginInfo"/>
 					<!--
@@ -208,7 +208,7 @@
 				
 				
 				<!--  begin : for 611 - 659 Sekundärausgabe-->
-				
+			
 			<mods:relatedItem displayLabel="secondary edition">
 				<xsl:for-each select="key('fields', '611')">
 					<xsl:call-template name="mab611ToRelatedItem" />
@@ -246,8 +246,8 @@
 			</mods:relatedItem>
 
 				<!--  end: 611-659	-->
-
 				
+			
 			<xsl:for-each select="key('fields', '902')">
 				<xsl:call-template name="mab902ToSubject"/>
 			</xsl:for-each>
@@ -341,7 +341,7 @@
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
-
+	
 	
 	
 	<xsl:template name="mab100ToName">
@@ -1044,8 +1044,8 @@
 	</xsl:template>
 	
 	
-	
 		
+	
 	
 	<xsl:template name="mab611ToRelatedItem">
 		<xsl:element name="mods:originInfo">
@@ -1211,7 +1211,7 @@
 			</xsl:element>
 		</xsl:element>
 	</xsl:template>
-
+	
 	
 	<xsl:template name="mab902ToSubject">
 		<xsl:element name="mods:subject">
@@ -1222,6 +1222,11 @@
 				<xsl:value-of select="'rswk'"/>
 			</xsl:attribute>
 			<xsl:element name="mods:topic">
+				<xsl:if test="mab:uf[@code='9']">
+					<xsl:attribute name="valueURI">
+						<xsl:value-of select="mab:uf[@code='9']"/>
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="mab:uf[not(@code='9')]">
 						<xsl:value-of select="mab:uf[not(@code='9')]"/>
