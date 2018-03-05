@@ -21,20 +21,28 @@
  ******************************************************************************/
 package de.mpg.mpdl.dlc.beans;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Base64;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.UriBuilder;
 
-import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
 import org.richfaces.event.ItemChangeEvent;
 
 import com.ocpsoft.pretty.PrettyContext;
 
+import de.escidoc.core.client.Authentication;
+import de.escidoc.core.client.exceptions.TransportException;
+import de.escidoc.core.client.exceptions.application.security.AuthenticationException;
 import de.mpg.mpdl.dlc.util.InternationalizationHelper;
 import de.mpg.mpdl.dlc.util.MessageHelper;
 import de.mpg.mpdl.dlc.util.PropertyReader;
@@ -54,6 +62,10 @@ public class LoginBean
     private String userHandle;
     private User user;
     private String tab = "toc";
+    
+    private Authentication auth;
+    private String userName;
+    private String userPass;
     
     private UserAccountServiceBean userAccountServiceBean = new UserAccountServiceBean();
     
@@ -78,6 +90,9 @@ public class LoginBean
 		this.login = false;
 		this.user = null;
 		this.userHandle = null;
+		this.auth = null;
+		this.userName = null;
+		this.userPass = null;
 	}
 	
 
@@ -92,7 +107,7 @@ public class LoginBean
         	String newUserHandle = null;
             try
             {
-                newUserHandle = new String(Base64.decode(request.getParameter("eSciDocUserHandle")), "UTF-8");
+                newUserHandle = new String(Base64.getDecoder().decode(request.getParameter("eSciDocUserHandle")), "UTF-8");
             }
             catch (Exception e)
             {
@@ -154,8 +169,29 @@ public class LoginBean
 	{    
 		FacesContext fc = FacesContext.getCurrentInstance();
 		PrettyContext pc = PrettyContext.getCurrentInstance();
+		try {
+			if (this.getUserName().isEmpty() || this.getUserPass().isEmpty()) {
+                MessageHelper.infoMessage(InternationalizationHelper.getMessage("username and/or password MUST NOT be empty!"));
+			} else {
+			auth = new Authentication(new URL(PropertyReader.getProperty("escidoc.common.login.url")), this.getUserName(), this.getUserPass());
+			String handle = auth.getHandle();
+			String base64UserHandle = Base64.getEncoder().encodeToString(handle.getBytes());
+
+    		String requestURL = PropertyReader.getProperty("dlc.instance.url") + pc.getContextPath()+pc.getRequestURL().toString();
+    		URI uri = new URI(requestURL+ "?eSciDocUserHandle="+ base64UserHandle);
+    		// URI redirectUri = UriBuilder.fromUri(requestURL).queryParam("eSciDocUserHandle", base64UserHandle).build();
+			fc.getExternalContext().redirect(uri.toString());
+			}
+			
+		} catch (AuthenticationException | TransportException | IOException | URISyntaxException e1) {
+            MessageHelper.infoMessage(InternationalizationHelper.getMessage("ERROR! " + e1.getMessage()));
+			logger.error("Login error", e1);
+		}
+				
+		
 //		HttpServletRequest request = (HttpServletRequest)fc.getExternalContext().getRequest();
 //		String requestURL = request.getRequestURL().toString();
+		/*
         try 
         {
     		String requestURL = PropertyReader.getProperty("dlc.instance.url") + pc.getContextPath()+pc.getRequestURL().toString();
@@ -167,6 +203,7 @@ public class LoginBean
         {
 			logger.error("Error redirecting to login page", e);
 		}
+		*/
 		return null;
 	}
 	
@@ -183,9 +220,9 @@ public class LoginBean
 				FacesContext fc = FacesContext.getCurrentInstance();
 				
 				//logout from escidoc
-	    		String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
-				fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
-
+	    		//String requestURL =PropertyReader.getProperty("dlc.instance.url")+ "/"+ PropertyReader.getProperty("dlc.context.path") + "/";
+				//fc.getExternalContext().redirect(getLogoutUrl().replace("$1", URLEncoder.encode(requestURL, "UTF-8")));
+				auth.logout();
 				//delete session
 		        HttpSession session = (HttpSession) fc.getExternalContext().getSession(false);
 		        session.invalidate();
@@ -231,5 +268,29 @@ public class LoginBean
 		} catch (Exception e) {
 			logger.error("Error while refreshing user handle", e);
 		}
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserPass() {
+		return userPass;
+	}
+
+	public void setUserPass(String userPass) {
+		this.userPass = userPass;
+	}
+
+	public Authentication getAuth() {
+		return auth;
+	}
+
+	public void setAuth(Authentication auth) {
+		this.auth = auth;
 	}
 }

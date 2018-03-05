@@ -28,7 +28,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:p="http://primefaces.prime.com.tr/ui">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
 	<f:loadBundle var="lbl" basename="Label" />
 	<f:loadBundle var="msg" basename="Messages" />
@@ -122,12 +122,15 @@
 					<div class="eg3_footer_content">
 						<!-- <ui:include src="../footerPages/footer.xhtml" />-->
 						<h:form>
+							<h:inputText id="username" value="#{loginBean.userName}" p:placeholder="username" rendered="#{!loginBean.login}"></h:inputText>
+							<h:inputSecret id="password" value="#{loginBean.userPass}" p:placeholder="password" rendered="#{!loginBean.login}"></h:inputSecret>
+							
 							<h:commandLink id="lnkLogin" title="#{tlt.meta_login}" 
-								value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" immediate="true">
+								value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" >
 							</h:commandLink>
 					
 							<h:commandLink id="lnkLogout" title="#{tlt.meta_logout}" 
-								value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" immediate="true">
+								value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" >
 							</h:commandLink> 
 						</h:form>
 						
