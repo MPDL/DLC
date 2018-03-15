@@ -75,7 +75,7 @@ public class HandleUpdate {
 			context.declareNamespace("ntei", "http://www.tei-c.org/ns/notTEI");
 			conn.setStaticContext(context);
 			XQExpression expr = conn.createExpression();
-			String search = "/srw/search/dlc_index?query=escidoc.objecttype=item%20and%20escidoc.content-model.objid=escidoc:2&amp;maximumRecords=500";
+			String search = "/srw/search/dlc_index?query=escidoc.objecttype=item%20and%20escidoc.content-model.objid=escidoc:3%20and%20escidoc.context.objid=escidoc:77483&amp;maximumRecords=1500";
 			URI uri = new URI(search);
 			String query = "for $item in doc('" + search + "')//item:item\n";
 			/* query += "for $comp in $item//comp:component\n";
@@ -84,7 +84,9 @@ public class HandleUpdate {
 			query += "return ";
 			query += "for $title in doc($href)//tei:titlePage/tei:docTitle/tei:titlePart\n";
 			*/
-			query += "return concat($item/@xlink:href, \" \", $item/item:properties/prop:pid)";
+			// query += "return concat($item/@xlink:href, \" \", $item/item:properties/prop:pid)";
+			query += "order by $item/md:md-records/md:md-record[@name='escidoc']/mods:mods/mods:recordInfo/mods:recordIdentifier\n";
+			query += "return concat($item/md:md-records/md:md-record[@name='escidoc']/mods:mods/mods:recordInfo/mods:recordIdentifier, \"   \", $item/item:properties/prop:pid)";
 			
 			Properties props = new Properties();
             props.setProperty("method", "xml");
@@ -109,7 +111,9 @@ public class HandleUpdate {
 					//System.out.println(result.getItem().toString());
 				} else {
 					rawValues = result.getAtomicValue();
-					setNewUrl4Handle(extractValues(rawValues)[1], extractValues(rawValues)[0]);
+					// setNewUrl4Handle(extractValues(rawValues)[1], extractValues(rawValues)[0]);
+					// System.out.println(extractValues(rawValues)[1] + "   " + extractValues(rawValues)[0]);
+					System.out.println(rawValues);
 				}
 			}
 		} catch (XQException e) {

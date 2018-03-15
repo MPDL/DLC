@@ -26,7 +26,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Base64;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -35,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.axis.encoding.Base64;
 import org.apache.log4j.Logger;
 import org.richfaces.event.ItemChangeEvent;
 
@@ -107,7 +107,7 @@ public class LoginBean
         	String newUserHandle = null;
             try
             {
-                newUserHandle = new String(Base64.getDecoder().decode(request.getParameter("eSciDocUserHandle")), "UTF-8");
+                newUserHandle = new String(Base64.decode(request.getParameter("eSciDocUserHandle")), "UTF-8");
             }
             catch (Exception e)
             {
@@ -175,7 +175,7 @@ public class LoginBean
 			} else {
 			auth = new Authentication(new URL(PropertyReader.getProperty("escidoc.common.login.url")), this.getUserName(), this.getUserPass());
 			String handle = auth.getHandle();
-			String base64UserHandle = Base64.getEncoder().encodeToString(handle.getBytes());
+			String base64UserHandle = Base64.encode(handle.getBytes());
 
     		String requestURL = PropertyReader.getProperty("dlc.instance.url") + pc.getContextPath()+pc.getRequestURL().toString();
     		URI uri = new URI(requestURL+ "?eSciDocUserHandle="+ base64UserHandle);
