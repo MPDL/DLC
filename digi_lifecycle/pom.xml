@@ -493,13 +493,13 @@
 			<properties>
 
 
-				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
-				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
-				<image-upload.url.upload>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
-				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<escidoc.common.framework.url>https://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>https://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<image-upload.url.upload>https://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.upload>
+				<image-upload.url.download>https://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
 				<image-upload.username>to-be-added-to-personal-settings.xml</image-upload.username>
 				<image-upload.password>to-be-added-to-personal-settings.xml</image-upload.password>
-				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<digilib.scaler.url>https://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
 				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
 				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
 				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
@@ -527,16 +527,16 @@
 			<properties>
 
 
-				<escidoc.common.framework.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
-				<escidoc.common.login.url>http://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
-				<dlc.instance.url>http://dev-dlc.mpdl.mpg.de</dlc.instance.url>
+				<escidoc.common.framework.url>https://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.framework.url>
+				<escidoc.common.login.url>https://dev-dlc.mpdl.mpg.de:8080/</escidoc.common.login.url>
+				<dlc.instance.url>https://dev-dlc.mpdl.mpg.de</dlc.instance.url>
 				<image-upload.url.upload>http://localhost:7070/image-upload/</image-upload.url.upload>
-				<image-upload.url.download>http://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
+				<image-upload.url.download>https://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
 				<image-upload.username>to-be-added-to-continuum-settings.xml</image-upload.username>
 				<image-upload.password>to-be-added-to-continuum-settings.xml</image-upload.password>
 				<image-upload.destDir>/data/dlc_images</image-upload.destDir>
 				<image-upload.tmpDir>/tmp</image-upload.tmpDir>
-				<digilib.scaler.url>http://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
+				<digilib.scaler.url>https://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
 				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
 				<dlc.content-model.multivolume.id>escidoc\:1002</dlc.content-model.multivolume.id>
 				<dlc.content-model.volume.id>escidoc\:1003</dlc.content-model.volume.id>
