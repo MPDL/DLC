@@ -534,7 +534,7 @@
 				<image-upload.url.download>https://dev-dlc.mpdl.mpg.de/image-upload/</image-upload.url.download>
 				<image-upload.username>to-be-added-to-continuum-settings.xml</image-upload.username>
 				<image-upload.password>to-be-added-to-continuum-settings.xml</image-upload.password>
-				<image-upload.destDir>/data/dlc_images</image-upload.destDir>
+				<image-upload.destDir>/srv/web/dlc_images</image-upload.destDir>
 				<image-upload.tmpDir>/tmp</image-upload.tmpDir>
 				<digilib.scaler.url>https://dev-dlc.mpdl.mpg.de/digitallibrary/servlet/Scaler</digilib.scaler.url>
 				<dlc.content-model.monograph.id>escidoc\:1001</dlc.content-model.monograph.id>
