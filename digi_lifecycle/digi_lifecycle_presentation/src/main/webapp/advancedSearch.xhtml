@@ -281,7 +281,7 @@
 						
 					</h:panelGroup>
 					
-					
+					<ui:remove>
 					<!-- locigal connector for cdc search
 					<h:panelGroup layout="block" styleClass="eg3_container_1 eg3_category">
 						<h:panelGroup layout="block" styleClass="eg3_container_1_6">
@@ -301,7 +301,7 @@
 					</h:panelGroup>
 					 -->
 					<!-- codicological data -->
-					
+					</ui:remove>
 					 
 					
 					
@@ -332,7 +332,7 @@
 						</h:panelGroup>
 								
 						<h:panelGroup id="cdc" layout="block" styleClass="eg3_container_3_4 eg3_overflow" rendered="#{not empty advancedSearchBean.cdcSearchCriterionList}">
-							<ui:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="sc" varStatus="rowKey">
+							<ui:repeat value="#{advancedSearchBean.cdcSearchCriterionList}" var="cdc" varStatus="rowKey">
 								<h:panelGroup layout="block" styleClass="eg3_container_3_4">
 									<h:panelGroup layout="block" styleClass="eg3_container_9_10 eg3_containerCenter">
 										<h:outputText value="&#160;"/>											
@@ -342,7 +342,7 @@
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-												<h:selectOneMenu value="#{sc.operator}">						
+												<h:selectOneMenu value="#{cdc.operator}">						
 													<f:selectItem itemLabel="#{lbl.advancedSearch_and}" itemValue="AND"/>
 													<f:selectItem itemLabel="#{lbl.advancedSearch_or}" itemValue="OR"/>
 													<f:selectItem itemLabel="#{lbl.advancedSearch_not}" itemValue="NOT"/>
@@ -355,12 +355,12 @@
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent eg3_main_color">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.superElementName}">						
+											<h:selectOneMenu value="#{cdc.superElementName}">						
 												<f:selectItem itemLabel="#{cdcLbl.cdc_object}" itemValue="object"/>
 												<f:selectItem itemLabel="#{cdcLbl.cdc_binding}" itemValue="binding"/>
 												<f:selectItem itemLabel="#{cdcLbl.cdc_bodyOfVolume}" itemValue="bodyOfVolume"/>
 												<f:selectItem itemLabel="#{cdcLbl.cdc_provenance}" itemValue="provenance"/>
-												<f:ajax event="change" listener="#{sc.superElementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>
+												<f:ajax event="change" listener="#{cdc.superElementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>
 											</h:selectOneMenu>
 									</h:panelGroup>
 									
@@ -373,27 +373,27 @@
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.elementName}">								
-												<f:selectItems value="#{sc.elementSelectItems}"/>
-												<f:ajax event="change" listener="#{sc.elementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>										
+											<h:selectOneMenu value="#{cdc.elementName}">								
+												<f:selectItems value="#{cdc.elementSelectItems}"/>
+												<f:ajax event="change" listener="#{cdc.elementNameChanged}" execute="@form" render=":#{rich:clientId('cdc')}"/>										
 											</h:selectOneMenu> 
 									</h:panelGroup>
 									
-									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'ENUM'}">
+									<h:panelGroup layout="block" styleClass="eg3_dynamicSelectBox_js eg3_container_1_3 eg3_floatRight" rendered="#{cdc.type == 'ENUM'}">
 											<h:panelGroup layout="block" styleClass="eg3_selectionContent">
 												<span class="eg3_selectionText"></span>
 											</h:panelGroup>
-											<h:selectOneMenu value="#{sc.value}">								
-												<f:selectItems value="#{sc.enumSelectItems}"/>									
+											<h:selectOneMenu value="#{cdc.value}">								
+												<f:selectItems value="#{cdc.enumSelectItems}"/>									
 											</h:selectOneMenu> 
 									</h:panelGroup>
 									
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'TEXT'}">
-											<h:inputText value="#{sc.value}" styleClass="eg3_container_1"/>								
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{cdc.type == 'TEXT'}">
+											<h:inputText value="#{cdc.value}" styleClass="eg3_container_1"/>								
 									</h:panelGroup>
 									
-									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{sc.type == 'BOOLEAN'}">
-											<h:selectBooleanCheckbox value="#{sc.value}" />					
+									<h:panelGroup layout="block" styleClass="eg3_container_1_3 eg3_floatRight" rendered="#{cdc.type == 'BOOLEAN'}">
+											<h:selectBooleanCheckbox value="#{cdc.value}" />					
 									</h:panelGroup>
 
 								</h:panelGroup>
