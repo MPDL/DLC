@@ -28,7 +28,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://primefaces.prime.com.tr/ui">
 
 	<f:loadBundle var="lbl" basename="Label" />
 	<f:loadBundle var="msg" basename="Messages" />
@@ -122,17 +122,26 @@
 					<div class="eg3_footer_content">
 						<!-- <ui:include src="../footerPages/footer.xhtml" />-->
 						<h:form>
-							<h:inputText id="username" value="#{loginBean.userName}" p:placeholder="username" rendered="#{!loginBean.login}"></h:inputText>
-							<h:inputSecret id="password" value="#{loginBean.userPass}" p:placeholder="password" rendered="#{!loginBean.login}"></h:inputSecret>
-							
+
+							<h:inputText id="username" styleClass="eg3_username" value="#{loginBean.userName}" rendered="#{!loginBean.login}"></h:inputText>
+							<script type="text/javascript">
+							$('.eg3_username').attr("placeholder", "username");
+						</script>						
+						
+							<h:inputSecret id="password"  styleClass="eg3_password" value="#{loginBean.userPass}" rendered="#{!loginBean.login}"></h:inputSecret>
+							<h:commandButton type="submit" styleClass="eg3_icon_quickSearch_16_16" style="background-color:transparent; position:absolute; top:-30px;" id="btnLoginAction" title="password" action="#{loginBean.login}" value="&#160;"/>
+						<script type="text/javascript">
+							$('.eg3_password').attr("placeholder", "password");
+						</script>
+						
 							<h:commandLink id="lnkLogin" title="#{tlt.meta_login}" 
-								value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}" >
+								value="#{lbl.header_lnk_login}" action="#{loginBean.login}" rendered="#{!loginBean.login}">
 							</h:commandLink>
 					
 							<h:commandLink id="lnkLogout" title="#{tlt.meta_logout}" 
-								value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}" >
+								value="#{lbl.header_lnk_logout}" action="#{loginBean.logout}" rendered="#{loginBean.login}">
 							</h:commandLink> 
-						</h:form>
+																		</h:form>
 						
 						<h:panelGroup styleClass="eg3_separator">&#160;</h:panelGroup>
 						
